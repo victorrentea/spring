@@ -2,26 +2,18 @@ package spring.training.first;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.LifecycleProcessor;
-import org.springframework.context.SmartLifecycle;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import spring.training.B;
 
 @SpringBootApplication
 public class FirstApplication {
@@ -42,7 +34,9 @@ class A {
 	private final B b;
 
 	@Autowired
-	public void myInit(B b, C c) {
+//	public void myInit(B b, @Nou IC c) {
+	public void myInit(B b, IC c) {
+
 		System.out.println("Method injection");
 	}
 
@@ -56,12 +50,36 @@ class A {
 	}
 }
 
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@interface Nou {}
 
+
+// daca asta ar fi intr-un JAR care doar uneori e pun in classpath si atuncicand e, trebuie sa castige
+@Primary
 @Component
-class C {
+@Profile("prod")
+class CVechi implements IC {
 	private int totalOrderPrice;
 
-	void compute(Order order) {
+	@Override
+	public void compute(Order order) {
+		totalOrderPrice += order.getPrice();
+	}
+	@PostConstruct
+	public void hello() {
+
+		// BUG aici
+		System.out.println("Legacy/ Mereu e acolo. dar nimeni nu vorbeste de el.");
+	}
+}
+@Nou
+@Component
+class CNou implements IC {
+	private int totalOrderPrice;
+
+	@Override
+	public void compute(Order order) {
 		totalOrderPrice += order.getPrice();
 	}
 }

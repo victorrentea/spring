@@ -1,4 +1,4 @@
-package spring.training;
+package spring.training.first;
 
 import org.springframework.stereotype.Component;
 
