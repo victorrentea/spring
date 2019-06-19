@@ -55,6 +55,7 @@ class OrderExporter  {
 	private LabelService labelService;
 
 	public void export(Locale locale) {
+		log.debug("Oare cu cine vorbesc ? " + labelService.getClass());
 		labelService.load(locale);
 		log.debug("Running export in " + locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
@@ -77,11 +78,16 @@ class InvoiceExporter {
 @Service
 @Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class LabelService {
+	@Autowired
 	private CountryRepo countryRepo;
-	
-	public LabelService(CountryRepo countryRepo) {
+
+	public void setCountryRepo(CountryRepo countryRepo) {
 		this.countryRepo = countryRepo;
 	}
+
+	//	public LabelService(CountryRepo countryRepo) {
+//		this.countryRepo = countryRepo;
+//	}
 
 	private Map<String, String> countryNames;
 	

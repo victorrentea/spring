@@ -12,17 +12,21 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primesXX")
 	public Boolean isPrime(int n) { 
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
@@ -42,6 +46,7 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	@Cacheable("folders")
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})", folder);
@@ -56,5 +61,14 @@ public class ExpensiveOps {
 		byte[] digest = md.digest();
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
-	
+
+	@CacheEvict("folders")
+	public void aruncaIntrareaDinCache(File file) {
+		// Let the MAGIC happen! Do not touch.
+	}
+
+	@CacheEvict(cacheNames = "folders", allEntries = true)
+	public void aruncaToateIntrarile() {
+
+	}
 }
