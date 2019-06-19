@@ -33,7 +33,7 @@ public class Proprietati implements CommandLineRunner {
             @Value("${parola.critica:12345678}") String parola,
             ClasaVeche clasaVeche) {
         System.out.println("In altaClasa()");
-        return new AltaClasa(clasaVeche, parola);
+        return new AltaClasa(clasaVeche, parola, clasaVeche.getCurrentIp().split("\\."));
     }
     @Bean
     public FinalaMica mica(AltaClasa altaClasa) {
@@ -45,6 +45,9 @@ public class Proprietati implements CommandLineRunner {
         System.out.println("Instantiez finala mic");
         return new FinalaMica(altaClasa);
     }
+
+
+
 
 
     @Override
@@ -71,6 +74,7 @@ public class Proprietati implements CommandLineRunner {
 class AltaClasa {
     private final ClasaVeche veche;
     private final String parola;
+    private final String[] ipParts;
     @PostConstruct
     public void hello() {
         System.out.println("Post Construct in AltaClasa");
@@ -93,13 +97,29 @@ class FinalaMica {
 class ClasaVeche {
     private static ClasaVeche INSTANCE;
     private ClasaVeche() {
-        //chestii
+        currentIp = resolveIp();
     }
+
+    private String resolveIp() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "127.0.0.1";
+    }
+
     public static ClasaVeche getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ClasaVeche();
         }
         return INSTANCE;
+    }
+
+    private String currentIp;
+
+    public String getCurrentIp() {
+        return currentIp;
     }
 
     public void metoda() {
