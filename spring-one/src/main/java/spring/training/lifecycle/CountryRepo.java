@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class CountryRepo {
-	private final static Logger log = LoggerFactory.getLogger(CountryRepo.class);
 
 	public Map<String, String> loadCountryNamesAsMap(Locale locale) {
 		// connect to database, get data. fake some latency

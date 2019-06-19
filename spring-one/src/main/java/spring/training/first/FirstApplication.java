@@ -33,9 +33,7 @@ public class FirstApplication {
 
 @Service
 @Retention(RetentionPolicy.RUNTIME)
-@interface Facade {
-
-}
+@interface Facade {}
 
 
 @RequiredArgsConstructor
@@ -60,7 +58,19 @@ class A {
 
 
 @Component
-class C {}
+class C {
+	private int totalOrderPrice;
 
+	void compute(Order order) {
+		totalOrderPrice += order.getPrice();
+	}
+}
+
+class Order {
+
+	public int getPrice() {
+		return 1;
+	}
+}
 
 
