@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import spring.training.B;
 
 @SpringBootApplication
 public class FirstApplication {
@@ -35,39 +37,30 @@ public class FirstApplication {
 
 }
 
+
+@RequiredArgsConstructor
 @Facade
 class A {
-	private B b;
+	private final B b;
 
-	public A(B b) {
-		this.b = b;
+	@Autowired
+	public void myInit(B b, C c) {
+		System.out.println("Method injection");
 	}
-
-	//	@Autowired
-//	public A(B b) {
-//		this.b = b;
-//	}
-//	@Autowired
-//	public A(B b, int i) {
-//		this.b = b;
-//	}
-
-	//	@Autowired
-//	private void setB(B b) {
-//		this.b = b;
-//	}
-//	A() {
-//        System.out.println("Hello world " + b);
-//	}
 
 	@PostConstruct
 	public void gatafrate() {
         System.out.println("Hello frate " + b);
 	}
+
+	public String m() {
+		return b.n().toUpperCase();
+	}
 }
+
 
 @Component
-class B {
+class C {}
 
-}
+
 
