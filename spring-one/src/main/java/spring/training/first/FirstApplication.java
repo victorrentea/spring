@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -58,7 +59,7 @@ class A {
 // daca asta ar fi intr-un JAR care doar uneori e pun in classpath si atuncicand e, trebuie sa castige
 @Primary
 @Component
-@Profile("prod")
+@Profile("localDev")
 class CVechi implements IC {
 	private int totalOrderPrice;
 
