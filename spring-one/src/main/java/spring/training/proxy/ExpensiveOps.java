@@ -24,13 +24,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@LoggedClass
 public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+	@LoggedMethod
 	@Cacheable("primesXX")
-	public Boolean isPrime(int n) { 
+	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
+//		new RuntimeException().printStackTrace(); // uncomment for debugging purposes
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -48,15 +51,15 @@ public class ExpensiveOps {
 		return true;
 	}
 
-//	@Autowired
-//	private ExpensiveOps myself;
+	@Autowired
+	private ExpensiveOps myself;
 
 	@Cacheable("folders")
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})", folder);
 
-		ExpensiveOps myself= (ExpensiveOps) AopContext.currentProxy();
+//		ExpensiveOps myself= (ExpensiveOps) AopContext.currentProxy();
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + myself.isPrime(10000169) + "\n");
 

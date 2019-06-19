@@ -1,22 +1,25 @@
 package spring.training.proxy;
 
-import static java.util.Arrays.asList;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@EnableCaching
+@EnableCaching(order = 1)
 @SpringBootApplication
 public class ProxySpringApp implements CommandLineRunner {
 	public static void main(String[] args) {
@@ -56,4 +59,27 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 	
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedMethod {}
+
+@Slf4j
+@Aspect
+@Component
+class MethodLogger {
+	@Order(10)
+//	@Around("execution(* ExpensiveOps.*(..))")
+//	@Around("execution(* *(..)) && @within(spring.training.proxy.LoggedClass)")
+	@Around("execution(* *(..)) && @annotation(spring.training.proxy.LoggedMethod)")
+	public Object interceptMethod(ProceedingJoinPoint point) throws Throwable {
+		log.debug(">> Calling {}({})",
+				point.getSignature().getName(),
+				Arrays.toString(point.getArgs())
+		);
+		return point.proceed();
+	}
+
 }
