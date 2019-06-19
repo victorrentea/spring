@@ -9,7 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
@@ -50,12 +52,11 @@ class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
-	private CountryRepo countryRepo;
-//	@Autowired
+	private ApplicationContext galeataSpring;
 //	private LabelService labelService;
 
 	public void export(Locale locale) {
-		LabelService labelService = new LabelService(countryRepo);
+		LabelService labelService = galeataSpring.getBean(LabelService.class);
 		labelService.load(locale);
 		log.debug("Running export in " + locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
@@ -75,9 +76,9 @@ class InvoiceExporter {
 }
 
 @Slf4j
-//@Service
+@Service
+@Scope("prototype")
 class LabelService {
-//	@Autowired
 	private CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
