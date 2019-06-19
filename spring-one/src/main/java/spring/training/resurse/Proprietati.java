@@ -1,6 +1,7 @@
 package spring.training.resurse;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,20 +25,25 @@ public class Proprietati implements CommandLineRunner {
         return ClasaVeche.getInstance();
     }
 
+
+
+
     @Bean
-    public AltaClasa altaClasa() {
+    public AltaClasa altaClasa(
+            @Value("${parola.critica:12345678}") String parola,
+            ClasaVeche clasaVeche) {
         System.out.println("In altaClasa()");
-        return new AltaClasa(clasaVeche(), parola);
+        return new AltaClasa(clasaVeche, parola);
     }
     @Bean
-    public FinalaMica mica() {
+    public FinalaMica mica(AltaClasa altaClasa) {
         System.out.println("Instantiez finala mic");
-        return new FinalaMica(altaClasa());
+        return new FinalaMica(altaClasa);
     }
     @Bean
-    public FinalaMica finalaMica2() {
+    public FinalaMica finalaMica2(AltaClasa altaClasa) {
         System.out.println("Instantiez finala mic");
-        return new FinalaMica(altaClasa());
+        return new FinalaMica(altaClasa);
     }
 
 
