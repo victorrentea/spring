@@ -3,8 +3,6 @@ package spring.training.lifecycle;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -41,8 +39,8 @@ public class SingletonSpringApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 	// TODO [5] (after AOP): RequestContext, @Cacheable. on thread?! @ThreadLocal
 	public void run(String... args) throws Exception {
-		exporter.export(Locale.ENGLISH);
-//		exporter.export(Locale.FRENCH);
+		new Thread(() ->exporter.export(Locale.ENGLISH)).start();
+		new Thread(() ->exporter.export(Locale.FRENCH)).start();
 	}
 }
 
@@ -52,30 +50,34 @@ class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
-	private LabelService labelService;
+	private CountryRepo countryRepo;
+//	@Autowired
+//	private LabelService labelService;
 
 	public void export(Locale locale) {
+		LabelService labelService = new LabelService(countryRepo);
+		labelService.load(locale);
 		log.debug("Running export in " + locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 
 @Slf4j
 @Service 
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
-	public void exportInvoice() {
+//	@Autowired
+//	private LabelService labelService;
+
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
-@Service
+//@Service
 class LabelService {
-	@Autowired
+//	@Autowired
 	private CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
@@ -84,12 +86,11 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 	
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("load() in instance: " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
 		log.debug("getCountryName() in instance: " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
