@@ -6,10 +6,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.EventListener;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.beans.Transient;
 
 @SpringBootApplication
 public class ObserverSpringApp implements CommandLineRunner {
@@ -17,12 +24,12 @@ public class ObserverSpringApp implements CommandLineRunner {
 		SpringApplication.run(ObserverSpringApp.class, args);
 	}
 	
-//	@Bean
-//    public ApplicationEventMulticaster applicationEventMulticaster() {
-//        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-//        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-//        return eventMulticaster;
-//    }
+	@Bean
+    public ApplicationEventMulticaster applicationEventMulticaster() {
+        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        return eventMulticaster;
+    }
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
@@ -34,8 +41,13 @@ public class ObserverSpringApp implements CommandLineRunner {
 	// TODO [2] control the order
 	// TODO [3] chain events
 	// TODO [opt] Transaction-scoped events
+	@Transactional
 	public void run(String... args) throws Exception {
+		System.out.println("Start TX");
+		System.out.println("Fac ceva pe baza");
 		publisher.publishEvent(new OrderPlaced(13));
+		System.out.println("Am aruncat eventuri");
+		System.out.println("Commit TX");
 		//afterTransaction.runInTransaction();
 	}
 }
@@ -71,6 +83,6 @@ class InvoiceService {
 	public void handle(OrderInStock event) {
 		log.info("Generating invoice for order " + event.orderId);
 		// TODO what if...
-		// throw new RuntimeException("thrown from generate invoice");
+		 throw new RuntimeException("thrown from generate invoice");
 	} 
 }
