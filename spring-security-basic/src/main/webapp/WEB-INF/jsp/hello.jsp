@@ -9,7 +9,7 @@
     <body>
         <h1>Hello WWW!</h1>
         <%--<h1>Hello <sec:authentication property="principal.username" />!</h1>--%>
-
+        Pagina sigura
 
 
         <form action="/logout" method="post">
