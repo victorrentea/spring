@@ -56,7 +56,7 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 	}
 
 	private AuthnContext getAuthnContext(Claims claims) {
-		String contextStr = claims.get("AuthnContext", String.class);
+		String contextStr = claims.get("AuthnContext4", String.class);
 		if (contextStr == null) {
 			return null;
 		}
