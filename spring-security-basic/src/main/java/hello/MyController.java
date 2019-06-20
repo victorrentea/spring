@@ -14,11 +14,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
+@Controller
 public class MyController {
-    public String transferMoney(String accountNo, String amount) {
+
+    @GetMapping("transfer")
+    @ResponseBody
+    public String transferMoney(@RequestParam String accountNo, @RequestParam String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
     }
+
+
+
+
+
+
+
+
+
 
     public String redirect() {
 //        redirect to https://myhost.com/some/arbitrary/path
