@@ -20,14 +20,14 @@ import org.springframework.web.client.RestTemplate;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .authenticationProvider(preAuthenticatedProvider())
-            .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
-            .logout().permitAll();
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
+                    .authenticationProvider(preAuthenticatedProvider())
+                    .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+                    .logout().permitAll();
 
     }
 

@@ -7,12 +7,12 @@ import java.util.Map;
 
 @Repository
 public class UserRepository {
-    private static final Map<String, User> dummyData = new HashMap<>();
+    private static final Map<String, UserVO> dummyData = new HashMap<>();
     static {
-        dummyData.put("test", new User("test", "Test User", "USER"));
-        dummyData.put("admin", new User("admin", "Admin User", "ADMIN"));
+        dummyData.put("test", new UserVO("test", "Test UserVO", "USER"));
+        dummyData.put("admin", new UserVO("admin", "Admin UserVO", "ADMIN"));
     }
-    public User findByUsername(String username) {
+    public UserVO findByUsername(String username) {
         return dummyData.get(username.toLowerCase());
     }
 }

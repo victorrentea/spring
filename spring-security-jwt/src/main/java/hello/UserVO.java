@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @Data
-public class User implements UserDetails {
+public class UserVO implements UserDetails {
     private final String username, fullName, role;
     private boolean enabled = true;
 

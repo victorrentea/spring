@@ -5,9 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,20 +29,20 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 		}
 
 		log.debug("Lookup username {} in database", username);
-		User user = userRepository.findByUsername(username);
+		UserVO userVO = userRepository.findByUsername(username);
 
-		if (user == null) {
-			throw new UsernameNotFoundException("User " + username + " not in database");
+		if (userVO == null) {
+			throw new UsernameNotFoundException("UserVO " + username + " not in database");
 		} else {
-			log.debug("User found in database");
-			if (!user.isEnabled()) {
-				throw new UsernameNotFoundException("User is inactive in the database");
+			log.debug("UserVO found in database");
+			if (!userVO.isEnabled()) {
+				throw new UsernameNotFoundException("UserVO is inactive in the database");
 			}
 		}
 
 		log.debug("Allowing the request to get in");
-//		return new MyUserWithContext<User>(user.getUsername(), user, principal.getContext());
-		return user;
+//		return new MyUserWithContext<UserVO>(userVO.getUsername(), userVO, principal.getContext());
+		return userVO;
 	}
 
 
