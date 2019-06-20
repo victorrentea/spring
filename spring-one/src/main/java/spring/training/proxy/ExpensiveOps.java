@@ -31,7 +31,7 @@ public class ExpensiveOps {
 
 	@LoggedMethod
 	@Cacheable("primesXX")
-	public Boolean isPrime(int n) {
+	public /*final :p */Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
 //		new RuntimeException().printStackTrace(); // uncomment for debugging purposes
 		BigDecimal number = new BigDecimal(n);
