@@ -14,39 +14,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
-@Controller
 public class MyController {
-    @Value("${a}")
-    private String a;
-
-    @GetMapping("/transfer")
-    @ResponseBody
-    public String transferMoney(@RequestParam String accountNo, @RequestParam String amount) {
+    public String transferMoney(String accountNo, String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
-        return "CAT!";
+        return "CAT Image!";
     }
 
-    @GetMapping("redirect")
     public String redirect() {
-        return "redirect:https://myhost.com/some/arbitrary/path";
-    }
+//        redirect to https://myhost.com/some/arbitrary/path
+        return "??";
+   }
 
-    @GetMapping("locale")
-    @ResponseBody
     public String locale(HttpServletRequest request) {
-        return new RequestContext(request).getLocale().toString();
+        return "Moldoveneste";
     }
 
-    @GetMapping("date")
-    @ResponseBody
-    public String convertDate(@RequestParam Date date) {
-        return new SimpleDateFormat("yyyyMMdd").format(date);
+    public String convertDate(Date date) {
+        return "Anul Boului [CN]";
     }
 
-    @InitBinder
-    public void dateBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-    }
+//    @InitBinder
+//    public void dateBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+//    }
 }
