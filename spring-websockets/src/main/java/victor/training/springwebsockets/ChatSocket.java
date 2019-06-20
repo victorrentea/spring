@@ -17,38 +17,8 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ChatSocket extends TextWebSocketHandler {
+public class ChatSocket {
 
-    private Map<String, List<WebSocketSession>> openSessions = new HashMap<>();
+//    private Map<String, List<WebSocketSession>> openSessions = new HashMap<>();
 
-    @MessageMapping
-    @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        String roomId = extractRoomId(session);
-        log.info("Message received ");
-        List<WebSocketSession> myRoom = openSessions.get(roomId);
-        log.info("There are {} persons in my room", myRoom.size());
-        for (WebSocketSession socketSession : myRoom) {
-            socketSession.sendMessage(new TextMessage(message.getPayload()));
-        }
-    }
-
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String roomId = extractRoomId(session);
-        log.info("Connection established to {}", roomId);
-        openSessions.computeIfAbsent(roomId, k -> new ArrayList<>()).add(session);
-    }
-
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String roomId = extractRoomId(session);
-        log.info("Disconnecting {}", roomId);
-        openSessions.get(roomId).remove(session);
-    }
-
-    private String extractRoomId(WebSocketSession session) {
-        String[] arr = session.getUri().toString().split("/");
-        return arr[arr.length-1];
-    }
 }

@@ -23,8 +23,8 @@ public class SpringWebsocketsApplication implements WebSocketConfigurer {
 	private ChatSocket chatSocket;
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(chatSocket, "/chat/*")
-				.addInterceptors(new HttpSessionHandshakeInterceptor());
+
+//				.addInterceptors(new HttpSessionHandshakeInterceptor());
 	}
 
 	@Bean
