@@ -65,13 +65,7 @@ public class ProprietatiConfig implements CommandLineRunner {
             System.out.println("Fraere: eroare: " + message);
         }
 
-        System.out.println("props="  +props);
-//        System.out.println("props.b.bb="  +props.getB().getBb());
-//        System.out.println("props.c="  +props.getB().getBb());
     }
-
-    @Autowired
-    private OneProps props;
 
     private void altaMetoda(int i) {
         if (i < 0) {
