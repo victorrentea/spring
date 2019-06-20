@@ -24,6 +24,12 @@ public class MyController {
         return "CAT Image!";
     }
 
+    @GetMapping("pisici")
+    @ResponseBody
+    public String pisica() {
+        return "Pisica";
+    }
+
 
 
 
