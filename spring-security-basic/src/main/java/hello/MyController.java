@@ -17,7 +17,7 @@ import java.util.Date;
 @Controller
 public class MyController {
 
-    @GetMapping("transfer")
+    @PostMapping("transfer")
     @ResponseBody
     public String transferMoney(@RequestParam String accountNo, @RequestParam String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
