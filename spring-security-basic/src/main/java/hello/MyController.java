@@ -1,8 +1,11 @@
 package hello;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +27,15 @@ public class MyController {
         return "CAT Image!";
     }
 
+    @Autowired
+    private HolyDomainServiceLogic service;
+
     @GetMapping("pisici")
     @ResponseBody
+//    @Secured("ROLE_ADMIN")
+//    @PreAuthorize("hasRole('ADMIN')")
     public String pisica() {
-        return "Pisica";
+        return service.pisica();
     }
 
 
