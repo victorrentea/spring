@@ -24,7 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
-            .formLogin().loginPage("/login").permitAll().and()
+//            .formLogin().loginPage("/login").permitAll().and()
+            .httpBasic().and()
             .logout().logoutUrl("/logout").permitAll()
             ;
 
