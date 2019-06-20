@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@Component
+@ConfigurationProperties("one")
 public class OneProps {
     private String a;
     private B b;

@@ -64,8 +64,12 @@ public class ProprietatiConfig implements CommandLineRunner {
             String message = messageSource.getMessage(key, null, locale);
             System.out.println("Fraere: eroare: " + message);
         }
-
+        System.out.println("props: " + props);
     }
+
+    @Autowired
+    private OneProps props;
+
 
     private void altaMetoda(int i) {
         if (i < 0) {
