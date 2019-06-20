@@ -1,12 +1,16 @@
 package hello;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,21 +39,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @SuppressWarnings("deprecation")
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("test")
-                .password("test")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("admin")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user,admin);
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("test")
+//                .password("test")
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("admin")
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user,admin);
+//    }
+
+
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // TODO: explore .jdbcAuthentication()
+        auth.inMemoryAuthentication()
+                .withUser("test").password("{noop}test").roles("USER")
+                .and()
+                .withUser("admin").password("{noop}admin").roles("ADMIN");
     }
 
-    //Define a UserDetailsService
 }
