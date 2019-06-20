@@ -19,10 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        HttpSessionCsrfTokenRepository tokenRepository = new HttpSessionCsrfTokenRepository();
         http
-//            .csrf().disable()
-             .csrf().csrfTokenRepository(tokenRepository).and()
             .authorizeRequests()
                 .mvcMatchers("/").permitAll()
                 .anyRequest().authenticated()
