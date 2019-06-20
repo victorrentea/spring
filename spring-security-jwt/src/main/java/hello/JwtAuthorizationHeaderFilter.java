@@ -5,6 +5,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
@@ -16,7 +18,7 @@ import javax.xml.bind.DatatypeConverter;
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
 
-	public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
+//	public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
 
 	@Value("${jwt.secret}")
 	private String backendSecret;
@@ -28,7 +30,10 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
 
-		String jwtHeader = request.getHeader(JWT_HEADER_NAME);
+//		new HttpRequest(request);
+		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		System.out.println("Header: " + authenticationHeader);
+		String jwtHeader = authenticationHeader.substring("Bearer ".length());
 
 		if (jwtHeader == null) {
 			return null;

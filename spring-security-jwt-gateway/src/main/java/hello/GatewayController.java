@@ -25,7 +25,7 @@ public class GatewayController {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
+//    public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -45,7 +45,8 @@ public class GatewayController {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
         HttpHeaders headers = new HttpHeaders();
-        headers.set(JWT_HEADER_NAME, jwtToken);
+        headers.setBearerAuth(jwtToken);
+//        headers.set(JWT_HEADER_NAME, jwtToken);
         log.debug("JWT: " + jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
