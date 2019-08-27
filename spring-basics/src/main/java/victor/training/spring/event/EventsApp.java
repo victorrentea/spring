@@ -18,6 +18,7 @@ import org.springframework.integration.config.EnableIntegration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import victor.training.spring.ThreadUtils;
 
 @SpringBootApplication
 @EnableBinding({Source.class, Sink.class})
@@ -42,9 +43,11 @@ class OrderService {
     private final ApplicationEventPublisher publisher;
 
     public void placeOrder(OrderDto orderDto) {
-        long newOrderId = 1L;
-        log.debug("Creating order " + newOrderId);
-        publisher.publishEvent(new OrderCreatedEvent(newOrderId));
+        for (int i = 0; i < 10; i++) {
+        log.debug("Creating order " + i);
+            publisher.publishEvent(new OrderCreatedEvent(i));
+
+        }
     }
 }
 @Data
@@ -79,6 +82,8 @@ class SendConfirmationEmail {
 
         log.debug("Sending Confirmation email with invoice din DB for order " +
                 orderId);
+        ThreadUtils.sleep(2000);
+        log.debug("End");
     }
 }
 
