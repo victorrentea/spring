@@ -1,4 +1,4 @@
-package spring.training.lifecycle;
+package spring.training.life;
 
 import java.util.Locale;
 import java.util.Map;

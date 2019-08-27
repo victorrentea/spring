@@ -1,4 +1,4 @@
-package spring.training.lifecycle;
+package spring.training.life;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
