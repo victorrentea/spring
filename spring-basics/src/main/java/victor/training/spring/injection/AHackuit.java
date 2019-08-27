@@ -3,6 +3,8 @@ package victor.training.spring.injection;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-@Service("altA")
+@Service
 @Primary
-class FastA implements A {}
+class AHackuit  extends  ADeployat {
+    //hackuie
+}

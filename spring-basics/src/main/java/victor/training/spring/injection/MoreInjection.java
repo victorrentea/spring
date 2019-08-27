@@ -13,7 +13,7 @@ public class MoreInjection implements CommandLineRunner {
 	}
 
 	@Autowired
-	private A a;
+	private ADeployat a;
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(a);
