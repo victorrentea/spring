@@ -20,21 +20,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-@LoggedClass
 public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 	
-	@LoggedMethod
-	@Cacheable("primes")
-	// daca faci metodala finala sau privata Aspectele nu pot interveni.
-	// pentru ca nu merge @Override
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
-		
-		new RuntimeException().printStackTrace(System.out);
-		
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -52,21 +44,8 @@ public class ExpensiveOps {
 		return true;
 	}
 	
-//	@Transactional(REQUIRES_NEW)
-//	private void salveazaBatch(List<String> listaDe500) {
-//		
-//	}
-//	
-	
-	@Autowired
-	private ExpensiveOps euInOglinda;
-	
-	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})", folder);
-		
-		log.debug("Got: " + euInOglinda.isPrime(10_000_169) + "\n");
-		
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here
@@ -81,11 +60,5 @@ public class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@CacheEvict("folders")
-	public void aruncaCacheulPentruFolderul(File folder) {
-		 // Let the magic happen
-		System.out.println("Degeaba");
 	}
 }
