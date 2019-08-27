@@ -25,6 +25,7 @@ public /*final - will break*/ class ExpensiveOps {
 	@Cacheable("numere")
 	//@Transactional(REQUIRES_NEW)
 	public /*final - doesn't break. Silent death*/ Boolean isPrime(int n) {
+//		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
