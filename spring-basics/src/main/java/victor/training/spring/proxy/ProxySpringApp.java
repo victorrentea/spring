@@ -48,38 +48,8 @@ public class ProxySpringApp implements CommandLineRunner {
 		log.debug("Folder MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-
-
-		log.debug("Detectez ca un fisier s-a modificat");
-//		ops.aruncaIntrareaDinCache(new File("."));
-		ops.aruncaToateIntrarile();
-
 		log.debug("Folder MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 	
-}
-
-@Retention(RetentionPolicy.RUNTIME)
-@interface LoggedClass {}
-
-@Retention(RetentionPolicy.RUNTIME)
-@interface LoggedMethod {}
-
-@Slf4j
-@Aspect
-@Component
-class MethodLogger {
-	@Order(10)
-//	@Around("execution(* ExpensiveOps.*(..))")
-//	@Around("execution(* *(..)) && @within(spring.training.proxy.LoggedClass)")
-	@Around("execution(* *(..)) && @annotation(spring.training.proxy.LoggedMethod)")
-	public Object interceptMethod(ProceedingJoinPoint point) throws Throwable {
-		log.debug(">> Calling {}({})",
-				point.getSignature().getName(),
-				Arrays.toString(point.getArgs())
-		);
-		return point.proceed();
-	}
-
 }
