@@ -17,8 +17,8 @@ import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
+import static java.util.concurrent.CompletableFuture.allOf;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
@@ -59,8 +59,12 @@ class Beutor implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		log.debug("Submitting my order to : " + barman.getClass());
 
-		Future<Ale> futureAle = barman.getOneAle();
-		Future<Whiskey> futureWhiskey = barman.getOneWhiskey();
+		CompletableFuture<Ale> futureAle = barman.getOneAle();
+		CompletableFuture<Whiskey> futureWhiskey = barman.getOneWhiskey();
+
+		allOf(futureAle, futureWhiskey).thenRun(() -> {
+			System.out.println("Gata");
+		});
 
 		log.debug("A plecat fata cu comanda");
 		Ale ale = futureAle.get();
@@ -74,14 +78,14 @@ class Beutor implements CommandLineRunner {
 @Service
 class Barman {
 	@Async
-	public Future<Ale> getOneAle() {
+	public CompletableFuture<Ale> getOneAle() {
 		 log.debug("Pouring Ale...");
 		 ThreadUtils.sleep(1000);
 		 return completedFuture(new Ale());
 	 }
 
 	@Async
-	 public Future<Whiskey> getOneWhiskey() {
+	 public CompletableFuture<Whiskey> getOneWhiskey() {
 		 log.debug("Pouring Whiskey...");
 		 ThreadUtils.sleep(1000);
 		 return completedFuture(new Whiskey());
