@@ -2,6 +2,7 @@ package victor.training.spring.injection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,8 +58,12 @@ public class MoreInjection implements CommandLineRunner {
 
 // ldap spaga
 class WebServiceClient {
+
 	private final String endpoint;
 	private SecurityProvider securityProvider;
+
+	@Value("${secret}")
+	private String secret;
 
 	public WebServiceClient(String endpoint, SecurityProvider securityProvider) {
 		this.endpoint = endpoint;
@@ -68,7 +73,8 @@ class WebServiceClient {
 	@Override
 	public String toString() {
 		return "WebServiceClient{" +
-				"endpoint='" + endpoint + '\'' +
+				"secret='" + secret + '\'' +
+				", endpoint='" + endpoint + '\'' +
 				", securityProvider=" + securityProvider +
 				'}';
 	}
