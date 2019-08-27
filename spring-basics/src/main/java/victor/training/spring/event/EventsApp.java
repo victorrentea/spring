@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
@@ -32,21 +31,19 @@ public class EventsApp implements CommandLineRunner {
         orderService.placeOrder(new OrderDto());
     }
 }
+class OrderDto {}
 @RequiredArgsConstructor
 @Service
 @Slf4j
 class OrderService {
-//    private final InvoiceGenerator invoiceGenerator;
     private final ApplicationEventPublisher publisher;
 
     public void placeOrder(OrderDto orderDto) {
         long newOrderId = 1L;
         log.debug("Creating order " + newOrderId);
-//        invoiceGenerator.generateInvoice(newOrderId);
         publisher.publishEvent(new OrderCreatedEvent(newOrderId));
     }
 }
-class OrderDto {}
 @Data
 class OrderCreatedEvent {
     private final long orderId;
@@ -56,25 +53,23 @@ class OrderCreatedEvent {
 @Slf4j
 class InvoiceGenerator {
     @EventListener
-    @Order(20)
-    public void handle(OrderCreatedEvent orderCreatedEvent) {
-        generateInvoice(orderCreatedEvent.getOrderId());
-    }
-    public void generateInvoice(long orderId) {
-        log.debug("Generating invoice for order " + orderId);
+    public InvoiceGeneratedEvent handle(OrderCreatedEvent orderCreatedEvent) {
+        // persist Invoice in DB
+        log.debug("Generating invoice for order " + orderCreatedEvent.getOrderId());
+        return new InvoiceGeneratedEvent(orderCreatedEvent.getOrderId());
     }
 }
-
+@Data
+class InvoiceGeneratedEvent {
+    private final long orderId;
+}
 @Service
 @Slf4j
 class SendConfirmationEmail {
-    @Order(10)
     @EventListener
-    public void handle(OrderCreatedEvent orderCreatedEvent) {
-        generateInvoice(orderCreatedEvent.getOrderId());
-    }
-    public void generateInvoice(long orderId) {
-        if (true) throw new RuntimeException("on purpose");
-        log.debug("Sending Confirmation email for order " + orderId);
+    public void handle(InvoiceGeneratedEvent orderCreatedEvent) {
+        log.debug("Sending Confirmation email with invoice din DB for order " +
+                orderCreatedEvent.getOrderId());
     }
 }
+
