@@ -19,7 +19,6 @@ public class PropertiesApp implements CommandLineRunner {
         SpringApplication.run(PropertiesApp.class);
     }
 
-
     @Value("${my.secret:12345678}")
     private String secret;
 

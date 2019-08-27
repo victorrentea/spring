@@ -63,9 +63,9 @@ class UsingSpells {
 	private String s1;
 	@Value("#{sandbox.intProperty + 1}")
 	private String s2;
-	@Value("#{sandbox.childList.?[intProperty gt 15]}") //.stream().filter()
+	@Value("#{sandbox.childList.?[intProperty gt 15]}")
 	private List<SpELSandbox> children;
-	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}") //.stream().map()
+	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
 	private List<Integer> childrenInts;
 	@Value("#{sandbox.randomToken()}")
 	private String randomToken;
@@ -81,7 +81,7 @@ class UsingSpells {
 		System.out.println("-------------END SPEL-----------");
 	}
 
-	public static void manualSpELPlay(Object root) {
+	public static void manualSpELPlay(SpELSandbox root) {
 		// TODO: research:
 		ExpressionParser parser = new SpelExpressionParser();
 		Expression stringsOver20 = parser.parseExpression("stringList.?[toString() gt '20']");
