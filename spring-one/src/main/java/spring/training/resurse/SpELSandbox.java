@@ -4,6 +4,10 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -63,6 +67,8 @@ class UsingSpells {
 	private List<SpELSandbox> children;
 	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}") //.stream().map()
 	private List<Integer> childrenInts;
+	@Value("#{sandbox.randomToken()}")
+	private String randomToken;
 
 	@PostConstruct
 	public void show() {
@@ -71,7 +77,16 @@ class UsingSpells {
 		System.out.println(s2);
 		System.out.println(children);
 		System.out.println(childrenInts);
+		System.out.println(randomToken);
 		System.out.println("-------------END SPEL-----------");
 	}
+
+	public static void manualSpELPlay(Object root) {
+		// TODO: research:
+		ExpressionParser parser = new SpelExpressionParser();
+		Expression stringsOver20 = parser.parseExpression("stringList.?[toString() gt '20']");
+		System.out.println(stringsOver20.getValue(new StandardEvaluationContext(root)));
+	}
+
 
 }
