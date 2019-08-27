@@ -23,11 +23,13 @@ class AutoRun implements CommandLineRunner {
 	private C c;
 
 	AutoRun(B b) {
+        System.out.println("NEW");
 		this.b = b;
 	}
 
 	@Autowired
 	public void oricum(CFactory cFactory, A a) {
+        System.out.println("method injection");
 		c = cFactory.createC();
 		this.a = a;
 	}
@@ -35,7 +37,6 @@ class AutoRun implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Hello " + a.m() + " -- " + c);
-
 	}
 }
 @Service
@@ -48,7 +49,16 @@ class C {}
 
 @Service
 class A {
-	public String m() {
+
+    private B b;
+
+    @Autowired
+    public void setB(B b) {
+        System.out.println("Ii dau lui A pe un B");
+        this.b = b;
+    }
+
+    public String m() {
 		return "Spring";
 	}
 }
