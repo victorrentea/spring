@@ -36,7 +36,7 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [2] instantiate manually, set dependencies, pass around; no AOP
 	// TODO [3] prototype scope + ObjectFactory or @Lookup. Did you said "Factory"? ...
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
-	// TODO [5] (after AOP): RequestContext, @Cacheable on thread?! @ThreadLocal
+
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
 		// TODO exporter.export(Locale.FRENCH);

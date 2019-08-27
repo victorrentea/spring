@@ -26,7 +26,7 @@ public class ExpensiveOps {
 	private static final BigDecimal TWO = new BigDecimal("2");
 	
 	public Boolean isPrime(int n) {
-		log.debug("Computing isPrime({})", n);
+		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -45,7 +45,7 @@ public class ExpensiveOps {
 	}
 	
 	public String hashAllFiles(File folder) {
-		log.debug("Computing hashAllFiles({})", folder);
+		log.debug("Computing hashAllFiles({})...", folder);
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here
