@@ -1,10 +1,12 @@
 package victor.training.spring.props;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,9 @@ public class PropertiesApp implements CommandLineRunner {
     @Value("${my.secret:12345678}")
     private String secret;
 
+    @Autowired
+    private LdapProps ldapProps;
+
     @Bean
     public ManuallyConfigurable manuallyConfigurable(@Value("${my.secret:12345678}") String secret) {
         return new ManuallyConfigurable(secret);
@@ -29,8 +34,21 @@ public class PropertiesApp implements CommandLineRunner {
     @Override
     public void run(String... args) {
         System.out.println("Parola este: " + secret);
+        System.out.println("Am citit: " + ldapProps);
     }
 }
+
+
+@Data
+@Component
+@ConfigurationProperties(prefix="ldap.props")
+class LdapProps {
+    private String url;
+    private String user;
+    private String password;
+}
+
+
 
 
 // "Can't touch this!"
@@ -53,10 +71,10 @@ class TranslatingExceptionsPlay implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Locale locale = new Locale("RO", "RO");
+        Locale locale = new Locale("ES", "ES");
         try {
             altaMetoda(-1);
-        } catch (MyException e) {
+        } catch (MyException e) { // se va intampla intr-un @RestControllerAdvice
             String key = e.getCode().code;
             String message = messageSource.getMessage(key, null, locale);
             System.out.println("Error: " + message);
