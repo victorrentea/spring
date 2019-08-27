@@ -17,8 +17,6 @@ public class PropertiesApp implements CommandLineRunner {
         SpringApplication.run(PropertiesApp.class);
     }
 
-    @Autowired
-    private StructuredProps props;
 
     @Value("${my.secret:12345678}")
     private String secret;
@@ -31,7 +29,6 @@ public class PropertiesApp implements CommandLineRunner {
     @Override
     public void run(String... args) {
         System.out.println("Parola este: " + secret);
-        System.out.println("Structured Props: " + props);
     }
 }
 
