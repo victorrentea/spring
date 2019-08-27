@@ -13,7 +13,8 @@ public class MoreInjection implements CommandLineRunner {
 	}
 
 	@Autowired
-	private ADeployat a;
+	//-Dspring.profiles.active=masina.mea
+	private ALogin a;
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(a);
