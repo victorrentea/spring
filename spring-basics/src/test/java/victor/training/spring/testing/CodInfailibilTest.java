@@ -20,7 +20,6 @@ public class CodInfailibilTest {
     @MockBean
     private DoamneDoamne mockDoamne;
 
-
     @Test(expected = IllegalArgumentException.class)
     public void throwWhenNegativeAnswerToPray() {
         when(mockDoamne.pray(anyString())).thenReturn(-1);

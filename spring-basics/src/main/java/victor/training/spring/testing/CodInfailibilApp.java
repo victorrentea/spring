@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @SpringBootApplication
 public class CodInfailibilApp {
     public static void main(String[] args) {
@@ -11,19 +13,21 @@ public class CodInfailibilApp {
     }
 
 
-
 }
 
 @Service
 class Cuib {
     private final Gandac gandac1;
+
     Cuib(Gandac gandac1) {
         this.gandac1 = gandac1;
     }
+
     public void m() {
         gandac1.m();
     }
 }
+
 @Service
 class Gandac {
     private final DoamneDoamne doamne;
@@ -31,6 +35,7 @@ class Gandac {
     Gandac(DoamneDoamne doamne) {
         this.doamne = doamne;
     }
+
     public void m() {
         if (doamne.pray("Mine") < 0) {
             throw new IllegalArgumentException("Singur");
@@ -42,6 +47,12 @@ class Gandac {
 
 @Service
 class DoamneDoamne {
+
+    @PostConstruct
+    public void init() {
+        System.out.println("\n\nASDASDSADSAASDSADSADA\n\n\nMai intai a fost Cuvantul");
+    }
+
     public int pray(String prayer) {
 //        return 1;
         throw new RuntimeException("Tre sa fie in prod ca sa mearga");
