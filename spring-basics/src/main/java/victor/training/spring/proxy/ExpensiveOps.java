@@ -18,11 +18,13 @@ import java.security.MessageDigest;
 
 @Slf4j
 @Component
-public class ExpensiveOps {
+public /*final - will break*/ class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
-	public Boolean isPrime(int n) {
+	@Cacheable("numere")
+	//@Transactional(REQUIRES_NEW)
+	public /*final - doesn't break. Silent death*/ Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -41,8 +43,17 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	@Autowired
+	private ExpensiveOps myselfProxied;
+
+	// Map<"folders", Map<param, returnValue>
+	@Cacheable("folders")
 	@SneakyThrows
 	public String hashAllFiles(File folder) {
+
+		log.debug("Chem o metoda 'proxiata' din aceasi clasa");
+		System.out.println("isPrime: " + myselfProxied.isPrime(10_000_169));
+
 		log.debug("Computing hashAllFiles({})", folder);
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < 3; i++) { // pretend there is much more work to do here
@@ -56,4 +67,12 @@ public class ExpensiveOps {
 	    return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
 
+	@CacheEvict("folders")
+	public void evictFileHash(File file) {
+		// nimic. Don't touch. Let the magic happen!
+	}
+	@CacheEvict(value = "folders", allEntries = true)
+	public void evictAllFileHash() {
+		// nimic. Don't touch. Let the magic happen!
+	}
 }
