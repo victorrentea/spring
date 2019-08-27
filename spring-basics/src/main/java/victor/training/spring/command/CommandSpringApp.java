@@ -3,13 +3,12 @@ package victor.training.spring.command;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -17,10 +16,10 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
 @SpringBootApplication
@@ -29,11 +28,14 @@ public class CommandSpringApp {
 		SpringApplication.run(CommandSpringApp.class, args).close(); // Note: .close to stop executors after CLRunner finishes
 	}
 
+
+	//--barman.thread.count=1
+	//-Dbarman.thread.count=1
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(@Value("${barman.thread.count:2}") int threadCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(threadCount);
+		executor.setMaxPoolSize(threadCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
@@ -48,17 +50,19 @@ public class CommandSpringApp {
 class Beutor implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
+	@Autowired
+	ThreadPoolTaskExecutor pool;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
     // TODO [3] wanna try it out over JMS? try out ServiceActivatorPattern
 	public void run(String... args) throws Exception {
-		log.debug("Submitting my order");
-		ExecutorService pool = Executors.newFixedThreadPool(2);
+		log.debug("Submitting my order to : " + barman.getClass());
 
-		Future<Ale> futureAle = pool.submit(barman::getOneAle);
-		Future<Whiskey> futureWhiskey = pool.submit(barman::getOneWhiskey);
+		Future<Ale> futureAle = barman.getOneAle();
+		Future<Whiskey> futureWhiskey = barman.getOneWhiskey();
 
+		log.debug("A plecat fata cu comanda");
 		Ale ale = futureAle.get();
 		Whiskey whiskey = futureWhiskey.get();
 
@@ -69,16 +73,18 @@ class Beutor implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-	public Ale getOneAle() {
+	@Async
+	public Future<Ale> getOneAle() {
 		 log.debug("Pouring Ale...");
 		 ThreadUtils.sleep(1000);
-		 return new Ale();
+		 return completedFuture(new Ale());
 	 }
-	
-	 public Whiskey getOneWhiskey() {
+
+	@Async
+	 public Future<Whiskey> getOneWhiskey() {
 		 log.debug("Pouring Whiskey...");
 		 ThreadUtils.sleep(1000);
-		 return new Whiskey();
+		 return completedFuture(new Whiskey());
 	 }
 }
 
