@@ -17,10 +17,13 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @EnableAsync
 @SpringBootApplication
-@EnableBinding({Sink.class, Source.class})
 public class CommandSpringApp {
 	public static void main(String[] args) {
 		SpringApplication.run(CommandSpringApp.class, args).close(); // Note: .close to stop executors after CLRunner finishes
@@ -42,7 +45,7 @@ public class CommandSpringApp {
 
 @Slf4j
 @Component
-class Drinker implements CommandLineRunner {
+class Beutor implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
 
@@ -50,10 +53,15 @@ class Drinker implements CommandLineRunner {
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
     // TODO [3] wanna try it out over JMS? try out ServiceActivatorPattern
 	public void run(String... args) throws Exception {
-		Thread.sleep(3000);
 		log.debug("Submitting my order");
-		Ale ale = barman.getOneAle();
-		Whiskey whiskey = barman.getOneWhiskey();
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+
+		Future<Ale> futureAle = pool.submit(barman::getOneAle);
+		Future<Whiskey> futureWhiskey = pool.submit(barman::getOneWhiskey);
+
+		Ale ale = futureAle.get();
+		Whiskey whiskey = futureWhiskey.get();
+
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(ale, whiskey));
 	}
 }

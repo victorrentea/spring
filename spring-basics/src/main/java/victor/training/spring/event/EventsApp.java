@@ -20,6 +20,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
+import java.util.UUID;
+
 @SpringBootApplication
 @EnableBinding({Source.class, Sink.class})
 
@@ -66,6 +68,7 @@ class InvoiceGenerator {
         log.debug("Generating invoice for order " + orderCreatedEvent.getOrderId());
         Message<Long> message = MessageBuilder
                 .withPayload(orderCreatedEvent.getOrderId())
+                .setHeader("correlationId", UUID.randomUUID().toString())
                 .build();
         source.output().send(message);
     }
@@ -83,7 +86,11 @@ class SendConfirmationEmail {
         log.debug("Sending Confirmation email with invoice din DB for order " +
                 orderId);
         ThreadUtils.sleep(2000);
-        log.debug("End");
+        if (Math.random() < .5f) {
+            log.error("BUBA" +orderId);
+            throw new IllegalArgumentException("Buba");
+        }
+        log.debug("End " +orderId);
     }
 }
 
