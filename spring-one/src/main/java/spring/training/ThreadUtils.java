@@ -1,4 +1,4 @@
-package spring.training.lifecycle;
+package spring.training;
 
 public class ThreadUtils {
 	
