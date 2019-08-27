@@ -42,7 +42,6 @@ public class MoreInjection implements CommandLineRunner {
 	@Bean
 	public WebServiceClient ldap(@Value("${secret:def}") String secret) {
 		System.out.println("creez ldap : oare cine e this ?" + this);
-//		this.securityProvider();
 		return new WebServiceClient("ldap bla bla", securityProvider(), secret);
 	}
 
