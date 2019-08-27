@@ -1,6 +1,5 @@
 package victor.training.spring.springbasics;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,16 +15,21 @@ public class SpringBasicsApplication {
 	}
 }
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Component // @Service @Repository @Controller @RestController @MessageEndpoint
 class AutoRun implements CommandLineRunner {
-	private final A a;
 	private final B b;
+	private A a;
 	private C c;
 
+	AutoRun(B b) {
+		this.b = b;
+	}
+
 	@Autowired
-	public void setC(CFactory cFactory) {
+	public void oricum(CFactory cFactory, A a) {
 		c = cFactory.createC();
+		this.a = a;
 	}
 
 	@Override
