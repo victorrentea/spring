@@ -6,7 +6,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -73,5 +75,20 @@ class LoggingAspect {
 		log.debug("AOP: Calling method {} with params {}",point.getSignature().getName(),
 				Arrays.toString(point.getArgs()));
 		return point.proceed();
+	}
+}
+
+@Component
+class AsistentaMaternala implements BeanPostProcessor {
+	@Override
+	public Object postProcessBeforeInitialization(Object copil, String beanName) throws BeansException {
+		System.out.println("Infasez pe " + copil);
+		return copil;
+	}
+
+	@Override
+	public Object postProcessAfterInitialization(Object copil, String beanName) throws BeansException {
+		System.out.println("Dau biberon la " + copil);
+		return copil;
 	}
 }
