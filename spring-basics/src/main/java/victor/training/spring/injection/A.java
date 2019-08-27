@@ -1,3 +1,3 @@
 package victor.training.spring.injection;
 
-public interface I {}
+public interface A {}
