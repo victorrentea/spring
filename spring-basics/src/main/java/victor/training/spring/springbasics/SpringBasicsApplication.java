@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @SpringBootApplication
 public class SpringBasicsApplication {
 
@@ -49,24 +51,23 @@ class C {}
 
 @Service
 class B{
-	private final A a;
-	B(A a) {
-		System.out.println("new B");
-		this.a = a;
+	public String m() {
+		return "mb";
 	}
 }
 @Service
 class A {
+	@Autowired
     private B b;
-    A(B b) {
-		this.b = b;
-		System.out.println("new A");
+
+    public A() {
+		System.out.println("In constructor: " + b);
 	}
-//    @Autowired
-//    public void setB(B b) {
-//        System.out.println("Ii dau lui A pe un B");
-//        this.b = b;
-//    }
+
+    @PostConstruct
+	public void initializeXy() {
+		System.out.println("POstConstruct poate invoca metode pe beanuri care ti-au fost date de sus, de Zana Spring " + b.m());
+	}
 
     public String m() {
 		return "Spring";
