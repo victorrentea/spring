@@ -66,6 +66,7 @@ class SendConfirmationEmail {
         generateInvoice(orderCreatedEvent.getOrderId());
     }
     public void generateInvoice(long orderId) {
+        if (true) throw new RuntimeException("on purpose");
         log.debug("Sending Confirmation email for order " + orderId);
     }
 }
