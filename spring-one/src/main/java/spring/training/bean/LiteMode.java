@@ -1,13 +1,16 @@
-package spring.training.first;
+package spring.training.bean;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+
+// A bit more advanced
+
+@EnableCaching
 @Component
 public class LiteMode {
-
 	@Bean
 	public R r1(P p) {
 		System.out.println("Got p: " + p.getClass());
@@ -21,8 +24,8 @@ public class LiteMode {
 
 class R{}
 class P {
-	@Async
-	public void m() {
-		
+	//@Cacheable("stuff")
+	public int m() {
+		return 0;
 	}
-}	
+}

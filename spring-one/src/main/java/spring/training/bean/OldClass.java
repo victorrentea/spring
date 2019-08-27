@@ -2,16 +2,16 @@ package spring.training.bean;
 
 import spring.training.ThreadUtils;
 
-// no permission not change
+// CAN'T TOUCH THIS !! Ta-na-na-na
 class OldClass {
     private static OldClass INSTANCE;
     private OldClass() {
-        currentIp = resolveIp();
+        currentCountry = geolocateCurrentCountry();
     }
 
-    private String resolveIp() {
+    private String geolocateCurrentCountry() {
         ThreadUtils.sleep(1000);
-        return "127.0.0.1";
+        return "Romania";
     }
 
     public static OldClass getInstance() {
@@ -21,10 +21,10 @@ class OldClass {
         return INSTANCE;
     }
 
-    private String currentIp;
+    private String currentCountry;
 
-    public String getCurrentIp() {
-        return currentIp;
+    public String getCurrentCountry() {
+        return currentCountry;
     }
 
     public void method() {
