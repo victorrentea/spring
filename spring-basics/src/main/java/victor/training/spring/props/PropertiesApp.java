@@ -10,7 +10,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import victor.training.spring.ThreadUtils;
 
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -30,6 +33,11 @@ public class PropertiesApp implements CommandLineRunner {
         return new ManuallyConfigurable(secret);
     }
 
+    @Bean
+    public OldCompo oldCompo() {
+        return OldCompo.getInstance();
+    }
+
     @Override
     public void run(String... args) {
         System.out.println("Parola este: " + secret);
@@ -37,6 +45,46 @@ public class PropertiesApp implements CommandLineRunner {
     }
 }
 
+@Component
+class AltaClasa {
+    private final String[] ip;
+
+    AltaClasa(@Value("#{oldCompo.myIp.split('\\.')}") String[] ip) {
+        this.ip = ip;
+    }
+
+    @PostConstruct
+    public void m() {
+        System.out.println("AA " + Arrays.toString(ip));
+    }
+}
+
+
+// can't touch this
+class OldCompo {
+    private static OldCompo INSTANCE;
+    private final String myIp;
+
+    private OldCompo() {
+        myIp = resolveIp();
+    }
+
+    public String getMyIp() {
+        return myIp;
+    }
+
+    private String resolveIp() {
+        ThreadUtils.sleep(2000);
+        return "192.1.1.1";
+    }
+
+    public static OldCompo getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new OldCompo();
+        }
+        return INSTANCE;
+    }
+}
 
 @Data
 @Component
