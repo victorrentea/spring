@@ -14,6 +14,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 @Slf4j
@@ -24,8 +26,8 @@ public class ProxySpringApp implements CommandLineRunner {
 		SpringApplication.run(ProxySpringApp.class, args);
 	}
 
-//	@Autowired
-//	private ExpensiveOps ops;
+	@Autowired
+	private ExpensiveOps ops;
 
 	// TODO [1] implement decorator
 	// TODO [2] apply decorator via Spring
@@ -34,7 +36,7 @@ public class ProxySpringApp implements CommandLineRunner {
 	// TODO [5] Spring cache support
 	// TODO [6] Back to singleton (are you still alive?)
 	public void run(String... args) throws Exception {
-		ExpensiveOps ops= new ExpensiveOps();
+//		ExpensiveOps ops= new ExpensiveOps();
 		System.out.println("Oare cu cine vorbesc !? " + ops.getClass());
 		log.debug("\n");
 		log.debug("---- CPU Intensive ~ memoization?");
@@ -55,14 +57,20 @@ public class ProxySpringApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface  LoggedMethod {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface  LoggedClass {}
 @Component
 @Aspect
 class LoggingAspect {
 	private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
-	@Around("execution(* isPrime(int))")
+//	@Around("execution(* victor..*.*(..))")
+//	@Around("execution(* *(..)) && @annotation(victor.training.spring.proxy.LoggedMethod)")
+	@Around("execution(* *(..)) && @within(victor.training.spring.proxy.Facade)")
 	public Object m(ProceedingJoinPoint point) throws Throwable {
-		log.debug("Calling method {} with params {}",point.getSignature().getName(),
+		log.debug("AOP: Calling method {} with params {}",point.getSignature().getName(),
 				Arrays.toString(point.getArgs()));
 		return point.proceed();
 	}

@@ -8,22 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 
+
+//@LoggedClass
+@Service
+//@Transactional(REQUIRES_NEW)
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {
+
+}
+
 @Slf4j
-@Component
+@Facade
 public /*final - will break*/ class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Cacheable("numere")
 	//@Transactional(REQUIRES_NEW)
+//	@LoggedMethod
 	public /*final - doesn't break. Silent death*/ Boolean isPrime(int n) {
 //		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})", n);
@@ -50,8 +63,8 @@ public /*final - will break*/ class ExpensiveOps {
 	// Map<"folders", Map<param, returnValue>
 	@Cacheable("folders")
 	@SneakyThrows
+//	@LoggedMethod
 	public String hashAllFiles(File folder) {
-
 		log.debug("Chem o metoda 'proxiata' din aceasi clasa");
 		System.out.println("isPrime: " + myselfProxied.isPrime(10_000_169));
 

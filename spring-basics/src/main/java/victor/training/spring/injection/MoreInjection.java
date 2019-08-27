@@ -1,5 +1,6 @@
 package victor.training.spring.injection;
 
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +67,7 @@ public class MoreInjection implements CommandLineRunner {
 //}
 
 // ldap spaga
-class WebServiceClient {
+class WebServiceClient implements BeanNameAware {
 	private final String endpoint;
 	private final SecurityProvider securityProvider;
 	private final String secret;
@@ -75,6 +76,7 @@ class WebServiceClient {
 		this.endpoint = endpoint;
 		this.securityProvider = securityProvider;
 		this.secret = secret;
+
 	}
 
 	@Override
@@ -84,6 +86,11 @@ class WebServiceClient {
 				", endpoint='" + endpoint + '\'' +
 				", securityProvider=" + securityProvider +
 				'}';
+	}
+
+	@Override
+	public void setBeanName(String beanName) {
+		System.out.println("Tu esti : " +beanName);
 	}
 }
 
