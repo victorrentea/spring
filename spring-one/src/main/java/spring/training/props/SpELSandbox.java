@@ -1,6 +1,7 @@
 package spring.training.props;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,6 @@ public class SpELSandbox {
 	private String stringProperty;
 	private Integer intProperty;
 	private Boolean booleanProperty;
-	private List<String> stringList;
 	private List<SpELSandbox> childList;
 
 	public SpELSandbox() {
@@ -39,13 +39,15 @@ public class SpELSandbox {
 
 @Configuration
 class SpelConfiguration {
+	@Value("#{T(java.lang.Math).random() lt 0.5f?'A Beautiful Day':null}")
+	private String day;
+
 	@Bean
-	public SpELSandbox sandbox(
-			@Value("#{T(java.lang.Math).random() lt 0.5f?'A Beautiful Day':null}") String day) {
+	public SpELSandbox sandbox() {
 		SpELSandbox box = new SpELSandbox();
+		box.setIntProperty(10);
 		box.setStringProperty(day);
 		box.setBooleanProperty(true);
-		box.setIntProperty(10);
 		box.setChildList(Arrays.asList(
 				new SpELSandbox(10, "One"),
 				new SpELSandbox(20, "Two"),
@@ -59,32 +61,37 @@ class SpelConfiguration {
 
 @Component
 class UsingSpells {
-	@Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}") // Optional.map.orElse('ploua')
-	private String s1;
 	@Value("#{sandbox.intProperty + 1}")
+	private String s1;
+	@Value("#{sandbox.stringProperty}")
 	private String s2;
-	@Value("#{sandbox.childList.?[intProperty gt 15]}") //.stream().filter()
+	@Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
+	private String s3;
+	@Value("#{sandbox.childList.?[intProperty gt 15]}")
 	private List<SpELSandbox> children;
-	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}") //.stream().map()
+	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
 	private List<Integer> childrenInts;
 	@Value("#{sandbox.randomToken()}")
 	private String randomToken;
+	@Autowired
+	private SpELSandbox sandbox;
 
 	@PostConstruct
 	public void show() {
 		System.out.println("-------------SPEL-----------");
 		System.out.println(s1);
-		System.out.println(s2);
-		System.out.println(children);
-		System.out.println(childrenInts);
-		System.out.println(randomToken);
+//		System.out.println(s2);
+//		System.out.println(s3);
+//		System.out.println(children);
+//		System.out.println(childrenInts);
+//		System.out.println(randomToken);
+//		manualSpELPlay(sandbox);
 		System.out.println("-------------END SPEL-----------");
 	}
 
 	public static void manualSpELPlay(Object root) {
-		// TODO: research:
 		ExpressionParser parser = new SpelExpressionParser();
-		Expression stringsOver20 = parser.parseExpression("stringList.?[toString() gt '20']");
+		Expression stringsOver20 = parser.parseExpression("stringProperty?.toUpperCase()?:'Ploua'");
 		System.out.println(stringsOver20.getValue(new StandardEvaluationContext(root)));
 	}
 

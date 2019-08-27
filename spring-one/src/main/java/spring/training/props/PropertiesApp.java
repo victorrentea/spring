@@ -1,7 +1,6 @@
 package spring.training.props;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,17 +19,13 @@ public class PropertiesApp implements CommandLineRunner {
     @Autowired
     private StructuredProps props;
 
-    @Value("${my.secret:12345678}")
-    private String secret;
-
     @Bean
-    public ManuallyConfigurable manuallyConfigurable(@Value("${my.secret:12345678}") String secret) {
-        return new ManuallyConfigurable(secret);
+    public ManuallyConfigurable manuallyConfigurable() {
+        return new ManuallyConfigurable("12345678");
     }
 
     @Override
     public void run(String... args) {
-        System.out.println("Parola este: " + secret);
         System.out.println("Structured Props: " + props);
     }
 }
@@ -50,23 +45,23 @@ class ManuallyConfigurable {
 
 
 @Component
-class TranslatingExceptionsPlay implements CommandLineRunner{
+class TranslatingExceptionsPlay implements CommandLineRunner {
     @Autowired
     private MessageSource messageSource;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Locale locale = new Locale("RO", "RO");
         try {
-            altaMetoda(-1);
+            throwingBizMethod(-1);
         } catch (MyException e) {
-            String key = e.getCode().code;
-            String message = messageSource.getMessage(key, null, locale);
+            String message = messageSource.getMessage(e.getCode().code, e.getArgs(), locale);
             System.out.println("Error: " + message);
+            // TODO implement it in a @RestControllerAdvice
         }
     }
 
-    private void altaMetoda(int i) {
+    private void throwingBizMethod(int i) {
         if (i < 0) {
             throw new MyException(MyException.ErrorCode.I_NEGATIVE);
         }

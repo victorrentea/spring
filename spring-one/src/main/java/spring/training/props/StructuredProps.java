@@ -1,6 +1,7 @@
 package spring.training.props;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 @Component
 @ConfigurationProperties("structured")
 public class StructuredProps {
+    @Value("${structured.a}")
     private String a;
     private B b;
     private List<String> list;
