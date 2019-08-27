@@ -1,4 +1,4 @@
-package spring.training.resurse;
+package spring.training.props;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

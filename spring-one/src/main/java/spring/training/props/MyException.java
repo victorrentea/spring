@@ -1,4 +1,4 @@
-package spring.training.resurse;
+package spring.training.props;
 
 class MyException extends RuntimeException {
     public enum ErrorCode {
