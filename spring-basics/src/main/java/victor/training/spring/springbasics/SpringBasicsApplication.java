@@ -39,24 +39,34 @@ class AutoRun implements CommandLineRunner {
 		System.out.println("Hello " + a.m() + " -- " + c);
 	}
 }
-@Service
-class B{}
+
 @Service
 class CFactory{
 	public C createC() {return new C();}
 }
 class C {}
 
+
+@Service
+class B{
+	private final A a;
+	B(A a) {
+		System.out.println("new B");
+		this.a = a;
+	}
+}
 @Service
 class A {
-
     private B b;
-
-    @Autowired
-    public void setB(B b) {
-        System.out.println("Ii dau lui A pe un B");
-        this.b = b;
-    }
+    A(B b) {
+		this.b = b;
+		System.out.println("new A");
+	}
+//    @Autowired
+//    public void setB(B b) {
+//        System.out.println("Ii dau lui A pe un B");
+//        this.b = b;
+//    }
 
     public String m() {
 		return "Spring";
