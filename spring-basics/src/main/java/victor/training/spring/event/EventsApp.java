@@ -7,22 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.integration.annotation.MessageEndpoint;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.config.EnableIntegration;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
+@EnableBinding({Source.class, Sink.class})
+
 public class EventsApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(EventsApp.class,args);
     }
-
-//	@Bean
-//    public ApplicationEventMulticaster applicationEventMulticaster() {
-//        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-//        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-//        return eventMulticaster;
-//    }
 
     @Autowired
     private OrderService orderService;
@@ -51,25 +54,31 @@ class OrderCreatedEvent {
 //////////////// alt pachet ////////////////
 @Service
 @Slf4j
+@RequiredArgsConstructor
 class InvoiceGenerator {
+    private final Source source;
     @EventListener
-    public InvoiceGeneratedEvent handle(OrderCreatedEvent orderCreatedEvent) {
+    public void handle(OrderCreatedEvent orderCreatedEvent) {
         // persist Invoice in DB
         log.debug("Generating invoice for order " + orderCreatedEvent.getOrderId());
-        return new InvoiceGeneratedEvent(orderCreatedEvent.getOrderId());
+        Message<Long> message = MessageBuilder
+                .withPayload(orderCreatedEvent.getOrderId())
+                .build();
+        source.output().send(message);
     }
 }
 @Data
 class InvoiceGeneratedEvent {
     private final long orderId;
 }
-@Service
+@MessageEndpoint
 @Slf4j
 class SendConfirmationEmail {
-    @EventListener
-    public void handle(InvoiceGeneratedEvent orderCreatedEvent) {
+    @ServiceActivator(inputChannel = Sink.INPUT)
+    public void handle(Long orderId) {
+
         log.debug("Sending Confirmation email with invoice din DB for order " +
-                orderCreatedEvent.getOrderId());
+                orderId);
     }
 }
 
