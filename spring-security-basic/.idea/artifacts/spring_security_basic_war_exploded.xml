@@ -39,6 +39,10 @@
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.4.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-security:2.1.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.1.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-jasper:9.0.17" />
           <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.17" />
@@ -49,13 +53,11 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.1.5.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.16.20" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:5.1.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.6.RELEASE" />

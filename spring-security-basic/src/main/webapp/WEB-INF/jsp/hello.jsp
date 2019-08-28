@@ -1,3 +1,4 @@
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 
@@ -7,8 +8,8 @@
         <title>Hello World!</title>
     </head>
     <body>
-        <h1>Hello WWW!</h1>
-        <%--<h1>Hello <sec:authentication property="principal.username" />!</h1>--%>
+        <%--<h1>Hello <%=SecurityContextHolder.getContext().getAuthentication().getPrincipal() %>!</h1>--%>
+        <h1>Hello <sec:authentication property="principal.username" />!</h1>
 
 
 
