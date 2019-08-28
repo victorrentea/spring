@@ -3,6 +3,7 @@ package hello;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,8 +16,11 @@ import java.util.Date;
 
 @Service
 class AltServiciu {
-
-    @PreAuthorize("hasRole('ADMIN') ") //TODO and authen.canProceed()
+//    @PostAuthorize()
+//    public void x() {
+//re
+//    }
+    @PreAuthorize("hasRole('ADMIN') ") // TODO take me and @authen.canProceed()
     public void metodaCritica() {
     //if (!  user.countryId in currentUser.tari )
     //     throw N-ai voie
@@ -27,7 +31,6 @@ class AltServiciu {
         }
     }
 }
-
 @Service
 class Authen {
     public boolean canProceed() {
@@ -72,11 +75,6 @@ public class MyController {
         return "CAT Image!";
     }
 
-
-    @GetMapping(value = "xml", produces = "application/xml")
-    public TransferDto getDataInXml() {
-        return new TransferDto();
-    }
 
 
     public String locale(HttpServletRequest request) {

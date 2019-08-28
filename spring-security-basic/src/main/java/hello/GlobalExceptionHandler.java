@@ -20,8 +20,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(MyException.class)
-	public ResponseEntity<String> handleBusinessException(HttpServletRequest request,
-														  MyException e) {
+	public ResponseEntity<String> handleBusinessException(HttpServletRequest request, MyException e) {
 		log.error("MyException occured: " + e.getCode(), e);
 		String message = messageSource.getMessage(e.getCode().code,
 				e.getArgs(), request.getLocale());
@@ -32,12 +31,10 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(value = Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<String> defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
 		log.error("General exception occured: " + e, e);
 		String message = messageSource.getMessage(
-				MyException.ErrorCode.GENERAL.code,
-				null, request.getLocale());
+				MyException.ErrorCode.GENERAL.code,null, request.getLocale());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(message);
 	}
