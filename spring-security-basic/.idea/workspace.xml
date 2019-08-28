@@ -41,8 +41,11 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1Q1ceS3Jb297cI6bavqjVxAYAmr" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -51,7 +54,7 @@
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jpa" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Project" />
@@ -97,7 +100,7 @@
       <updated>1566941637352</updated>
       <workItem from="1566941638864" duration="598000" />
       <workItem from="1566942477280" duration="1310000" />
-      <workItem from="1566971582756" duration="12441000" />
+      <workItem from="1566971582756" duration="13033000" />
     </task>
     <task id="LOCAL-00001" summary="more initial hints">
       <created>1566942551355</created>
@@ -155,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566988788241</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add JWT apps">
+      <created>1566991790716</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1566991790716</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,6 +225,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="more initial hints" />
     <MESSAGE value="my first endpoint" />
     <MESSAGE value="form login chiar merge" />
@@ -222,6 +233,7 @@
     <MESSAGE value="url-based authorizare" />
     <MESSAGE value="date format" />
     <MESSAGE value="Global Exception Handler" />
-    <option name="LAST_COMMIT_MESSAGE" value="Global Exception Handler" />
+    <MESSAGE value="add JWT apps" />
+    <option name="LAST_COMMIT_MESSAGE" value="add JWT apps" />
   </component>
 </project>
