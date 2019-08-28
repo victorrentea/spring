@@ -3,6 +3,7 @@ package hello;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +21,26 @@ public class MyController {
     public String helloWeb(@RequestBody String body) {
         return "Hello Web " + body;
     }
+    @GetMapping("get")
+    public String helloWeb() {
+        return "Hello Web !";
+    }
 
-    @GetMapping("transfer")
+    static class TransferDto {
+        public String accountNo;
+        public String amount;
+    }
+
+    @PostMapping("transfer")
     public String transferMoney(
-            @RequestParam String accountNo,
-            @RequestParam String amount) {
-        log.debug("Transferring EUR {} to account {}", amount, accountNo);
+            @RequestBody TransferDto dto) {
+        log.debug("Transferring EUR {} to account {}",
+                dto.amount,
+                dto.accountNo);
         return "CAT Image!";
     }
 
-    public String redirect() {
-//        redirect to https://myhost.com/some/arbitrary/path
-        return "??";
-   }
+
 
     public String locale(HttpServletRequest request) {
         return "Moldoveneste";

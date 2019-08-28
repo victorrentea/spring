@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70168a3e-c4b5-4e84-b491-7c58e853ad38" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hello/UnController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hello/MyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/MyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hello/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/csrf.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/csrf.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/hello.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/hello.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,6 +23,13 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
@@ -88,7 +98,7 @@
       <updated>1566941637352</updated>
       <workItem from="1566941638864" duration="598000" />
       <workItem from="1566942477280" duration="1310000" />
-      <workItem from="1566971582756" duration="2709000" />
+      <workItem from="1566971582756" duration="5392000" />
     </task>
     <task id="LOCAL-00001" summary="more initial hints">
       <created>1566942551355</created>
@@ -111,7 +121,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566976244012</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Niciodata nu face operatii nasoale peste GET">
+      <created>1566976665699</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566976665699</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +191,7 @@
     <MESSAGE value="more initial hints" />
     <MESSAGE value="my first endpoint" />
     <MESSAGE value="form login chiar merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="form login chiar merge" />
+    <MESSAGE value="Niciodata nu face operatii nasoale peste GET" />
+    <option name="LAST_COMMIT_MESSAGE" value="Niciodata nu face operatii nasoale peste GET" />
   </component>
 </project>

@@ -17,9 +17,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("Security starting..");
         http .authorizeRequests()
-                .mvcMatchers("/**").authenticated()
+                .mvcMatchers("/redirect").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-        .formLogin().loginPage("/login").permitAll()
+        /*.csrf().disable()*/
+        .httpBasic()
+//                .and()
+//        .formLogin().loginPage("/login").permitAll()
+        .and().logout().permitAll()
                 ;
     }
 
@@ -31,7 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("test")
                 .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(userDetails);
+        UserDetails adminDetails = User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("admin")
+                .roles("ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(userDetails, adminDetails);
     }
 }
 
