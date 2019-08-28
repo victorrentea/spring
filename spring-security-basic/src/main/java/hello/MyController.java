@@ -20,7 +20,10 @@ class AltServiciu {
     public void metodaCritica() {
     //if (!  user.countryId in currentUser.tari )
     //     throw N-ai voie
-    System.out.println("CRITIC FRATE");
+        System.out.println("CRITIC FRATE");
+        if (Math.random()<.5f) {
+            throw new MyException(MyException.ErrorCode.I_NEGATIVE);
+        }
     }
 }
 

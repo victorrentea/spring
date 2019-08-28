@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70168a3e-c4b5-4e84-b491-7c58e853ad38" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../spring-basics/src/main/java/victor/training/spring/schedulers/SchedulersApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hello/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hello/MyException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/messages.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-basics/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-basics/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hello/MyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/MyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hello/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/WebSecurityConfig.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -61,6 +66,11 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="hello" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -94,7 +104,7 @@
       <updated>1566941637352</updated>
       <workItem from="1566941638864" duration="598000" />
       <workItem from="1566942477280" duration="1310000" />
-      <workItem from="1566971582756" duration="6346000" />
+      <workItem from="1566971582756" duration="7632000" />
     </task>
     <task id="LOCAL-00001" summary="more initial hints">
       <created>1566942551355</created>
@@ -131,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566979510839</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="date format">
+      <created>1566980471046</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1566980471046</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,6 +213,7 @@
     <MESSAGE value="form login chiar merge" />
     <MESSAGE value="Niciodata nu face operatii nasoale peste GET" />
     <MESSAGE value="url-based authorizare" />
-    <option name="LAST_COMMIT_MESSAGE" value="url-based authorizare" />
+    <MESSAGE value="date format" />
+    <option name="LAST_COMMIT_MESSAGE" value="date format" />
   </component>
 </project>
