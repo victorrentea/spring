@@ -19,36 +19,32 @@ public class Playground {
     @Autowired
     private DataSource ds;
 
+    @Autowired
+    private AltaClasa altaClasa;
+
     @Transactional
     public void firstTransaction() {
         JdbcTemplate jdbc = new JdbcTemplate(ds);
-
         jdbc.update("INSERT INTO ERROR_LOG(ID,MESSAGE) VALUES (1,'a')");
         try {
-            altaMetoda();
+            altaClasa.altaMetoda();
         } catch (Exception e) {
             // ;) shaworma
         }
-
-        log.debug("Halo!");
+        jdbc.update("INSERT INTO ERROR_LOG(ID,MESSAGE) VALUES (2,'B')");
+        log.info("Halo!");
     }
-
-    @Transactional // e degaba pus asta aici. Doar te confuzeaza
+}
+@Component
+class AltaClasa {
+    @Transactional
     public void altaMetoda() {
-
         if (true) throw new RuntimeException("a");
         // doar exceptiile runtime vor cauza Tranzactia **curenta** sa faca rollback
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void secondTransaction() {
-    }
-}
 
-//@Component
-//class AltaClasa {
-//
-//}
+}
 
 //@Aspect
 //    @Order(1) // runs BEFORE the TxInterceptor

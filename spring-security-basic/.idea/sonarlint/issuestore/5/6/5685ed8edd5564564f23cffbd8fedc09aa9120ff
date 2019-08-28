@@ -1,0 +1,9 @@
+
+asquid:S00112"FDefine and throw a dedicated exception instead of using a generic one.(è¶Ìıÿÿÿÿ
+gsquid:UselessImportCheck"@Remove this unused import 'com.bnpp.regliss.ReglissEnvironment'.(š¤Àåøÿÿÿÿ
+gsquid:UselessImportCheck"@Remove this unused import 'org.apache.commons.lang.StringUtils'.(Ö¥¬øÿÿÿÿ
+`squid:UselessImportCheck">Remove this unused import 'com.bnpp.regliss.ReglissException'.(¨Œìè
+msquid:UselessImportCheck"KRemove this unused import 'com.bnpp.regliss.service.ReglissRequestContext'.( ‘Æ
+jsquid:UselessImportCheck"HRemove this unused import 'com.bnpp.regliss.ReglissException.ErrorCode'.(­ÜÜò
+Tsquid:UselessImportCheck"-Remove this unused import 'java.util.Locale'.(åğ×±ûÿÿÿÿ
+fsquid:UselessImportCheck"DRemove this unused import 'javax.persistence.QueryTimeoutException'.(ØìÍ“

@@ -36,7 +36,7 @@ public class JpaApplication {
 		System.out.println(" ========= FIRST TRANSACTION ========== ");
 		playground.firstTransaction();
 		System.out.println(" ========= SECOND TRANSACTION ========== ");
-		playground.secondTransaction();
+//		playground.secondTransaction();
 		System.out.println(" ========= END ========== ");
 	}
 	
