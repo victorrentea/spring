@@ -6,7 +6,7 @@
     <body>
         <h1>Welcome!</h1>
         
-        <!--<p>Click <a href="transfer?accountNo=123456&amount=100">here</a> to see kittens.</p>-->
+        <%--<p>Click <a href="transfer?accountNo=123456&amount=100">here</a> to see kittens.</p>--%>
         <img src="transfer?accountNo=123456&amount=100">
     </body>
 </html>

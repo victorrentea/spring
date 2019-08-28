@@ -11,8 +11,6 @@
         <%--<h1>Hello <%=SecurityContextHolder.getContext().getAuthentication().getPrincipal() %>!</h1>--%>
         <h1>Hello <sec:authentication property="principal.username" />!</h1>
 
-
-
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="submit" value="Sign Out"/>

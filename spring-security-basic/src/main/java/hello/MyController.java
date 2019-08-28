@@ -20,9 +20,12 @@ public class MyController {
     public String helloWeb(@RequestBody String body) {
         return "Hello Web " + body;
     }
-    
-    public String transferMoney(String accountNo, String amount) {
-//        log.debug("Transferring EUR {} to account {}", amount, accountNo);
+
+    @GetMapping("transfer")
+    public String transferMoney(
+            @RequestParam String accountNo,
+            @RequestParam String amount) {
+        log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
     }
 
