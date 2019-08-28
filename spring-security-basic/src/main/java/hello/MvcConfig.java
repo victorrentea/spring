@@ -22,15 +22,15 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
 
-    @Bean
-    public CookieLocaleResolver localeResolver() {
-        return new CookieLocaleResolver();
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-        interceptor.setParamName("lang");
-        registry.addInterceptor(interceptor);
-    }
+//    @Bean
+//    public CookieLocaleResolver localeResolver() {
+//        return new CookieLocaleResolver();
+//    }
+//
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+//        interceptor.setParamName("lang");
+//        registry.addInterceptor(interceptor);
+//    }
 }

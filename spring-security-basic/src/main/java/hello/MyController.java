@@ -14,9 +14,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
+@RestController
 public class MyController {
+    @PostMapping("www")
+    public String helloWeb(@RequestBody String body) {
+        return "Hello Web " + body;
+    }
+    
     public String transferMoney(String accountNo, String amount) {
-        log.debug("Transferring EUR {} to account {}", amount, accountNo);
+//        log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
     }
 
