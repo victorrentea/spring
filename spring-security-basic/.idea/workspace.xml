@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70168a3e-c4b5-4e84-b491-7c58e853ad38" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../spring-basics/src/main/java/victor/training/spring/schedulers/SchedulersApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-basics/src/main/java/victor/training/spring/schedulers/SchedulersApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hello/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hello/MyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/MyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hello/MyException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/MyException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/messages.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/messages.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +104,7 @@
       <updated>1566941637352</updated>
       <workItem from="1566941638864" duration="598000" />
       <workItem from="1566942477280" duration="1310000" />
-      <workItem from="1566971582756" duration="7632000" />
+      <workItem from="1566971582756" duration="9841000" />
     </task>
     <task id="LOCAL-00001" summary="more initial hints">
       <created>1566942551355</created>

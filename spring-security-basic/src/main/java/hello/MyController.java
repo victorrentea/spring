@@ -22,6 +22,7 @@ class AltServiciu {
     //     throw N-ai voie
         System.out.println("CRITIC FRATE");
         if (Math.random()<.5f) {
+            System.out.println("BUBA");
             throw new MyException(MyException.ErrorCode.I_NEGATIVE);
         }
     }
@@ -44,6 +45,7 @@ public class MyController {
     public String helloWeb(@RequestBody String body) {
         return "Hello Web " + body;
     }
+
     @GetMapping("get")
     public String helloWeb() {
         altServiciu.metodaCritica();
@@ -53,6 +55,12 @@ public class MyController {
     static class TransferDto {
         public String accountNo;
         public String amount;
+        TransferDto(){}
+
+        public TransferDto(String accountNo, String amount) {
+            this.accountNo = accountNo;
+            this.amount = amount;
+        }
     }
 
     @PostMapping("transfer")
@@ -64,6 +72,11 @@ public class MyController {
         return "CAT Image!";
     }
 
+
+    @GetMapping(value = "xml", produces = "application/xml")
+    public TransferDto getDataInXml() {
+        return new TransferDto();
+    }
 
 
     public String locale(HttpServletRequest request) {
