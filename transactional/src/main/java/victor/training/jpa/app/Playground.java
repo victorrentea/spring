@@ -32,13 +32,18 @@ public class Playground {
             e.printStackTrace();
             // ;) shaworma
         }
-        jdbc.update("INSERT INTO ERROR_LOG(ID,MESSAGE) VALUES (2,'B')");
+        altaMetLocala(jdbc);
         log.info("Halo!");
+    }
+
+    private void altaMetLocala(JdbcTemplate jdbc) {
+        jdbc.update("INSERT INTO ERROR_LOG(ID,MESSAGE) VALUES (2,'B')");
     }
 }
 @Component
 @Transactional
 class AltaClasa {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void altaMetoda() {
         if (true) throw new RuntimeException("a");
         // doar exceptiile runtime vor cauza Tranzactia **curenta** sa faca rollback
