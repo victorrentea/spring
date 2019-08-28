@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="70168a3e-c4b5-4e84-b491-7c58e853ad38" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hello/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hello/MyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hello/MyController.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +97,7 @@
       <updated>1566941637352</updated>
       <workItem from="1566941638864" duration="598000" />
       <workItem from="1566942477280" duration="1310000" />
-      <workItem from="1566971582756" duration="10662000" />
+      <workItem from="1566971582756" duration="12441000" />
     </task>
     <task id="LOCAL-00001" summary="more initial hints">
       <created>1566942551355</created>
@@ -150,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566987892929</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Global Exception Handler">
+      <created>1566988788241</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1566988788241</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
