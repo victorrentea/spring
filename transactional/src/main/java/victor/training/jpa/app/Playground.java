@@ -29,6 +29,7 @@ public class Playground {
         try {
             altaClasa.altaMetoda();
         } catch (Exception e) {
+            e.printStackTrace();
             // ;) shaworma
         }
         jdbc.update("INSERT INTO ERROR_LOG(ID,MESSAGE) VALUES (2,'B')");
@@ -36,11 +37,18 @@ public class Playground {
     }
 }
 @Component
+@Transactional
 class AltaClasa {
-    @Transactional
     public void altaMetoda() {
         if (true) throw new RuntimeException("a");
         // doar exceptiile runtime vor cauza Tranzactia **curenta** sa faca rollback
+    }
+
+    public void aa() {
+    }
+    public void bb() {
+    }
+    public void cc() {
     }
 
 
