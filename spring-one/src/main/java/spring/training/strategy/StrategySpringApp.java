@@ -19,12 +19,6 @@ public class StrategySpringApp implements CommandLineRunner {
 	}
 
 	@Autowired
-	private Baza baza;
-	
-	@Autowired
-	private ConfigProvider configProvider; 
-	
-	@Autowired
 	private CustomsService service;
 	// TODO [1] Break CustomsService logic into Strategies
 	// TODO [2] Convert it to Chain Of Responsibility
@@ -34,8 +28,6 @@ public class StrategySpringApp implements CommandLineRunner {
 		System.out.println("Tax for (RO,100,100) = " + service.computeCustomsTax("RO", 100, 100));
 		System.out.println("Tax for (CH,100,100) = " + service.computeCustomsTax("CH", 100, 100));
 		System.out.println("Tax for (UK,100,100) = " + service.computeCustomsTax("UK", 100, 100));
-		System.out.println("Ce baza imi dai ?" + baza);
-		System.out.println("Property: " + configProvider.getProperties().getProperty("someProp"));
 	}
 }
 @Service
@@ -62,14 +54,8 @@ interface TaxComputer {
 	boolean accepts(String originCountry);
 }
 @Service
-class W{ }
-
-@Service
 class EUTaxComputer implements TaxComputer{
-	@Autowired
-	private W w;
 	public double compute(double tobacoValue, double regularValue) {
-		System.out.println("w: " + w);
 		return tobacoValue/3;
 	}
 	public boolean accepts(String originCountry) {
