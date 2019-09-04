@@ -4,20 +4,16 @@ import java.util.Locale;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
@@ -48,34 +44,33 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
-abstract
 class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-
-	@Lookup
-	public abstract LabelService createLabelService();
+	@Autowired
+	private LabelService labelService;
 
 	public void export(Locale locale) {
+		log.debug("Oare pe ce chem eu metodele aste a?! : " + labelService.getClass());
 		log.debug("Running export in " + locale);
-		LabelService labelService = createLabelService();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice(labelService);
+		invoiceExporter.exportInvoice();
 	}
 }
 @Slf4j
 @Service 
 class InvoiceExporter {
-
-	public void exportInvoice(LabelService labelService) {
+	@Autowired
+	private LabelService labelService;
+	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
 @Service
-@Scope("prototype")
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class LabelService {
 	private CountryRepo countryRepo;
 
