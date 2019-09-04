@@ -31,13 +31,22 @@ public class BeanApp implements CommandLineRunner {
 //        System.out.println(spring.getBean(Person.class)); // crapa ca-s doua dupa tip
     }
     @Bean
-    public Conversation conversation(@Qualifier("jane") Person janeX, Person john) {
-        return new Conversation(john, janeX);
+    public Conversation conversation() {
+        System.out.println("Se incepe o conversatie din "  +this.getClass());
+        Conversation conversation = new Conversation(john(), jane());
+        System.out.println("Am construit conv");
+        return conversation;
+    }
+    @Bean
+    public Conversation argue() {
+        System.out.println("Se isca o galceava");
+        return new Conversation(john(), jane());
     }
 
 
     @Bean
     public Person john() {
+        System.out.println("John se naste");
         return new Person("John");
     }
     @Bean

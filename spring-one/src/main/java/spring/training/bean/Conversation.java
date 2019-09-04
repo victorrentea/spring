@@ -1,5 +1,7 @@
 package spring.training.bean;
 
+import javax.annotation.PostConstruct;
+
 public class Conversation {
     private final Person one;
     private final Person two;
@@ -8,6 +10,7 @@ public class Conversation {
         this.one = one;
         this.two = two;
     }
+
 
     public void start() {
         System.out.println(one.sayHello());
