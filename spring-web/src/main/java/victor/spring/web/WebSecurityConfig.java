@@ -1,4 +1,4 @@
-package hello;
+package victor.spring.web;
 
 // at some point later: @EnableGlobalMethodSecurity(prePostEnabled = true)
 //public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
