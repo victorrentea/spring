@@ -26,7 +26,7 @@ public class ExpensiveOps {
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Cacheable("primeszzzZZ")
-	public Boolean isPrime(int n) {
+	public final Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
