@@ -1,22 +1,11 @@
 package spring.training.first;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.LifecycleProcessor;
-import org.springframework.context.SmartLifecycle;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -31,9 +20,44 @@ public class FirstApplication implements CommandLineRunner{
 		SpringApplication.run(FirstApplication.class);
 	}
 
+	@Autowired
+    private A a;
+
 	@Override
 	public void run(String... args) throws Exception {
 
+	    a.m();
 
 	}
+}
+
+//@Component
+@Service
+//@Repository
+//@Controller
+//@RestController
+//@Configuration
+//@MessageEndpoint
+class A {
+	private final B b;
+	private final C c;
+
+	@Autowired
+	public A(B b, C c) {
+		this.b = b;
+		this.c = c;
+	}
+	public A(B b) {
+		this.b = b;
+		this.c = null;
+	}
+	public void m() {
+    }
+}
+
+@Component
+class B {
+}
+@Component
+class C {
 }
