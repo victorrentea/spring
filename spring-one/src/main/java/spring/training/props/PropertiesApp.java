@@ -18,16 +18,14 @@ public class PropertiesApp implements CommandLineRunner {
         SpringApplication.run(PropertiesApp.class);
     }
 
-    @Value("${secret.mare}")
-    private String secret;
+
     @Bean
-    public ManuallyConfigurable manuallyConfigurable() {
+    public ManuallyConfigurable manuallyConfigurable(@Value("${secret.mare}") String secret) {
         return new ManuallyConfigurable(secret);
     }
 
     @Override
     public void run(String... args) {
-        System.out.println("Log.info pass= " + secret);
         System.out.println("Structured Props: ");
     }
 }
