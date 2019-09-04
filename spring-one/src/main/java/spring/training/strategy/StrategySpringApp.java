@@ -18,6 +18,8 @@ public class StrategySpringApp implements CommandLineRunner {
 			.run(args);
 	}
 
+	@Autowired
+    Inocenta inocenta;
 
 	@Autowired
     ConfigProvider configProvider;
@@ -34,6 +36,7 @@ public class StrategySpringApp implements CommandLineRunner {
 		System.out.println("Tax for (UK,100,100) = " + service.computeCustomsTax("UK", 100, 100));
 		System.out.println("Tax for (AUS,100,100) = " + service.computeCustomsTax("AUS", 100, 100));
         System.out.println(configProvider);
+        inocenta.m();
 	}
 }
 @Service
