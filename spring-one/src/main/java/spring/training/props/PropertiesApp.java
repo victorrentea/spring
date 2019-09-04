@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -63,19 +64,19 @@ class TranslatingExceptionsPlay implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Locale locale = new Locale("RO", "RO");
+        Locale locale = new Locale("ES", "ES");
         try {
             throwingBizMethod(-1);
-        } catch (MyException e) {
-            String message = messageSource.getMessage(e.getCode().code, e.getArgs(), locale);
-            System.out.println("Error: " + message);
-            // TODO implement it in a @RestControllerAdvice
+        } catch (IllegalArgumentException e) {
+            //traduc cheia in mesaj
+            String message = messageSource.getMessage(e.getMessage(), null, locale);
+            System.err.println(message);
         }
     }
 
     private void throwingBizMethod(int i) {
         if (i < 0) {
-            throw new MyException(MyException.ErrorCode.I_NEGATIVE);
+            throw new IllegalArgumentException("error.i.negativeoups");
         }
     }
 }
