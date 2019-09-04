@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -33,6 +34,12 @@ public class PropertiesApp implements CommandLineRunner {
 class A {
     @Autowired
     ManuallyConfigurable configurable;
+    @Value("${alt.secret.mare:12345678}")
+    String secret;
+    @PostConstruct
+    public void printPasswordLoudAndClear() {
+        System.out.println("PASS: " + secret);
+    }
 }
 
 
