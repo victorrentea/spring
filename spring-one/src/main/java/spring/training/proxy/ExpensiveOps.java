@@ -46,16 +46,15 @@ public class ExpensiveOps {
 	}
 
 
-//	@Autowired
-//	private
+	@Autowired
+	private ExpensiveOps myselfProxied;
 
 	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 
-		ExpensiveOps myselfProxied = new ExpensiveOps();
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + myselfProxied.isPrime(10_000_169) + "\n");
+		log.debug("Got: " + isPrime(10_000_169) + "\n");
 
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
