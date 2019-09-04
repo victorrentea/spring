@@ -19,10 +19,6 @@ public class BeanApp implements CommandLineRunner {
     private ApplicationContext spring;
 
     @Autowired
-    private Person jane;
-    @Autowired
-    private Person john;
-    @Autowired
     private Conversation conversation;
 
     @Override
@@ -35,8 +31,8 @@ public class BeanApp implements CommandLineRunner {
 //        System.out.println(spring.getBean(Person.class)); // crapa ca-s doua dupa tip
     }
     @Bean
-    public Conversation conversation() {
-        return new Conversation(john, jane);
+    public Conversation conversation(@Qualifier("jane") Person janeX, Person john) {
+        return new Conversation(john, janeX);
     }
 
 
