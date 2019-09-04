@@ -1,5 +1,10 @@
 package spring.training.proxy;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -9,22 +14,19 @@ public class Experiment {
     public static void main(String[] args) {
         MateImpl realStuff = new MateImpl();
 
-        InvocationHandler h = new InvocationHandler() {
+        MethodInterceptor callback = new MethodInterceptor() {
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
                 System.out.println("Cheama userul metoda "
                         + method.getName() + " cu param " + Arrays.toString(args));
                 return method.invoke(realStuff, args);
             }
         };
-
-        Mate mate = (Mate) Proxy.newProxyInstance(Experiment.class.getClassLoader(),
-                new Class<?>[]{Mate.class},
-                h);
+        MateImpl mate = (MateImpl) Enhancer.create(MateImpl.class, callback);
         biznisLogic(mate);
     }
 
-    private static void biznisLogic(Mate mate) {
+    private static void biznisLogic(MateImpl mate) {
         System.out.println("Oare cu cine vorbesc ? " + mate.getClass());
         System.out.println(mate.sum(1,1));
         System.out.println(mate.sum(0,2));
@@ -34,18 +36,11 @@ public class Experiment {
     }
 }
 
-interface Mate {
-    Integer sum(int a, int b);
-    Integer product(int a, int b);
-}
-
-class MateImpl implements Mate {
-    @Override
+class MateImpl {
     public Integer sum(int a, int b) {
         return a + b;
     }
 
-    @Override
     public Integer product(int a, int b) {
         return a  *b;
     }
