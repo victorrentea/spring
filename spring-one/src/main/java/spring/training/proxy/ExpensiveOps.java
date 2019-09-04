@@ -25,7 +25,7 @@ public final class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
-	@Cacheable("primeszzzZZ")
+//	@Cacheable("primeszzzZZ")
 	public  Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
@@ -49,7 +49,7 @@ public final class ExpensiveOps {
 	@Autowired
 	private ExpensiveOps myselfProxied;
 
-	@Cacheable("folders")
+//	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 
@@ -72,7 +72,7 @@ public final class ExpensiveOps {
 		}
 	}
 
-	@CacheEvict("folders")
+//	@CacheEvict("folders")
 	public void evictFolderCache(File file) {
 		// Empty method. Do not touch. Let the magic happen!
 	}
