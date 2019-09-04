@@ -1,5 +1,6 @@
 package spring.training.first;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -64,8 +65,50 @@ class A {
 class B {
 }
 @Component
+@RequiredArgsConstructor
 class C {
+	// --------------- forma 1
+	// PRO: mai scurta
+//	@Autowired
+//	private CA ca;
+//	@Autowired
+//	private CB cb;
+
+	// ------------------ forma 2
+	// PRO: orice dev certificat Java isi da seama ca acele campuri nu raman nulle niciodata
+	// PRO: daca vrei sa instantiezi de mana (NB: Mockito merge pe ambele)
+//	private final CA ca;
+//	private final CB cb;
+//	C(CA ca, CB cb) {
+//		this.ca = ca;
+//		this.cb = cb;
+//	}
+
+	// --------------- forma 3
+	// PRO:cea mai scurta si cea mai HORROR !
+	private final CA ca;
+	private final CB cb;
+
+
+
+	public int m() {
+		return ca.m() + cb.m();
+	}
 }
+
+@Service
+class CA {
+	public int m() {
+		return 2;
+	}
+}
+@Service
+class CB {
+	public int m() {
+		return 1;
+	}
+}
+
 @Component
 class DataSource {
 	public void n() {
