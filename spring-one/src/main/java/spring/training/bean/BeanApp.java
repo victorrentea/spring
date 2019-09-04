@@ -19,23 +19,27 @@ public class BeanApp implements CommandLineRunner {
     private ApplicationContext spring;
 
     @Autowired
-    @Qualifier("jane")
-    private Person janePerson;
+    private Person jane;
+    @Autowired
+    private Person john;
+    @Autowired
+    private Conversation conversation;
 
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(
-                new Person("John"),
-                new Person("Jane"));
         conversation.start();
         // TODO manage all with Spring
 
         System.out.println(spring.getBean("john"));
         System.out.println(spring.getBean("labelStuff"));
 //        System.out.println(spring.getBean(Person.class)); // crapa ca-s doua dupa tip
-
-
     }
+    @Bean
+    public Conversation conversation() {
+        return new Conversation(john, jane);
+    }
+
+
     @Bean
     public Person john() {
         return new Person("John");
