@@ -91,6 +91,9 @@ class Barman {
     public Future<Ale> getOneAle() {
         log.debug("Pouring Ale...");
         ThreadUtils.sleep(1000);
+        if (Math.random() < 0.5) {
+            throw new IllegalStateException("Nu mai e bere !!!");
+        }
         return completedFuture(new Ale());
     }
 
