@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="85f4bcde-1a53-4ab1-81b7-5612ae568b64" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="AnnotationType" />
+        <option value="Interface" />
+        <option value="JUnit4 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="Orange201908" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1PzuBPBWlXnjqUTtB7HV8IdT6wb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/victor/training/spring/injection" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../spring-one/pom.xml" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="show.run.dashboard.notification" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="victor.training.spring.testing" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="victor.training.spring.injection" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="victor.training.spring.injection" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\workspace\spring\spring-basics\src\main\java\victor\training\spring" />
+      <recent name="C:\workspace\spring\spring-basics\src\main\resources" />
+      <recent name="C:\workspace\spring\spring-basics\src\main\java\victor\training\spring\injection" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.SingletonSpringApp">
+    <configuration name="EventsApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="victor.training.spring.event.EventsApp" />
+      <module name="spring-basics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="victor.training.spring.event.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SchedulersApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="victor.training.spring.schedulers.SchedulersApp" />
+      <module name="spring-basics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="victor.training.spring.schedulers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SingletonSpringApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="victor.training.spring.life.SingletonSpringApp" />
+      <module name="spring-basics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="victor.training.spring.life.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringBasicsApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="victor.training.spring.springbasics.SpringBasicsApplication" />
+      <module name="spring-basics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="victor.training.spring.springbasics.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringBasicsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="spring-basics" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="victor.training.spring.springbasics.SpringBasicsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringLifeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="spring-basics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="victor.training.spring.life.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="victor.training.spring.life.SpringLifeApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.EventsApp" />
+      <item itemvalue="Application.SchedulersApp" />
+      <item itemvalue="Spring Boot.SpringBasicsApplication" />
+      <item itemvalue="Application.SingletonSpringApp" />
+      <item itemvalue="Application.SpringBasicsApplication" />
+      <item itemvalue="Spring Boot.SpringLifeApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SpringLifeApplication" />
+        <item itemvalue="Application.SpringBasicsApplication" />
+        <item itemvalue="Application.SingletonSpringApp" />
+        <item itemvalue="Application.SchedulersApp" />
+        <item itemvalue="Application.EventsApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="85f4bcde-1a53-4ab1-81b7-5612ae568b64" name="Default Changelist" comment="" />
+      <created>1566889110017</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566889110017</updated>
+      <workItem from="1566889111735" duration="32272000" />
+      <workItem from="1566971464158" duration="4819000" />
+      <workItem from="1567577909417" duration="202000" />
+    </task>
+    <task id="LOCAL-00002" summary="Constructor Injection (fara nici un @AUtowired)">
+      <created>1566889798737</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566889798737</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Constructor injection cu Lombok">
+      <created>1566889912752</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1566889912752</updated>
+    </task>
+    <task id="LOCAL-00004" summary="method injection. @Autowired pe setteri dar si pe orice alta metoda">
+      <created>1566890288548</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566890288548</updated>
+    </task>
+    <task id="LOCAL-00005" summary="method injection">
+      <created>1566890397509</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1566890397509</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Spring leaga firele pentru noi in ordinea care trebuie">
+      <created>1566890593310</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1566890593310</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Dependenta circulara. Eu de ea si ea de mine.;)">
+      <created>1566890741897</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1566890741897</updated>
+    </task>
+    <task id="LOCAL-00008" summary="@PostConstruct pentru initializari">
+      <created>1566891034541</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1566891034541</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Scope prototype permite lui Spring sa creeze instante noi de fiecare data cand are nevoie de una.">
+      <created>1566891311084</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1566891311084</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Prepare Singleton/proxy/thread discussion">
+      <created>1566891526019</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1566891526019</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Prepare proxy">
+      <created>1566892195493</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1566892195493</updated>
+    </task>
+    <task id="LOCAL-00012" summary="@Qualifier cu text">
+      <created>1566894284803</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1566894284803</updated>
+    </task>
+    <task id="LOCAL-00013" summary="@Qualifier pe adnotarile mele">
+      <created>1566894551055</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1566894551055</updated>
+    </task>
+    <task id="LOCAL-00014" summary="@Primary">
+      <created>1566894679785</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1566894679785</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Cum sa suprascrii beanuri cu @Primary">
+      <created>1566894783147</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1566894783147</updated>
+    </task>
+    <task id="LOCAL-00016" summary="@Profile!!! WArning: nu faceti profilul PROD vreodata!">
+      <created>1566895080480</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1566895080480</updated>
+    </task>
+    <task id="LOCAL-00017" summary="@Bean ca un fel de factory: creezi de mana instante de obiecte de care apoi Spring are grijE">
+      <created>1566895676996</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1566895676996</updated>
+    </task>
+    <task id="LOCAL-00018" summary="@Bean + detalii de viata ale binurilor">
+      <created>1566896312208</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1566896312208</updated>
+    </task>
+    <task id="LOCAL-00019" summary="@Value ca sa pescuiesti proprietati din .properties">
+      <created>1566896504009</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1566896504009</updated>
+    </task>
+    <task id="LOCAL-00020" summary="@Value">
+      <created>1566897191357</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1566897191357</updated>
+    </task>
+    <task id="LOCAL-00021" summary="prepare proxy">
+      <created>1566901293901</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1566901293901</updated>
+    </task>
+    <task id="LOCAL-00022" summary="start props">
+      <created>1566901398136</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1566901398136</updated>
+    </task>
+    <task id="LOCAL-00023" summary="internationalizarea mesajelor (i18n). sa-i spui eroare pe limba lui">
+      <created>1566902028294</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1566902028294</updated>
+    </task>
+    <task id="LOCAL-00024" summary="SPEL">
+      <created>1566902729206</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1566902729206</updated>
+    </task>
+    <task id="LOCAL-00025" summary="The @Value of SPEL">
+      <created>1566903398005</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1566903398005</updated>
+    </task>
+    <task id="LOCAL-00026" summary="reverted solution">
+      <created>1566903451606</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1566903451606</updated>
+    </task>
+    <task id="LOCAL-00027" summary="@Cacheable + proxy">
+      <created>1566905171604</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1566905171604</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Proxy playing around">
+      <created>1566906744442</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1566906744442</updated>
+    </task>
+    <task id="LOCAL-00029" summary="SIngletong + lifecycle solved">
+      <created>1566906812610</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1566906812610</updated>
+    </task>
+    <task id="LOCAL-00030" summary="AOP: weaving based on custom annotations (@LoggedMethod and @LoggedClass)">
+      <created>1566908989791</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1566908989791</updated>
+    </task>
+    <task id="LOCAL-00031" summary="integration testing + varza = static fields">
+      <created>1566910836717</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1566910836717</updated>
+    </task>
+    <task id="LOCAL-00032" summary="@MockBean">
+      <created>1566910966312</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1566910966312</updated>
+    </task>
+    <task id="LOCAL-00033" summary="@MockBean">
+      <created>1566911064560</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1566911064560</updated>
+    </task>
+    <task id="LOCAL-00034" summary="@EventListener iti permite sa reduci cuplarea intre clasele tale, pregatindu-te moral pentru COZI. DAR TOTUL E SYNC INCA!">
+      <created>1566911871332</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1566911871332</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Erorile opresc alti handleri sa proceseze mesajul. Tranzactia este inca pastrata pentru ca te gasesti in acelasi thread.">
+      <created>1566911981165</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1566911981165</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Async process de eventuri _ un mod fragil de a simula cozi. o coada decenta persita mesajele intr-o baza de date pe disc. aici totul e in memorie. Traiasca OutOfMemoryError.">
+      <created>1566912257975</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1566912257975</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Prepare queues">
+      <created>1566913060350</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1566913060350</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Prepare command">
+      <created>1566913090209</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1566913090209</updated>
+    </task>
+    <task id="LOCAL-00039" summary="rename for readibility">
+      <created>1566913101376</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1566913101376</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Event chaining cu @EventListener">
+      <created>1566913489383</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1566913489383</updated>
+    </task>
+    <task id="LOCAL-00041" summary="MErge@!! Am trimis mesaje pe Rabbit ! Frate. 10 linii de cod + 10 in pom + 5 in props">
+      <created>1566914556611</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1566914556611</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Procesarea de mesaje poate fi facuta in paralel pe 3 threaduri e.g.">
+      <created>1566915113885</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1566915113885</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Async processing JavaSE way">
+      <created>1566916261539</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1566916261539</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Future&lt;&gt; intoarse din @Async">
+      <created>1566916946085</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1566916946085</updated>
+    </task>
+    <task id="LOCAL-00045" summary="CompletableFuture">
+      <created>1566917385535</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1566917385535</updated>
+    </task>
+    <task id="LOCAL-00046" summary="cleanup">
+      <created>1566938847401</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1566938847401</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Spring Security start">
+      <created>1566942401998</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1566942401998</updated>
+    </task>
+    <task id="LOCAL-00048" summary="@Scheduled luand cron expr din fisier">
+      <created>1566981713002</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1566981713002</updated>
+    </task>
+    <task id="LOCAL-00049" summary="@Scheduled">
+      <created>1566982396137</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1566982396137</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Tx">
+      <created>1567577991786</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1567577991787</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="The @Value of SPEL" />
+    <MESSAGE value="reverted solution" />
+    <MESSAGE value="@Cacheable + proxy" />
+    <MESSAGE value="Proxy playing around" />
+    <MESSAGE value="SIngletong + lifecycle solved" />
+    <MESSAGE value="AOP: weaving based on custom annotations (@LoggedMethod and @LoggedClass)" />
+    <MESSAGE value="integration testing + varza = static fields" />
+    <MESSAGE value="@MockBean" />
+    <MESSAGE value="@EventListener iti permite sa reduci cuplarea intre clasele tale, pregatindu-te moral pentru COZI. DAR TOTUL E SYNC INCA!" />
+    <MESSAGE value="Erorile opresc alti handleri sa proceseze mesajul. Tranzactia este inca pastrata pentru ca te gasesti in acelasi thread." />
+    <MESSAGE value="Async process de eventuri _ un mod fragil de a simula cozi. o coada decenta persita mesajele intr-o baza de date pe disc. aici totul e in memorie. Traiasca OutOfMemoryError." />
+    <MESSAGE value="Prepare queues" />
+    <MESSAGE value="Prepare command" />
+    <MESSAGE value="rename for readibility" />
+    <MESSAGE value="Event chaining cu @EventListener" />
+    <MESSAGE value="MErge@!! Am trimis mesaje pe Rabbit ! Frate. 10 linii de cod + 10 in pom + 5 in props" />
+    <MESSAGE value="Procesarea de mesaje poate fi facuta in paralel pe 3 threaduri e.g." />
+    <MESSAGE value="Async processing JavaSE way" />
+    <MESSAGE value="Future&lt;&gt; intoarse din @Async" />
+    <MESSAGE value="CompletableFuture" />
+    <MESSAGE value="cleanup" />
+    <MESSAGE value="Spring Security start" />
+    <MESSAGE value="@Scheduled luand cron expr din fisier" />
+    <MESSAGE value="@Scheduled" />
+    <MESSAGE value="Tx" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tx" />
+  </component>
+</project>
