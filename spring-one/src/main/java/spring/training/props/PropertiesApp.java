@@ -51,16 +51,15 @@ class TranslatingExceptionsPlay implements CommandLineRunner {
         Locale locale = new Locale("RO", "RO");
         try {
             throwingBizMethod(-1);
-        } catch (MyException e) {
-            String message = messageSource.getMessage(e.getCode().code, e.getArgs(), locale);
-            System.out.println("Error: " + message);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
             // TODO implement it in a @RestControllerAdvice
         }
     }
 
     private void throwingBizMethod(int i) {
         if (i < 0) {
-            throw new MyException(MyException.ErrorCode.I_NEGATIVE);
+            throw new IllegalArgumentException("Dear user, i must be negative, but given " + i);
         }
     }
 }
