@@ -41,17 +41,22 @@ public class FirstApplication implements CommandLineRunner{
 class A {
 	private final B b;
 	private final C c;
+	private DataSource ds;
 
-	@Autowired
 	public A(B b, C c) {
 		this.b = b;
 		this.c = c;
 	}
-	public A(B b) {
-		this.b = b;
-		this.c = null;
+
+	@Autowired
+	public void initialize(DataSource ds, B b) {
+		this.ds = ds;
+//		jdbc = new JdbcTemplate(ds);
+//		calcule cu b s ids; si obtinea tz pe care il stocai pe un camp.
 	}
+
 	public void m() {
+		ds.n();
     }
 }
 
@@ -60,4 +65,9 @@ class B {
 }
 @Component
 class C {
+}
+@Component
+class DataSource {
+	public void n() {
+	}
 }
