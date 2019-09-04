@@ -1,5 +1,7 @@
 package spring.training.bean;
 
+import org.springframework.stereotype.Service;
+
 public class Person {
     private final String name;
 
