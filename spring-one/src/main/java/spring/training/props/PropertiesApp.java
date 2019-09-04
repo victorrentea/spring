@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -32,7 +33,7 @@ public class PropertiesApp implements CommandLineRunner {
 }
 @Service
 class A {
-    @Autowired
+    @Inject
     ManuallyConfigurable configurable;
     @Value("${alt.secret.mare:12345678}")
     String secret;
