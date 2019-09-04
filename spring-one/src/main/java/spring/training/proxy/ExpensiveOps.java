@@ -54,7 +54,7 @@ public class ExpensiveOps {
 		log.debug("Computing hashAllFiles({})...", folder);
 
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + isPrime(10_000_169) + "\n");
+		log.debug("Got: " + myselfProxied.isPrime(10_000_169) + "\n");
 
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
