@@ -6,6 +6,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -47,15 +48,17 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
+abstract
 class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private ObjectFactory<LabelService> labelServiceFactory;
+
+	@Lookup
+	public abstract LabelService createLabelService();
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = labelServiceFactory.getObject();
+		LabelService labelService = createLabelService();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
