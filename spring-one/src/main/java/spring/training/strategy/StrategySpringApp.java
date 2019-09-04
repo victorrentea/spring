@@ -18,6 +18,7 @@ public class StrategySpringApp implements CommandLineRunner {
 			.run(args);
 	}
 
+
 	@Autowired
 	private CustomsService service;
 	// TODO [1] Break CustomsService logic into Strategies
@@ -28,6 +29,7 @@ public class StrategySpringApp implements CommandLineRunner {
 		System.out.println("Tax for (RO,100,100) = " + service.computeCustomsTax("RO", 100, 100));
 		System.out.println("Tax for (CH,100,100) = " + service.computeCustomsTax("CH", 100, 100));
 		System.out.println("Tax for (UK,100,100) = " + service.computeCustomsTax("UK", 100, 100));
+		System.out.println("Tax for (AUS,100,100) = " + service.computeCustomsTax("AUS", 100, 100));
 	}
 }
 @Service
@@ -77,8 +79,19 @@ class UKTaxComputer implements TaxComputer {
 	public double compute(double tobacoValue, double regularValue) {
 		return tobacoValue/2 + regularValue/2;
 	}
-
 	public boolean accepts(String originCountry) {
 		return "UK".equals(originCountry);
+	}
+}
+// ----- sub aceasta linie este cod pus intr-un alt .jar asezat in classpathul aplicatiei care deja e compilata
+// adica, ce e deasupra e deja binar compilat.
+
+@Service
+class AustraliaTaxComputer implements TaxComputer {
+	public double compute(double tobacoValue, double regularValue) {
+		return 1;
+	}
+	public boolean accepts(String originCountry) {
+		return "AUS".equals(originCountry);
 	}
 }
