@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-public class StructuredProps {
+public class ClassUsingTonsOfProperties {
     private String a;
     private List<String> list;
     private Map<String,String> map;

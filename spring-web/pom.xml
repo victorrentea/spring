@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>victor.training</groupId>
-    <artifactId>spring-security-basic</artifactId>
+    <artifactId>spring-web</artifactId>
     <version>0.1.0</version>
     <packaging>war</packaging>
 
