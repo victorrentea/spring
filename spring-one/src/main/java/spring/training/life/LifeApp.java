@@ -91,3 +91,27 @@ class LabelService {
 		return countryNames.get(iso2Code.toUpperCase());
 	}
 }
+
+//
+//class Controller1 {
+//	Service1 s;
+//	void handleHtt() {
+//		s.m();
+//	}
+//}
+//class Service1 {
+//	Repo repo;
+//	void m() {
+//		repo.update(1, "new");
+//	}
+//}
+//
+//class Repo {
+////	@Autowired
+////	private LabelService
+//	public void update(long id, String newValue) {
+//		// UPDATE SET lastModifiedBy =
+//		String userId = SecurityContextHolder.getContext().getPrinc;
+//		System.out.println(userId);
+//	}
+//}
