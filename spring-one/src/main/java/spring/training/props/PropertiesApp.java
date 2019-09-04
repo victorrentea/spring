@@ -76,7 +76,7 @@ class TranslatingExceptionsPlay implements CommandLineRunner {
 
     private void throwingBizMethod(int i) {
         if (i < 0) {
-            throw new IllegalArgumentException("error.i.negativeoups");
+            throw new IllegalArgumentException("error.i.negative");
         }
     }
 }
