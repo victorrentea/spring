@@ -33,17 +33,22 @@ class MyController {
 @Service
 @RequiredArgsConstructor
 class MyService {
-    private final MyRepo repo;
+    private final IMyRepo repo;
     public LocalDate m() {
         Order order = repo.findById(1L);
         return order.getCreationDate();
     }
 }
 
+interface IMyRepo {
+    public Order findById(long id);
+}
 @Repository
-class MyRepo {
+class MyRepo implements  IMyRepo {
     public Order findById(long l) {
-        throw new NotImplementedException();
+        Order order = new Order();
+        order.setCreationDate(LocalDate.now().minusDays(1));
+        return order;
     }
 }
 

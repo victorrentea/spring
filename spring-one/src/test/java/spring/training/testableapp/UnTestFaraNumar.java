@@ -4,16 +4,10 @@ package spring.training.testableapp;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import spring.training.ThreadUtils;
 
 import java.time.LocalDate;
 
@@ -23,9 +17,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@ActiveProfiles("orderRepoMocked") // poti activa selectiv diverse implementari 'test doubles' dupa nevoie
-//@TestPropertySource({"a=override","c=override"})
-public class UnTest {
+public class UnTestFaraNumar {
     @Autowired
     private MyController controller;
 
@@ -34,7 +26,7 @@ public class UnTest {
 
     @Test
     public void dummy() {
-        System.out.println("Test1");
+        System.out.println("Test fara numar");
         Order order = new Order();
         order.setCreationDate(now());
         when(repo.findById(anyLong())).thenReturn(order);
