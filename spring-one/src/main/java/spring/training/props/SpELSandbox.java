@@ -57,19 +57,17 @@ class SpelConfiguration {
 		return box;
 	}
 }
-
-
 @Component
 class UsingSpells {
-	@Value("#{sandbox.intProperty + 1}")
+	@Value("#{sandbox.getIntProperty() + 1}")
 	private String s1;
 	@Value("#{sandbox.stringProperty}")
 	private String s2;
-	@Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
+	@Value("#{sandbox.stringProperty?.toUpperCase()?:''}") // null-safe accessor (.map(String::toUpperCase).orElse("")
 	private String s3;
-	@Value("#{sandbox.childList.?[intProperty gt 15]}")
+	@Value("#{sandbox.childList.?[intProperty gt 15]}") // .filter()
 	private List<SpELSandbox> children;
-	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
+	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}") //.filter().map(Ceva::getIntProperty)
 	private List<Integer> childrenInts;
 	@Value("#{sandbox.randomToken()}")
 	private String randomToken;
@@ -80,18 +78,19 @@ class UsingSpells {
 	public void show() {
 		System.out.println("-------------SPEL-----------");
 		System.out.println(s1);
-//		System.out.println(s2);
-//		System.out.println(s3);
-//		System.out.println(children);
-//		System.out.println(childrenInts);
-//		System.out.println(randomToken);
-//		manualSpELPlay(sandbox);
+		System.out.println(s2);
+		System.out.println(s3);
+		System.out.println(children);
+		System.out.println(childrenInts);
+		System.out.println(randomToken);
+		manualSpELPlay(sandbox);
 		System.out.println("-------------END SPEL-----------");
 	}
 
 	public static void manualSpELPlay(Object root) {
 		ExpressionParser parser = new SpelExpressionParser();
-		Expression stringsOver20 = parser.parseExpression("stringProperty?.toUpperCase()?:'Ploua'");
+		Expression stringsOver20 = parser.parseExpression(
+				"stringProperty?.toUpperCase()?:'Ploua'");
 		System.out.println(stringsOver20.getValue(new StandardEvaluationContext(root)));
 	}
 
