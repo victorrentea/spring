@@ -24,7 +24,8 @@ public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primeszzzZZ")
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
@@ -43,7 +44,8 @@ public class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
+	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
@@ -60,5 +62,10 @@ public class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@CacheEvict("folders")
+	public void evictFolderCache(File file) {
+		// Empty method. Do not touch. Let the magic happen!
 	}
 }

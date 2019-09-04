@@ -34,16 +34,22 @@ public class ProxyApp implements CommandLineRunner {
 
 	public void run(String... args) {
 		log.debug("\n");
+		log.debug("ops.class = " + ops.getClass());
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		log.debug("10000169 is prime ? ");
+		log.debug("Got: " + ops.isPrime(43) + "\n");
+		log.debug("Got: " + ops.isPrime(42) + "\n");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
-		
+
 		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.debug("Daca se schimba aici un fis");
+		ops.evictFolderCache(new File("."));
+
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
