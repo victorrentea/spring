@@ -47,9 +47,9 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 					.parseClaimsJws(encodedJwt)
 					.getBody();
 
-			AuthnContext authnContext = getAuthnContext(claims);
-			log.info("Attempting login with userid={} and level={}", claims.getSubject(), authnContext);
-			return new UsernameContextPrincipal(claims.getSubject(), authnContext);
+			String countryId = (String) claims.get("countryId");
+			log.info("Attempting login with userid={} and country={}", claims.getSubject(), countryId);
+			return new UsernameContextPrincipal(claims.getSubject(), AuthnContext.LOW);
 		} catch (UnsupportedJwtException jwtException) {
 			throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
 		}

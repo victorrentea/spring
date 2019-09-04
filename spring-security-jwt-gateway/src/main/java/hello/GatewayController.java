@@ -39,12 +39,11 @@ public class GatewayController {
 
         log.debug("Sending user id {}", user);
         AuthnContext authnContext = AuthnContext.valueOf(level);
+
+
         String jwtToken = Jwts.builder()
                 .setSubject(user)
-                .claim("AuthnContext", authnContext.name())
-                .claim("AuthnContext2", authnContext.name())
-                .claim("AuthnContext3", authnContext.name())
-                .claim("AuthnContext4", authnContext.name())
+                .claim("countryId", "RO")
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
         HttpHeaders headers = new HttpHeaders();
