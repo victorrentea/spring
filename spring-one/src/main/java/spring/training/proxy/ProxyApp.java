@@ -1,17 +1,25 @@
 package spring.training.proxy;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
-@EnableCaching 
+@EnableCaching
 @SpringBootApplication
 @Slf4j
 public class ProxyApp implements CommandLineRunner {
@@ -31,8 +39,11 @@ public class ProxyApp implements CommandLineRunner {
 	// Very precious things that I want to keep agnostic to technical details
 	@Autowired
 	private ExpensiveOps ops;
+	@Autowired
+	ClasaAltuia alta;
 
 	public void run(String... args) {
+		alta.m();
 		log.debug("\n");
 		log.debug("ops.class = " + ops.getClass());
  		log.debug("---- CPU Intensive ~ memoization?");
@@ -41,6 +52,7 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(43) + "\n");
 		log.debug("Got: " + ops.isPrime(42) + "\n");
+		log.debug("Dupa asta, tre un log");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 
 		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
@@ -55,3 +67,30 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Service
+class ClasaAltuia {
+	public void m() {
+		System.out.println("Ceva");
+	}
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedMethod {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+
+@Component
+@Aspect
+@Slf4j
+class MyLoggingAspect {
+	//private static final Logger log = LoggerFactory.getLogger(MyLoggingAspect.class);
+//	@Around("execution(* spring.training.proxy.*.*(..))")
+//	@Around("execution(* spring..*.*(..))") // orice subpachet
+//	@Around("execution(* *(..)) && @annotation(spring.training.proxy.LoggedMethod)")
+	@Around("execution(* *(..)) && @within(spring.training.proxy.LoggedClass)")
+	public Object logAround(ProceedingJoinPoint point) throws Throwable {
+		log.debug("AOP: Calling method {} with param {}",
+				point.getSignature().getName(),
+				Arrays.toString(point.getArgs()));
+		return point.proceed(); //lasa apelul sa ajunga la metoda reala
+	}
+}
