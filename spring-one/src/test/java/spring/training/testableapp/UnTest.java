@@ -1,6 +1,7 @@
 package spring.training.testableapp;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 //@ActiveProfiles("orderRepoMocked") // poti activa selectiv diverse implementari 'test doubles' dupa nevoie
 //@TestPropertySource({"a=override","c=override"})
 public class UnTest {
@@ -34,7 +36,7 @@ public class UnTest {
 
     @Test
     public void dummy() {
-        System.out.println("Test1");
+        log.debug("Test1XX " + controller.getClass());
         Order order = new Order();
         order.setCreationDate(now());
         when(repo.findById(anyLong())).thenReturn(order);
