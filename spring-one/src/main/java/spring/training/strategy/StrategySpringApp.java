@@ -20,6 +20,9 @@ public class StrategySpringApp implements CommandLineRunner {
 
 
 	@Autowired
+    ConfigProvider configProvider;
+
+	@Autowired
 	private CustomsService service;
 	// TODO [1] Break CustomsService logic into Strategies
 	// TODO [2] Convert it to Chain Of Responsibility
@@ -30,6 +33,7 @@ public class StrategySpringApp implements CommandLineRunner {
 		System.out.println("Tax for (CH,100,100) = " + service.computeCustomsTax("CH", 100, 100));
 		System.out.println("Tax for (UK,100,100) = " + service.computeCustomsTax("UK", 100, 100));
 		System.out.println("Tax for (AUS,100,100) = " + service.computeCustomsTax("AUS", 100, 100));
+        System.out.println(configProvider);
 	}
 }
 @Service
