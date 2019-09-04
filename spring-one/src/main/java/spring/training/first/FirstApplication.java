@@ -8,6 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
 // [2] Qualifier
@@ -26,14 +30,22 @@ public class FirstApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-
+//Field f;
+//f.setAccessible(true);
 	    a.m();
 
 	}
 }
 
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {
+
+}
+
 //@Component
-@Service
+//@Service
+@Facade
 //@Repository
 //@Controller
 //@RestController
@@ -44,7 +56,9 @@ class A {
 	private final C c;
 	private DataSource ds;
 
-	public A(B b, C c) {
+
+	private A(B b, C c) {
+		System.out.println("Oare chiar asa e");
 		this.b = b;
 		this.c = c;
 	}
