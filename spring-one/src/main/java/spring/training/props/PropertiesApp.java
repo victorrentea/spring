@@ -16,9 +16,6 @@ public class PropertiesApp implements CommandLineRunner {
         SpringApplication.run(PropertiesApp.class);
     }
 
-    @Autowired
-    private StructuredProps props;
-
     @Bean
     public ManuallyConfigurable manuallyConfigurable() {
         return new ManuallyConfigurable("12345678");
@@ -26,7 +23,7 @@ public class PropertiesApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("Structured Props: " + props);
+        System.out.println("Structured Props: ");
     }
 }
 
