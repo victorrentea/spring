@@ -1,9 +1,12 @@
 package spring.training.events;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,22 +35,29 @@ public class EventsApp implements CommandLineRunner {
 	// TODO [5] queues: retries, chaining, topics
 	// TODO [opt] Transaction-scoped events
 
-	@Autowired
-	private StockManagementService stockManagementService;
-
-	@Autowired
-	private InvoiceService invoiceService;
 
 	public void run(String... args) throws Exception {
 		placeOrder();
 	}
 
+
+	@Autowired
+	private InvoiceService invoiceService;
+
+	@Autowired
+	private ApplicationEventPublisher publisher;
+
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
-		stockManagementService.process(orderId);
+
+		publisher.publishEvent(new OrderPlacedEvent(orderId));
 		invoiceService.sendInvoice(orderId);
 	}
+}
+@Data
+class OrderPlacedEvent {
+	private final long orderId;
 }
 
 @Slf4j
@@ -55,7 +65,9 @@ public class EventsApp implements CommandLineRunner {
 class StockManagementService {
 	private int stock = 3; // silly implem :D
 
-	public void process(long orderId) {
+	@EventListener
+	public void process(OrderPlacedEvent event) {
+		long orderId = event.getOrderId();
 		log.info("Checking stock for products in order " + orderId);
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
