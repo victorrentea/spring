@@ -15,7 +15,7 @@ public class TransactionPlay {
     @Autowired
     AltServiciu altServiciu;
 
-    @Transactional (noRollbackFor = RuntimeException.class)
+    @Transactional
     public void transactedMethod() throws Exception {
         em.persist(new ErrorLog("Kernel Panic"));
         try {
@@ -31,12 +31,12 @@ public class TransactionPlay {
 class AltServiciu {
     @Autowired
     private EntityManager em;
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW,readOnly = true)
     public void persistError(String message) {
         em.persist(new ErrorLog("ERoare pe bune :"  + message));
     }
 //    @Transactional(propagation = Propagation.MANDATORY)
-    @Transactional(noRollbackFor = RuntimeException.class)
+    @Transactional
     public void m() {
         em.persist(new ErrorLog("Kernel Panic #2"));
 //        new RuntimeException().printStackTrace();
