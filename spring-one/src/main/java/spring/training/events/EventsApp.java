@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -59,11 +58,10 @@ class OrderPlacedEvent {
 @Slf4j
 @Service
 class StockManagementService {
-	private int stock = 0; // silly implem :D
+	private int stock = 3; // silly implem :D
 
-	@Order(1)
 	@EventListener
-	public void process(OrderPlacedEvent event) {
+	public StockAvailableForOrderEvent process(OrderPlacedEvent event) {
 		long orderId = event.getOrderId();
 		log.info("Checking stock for products in order " + orderId);
 		if (stock == 0) {
@@ -71,16 +69,19 @@ class StockManagementService {
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
+		return new StockAvailableForOrderEvent(orderId);
 	}
-
+}
+@Data
+class StockAvailableForOrderEvent {
+	private final long orderId;
 }
 
 @Slf4j
 @Service
 class InvoiceService {
-	@Order(2)
 	@EventListener
-	public void sendInvoice(OrderPlacedEvent event) {
+	public void sendInvoice(StockAvailableForOrderEvent event) {
 		long orderId = event.getOrderId();
 		log.info("Generating invoice for order " + orderId);
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
