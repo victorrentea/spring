@@ -33,6 +33,7 @@ public class DeepController {
 }
 @Component
 class DeepService {
+
     @PreAuthorize("@countryAccessValidator.canAccessCountry(#countryId) && hasRole('ADMIN')")
     public String securedMethod(long countryId) {
 //        if (useru curent are drpet pe countrcyId)
