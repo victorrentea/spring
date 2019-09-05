@@ -11,24 +11,27 @@ import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.EventListener;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 //@EnableBinding({})
+@EnableAsync
 @SpringBootApplication
 public class EventsApp implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(EventsApp.class, args);
 	}
 	
-	@Bean
-    public ApplicationEventMulticaster applicationEventMulticaster() {
-        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-        return eventMulticaster;
-    }
+//	@Bean
+//    public ApplicationEventMulticaster applicationEventMulticaster() {
+//        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+//        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+//        return eventMulticaster;
+//    }
 
 
 	// TODO [1] Decouple using @EventListener and ApplicationEventPublisher
@@ -67,6 +70,7 @@ class StockManagementService {
 	private int stock = 0; // silly implem :D
 
 	// @Transactional
+	@Async
 	@EventListener
 	public StockAvailableForOrderEvent process(OrderPlacedEvent event) {
 		long orderId = event.getOrderId();
@@ -88,6 +92,7 @@ class StockAvailableForOrderEvent {
 @Service
 class InvoiceService {
 	// @Transactional
+	@Async
 	@EventListener
 	public void sendInvoice(StockAvailableForOrderEvent event) {
 		long orderId = event.getOrderId();
