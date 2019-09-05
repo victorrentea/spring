@@ -2,7 +2,6 @@ package victor.training.jpa.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.jpa.app.domain.entity.ErrorLog;
 
@@ -18,8 +17,11 @@ public class TransactionPlay {
     @Transactional
     public void transactedMethod() throws Exception {
         em.persist(new ErrorLog("Kernel Panic"));
-        altServiciu.m();
-//        throw new RuntimeException(":)");
+        try {
+            altServiciu.m();
+        } catch (Exception e) {
+            // :) shaworma
+        }
     }
 }
 
@@ -27,17 +29,11 @@ public class TransactionPlay {
 class AltServiciu {
     @Autowired
     private EntityManager em;
-    @Transactional(propagation = Propagation.MANDATORY)
+//    @Transactional(propagation = Propagation.MANDATORY)
     public void m() {
-        m2();
-
-    }
-
-    private void m2() {
-        m3();
-    }
-
-    private void m3() {
         em.persist(new ErrorLog("Kernel Panic #2"));
+        throw new RuntimeException(":)");
+
     }
+
 }

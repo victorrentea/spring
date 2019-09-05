@@ -40,7 +40,7 @@ public class JpaApplication {
 		// aici NU am trazactie !!!
 		System.out.println(" ========= FIRST TRANSACTION ========== ");
         transactionPlay.transactedMethod();
-		altServiciu.m();
+//		altServiciu.m();
 		System.out.println(" ========= SECOND TRANSACTION ========== ");
 //		playground.secondTransaction();
 		System.out.println(" ========= END ========== ");
