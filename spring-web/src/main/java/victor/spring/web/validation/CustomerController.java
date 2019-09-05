@@ -28,28 +28,8 @@ public class CustomerController {
         return message;
     }
 
-    @Autowired
-    private DeepService deepService;
-
-    @GetMapping("deep")
-    public String deep() {
-        return deepService.securedMethod(1L);
-    }
 }
 
-@Component
-class DeepService {
 
-    @PreAuthorize("hasRole('USER') && @countryProtector.allow(principal)")
-    public String securedMethod(long countryId) {
-        return "a";
-    }
-}
 
-@Component
-class CountryProtector {
-    public boolean allow(User principal) {
-        System.out.println("Validate: " + principal);
-        return true;
-    }
-}
+
