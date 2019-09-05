@@ -33,10 +33,17 @@ public class Playground {
 //                .setParameter("name", "Victor")
 //                .getResultList();
 //        System.out.println(teachers);
-//        Teacher v = repo.findById(1L).get();
-//        Teacher v = repo.findByName("Victor").get();
-        Teacher v = repo.getByNameAndGrade("VictorX", Grade.ASSISTENT);
-        System.out.println(v);
+        System.out.println(repo.findById(1L).get());
+        System.out.println(repo.findByName("Victor").get());
+        System.out.println(repo.findForGrant("Victor", Grade.ASSISTENT));
+        System.out.println(repo.getByDetailsCv("A pimped CV"));
+
+
+    }
+
+//    @NonNull
+    public Integer altaMetoda() {
+        return null;
     }
 
 }
@@ -46,8 +53,9 @@ interface SomeRepo extends JpaRepository<Teacher, Long> {
 
     Optional<Teacher> findByName(String name);
     Teacher getByNameAndGrade(String name, Grade grade);
+    Teacher getByDetailsCv(String cv);
 
     @Query("FROM Teacher t WHERE t.name=?1 and t.grade=?2")
-    Optional<Teacher> findForGrant(String name, Grade grade);
+    Teacher findForGrant(String name, Grade grade);
 
 }

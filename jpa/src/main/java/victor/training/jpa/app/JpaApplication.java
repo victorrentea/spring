@@ -34,6 +34,7 @@ public class JpaApplication {
 		System.out.println("Application started. Running playground code...");
 		dummyDataCreator.persistDummyData();
 		System.out.println(" ========= FIRST TRANSACTION ========== ");
+		System.out.println("int: "  + playground.altaMetoda());
 		playground.firstTransaction();
 		System.out.println(" ========= SECOND TRANSACTION ========== ");
 //		playground.secondTransaction();
