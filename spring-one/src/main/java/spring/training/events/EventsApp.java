@@ -5,20 +5,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.EventListener;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.integration.annotation.MessageEndpoint;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Random;
+
 @Slf4j
-//@EnableBinding({})
+@EnableBinding({Queues.class})
 @EnableAsync
 @SpringBootApplication
 public class EventsApp implements CommandLineRunner {
@@ -49,14 +56,15 @@ public class EventsApp implements CommandLineRunner {
 
 
 	@Autowired
-	private ApplicationEventPublisher publisher;
+	private Queues queues;
 
 	// @Transactional
 	private void placeOrder() {
-		log.debug(">> PERSIST new Order");
-		long orderId = 13L;
+		long orderId = new Random().nextInt();
+		log.debug(">> PERSIST new Order id " + orderId);
 
-		publisher.publishEvent(new OrderPlacedEvent(orderId));
+		Message<Long> message = MessageBuilder.withPayload(orderId).build();
+//		queues.q1out().send(message);
 		log.debug("Finished handling event");
 	}
 }
@@ -65,22 +73,21 @@ class OrderPlacedEvent {
 	private final long orderId;
 }
 @Slf4j
-@Service
+@MessageEndpoint
 class StockManagementService {
-	private int stock = 0; // silly implem :D
+	private int stock = 3; // silly implem :D
 
 	// @Transactional
-	@Async
-	@EventListener
-	public StockAvailableForOrderEvent process(OrderPlacedEvent event) {
-		long orderId = event.getOrderId();
+	@ServiceActivator(inputChannel = Queues.Q1_IN)
+	public void process(Long orderId) {
+//		long orderId = event.getOrderId();
 		log.info("Checking stock for products in order " + orderId);
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
-		return new StockAvailableForOrderEvent(orderId);
+//		return new StockAvailableForOrderEvent(orderId);
 	}
 }
 @Data
