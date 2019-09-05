@@ -26,16 +26,19 @@ public class JpaApplication {
 	private Playground playground;
 
 	@Autowired
-	private PlatformTransactionManager txm;
+    private PlatformTransactionManager txm;
+	@Autowired
+    private TransactionPlay transactionPlay;
 
-	@EventListener
-	public void onApplicationEvent(ContextRefreshedEvent event) {
+    @EventListener
+	public void onApplicationEvent(ContextRefreshedEvent event) throws Exception {
 		System.out.println(txm.getClass());
 		System.out.println("Application started. Running playground code...");
 		dummyDataCreator.persistDummyData();
-		System.out.println(" ========= FIRST TRANSACTION ========== ");
 		System.out.println("int: "  + playground.altaMetoda());
 		playground.firstTransaction();
+		System.out.println(" ========= FIRST TRANSACTION ========== ");
+        transactionPlay.transactedMethod();
 		System.out.println(" ========= SECOND TRANSACTION ========== ");
 //		playground.secondTransaction();
 		System.out.println(" ========= END ========== ");
