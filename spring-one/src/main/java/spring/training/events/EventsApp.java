@@ -6,7 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.EventListener;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +23,12 @@ public class EventsApp implements CommandLineRunner {
 		SpringApplication.run(EventsApp.class, args);
 	}
 	
-//	@Bean
-//    public ApplicationEventMulticaster applicationEventMulticaster() {
-//        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-//        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-//        return eventMulticaster;
-//    }
+	@Bean
+    public ApplicationEventMulticaster applicationEventMulticaster() {
+        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        return eventMulticaster;
+    }
 
 
 	// TODO [1] Decouple using @EventListener and ApplicationEventPublisher
@@ -44,11 +48,13 @@ public class EventsApp implements CommandLineRunner {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
+	// @Transactional
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
 
 		publisher.publishEvent(new OrderPlacedEvent(orderId));
+		log.debug("Finished handling event");
 	}
 }
 @Data
@@ -58,8 +64,9 @@ class OrderPlacedEvent {
 @Slf4j
 @Service
 class StockManagementService {
-	private int stock = 3; // silly implem :D
+	private int stock = 0; // silly implem :D
 
+	// @Transactional
 	@EventListener
 	public StockAvailableForOrderEvent process(OrderPlacedEvent event) {
 		long orderId = event.getOrderId();
@@ -80,6 +87,7 @@ class StockAvailableForOrderEvent {
 @Slf4j
 @Service
 class InvoiceService {
+	// @Transactional
 	@EventListener
 	public void sendInvoice(StockAvailableForOrderEvent event) {
 		long orderId = event.getOrderId();
