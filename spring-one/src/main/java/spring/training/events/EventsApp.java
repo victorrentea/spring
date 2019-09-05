@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -55,12 +56,12 @@ public class EventsApp implements CommandLineRunner {
 class OrderPlacedEvent {
 	private final long orderId;
 }
-
 @Slf4j
 @Service
 class StockManagementService {
-	private int stock = 3; // silly implem :D
+	private int stock = 0; // silly implem :D
 
+	@Order(1)
 	@EventListener
 	public void process(OrderPlacedEvent event) {
 		long orderId = event.getOrderId();
@@ -71,11 +72,13 @@ class StockManagementService {
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
 	}
+
 }
 
 @Slf4j
 @Service
 class InvoiceService {
+	@Order(2)
 	@EventListener
 	public void sendInvoice(OrderPlacedEvent event) {
 		long orderId = event.getOrderId();
