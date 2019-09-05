@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="H2 pe local" uuid="b369ceb6-58fb-49d5-8f9f-0e805fa254e4">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:tcp://localhost:9092/nio:~/source/db/database/db;AUTO_SERVER=TRUE</jdbc-url>
+    </data-source>
+  </component>
+</project>
