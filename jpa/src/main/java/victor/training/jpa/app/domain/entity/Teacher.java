@@ -51,9 +51,9 @@ public class Teacher {
 	@Enumerated(EnumType.STRING)
 	private DayOfWeek counselingDay;
 	
-	private int counselingStartHour;
+	private Integer counselingStartHour;
 	
-	private int counselingDurationInHours;
+	private Integer counselingDurationInHours;
 	
 	private String counselingRoomId;
 	
@@ -129,19 +129,19 @@ public class Teacher {
 		this.counselingDay = counselingDay;
 	}
 
-	public int getCounselingStartHour() {
+	public Integer getCounselingStartHour() {
 		return counselingStartHour;
 	}
 
-	public void setCounselingStartHour(int counselingStartHour) {
+	public void setCounselingStartHour(Integer counselingStartHour) {
 		this.counselingStartHour = counselingStartHour;
 	}
 
-	public int getCounselingDurationInHours() {
+	public Integer getCounselingDurationInHours() {
 		return counselingDurationInHours;
 	}
 
-	public void setCounselingDurationInHours(int counselingDurationInHours) {
+	public void setCounselingDurationInHours(Integer counselingDurationInHours) {
 		this.counselingDurationInHours = counselingDurationInHours;
 	}
 
