@@ -1,6 +1,8 @@
-package hello;
+package victor.spring.web;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 @Slf4j
 public class MyController {
+
+
+
+
+
+
     public String transferMoney(String accountNo, String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
