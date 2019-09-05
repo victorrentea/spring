@@ -12,6 +12,7 @@ public class ErrorLog {
 	private Long id;
 	
 	private String message;
+	private int  severity;
 
 	public ErrorLog() {
 	}

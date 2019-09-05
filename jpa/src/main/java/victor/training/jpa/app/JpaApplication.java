@@ -37,12 +37,16 @@ public class JpaApplication {
 		dummyDataCreator.persistDummyData();
 		System.out.println("int: "  + playground.altaMetoda());
 		playground.firstTransaction();
+		// aici NU am trazactie !!!
 		System.out.println(" ========= FIRST TRANSACTION ========== ");
         transactionPlay.transactedMethod();
+		altServiciu.m();
 		System.out.println(" ========= SECOND TRANSACTION ========== ");
 //		playground.secondTransaction();
 		System.out.println(" ========= END ========== ");
 	}
+	@Autowired
+	AltServiciu altServiciu;
 	
 
 //	@Bean
