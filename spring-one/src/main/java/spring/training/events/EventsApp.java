@@ -42,9 +42,6 @@ public class EventsApp implements CommandLineRunner {
 
 
 	@Autowired
-	private InvoiceService invoiceService;
-
-	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	private void placeOrder() {
@@ -52,7 +49,6 @@ public class EventsApp implements CommandLineRunner {
 		long orderId = 13L;
 
 		publisher.publishEvent(new OrderPlacedEvent(orderId));
-		invoiceService.sendInvoice(orderId);
 	}
 }
 @Data
@@ -80,7 +76,9 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-	public void sendInvoice(long orderId) {
+	@EventListener
+	public void sendInvoice(OrderPlacedEvent event) {
+		long orderId = event.getOrderId();
 		log.info("Generating invoice for order " + orderId);
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
