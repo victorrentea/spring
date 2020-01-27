@@ -29,11 +29,10 @@ public class GatewayController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    // TODO per-endpoint CORS policy via @CrossOrigin
     @RequestMapping("/resource")
     public String update() {
-        return "Updated at " + LocalDateTime.now().toString() + "<br>(if no request is blocked add these to windows\\system32\\drivers\\etc\\hosts: 127.0.0.1 racheta\n" +
-                "127.0.0.1 marte";
+        return "Updated at " + LocalDateTime.now().toString();
 
         // XXX if no request is blocked add these to windows\system32\drivers\etc\hosts:
         // 127.0.0.1 racheta
