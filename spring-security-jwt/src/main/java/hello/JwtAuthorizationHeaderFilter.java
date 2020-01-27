@@ -32,11 +32,11 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
 		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		System.out.println("Header: " + authenticationHeader);
-		String jwtHeader = authenticationHeader.substring("Bearer ".length());
-
-		if (StringUtils.isBlank(jwtHeader)) {
+		if (StringUtils.isBlank(authenticationHeader)) {
 			return null;
 		}
+		String jwtHeader = authenticationHeader.substring("Bearer ".length());
+
 
         try {
 			Claims claims = Jwts.parser()

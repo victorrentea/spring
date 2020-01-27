@@ -16,5 +16,10 @@ public class PeacefulController {
     public String rest() {
         return "Peace on you " + repo.save();
     }
+
+    @GetMapping("unsecured")
+    public String unsecured() {
+        return "Unsecured (public) data";
+    }
 }
 
