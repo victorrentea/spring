@@ -1,0 +1,7 @@
+keytool -genkeypair -keysize 2048 -keyalg RSA -alias backend -keystore dest.keystore
+
+keytool -list -keystore dest.keystore
+
+keytool -exportcert -keystore dest.keystore -alias backend -storepass parola -file out.cer -rfc
+
+keytool -import -alias gateway -file gateway.cer -keystore backend.jks -storepass parola

@@ -12,3 +12,5 @@ server:
     key-alias: spring-backend
     key-password: parola
     key-store-type: JKS
+
+
