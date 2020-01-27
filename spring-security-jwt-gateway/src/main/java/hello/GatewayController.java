@@ -30,7 +30,7 @@ public class GatewayController {
     @Autowired
     private RestTemplate restTemplate;
 
-    // in the authorization server (e.g. a proxy?)
+    // the authorization server (e.g. a proxy, ZUUL?) does:
     @GetMapping("/")
     public String home(
             @RequestParam(defaultValue = "test") String user,
@@ -46,17 +46,17 @@ public class GatewayController {
                 .claim("countryId", "RO")
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+        log.debug("JWT: " + jwtToken);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwtToken);
 //        headers.set(JWT_HEADER_NAME, jwtToken);
-        log.debug("JWT: " + jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
                 new URI("http://localhost:8081/rest"));
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
-
         return "Got: " + responseEntity.getBody() + " <br>Try adding ?user=<uid>";
-        //some idea for propagating it over thread :https://stackoverflow.com/questions/46729203/propagate-http-header-jwt-token-over-services-using-spring-rest-template
+        // Want to magically propagate JWT to subsequent REST calls it over thread :https://stackoverflow.com/questions/46729203/propagate-http-header-jwt-token-over-services-using-spring-rest-template
     }
 }

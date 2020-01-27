@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -29,22 +30,18 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-
-//		new HttpRequest(request);
 		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		System.out.println("Header: " + authenticationHeader);
 		String jwtHeader = authenticationHeader.substring("Bearer ".length());
 
-		if (jwtHeader == null) {
+		if (StringUtils.isBlank(jwtHeader)) {
 			return null;
 		}
 
-		String encodedJwt = jwtHeader;
-
-		try {
+        try {
 			Claims claims = Jwts.parser()
 					.setSigningKey(DatatypeConverter.parseBase64Binary(backendSecret))
-					.parseClaimsJws(encodedJwt)
+					.parseClaimsJws(jwtHeader)
 					.getBody();
 
 			String countryId = (String) claims.get("countryId");
@@ -53,14 +50,6 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 		} catch (UnsupportedJwtException jwtException) {
 			throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
 		}
-	}
-
-	private AuthnContext getAuthnContext(Claims claims) {
-		String contextStr = claims.get("AuthnContext4", String.class);
-		if (contextStr == null) {
-			return null;
-		}
-		return AuthnContext.valueOf(contextStr);
 	}
 
 	@Override
