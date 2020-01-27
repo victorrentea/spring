@@ -2,6 +2,11 @@ keytool -genkeypair -keysize 2048 -keyalg RSA -alias backend -keystore dest.keys
 
 keytool -list -keystore dest.keystore
 
+#export certificat public
 keytool -exportcert -keystore dest.keystore -alias backend -storepass parola -file out.cer -rfc
 
+#trust the other
 keytool -import -alias gateway -file gateway.cer -keystore backend.jks -storepass parola
+
+#Importabil in browser:
+keytool -importkeystore -srckeystore gateway.jks -destkeystore gateway.p12 -srcstoretype JKS -deststoretype PKCS12 -srcstorepass parola -deststorepass parola -srcalias gateway -destalias gateway -srckeypass parola -destkeypass parola -noprompt

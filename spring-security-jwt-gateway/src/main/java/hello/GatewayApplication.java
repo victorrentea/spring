@@ -28,34 +28,36 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            KeyStore keyStore = KeyStore.getInstance("jks");
-            try (InputStream inputStream = new ClassPathResource("gateway.jks").getInputStream()) {
-                keyStore.load(inputStream, "parola".toCharArray());
-            }
-
-            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder()
-                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                    .loadKeyMaterial(keyStore, "parola".toCharArray())
-                    .build(),
-                    NoopHostnameVerifier.INSTANCE);
-
-            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
-                    .setMaxConnTotal(5)
-                    .setMaxConnPerRoute(5)
-                    .build();
-
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-            requestFactory.setReadTimeout(10_000);
-            requestFactory.setConnectTimeout(10_000);
-            restTemplate.setRequestFactory(requestFactory);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not create RestTemplate", e);
-        }
-
+//        configure2SSL(restTemplate);
         return restTemplate;
     }
+
+//    private void configure2SSL(RestTemplate restTemplate) {
+//        try {
+//            KeyStore keyStore = KeyStore.getInstance("jks");
+//            try (InputStream inputStream = new ClassPathResource("gateway.jks").getInputStream()) {
+//                keyStore.load(inputStream, "parola".toCharArray());
+//            }
+//
+//            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder()
+//                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+//                    .loadKeyMaterial(keyStore, "parola".toCharArray()) // present certificate to server
+//                    .build(),
+//                    NoopHostnameVerifier.INSTANCE);
+//
+//            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
+//                    .setMaxConnTotal(5)
+//                    .setMaxConnPerRoute(5)
+//                    .build();
+//
+//            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+//            requestFactory.setReadTimeout(10_000);
+//            requestFactory.setConnectTimeout(10_000);
+//            restTemplate.setRequestFactory(requestFactory);
+//        } catch (Exception e) {
+//            throw new RuntimeException("Could not create RestTemplate", e);
+//        }
+//    }
 
 
     public static void main(String[] args) throws Throwable {
