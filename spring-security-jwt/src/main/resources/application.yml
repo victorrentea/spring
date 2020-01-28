@@ -5,16 +5,5 @@ jwt.secret: secretMare
 
 server:
   port: 8081
-  ssl:
-    enabled: true
-    key-store: backend.jks
-    key-store-password: parola
-    key-alias: spring-backend
-    key-password: parola
-    key-store-type: JKS
-    client-auth: need
-    trust-store: backend.jks
-    trust-store-password: parola
-    trust-store-type: JKS
 
 
