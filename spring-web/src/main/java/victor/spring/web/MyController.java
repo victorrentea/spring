@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
+@RestController
 public class MyController {
+    @GetMapping("transfer")
     public String transferMoney(String accountNo, String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
