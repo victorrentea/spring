@@ -16,11 +16,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .mvcMatchers("pe-pagina").permitAll()
+                .mvcMatchers("sigur").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and()
+            .and()
                 .csrf().disable()
                 .formLogin().permitAll()
-                .and()
+            .and()
                 .logout()
                 ;
     }
@@ -30,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
                 .username("test")
-                .password("test=")
+                .password("test")
                 .roles("USER")
                 .build();
         UserDetails adminDetails = User.withDefaultPasswordEncoder()
