@@ -29,7 +29,8 @@ public class GatewayController {
     @Autowired
     private RestTemplate restTemplate;
 
-    // TODO per-endpoint CORS policy via @CrossOrigin
+    // TODO per-endpoint CORS policy via
+    //  @CrossOrigin
     @RequestMapping("/resource")
     public String update() {
         return "Updated at " + LocalDateTime.now().toString();
