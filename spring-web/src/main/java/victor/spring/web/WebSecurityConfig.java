@@ -18,9 +18,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
+                .csrf().disable()
                 .formLogin().permitAll()
                 .and()
-                .userDetailsService(userDetailsService());
+                .logout()
+                ;
     }
 
     @SuppressWarnings("deprecation")
@@ -28,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
                 .username("test")
-                .password("test")
+                .password("test=")
                 .roles("USER")
                 .build();
         UserDetails adminDetails = User.withDefaultPasswordEncoder()

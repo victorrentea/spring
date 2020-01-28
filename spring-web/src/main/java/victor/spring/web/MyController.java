@@ -15,11 +15,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+
 @Slf4j
 @RestController
 public class MyController {
-    @GetMapping("transfer")
-    public String transferMoney(String accountNo, String amount) {
+    @PostMapping("transfer")
+    public String transferMoney(@RequestParam String accountNo, @RequestParam  String amount) {
         log.debug("Transferring EUR {} to account {}", amount, accountNo);
         return "CAT Image!";
     }
