@@ -11,5 +11,8 @@ server:
     key-password: parola
     key-alias: backend
     key-store-password: parola
-
-
+    enabled: true
+    client-auth: need
+    trust-store: C:\workspace\spring\backend.jks
+    trust-store-type: JKS
+    trust-store-password: parola
