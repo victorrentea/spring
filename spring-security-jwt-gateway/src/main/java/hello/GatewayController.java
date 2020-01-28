@@ -30,7 +30,7 @@ public class GatewayController {
     private RestTemplate restTemplate;
 
     // TODO per-endpoint CORS policy via
-    //  @CrossOrigin
+//  @CrossOrigin("http://localhost:8080")
     @RequestMapping("/resource")
     public String update() {
         return "Updated at " + LocalDateTime.now().toString();
