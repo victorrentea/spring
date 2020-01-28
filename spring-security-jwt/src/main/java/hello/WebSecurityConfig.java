@@ -26,8 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("unsecured").permitAll()
                     .anyRequest().authenticated()
                     .and()
-                    // TODO add auth provider
-                    // TODO add filter next to basic
+                    .authenticationProvider(preAuthenticatedProvider())
+                    .addFilterBefore(jwtFilter(),BasicAuthenticationFilter.class)
                     .logout().permitAll();
 
     }

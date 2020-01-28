@@ -5,5 +5,11 @@ jwt.secret: secretMare
 
 server:
   port: 8081
+  ssl:
+    key-store: C:\workspace\spring\backend.jks
+    key-store-type: JKS
+    key-password: parola
+    key-alias: backend
+    key-store-password: parola
 
 
