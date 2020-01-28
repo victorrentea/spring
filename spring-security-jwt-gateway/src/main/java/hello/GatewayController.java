@@ -65,7 +65,7 @@ public class GatewayController {
 //        headers.set(JWT_HEADER_NAME, jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("http://localhost:8081/rest"));
+                new URI("https://localhost:8081/rest"));
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
         return "Got: " + responseEntity.getBody() + " <br>Try adding ?user=<uid>";

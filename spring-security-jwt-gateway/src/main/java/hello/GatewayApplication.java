@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -37,7 +38,7 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
     private void configure2SSL(RestTemplate restTemplate) {
         try {
             KeyStore keyStore = KeyStore.getInstance("jks");
-            try (InputStream inputStream = new ClassPathResource("gateway.jks").getInputStream()) {
+            try (InputStream inputStream = new FileInputStream("C:\\workspace\\spring\\gateway.jks")) {
                 keyStore.load(inputStream, "parola".toCharArray());
             }
 
