@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import my.spring.playground.SpaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 	private final MessageSource messageSource;
+	@Value("${telefonul.lui.sefu}")
+	private String bossNumber;
+
 
 	@ExceptionHandler(value = Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -25,11 +29,12 @@ public class GlobalExceptionHandler {
 		log.error(exception.getMessage(), exception);
 
 		String messageKey = "error.GENERAL";
-		String message = messageSource.getMessage(messageKey, null, request.getLocale());
+		String message = messageSource.getMessage(
+				messageKey, new String[]{bossNumber}, request.getLocale());
 		// pseudo cod: luat prop din fisier
-
 		return message;
 	}
+
 	@ExceptionHandler(value = SpaException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String spaErrorHandler(HttpServletRequest request, SpaException exception) throws Exception {
