@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -63,11 +64,24 @@ class B {
 	private final C c;
 
 	public void g() {
-		System.out.println("Aici in beci");
+		System.out.println("Aici in beci vb cu " + c.getClass());
 	}
 }
+
+interface C {}
+
+
+// uneori
 @Service
-class C {}
+@Profile("!alta")
+class CDefault implements C {
+}
+// alteori
+@Service
+@Profile("alta")
+class CAlta implements C {
+
+}
 
 @Data
 class FullName {
