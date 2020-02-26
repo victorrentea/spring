@@ -56,6 +56,7 @@ public class AopApp implements CommandLineRunner {
 @Component
 @Aspect
 @Slf4j
+//@ORder se poate dar e rau
 class LoggingAspect {
 
 //    @Around("execution(* victor.training.springdemo.aop..*.*(..))") // package-name filtering
@@ -73,6 +74,7 @@ class LoggingAspect {
 class NumericWorks {
     @Cacheable("prime")
     public boolean isPrime(long n) {
+        new RuntimeException().printStackTrace();
         log.debug("Incep calculul");
         for (Long i = 2L; i <n; i++) {
             if (n % i == 0) {
