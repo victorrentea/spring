@@ -3,6 +3,9 @@ package victor.training.springdemo.aop;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.jooq.lambda.Unchecked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,13 +14,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
+import java.util.Arrays;
 
 @Slf4j
 @EnableCaching
@@ -44,9 +51,25 @@ public class AopApp implements CommandLineRunner {
         log.debug(works.hashAllFiles(new File("..")));
     }
 }
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+@Component
+@Aspect
+@Slf4j
+class LoggingAspect {
+
+//    @Around("execution(* victor.training.springdemo.aop..*.*(..))") // package-name filtering
+    @Around("execution(* *(..)) && @within(victor.training.springdemo.aop.LoggedClass)") // package-name filtering
+    public Object intercept(ProceedingJoinPoint point) throws Throwable {
+        log.debug("Calling {} cu param {}", point.getSignature().getName(),
+                Arrays.toString(point.getArgs()));
+        return point.proceed();
+    }
+}
 
 @Slf4j
 @Service
+@LoggedClass
 class NumericWorks {
     @Cacheable("prime")
     public boolean isPrime(long n) {
