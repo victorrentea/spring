@@ -79,7 +79,7 @@ class CSotia implements C {
 }
 // alteori
 @Service
-@Profile("alta")
+@Profile("prod") // NICIODATA nu defini profilul PROD
 class CAlta implements C {
 
 }
