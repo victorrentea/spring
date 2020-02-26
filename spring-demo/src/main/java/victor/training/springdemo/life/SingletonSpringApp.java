@@ -2,6 +2,8 @@ package victor.training.springdemo.life;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -54,10 +56,10 @@ public class SingletonSpringApp implements CommandLineRunner {
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final ApplicationContext context;
+	private final ObjectFactory<LabelService> labelServiceFactory;
 
 	public void export(Locale locale) {
-		LabelService labelService = context.getBean(LabelService.class);
+		LabelService labelService = labelServiceFactory.getObject();
 		labelService.load(locale);
 		log.debug("Running export in " + locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
