@@ -1,4 +1,4 @@
-package victor.training.springdemo;
+package victor.training.springdemo.first;
 
 import java.util.ArrayList;
 import java.util.List;

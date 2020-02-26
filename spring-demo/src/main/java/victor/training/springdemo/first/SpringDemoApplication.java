@@ -1,4 +1,4 @@
-package victor.training.springdemo;
+package victor.training.springdemo.first;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -7,11 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Retention;

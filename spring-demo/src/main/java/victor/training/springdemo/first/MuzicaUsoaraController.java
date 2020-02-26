@@ -1,4 +1,4 @@
-package victor.training.springdemo;
+package victor.training.springdemo.first;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

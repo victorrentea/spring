@@ -1,7 +1,6 @@
-package victor.training.springdemo;
+package victor.training.springdemo.first;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
