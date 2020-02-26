@@ -73,8 +73,9 @@ class LoggingAspect {
 @LoggedClass
 class NumericWorks {
     @Cacheable("prime")
+//    @Transactional
     public boolean isPrime(long n) {
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
         log.debug("Incep calculul");
         for (Long i = 2L; i <n; i++) {
             if (n % i == 0) {
@@ -84,10 +85,14 @@ class NumericWorks {
         return true;
     }
 
+    @Autowired
+    private NumericWorks totEuDarProxiat;
+
     @Cacheable("foldere")
     @SneakyThrows
     public String hashAllFiles(File folder) {
         log.debug("Computing hashAllFiles({})", folder);
+        System.out.println(totEuDarProxiat.isPrime(10_000_169));
         MessageDigest md = MessageDigest.getInstance("MD5");
         for (int i = 0; i < 3; i++) { // pretend there is much more work to do here
             Files.walk(folder.toPath())
