@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
@@ -52,13 +53,12 @@ public class SingletonSpringApp implements CommandLineRunner {
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final CountryRepo countryRepo;
+	private final LabelService labelService; // Injectia unui prototype intrun signleton e bad idea: se va creea o SINGURA instanta de prototype
 
 	public void export(Locale locale) {
-		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
 	}
 }
@@ -66,14 +66,14 @@ class OrderExporter  {
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-//	private final LabelService labelService;
-
 	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
+@Service
+@Scope("prototype")
 class LabelService {
 	private CountryRepo countryRepo;
 	public LabelService(CountryRepo countryRepo) {
