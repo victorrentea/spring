@@ -23,6 +23,10 @@ import my.spring.playground.repo.CourseRepository;
 import my.spring.playground.repo.TeacherRepository;
 import my.spring.playground.service.DummyData;
 
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("rest/courses")
 public class CoursesController {
 	
 	private final static Logger log = LoggerFactory.getLogger(CoursesController.class);
@@ -35,7 +39,8 @@ public class CoursesController {
 	
 	@Autowired
 	private TeacherRepository teacherRepo;
-	
+
+	@GetMapping
 	public List<CourseDto> getAllCourses() {
 		List<CourseDto> dtos = new ArrayList<CourseDto>();
 		for (Course course : courseRepo.findAll()) {
@@ -44,26 +49,32 @@ public class CoursesController {
 		return dtos;
 	}
 
-	public CourseDto getCourseById(Long id) { 
+	@GetMapping("{id}")
+	public CourseDto getCourseById(@PathVariable Long id) {
 		return mapToDto(courseRepo.getById(id));
 	}
-	
-	public void updateCourse(Long id, CourseDto dto) throws ParseException {
+
+	@PutMapping("{id}")
+	public void updateCourse(@PathVariable Long id, @RequestBody CourseDto dto) throws ParseException {
 		if (courseRepo.getByName(dto.name) != null &&  !courseRepo.getByName(dto.name).getId().equals(id)) {
 			throw new IllegalArgumentException("Another course with that name already exists");
 		}
 		Course course = courseRepo.getById(id);
 		course.setName(dto.name);
 		course.setDescription(dto.description);
-		course.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		format.setLenient(false);
+		course.setStartDate(format.parse(dto.startDate));
 		course.setTeacher(teacherRepo.getById(dto.teacherId));
 	}
-	
-	public void deleteCourseById(Long id) { 
+
+	@DeleteMapping("{id}")
+	public void deleteCourseById(@PathVariable Long id) {
 		courseRepo.deleteById(id);
 	}
-	
-	public void createCourse(CourseDto dto) throws ParseException { 
+
+	@PostMapping
+	public void createCourse(@RequestBody CourseDto dto) throws ParseException {
 		if (courseRepo.getByName(dto.name) != null) {
 			throw new IllegalArgumentException("Another course with that name already exists");
 		}

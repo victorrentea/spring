@@ -132,18 +132,13 @@ function openEditCourse(courseId) {
 		method: "GET",
 		success: function(data) {
 			//au venit datele
-			$.ajax(restEndpoint + "/courses/"+courseId, {
-				method: "GET",
-				success: function(data) {
-					$.ajax(restEndpoint + "/courses/"+courseId, {
-						method: "GET",
-						success: function(data) {
-							//au venit datele
-						}
-					});
-					//au venit datele
-				}
-			});
+			$("#editCourseId").val(data.id);
+			$("#editName").val(data.name);
+			$("#editDescription").val(data.description);
+			$("#editTeacher").val(data.teacherId);
+			$("#editStartDate").val(data.startDate);
+			$('#coursesMain').hide();
+			$('#courseEditDiv').show();
 		}
 	});
 }
