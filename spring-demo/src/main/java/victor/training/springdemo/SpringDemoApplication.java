@@ -1,9 +1,19 @@
 package victor.training.springdemo;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 @SpringBootApplication
 public class SpringDemoApplication implements CommandLineRunner {
@@ -11,41 +21,57 @@ public class SpringDemoApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringDemoApplication.class, args);
 	}
+//	@Autowired
+	private A a;
+
+	@Autowired
+	public void init(A a, B b) {
+		this.a = a;
+		System.out.println(b);
+	}
+	@Autowired
+	ApplicationContext ctx;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Hello Spring!");
-
-		new A(B.getInstance()).f();
+		A a = ctx.getBean(A.class);
+		a.f();
 	}
 }
 
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {
+}
+
+//@Service
+//@Component
+@Facade
 class A {
 	private final B b;
-	A(B b) {
+	public A(B b) {
 		this.b = b;
 	}
 	public void f() {
 		b.g();
 	}
 }
-//@Service
+@Service // o singura instanta din B
+@RequiredArgsConstructor
 class B {
-	private static B INSTANCE;
 	private final C c;
-	public static B getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new B();
-		}
-		return INSTANCE;
-	}
-
-	private B() {
-		this.c = new C();
-	}
 
 	public void g() {
 		System.out.println("Aici in beci");
 	}
 }
+@Service
 class C {}
+
+@Data
+class FullName {
+	private final String firstName, lastName;
+}
+
+
