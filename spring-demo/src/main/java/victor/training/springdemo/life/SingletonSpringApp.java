@@ -1,5 +1,6 @@
 package victor.training.springdemo.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -43,19 +44,19 @@ public class SingletonSpringApp implements CommandLineRunner {
 	// TODO [5] (after AOP): RequestContext, @Cacheable. on thread?! @ThreadLocal
 	public void run(String... args) throws Exception {
 		exporter.export(Locale.ENGLISH);
-//		exporter.export(Locale.FRENCH);
+		exporter.export(Locale.FRENCH);
 	}
 }
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
+		labelService.load(locale);
 		log.debug("Running export in " + locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice();
@@ -64,10 +65,10 @@ class OrderExporter  {
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
+	private final LabelService labelService;
+
 	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
@@ -83,10 +84,9 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 	
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("load() in instance: " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
