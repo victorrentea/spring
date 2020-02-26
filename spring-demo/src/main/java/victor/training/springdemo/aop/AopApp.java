@@ -78,5 +78,6 @@ class NumericWorks {
     @CacheEvict("foldere")
     public void clearFolderCache(File folder) {
         // NIMIC! Empty Method. Do NOT Touch. Let the magic happen.
+        // chem functia asta doar ca sa se prinda proxu-ul ca tre sa arunce la gunoi cacheul
     }
 }
