@@ -6,18 +6,14 @@
         <expanded-state>
           <State />
           <State>
-            <id>Android</id>
-          </State>
-          <State>
-            <id>LintAndroid</id>
-          </State>
-          <State>
-            <id>PerformanceLintAndroid</id>
-          </State>
-          <State>
-            <id>SecurityLintAndroid</id>
+            <id>Java</id>
           </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>Java</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>
