@@ -3,19 +3,14 @@ package my.spring.playground.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import my.spring.playground.SpaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import my.spring.playground.controller.dto.CourseDto;
 import my.spring.playground.domain.Course;
@@ -62,10 +57,19 @@ public class CoursesController {
 		Course course = courseRepo.getById(id);
 		course.setName(dto.name);
 		course.setDescription(dto.description);
+
+		Date newDate = parseDate(dto.startDate);
+		if (newDate.before(new Date())) {
+			throw new SpaException(SpaException.ErrorCode.COURSE_DATE_IN_THE_PAST);
+		}
+		course.setStartDate(newDate);
+		course.setTeacher(teacherRepo.getById(dto.teacherId));
+	}
+
+	private Date parseDate(String startDateStr) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		format.setLenient(false);
-		course.setStartDate(format.parse(dto.startDate));
-		course.setTeacher(teacherRepo.getById(dto.teacherId));
+		return format.parse(startDateStr);
 	}
 
 	@DeleteMapping("{id}")
