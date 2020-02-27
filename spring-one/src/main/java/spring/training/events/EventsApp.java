@@ -11,6 +11,7 @@ import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.EventListener;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,14 @@ public class EventsApp implements CommandLineRunner {
 		long orderId = 13L;
 		publisher.publishEvent(new OrderPlacedEvent(orderId));
 		log.debug("Commit Order");
+	}
+}
+@Component
+// "MACHINE LEARNING"
+class BusinessIntelligence {
+	@EventListener
+	public void vreauSiEuSaStiu(OrderPlacedEvent event) {
+		System.out.println("Inregistrez comanda pentru scopuri de vrajeala (adica cum sa vand mai mult)");
 	}
 }
 @Value
