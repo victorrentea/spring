@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,17 +47,16 @@ class OrderPlacedEvent {
 @Service
 class StockManagementService {
 	private int stock = 3; // silly implem :D
-	@Autowired
-	private ApplicationEventPublisher publisher;
+
 	@EventListener
-	public void handleOrderPlaced(OrderPlacedEvent event) {
+	public OrderInStockEvent handleOrderPlaced(OrderPlacedEvent event) {
 		log.info("Checking stock for products in order " + event.getOrderId());
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
-		publisher.publishEvent(new OrderInStockEvent(event.getOrderId()));
+		return new OrderInStockEvent(event.getOrderId());
 	}
 }
 @Value
