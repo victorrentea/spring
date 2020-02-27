@@ -1,9 +1,12 @@
 package spring.training.events;
 
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,32 +34,32 @@ public class EventsApp implements CommandLineRunner {
 	// TODO [4] handle asynchronously: exceptions, Tx, Thread Scope, debate
 	// TODO [5] queues: retries, chaining, topics
 	// TODO [opt] Transaction-scoped events
-
-	@Autowired
-	private StockManagementService stockManagementService;
-
 	@Autowired
 	private InvoiceService invoiceService;
+	@Autowired
+	private ApplicationEventPublisher publisher;
 
 	public void run(String... args) throws Exception {
 		placeOrder();
 	}
-
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
-		stockManagementService.process(orderId);
-		invoiceService.sendInvoice(orderId);
+		publisher.publishEvent(new OrderPlacedEvent(orderId));
+//		invoiceService.sendInvoice(orderId);
 	}
 }
-
+@Value
+class OrderPlacedEvent {
+	long orderId;
+}
 @Slf4j
 @Service
 class StockManagementService {
 	private int stock = 3; // silly implem :D
-
-	public void process(long orderId) {
-		log.info("Checking stock for products in order " + orderId);
+	@EventListener
+	public void handleOrderPlaced(OrderPlacedEvent event) {
+		log.info("Checking stock for products in order " + event.getOrderId());
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
@@ -68,8 +71,9 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-	public void sendInvoice(long orderId) {
-		log.info("Generating invoice for order " + orderId);
+	@EventListener
+	public void sendInvoice(OrderPlacedEvent event) {
+		log.info("Generating invoice for order " + event.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
 	}
