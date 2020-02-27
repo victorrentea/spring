@@ -9,14 +9,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.sql.DataSource;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @SpringBootApplication
 public class SpringDemoApplication implements CommandLineRunner {
+
+	private JdbcTemplate jdbcTemplate;
+	private TransactionTemplate transactionTemplate;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringDemoApplication.class, args);
@@ -29,6 +37,20 @@ public class SpringDemoApplication implements CommandLineRunner {
 		this.a = a;
 		System.out.println(b);
 	}
+
+	@Autowired
+	public void initTemplate(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	@Autowired
+	public void initTemplate(PlatformTransactionManager dataSource) {
+		this.transactionTemplate = new TransactionTemplate(dataSource);
+		transactionTemplate.setPropagationBehavior(Propagation.REQUIRES_NEW.value());
+//		transactionTemplate.execute(() -> {});
+//		transactionTemplate.execute(() -> {});
+//		transactionTemplate.execute(() -> {});
+	}
+
 	@Autowired
 	ApplicationContext ctx;
 
@@ -46,6 +68,9 @@ public class SpringDemoApplication implements CommandLineRunner {
 }
 
 //@Service
+//@Controller
+//@RestController
+//@Repository
 //@Component
 @Facade
 class A {
