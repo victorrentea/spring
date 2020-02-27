@@ -15,8 +15,12 @@ public class PeacefulController {
         return "Peace on you " + user.getUsername();
     }
 
-    @GetMapping("corner")
+    @GetMapping("admin/corner")
     public String cornerOffice() {
         return "Ficus";
+    }
+    @GetMapping("admin/masina/serviciu")
+    public String masinaDeServiciu() {
+        return "De Serviciu";
     }
 }
