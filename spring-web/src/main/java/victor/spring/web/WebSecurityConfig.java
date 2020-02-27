@@ -16,6 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .mvcMatchers("corner").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin();
@@ -29,7 +30,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("test")
                 .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(userDetails);
+        UserDetails adminDetails = User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("admin")
+                .roles("ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(userDetails, adminDetails);
     }
 }
 

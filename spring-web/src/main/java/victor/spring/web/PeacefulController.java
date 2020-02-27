@@ -14,4 +14,9 @@ public class PeacefulController {
                 .getAuthentication().getPrincipal();
         return "Peace on you " + user.getUsername();
     }
+
+    @GetMapping("corner")
+    public String cornerOffice() {
+        return "Ficus";
+    }
 }
