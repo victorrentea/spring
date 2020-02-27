@@ -46,7 +46,10 @@ public class AsyncApp {
 	}
 
 }
-
+@lombok.Value
+class Req {
+	String drink;
+}
 @Slf4j
 @Component
 class Drinker implements CommandLineRunner {
@@ -61,7 +64,9 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
+
 		queues.q1out().send(MessageBuilder.withPayload("BERE").build());
+
 		Future<Ale> futureAle = barman.getOneAle();
 		Future<Whiskey> futureWhiskey = barman.getOneWhiskey();
 
