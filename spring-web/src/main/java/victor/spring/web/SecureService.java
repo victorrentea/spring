@@ -1,11 +1,15 @@
 package victor.spring.web;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,9 +34,12 @@ public class SecureService {
     }
 
     private boolean isAdmin() {
-        User user = (User) SecurityContextHolder.getContext()
+        return currentUser().getAuthorities().stream().anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+    }
+
+    private User currentUser() {
+        return (User) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return user.getAuthorities().stream().anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
     }
 
     @Autowired
@@ -46,6 +53,36 @@ public class SecureService {
 
     // TODO allow method call only if user.jurisdictions.contains(countryCode)
 
+    public void exportTrades(String countryIso) {
+        if (!jurisdictionChecker.canAccessCountry(currentUser().getUsername(), countryIso)) {
+            throw new IllegalArgumentException("N-ai voie!");
+        }
+        System.out.println("Export trades " + countryIso);
+    }
+
+    @Autowired
+    private UserJurisdictionChecker jurisdictionChecker;
+}
+
+@Component
+@RequiredArgsConstructor
+class UserJurisdictionChecker {
+    private final UserJurisdictionsRepo repo;
+    public boolean canAccessCountry(String username, String countryIso) {
+        return repo.getUserCountries(username).contains(countryIso);
+    }
+}
+
+@Repository
+class UserJurisdictionsRepo {
+    public List<String> getUserCountries(String username) {
+        if (username.equals("test")) {
+            return Arrays.asList("RO", "ES");
+        } else {
+            return Arrays.asList("FR");
+
+        }
+    }
 }
 
 class TradeSearchResult {

@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,10 @@ public class PeacefulController {
         return secureService.searchTrades(criteria);
     }
 
+    @GetMapping("trades/export")
+    public void exportTrades(@RequestParam String countryIso) {
+        secureService.exportTrades(countryIso);
+    }
 
     @GetMapping("cantina-smechera")
     @PreAuthorize("hasRole('ADMIN')")
