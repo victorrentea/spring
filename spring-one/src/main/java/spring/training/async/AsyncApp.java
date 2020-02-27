@@ -59,8 +59,11 @@ class Drinker implements CommandLineRunner {
 		log.debug("A plecat chelneritza");
 		Ale ale = futureAle.get();
 		Whiskey whiskey = futureWhiskey.get();
-
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(ale, whiskey));
+
+		barman.injura("^&$!^@&&!^#2#!&^&")/*.get() jale*/;
+		ThreadUtils.sleep(1000);
+		log.debug("Ma bag in patutz");
 	}
 }
 
@@ -70,6 +73,9 @@ class Barman {
 	@Async
 	public CompletableFuture<Ale> getOneAle() {
 		 log.debug("Pouring Ale...");
+//		if (true) {
+//			throw new IllegalStateException("Nu mai e bere");
+//		}
 		 ThreadUtils.sleep(1000); // WS CALL
 		 return completedFuture(new Ale());
 	 }
@@ -79,6 +85,11 @@ class Barman {
 		 ThreadUtils.sleep(1000); // WS CALL
 		 return completedFuture(new Whiskey());
 	 }
+
+	 @Async
+	public Future<Void> injura(String inj_uratura) {
+		 throw new IllegalArgumentException("Iti fac buzunar");
+	}
 }
 
 @Data
