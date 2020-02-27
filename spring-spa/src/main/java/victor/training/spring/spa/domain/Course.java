@@ -1,8 +1,6 @@
-package my.spring.playground.domain;
+package victor.training.spring.spa.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Course extends BaseEntity {
 	private String name;

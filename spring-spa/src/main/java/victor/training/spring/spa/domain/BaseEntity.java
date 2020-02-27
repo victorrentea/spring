@@ -1,4 +1,4 @@
-package my.spring.playground.domain;
+package victor.training.spring.spa.domain;
 
 public abstract class BaseEntity {
 	protected Long id;

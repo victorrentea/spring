@@ -1,4 +1,4 @@
-package my.spring.playground.controller.dto;
+package victor.training.spring.spa.controller.dto;
 
 public class TeacherDto {
 	public Long id;

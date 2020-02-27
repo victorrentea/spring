@@ -1,4 +1,4 @@
-package my.spring.playground.service;
+package victor.training.spring.spa.service;
 
 import java.util.Date;
 
@@ -7,10 +7,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import my.spring.playground.domain.Course;
-import my.spring.playground.domain.Teacher;
-import my.spring.playground.repo.CourseRepository;
-import my.spring.playground.repo.TeacherRepository;
+import victor.training.spring.spa.domain.Course;
+import victor.training.spring.spa.domain.Teacher;
+import victor.training.spring.spa.repo.CourseRepository;
+import victor.training.spring.spa.repo.TeacherRepository;
 
 @Service
 public class DummyData {

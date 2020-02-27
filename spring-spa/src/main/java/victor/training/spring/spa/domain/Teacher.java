@@ -1,4 +1,4 @@
-package my.spring.playground.domain;
+package victor.training.spring.spa.domain;
 
 import java.util.ArrayList;
 import java.util.List;

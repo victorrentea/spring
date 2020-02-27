@@ -1,11 +1,11 @@
-package my.spring.playground.repo;
+package victor.training.spring.spa.repo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import my.spring.playground.domain.BaseEntity;
+import victor.training.spring.spa.domain.BaseEntity;
 
 public class BaseRepository<T extends BaseEntity> {
 

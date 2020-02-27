@@ -1,4 +1,4 @@
-package my.spring.playground.controller.util;
+package victor.training.spring.spa.controller.util;
 
 import javax.servlet.http.HttpServletRequest;
 

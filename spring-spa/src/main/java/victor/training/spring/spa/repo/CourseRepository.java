@@ -1,8 +1,8 @@
-package my.spring.playground.repo;
+package victor.training.spring.spa.repo;
 
 import org.springframework.stereotype.Repository;
 
-import my.spring.playground.domain.Course;
+import victor.training.spring.spa.domain.Course;
 
 @Repository
 public class CourseRepository extends BaseRepository<Course> {

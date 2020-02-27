@@ -132,18 +132,13 @@ function openEditCourse(courseId) {
 		method: "GET",
 		success: function(data) {
 			//au venit datele
-			$.ajax(restEndpoint + "/courses/"+courseId, {
-				method: "GET",
-				success: function(data) {
-					$.ajax(restEndpoint + "/courses/"+courseId, {
-						method: "GET",
-						success: function(data) {
-							//au venit datele
-						}
-					});
-					//au venit datele
-				}
-			});
+			$("#editCourseId").val(data.id);
+			$("#editName").val(data.name);
+			// BUG
+			$("#editStartDate").val(data.startDate);
+			$("#editTeacher").val(data.teacherId);
+			$('#coursesMain').hide();
+			$('#courseEditDiv').show();
 		}
 	});
 }
@@ -152,7 +147,6 @@ function updateCourse() {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
-			description:$("#editDescription").val(),
 			startDate:$("#editStartDate").val(),
 			teacherId:$("#editTeacher").val()
 		}),

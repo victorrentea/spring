@@ -1,4 +1,4 @@
-package my.spring.playground.controller;
+package victor.training.spring.spa.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,20 +8,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import my.spring.playground.controller.dto.CourseDto;
-import my.spring.playground.domain.Course;
-import my.spring.playground.repo.CourseRepository;
-import my.spring.playground.repo.TeacherRepository;
-import my.spring.playground.service.DummyData;
+import victor.training.spring.spa.controller.dto.CourseDto;
+import victor.training.spring.spa.domain.Course;
+import victor.training.spring.spa.repo.CourseRepository;
+import victor.training.spring.spa.repo.TeacherRepository;
+import victor.training.spring.spa.service.DummyData;
 
 public class CoursesController {
 	
