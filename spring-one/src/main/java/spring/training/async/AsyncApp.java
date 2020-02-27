@@ -3,10 +3,12 @@ package spring.training.async;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Service;
 import spring.training.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
 @SpringBootApplication
@@ -23,10 +29,10 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(@Value("${barman.count:2}")int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(barmanCount);
+		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
@@ -47,8 +53,13 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
-		Ale ale = barman.getOneAle();
-		Whiskey whiskey = barman.getOneWhiskey();
+		Future<Ale> futureAle = barman.getOneAle();
+		Future<Whiskey> futureWhiskey = barman.getOneWhiskey();
+
+		log.debug("A plecat chelneritza");
+		Ale ale = futureAle.get();
+		Whiskey whiskey = futureWhiskey.get();
+
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(ale, whiskey));
 	}
 }
@@ -56,16 +67,17 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-	public Ale getOneAle() {
+	@Async
+	public CompletableFuture<Ale> getOneAle() {
 		 log.debug("Pouring Ale...");
-		 ThreadUtils.sleep(1000);
-		 return new Ale();
+		 ThreadUtils.sleep(1000); // WS CALL
+		 return completedFuture(new Ale());
 	 }
-	
-	 public Whiskey getOneWhiskey() {
+	@Async
+	 public CompletableFuture<Whiskey> getOneWhiskey() {
 		 log.debug("Pouring Whiskey...");
-		 ThreadUtils.sleep(1000);
-		 return new Whiskey();
+		 ThreadUtils.sleep(1000); // WS CALL
+		 return completedFuture(new Whiskey());
 	 }
 }
 
