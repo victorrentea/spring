@@ -46,10 +46,7 @@ public class AsyncApp {
 	}
 
 }
-@lombok.Value
-class Req {
-	String drink;
-}
+
 @Slf4j
 @Component
 class Drinker implements CommandLineRunner {
