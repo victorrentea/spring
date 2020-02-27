@@ -1,5 +1,6 @@
 package victor.spring.web;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,17 @@ public class PeacefulController {
         return "Peace on you " + user.getUsername();
     }
 
+
+    @GetMapping("cantina-smechera")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String cantinaSmechera() {
+        return "Totu la 30%";
+    }
+
+    @GetMapping("login-info")
+    public String loginInfo() {
+        return "Suna-l Pe Sefu";
+    }
     @GetMapping("admin/corner")
     public String cornerOffice() {
         return "Ficus";
