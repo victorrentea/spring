@@ -53,15 +53,16 @@ public class SecureService {
 
     // TODO allow method call only if user.jurisdictions.contains(countryCode)
 
-    public void exportTrades(String countryIso) {
-        if (!jurisdictionChecker.canAccessCountry(currentUser().getUsername(), countryIso)) {
-            throw new IllegalArgumentException("N-ai voie!");
-        }
-        System.out.println("Export trades " + countryIso);
-    }
-
     @Autowired
     private UserJurisdictionChecker jurisdictionChecker;
+
+    @PreAuthorize("hasRole('USER') && @userJurisdictionChecker.canAccessCountry(principal.username,#countryIso)")
+    public void exportTrades(String countryIso) {
+//        if (!jurisdictionChecker.canAccessCountry(currentUser().getUsername(), countryIso)) {
+//            throw new IllegalArgumentException("N-ai voie!");
+//        }
+        System.out.println("Export trades " + countryIso);
+    }
 }
 
 @Component
