@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.Bean;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.config.EnableIntegration;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -21,6 +25,7 @@ import java.util.concurrent.Future;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
+@EnableBinding({Queues.class})
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
@@ -48,11 +53,15 @@ class Drinker implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
 
+	@Autowired
+	private Queues queues;
+
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
+		queues.q1out().send(MessageBuilder.withPayload("BERE").build());
 		Future<Ale> futureAle = barman.getOneAle();
 		Future<Whiskey> futureWhiskey = barman.getOneWhiskey();
 
@@ -70,6 +79,13 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
+
+	@ServiceActivator(inputChannel = Queues.Q1_IN)
+	public void receiveOrder(String comanda) {
+		System.out.println("GOT: " + comanda);
+	}
+
+
 	@Async
 	public CompletableFuture<Ale> getOneAle() {
 		 log.debug("Pouring Ale...");
