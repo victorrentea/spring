@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import my.spring.playground.SpaException;
+import my.spring.playground.repo.UserRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

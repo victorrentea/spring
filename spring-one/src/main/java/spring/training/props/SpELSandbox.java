@@ -3,6 +3,7 @@ package spring.training.props;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -38,10 +40,12 @@ public class SpELSandbox {
 
 
 @Configuration
-class SpelConfiguration {
+class SpelConfiguration implements CommandLineRunner {
 	@Value("#{T(java.lang.Math).random() lt 0.5f?'A Beautiful Day':null}")
 	private String day;
-
+	public void run(String... args) throws Exception {
+		System.out.println("Azi e: " + day);
+	}
 	@Bean
 	public SpELSandbox sandbox() {
 		SpELSandbox box = new SpELSandbox();
@@ -57,33 +61,32 @@ class SpelConfiguration {
 		return box;
 	}
 }
-
-
 @Component
 class UsingSpells {
-	@Value("#{sandbox.intProperty + 1}")
+	@Value("#{sandbox.intProperty+2}")
 	private String s1;
-	@Value("#{sandbox.stringProperty}")
+//	@Value("#{sandbox.stringProperty != null ? sandbox.stringProperty.toUpperCase():null}")
+	@Value("#{sandbox.stringProperty?.toUpperCase()?:':('}") // idem
 	private String s2;
-	@Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
 	private String s3;
-	@Value("#{sandbox.childList.?[intProperty gt 15]}")
+	@Value("#{sandbox.childList.?[stringProperty matches '.*e.*']}")
 	private List<SpELSandbox> children;
-	@Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
+	@Value("#{sandbox.childList.![intProperty]}")
 	private List<Integer> childrenInts;
-	@Value("#{sandbox.randomToken()}")
 	private String randomToken;
 	@Autowired
 	private SpELSandbox sandbox;
 
 	@PostConstruct
 	public void show() {
+		// vise....
+//		Optional.ofNullable(sandbox.getStringProperty()).map(String::toUpperCase).orElse(null);
 		System.out.println("-------------SPEL-----------");
 		System.out.println(s1);
-//		System.out.println(s2);
+		System.out.println(s2);
 //		System.out.println(s3);
-//		System.out.println(children);
-//		System.out.println(childrenInts);
+		System.out.println(children);
+		System.out.println(childrenInts);
 //		System.out.println(randomToken);
 //		manualSpELPlay(sandbox);
 		System.out.println("-------------END SPEL-----------");
