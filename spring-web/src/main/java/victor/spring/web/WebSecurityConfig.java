@@ -22,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("login-info").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .csrf().disable()
                 .formLogin();
     }
 
