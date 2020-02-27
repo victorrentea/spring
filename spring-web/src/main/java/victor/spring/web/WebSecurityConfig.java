@@ -23,7 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
-                .formLogin();
+//                .formLogin()
+                .httpBasic()
+        ;
     }
 
     //Define a UserDetailsService
