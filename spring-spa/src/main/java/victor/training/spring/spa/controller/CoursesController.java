@@ -47,6 +47,7 @@ public class CoursesController {
 		Course course = courseRepo.getById(id);
 		course.setName(dto.name);
 		course.setDescription(dto.description);
+		// TODO implement date not in the past. i18n
 		course.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
 		course.setTeacher(teacherRepo.getById(dto.teacherId));
 	}
