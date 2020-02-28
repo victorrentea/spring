@@ -1,11 +1,12 @@
-package hello;
+package victor.training.spring.security.jwt.app;
 
 import java.io.Serializable;
 
 
 public class UsernameContextPrincipal implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	public enum AuthnContext {
+		LOW, MEDIUM, HIGH
+	}
 
 	private final String username;
 	private final AuthnContext context;

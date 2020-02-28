@@ -1,4 +1,4 @@
-package hello;
+package victor.training.spring.security.jwt.app;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

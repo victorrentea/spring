@@ -1,4 +1,4 @@
-package hello;
+package victor.training.spring.security.jwt.app;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,13 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
+import victor.training.spring.security.jwt.app.UsernameContextPrincipal.AuthnContext;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
 
 @Slf4j

@@ -1,4 +1,4 @@
-package hello;
+package victor.training.spring.security.jwt.app;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

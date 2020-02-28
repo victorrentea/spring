@@ -1,23 +1,19 @@
-package hello;
+package victor.training.spring.security.jwt.app;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+@Slf4j
+@RequiredArgsConstructor
 public class DatabaseUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
-
-
-	private static final Logger log = LoggerFactory.getLogger(DatabaseUserDetailsService.class);
-
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
@@ -29,20 +25,20 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 		}
 
 		log.debug("Lookup username {} in database", username);
-		UserVO userVO = userRepository.findByUsername(username);
+		SecurityUser securityUser = userRepository.findByUsername(username);
 
-		if (userVO == null) {
+		if (securityUser == null) {
 			throw new UsernameNotFoundException("UserVO " + username + " not in database");
 		} else {
 			log.debug("UserVO found in database");
-			if (!userVO.isEnabled()) {
+			if (!securityUser.isEnabled()) {
 				throw new UsernameNotFoundException("UserVO is inactive in the database");
 			}
 		}
 
 		log.debug("Allowing the request to get in");
 //		return new MyUserWithContext<UserVO>(userVO.getUsername(), userVO, principal.getContext());
-		return userVO;
+		return securityUser;
 	}
 
 
