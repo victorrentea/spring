@@ -1,4 +1,4 @@
-package victor.training.spring.proxy;
+package victor.training.spring.aspects;
 
 import java.io.File;
 import java.io.IOException;
