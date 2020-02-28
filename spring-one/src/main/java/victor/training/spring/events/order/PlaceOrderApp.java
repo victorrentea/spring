@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@EnableBinding({Queues.class})
 @SpringBootApplication
-public class EventsApp implements CommandLineRunner {
+public class PlaceOrderApp implements CommandLineRunner {
 	public static void main(String[] args) {
-		SpringApplication.run(EventsApp.class, args);
+		SpringApplication.run(PlaceOrderApp.class, args);
 	}
 	
 //	@Bean
