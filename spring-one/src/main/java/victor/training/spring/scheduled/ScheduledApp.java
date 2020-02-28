@@ -4,21 +4,34 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import victor.training.spring.ThreadUtils;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
 @Slf4j
-public class ScheduledApp implements CommandLineRunner {
+public class ScheduledApp  {
     public static void main(String[] args) {
         SpringApplication.run(ScheduledApp.class);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        Thread.sleep(5000);
-    }
-
-    // TODO should run every 5 seconds / configurable / cron
+    // TODO 1 Should run every 5 seconds / configurable / cron "*/5 * * * * *"
+    // TODO 3 Should run on a separate 1-thread pool
     public void lookIntoFolder() {
         log.debug("Looking into folder");
+        ThreadUtils.sleep(7000);
+        log.debug("DONE");
+    }
+
+    // TODO 2 define another task at each second. This should not block.
+    // TODO explore application.properties
+    public void pollFast() {
+        log.debug("FAST each second");
     }
 }
