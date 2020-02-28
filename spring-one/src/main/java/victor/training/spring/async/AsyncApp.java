@@ -44,6 +44,7 @@ class Drinker implements CommandLineRunner {
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
+	// TODO [3] Enable messaging...
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
