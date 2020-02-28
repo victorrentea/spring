@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // [3] Primary
 // [4] Profile
 // [5] getBean
+// [6] inject List<BeanI>
 
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner{

@@ -63,7 +63,7 @@ class SpelConfiguration {
 class UsingSpells {
     @Value("#{sandbox.intProperty + 1}")
     private String s1;
-    @Value("#{sandbox.random}")
+    @Value("#{sandbox.randomToken()}")
     private String s2;
     @Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
     private String s3;
