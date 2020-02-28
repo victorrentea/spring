@@ -18,30 +18,32 @@ import victor.training.spring.spa.controller.util.DummyData;
 import victor.training.spring.spa.service.CourseService;
 
 @RestController
+@RequestMapping("rest/courses")
 public class CoursesController {
 	@Autowired
 	private CourseService courseService;
 	
-	@GetMapping("/rest/courses")
+	@GetMapping
 	public List<CourseDto> getAllCourses() {
 		return courseService.getAllCourses();
 	}
 
-	@GetMapping("/rest/courses/{id}")
+	@GetMapping("{id}")
 	public CourseDto getCourseById(@PathVariable Long id) {
 		return courseService.getCourseById(id);
 	}
 
-	@PutMapping("rest/courses/{id}")
+	@PutMapping("{id}")
 	public void updateCourse(@PathVariable Long id,@RequestBody CourseDto dto) throws ParseException {
 		courseService.updateCourse(id, dto);
 	}
-	
-	public void deleteCourseById(Long id) {
+
+	@DeleteMapping("{id}")
+	public void deleteCourseById(@PathVariable Long id) {
 		courseService.deleteCourseById(id);
 	}
-	
-	public void createCourse(CourseDto dto) throws ParseException { 
-		createCourse(dto);
+	@PostMapping
+	public void createCourse(@RequestBody CourseDto dto) throws ParseException {
+		courseService.createCourse(dto);
 	}
 }

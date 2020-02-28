@@ -15,6 +15,7 @@ import victor.training.spring.spa.repo.TeacherRepo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,12 +23,11 @@ import java.util.List;
 public class CourseService {
     @Autowired
     private CourseRepo courseRepo;
-
     @Autowired
     private TeacherRepo teacherRepo;
 
     public List<CourseDto> getAllCourses() {
-        List<CourseDto> dtos = new ArrayList<CourseDto>();
+        List<CourseDto> dtos = new ArrayList<>();
         for (Course course : courseRepo.findAll()) {
             dtos.add(mapToDto(course));
         }
@@ -46,8 +46,13 @@ public class CourseService {
         course.setName(dto.name);
         course.setDescription(dto.description);
         // TODO implement date not in the past. i18n
-        course.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
+        course.setStartDate(parseStartDate(dto));
         course.setTeacher(teacherRepo.getOne(dto.teacherId));
+    }
+
+    private Date parseStartDate(CourseDto dto) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.parse(dto.startDate);
     }
 
     public void deleteCourseById(Long id) {
@@ -76,7 +81,7 @@ public class CourseService {
         Course newEntity = new Course();
         newEntity.setName(dto.name);
         newEntity.setDescription(dto.description);
-        newEntity.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
+        newEntity.setStartDate(parseStartDate(dto));
         newEntity.setTeacher(teacherRepo.getOne(dto.teacherId));
         return newEntity;
     }
