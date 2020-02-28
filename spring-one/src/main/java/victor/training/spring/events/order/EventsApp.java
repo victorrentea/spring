@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@EnableBinding({})
+//@EnableBinding({Queues.class})
 @SpringBootApplication
 public class EventsApp implements CommandLineRunner {
 	public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class EventsApp implements CommandLineRunner {
 	@Autowired
 	private InvoiceService invoiceService;
 
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		placeOrder();
 	}
 

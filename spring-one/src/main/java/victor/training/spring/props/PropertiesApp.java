@@ -6,15 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class PropertiesApp implements CommandLineRunner {
+public class PropertiesApp {
     public static void main(String[] args) {
         SpringApplication.run(PropertiesApp.class);
     }
 
-    @Override
-    public void run(String... args) {
-        System.out.println("Structured Props: ");
-    }
 }
 
 

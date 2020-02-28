@@ -13,7 +13,7 @@ import java.util.Map;
 @Slf4j
 @Data
 @Component
-public class ClassUsingTonsOfProperties {
+public class ClassWithTonsOfProperties {
     private String a;
     private List<String> list;
     private Map<String,String> map;
@@ -24,3 +24,4 @@ public class ClassUsingTonsOfProperties {
         log.debug("My props: " + this);
     }
 }
+
