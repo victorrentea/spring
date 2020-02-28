@@ -1,31 +1,29 @@
-package hello;
+package victor.training.spring.security.jwt.gateway;
 
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 
 @SpringBootApplication
-public class GatewayApplication extends WebSecurityConfigurerAdapter {
+public class Application extends WebSecurityConfigurerAdapter {
 
+    public static void main(String[] args) throws Throwable {
+        SpringApplication.run(Application.class, args);
+    }
 
     @Bean
     public RestTemplate restTemplate() {
@@ -59,11 +57,6 @@ public class GatewayApplication extends WebSecurityConfigurerAdapter {
         } catch (Exception e) {
             throw new RuntimeException("Could not create RestTemplate", e);
         }
-    }
-
-
-    public static void main(String[] args) throws Throwable {
-        SpringApplication.run(GatewayApplication.class, args);
     }
 
     @Override

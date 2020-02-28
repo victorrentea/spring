@@ -1,7 +1,8 @@
-package hello;
+package victor.training.spring.security.jwt.gateway;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,21 +20,17 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class GatewayController {
+    private final RestTemplate restTemplate;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
-
-//    public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     // TODO per-endpoint CORS policy via @CrossOrigin
     @RequestMapping("/resource")
     public String update() {
         return "Updated at " + LocalDateTime.now().toString();
-
         // XXX if no request is blocked add these to windows\system32\drivers\etc\hosts:
         // 127.0.0.1 racheta
         // 127.0.0.1 marte
@@ -45,29 +42,30 @@ public class GatewayController {
     @GetMapping("/")
     public String home(
             @RequestParam(defaultValue = "test") String user,
-            @RequestParam(defaultValue = "LOW") String level
+            @RequestParam(defaultValue = "RO") String country
             ) throws URISyntaxException {
 
         log.debug("Sending user id {}", user);
-        AuthnContext authnContext = AuthnContext.valueOf(level);
 
 
         String jwtToken = Jwts.builder()
                 .setSubject(user)
-                .claim("countryId", "RO")
+                .claim("country", country)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
-        log.debug("JWT: " + jwtToken);
+        log.debug("JWT Token: " + jwtToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwtToken);
-//        headers.set(JWT_HEADER_NAME, jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("https://localhost:8081/rest"));
+                new URI("http://localhost:8081/rest"));
+        // TODO switch to https
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
         return "Got: " + responseEntity.getBody() + " <br>Try adding ?user=<uid>";
-        // Want to magically propagate JWT to subsequent REST calls it over thread :https://stackoverflow.com/questions/46729203/propagate-http-header-jwt-token-over-services-using-spring-rest-template
+
+        // Want to magically propagate JWT to subsequent REST calls it over thread :
+        // https://stackoverflow.com/questions/46729203/propagate-http-header-jwt-token-over-services-using-spring-rest-template
     }
 }

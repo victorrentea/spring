@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
-import victor.training.spring.security.jwt.app.UsernameContextPrincipal.AuthnContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
@@ -30,12 +29,12 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
 		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		System.out.println("Header: " + authenticationHeader);
+		log.debug("Received Header: " + authenticationHeader);
+		log.debug("Try to decode it on http://jwt.io/");
 		if (StringUtils.isBlank(authenticationHeader)) {
 			return null;
 		}
 		String jwtHeader = authenticationHeader.substring("Bearer ".length());
-
 
         try {
 			Claims claims = Jwts.parser()
@@ -43,9 +42,9 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 					.parseClaimsJws(jwtHeader)
 					.getBody();
 
-			String countryId = (String) claims.get("countryId");
-			log.info("Attempting login with userid={} and country={}", claims.getSubject(), countryId);
-			return new UsernameContextPrincipal(claims.getSubject(), AuthnContext.LOW);
+			String country = (String) claims.get("country");
+			log.info("Attempting login with userid={} and country={}", claims.getSubject(), country);
+			return new CustomPrincipal(claims.getSubject(), country);
 		} catch (UnsupportedJwtException jwtException) {
 			throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
 		}

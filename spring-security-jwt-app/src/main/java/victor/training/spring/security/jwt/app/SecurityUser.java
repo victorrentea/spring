@@ -15,6 +15,7 @@ public class SecurityUser implements UserDetails {
     private final String username;
     private final String fullName;
     private final String role;
+    private String country; // dynamic, based on login request
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {

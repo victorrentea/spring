@@ -1,4 +1,4 @@
-logging.level.hello: DEBUG
+logging.level.victor: DEBUG
 logging.pattern.console: "%d{HH:mm:ss.SSS} %-10.10logger{0} %message%n"
 
 
