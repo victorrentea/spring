@@ -16,6 +16,8 @@ public class BeanApp implements CommandLineRunner {
         Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         conversation.start();
         // TODO manage all with Spring
+
+        // TODO alternative: "Mirabela Dauer" story :)
     }
 }
 
