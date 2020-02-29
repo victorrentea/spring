@@ -4,9 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
@@ -16,11 +14,10 @@ import javax.xml.bind.DatatypeConverter;
 
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
-
-//	public static final String JWT_HEADER_NAME = "x-mycomp-jwt-1";
-
 	@Value("${jwt.secret}")
-	private String backendSecret;
+	private String jwtSecret;
+	@Value("${jwt.header}")
+	private String jwtHeader;
 
 	public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
 		setAuthenticationManager(authenticationManager);
@@ -28,23 +25,24 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-		String authenticationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		log.debug("Received Header: " + authenticationHeader);
-		log.debug("Try to decode it on http://jwt.io/");
-		if (StringUtils.isBlank(authenticationHeader)) {
-			return null;
-		}
-		String jwtHeader = authenticationHeader.substring("Bearer ".length());
+        String jwtToken = request.getHeader(jwtHeader);
+        if (jwtToken == null) {
+			log.warn("Header {} not set", jwtHeader);
+            return null;
+        }
+
+        log.debug("Received Header: " + jwtToken);
+		log.debug("Hint: Try to decode it on http://jwt.io/");
 
         try {
 			Claims claims = Jwts.parser()
-					.setSigningKey(DatatypeConverter.parseBase64Binary(backendSecret))
-					.parseClaimsJws(jwtHeader)
+					.setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecret))
+					.parseClaimsJws(jwtToken)
 					.getBody();
 
 			String country = (String) claims.get("country");
-			log.info("Attempting login with userid={} and country={}", claims.getSubject(), country);
-			return new CustomPrincipal(claims.getSubject(), country);
+			log.info("Attempting login with user={} and country={}", claims.getSubject(), country);
+			return new JwtPrincipal(claims.getSubject(), country);
 		} catch (UnsupportedJwtException jwtException) {
 			throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
 		}

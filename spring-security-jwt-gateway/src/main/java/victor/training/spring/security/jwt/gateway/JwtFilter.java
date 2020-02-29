@@ -18,6 +18,8 @@ public class JwtFilter extends ZuulFilter {
 
 	@Value("${jwt.secret}")
 	private String jwtSecret;
+	@Value("${jwt.header}")
+	private String jwtHeader;
 
     @Override
     public String filterType() {
@@ -54,9 +56,9 @@ public class JwtFilter extends ZuulFilter {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
 
-        log.info("Add jwt token: {}", jwtSecret);
+        log.info("Add jwt token: {}", jwtToken);
 
-        ctx.addZuulRequestHeader("Authorization", "Bearer " + jwtToken);
+        ctx.addZuulRequestHeader(jwtHeader, jwtToken);
         return null;
     }
 }

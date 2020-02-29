@@ -11,7 +11,7 @@ public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
 		// TODO implement me
-		return "";
+		return "TODO:user";
 	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application

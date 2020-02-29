@@ -17,7 +17,7 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 
 	@Override
 	public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
-		CustomPrincipal principal = (CustomPrincipal) token.getPrincipal();
+		JwtPrincipal principal = (JwtPrincipal) token.getPrincipal();
 
 		String username = principal.getUsername();
 		if (StringUtils.isBlank(username)) {

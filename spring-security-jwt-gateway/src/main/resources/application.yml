@@ -8,5 +8,7 @@ zuul:
       url: http://localhost:8080
 
 jwt.secret: secretMare
+jwt.header: JWT-Header
+
 server:
   port: 80

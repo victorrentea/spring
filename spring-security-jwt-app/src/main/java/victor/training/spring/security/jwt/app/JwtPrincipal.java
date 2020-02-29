@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class CustomPrincipal implements Serializable {
+public class JwtPrincipal implements Serializable {
 	private final String username;
 	private final String country;
 }

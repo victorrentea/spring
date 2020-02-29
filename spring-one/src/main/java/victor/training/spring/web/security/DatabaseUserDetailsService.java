@@ -3,9 +3,11 @@
 //
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 //import org.springframework.stereotype.Component;
 //import victor.training.spring.web.domain.User;
 //import victor.training.spring.web.repo.UserRepo;
@@ -15,6 +17,7 @@
 //@Component
 //@Slf4j
 //// TODO implement JWT with AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken>
+//// Hint: JwtPrincipal jwtPrincipal = (JwtPrincipal) token.getPrincipal();
 //public class DatabaseUserDetailsService implements UserDetailsService {
 //    @Autowired
 //    private UserRepo userRepository;

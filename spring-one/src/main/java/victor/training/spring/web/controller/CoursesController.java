@@ -9,37 +9,31 @@ import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.CourseDto;
 import victor.training.spring.web.service.CourseService;
 
-@RestController
-@RequestMapping("rest/courses")
 public class CoursesController {
 	@Autowired
 	private CourseService courseService;
 	
-	@GetMapping
 	// TODO [SEC] Restrict display for courses of teachers of users
 	public List<CourseDto> getAllCourses() {
 		return courseService.getAllCourses();
 	}
 
-	@GetMapping("{id}")
 	// TODO [SEC] Check user manages teacher of this course
-	public CourseDto getCourseById(@PathVariable Long id) {
+	public CourseDto getCourseById(Long id) {
 		return courseService.getCourseById(id);
 	}
 
-	@PutMapping("{id}")
 	// TODO [SEC] Check user manages teacher of this course
-	public void updateCourse(@PathVariable Long id,@RequestBody CourseDto dto) throws ParseException {
+	public void updateCourse(Long id,CourseDto dto) throws ParseException {
 		courseService.updateCourse(id, dto);
 	}
 
-	@DeleteMapping("{id}")
 	// TODO [SEC] Allow only for special permission
-	public void deleteCourseById(@PathVariable Long id) {
+	public void deleteCourseById(Long id) {
 		courseService.deleteCourseById(id);
 	}
-	@PostMapping
-	public void createCourse(@RequestBody CourseDto dto) throws ParseException {
+
+	public void createCourse(CourseDto dto) throws ParseException {
 		courseService.createCourse(dto);
 	}
 }

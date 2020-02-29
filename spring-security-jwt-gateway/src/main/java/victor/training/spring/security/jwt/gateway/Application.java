@@ -14,12 +14,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
 import java.security.KeyStore;
 
-@EnableZuulProxy
+//@EnableZuulProxy
 @SpringBootApplication
 public class Application extends WebSecurityConfigurerAdapter {
 
@@ -66,8 +70,17 @@ public class Application extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // otherwise button POSTS will get rejected
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+//                .authenticated().and().formLogin()
+                ;
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("test").password("test").roles("USER").build();
+//        return new InMemoryUserDetailsManager(userDetails);
+//    }
+//}
 
     // TODO Global CORS policy:
 //    @Bean
