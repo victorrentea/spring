@@ -21,21 +21,6 @@ public class PropertiesApp {
 
 }
 
-@Slf4j
-@Data
-@Component
-class ClassWithTonsOfProperties {
-    private String a;
-    private List<String> list;
-    private Map<String,String> map;
-    // TODO B b;
-
-    @PostConstruct
-    public void printMyself() {
-        log.debug("My props: " + this);
-    }
-}
-
 
 
 

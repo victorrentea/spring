@@ -16,21 +16,25 @@ public class CoursesController {
 	private CourseService courseService;
 	
 	@GetMapping
+	// TODO [SEC] Restrict display for courses of teachers of users
 	public List<CourseDto> getAllCourses() {
 		return courseService.getAllCourses();
 	}
 
 	@GetMapping("{id}")
+	// TODO [SEC] Check user manages teacher of this course
 	public CourseDto getCourseById(@PathVariable Long id) {
 		return courseService.getCourseById(id);
 	}
 
 	@PutMapping("{id}")
+	// TODO [SEC] Check user manages teacher of this course
 	public void updateCourse(@PathVariable Long id,@RequestBody CourseDto dto) throws ParseException {
 		courseService.updateCourse(id, dto);
 	}
 
 	@DeleteMapping("{id}")
+	// TODO [SEC] Allow only for special permission
 	public void deleteCourseById(@PathVariable Long id) {
 		courseService.deleteCourseById(id);
 	}

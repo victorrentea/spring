@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
@@ -39,5 +40,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         UserDetails adminDetails = User.withDefaultPasswordEncoder()
                 .username("admin").password("admin").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(userDetails,adminDetails);
+    }
+}
+
+class DBUserDetailsService implements UserDetailsService {
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

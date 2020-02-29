@@ -21,6 +21,8 @@ public class CourseService {
     private CourseRepo courseRepo;
     @Autowired
     private TeacherRepo teacherRepo;
+    @Autowired
+    private EmailSender emailSender;
 
     public List<CourseDto> getAllCourses() {
         List<CourseDto> dtos = new ArrayList<>();
@@ -42,7 +44,11 @@ public class CourseService {
         course.setName(dto.name);
         course.setDescription(dto.description);
         // TODO implement date not in the past. i18n
-        course.setStartDate(parseStartDate(dto));
+        Date newDate = parseStartDate(dto);
+        if (!newDate.equals(course.getStartDate())) {
+            emailSender.sendScheduleChangedEmail(course.getTeacher(), course.getName(), newDate);
+        }
+        course.setStartDate(newDate);
         course.setTeacher(teacherRepo.getOne(dto.teacherId));
     }
 
