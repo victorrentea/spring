@@ -2,20 +2,15 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 
 @RestController
 public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {
-			return "";
-		}
-		return "User: " + context.getAuthentication().getName();
+		return "";
 	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application
