@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class Controller {
-    @GetMapping("/rest")
+    @GetMapping("/ping")
     public String rest() {
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return "Peace on you " + user.getUsername() + " from " + user.getCountry();

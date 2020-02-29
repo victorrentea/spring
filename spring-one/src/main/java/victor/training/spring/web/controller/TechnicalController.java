@@ -10,6 +10,7 @@ import victor.training.spring.props.WelcomeInfo;
 public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
+		// TODO implement me
 		return "";
 	}
 
@@ -26,6 +27,11 @@ public class TechnicalController {
 	public void haveABeer() {
 		// TODO [opt] propagate identity through async calls
 		// https://www.baeldung.com/spring-security-async-principal-propagation
+	}
+
+	@GetMapping("ping")
+	public String ping() {
+		return "Pong " + getCurrentUsername();
 	}
 
 	@Autowired

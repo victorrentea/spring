@@ -59,7 +59,7 @@ public class GatewayController {
         headers.setBearerAuth(jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("http://localhost:8080/rest"));
+                new URI("http://localhost:8080/ping"));
         // TODO switch to https
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 

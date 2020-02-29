@@ -8,6 +8,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.InputStream;
 import java.security.KeyStore;
 
+@EnableZuulProxy
 @SpringBootApplication
 public class Application extends WebSecurityConfigurerAdapter {
 
