@@ -17,7 +17,7 @@ html {
 <body >
 	
 	<h2>Single Page Application</h2>
-	<h3>With Spring</h3>
+	<h3>With Spring <span id="username"></span></h3>
 	
 	
 	<div id="coursesMain" style="border:2px solid red">
@@ -97,6 +97,11 @@ function refreshCoursesTable() {
 	});
 }
 refreshCoursesTable();
+$.ajax(restEndpoint +"/user/current", {
+	method: "GET",
+	success: function(username) {
+		$("#username").text(username);
+	}});
 $("#newStartDate").val("01-01-2019");
 
 function populateTeacherCombo($teacherCombo) {

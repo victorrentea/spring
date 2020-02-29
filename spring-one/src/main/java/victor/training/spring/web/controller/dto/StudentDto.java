@@ -1,4 +1,4 @@
-package victor.training.spring.spa.controller.dto;
+package victor.training.spring.web.controller.dto;
 
 public class StudentDto {
 	public Long id;

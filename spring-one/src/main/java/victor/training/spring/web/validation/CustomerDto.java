@@ -1,4 +1,4 @@
-package victor.spring.web.validation;
+package victor.training.spring.web.validation;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

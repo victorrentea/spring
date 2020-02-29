@@ -1,14 +1,12 @@
-package victor.training.spring.spa.service;
+package victor.training.spring.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import victor.training.spring.spa.controller.dto.TeacherDto;
-import victor.training.spring.spa.domain.Teacher;
-import victor.training.spring.spa.repo.TeacherRepo;
+import victor.training.spring.web.controller.dto.TeacherDto;
+import victor.training.spring.web.domain.Teacher;
+import victor.training.spring.web.repo.TeacherRepo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

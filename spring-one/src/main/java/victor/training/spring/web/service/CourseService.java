@@ -1,16 +1,12 @@
-package victor.training.spring.spa.service;
+package victor.training.spring.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import victor.training.spring.spa.controller.dto.CourseDto;
-import victor.training.spring.spa.domain.Course;
-import victor.training.spring.spa.repo.CourseRepo;
-import victor.training.spring.spa.repo.TeacherRepo;
+import victor.training.spring.web.controller.dto.CourseDto;
+import victor.training.spring.web.domain.Course;
+import victor.training.spring.web.repo.CourseRepo;
+import victor.training.spring.web.repo.TeacherRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

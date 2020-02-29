@@ -1,11 +1,10 @@
-package victor.spring.web.validation;
+package victor.training.spring.web.validation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @RestController

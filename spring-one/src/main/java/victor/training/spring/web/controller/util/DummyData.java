@@ -1,8 +1,6 @@
-package victor.training.spring.spa.controller.util;
+package victor.training.spring.web.controller.util;
 
 import java.util.Date;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -10,10 +8,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import victor.training.spring.spa.domain.Course;
-import victor.training.spring.spa.domain.Teacher;
-import victor.training.spring.spa.repo.CourseRepo;
-import victor.training.spring.spa.repo.TeacherRepo;
+import victor.training.spring.web.domain.Course;
+import victor.training.spring.web.domain.Teacher;
+import victor.training.spring.web.repo.CourseRepo;
+import victor.training.spring.web.repo.TeacherRepo;
 
 @Service
 public class DummyData {

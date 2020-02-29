@@ -1,4 +1,4 @@
-package victor.spring.web.validation;
+package victor.training.spring.web.validation;
 
 import org.apache.commons.lang3.StringUtils;
 

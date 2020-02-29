@@ -1,6 +1,6 @@
-package victor.training.spring.spa.controller.dto;
+package victor.training.spring.web.controller.dto;
 
-import victor.training.spring.spa.domain.Teacher;
+import victor.training.spring.web.domain.Teacher;
 
 public class TeacherDto {
 	public Long id;

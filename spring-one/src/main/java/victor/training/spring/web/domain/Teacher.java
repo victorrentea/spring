@@ -1,4 +1,4 @@
-package victor.training.spring.spa.domain;
+package victor.training.spring.web.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,16 +1,12 @@
-package victor.training.spring.spa.controller;
+package victor.training.spring.web.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import victor.training.spring.spa.controller.dto.TeacherDto;
-import victor.training.spring.spa.domain.Teacher;
-import victor.training.spring.spa.service.TeacherService;
+import victor.training.spring.web.controller.dto.TeacherDto;
+import victor.training.spring.web.service.TeacherService;
 
 @RestController
 @RequestMapping("/rest/teachers")
