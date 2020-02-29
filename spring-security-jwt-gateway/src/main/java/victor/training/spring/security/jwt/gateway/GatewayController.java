@@ -39,7 +39,7 @@ public class GatewayController {
     }
 
     // the authorization server (e.g. a proxy, ZUUL?) does:
-    @GetMapping("/")
+    @GetMapping("/x")
     public String home(
             @RequestParam(defaultValue = "test") String user,
             @RequestParam(defaultValue = "RO") String country
@@ -59,7 +59,7 @@ public class GatewayController {
         headers.setBearerAuth(jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("http://localhost:8081/rest"));
+                new URI("http://localhost:8080/rest"));
         // TODO switch to https
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 

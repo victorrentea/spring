@@ -4,7 +4,7 @@ logging.pattern.console: "%d{HH:mm:ss.SSS} %-10.10logger{0} %message%n"
 jwt.secret: secretMare
 
 server:
-  port: 8081
+  port: 8080
 #  ssl:
 #    enabled: true
 #    key-store: backend.jks
