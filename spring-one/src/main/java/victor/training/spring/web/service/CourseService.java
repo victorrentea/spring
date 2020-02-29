@@ -1,8 +1,10 @@
 package victor.training.spring.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.SecurityUser;
 import victor.training.spring.web.controller.dto.CourseDto;
 import victor.training.spring.web.domain.Course;
 import victor.training.spring.web.repo.CourseRepo;
@@ -25,6 +27,8 @@ public class CourseService {
     private EmailSender emailSender;
 
     public List<CourseDto> getAllCourses() {
+        SecurityUser principal = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(principal.getManagedTeacherIds());
         List<CourseDto> dtos = new ArrayList<>();
         for (Course course : courseRepo.findAll()) {
             dtos.add(mapToDto(course));
@@ -36,6 +40,7 @@ public class CourseService {
         return mapToDto(courseRepo.findById(id).get());
     }
 
+    // TODO Test this!
     public void updateCourse(Long id, CourseDto dto) throws ParseException {
         if (courseRepo.getByName(dto.name) != null &&  !courseRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another course with that name already exists");

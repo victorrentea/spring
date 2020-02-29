@@ -4,11 +4,10 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableSet;
 
 @Entity
 public class User {
@@ -18,13 +17,13 @@ public class User {
     private String username;
     private UserProfile profile;
     @ElementCollection
-    private List<Long> managedTeacherIds = new ArrayList<>();
+    private Set<Long> managedTeacherIds = new HashSet<>();
     protected User() {
     }
     public User(String username, UserProfile profile, List<Long> managedTeacherIds) {
         this.username = username;
         this.profile = profile;
-        this.managedTeacherIds = managedTeacherIds;
+        this.managedTeacherIds = new HashSet<>(managedTeacherIds);
     }
 
     public String getUsername() {
@@ -35,8 +34,8 @@ public class User {
         return profile;
     }
 
-    public List<Long> getManagedTeacherIds() {
-        return unmodifiableList(managedTeacherIds);
+    public Set<Long> getManagedTeacherIds() {
+        return unmodifiableSet(managedTeacherIds);
     }
 
     public Long getId() {
