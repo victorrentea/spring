@@ -2,6 +2,7 @@ package victor.training.spring.web.validation;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -16,6 +17,7 @@ public class PostalCodeValidator implements ConstraintValidator<ValidPostalCode,
         if (StringUtils.isBlank(value)) {
             return false;
         }
+
         return value.matches("\\d+");
     }
 }
