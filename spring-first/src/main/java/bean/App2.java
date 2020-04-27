@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 
 @SpringBootApplication
@@ -15,24 +19,32 @@ public class App2 implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
     }
-    @Autowired
-    private DataSource ds;
-    public void m() {
+    @Bean//(name = "legacy")
+    public LegacyClass legacy() {
+        System.out.println("Instantiez");
         LegacyClass legacyClass = new LegacyClass(ds); // dependinte pe care le cere
         legacyClass.init();// protocol de interactiune complex
-        legacyClass.varzaMurata(); // daca as vrea as interceptez acest apel cu Spring AOP
+        return legacyClass;
     }
-}
 
-class ClasaMea {
     @Autowired
     private DataSource ds;
-    // am nevoie de LegacyClass
+
+
+    @Autowired
+    LegacyClass legacyClass;
+    @PostConstruct
     public void m() {
-        LegacyClass legacyClass = new LegacyClass(ds);
-        legacyClass.init();
+        legacyClass.varzaMurata();
+    }
+}
+@Service
+class ClasaMea {
+    @Autowired
+    LegacyClass legacyClass;
+    @PostConstruct
+    public void m() {
         legacyClass.varzaMurata();
     }
 }
@@ -46,11 +58,10 @@ class LegacyClass {
         this.ds = ds;
     }
     public void init() {
-
     }
 
     public void varzaMurata() {
-
+        System.out.println("Sarmale");
     }
 }
 
