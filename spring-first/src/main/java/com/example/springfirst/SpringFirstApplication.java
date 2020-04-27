@@ -11,10 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.ApplicationContextEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -26,20 +31,44 @@ public class SpringFirstApplication implements CommandLineRunner {
 		SpringApplication.run(SpringFirstApplication.class, args);
 	}
 
-	@Autowired
 	private A a;
+	private B b;
+
+	@Autowired
+	public void init(A a, B b) {
+		System.out.println("Method injection");
+		this.a = a;
+	}
 
 	@Override
+	//@Transactional -- OK
 	public void run(String... args) throws Exception {
 		System.out.println("Start");
 		a.m();
 		log.debug("logu magic");
 	}
+
+	@PostConstruct // Limitare: nu poate avea Tranzactii
+	//@Transactional -- e ignorata
+	public void oriceDaSaFiePublic() {
+		System.out.println("Neonatal");
+	}
+
+	//@Transactional OK
+	@EventListener
+	public void laStartupEvent(ApplicationStartedEvent event) {
+		System.out.println("La event");
+	}
+
 }
 @Facade
 class A {
 	@Autowired
-	B b;
+	private B b;
+	@PostConstruct
+	public void oriceDaSaFiePublic() {
+		System.out.println("NeonatalA");
+	}
 	public void m() {
 	    b.met();
 		EntitateHibernate e = new EntitateHibernate();
