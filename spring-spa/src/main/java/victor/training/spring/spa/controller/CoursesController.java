@@ -9,12 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.spa.controller.dto.CourseDto;
 import victor.training.spring.spa.domain.Course;
 import victor.training.spring.spa.repo.CourseRepository;
 import victor.training.spring.spa.repo.TeacherRepository;
 import victor.training.spring.spa.service.DummyData;
 
+@RestController
+@RequestMapping("rest/courses")
 public class CoursesController {
 	
 	private final static Logger log = LoggerFactory.getLogger(CoursesController.class);
@@ -27,7 +31,8 @@ public class CoursesController {
 	
 	@Autowired
 	private TeacherRepository teacherRepo;
-	
+
+	@GetMapping
 	public List<CourseDto> getAllCourses() {
 		List<CourseDto> dtos = new ArrayList<CourseDto>();
 		for (Course course : courseRepo.findAll()) {
@@ -36,11 +41,13 @@ public class CoursesController {
 		return dtos;
 	}
 
-	public CourseDto getCourseById(Long id) { 
+	@GetMapping("{id}")
+	public CourseDto getCourseById(@PathVariable Long id) {
 		return mapToDto(courseRepo.getById(id));
 	}
-	
-	public void updateCourse(Long id, CourseDto dto) throws ParseException {
+
+	@PutMapping("{id}")
+	public void updateCourse(@PathVariable Long id,@RequestBody CourseDto dto) throws ParseException {
 		if (courseRepo.getByName(dto.name) != null &&  !courseRepo.getByName(dto.name).getId().equals(id)) {
 			throw new IllegalArgumentException("Another course with that name already exists");
 		}
@@ -51,12 +58,14 @@ public class CoursesController {
 		course.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
 		course.setTeacher(teacherRepo.getById(dto.teacherId));
 	}
-	
-	public void deleteCourseById(Long id) { 
+
+	@DeleteMapping("{id}")
+	public void deleteCourseById(@PathVariable Long id) {
 		courseRepo.deleteById(id);
 	}
-	
-	public void createCourse(CourseDto dto) throws ParseException { 
+
+	@PostMapping
+	public void createCourse(@RequestBody CourseDto dto) throws ParseException {
 		if (courseRepo.getByName(dto.name) != null) {
 			throw new IllegalArgumentException("Another course with that name already exists");
 		}
