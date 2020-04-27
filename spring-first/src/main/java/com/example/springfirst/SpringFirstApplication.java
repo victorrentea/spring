@@ -15,6 +15,7 @@ import org.springframework.boot.context.event.ApplicationContextInitializedEvent
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -55,25 +56,30 @@ public class SpringFirstApplication implements CommandLineRunner {
 	}
 
 	//@Transactional OK
+	@Order(20)
 	@EventListener
 	public void laStartupEvent(ApplicationStartedEvent event) {
-		System.out.println("La event");
+		System.out.println("La event MAIN");
 	}
-
 }
 @Facade
 class A {
 	@Autowired
 	private B b;
+	@Order(30)
+	@EventListener
+	public void laStartupEvent(ApplicationStartedEvent event) {
+		System.out.println("La event A");
+	}
 	@PostConstruct
 	public void oriceDaSaFiePublic() {
 		System.out.println("NeonatalA");
 	}
 	public void m() {
 	    b.met();
-		EntitateHibernate e = new EntitateHibernate();
-		e.setName("name");
-		e.setPhone("8989989");
+		EntitateHibernate e = new EntitateHibernate()
+				.setName("name")
+				.setPhone("8989989");
 //	    new EntitateHibernate().setId(1l);
 //		new EntitateHibernate().setStatus(EntitateHibernate.Status.DELETED);
 	}
@@ -123,6 +129,12 @@ class B {
 	private final D d5;
 	private final D d6;
 
+
+	@Order(25)
+	@EventListener
+	public void laStartupEvent(ApplicationStartedEvent event) {
+		System.out.println("La event B");
+	}
 
 
 	public void met() {
