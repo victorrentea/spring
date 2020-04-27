@@ -3,6 +3,7 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -39,17 +40,16 @@ public class LifeApp implements CommandLineRunner{
 
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		exporter.export(Locale.FRENCH);
 		
 	}
 }
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
@@ -58,11 +58,11 @@ class OrderExporter  {
 	}
 }
 @Slf4j
-@Service 
+@Service
+@RequiredArgsConstructor
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
+	private final LabelService labelService;
+
 	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
@@ -77,15 +77,12 @@ class LabelService {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
 	}
-
 	private Map<String, String> countryNames;
-
 	@PostConstruct
 	public void load() {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(Locale.FRENCH);
 	}
-	
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
