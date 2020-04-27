@@ -24,7 +24,7 @@ public class PoezieConfig  {
     public Autor eminescu() {
         System.out.println("Se naste un geniu");
         return new Autor("Eminescu");
-    }
+}
     @Bean
     @Scope("prototype")
     public Poezie luceafarul() {
