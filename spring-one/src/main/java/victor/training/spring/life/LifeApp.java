@@ -10,9 +10,7 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
@@ -51,12 +49,14 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
+	private final CountryRepo countryRepo;
 //	private final LabelService labelService;
-	private final ApplicationContext spring;
+//	private final ApplicationContext spring;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = spring.getBean(LabelService.class);
+//		LabelService labelService = spring.getBean(LabelService.class);
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
@@ -74,11 +74,9 @@ class InvoiceExporter {
 }
 
 @Slf4j
-@Service // 1 instanta
-@Scope("prototype")
 class LabelService {
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
