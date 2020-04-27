@@ -53,6 +53,7 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice();
 	}
@@ -78,13 +79,30 @@ class LabelService {
 		this.countryRepo = countryRepo;
 	}
 	private Map<String, String> countryNames;
-	@PostConstruct
-	public void load() {
+//	@PostConstruct
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.FRENCH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
+	}
+}
+
+class Paranteza {
+	@Autowired LabelService labelService;
+
+	public Paranteza() {
+		m();
+	}
+	@PostConstruct
+	public void v () {
+		// ce poti face aici dar nu poti in constructor
+		m();
+		labelService.getCountryName("ES"); // merge!
+	}
+	public void m() {
+
 	}
 }
