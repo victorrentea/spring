@@ -45,7 +45,11 @@ public class CourseService {
         course.setName(dto.name);
         course.setDescription(dto.description);
         // TODO implement date not in the past. i18n
+
         Date newDate = parseStartDate(dto);
+        if (newDate.before(new Date())) {
+            throw new IllegalArgumentException("Start date already in the past");
+        }
         if (!newDate.equals(course.getStartDate())) {
             emailSender.sendScheduleChangedEmail(course.getTeacher(), course.getName(), newDate);
         }
