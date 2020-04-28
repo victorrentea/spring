@@ -134,7 +134,7 @@ function openEditCourse(courseId) {
 			//au venit datele
 			$("#editCourseId").val(data.id);
 			$("#editName").val(data.name);
-			// BUG
+			$("#editDescription").val(data.description);
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
 			$('#coursesMain').hide();
@@ -147,6 +147,7 @@ function updateCourse() {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
+			description:$("#editDescription").val(),
 			startDate:$("#editStartDate").val(),
 			teacherId:$("#editTeacher").val()
 		}),

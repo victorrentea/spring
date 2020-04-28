@@ -4,13 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.spa.SpaException;
 import victor.training.spring.spa.controller.dto.CourseDto;
 import victor.training.spring.spa.domain.Course;
 import victor.training.spring.spa.repo.CourseRepository;
@@ -64,10 +68,14 @@ public class CoursesController {
 		courseRepo.deleteById(id);
 	}
 
+
 	@PostMapping
 	public void createCourse(@RequestBody CourseDto dto) throws ParseException {
+		if (StringUtils.isBlank(dto.name)) {
+			throw new SpaException(SpaException.ErrorCode.MISSING_NAME);
+		}
 		if (courseRepo.getByName(dto.name) != null) {
-			throw new IllegalArgumentException("Another course with that name already exists");
+			throw new SpaException(SpaException.ErrorCode.DUPLICATE_NAME);
 		}
 		courseRepo.save(mapToEntity(dto));
 	}
