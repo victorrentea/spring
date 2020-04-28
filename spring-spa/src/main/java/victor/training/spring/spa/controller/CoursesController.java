@@ -3,9 +3,12 @@ package victor.training.spring.spa.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +25,14 @@ import victor.training.spring.spa.repo.TeacherRepository;
 import victor.training.spring.spa.service.DummyData;
 
 @RestController
+@Slf4j
 @RequestMapping("rest/courses")
+@RequiredArgsConstructor
 public class CoursesController {
 	
-	private final static Logger log = LoggerFactory.getLogger(CoursesController.class);
-
-	@Autowired
-	private DummyData service;
-	
-	@Autowired
-	private CourseRepository courseRepo;
-	
-	@Autowired
-	private TeacherRepository teacherRepo;
+	private final DummyData service;
+	private final CourseRepository courseRepo;
+	private final TeacherRepository teacherRepo;
 
 	@GetMapping
 	public List<CourseDto> getAllCourses() {
@@ -59,8 +57,18 @@ public class CoursesController {
 		course.setName(dto.name);
 		course.setDescription(dto.description);
 		// TODO implement date not in the past. i18n
-		course.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(dto.startDate));
+		course.setStartDate(parseDate(dto.startDate));
 		course.setTeacher(teacherRepo.getById(dto.teacherId));
+	}
+
+	private Date parseDate(String dateStr) throws ParseException {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			sdf.setLenient(false);
+			return sdf.parse(dateStr);
+		} catch (ParseException e) {
+			throw new SpaException(SpaException.ErrorCode.INVALID_DATE, dateStr);
+		}
 	}
 
 	@DeleteMapping("{id}")

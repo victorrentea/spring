@@ -5,6 +5,7 @@ public class SpaException extends RuntimeException {
     public enum ErrorCode {
         MISSING_NAME("error.missing.name"),
         DUPLICATE_NAME("error.duplicate.name"),
+        INVALID_DATE("error.invalid.date"),
         GENERAL("error.general");
         public final String messageKey;
 
@@ -13,32 +14,36 @@ public class SpaException extends RuntimeException {
         }
     }
     private final ErrorCode errorCode;
+    private final String[] args;
 
     public SpaException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
+        this(null, null, errorCode);
+
+    }
+    public SpaException(ErrorCode errorCode, String... args) {
+        this(null, null, errorCode, args);
     }
 
     public SpaException(String message, ErrorCode errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+        this(message, null, errorCode);
     }
 
-    public SpaException(String message, Throwable cause, ErrorCode errorCode) {
+    public SpaException(String message, Throwable cause, ErrorCode errorCode, String... args) {
         super(message, cause);
         this.errorCode = errorCode;
+        this.args = args;
     }
 
     public SpaException(Throwable cause, ErrorCode errorCode) {
-        super(cause);
-        this.errorCode = errorCode;
+        this(null, cause, errorCode);
     }
 
-    public SpaException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, ErrorCode errorCode) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.errorCode = errorCode;
-    }
 
     public ErrorCode getErrorCode() {
         return errorCode;
+    }
+
+    public String[] getArgs() {
+        return args;
     }
 }

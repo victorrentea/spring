@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 	public String spaExceptionHandler(HttpServletRequest request, SpaException exception) throws Exception {
 		Locale locale = request.getLocale();
 		System.out.println("Locale: " + locale);
-		String translatedMessage = messageSource.getMessage(exception.getErrorCode().messageKey, null, locale);
+		String translatedMessage = messageSource.getMessage(exception.getErrorCode().messageKey, exception.getArgs(), locale);
 		log.error(exception.getMessage(), exception);
 		return translatedMessage;
 	}
