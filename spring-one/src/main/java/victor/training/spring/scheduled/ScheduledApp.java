@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
 @Slf4j
+@EnableScheduling
 public class ScheduledApp  {
     public static void main(String[] args) {
         SpringApplication.run(ScheduledApp.class);
@@ -23,6 +24,7 @@ public class ScheduledApp  {
 
     // TODO 1 Should run every 5 seconds / configurable / cron "*/5 * * * * *"
     // TODO 3 Should run on a separate 1-thread pool
+    @Scheduled(fixedRate = 5000)
     public void lookIntoFolder() {
         log.debug("Looking into folder");
         ThreadUtils.sleep(7000);
