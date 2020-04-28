@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -50,14 +51,17 @@ public class LifeApp implements CommandLineRunner{
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class OrderExporter  {
+abstract class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
 //	private final LabelService labelService;
 	private final ObjectFactory<LabelService> labelServiceObjectFactory;
 
+	@Lookup
+	public abstract LabelService createLabelService(); // implementata dinamic la runtime sa creeze o noua instanta
+
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = labelServiceObjectFactory.getObject();
+		LabelService labelService = createLabelService();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
