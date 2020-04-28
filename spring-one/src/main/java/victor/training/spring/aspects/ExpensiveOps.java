@@ -15,6 +15,9 @@ import org.hibernate.annotations.Cache;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +46,8 @@ public class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
+	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
@@ -60,5 +64,10 @@ public class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@CacheEvict("folders")
+	public void invalidateFolderCache(File folder) {
+		// EMPTY. DO NOT DELETE. LET THE MAGIC HAPPEN
 	}
 }

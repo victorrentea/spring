@@ -34,6 +34,9 @@ public class ProxyApp implements CommandLineRunner {
 
 	public void run(String... args) {
 		log.debug("\n");// 2 3 4 10_000169
+//		ops = new ExpensiveOps(); // <------- INSTANTA NOUA, nemanageuita de spring,
+		log.debug("Oare ce instanta e aia ? " + ops.getClass());
+		// deci nu merg: @Autowired, @Value,  @PostConstruct si nici proxiurile
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
@@ -44,6 +47,8 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		// AICI gasesc o schimbare intr-un fisier din folder
+		ops.invalidateFolderCache(new File("."));
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
