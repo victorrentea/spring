@@ -24,6 +24,13 @@ public class ClassProxies {
         };
         Mate mate = (Mate) Enhancer.create(Mate.class, callback);
 
+//        altaMetoda(new Mate(){
+//            @Override
+//            public int suma(int a, int b) {
+//                System.out.println("SRI");
+//                return super.suma(a, b);
+//            }
+//        });
         altaMetoda(mate);
     }
 
@@ -36,8 +43,8 @@ public class ClassProxies {
         System.out.println(mate.produs(1, 2));
     }
 }
-class Mate {
-    public int suma(int a, int b) {
+/*final */class Mate { // clasele finale nu pot fi proxy-ate.
+    public final int suma(int a, int b) { // interceptia nu functioneaza pentru metodele marcate final
         return a+ b;
     }
     public int produs(int a, int b) {
