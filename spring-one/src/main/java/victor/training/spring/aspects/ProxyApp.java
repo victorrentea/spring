@@ -1,14 +1,21 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
@@ -53,4 +60,18 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {}
+
+@Slf4j
+@Aspect
+@Component
+class LogginAspect {
+	@Around("execution(* *(..)) && @within(victor.training.spring.aspects.Logged)")
+	public Object m(ProceedingJoinPoint pjp) throws Throwable {
+		log.debug("Calling method {} with args {}", pjp.getSignature(), Arrays.toString(pjp.getArgs()));
+		return pjp.proceed();
+	}
+}
+
 
