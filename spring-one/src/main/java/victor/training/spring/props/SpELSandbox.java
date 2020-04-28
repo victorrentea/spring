@@ -3,6 +3,7 @@ package victor.training.spring.props;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
@@ -58,27 +59,26 @@ class SpelConfiguration {
     }
 }
 
-
 @Component
 class UsingSpells {
     @Value("#{sandbox.intProperty + 1}")
     private String s1;
-    @Value("#{sandbox.randomToken()}")
+    @Value("#{sandbox.stringProperty != NULL ? 'YES' : 'NO' }") // din Kotlin
     private String s2;
-    @Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
+    @Value("#{sandbox.stringProperty?.toUpperCase()?:'RAIN'}") // NVL din SQL
     private String s3;
-    @Value("#{sandbox.childList.?[intProperty gt 15]}")
+    @Value("#{sandbox.childList.?[intProperty gt 15]}") // .filter jva8
     private List<SpELSandbox> children;
-    @Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
+    @Value("#{sandbox.childList.?[stringProperty matches '.*e.*'].![intProperty]}") // .filter.map
     private List<Integer> childrenInts;
 
 
     @PostConstruct
     public void show() {
         System.out.println("-------------SPEL-----------");
-        System.out.println("intProperty + 1 = " + s1);
-        System.out.println("stringProperty.randomToken() YES/NO = " + s2);
-        System.out.println("stringProperty.upperCase or 'RAIN' if null =  ");
+        System.out.println("sandobox>intProperty + 1 = " + s1);
+        System.out.println("is stringProperty set? (YES/NO) " + s2);
+        System.out.println("stringProperty.upperCase or 'RAIN' if null =  "  + s3);
         System.out.println("children with intProperty > 15 = " + children);
 		System.out.println("children with stringProperty containing '*e*' .intProperty = " + childrenInts);
 		manualSpELPlay();
@@ -93,6 +93,5 @@ class UsingSpells {
         Expression stringsOver20 = parser.parseExpression("stringProperty?.toUpperCase()?:'Ploua'");
         System.out.println(stringsOver20.getValue(new StandardEvaluationContext(sandbox)));
     }
-
 
 }
