@@ -11,9 +11,11 @@ import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.annotations.Cache;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +23,8 @@ public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primesx")
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
