@@ -1,0 +1,6 @@
+#spring.profiles.active=local
+
+proprMea: Ambulanta
+doishpe: 12
+tempFolder.test:
+  in: C:\\workspace

@@ -21,7 +21,7 @@ public class PropsApp implements CommandLineRunner {
     private String prop;
     @Value("${doishpe}")
     private int doishpe;
-    @Value("${tempFolder}")
+    @Value("${tempFolder.test.in}")
     private File tempFolder;
 
     @Override
