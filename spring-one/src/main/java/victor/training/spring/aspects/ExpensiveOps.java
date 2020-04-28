@@ -33,6 +33,7 @@ public class ExpensiveOps {
 	@Cacheable("primesx")
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
+		new RuntimeException().printStackTrace();
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;

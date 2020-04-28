@@ -18,7 +18,7 @@ public class User {
     private UserProfile profile;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
-    protected User() {
+    public User() {
     }
     public User(String username, UserProfile profile, List<Long> managedTeacherIds) {
         this.username = username;
