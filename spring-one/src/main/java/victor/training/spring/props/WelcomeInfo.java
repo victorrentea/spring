@@ -2,6 +2,7 @@ package victor.training.spring.props;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,9 @@ import java.util.Map;
 @Data
 @Component
 public class WelcomeInfo {
+    @Value("${welcome.welcomeMessage}")
     private String welcomeMessage;
+    @Value("${welcome.supportUrls}")
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
     // TODO HelpInfo help;
