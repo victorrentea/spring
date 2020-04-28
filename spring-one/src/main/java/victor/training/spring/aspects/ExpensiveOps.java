@@ -15,11 +15,13 @@ import org.hibernate.annotations.Cache;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ExpensiveOps {
@@ -47,9 +49,19 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	@Autowired
+	private ExpensiveOps myselfProxied;
+
 	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
+
+		log.debug("dintr-un motiv obscur chemi de aici  functia isPrime -> -- din aceeasi clasa");
+		System.out.println(myselfProxied.isPrime(10_000_169)); // 1
+		System.out.println(((ExpensiveOps)AopContext.currentProxy()).isPrime(10_000_169)); // 2
+		// 3 sa muti metoda cealalta intr-o alta clasa ca sa nu-ti fie rusine ca o injectezi pe aia
+		// 4 sa faci acea treaba programatic : CacheManager, TransactionTemplate, RestTemplate, JdbcTemplate
+
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here
