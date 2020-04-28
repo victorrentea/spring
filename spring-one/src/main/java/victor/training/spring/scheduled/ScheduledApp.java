@@ -29,7 +29,7 @@ public class ScheduledApp  {
     @Scheduled(cron = "${folder.poller.cron}")
     public void lookIntoFolder() {
         log.debug("Looking into folder");
-        ThreadUtils.sleep(4000);
+        ThreadUtils.sleep(11000);
         log.debug("DONE");
     }
 
@@ -37,8 +37,8 @@ public class ScheduledApp  {
 
     // TODO 2 define another task at each second. This should not block.
     // TODO explore application.properties
-    @Scheduled(fixedRate = 1000)
-    public void pollFast() {
-        log.debug("FAST each second");
-    }
+//    @Scheduled(fixedRate = 1000)
+//    public void pollFast() {
+//        log.debug("FAST each second");
+//    }
 }
