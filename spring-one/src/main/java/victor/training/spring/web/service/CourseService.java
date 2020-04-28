@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional
+//@Transactional
 public class CourseService {
     @Autowired
     private CourseRepo courseRepo;
