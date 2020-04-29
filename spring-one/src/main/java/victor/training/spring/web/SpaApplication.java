@@ -4,9 +4,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.props.PropertiesApp;
 
+@EnableAsync
 @EnableSwagger2
 @SpringBootApplication
 @EnableCaching
