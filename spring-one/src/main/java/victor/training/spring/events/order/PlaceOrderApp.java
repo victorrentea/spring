@@ -62,23 +62,26 @@ class StockManagementService {
     private int stock = 3; // silly implem :D
 
 	@EventListener
-    @Order(10)
-    public void process(OrderPlacedEvent event) {
+    public OrderInStockEvent process(OrderPlacedEvent event) {
         log.info("Checking stock for products in order " + event.getOrderId());
         if (stock == 0) {
             throw new IllegalStateException("Out of stock");
         }
         stock--;
         log.info(">> PERSIST new STOCK!!");
+        return new OrderInStockEvent(event.getOrderId());
     }
+}
+@Value
+class OrderInStockEvent {
+    long orderId;
 }
 
 @Slf4j
 @Service
 class InvoiceService {
     @EventListener
-    @Order(20)
-    public void sendInvoice(OrderPlacedEvent event) {
+    public void sendInvoice(OrderInStockEvent event) {
         log.info("Generating invoice for order " + event.getOrderId());
         // TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
         log.info(">> PERSIST Invoice!!");
