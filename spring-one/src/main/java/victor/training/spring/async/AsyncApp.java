@@ -60,6 +60,7 @@ class Beutor implements CommandLineRunner {
 
 		CompletableFuture<Beer> futureBeer = barman.getOneBeer(); // 1 // voi va ganditi la apeluri de servicii web REST
 		CompletableFuture<Vodka> futureVodka = barman.getOneVodka(); // 2
+		// == Single din rxJava2
 		log.debug("A plecat fata cu comanda");
 
 		futureBeer.thenCombine(futureVodka, DillyDilly::new)
