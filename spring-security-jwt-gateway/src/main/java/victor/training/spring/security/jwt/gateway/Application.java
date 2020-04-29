@@ -34,7 +34,7 @@ public class Application extends WebSecurityConfigurerAdapter {
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        configure2SSL(restTemplate);
+//        configure2SSL(restTemplate);
         return restTemplate;
     }
 
@@ -70,7 +70,7 @@ public class Application extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // otherwise button POSTS will get rejected
                 .authorizeRequests()
-                .anyRequest().permitAll()
+                .anyRequest().anonymous()
 //                .authenticated().and().formLogin()
                 ;
     }
