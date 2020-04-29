@@ -1,0 +1,3 @@
+Goal: access http://localhost/back/ping and be forwared automatically to backend.
+1) enable zool
+2) enable authentication (eg form w/ in-mem users)

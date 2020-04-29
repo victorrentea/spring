@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.InputStream;
 import java.security.KeyStore;
 
-//@EnableZuulProxy
+@EnableZuulProxy
 @SpringBootApplication
 public class Application extends WebSecurityConfigurerAdapter {
 
@@ -70,17 +70,16 @@ public class Application extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // otherwise button POSTS will get rejected
                 .authorizeRequests()
-                .anyRequest().anonymous()
-//                .authenticated().and().formLogin()
+                .anyRequest()//.authenticated()
+                .authenticated().and().formLogin()
                 ;
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("test").password("test").roles("USER").build();
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-//}
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails userDetails = User.withDefaultPasswordEncoder().username("test").password("test").roles("USER").build();
+        return new InMemoryUserDetailsManager(userDetails);
+    }
 
     // TODO Global CORS policy:
 //    @Bean
