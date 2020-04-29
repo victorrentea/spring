@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.CourseDto;
 import victor.training.spring.web.domain.Course;
@@ -42,26 +43,10 @@ public class CoursesController {
 	}
 
 	@DeleteMapping("{id}")
-	@PreAuthorize("hasAuthority('deleteCourse')")
 	// TODO [SEC] Allow only for special permission
+	// TODO  and @accessController.canDeleteCourse(#id)
 	public void deleteCourseById(@PathVariable Long id) {
-		if (!canDeleteCourse(id)) {
-			throw new IllegalArgumentException("No access!");
-		}
 		courseService.deleteCourseById(id);
-	}
-
-	@Autowired
-	private CourseRepo courseRepo;
-
-	private boolean canDeleteCourse(long courseId) {
-		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Course course = courseRepo.findById(courseId).get();
-		Set<Long> managedTeacherIds = securityUser.getManagedTeacherIds();
-		log.info("Managed teacher IDs: " + managedTeacherIds);
-		log.info("Course . teacher.id " + course.getTeacher().getId());
-		return managedTeacherIds.contains(course.getTeacher().getId());
-
 	}
 
 	@PostMapping
