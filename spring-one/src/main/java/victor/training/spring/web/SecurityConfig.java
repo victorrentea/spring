@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import victor.training.spring.web.security.DatabaseUserDetailsService;
-import victor.training.spring.web.security.JwtAuthorizationHeaderFilter;
-
+//import victor.training.spring.web.security.DatabaseUserDetailsService;
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
@@ -24,40 +22,42 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .csrf().disable()
+                .authorizeRequests()
                 .mvcMatchers("/unsecured/**").anonymous()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
         .httpBasic()
-                .and()
-        .authenticationProvider(preAuthenticatedProvider())
-                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//        .authenticationProvider(preAuthenticatedProvider())
+//                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
     }
-    @Bean
-    public AuthenticationProvider preAuthenticatedProvider() {
-        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-        provider.setPreAuthenticatedUserDetailsService(preauthUserDetailsService());
-        return provider;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public JwtAuthorizationHeaderFilter jwtFilter() throws Exception {
-        return new JwtAuthorizationHeaderFilter(authenticationManagerBean());
-    }
-
-    @Bean
-    protected DatabaseUserDetailsService preauthUserDetailsService() {
-        return new DatabaseUserDetailsService();
-    }
+//    @Bean
+//    public AuthenticationProvider preAuthenticatedProvider() {
+//        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+//        provider.setPreAuthenticatedUserDetailsService(preauthUserDetailsService());
+//        return provider;
+//    }
+//
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+//
+//    @Bean
+//    public JwtAuthorizationHeaderFilter jwtFilter() throws Exception {
+//        return new JwtAuthorizationHeaderFilter(authenticationManagerBean());
+//    }
+//
+//    @Bean
+//    protected DatabaseUserDetailsService preauthUserDetailsService() {
+//        return new DatabaseUserDetailsService();
+//    }
 
     @Bean
     public UserDetailsService userDetailsService() {
