@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,7 @@ class StockManagementService {
     private int stock = 3; // silly implem :D
 
 	@EventListener
+    @Order(10)
     public void process(OrderPlacedEvent event) {
         log.info("Checking stock for products in order " + event.getOrderId());
         if (stock == 0) {
@@ -75,6 +77,7 @@ class StockManagementService {
 @Service
 class InvoiceService {
     @EventListener
+    @Order(20)
     public void sendInvoice(OrderPlacedEvent event) {
         log.info("Generating invoice for order " + event.getOrderId());
         // TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
