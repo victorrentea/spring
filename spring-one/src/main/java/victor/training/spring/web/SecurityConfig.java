@@ -34,6 +34,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
 //        .httpBasic()
+
 //                .and()
         .authenticationProvider(preAuthenticatedProvider())
                 .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
