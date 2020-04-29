@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.context.SecurityContext;
@@ -12,6 +13,7 @@ import victor.training.spring.web.service.UserService;
 
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 @RestController
 public class TechnicalController {
 	@Autowired
@@ -19,20 +21,22 @@ public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
-		return userService.getCurrentUsername().get();
+//		return userService.getCurrentUsername().get(); // asta nu merge,
+		// Poate merge: citeste aici: https://www.baeldung.com/spring-security-async-principal-propagation
+
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 	@PostMapping
-			public void enable() {
+	public void enable() {
 		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 
 
 	}
 
-	@Autowired  // TODO Import the other Spring Boot Application
+	@Autowired
 	WelcomeInfo welcomeInfo;
 
-	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public WelcomeInfo showWelcomeInfo(){
 		return welcomeInfo;
@@ -51,10 +55,12 @@ public class TechnicalController {
 
 	@Autowired
 	private ConfigurableApplicationContext context;
+
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/restart")
 	public void restart() {
-		context.refresh();
+		log.info("Hot-restarting spring application");
+//		context.refresh();
 	}
 
 }

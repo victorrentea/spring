@@ -19,6 +19,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers("/unsecured/**").anonymous()
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
         .formLogin().permitAll()
