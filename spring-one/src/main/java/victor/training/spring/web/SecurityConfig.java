@@ -15,13 +15,16 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .anyRequest().authenticated()
-//                ;
-//
-//    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .mvcMatchers("/unsecured/**").anonymous()
+                .anyRequest().authenticated()
+                .and()
+        .formLogin().permitAll()
+        ;
+
+    }
 
 
     @Bean
@@ -31,8 +34,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .password("test")
                 .roles("USER")
                 .build();
+        UserDetails adminDetails = User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("admin")
+                .roles("ADMIN")
+                .build();
 
-        return new InMemoryUserDetailsManager(userDetails);
+        return new InMemoryUserDetailsManager(userDetails, adminDetails);
     }
 
 }

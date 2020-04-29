@@ -12,6 +12,7 @@ import victor.training.spring.props.PropertiesApp;
 @EnableSwagger2
 @SpringBootApplication
 @EnableCaching
+@Import(PropertiesApp.class)
 public class SpaApplication {
 
 	public static void main(String[] args) {

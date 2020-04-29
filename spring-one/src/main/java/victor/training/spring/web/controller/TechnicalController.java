@@ -5,6 +5,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
@@ -21,7 +22,14 @@ public class TechnicalController {
 		return userService.getCurrentUsername().get();
 	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
+	@PostMapping
+			public void enable() {
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+
+
+	}
+
+	@Autowired  // TODO Import the other Spring Boot Application
 	WelcomeInfo welcomeInfo;
 
 	// TODO [SEC] allow unsecured access
