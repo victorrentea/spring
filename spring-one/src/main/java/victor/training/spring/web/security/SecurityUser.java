@@ -19,6 +19,16 @@ public class SecurityUser implements UserDetails {
 		this.managedTeacherIds = managedTeacherIds;
 	}
 
+	/**
+	 * TODO NEVER put this in PRODUCTION. ONLY FOR DEMO PURPOSES
+	 * FIXME ! THIS IS A HACK ! - this UserDetails instance declares a password identical to the username
+	 * When used with user/password authentication (Form or Basic) it expects the password to be equal to the username
+	 */
+	@Override
+	public String getPassword() {
+		return "{noop}" + username; // FAKE LOGIN--- this assumes all users have password = username
+	}
+
 	public Set<Long> getManagedTeacherIds() {
 		return managedTeacherIds;
 	}
@@ -28,10 +38,7 @@ public class SecurityUser implements UserDetails {
 		return permissions.stream().map(SimpleGrantedAuthority::new).collect(toSet());
 	}
 
-	@Override
-	public String getPassword() {
-		return "{noop}" + username; // FAKE LOGIN--- this assumes all users have password = username
-	}
+
 
 	@Override
 	public String getUsername() {

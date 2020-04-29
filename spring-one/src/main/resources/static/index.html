@@ -126,6 +126,11 @@ function deleteCourse(id) {
 		success: function() {
 			toastr.success("Course deleted"); 
 			refreshCoursesTable();
+		},
+		error: function(a,b,c) {
+			if (a.responseText) {
+				toastr.error(a.responseText);
+			}
 		}
 	});
 }
