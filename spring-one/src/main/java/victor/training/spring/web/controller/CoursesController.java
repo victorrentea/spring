@@ -28,7 +28,10 @@ public class CoursesController {
 		courseService.updateCourse(id, dto);
 	}
 
-	// TODO [SEC] Allow only for special permission
+	// after switching to DatabaseUserDetailsService
+	// TODO [SEC] 1 Allow only for ROLE 'USER'
+	// TODO [SEC] 2 Authorize the user to have the authority 'deleteCourse'
+	/** @see victor.training.spring.web.domain.UserProfile */
 	public void deleteCourseById(Long id) {
 		courseService.deleteCourseById(id);
 	}
