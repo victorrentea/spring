@@ -37,9 +37,6 @@ public class PlaceOrderApp implements CommandLineRunner {
 
 
     @Autowired
-    private InvoiceService invoiceService;
-
-    @Autowired
     ApplicationEventPublisher eventPublisher;
 
     public void run(String... args) {
@@ -50,7 +47,6 @@ public class PlaceOrderApp implements CommandLineRunner {
         log.debug(">> PERSIST new Order");
         long orderId = 13L;
         eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
-        invoiceService.sendInvoice(orderId);
     }
 }
 
@@ -78,8 +74,9 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-    public void sendInvoice(long orderId) {
-        log.info("Generating invoice for order " + orderId);
+    @EventListener
+    public void sendInvoice(OrderPlacedEvent event) {
+        log.info("Generating invoice for order " + event.getOrderId());
         // TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
         log.info(">> PERSIST Invoice!!");
     }
