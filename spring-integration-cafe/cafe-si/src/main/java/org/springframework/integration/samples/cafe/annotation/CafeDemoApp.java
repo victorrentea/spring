@@ -16,6 +16,8 @@
 
 package org.springframework.integration.samples.cafe.annotation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -28,6 +30,8 @@ import org.springframework.integration.samples.cafe.Order;
 import org.springframework.integration.samples.cafe.SerialSillyCafe;
 
 public class CafeDemoApp {
+
+	private static Log logger = LogFactory.getLog(CafeDemoApp.class);
 
 	public static void main(String[] args) {
 
@@ -44,6 +48,7 @@ public class CafeDemoApp {
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);
 			cafe.placeOrder(order);
+			logger.warn("Submitted order " + i);
 		}
 		//WE'll have to wait some more for all Deliveries to appear in console
 		//context.close();

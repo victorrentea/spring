@@ -22,6 +22,9 @@ import org.springframework.messaging.PollableChannel;
 @ComponentScan
 public class CafeDemoConfig {
 
+    @Autowired
+    private Barista barista;
+
     @Bean
     public IntegrationFlow logOrders() {
             return IntegrationFlows.from("orders")
@@ -46,7 +49,8 @@ public class CafeDemoConfig {
     public IntegrationFlow pollColdDrinks() {
         return IntegrationFlows.from("coldDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
-                .log(LoggingHandler.Level.WARN, "cold")
+                .handle(barista, "prepareColdDrink")
+                .log(LoggingHandler.Level.WARN, "cold-after")
                 .get();
     }
     @Bean
@@ -54,13 +58,13 @@ public class CafeDemoConfig {
         return IntegrationFlows.from("hotDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)/*.maxMessagesPerPoll(1)*/))
                 .channel("hotDrinksPollable")
-                .log(LoggingHandler.Level.WARN, "hot")
+//                .log(LoggingHandler.Level.WARN, "hot")
                 .get();
     }
     @Bean
     public IntegrationFlow logHotDrinksPollable() {
         return IntegrationFlows.from("hotDrinksPollable")
-                .log(LoggingHandler.Level.WARN, "hot")
+                .log(LoggingHandler.Level.DEBUG, "hot")
                 .get();
     }
 }

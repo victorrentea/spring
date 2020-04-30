@@ -9,7 +9,9 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.samples.cafe.Drink;
 import org.springframework.integration.samples.cafe.OrderItem;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Barista {
 
 	private static Log logger = LogFactory.getLog(Barista.class);
