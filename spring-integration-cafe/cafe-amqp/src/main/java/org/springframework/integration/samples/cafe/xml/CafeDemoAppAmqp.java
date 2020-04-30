@@ -46,7 +46,7 @@ public class CafeDemoAppAmqp {
 	 */
 	public static void order(AbstractApplicationContext context, int count){
 		Cafe cafe = (Cafe) context.getBean("cafe");
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 1; i <= 20; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);
@@ -55,12 +55,11 @@ public class CafeDemoAppAmqp {
 	}
 
 	public static void main(String[] args) {
-		// TODO recover
-//		AbstractApplicationContext context =
-//			CafeDemoAppUtilities.loadProfileContext(
-//					"/META-INF/spring/integration/amqp/cafeDemo-amqp-xml.xml",
-//					CafeDemoAppAmqp.class,CafeDemoAppUtilities.DEV);
-//		order(context, 100);
-//		context.close();
+		AbstractApplicationContext context =
+			CafeDemoAppUtilities.loadProfileContext(
+					"/META-INF/spring/integration/amqp/cafeDemo-amqp-xml.xml",
+					CafeDemoAppAmqp.class,CafeDemoAppUtilities.DEV);
+		order(context, 100);
+		context.close();
 	}
 }

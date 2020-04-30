@@ -25,21 +25,27 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.samples.cafe.Cafe;
 import org.springframework.integration.samples.cafe.DrinkType;
 import org.springframework.integration.samples.cafe.Order;
+import org.springframework.integration.samples.cafe.SerialSillyCafe;
 
 public class CafeDemoApp {
 
 	public static void main(String[] args) {
 
+
+//		TODO TRY OUT CafeDemoPlainJava first
+
 		AbstractApplicationContext context =
 			//new ClassPathXmlApplicationContext("/META-INF/spring/integration/cafeDemo-annotation.xml", CafeDemoApp.class);
 			new AnnotationConfigApplicationContext(CafeDemoConfig.class);
 		Cafe cafe = (Cafe) context.getBean("cafe");
+//		cafe = new SerialSillyCafe();
 		for (int i = 1; i <= 20; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);
 			cafe.placeOrder(order);
 		}
+		//WE'll have to wait some more for all Deliveries to appear in console
 		context.close();
 	}
 }

@@ -18,6 +18,7 @@ package org.springframework.integration.samples.cafe;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Marius Bogoevici
@@ -62,14 +63,11 @@ public class Delivery implements Serializable{
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer(SEPARATOR + "\n");
-		buffer.append("Order #" + getOrderNumber() + "\n");
-		for (Drink drink : getDeliveredDrinks()) {
-			buffer.append(drink);
-			buffer.append("\n");
-		}
-		buffer.append(SEPARATOR + "\n");
-		return buffer.toString();
+		return SEPARATOR + "\n" + "Delivery for Order #" + getOrderNumber() + "\n"  +
+			getDeliveredDrinks()
+				.stream().map(drink -> drink + "\n")
+				.collect(Collectors.joining("")) +
+			SEPARATOR + "\n";
 	}
 
 }
