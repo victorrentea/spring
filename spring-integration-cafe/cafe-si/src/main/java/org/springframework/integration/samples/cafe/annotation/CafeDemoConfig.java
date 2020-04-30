@@ -9,6 +9,7 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 
@@ -38,9 +39,17 @@ public class CafeDemoConfig {
     }
 
     @Bean
+    public IntegrationFlow bridgeCold() {
+        return IntegrationFlows.from("coldDrinks")
+                .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
+                .channel("coldDrinkBarista")
+                .get();
+    }
+
+    @Bean
     public IntegrationFlow printout() {
         return IntegrationFlows.from("deliveries")
-                .log(LoggingHandler.Level.INFO)
+                .log(LoggingHandler.Level.WARN)
                 .get();
     }
 

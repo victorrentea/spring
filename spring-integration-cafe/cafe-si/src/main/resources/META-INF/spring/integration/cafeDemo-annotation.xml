@@ -27,9 +27,9 @@
 	<int:channel id="hotDrinkBarista"/>
 	<int:channel id="preparedDrinks"/>
 
-	<int:bridge input-channel="coldDrinks" output-channel="coldDrinkBarista">
+	<!--<int:bridge input-channel="coldDrinks" output-channel="coldDrinkBarista">
 		<int:poller fixed-delay="1000"/>
-	</int:bridge>
+	</int:bridge>-->
 
 	<int:bridge input-channel="hotDrinks" output-channel="hotDrinkBarista">
 		<int:poller fixed-delay="1000"/>
