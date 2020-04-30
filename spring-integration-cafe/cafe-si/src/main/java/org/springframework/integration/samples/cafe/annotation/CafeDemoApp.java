@@ -39,7 +39,7 @@ public class CafeDemoApp {
 //			new AnnotationConfigApplicationContext(CafeDemoConfig.class);
 //		Cafe cafe = (Cafe) context.getBean("cafe");
 		Cafe cafe = new SerialSillyCafe();
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 10; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);
