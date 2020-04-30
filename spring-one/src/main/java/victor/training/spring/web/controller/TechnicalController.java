@@ -21,8 +21,8 @@ public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-//		return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+//		return SecurityContextHolder.getContext().getAuthentication().getName();
+		return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}
 
 	@PostConstruct

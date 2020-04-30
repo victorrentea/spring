@@ -14,6 +14,7 @@ public class DatabaseUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepo userRepository;
 
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("Lookup username {} in database", username);
         User user = userRepository.getForLogin(username)

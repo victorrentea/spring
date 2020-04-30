@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public enum UserProfile {
-    USER("runSearch", "USER"),
+    USER("runSearch", "startExport", "USER"),
+    POWER_USER( "deleteCourse", "USER"),
     ADMIN("runSearch", "ADMIN",
             "deleteCourse");
     public final Set<String> permissions;
