@@ -14,6 +14,8 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.samples.cafe.OrderItem;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.PollableChannel;
+
 @EnableIntegration
 @IntegrationComponentScan("org.springframework.integration.samples.cafe") // sa scaneze si interfete @MessageGateway pt care sa creeze apoi proxyuri
 //@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml") //inspiration
@@ -29,17 +31,35 @@ public class CafeDemoConfig {
                     .get();
     }
 
+    @Bean
+    public PollableChannel coldDrinks() {
+        return new QueueChannel(10);
+    }
+    @Bean
+    public PollableChannel hotDrinks() {
+        return new QueueChannel(10);
+    }
+
     // TODO vrem ca cele doua canale coldDrinks si hotDrinks sa devina Pollable (tu ii vei cere din treadpoolurile barmanilor)
     //  nu Subscribable (sa dea el in tine ca animalu)
     @Bean
-    public IntegrationFlow logColdDrinks() {
+    public IntegrationFlow pollColdDrinks() {
         return IntegrationFlows.from("coldDrinks")
+                .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
                 .log(LoggingHandler.Level.WARN, "cold")
                 .get();
     }
     @Bean
-    public IntegrationFlow logHotDrinks() {
+    public IntegrationFlow pollHotDrinks() {
         return IntegrationFlows.from("hotDrinks")
+                .bridge(e -> e.poller(Pollers.fixedDelay(1000)/*.maxMessagesPerPoll(1)*/))
+                .channel("hotDrinksPollable")
+                .log(LoggingHandler.Level.WARN, "hot")
+                .get();
+    }
+    @Bean
+    public IntegrationFlow logHotDrinksPollable() {
+        return IntegrationFlows.from("hotDrinksPollable")
                 .log(LoggingHandler.Level.WARN, "hot")
                 .get();
     }
