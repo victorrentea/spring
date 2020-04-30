@@ -81,6 +81,6 @@ public class OrderItem implements Serializable {
 
 	public String toString() {
 		return ((this.iced) ? "iced " : "hot ") + this.shots + " shot " + this.type;
-	}
+}
 
 }

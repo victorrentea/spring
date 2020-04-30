@@ -22,6 +22,7 @@ public class CafeDemoConfig {
     @Bean
     public IntegrationFlow logOrders() {
             return IntegrationFlows.from("orders")
+                    .split("orderSplitter", "split")
                     .log(LoggingHandler.Level.WARN)
                     .get();
     }
