@@ -1,5 +1,6 @@
 package org.springframework.integration.samples.cafe.annotation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
@@ -37,12 +38,14 @@ public class CafeDemoConfig {
     public MessageChannel coldDrinks() {
         return new QueueChannel(10);
     }
-
+@Autowired
+Barista barista;
     @Bean
     public IntegrationFlow bridgeCold() {
         return IntegrationFlows.from("coldDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
-                .channel("coldDrinkBarista")
+                .handle(barista,"prepareColdDrink")
+                .channel("preparedDrinks")
                 .get();
     }
 

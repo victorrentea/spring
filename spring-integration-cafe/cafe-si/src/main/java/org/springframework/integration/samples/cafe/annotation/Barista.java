@@ -47,7 +47,7 @@ public class Barista {
 		}
 	}
 
-	@ServiceActivator(inputChannel="coldDrinkBarista", outputChannel="preparedDrinks")
+//	@ServiceActivator(inputChannel="coldDrinkBarista", outputChannel="preparedDrinks")
 	public Drink prepareColdDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.coldDrinkDelay);
