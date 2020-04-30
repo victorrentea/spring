@@ -61,4 +61,12 @@ public class Order implements Serializable{
 	public void setItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
+
+	@Override
+	public String toString() {
+		return "Order{" +
+				"orderItems=" + orderItems +
+				", number=" + number +
+				'}';
+	}
 }

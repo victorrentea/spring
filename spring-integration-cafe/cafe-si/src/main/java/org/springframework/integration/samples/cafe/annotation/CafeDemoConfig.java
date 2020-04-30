@@ -14,10 +14,16 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
 @EnableIntegration
-@IntegrationComponentScan("org.springframework.integration.samples.cafe")
+@IntegrationComponentScan("org.springframework.integration.samples.cafe") // sa scaneze si interfete @MessageGateway pt care sa creeze apoi proxyuri
 //@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml") //inspiration
 @ComponentScan
 public class CafeDemoConfig {
 
+    @Bean
+    public IntegrationFlow logOrders() {
+            return IntegrationFlows.from("orders")
+                    .log(LoggingHandler.Level.WARN)
+                    .get();
+    }
 
 }
