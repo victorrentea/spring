@@ -46,25 +46,28 @@ public class CafeDemoConfig {
     // TODO vrem ca cele doua canale coldDrinks si hotDrinks sa devina Pollable (tu ii vei cere din treadpoolurile barmanilor)
     //  nu Subscribable (sa dea el in tine ca animalu)
     @Bean
-    public IntegrationFlow pollColdDrinks() {
+    public IntegrationFlow processColdDrinks() {
         return IntegrationFlows.from("coldDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
                 .handle(barista, "prepareColdDrink")
-                .log(LoggingHandler.Level.WARN, "cold-after")
+                .log(LoggingHandler.Level.WARN, "cold")
+                .channel("drinks")
                 .get();
     }
     @Bean
-    public IntegrationFlow pollHotDrinks() {
+    public IntegrationFlow processHotDrinks() {
         return IntegrationFlows.from("hotDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)/*.maxMessagesPerPoll(1)*/))
-                .channel("hotDrinksPollable")
-//                .log(LoggingHandler.Level.WARN, "hot")
+                .handle(barista, "prepareHotDrink")
+                .log(LoggingHandler.Level.WARN, "hot")
+                .channel("drinks")
                 .get();
     }
+
     @Bean
-    public IntegrationFlow logHotDrinksPollable() {
-        return IntegrationFlows.from("hotDrinksPollable")
-                .log(LoggingHandler.Level.DEBUG, "hot")
+    public IntegrationFlow pollDeliveries() {
+        return IntegrationFlows.from("deliveries")
+                .log(LoggingHandler.Level.WARN, "delivery")
                 .get();
     }
 }
