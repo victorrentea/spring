@@ -34,11 +34,11 @@ public class CafeDemoApp {
 
 //		TODO TRY OUT CafeDemoPlainJava first
 
-		AbstractApplicationContext context =
+//		AbstractApplicationContext context =
 			//new ClassPathXmlApplicationContext("/META-INF/spring/integration/cafeDemo-annotation.xml", CafeDemoApp.class);
-			new AnnotationConfigApplicationContext(CafeDemoConfig.class);
-		Cafe cafe = (Cafe) context.getBean("cafe");
-//		cafe = new SerialSillyCafe();
+//			new AnnotationConfigApplicationContext(CafeDemoConfig.class);
+//		Cafe cafe = (Cafe) context.getBean("cafe");
+		Cafe cafe = new SerialSillyCafe();
 		for (int i = 1; i <= 20; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
@@ -46,6 +46,6 @@ public class CafeDemoApp {
 			cafe.placeOrder(order);
 		}
 		//WE'll have to wait some more for all Deliveries to appear in console
-		context.close();
+		//context.close();
 	}
 }

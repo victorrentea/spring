@@ -10,7 +10,6 @@ import org.springframework.integration.samples.cafe.Drink;
 import org.springframework.integration.samples.cafe.OrderItem;
 import org.springframework.stereotype.Component;
 
-@Component
 public class Barista {
 
 	private static Log logger = LogFactory.getLog(Barista.class);
@@ -32,7 +31,6 @@ public class Barista {
 		this.coldDrinkDelay = coldDrinkDelay;
 	}
 
-	@ServiceActivator(inputChannel="hotDrinkBarista", outputChannel="preparedDrinks")
 	public Drink prepareHotDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.hotDrinkDelay);
@@ -47,7 +45,6 @@ public class Barista {
 		}
 	}
 
-//	@ServiceActivator(inputChannel="coldDrinkBarista", outputChannel="preparedDrinks")
 	public Drink prepareColdDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.coldDrinkDelay);

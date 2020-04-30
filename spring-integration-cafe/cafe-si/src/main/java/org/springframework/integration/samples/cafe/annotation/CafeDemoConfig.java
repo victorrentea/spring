@@ -13,47 +13,11 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.messaging.MessageChannel;
-
-/**
- * Provides the 'main' method for running the Cafe Demo application. When an
- * order is placed, the Cafe will send that order to the "orders" channel.
- * The channels are defined within the configuration file ("cafeDemo.xml"),
- * and the relevant components are configured with annotations (such as the
- * OrderSplitter, DrinkRouter, and Barista classes).
- *
- * @author Mark Fisher
- * @author Marius Bogoevici
- */
 @EnableIntegration
 @IntegrationComponentScan("org.springframework.integration.samples.cafe")
-@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml")
-@ComponentScan("org.springframework.integration.samples.cafe.annotation")
+//@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml") //inspiration
+@ComponentScan
 public class CafeDemoConfig {
 
-    @Bean
-    public MessageChannel orders() {
-        return new DirectChannel();
-    }
-    @Bean
-    public MessageChannel coldDrinks() {
-        return new QueueChannel(10);
-    }
-@Autowired
-Barista barista;
-    @Bean
-    public IntegrationFlow bridgeCold() {
-        return IntegrationFlows.from("coldDrinks")
-                .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
-                .handle(barista,"prepareColdDrink")
-                .channel("preparedDrinks")
-                .get();
-    }
-
-    @Bean
-    public IntegrationFlow printout() {
-        return IntegrationFlows.from("deliveries")
-                .log(LoggingHandler.Level.WARN)
-                .get();
-    }
 
 }
