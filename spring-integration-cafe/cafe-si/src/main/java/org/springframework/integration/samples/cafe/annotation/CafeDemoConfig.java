@@ -22,7 +22,8 @@ public class CafeDemoConfig {
     @Bean
     public IntegrationFlow logOrders() {
             return IntegrationFlows.from("orders")
-                    .split("orderSplitter", "split")
+//                    .split("orderSplitter", "split")
+                    .split("payload.items") // SpEL   -> payload este un atribut al GenericMessage (vezi log)
                     .log(LoggingHandler.Level.WARN)
                     .get();
     }
