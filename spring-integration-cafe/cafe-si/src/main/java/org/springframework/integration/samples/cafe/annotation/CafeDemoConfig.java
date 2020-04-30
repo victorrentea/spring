@@ -28,6 +28,9 @@ public class CafeDemoConfig {
                     .route((OrderItem orderItem) -> orderItem.isIced()? "coldDrinks" : "hotDrinks")
                     .get();
     }
+
+    // TODO vrem ca cele doua canale coldDrinks si hotDrinks sa devina Pollable (tu ii vei cere din treadpoolurile barmanilor)
+    //  nu Subscribable (sa dea el in tine ca animalu)
     @Bean
     public IntegrationFlow logColdDrinks() {
         return IntegrationFlows.from("coldDrinks")
