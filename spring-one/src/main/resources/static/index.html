@@ -75,14 +75,14 @@ function getContextPath() {
 var restEndpoint = getContextPath() + "/rest";
 
 function refreshCoursesTable() {
-	$.ajax(restEndpoint +"/courses", {
+	$.ajax(restEndpoint +"/cours", {
 		method: "GET",
-		success: function(courses) {
+		success: function(cours) {
 			$("#coursesTable tr").each(function(i, r) {
 				if (i>0) r.remove();
 			});
-			for (var i=0; i<courses.length;i++) {
-				var c = courses[i];
+			for (var i=0; i<cours.length;i++) {
+				var c = cours[i];
 				var row = '<tr id="'+c.id+'">';
 				row+='<td>'+c.name+'</td>';
 				row+='<td>'+c.startDate + '</td>';
@@ -121,7 +121,7 @@ populateTeacherCombo($("#editTeacher"));
 
 
 function deleteCourse(id) {
-	$.ajax(restEndpoint +"/courses/"+id, {
+	$.ajax(restEndpoint +"/cours/"+id, {
 		method: "DELETE",
 		success: function() {
 			toastr.success("Course deleted"); 
@@ -138,7 +138,7 @@ function deleteCourse(id) {
 //------------- COURSE: UPDATE SCREEN --------------------
 
 function openEditCourse(courseId) {
-	$.ajax(restEndpoint + "/courses/"+courseId, {
+	$.ajax(restEndpoint + "/cours/"+courseId, {
 		method: "GET",
 		success: function(data) {
 			//au venit datele
@@ -153,7 +153,7 @@ function openEditCourse(courseId) {
 	});
 }
 function updateCourse() {
-	$.ajax(restEndpoint +"/courses/" +$("#editCourseId").val(), {
+	$.ajax(restEndpoint +"/cours/" +$("#editCourseId").val(), {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
@@ -185,7 +185,7 @@ function openCreateCourse() {
 	$('#courseNewDiv').show();
 }
 function createCourse() {
-	$.ajax(restEndpoint +"/courses", {
+	$.ajax(restEndpoint +"/cours", {
 		data: JSON.stringify({
 			name:$("#newName").val(),
 			description:$("#newDescription").val(),

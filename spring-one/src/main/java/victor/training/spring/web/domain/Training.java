@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
-public class Course {
+public class Training {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -18,10 +18,10 @@ public class Course {
 	private Teacher teacher;
 
 	
-	public Course() {
+	public Training() {
 	}
 	
-	public Course(String name, String description, Date startDate) {
+	public Training(String name, String description, Date startDate) {
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
