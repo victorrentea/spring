@@ -27,6 +27,11 @@ public class Training {
 		this.startDate = startDate;
 	}
 
+	public Training setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
 	public Long getId() {
 		return id;
 	}

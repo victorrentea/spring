@@ -27,6 +27,11 @@ public class Teacher {
 		return id;
 	}
 
+	public Teacher setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
 	public final String getName() {
 		return name;
 	}
