@@ -1,11 +1,11 @@
-package victor.training.spring.web.repo;
+package com.example.demo.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.entity.Teacher;
 import org.springframework.stereotype.Repository;
-import victor.training.spring.web.domain.Teacher;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 //public interface TeacherRepo extends JpaRepository<Teacher, Long> {
 //}
