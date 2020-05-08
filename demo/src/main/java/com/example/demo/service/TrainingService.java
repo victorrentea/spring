@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TrainingService {
@@ -20,14 +20,16 @@ public class TrainingService {
     private TrainingRepo trainingRepo;
     @Autowired
     private TeacherRepo teacherRepo;
+    @Autowired
+    private TrainingMapper trainingMapper;
 
     public List<TrainingDto> getAllTrainings() {
-        // TODO
-        return Collections.emptyList();
+        return trainingRepo.findAll().stream().map(training -> new TrainingDto(training)).collect(toList());
     }
 
     public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+
+        return new TrainingDto(trainingRepo.findById(id).get());
     }
 
     // TODO Test this!
@@ -38,7 +40,7 @@ public class TrainingService {
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
         training.setDescription(dto.description);
-        training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ISO_DATE));
         training.setTeacher(teacherRepo.getOne(dto.teacherId));
     }
 
@@ -50,15 +52,9 @@ public class TrainingService {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another course with that name already exists");
         }
-        Training newEntity = new Training();
-        // TODO
+        Training newEntity = trainingMapper.mapToEntity(dto);
         trainingRepo.save(newEntity);
     }
 
-    private TrainingDto mapToDto(Training training) {
-        TrainingDto dto = new TrainingDto();
-        // TODO
-        return dto ;
-    }
 
 }

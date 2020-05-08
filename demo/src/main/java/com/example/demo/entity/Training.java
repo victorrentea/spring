@@ -2,6 +2,10 @@ package com.example.demo.entity;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
 
 public class Training {
 	private Long id;
@@ -14,10 +18,11 @@ public class Training {
 	public Training() {
 	}
 	
-	public Training(String name, String description, LocalDate startDate) {
+	public Training(String name, String description, LocalDate startDate, Teacher teacher) {
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
+		setTeacher(teacher);
 	}
 
 	public Training setId(Long id) {
@@ -45,19 +50,23 @@ public class Training {
 		this.description = description;
 	}
 
-	public final LocalDate getStartDate() {
-		return startDate;
+	public final Optional<LocalDate> getStartDate() {
+		return ofNullable(startDate);
 	}
 
 	public final void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
+//	public final Optional<Teacher> getTeacher() {
+//		return ofNullable(teacher);
+//	}
 	public final Teacher getTeacher() {
 		return teacher;
 	}
 
 	public final void setTeacher(Teacher teacher) {
+		Objects.requireNonNull(teacher);
 		this.teacher = teacher;
 	}
 

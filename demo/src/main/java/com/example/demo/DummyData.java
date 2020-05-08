@@ -26,24 +26,21 @@ public class DummyData {
 
 	@EventListener
 	public void initMockData(ContextRefreshedEvent event) {
-		Training c1 = new Training("Spring Framework", "All about Spring", LocalDate.now());
-		Training c2 = new Training("JPA", "The coolest standard in Java EE", LocalDate.now());
-		Training c3 = new Training("Java Basic", "The new way of doing Single Page Applications", LocalDate.now());
-		Training c4 = new Training("DesignPatterns", "Design Thinking", LocalDate.now());
-		trainingRepo.save(c1);
-		trainingRepo.save(c2);
-		trainingRepo.save(c3);
-		trainingRepo.save(c4);
-
+		System.out.println("Inserting dummy data");
 		Teacher t1 = new Teacher("Victor");
 		Teacher t2 = new Teacher("Ionut");
 		teacherRepo.save(t1);
 		teacherRepo.save(t2);
-		
-		c1.setTeacher(t1);
-		c2.setTeacher(t1);
-		c3.setTeacher(t2);
-		c4.setTeacher(t1);
+
+
+		Training c1 = new Training("Spring Framework", "All about Spring", LocalDate.now(), t1);
+		Training c2 = new Training("JPA", "The coolest standard in Java EE", LocalDate.now(), t1);
+		Training c3 = new Training("Java Basic", "The new way of doing Single Page Applications", LocalDate.now(), t2);
+		Training c4 = new Training("DesignPatterns", "Design Thinking", LocalDate.now(), t1);
+		trainingRepo.save(c1);
+		trainingRepo.save(c2);
+		trainingRepo.save(c3);
+		trainingRepo.save(c4);
 	}
 	
 	

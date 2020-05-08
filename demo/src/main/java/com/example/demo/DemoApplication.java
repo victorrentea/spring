@@ -16,6 +16,11 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 }
+
+
+
+
+
 @Component
 class A implements CommandLineRunner {
 	private final B b;
