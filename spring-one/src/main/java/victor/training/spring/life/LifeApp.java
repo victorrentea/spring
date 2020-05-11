@@ -62,7 +62,7 @@ class OrderExporter  {
 			log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
 			altaMet();
 		} finally {
-			// ThreadLocal.remove
+			ClearableThreadScope.clearAllThreadData();
 		}
 	}
 	private void altaMet() { // semnaturi curate si uscate.
