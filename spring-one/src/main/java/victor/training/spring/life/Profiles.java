@@ -7,15 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Profiles implements CommandLineRunner {
-    @Qualifier("varza")
     @Autowired
-    private I i;
-//    public Profiles(@Qualifier("varza") I i) {
+    private IA i;
+//    public Profiles(IA i) {
 //        this.i = i;
 //    }
 
 @Autowired
-    public void setI(@Qualifier("varza")  I i) {
+    public void setI(  IA i) {
         this.i = i;
     }
 
