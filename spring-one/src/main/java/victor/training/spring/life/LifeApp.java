@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -45,19 +46,20 @@ public class LifeApp implements CommandLineRunner{
 	}
 }
 @Service
-class OrderExporter  {
+abstract class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private ObjectFactory<LabelService> labelServiceFactory;
+
+	@Lookup
+	public abstract LabelService hocusPocus();
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = labelServiceFactory.getObject();
+		LabelService labelService = hocusPocus();
 		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice(locale);
+		log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Service
@@ -65,13 +67,8 @@ class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 //	@Autowired
 //	private LabelService labelService;
-@Autowired
-private ObjectFactory<LabelService> labelServiceFactory;
-	
-	public void exportInvoice(Locale locale) {
-		LabelService labelService = labelServiceFactory.getObject();
-		labelService.load(locale);
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+	public void exportInvoice(LabelService labelService) {
+		log.debug("BIZ LOGIC. Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
