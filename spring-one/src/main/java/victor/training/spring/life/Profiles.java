@@ -7,14 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Profiles implements CommandLineRunner {
-    @Autowired
-    private IA i;
-//    public Profiles(IA i) {
-//        this.i = i;
-//    }
-
-@Autowired
-    public void setI(  IA i) {
+    private final I i;
+    public Profiles(I i) {
         this.i = i;
     }
 
@@ -31,9 +25,9 @@ class IA implements I {
         System.out.println("A");
     }
 }
-@Component
-class IB implements I {
-    public void m() {
-        System.out.println("B");
-    }
-}
+//@Component
+//class IB implements I {
+//    public void m() {
+//        System.out.println("B");
+//    }
+//}

@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class LifeApp implements CommandLineRunner{
 	@Bean
 	public static CustomScopeConfigurer defineThreadScope() {
@@ -51,7 +53,7 @@ public class LifeApp implements CommandLineRunner{
 
 @Component
 @Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
-class MyRequestScope{
+class MyRequestContext {
 	private String username;
 	public String getUsername() {
 		return username;
@@ -68,18 +70,19 @@ class OrderExporter  {
 	@Autowired
 	private LabelService labelService;
 	@Autowired
-	private MyRequestScope requestScope;
+	private MyRequestContext requestContext;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
-		requestScope.setUsername("sys");
+		System.out.println("Sus: " + requestContext.getClass());
+		requestContext.setUsername("sys");
 
 		try {
 			log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
 			altaMet();
 		} finally {
-			ClearableThreadScope.clearAllThreadData();
+//			ClearableThreadScope.clearAllThreadData();
 		}
 	}
 	private void altaMet() { // semnaturi curate si uscate.
@@ -128,10 +131,11 @@ class B {
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final CountryRepo countryRepo;
-	private final MyRequestScope requestScope;
+	private final MyRequestContext requestScope;
 
-	public LabelService(CountryRepo countryRepo, MyRequestScope requestScope) {
+	public LabelService(CountryRepo countryRepo, MyRequestContext requestScope) {
 		this.requestScope = requestScope;
+		System.out.println("jos: " + requestScope.getClass());
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
 	}
