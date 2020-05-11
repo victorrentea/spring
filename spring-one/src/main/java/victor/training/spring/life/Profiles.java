@@ -1,21 +1,20 @@
 package victor.training.spring.life;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class Profiles implements CommandLineRunner {
-    private final I i;
-    public Profiles(I i) {
-        this.i = i;
+    private final List<I> toate;
+
+    public Profiles(List<I> toate) {
+        this.toate = toate;
     }
 
     public void run(String... args) throws Exception {
-        i.m();
+        toate.forEach(I::m);
     }
 }
 interface I {
@@ -28,8 +27,8 @@ class IA implements I { // hackareala pentru confort
     }
 }
 // only available without -Dspring.profiles.active=local
-@Primary
-@Profile("! local")
+//@Primary
+//@Profile("! local")
 //@Profile("prod") // NICIODATA nu def un profil doar pt PROD.
 @Component
 class IB implements I { //asta e pe bune
