@@ -37,6 +37,10 @@ public class BeanApp implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        // language=sql
+        String sql = "SELECT * FROM TEACHER " +
+                " LEFT JOIN TRAINING T on TEACHER.ID = T.TEACHER_ID";
+
         Poezie luceafarul = (Poezie) context.getBean("luceafarul");
         System.out.println("Citesc un volum de " + luceafarul);
     }
@@ -51,13 +55,6 @@ class Poezie {
         this.autor = autor;
     }
 
-    @Override
-    public String toString() {
-        return "Poezie{" +
-                "nume='" + nume + '\'' +
-                ", autor=" + autor +
-                '}';
-    }
 }
 class Autor {
     private final String name;
