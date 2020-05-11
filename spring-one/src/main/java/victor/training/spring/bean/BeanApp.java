@@ -4,14 +4,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 
-import javax.persistence.metamodel.SingularAttribute;
-import java.sql.DriverManager;
+import javax.annotation.PostConstruct;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
-@SpringBootApplication
+//class Tzeapa extends BeanApp {
+//    @Override
+//    public Autor eminescu() {
+//        return super.eminescu();
+//    }
+//}
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
+        DataSourceTransactionManagerAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class})
 public class BeanApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class, args);
@@ -21,11 +36,25 @@ public class BeanApp implements CommandLineRunner {
     // configurezi
     @Bean // recomandat: doar in clase @Configuration
     public Autor eminescu() {
+        System.out.println("Nasc un geniu");
         return new Autor("Eminescu");
     }
     @Bean
+    @Profile("!digital")
+    @Scope("prototype")
     public Poezie luceafarul() {
+        System.out.println("Printez poezia");
+        //cand chem aicea eminescu de fapt nu se invoca metoda de sus, ci
+        // Springu iti subleaseaza si hackuie clasa BeanApp
+        // ca orice metoda publica chemi sa rule el:
+        // nu va chema de fapt functia aceea cand vrei tu
         return new Poezie("Luceafarul", eminescu());
+    }
+    @Bean(name = "luceafarul")
+    @Profile("digital")
+    @Scope("prototype")
+    public PostareLirica luceafarul2() throws MalformedURLException {
+        return new PostareLirica("Luceafarul", eminescu(), new URL("http://google.com"));
     }
     @Bean
     public SingletonPrafuit praf() {
@@ -41,12 +70,21 @@ public class BeanApp implements CommandLineRunner {
         String sql = "SELECT * FROM TEACHER " +
                 " LEFT JOIN TRAINING T on TEACHER.ID = T.TEACHER_ID";
 
-        Poezie luceafarul = (Poezie) context.getBean("luceafarul");
-        System.out.println("Citesc un volum de " + luceafarul);
+        System.out.println("Citesc un volum de " + context.getBean("luceafarul"));
+        System.out.println("Citesti si tu un ALT volum de " + context.getBean("luceafarul"));
     }
 //    TODO litemode
 }
-
+class PostareLirica {
+    private final String nume;
+    private final Autor autor;
+    private final URL url;
+    public PostareLirica(String nume, Autor autor, URL url) {
+        this.nume = nume;
+        this.autor = autor;
+        this.url = url;
+    }
+}
 class Poezie {
     private final String nume;
     private final Autor autor;
@@ -56,6 +94,7 @@ class Poezie {
     }
 
 }
+
 class Autor {
     private final String name;
     @Autowired
@@ -64,6 +103,11 @@ class Autor {
     }
     public Autor(String name) {
         this.name = name;
+    }
+
+    @PostConstruct
+    public void m() {
+        System.out.println("PostConstruct in singleton");
     }
 
     @Override
