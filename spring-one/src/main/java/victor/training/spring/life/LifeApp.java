@@ -42,9 +42,22 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [3] prototype scope + ObjectFactory or @Lookup. Did you said "Factory"? ...
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
+
 	public void run(String... args) {
 		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
 		new Thread(() -> exporter.export(Locale.FRENCH)).start();
+	}
+}
+
+@Component
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+class MyRequestScope{
+	private String username;
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
 @Service
@@ -54,10 +67,14 @@ class OrderExporter  {
 	private InvoiceExporter invoiceExporter;
 	@Autowired
 	private LabelService labelService;
+	@Autowired
+	private MyRequestScope requestScope;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
+		requestScope.setUsername("sys");
+
 		try {
 			log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
 			altaMet();
@@ -111,8 +128,10 @@ class B {
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final CountryRepo countryRepo;
+	private final MyRequestScope requestScope;
 
-	public LabelService(CountryRepo countryRepo) {
+	public LabelService(CountryRepo countryRepo, MyRequestScope requestScope) {
+		this.requestScope = requestScope;
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
 	}
@@ -122,6 +141,7 @@ class LabelService {
 //	@PostConstruct
 	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
+		log.debug("UPDATE LAST_MODIFIED_BY=" + requestScope.getUsername());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
