@@ -1,8 +1,11 @@
 package victor.training.spring.life;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 @Component
@@ -11,7 +14,7 @@ public class Profiles implements CommandLineRunner {
     private final I safe;
 
 
-    public Profiles(List<I> toate, I safe) {
+    public Profiles(List<I> toate, @Safe I safe) {
         this.toate = toate;
         this.safe = safe;
     }
@@ -22,6 +25,9 @@ public class Profiles implements CommandLineRunner {
         safe.m();
     }
 }
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+@interface Safe { }
 interface I {
     void m();
 }
@@ -35,7 +41,8 @@ class IA implements I { // hackareala pentru confort
 //@Primary
 //@Profile("! local")
 //@Profile("prod") // NICIODATA nu def un profil doar pt PROD.
-@Component("safe")
+@Safe
+@Component
 class IB implements I { //asta e pe bune
     public void m() {
         System.out.println("B de pe alt FTP ca asa tre in prod");
