@@ -1,6 +1,5 @@
 package victor.training.spring.life;
 
-import java.awt.*;
 import java.util.Locale;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
@@ -59,7 +57,7 @@ class OrderExporter  {
 		LabelService labelService = labelServiceFactory.getObject();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice(labelService);
+		invoiceExporter.exportInvoice(locale);
 	}
 }
 @Service
@@ -67,8 +65,12 @@ class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 //	@Autowired
 //	private LabelService labelService;
+@Autowired
+private ObjectFactory<LabelService> labelServiceFactory;
 	
-	public void exportInvoice(LabelService labelService) {
+	public void exportInvoice(Locale locale) {
+		LabelService labelService = labelServiceFactory.getObject();
+		labelService.load(locale);
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
