@@ -1,14 +1,24 @@
 package victor.training.spring.life;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Profiles implements CommandLineRunner {
-    private final I i;
-    public Profiles(I i) {
+    @Qualifier("varza")
+    @Autowired
+    private I i;
+//    public Profiles(@Qualifier("varza") I i) {
+//        this.i = i;
+//    }
+
+@Autowired
+    public void setI(@Qualifier("varza")  I i) {
         this.i = i;
     }
+
     public void run(String... args) throws Exception {
         i.m();
     }
@@ -16,7 +26,7 @@ public class Profiles implements CommandLineRunner {
 interface I {
     void m();
 }
-@Component
+@Component("varza")
 class IA implements I {
     public void m() {
         System.out.println("A");
