@@ -30,6 +30,7 @@ class IA implements I { // hackareala pentru confort
 // only available without -Dspring.profiles.active=local
 @Primary
 @Profile("! local")
+//@Profile("prod") // NICIODATA nu def un profil doar pt PROD.
 @Component
 class IB implements I { //asta e pe bune
     public void m() {
