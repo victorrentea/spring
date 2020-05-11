@@ -3,7 +3,8 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -39,13 +41,12 @@ public class LifeApp implements CommandLineRunner{
 
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+		exporter.export(Locale.FRENCH);
 	}
 }
-@Slf4j
 @Service
 class OrderExporter  {
+	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
@@ -53,13 +54,14 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice();
 	}
 }
-@Slf4j
-@Service 
+@Service
 class InvoiceExporter {
+	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private LabelService labelService;
 	
@@ -68,9 +70,21 @@ class InvoiceExporter {
 	}
 }
 
-@Slf4j
+// BAD PRACTICE: ciircular dependencies
+@Component
+class A {
+	@Autowired
+	private B b;
+}
+@Component
+class B {
+	@Autowired
+	private A a;
+}
+
 @Service
 class LabelService {
+	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
@@ -80,10 +94,10 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	@PostConstruct
-	public void load() {
+//	@PostConstruct
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
