@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -48,13 +49,10 @@ class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
-	private CountryRepo countryRepo;
-//	@Autowired
-//	private LabelService labelService;
+	private LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice(labelService);
@@ -83,7 +81,8 @@ class B {
 	private A a;
 }
 
-//@Service
+@Service
+@Scope("prototype") // ori de cate ori ai nevoie de o instanta din clasa asta, creeaza una noua
 // Spring + OOP = HATE
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
