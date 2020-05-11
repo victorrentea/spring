@@ -40,8 +40,8 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		exporter.export(Locale.FRENCH);
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 	}
 }
 @Service
