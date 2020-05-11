@@ -5,15 +5,14 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,9 @@ public class LifeApp implements CommandLineRunner{
 		CustomScopeConfigurer configurer = new CustomScopeConfigurer();
 		// WARNING: Leaks memory. Prefer 'request' scope or read here: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/support/SimpleThreadScope.html
 		configurer.addScope("thread", new SimpleThreadScope());
+
+
+//		TODO: exact cum se curata
 		return configurer;
 	}
 	
@@ -46,28 +48,47 @@ public class LifeApp implements CommandLineRunner{
 	}
 }
 @Service
-abstract class OrderExporter  {
+class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-
-	@Lookup
-	public abstract LabelService hocusPocus();
+	@Autowired
+	private LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = hocusPocus();
 		labelService.load(locale);
-		log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice(labelService);
+		try {
+			log.debug("BIZ LOGIC. Origin Country: " + labelService.getCountryName("rO"));
+			altaMet();
+		} finally {
+			// ThreadLocal.remove
+		}
+	}
+	private void altaMet() { // semnaturi curate si uscate.
+		altaMetDinAltaClasa();
+	}
+	private void altaMetDinAltaClasa() {
+		invoiceExporter.exportInvoice();
 	}
 }
 @Service
 class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
-//	@Autowired
-//	private LabelService labelService;
-	public void exportInvoice(LabelService labelService) {
+	@Autowired
+	private LabelService labelService;
+	public void exportInvoice() {
+		// asta se intampla pe sub defapt
+//		labelService = new LabelService(null) {
+//			@Override
+//			public String getCountryName(String iso2Code) {
+		// gaseste threadul curent Thread.currentThread()
+		// ia-i datele de pe java.lang.ThreadLocal
+//				return super.getCountryName(iso2Code);
+//			}
+//		};
+		log.debug("Ce puii mei mi-a injectat springu aici, de eu can chem ajung pe 2 instante? " +
+				labelService.getClass());
 		log.debug("BIZ LOGIC. Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
@@ -85,7 +106,7 @@ class B {
 }
 
 @Service
-@Scope("prototype") // ori de cate ori ai nevoie de o instanta din clasa asta, creeaza una noua
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS) // ori de cate ori ai nevoie de o instanta din clasa asta, creeaza una noua
 // Spring + OOP = HATE
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
