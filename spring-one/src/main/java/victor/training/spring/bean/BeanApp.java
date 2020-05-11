@@ -8,10 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
@@ -50,12 +47,7 @@ public class BeanApp implements CommandLineRunner {
         // nu va chema de fapt functia aceea cand vrei tu
         return new Poezie("Luceafarul", eminescu());
     }
-    @Bean(name = "luceafarul")
-    @Profile("digital")
-    @Scope("prototype")
-    public PostareLirica luceafarul2() throws MalformedURLException {
-        return new PostareLirica("Luceafarul", eminescu(), new URL("http://google.com"));
-    }
+
     @Bean
     public SingletonPrafuit praf() {
         return SingletonPrafuit.getInstance();
@@ -74,6 +66,23 @@ public class BeanApp implements CommandLineRunner {
         System.out.println("Citesti si tu un ALT volum de " + context.getBean("luceafarul"));
     }
 //    TODO litemode
+}
+
+@Profile("digital")
+@Configuration
+class EraDigitala {
+    @Autowired
+    Autor eminescu;
+    @Bean
+    @Scope("prototype")
+    public PostareLirica luceafarul() throws MalformedURLException {
+        return new PostareLirica("Luceafarul", eminescu, new URL("http://google.com"));
+    }
+    @Bean
+    @Scope("prototype")
+    public PostareLirica baietEram() throws MalformedURLException {
+        return new PostareLirica("Baiet Eram", eminescu, new URL("http://google.com"));
+    }
 }
 class PostareLirica {
     private final String nume;
