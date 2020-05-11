@@ -84,10 +84,11 @@ class B {
 }
 
 //@Service
+// Spring + OOP = HATE
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
