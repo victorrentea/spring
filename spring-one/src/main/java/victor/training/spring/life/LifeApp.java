@@ -15,8 +15,6 @@ import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
 	@Bean
@@ -50,22 +48,25 @@ class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
-	private LabelService labelService;
+	private CountryRepo countryRepo;
+//	@Autowired
+//	private LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Service
 class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
-	@Autowired
-	private LabelService labelService;
+//	@Autowired
+//	private LabelService labelService;
 	
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
@@ -82,7 +83,7 @@ class B {
 	private A a;
 }
 
-@Service
+//@Service
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final CountryRepo countryRepo;
