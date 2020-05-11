@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import java.awt.*;
 import java.util.Locale;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = (LabelService) totSpringu.getBean("labelService");
+		LabelService labelService = totSpringu.getBean(LabelService.class);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice(labelService);
