@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -61,5 +62,10 @@ public class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@CacheEvict("folders")
+	public void evictFolderCache(File file) {
+		// GOALA. NU O STERGE> PERICOL. LASA MAGIA SA FUNCTIONEZE. UNICORNII EXISTA
 	}
 }
