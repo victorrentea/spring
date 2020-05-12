@@ -34,9 +34,11 @@ public class ProxyApp implements CommandLineRunner {
 
 	public void run(String... args) {
 		log.debug("\n");
+		log.debug("Lucrez cu " + ops.getClass());
+
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		
