@@ -10,8 +10,17 @@ logging.level.com.example: DEBUG
 welcome.info: Hello properties
 welcome:
   greeting: Hello YAML 3
+  help-file: C:\Users\victo\Google Drive\CV+Acte\PFA\Offer - ALL.pdf
   support:
-    phone: 999999999
+    phone: 999999999,88888888
     email: a@b.com
+  tenants:
+    - service-class-name: com.example.demo.service.ROService2
+      origin: a
+      country: ro
+    - service-class-name: com.example.demo.service.ROService2
+      origin: b
+      country: ALL
+
 #    email:
 #server.port=0 #aloca port aleator
