@@ -1,5 +1,6 @@
 package victor.training.spring;
 
+import org.h2.tools.Server;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.File;
@@ -9,10 +10,16 @@ public class StartDatabase {
 	public static void main(String[] args) throws SQLException {
 		deletePreviousDBContents();
 
-		System.out.println("Check out folder: ~/source/db/database/db");
 		System.out.println("Started DB...");
 
-		org.h2.tools.Server.createTcpServer().start();
+//		Server.main();
+		org.h2.tools.Server.createTcpServer(/*
+				"-tcpPort",
+				"9093",
+				"-baseDir",
+				"c:\\Users\\victo\\h2",
+				"-trace"*/
+		).start();
 	}
 
 	private static void deletePreviousDBContents() {
@@ -30,6 +37,10 @@ public class StartDatabase {
 			} else {
 				System.out.println("SUCCESS");
 			}
+		} else {
+			System.out.println("Nothing found at db path: " + databasePath.getAbsolutePath());
 		}
+		System.out.println("Check out folder: ~/source/db/database/db");
+
 	}
 }
