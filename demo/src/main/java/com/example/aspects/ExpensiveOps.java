@@ -4,6 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -43,10 +45,19 @@ public class ExpensiveOps {
 		return true;
 	}
 
+//	@Autowired CacheManager cacheManager; // calea samuraiului; fara magie, dar cu cod.
+//	cacheManager.getCache("folders")
+
+	@Autowired ExpensiveOps myselfProxied;
+
+
 	// "folders"->Map<(File,...alti-param),String>
 	// "primes" ->Map<BigDecimal,Boolean>
 	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
+		log.debug("10000169 is prime ? ");
+
+		log.debug("Got: " + myselfProxied.isPrime(10000169) + "\n");
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
