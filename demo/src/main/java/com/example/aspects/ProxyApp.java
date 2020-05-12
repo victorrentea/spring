@@ -20,7 +20,7 @@ public class ProxyApp implements CommandLineRunner {
 	}
 
 	// [1] Implement decorator with Spring
-	// [2] InterfaceProxy.proxy (no Spring)
+	// [2] ClassProxy.proxy (no Spring)
 	// [3] ClassProxy.proxy (no Spring)
 	// [4] Spring Cache support [opt: redis]
 	// [5] Spring aspect, @Facade, @Logged
