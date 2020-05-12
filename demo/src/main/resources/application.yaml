@@ -22,5 +22,5 @@ welcome:
       origin: b
       country: ALL
 #    email:
-spring.task.execution.pool.core-size: 1
+spring.task.execution.pool.core-size: 2
 #server.port=0 #aloca port aleator

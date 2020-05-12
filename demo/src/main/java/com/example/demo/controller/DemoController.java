@@ -6,9 +6,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Slf4j
 @RestController
@@ -26,14 +29,36 @@ public class DemoController {
 
     @GetMapping("beu")
     public String beu() throws ExecutionException, InterruptedException {
-        CompletableFuture<String> viitoareBere = barman.toarnaBere();
-        CompletableFuture<String> viitoareVodca = barman.toarnaVodca();
+        Future<String> viitoareBere = barman.toarnaBere();
+        Future<String> viitoareVodca = barman.toarnaVodca();
         log.debug("Aici a plecat fata cu berea");
+        // astea blocheaza threadul de HTTP request pentru  sec
+        // Daca esti :( din cauza asta, vezi metoda de mai jos
         String bere = viitoareBere.get();
         String vodca = viitoareVodca.get();
         log.debug("Am primit beuturile");
 
         return bere +" cu " + vodca; // dilly dilly
+    }
+
+    @GetMapping("beu-eficient")
+    public DeferredResult<String> beuEficient() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> viitoareBere = barman.toarnaBere();
+        CompletableFuture<String> viitoareVodca = barman.toarnaVodca();
+        log.debug("Aici a plecat fata cu berea");
+
+        DeferredResult<String> output = new DeferredResult<>();
+
+        CompletableFuture<String> futureDillyDilly = viitoareBere.thenCombineAsync(viitoareVodca, (bere, vodka) -> {
+            log.debug("Am primit beuturile");
+            return bere + " cu " + vodka; // dilly dilly
+        });
+
+        futureDillyDilly.thenAccept(dilly -> output.setResult(dilly));
+// FATZA: sa nu consume threaduri aiurea
+        log.debug("Threadul http iese aici");
+        return output;
+
     }
 }
 
