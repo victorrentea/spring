@@ -7,11 +7,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ProxyApp.class)
+//@TestPropertySource(locations = "alt.yaml")
 public class TestSpringCuBeanuriMockuite {
     @Autowired
     LogicaCuDependenteExterne target;
@@ -24,4 +27,14 @@ public class TestSpringCuBeanuriMockuite {
         Assert.assertEquals("A",target.m());
 
     }
+}
+
+
+
+@Service
+class ExternalSystemClientDoarPtTeste {
+    public String call() {
+        throw new IllegalArgumentException("NU POTI CHEMA DIN TESTE. N_AR TREBUI");
+    }
+
 }
