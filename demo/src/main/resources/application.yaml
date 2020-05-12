@@ -21,6 +21,6 @@ welcome:
     - service-class-name: com.example.demo.service.ROService2
       origin: b
       country: ALL
-
 #    email:
+spring.task.execution.pool.core-size: 1
 #server.port=0 #aloca port aleator

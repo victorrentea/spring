@@ -23,8 +23,9 @@ import java.util.concurrent.Future;
 public class UserService  {
     private final UserRepo userRepo;
 
-
+    @Cacheable("user-count")
     public long countUsers() {
+        new RuntimeException().printStackTrace();
         return userRepo.count();
     }
 
@@ -34,6 +35,7 @@ public class UserService  {
     // TODO 3 Avoid inconsistencies on multiple machines - use Redis as centralized cache
     // Scenario: N1.get(=2), N2.get(=2), N1.create, N1.get(=3), N2.get(=2) STALE!!!
     // TODO 4 At restart, clean the Redis cache (with CLR)
+    @CacheEvict("user-count")
     public void createUser() {
         userRepo.save(new User());
     }
