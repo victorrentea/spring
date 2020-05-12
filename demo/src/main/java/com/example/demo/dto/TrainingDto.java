@@ -17,6 +17,7 @@ public class TrainingDto {
 //    @Autowired NU MERGE IN CLASE DE DATE > JACKSON O CREEAZA nu SPRING
 //    private TeacherRepo teacherRepo;
 
+    public TrainingDto() {}
     public TrainingDto(Training training) {
         name = training.getName();
 //        teacherName = training.getTeacher().map(Teacher::getName).orElse("");

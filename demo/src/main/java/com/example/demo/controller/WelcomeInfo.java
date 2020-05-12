@@ -37,6 +37,8 @@ public class WelcomeInfo {
 
     }
 
+
+
     @Data
     static class SupportInfo {
         private List<String> phone;
