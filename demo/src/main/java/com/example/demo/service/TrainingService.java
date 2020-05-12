@@ -36,7 +36,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME);
+            throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME, dto.name);
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);

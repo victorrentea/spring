@@ -8,10 +8,15 @@ public class DemoException extends RuntimeException {
     }
 
     private final ErrorCode errorCode;
-//    private final Object[] params;
+    private Object[] params = {};
 
-    public DemoException(ErrorCode errorCode) {
+    public DemoException(ErrorCode errorCode, Object... params) {
         this.errorCode = errorCode;
+        this.params = params;
+    }
+
+    public Object[] getParams() {
+        return params;
     }
 
     public ErrorCode getErrorCode() {

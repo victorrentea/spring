@@ -35,6 +35,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleDateParseException(DemoException exception, HttpServletRequest request) {
         exception.printStackTrace();
-        return messageSource.getMessage("error." + exception.getErrorCode(),new Object[]{"test"}, request.getLocale());
+        return messageSource.getMessage("error." + exception.getErrorCode(),exception.getParams(), request.getLocale());
     }
 }
