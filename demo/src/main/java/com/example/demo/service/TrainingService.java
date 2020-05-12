@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DemoException;
 import com.example.demo.dto.TrainingDto;
 import com.example.demo.entity.Training;
 import com.example.demo.repo.TeacherRepo;
@@ -35,7 +36,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another course with that name already exists");
+            throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME);
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
