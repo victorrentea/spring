@@ -1,15 +1,18 @@
 package com.example.demo;
 
+import com.example.demo.controller.WelcomeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @SpringBootApplication
+@EnableConfigurationProperties(WelcomeInfo.class)
 public class DemoApplication {
 
 	public static void main(String[] args) {
