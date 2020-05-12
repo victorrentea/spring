@@ -23,4 +23,6 @@ welcome:
       country: ALL
 #    email:
 spring.task.execution.pool.core-size: 2
+folder.polling.rate.millis: 500
+refresh.referentials.cron: 0 0 0 1/1 * ? *
 #server.port=0 #aloca port aleator

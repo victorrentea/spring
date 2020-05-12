@@ -47,17 +47,17 @@ public class DemoController {
         CompletableFuture<String> viitoareVodca = barman.toarnaVodca();
         log.debug("Aici a plecat fata cu berea");
 
-        DeferredResult<String> output = new DeferredResult<>();
+        DeferredResult<String> deferredResult = new DeferredResult<>();
 
         CompletableFuture<String> futureDillyDilly = viitoareBere.thenCombineAsync(viitoareVodca, (bere, vodka) -> {
             log.debug("Am primit beuturile");
             return bere + " cu " + vodka; // dilly dilly
         });
 
-        futureDillyDilly.thenAccept(dilly -> output.setResult(dilly));
+        futureDillyDilly.thenAccept(dilly -> deferredResult.setResult(dilly));
 // FATZA: sa nu consume threaduri aiurea
         log.debug("Threadul http iese aici");
-        return output;
+        return deferredResult;
 
     }
 }
