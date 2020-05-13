@@ -31,6 +31,7 @@ public class TrainingController {
 	// TODO [SEC] 1 Allow only for ROLE 'USER'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteCourse'
 	/** @see victor.training.spring.web.domain.UserProfile */
+	// TODO and @accessController.canDeleteCourse(#id)
 	public void deleteCourseById(Long id) {
 		trainingService.deleteCourseById(id);
 	}
