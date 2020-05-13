@@ -6,7 +6,7 @@
 	<!-- Set up the connection factory. You must name the bean "connectionFactory" for the JMS-backed
 	channels to automatically find it. Otherwise, you must specify the connection when you declare the
 	channel -->
-	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+	<bean id="jmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
 		<property name="targetConnectionFactory">
 			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
 				<property name="brokerURL" value="tcp://localhost:61616"/>
