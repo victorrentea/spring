@@ -22,7 +22,8 @@ import java.util.concurrent.CompletableFuture;
 @SpringBootApplication
 public class AsyncApp {
 	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+		SpringApplication.run(AsyncApp.class, args);//.close(); // Note: .close added to stop executors after CLRunner finishes
+		ThreadUtils.sleep(5000);
 	}
 
 }
