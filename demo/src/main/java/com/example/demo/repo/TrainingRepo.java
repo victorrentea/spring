@@ -4,6 +4,7 @@ import com.example.demo.entity.Teacher;
 import com.example.demo.entity.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,9 @@ public interface TrainingRepo extends JpaRepository<Training, Long> {
 
     @Query("SELECT COUNT(*) FROM Training WHERE name=?1 AND id <> ?2")
     int countOtherWithSameName(String name, long id);
+
+//    @Procedure
+//    int functie(String s, Int)
 }
 //
 //@Repository

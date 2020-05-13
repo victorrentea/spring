@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.repo.TestRepo;
+import com.example.demo.service.Alta;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,9 @@ public class UserController {
     public String testDB() {
         return repo.test();
     }
+    @GetMapping("testdb2")
+    public void testDB2() {
+        alta.inseraSiTeacher();
+    }
+    @Autowired private Alta alta;
 }
