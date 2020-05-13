@@ -55,7 +55,6 @@ public class Barista {
 	public Drink prepareHotDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.hotDrinkDelay);
-			System.out.println("HOT");
 			logger.info(Thread.currentThread().getName()
 					+ " prepared hot drink #" + hotDrinkCounter.incrementAndGet() + " for order #"
 					+ orderItem.getOrderNumber() + ": " + orderItem);
@@ -70,7 +69,6 @@ public class Barista {
 	public Drink prepareColdDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.coldDrinkDelay);
-			System.out.println("COLD");
 			logger.info(Thread.currentThread().getName()
 					+ " prepared cold drink #" + coldDrinkCounter.incrementAndGet() + " for order #"
 					+ orderItem.getOrderNumber() + ": " + orderItem);

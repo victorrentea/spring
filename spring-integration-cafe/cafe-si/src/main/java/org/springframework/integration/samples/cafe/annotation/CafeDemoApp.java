@@ -16,41 +16,35 @@
 
 package org.springframework.integration.samples.cafe.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.samples.cafe.Cafe;
 import org.springframework.integration.samples.cafe.DrinkType;
 import org.springframework.integration.samples.cafe.Order;
-import org.springframework.integration.samples.cafe.SerialSillyCafe;
 
+/**
+ * Provides the 'main' method for running the Cafe Demo application. When an
+ * order is placed, the Cafe will send that order to the "orders" channel.
+ * The channels are defined within the configuration file ("cafeDemo.xml"),
+ * and the relevant components are configured with annotations (such as the
+ * OrderSplitter, DrinkRouter, and Barista classes).
+ *
+ * @author Mark Fisher
+ * @author Marius Bogoevici
+ */
 public class CafeDemoApp {
 
-	private static Log logger = LogFactory.getLog(CafeDemoApp.class);
-
 	public static void main(String[] args) {
-
-
-//		TODO TRY OUT CafeDemoPlainJava first
-
 		AbstractApplicationContext context =
-			//new ClassPathXmlApplicationContext("/META-INF/spring/integration/cafeDemo-annotation.xml", CafeDemoApp.class);
-			new AnnotationConfigApplicationContext(CafeDemoConfig.class);
+			new ClassPathXmlApplicationContext("/META-INF/spring/integration/cafeDemo-annotation.xml", CafeDemoApp.class);
+
 		Cafe cafe = (Cafe) context.getBean("cafe");
-//		Cafe cafe = new SerialSillyCafe();
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 100; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);
 			cafe.placeOrder(order);
-			logger.warn("Submitted order " + i);
 		}
-		//WE'll have to wait some more for all Deliveries to appear in console
-		//context.close();
+		context.close();
 	}
 }

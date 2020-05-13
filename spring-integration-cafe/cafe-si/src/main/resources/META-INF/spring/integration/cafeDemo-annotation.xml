@@ -13,28 +13,28 @@
 		http://www.springframework.org/schema/integration/stream
 		https://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
 
-	<!--<int:annotation-config/>-->
+	<int:annotation-config/>
 
-	<!--<context:component-scan base-package="org.springframework.integration.samples.cafe.annotation"/>-->
+	<context:component-scan base-package="org.springframework.integration.samples.cafe.annotation"/>
 
-<!--	<int:gateway id="cafe" service-interface="org.springframework.integration.samples.cafe.Cafe"/>-->
+	<int:gateway id="cafe" service-interface="org.springframework.integration.samples.cafe.Cafe"/>
 
-	<!--<int:channel id="orders"/>-->
+	<int:channel id="orders"/>
 	<int:channel id="drinks"/>
-	<!--<int:channel id="coldDrinks"><int:queue capacity="10"/></int:channel>-->
+	<int:channel id="coldDrinks"><int:queue capacity="10"/></int:channel>
 	<int:channel id="hotDrinks"><int:queue capacity="10"/></int:channel>
-	<!--<int:channel id="coldDrinkBarista"/>-->
+	<int:channel id="coldDrinkBarista"/>
 	<int:channel id="hotDrinkBarista"/>
 	<int:channel id="preparedDrinks"/>
 
-	<!--<int:bridge input-channel="coldDrinks" output-channel="coldDrinkBarista">
+	<int:bridge input-channel="coldDrinks" output-channel="coldDrinkBarista">
 		<int:poller fixed-delay="1000"/>
-	</int:bridge>-->
+	</int:bridge>
 
 	<int:bridge input-channel="hotDrinks" output-channel="hotDrinkBarista">
 		<int:poller fixed-delay="1000"/>
 	</int:bridge>
 
-	<!--<int-stream:stdout-channel-adapter id="deliveries"/>-->
+	<int-stream:stdout-channel-adapter id="deliveries"/>
 
 </beans:beans>

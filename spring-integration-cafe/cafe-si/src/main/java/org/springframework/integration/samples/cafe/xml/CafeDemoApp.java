@@ -42,9 +42,7 @@ public class CafeDemoApp {
 			new ClassPathXmlApplicationContext("/META-INF/spring/integration/cafeDemo-xml.xml", CafeDemoApp.class);
 
 		Cafe cafe = (Cafe) context.getBean("cafe");
-
-
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= 100; i++) {
 			Order order = new Order(i);
 			order.addItem(DrinkType.LATTE, 2, false);
 			order.addItem(DrinkType.MOCHA, 3, true);

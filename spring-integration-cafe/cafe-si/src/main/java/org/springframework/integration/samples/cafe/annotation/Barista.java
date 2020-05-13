@@ -16,9 +16,9 @@ public class Barista {
 
 	private static Log logger = LogFactory.getLog(Barista.class);
 
-	private long hotDrinkDelay = 3000;
+	private long hotDrinkDelay = 5000;
 
-	private long coldDrinkDelay = 500;
+	private long coldDrinkDelay = 1000;
 
 	private final AtomicInteger hotDrinkCounter = new AtomicInteger();
 
@@ -33,6 +33,7 @@ public class Barista {
 		this.coldDrinkDelay = coldDrinkDelay;
 	}
 
+	@ServiceActivator(inputChannel="hotDrinkBarista", outputChannel="preparedDrinks")
 	public Drink prepareHotDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.hotDrinkDelay);
@@ -47,6 +48,7 @@ public class Barista {
 		}
 	}
 
+	@ServiceActivator(inputChannel="coldDrinkBarista", outputChannel="preparedDrinks")
 	public Drink prepareColdDrink(OrderItem orderItem) {
 		try {
 			Thread.sleep(this.coldDrinkDelay);
