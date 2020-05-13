@@ -6,13 +6,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 //public interface TrainingRepo extends JpaRepository<Training, Long> {
 //    Training getByName(String name);
@@ -30,18 +31,28 @@ public class TrainingRepo {
     }
 
     public synchronized void save(Training training) {
-        training.setId(idSequence++);
-        data.put(training.getId(), training);
+        Long newId = jdbc.queryForObject("SELECT TRAINING_SEQ.nextval from DUAL", Long.class);
+        jdbc.update("INSERT INTO TRAINING(id, name, description, start_date, teacher_id)" +
+//                " values (:id, :name, :description, :startDate,:teacherId)",
+                " values (?, ?, ?, ?, ?)",
+                newId,
+                training.getName(),
+                training.getDescription(),
+                Date.valueOf(training.getStartDate().get()),
+                training.getTeacher().getId()
+                );
+        training.setId(newId);
+//        data.put(training.getId(), training);
     }
 
-    public Training getOne(Long teacherId) {
+    public Training getOne(Long trainingId) {
         return jdbc.queryForObject(
                 "SELECT tr.id, tr.name, tr.description,  tr.start_date, tr.teacher_id, " +
                         "te.name teacher_name " +
                         "FROM TRAINING tr " +
                         " LEFT JOIN TEACHER te ON te.id = tr.teacher_id" +
                         " WHERE ID=?",
-                mapTraining(), teacherId);
+                mapTraining(), trainingId);
     }
 
     private RowMapper<Training> mapTraining() {
@@ -68,14 +79,38 @@ public class TrainingRepo {
     }
 
     public void deleteById(Long id) {
-        data.remove(id);
+        jdbc.update("DELETE FROM TRAINING WHERE ID = ? ", id);
     }
 
     public Training getByName(String name) {
-        return data.values().stream().filter(t -> t.getName().equals(name)).findFirst().orElse(null);
+        List<Training> list = jdbc.query(
+                "SELECT tr.id, tr.name, tr.description,  tr.start_date, tr.teacher_id, " +
+                        "te.name teacher_name " +
+                        "FROM TRAINING tr " +
+                        " LEFT JOIN TEACHER te ON te.id = tr.teacher_id" +
+                        " WHERE tr.name=?",
+                mapTraining(), name);
+        if (list.size() == 0) {
+            return null;
+        } else {
+            return list.get(0);
+        }
     }
 
     public Optional<Training> findById(Long id) {
-        return Optional.ofNullable(data.get(id));
+        List<Training> list = jdbc.query(
+                "SELECT tr.id, tr.name, tr.description,  tr.start_date, tr.teacher_id, " +
+                        "te.name teacher_name " +
+                        "FROM TRAINING tr " +
+                        " LEFT JOIN TEACHER te ON te.id = tr.teacher_id" +
+                        " WHERE tr.ID=?",
+                mapTraining(), id);
+        if (list.size() == 1) {
+            return of(list.get(0));
+        } else if (list.isEmpty()) {
+            return empty();
+        } else {
+            throw new RuntimeException("Too many rows!");
+        }
     }
 }
