@@ -28,6 +28,10 @@ public class CoursesController {
 	@Autowired
 	private TeacherRepository teacherRepo;
 	
+	// ****************************************************************************
+	// TODO Solve it in Spring-spa project 
+	// ****************************************************************************
+	
 	public List<CourseDto> getAllCourses() {
 		List<CourseDto> dtos = new ArrayList<CourseDto>();
 		for (Course course : courseRepo.findAll()) {
