@@ -1,6 +1,11 @@
 package com.example.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Teacher {
+	@Id
 	private Long id;
 	private String name;
 
@@ -20,11 +25,11 @@ public class Teacher {
 		return this;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

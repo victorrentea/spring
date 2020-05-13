@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
@@ -7,11 +8,16 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+@Entity
 public class Training {
+	@Id
 	private Long id;
 	private String name;
+	@Lob
 	private String description;
+//	@Temporal(TemporalType.DATE) // inutil
 	private LocalDate startDate;
+	@ManyToOne
 	private Teacher teacher;
 
 	
@@ -34,38 +40,38 @@ public class Training {
 		return id;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public final String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public final void setDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public final Optional<LocalDate> getStartDate() {
+	public Optional<LocalDate> getStartDate() {
 		return ofNullable(startDate);
 	}
 
-	public final void setStartDate(LocalDate startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-//	public final Optional<Teacher> getTeacher() {
+//	public Optional<Teacher> getTeacher() {
 //		return ofNullable(teacher);
 //	}
-	public final Teacher getTeacher() {
+	public Teacher getTeacher() {
 		return teacher;
 	}
 
-	public final void setTeacher(Teacher teacher) {
+	public void setTeacher(Teacher teacher) {
 		Objects.requireNonNull(teacher);
 		this.teacher = teacher;
 	}

@@ -35,3 +35,7 @@ spring:
     password: sa
 #    driver-class-name: org.h2.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+  jpa:
+    hibernate:
+      ddl-auto: create #NU CARE CUMVA SA TE MANCEN-*** sa pui CREATE in PROD; sterge baza
+
