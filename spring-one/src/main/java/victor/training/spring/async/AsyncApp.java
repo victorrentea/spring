@@ -1,6 +1,7 @@
 package victor.training.spring.async;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,62 +22,53 @@ import java.util.concurrent.CompletableFuture;
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
-	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args);//.close(); // Note: .close added to stop executors after CLRunner finishes
-		ThreadUtils.sleep(5000);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AsyncApp.class, args);//.close(); // Note: .close added to stop executors after CLRunner finishes
+        ThreadUtils.sleep(5000);
+    }
 
 }
 
 @Slf4j
 @Component
 class Drinker implements CommandLineRunner {
-	@Autowired
-	private Barman barman;
+    @Autowired
+    private Barman barman;
 
-	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
-	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
-	// TODO [3] Enable messaging...
-	public void run(String... args) throws Exception {
-		CompletableFuture<String> viitoareBere = barman.toarnaBere();
-		CompletableFuture<String> viitoareVodca = barman.toarnaVodca();
-		log.debug("Aici a plecat fata cu berea");
+    // TODO [1] inject and use a ThreadPoolTaskExecutor.submit
+    // TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
+    // TODO [3] Enable messaging...
+    public void run(String... args) throws Exception {
+        CompletableFuture<String> viitoareBere = barman.toarnaBere();
+        CompletableFuture<String> viitoareVodca = barman.toarnaVodca();
+        log.debug("Aici a plecat fata cu berea");
 
-		DeferredResult<String> deferredResult = new DeferredResult<>();
+        CompletableFuture<String> futureDillyDilly = viitoareBere.thenCombineAsync(viitoareVodca, (bere, vodka) -> {
+            log.debug("Am primit beuturile");
+            return bere + " cu " + vodka; // dilly dilly
+        });
+        futureDillyDilly.thenAccept(dilly -> log.debug("Consum " + dilly));
 
-		CompletableFuture<String> futureDillyDilly = viitoareBere.thenCombineAsync(viitoareVodca, (bere, vodka) -> {
-			log.debug("Am primit beuturile");
-			return bere + " cu " + vodka; // dilly dilly
-		});
-
-		futureDillyDilly.thenAccept(dilly -> deferredResult.setResult(dilly));
-// FATZA: sa nu consume threaduri aiurea
-		log.debug("Threadul http iese aici");
-		futureDillyDilly.thenAccept(dilly -> log.debug("Consum " + dilly));
-	}
+        log.debug("Threadul http iese aici");
+    }
 }
 
 @Slf4j
 @Service
 class Barman {
-	@Async
-	public CompletableFuture<String> toarnaBere() {
-		try {
-			log.debug("Torn bere");
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return CompletableFuture.completedFuture("Bere");
-	}
-	@Async
-	public CompletableFuture<String> toarnaVodca() {
-		try {
-			log.debug("Torn Vodca");
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return CompletableFuture.completedFuture("Votca");
-	}
+    @SneakyThrows
+    @Async
+    public CompletableFuture<String> toarnaBere() {
+        log.debug("Torn bere");
+        Thread.sleep(2000);
+        return CompletableFuture.completedFuture("Bere");
+    }
+
+    @SneakyThrows
+    @Async
+    public CompletableFuture<String> toarnaVodca() {
+        log.debug("Torn Vodca");
+        Thread.sleep(2000);
+        return CompletableFuture.completedFuture("Votca");
+    }
 }
