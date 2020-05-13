@@ -1,6 +1,8 @@
 #logging.level.root=DEBUG
-logging.pattern.console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
-
+logging:
+  pattern.console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+  level.p6spy: DEBUG
+  level.com.p6spy: DEBUG
 spring.jackson:
   serialization.fail-on-empty-beans: false
   deserialization.fail-on-ignored-properties: true
@@ -28,7 +30,8 @@ refresh.referentials.cron: 0 0 0 1/1 * ?
 #server.port=0 #aloca port aleator
 spring:
   datasource:
-    url: jdbc:h2:mem:private
+    url: jdbc:p6spy:h2:mem:private
     username: sa
     password: sa
-    driver-class-name: org.h2.Driver
+#    driver-class-name: org.h2.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
