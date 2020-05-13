@@ -1,8 +1,12 @@
 package com.example.demo.repo;
 
 import com.example.demo.entity.Teacher;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,20 +16,27 @@ import java.util.Map;
 
 @Repository
 public class TeacherRepo {
-    private long idSequence;
-    private final Map<Long, Teacher> data = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
 
-    public synchronized void save(Teacher teacher) {
-        teacher.setId(idSequence++);
-        data.put(teacher.getId(), teacher);
+    public TeacherRepo(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Teacher getOne(Long teacherId) {
-        return data.get(teacherId);
+        return jdbcTemplate.queryForObject("SELECT id, name FROM TEACHER WHERE ID=?", mapTeacher(), teacherId);
+    }
+
+    private RowMapper<Teacher> mapTeacher() {
+        return (rs, rowNum) -> {
+            Teacher teacher = new Teacher();
+            teacher.setId(rs.getLong("id"));
+            teacher.setName(rs.getString("name"));
+            return teacher;
+        };
     }
 
     public Collection<Teacher> findAll() {
-        return data.values();
+        return jdbcTemplate.query("SELECT id, name FROM TEACHER", mapTeacher());
     }
 
 }

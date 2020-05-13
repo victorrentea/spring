@@ -17,7 +17,7 @@ create table training
     id          bigint not null,
     description varchar(255),
     name        varchar(255),
-    start_date  varchar(255),
+    start_date  date,
     teacher_id  bigint,
     primary key (id)
 );

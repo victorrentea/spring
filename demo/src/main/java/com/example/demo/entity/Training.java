@@ -69,6 +69,4 @@ public class Training {
 		Objects.requireNonNull(teacher);
 		this.teacher = teacher;
 	}
-
-
 }
