@@ -28,7 +28,4 @@ public class TeacherRepo {
         return data.values();
     }
 
-    public void deleteById(Long id) {
-        data.remove(id);
-    }
 }

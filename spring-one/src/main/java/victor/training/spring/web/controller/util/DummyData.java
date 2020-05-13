@@ -3,6 +3,7 @@ package victor.training.spring.web.controller.util;
 import java.util.Arrays;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -17,6 +18,7 @@ import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.UserRepo;
 
+@Slf4j
 @Service
 public class DummyData {
 
@@ -32,6 +34,7 @@ public class DummyData {
 	@EventListener
 	@Transactional
 	public void initMockData(ContextRefreshedEvent event) {
+		log.info("Inserting dummy data");
 		Training c1 = new Training("Spring Framework", "All about Spring", new Date(System.currentTimeMillis()+10*24*60*60*1000L));
 		Training c2 = new Training("JPA", "The coolest standard in Java EE", new Date(System.currentTimeMillis()+2*24*60*60*1000L));
 		Training c3 = new Training("Java Basic", "The new way of doing Single Page Applications", new Date(System.currentTimeMillis()+20*24*60*60*1000L));
