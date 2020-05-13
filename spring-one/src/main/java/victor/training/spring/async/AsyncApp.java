@@ -2,12 +2,12 @@ package victor.training.spring.async;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -39,8 +39,8 @@ class Drinker implements CommandLineRunner {
 
     public void run(String... args) {
         String x = "xx;";
-        beerRequestsOut.send(MessageBuilder.withPayload("blonda craft").build());
-        vodkaRequestsOut.send(MessageBuilder.withPayload("tare").build());
+        beerRequestsOut.send(MessageBuilder.withPayload("blonda craft").setHeader("corr","7").build());
+        vodkaRequestsOut.send(MessageBuilder.withPayload("tare").setHeader("corr","7").build());
         log.debug("Aici a plecat fata cu berea");
 
         // NU MA MAI POT BLOCA AICI.
@@ -60,8 +60,9 @@ class Drinker implements CommandLineRunner {
     }
 
     @ServiceActivator(inputChannel = Queues.DRINKS_RESULT_IN)
-    public void drink(String drink) {
-        log.debug("Eu beu: " + drink);
+    public void drink(Message<String> message) {
+        String drink = message.getPayload();
+        log.debug("Eu beu: " + drink + " ca rasp la req " + message.getHeaders().get("corr"));
     }
 }
 
@@ -70,25 +71,20 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-    private final MessageChannel responseChannel;
-
-    public Barman(@Qualifier(Queues.DRINKS_RESULT_IN) MessageChannel responseChannel) {
-        this.responseChannel = responseChannel;
-    }
-
-    @ServiceActivator(inputChannel = Queues.BEER_REQUESTS_IN)
+    @ServiceActivator(inputChannel = Queues.BEER_REQUESTS_IN, outputChannel = Queues.DRINKS_RESULT_IN)
     @SneakyThrows
-    public void toarnaBere(String tipBere) {
-        log.debug("Torn bere");
+    public Message<String> toarnaBere(Message<String> message) {
+        String tipBere = message.getPayload();
+        log.debug("Torn bere pt " + message.getHeaders().keySet());
         Thread.sleep(2000);
-        responseChannel.send(MessageBuilder.withPayload("Bere "+ tipBere).build());
+        return MessageBuilder.withPayload("Bere "+ tipBere).copyHeaders(message.getHeaders()).build();
     }
 
-    @ServiceActivator(inputChannel = Queues.VODKA_REQUESTS_IN)
+    @ServiceActivator(inputChannel = Queues.VODKA_REQUESTS_IN, outputChannel = Queues.DRINKS_RESULT_IN)
     @SneakyThrows
-    public void toarnaVodca() {
+    public Message<String> toarnaVodca(Message<String> message) {
         log.debug("Torn Vodca");
         Thread.sleep(2000);
-        responseChannel.send(MessageBuilder.withPayload("Vodka tare").build());
+        return MessageBuilder.withPayload("Vodka tare").copyHeaders(message.getHeaders()).build();
     }
 }
