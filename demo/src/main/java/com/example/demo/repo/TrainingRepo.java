@@ -3,6 +3,7 @@ package com.example.demo.repo;
 import com.example.demo.entity.Teacher;
 import com.example.demo.entity.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,11 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
 public interface TrainingRepo extends JpaRepository<Training, Long> {
-    Training getByName(String name);
+    Optional<Training> getByName(String name);
+    int countByNameAndIdNot(String name, long id);
+
+    @Query("SELECT COUNT(*) FROM Training WHERE name=?1 AND id <> ?2")
+    int countOtherWithSameName(String name, long id);
 }
 //
 //@Repository

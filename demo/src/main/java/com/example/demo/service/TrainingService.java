@@ -35,7 +35,25 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+        System.out.println("De vazut: "+ trainingRepo.getClass());
+
+//        trainingRepo.getByName(dto.name).ifPresent(t -> {
+//                if (!t.getId().equals(id)) {
+//                throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME, dto.name);
+//            }
+//        });
+
+//        if (!trainingRepo.getByName(dto.name).map(Training::getId).orElse(-1L).equals(id)) {
+////            throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME, dto.name);
+////        }
+
+        // ---> id: 5, name: JPA
+        // DB: id: 5, name: JPA --- asta esti chiar tu
+
+
+//        if (trainingRepo.countByNameAndIdNot(dto.name, id) != 0) {
+
+        if (trainingRepo.countOtherWithSameName(dto.name, id) != 0) {
             throw new DemoException(DemoException.ErrorCode.DUPLICATE_NAME, dto.name);
         }
         Training training = trainingRepo.findById(id).get();
@@ -51,7 +69,7 @@ public class TrainingService {
     }
 
     public void createTraining(TrainingDto dto) {
-        if (trainingRepo.getByName(dto.name) != null) {
+        if (trainingRepo.getByName(dto.name).isPresent()) {
             throw new IllegalArgumentException("Another course with that name already exists");
         }
         Training newEntity = trainingMapper.mapToEntity(dto);
