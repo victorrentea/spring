@@ -20,6 +20,8 @@ import static java.util.Optional.of;
 public interface TrainingRepo extends JpaRepository<Training, Long> {
     Optional<Training> getByName(String name);
     int countByNameAndIdNot(String name, long id);
+    // SPring genereaza o implementare care ruleaza query-ul de mai jos,
+    // dedus din numele metodei
 
     @Query("SELECT COUNT(*) FROM Training WHERE name=?1 AND id <> ?2")
     int countOtherWithSameName(String name, long id);
