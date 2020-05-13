@@ -11,6 +11,7 @@ import static java.util.Optional.ofNullable;
 @Entity
 public class Training {
 	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
 	@Lob
