@@ -1,14 +1,17 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+//@Table(
+//		uniqueConstraints = @UniqueConstraint(name="UK_NAME",columnNames = "NAME"),
+//		indexes = @Index()
+//)
 public class Teacher {
 	@Id
 	@GeneratedValue
 	private Long id;
+
 	private String name;
 
 	public Teacher() {
