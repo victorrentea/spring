@@ -43,6 +43,7 @@ public class TrainingService {
         training.setDescription(dto.description);
         training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ISO_DATE));
         training.setTeacher(teacherRepo.getOne(dto.teacherId));
+        // TODO missing repo.update(training)
     }
 
     public void deleteTrainingById(Long id) {
