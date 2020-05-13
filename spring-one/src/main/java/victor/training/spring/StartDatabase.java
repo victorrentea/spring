@@ -15,10 +15,11 @@ public class StartDatabase {
 //		Server.main();
 		org.h2.tools.Server.createTcpServer(/*
 				"-tcpPort",
-				"9093",
+				"9093",*/
+				/*"-help",*/
 				"-baseDir",
 				"c:\\Users\\victo\\h2",
-				"-trace"*/
+				"-trace"
 		).start();
 	}
 
