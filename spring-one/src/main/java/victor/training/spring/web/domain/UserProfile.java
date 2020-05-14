@@ -8,7 +8,7 @@ import java.util.Set;
 public enum UserProfile {
     USER("runSearch", "USER"),
     ADMIN("runSearch", "ADMIN",
-            "deleteCourse");
+            "deleteTraining");
     public final Set<String> permissions;
 
     UserProfile(String... permissions) {

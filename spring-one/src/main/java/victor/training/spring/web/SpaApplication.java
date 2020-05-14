@@ -2,10 +2,7 @@ package victor.training.spring.web;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import victor.training.spring.props.PropertiesApp;
 
 @EnableSwagger2
 @SpringBootApplication

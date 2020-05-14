@@ -10,8 +10,8 @@ import java.util.Date;
 public class EmailSender {
 
     // TODO [SEC] only ADMIN is allowed to send emails. other roles: (a) crash or (b) silently skip
-    public void sendScheduleChangedEmail(Teacher teacher, String courseName, Date newDate) {
-        System.out.println("SENDING EMAIL TO TEACHER " + teacher.getName() + " for course " + courseName + " moved to date " + newDate);
+    public void sendScheduleChangedEmail(Teacher teacher, String trainingName, Date newDate) {
+        System.out.println("SENDING EMAIL TO TEACHER " + teacher.getName() + " for training " + trainingName + " moved to date " + newDate);
 
     }
 }

@@ -1,6 +1,6 @@
 package victor.training.spring.web.controller.dto;
 
-public class CourseDto {
+public class TrainingDto {
 	public Long id;
 	public String name;
 	public Long teacherId;

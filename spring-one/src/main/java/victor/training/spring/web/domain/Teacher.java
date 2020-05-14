@@ -14,7 +14,7 @@ public class Teacher {
 	private Long id;
 	private String name;
 	@OneToMany(mappedBy = "teacher")
-	private List<Course> courses = new ArrayList<Course>();
+	private List<Training> trainings = new ArrayList<Training>();
 
 	public Teacher() {
 	}
@@ -35,12 +35,12 @@ public class Teacher {
 		this.name = name;
 	}
 
-	public final List<Course> getCourses() {
-		return courses;
+	public final List<Training> getTrainings() {
+		return trainings;
 	}
 
-	public final void setCourses(List<Course> courses) {
-		this.courses = courses;
+	public final void setTrainings(List<Training> trainings) {
+		this.trainings = trainings;
 	}
 
 }

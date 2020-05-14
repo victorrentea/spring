@@ -20,41 +20,41 @@ html {
 	<h3>With Spring <span id="username"></span></h3>
 	
 	
-	<div id="coursesMain" style="border:2px solid red">
-		<table id="coursesTable" border="1">
-			<tr><th>Course Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
+	<div id="trainingMain" style="border:2px solid red">
+		<table id="trainingTable" border="1">
+			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
 		</table>
-		<input type="button" value="Reload" onclick="refreshCoursesTable()">
-		<input type="button" value="Create New Course..." onclick="openCreateCourse()">
+		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
+		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
 	</div>
 	
-	<div id="courseNewDiv" style="display:none;border:2px solid green">
-		<h4>Create a New Course</h4>
+	<div id="trainingNewDiv" style="display:none;border:2px solid green">
+		<h4>Create a New Training</h4>
 		Name:<input type="text" id="newName" /> <br />
 		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
 		
 		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
 		Teacher: <select id="newTeacher"></select> <br />
-		<input type="button" value="Create" onclick="createCourse()">
-		<input type="button" value="Cancel" onclick="$('#courseNewDiv').hide();$('#coursesMain').show();">
+		<input type="button" value="Create" onclick="createTraining()">
+		<input type="button" value="Cancel" onclick="$('#trainingNewDiv').hide();$('#trainingMain').show();">
 	</div>
 	
-	<div id="courseEditDiv" style="display:none; border:2px solid blue">
-		<h4>Edit a Course</h4>
-		<input type="hidden" id="editCourseId" /> 
+	<div id="trainingEditDiv" style="display:none; border:2px solid blue">
+		<h4>Edit a Training</h4>
+		<input type="hidden" id="editTrainingId" />
 		Name:<input type="text" id="editName" /> <br />
 		Description:<textarea id="editDescription" cols="40" rows="3"></textarea> <br />
 		Start Date (dd-mm-yyyy):<input type="text" id="editStartDate" /> <br />
 		Teacher: <select id="editTeacher"></select><br />
-		<input type="button" value="Save" onclick="updateCourse()">
-		<input type="button" value="Cancel" onclick="$('#courseEditDiv').hide();$('#coursesMain').show();">
+		<input type="button" value="Save" onclick="updateTraining()">
+		<input type="button" value="Cancel" onclick="$('#trainingEditDiv').hide();$('#trainingMain').show();">
 	</div>
 
 
-<!-- <select multiple="multiple" id="coursesAvailable"><option value="a">A</option><option value="b">B</option></select>
-<input type="button" name=">>" onclick="moveSelectedOptions('#coursesAvailable', '#coursesSelected')"/>
-<input type="button" name="<<" onclick="moveSelectedOptions('#coursesSelected', '#coursesAvailable')"/>
-<select multiple="multiple" id="coursesSelected"></select> -->
+<!-- <select multiple="multiple" id="trainingAvailable"><option value="a">A</option><option value="b">B</option></select>
+<input type="button" name=">>" onclick="moveSelectedOptions('#trainingAvailable', '#trainingSelected')"/>
+<input type="button" name="<<" onclick="moveSelectedOptions('#trainingSelected', '#trainingAvailable')"/>
+<select multiple="multiple" id="trainingSelected"></select> -->
 
 <script type="text/javascript">
 
@@ -74,29 +74,29 @@ function getContextPath() {
 }
 var restEndpoint = getContextPath() + "/rest";
 
-function refreshCoursesTable() {
-	$.ajax(restEndpoint +"/courses", {
+function refreshTrainingsTable() {
+	$.ajax(restEndpoint +"/trainings", {
 		method: "GET",
-		success: function(courses) {
-			$("#coursesTable tr").each(function(i, r) {
+		success: function(trainings) {
+			$("#trainingTable tr").each(function(i, r) {
 				if (i>0) r.remove();
 			});
-			for (var i=0; i<courses.length;i++) {
-				var c = courses[i];
+			for (var i=0; i<trainings.length;i++) {
+				var c = trainings[i];
 				var row = '<tr id="'+c.id+'">';
 				row+='<td>'+c.name+'</td>';
 				row+='<td>'+c.startDate + '</td>';
 				row+='<td>'+c.teacherName+'</td>';
-				row+='<td><input type="button" value="Edit" onclick="openEditCourse('+c.id+')" />'+
-						 '<input type="button" value="Delete" onclick="deleteCourse('+c.id+')" /></td>';
+				row+='<td><input type="button" value="Edit" onclick="openEditTraining('+c.id+')" />'+
+						 '<input type="button" value="Delete" onclick="deleteTraining('+c.id+')" /></td>';
 				row+='</tr>';
-				$('#coursesTable tr:last').after(row);
+				$('#trainingTable tr:last').after(row);
 			}
-			toastr.info("Courses reloaded")
+			toastr.info("Trainings reloaded")
 		}
 	});
 }
-refreshCoursesTable();
+refreshTrainingsTable();
 $.ajax(restEndpoint +"/user/current", {
 	method: "GET",
 	success: function(username) {
@@ -120,12 +120,12 @@ populateTeacherCombo($("#newTeacher"));
 populateTeacherCombo($("#editTeacher"));
 
 
-function deleteCourse(id) {
-	$.ajax(restEndpoint +"/courses/"+id, {
+function deleteTraining(id) {
+	$.ajax(restEndpoint +"/trainings/"+id, {
 		method: "DELETE",
 		success: function() {
-			toastr.success("Course deleted"); 
-			refreshCoursesTable();
+			toastr.success("Training deleted");
+			refreshTrainingsTable();
 		},
 		error: function(a,b,c) {
 			if (a.responseText) {
@@ -135,25 +135,25 @@ function deleteCourse(id) {
 	});
 }
 
-//------------- COURSE: UPDATE SCREEN --------------------
+//------------- TRAINING: UPDATE SCREEN --------------------
 
-function openEditCourse(courseId) {
-	$.ajax(restEndpoint + "/courses/"+courseId, {
+function openEditTraining(trainingId) {
+	$.ajax(restEndpoint + "/trainings/"+trainingId, {
 		method: "GET",
 		success: function(data) {
 			//au venit datele
-			$("#editCourseId").val(data.id);
+			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
 			// BUG
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
-			$('#coursesMain').hide();
-			$('#courseEditDiv').show();
+			$('#trainingMain').hide();
+			$('#trainingEditDiv').show();
 		}
 	});
 }
-function updateCourse() {
-	$.ajax(restEndpoint +"/courses/" +$("#editCourseId").val(), {
+function updateTraining() {
+	$.ajax(restEndpoint +"/trainings/" +$("#editTrainingId").val(), {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
@@ -162,10 +162,10 @@ function updateCourse() {
 		}),
 		contentType: "application/json",
 		success: function(data) {
-			toastr.success("Course Updated");
-			$('#coursesMain').show();
-			$('#courseEditDiv').hide();
-			refreshCoursesTable();
+			toastr.success("Training Updated");
+			$('#trainingMain').show();
+			$('#trainingEditDiv').hide();
+			refreshTrainingsTable();
 		},
 		error: function(a,b,c) {
 			if (a.responseText) {
@@ -175,17 +175,17 @@ function updateCourse() {
 	});
 }
 
-// ------------- COURSE: CREATE SCREEN --------------------
+// ------------- TRAINING: CREATE SCREEN --------------------
 
-function openCreateCourse() {
+function openCreateTraining() {
 	$("#newName").val("");
 	$("#newDescription").val("");
 	$("#newTeacher").val(null);
-	$('#coursesMain').hide();
-	$('#courseNewDiv').show();
+	$('#trainingMain').hide();
+	$('#trainingNewDiv').show();
 }
-function createCourse() {
-	$.ajax(restEndpoint +"/courses", {
+function createTraining() {
+	$.ajax(restEndpoint +"/trainings", {
 		data: JSON.stringify({
 			name:$("#newName").val(),
 			description:$("#newDescription").val(),
@@ -195,10 +195,10 @@ function createCourse() {
 		method: "POST",
 		contentType: "application/json",
 		success: function(data) {
-			toastr.success("Course created");
-			$('#coursesMain').show();
-			$('#courseNewDiv').hide();
-			refreshCoursesTable();
+			toastr.success("Training created");
+			$('#trainingMain').show();
+			$('#trainingNewDiv').hide();
+			refreshTrainingsTable();
 		},
 		error: function(a,b,c) {
 			if (a.responseText) {
