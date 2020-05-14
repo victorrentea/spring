@@ -1,0 +1,21 @@
+1) Cafe: @MessagingGateway + @Gateway(requestChannel = orders) + log channel from DSL
+
+2) Splitter: @MEssageEndpoint + @Splitter in=orders out=drinks + log
+
+3) Router: in=drinks return "coldDrinks":"hotDrinks" + 2 log
+[opt] incearca SpEL ('payload.iced')
+
+4) Bridge intre coldDrinks (queue) to stop working in main thread.
+towards coldDrinksBarista
+
+router --- [10] -- poller ---> coldDrinksBarista
+       --- [10] -- poller ---> hodDrinksBarista
+
+Snippet: e -> e.poller(Pollers.fixedDelay(1000))
+
+5) Barista: @Component + @ServiceActivator(inputChannel= , out=) x 2 + log
+
+6) Waiter @MessageEndpoint @Aggregator + @CorrelationStrategy(drink) -> .getOrderNumber()
+
+
+Message Channel -> direct channel sau queue

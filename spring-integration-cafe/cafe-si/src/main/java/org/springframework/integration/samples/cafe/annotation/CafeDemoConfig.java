@@ -16,10 +16,14 @@ import org.springframework.integration.samples.cafe.OrderItem;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 
-@EnableIntegration
-@IntegrationComponentScan("org.springframework.integration.samples.cafe") // sa scaneze si interfete @MessageGateway pt care sa creeze apoi proxyuri
+// FULL REWRITE OF THE LOGIC IN INTEGRATION FLOWS DSL
+
+// REMOVE AND REWRITE THIS FILE, using the migration-guide.txt for inspiration
+
+//@EnableIntegration
+//@IntegrationComponentScan("org.springframework.integration.samples.cafe") // sa scaneze si interfete @MessageGateway pt care sa creeze apoi proxyuri
+//@ComponentScan
 //@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml") //inspiration
-@ComponentScan
 public class CafeDemoConfig {
 
     @Autowired
