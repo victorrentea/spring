@@ -12,15 +12,8 @@ public class StartDatabase {
 
 		System.out.println("Started DB...");
 
-//		Server.main();
-		org.h2.tools.Server.createTcpServer(/*
-				"-tcpPort",
-				"9093",*/
-				/*"-help",*/
-				"-baseDir",
-				"c:\\Users\\victo\\h2",
-				"-trace"
-		).start();
+		// Allow auto-creating new databases on disk at first connection
+		org.h2.tools.Server.createTcpServer("-ifNotExists").start();
 	}
 
 	private static void deletePreviousDBContents() {
