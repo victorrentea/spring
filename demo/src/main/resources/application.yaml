@@ -30,7 +30,7 @@ refresh.referentials.cron: 0 0 0 1/1 * ?
 #server.port=0 #aloca port aleator
 spring:
   datasource:
-    url: jdbc:p6spy:h2:mem:private
+    url: jdbc:p6spy:h2:tcp://localhost:9092/~/test
     username: sa
     password: sa
 #    driver-class-name: org.h2.Driver
