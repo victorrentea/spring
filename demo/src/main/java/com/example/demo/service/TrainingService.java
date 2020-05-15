@@ -42,7 +42,7 @@ public class TrainingService {
 
     @Cacheable("trainings")
     public List<TrainingDto> getAllTrainings() {
-        return trainingRepo.findAll().stream().map(training -> new TrainingDto(training)).collect(toList());
+        return trainingRepo.findAll().stream().map(TrainingDto::new).collect(toList());
     }
 
     public TrainingDto getTrainingById(Long id) {

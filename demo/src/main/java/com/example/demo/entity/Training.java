@@ -18,7 +18,7 @@ public class Training {
 	private String description;
 //	@Temporal(TemporalType.DATE) // inutil
 	private LocalDate startDate;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Teacher teacher;
 
 	
