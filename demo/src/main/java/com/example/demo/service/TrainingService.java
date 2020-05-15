@@ -71,6 +71,7 @@ public class TrainingService {
 
     // Exercitiu pentru cititor: implementeaza ACL-urile intr-un alt bean.
 //    @PreAuthorize("#numeleUnuiBean.verificaCaAreVoieUserulCurentPeTraningul(#id)")
+    @PreAuthorize("hasPermission(#id,'TRAINING','UPDATE')")
     @Transactional
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
 
