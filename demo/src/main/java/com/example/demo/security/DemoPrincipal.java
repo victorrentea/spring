@@ -33,7 +33,7 @@ public class DemoPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(toSet());
+        return roles.stream().map(r -> "ROLE_"+r).map(SimpleGrantedAuthority::new).collect(toSet());
     }
 
     @Override
