@@ -31,13 +31,26 @@ public class TrainingServiceTest {
 
     @Before
     public void checkNoTrainingsInDb() {
-        if (trainingRepo.count() != 0) {
-            throw new IllegalStateException("N-ar trebui sa fie date in baza");
+        long n = trainingRepo.count();
+        if (n != 0) {
+            throw new IllegalStateException("N-ar trebui sa fie date in baza. Am gasit " + n + " traininguri");
         }
     }
 
     @Test
     public void getAll() {
+        Training training = new Training();
+        training.setStartDate(LocalDate.now());
+        training.setTeacher(new Teacher("Tavi"));
+        trainingRepo.save(training);
+        List<TrainingDto> dtos = service.getAllTrainings();
+        assertEquals(1, dtos.size());
+        TrainingDto dto = dtos.get(0);
+        assertEquals("2020-05-15", dto.startDate);
+    }
+
+    @Test
+    public void getAll2() {
         Training training = new Training();
         training.setStartDate(LocalDate.now());
         training.setTeacher(new Teacher("Tavi"));
