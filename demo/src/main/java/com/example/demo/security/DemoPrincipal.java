@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -13,11 +14,17 @@ public class DemoPrincipal implements UserDetails {
     private String username;
     private String fullName;
     private List<String> roles;
+    private final Set<Long> managedTeacherIds;
 
-    public DemoPrincipal(String username, String fullName, List<String> roles) {
+    public DemoPrincipal(String username, String fullName, List<String> roles, Set<Long> managedTeacherIds) {
         this.username = username;
         this.fullName = fullName;
         this.roles = roles;
+        this.managedTeacherIds = managedTeacherIds;
+    }
+
+    public Set<Long> getManagedTeacherIds() {
+        return managedTeacherIds;
     }
 
     public String getFullName() {

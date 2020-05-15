@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
 @Service
 public class DummyData {
@@ -44,8 +43,8 @@ public class DummyData {
 		trainingRepo.save(c4);
 
 
-		userRepo.save(new User("user", "John", User.Role.USER));
-		userRepo.save(new User("admin", "Guru", User.Role.ADMIN));
+		userRepo.save(new User("user", "John", User.Role.USER, Arrays.asList(t1.getId())));
+		userRepo.save(new User("admin", "Guru", User.Role.ADMIN, Arrays.asList(t1.getId(), t2.getId())));
 	}
 
 	@Autowired

@@ -22,6 +22,8 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         Optional<User> userOpt = userRepo.findById(username);
         User user = userOpt.orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return new DemoPrincipal(username, user.getName(), Arrays.asList(user.getRole().name()));
+        return new DemoPrincipal(username, user.getName(),
+                Arrays.asList(user.getRole().name()),
+                user.getManagedTeacherIds());
     }
 }
