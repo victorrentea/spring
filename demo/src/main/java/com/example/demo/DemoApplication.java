@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@EnableCaching
+//@EnableCaching -- re-enable to test redis :)
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
