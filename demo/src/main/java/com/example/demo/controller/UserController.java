@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.repo.TestRepo;
+import com.example.demo.security.DemoPrincipal;
 import com.example.demo.service.Alta;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,9 @@ public class UserController {
         // cum e oare posibil ca dintr-o metoda STATICA sa obtii userul curent acum logat pe acest request??!
         // Hint: fiecare request HTTP este procesat in propriul sau thread. :D
         // ghici unde se agata date de securitate ? -> pe thread.
-        User user = (User) SecurityContextHolder.getContext()
+        DemoPrincipal user = (DemoPrincipal) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return user.getUsername();
+        return user.getFullName();
     }
 
     // daca vrei sa propagi security context pentru call-ul @Async:
