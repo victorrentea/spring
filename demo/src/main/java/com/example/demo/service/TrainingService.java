@@ -6,11 +6,13 @@ import com.example.demo.entity.Teacher;
 import com.example.demo.entity.Training;
 import com.example.demo.repo.TeacherRepo;
 import com.example.demo.repo.TrainingRepo;
+import com.example.demo.security.DemoPrincipal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -22,6 +24,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -66,6 +69,8 @@ public class TrainingService {
     @CacheEvict(value = "trainings", allEntries = true)
     @Transactional
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+
+
         System.out.println("De vazut: " + trainingRepo.getClass());
 
 //        trainingRepo.getByName(dto.name).ifPresent(t -> {
@@ -92,6 +97,17 @@ public class TrainingService {
         training.setDescription(dto.description);
         training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ISO_DATE));
         training.setTeacher(teacherRepo.getOne(dto.teacherId));
+
+
+        DemoPrincipal principal = (DemoPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Long> allowedTeacherIds = principal.getManagedTeacherIds();
+        Long thisTrainingTeacherId = training.getTeacher().getId();
+        if (!allowedTeacherIds.contains(thisTrainingTeacherId)) {
+            throw new IllegalArgumentException("N-ai voie");
+        }
+
+
+
         log.debug("IES");
         alta.inseraSiTeacher();
         try {
