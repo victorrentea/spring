@@ -4,10 +4,11 @@ import com.example.demo.entity.Training;
 import com.example.demo.repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TrainingDto {
+public class TrainingDto implements Serializable {
     public Long id;
     public String name;
     public Long teacherId;

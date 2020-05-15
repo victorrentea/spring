@@ -38,4 +38,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create #NU CARE CUMVA SA TE MANCEN-*** sa pui CREATE in PROD; sterge baza
-
+spring.cache.type: redis

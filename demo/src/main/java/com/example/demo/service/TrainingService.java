@@ -46,12 +46,13 @@ public class TrainingService {
         return new TrainingDto(trainingRepo.findById(id).get());
     }
 
+    @CacheEvict(value = "trainings", allEntries = true)
     // TODO Test this!
     public void deleteTrainingById(Long id) {
         trainingRepo.deleteById(id);
     }
 
-//    @CacheEvict(value = "trainings", allEntries = true)
+    @CacheEvict(value = "trainings", allEntries = true)
     public void createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name).isPresent()) {
             throw new IllegalArgumentException("Another course with that name already exists");
@@ -60,6 +61,7 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
+    @CacheEvict(value = "trainings", allEntries = true)
     @Transactional
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         System.out.println("De vazut: " + trainingRepo.getClass());

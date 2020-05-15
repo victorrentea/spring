@@ -27,6 +27,6 @@ public class Alta {
     @Transactional
     public void inseraSiTeacher() {
         teacherRepo.save(new Teacher("Tavi"));
-        jdbcTemplate.update("INSERT INTO TEACHER(id, name) VALUES (99, 'profu')");
+//        jdbcTemplate.update("INSERT INTO TEACHER(id, name) VALUES (99, 'profu')");
     }
 }
