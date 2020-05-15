@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.entity.Teacher;
 import com.example.demo.entity.Training;
+import com.example.demo.entity.User;
 import com.example.demo.repo.TeacherRepo;
 import com.example.demo.repo.TrainingRepo;
 import com.example.demo.repo.UserRepo;
@@ -41,7 +42,13 @@ public class DummyData {
 		trainingRepo.save(c2);
 		trainingRepo.save(c3);
 		trainingRepo.save(c4);
+
+
+		userRepo.save(new User("user", "John", User.Role.USER));
+		userRepo.save(new User("admin", "Guru", User.Role.ADMIN));
 	}
 
+	@Autowired
+	private UserRepo userRepo;
 
 }
