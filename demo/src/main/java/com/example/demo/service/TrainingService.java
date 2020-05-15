@@ -8,6 +8,7 @@ import com.example.demo.repo.TeacherRepo;
 import com.example.demo.repo.TrainingRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -50,6 +51,7 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
+//    @CacheEvict(value = "trainings", allEntries = true)
     public void createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name).isPresent()) {
             throw new IllegalArgumentException("Another course with that name already exists");
