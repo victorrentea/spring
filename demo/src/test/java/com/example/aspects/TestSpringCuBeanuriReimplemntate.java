@@ -10,22 +10,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 //@TestPropertySource(locations = "alt.yaml")
-public class TestSpringCuBeanuriMockuite {
+public class TestSpringCuBeanuriReimplemntate {
     @Autowired
     LogicaCuDependenteExterne target;
-    @MockBean
-    ExternalSystemClient mockClient;
 
     @Test
     public void zaTest() {
-        Mockito.when(mockClient.call()).thenReturn("a");
-        Assert.assertEquals("A",target.m());
+        Assert.assertEquals("DUMMY IMPL",target.m());
     }
+}
+
+
+@Service
+@Primary
+class ExternalSystemClientDoarPtTeste extends ExternalSystemClient {
+    public String call() {
+        return "dummy impl";
+    }
+
 }

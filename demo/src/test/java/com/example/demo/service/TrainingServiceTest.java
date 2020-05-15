@@ -11,9 +11,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +25,9 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+// Fix3: [solutia buna] Fiecare test sa ruleze in propria tranzactie,
+// pe care spring are grija sa o ROLLBACK-uie la final automat.
+@Transactional
 public class TrainingServiceTest {
     @Autowired
     private TrainingService service;
@@ -31,6 +36,10 @@ public class TrainingServiceTest {
 
     @Before
     public void checkNoTrainingsInDb() {
+        // Fix2: sterg baza inainte mea. Prost ca poate scapa gunoi. Prost ca tre sa le stergi in ordinea FKurilor
+//        trainingRepo.deleteAll();
+
+
         long n = trainingRepo.count();
         if (n != 0) {
             throw new IllegalStateException("N-ar trebui sa fie date in baza. Am gasit " + n + " traininguri");
@@ -38,6 +47,8 @@ public class TrainingServiceTest {
     }
 
     @Test
+    // FIX1: arunci tot springu la gunoi dupa COMMITul tau. Problema: mai pierzi 5-15 sec sa reporneasca springul
+//    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getAll() {
         Training training = new Training();
         training.setStartDate(LocalDate.now());
