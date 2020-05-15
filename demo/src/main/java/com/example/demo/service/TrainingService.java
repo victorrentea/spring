@@ -51,6 +51,7 @@ public class TrainingService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('CAN_DELETE_TRAINING')") <-- permission
     @CacheEvict(value = "trainings", allEntries = true)
     // TODO Test this!
     public void deleteTrainingById(Long id) {
@@ -67,6 +68,9 @@ public class TrainingService {
     }
 
     @CacheEvict(value = "trainings", allEntries = true)
+
+    // Exercitiu pentru cititor: implementeaza ACL-urile intr-un alt bean.
+//    @PreAuthorize("#numeleUnuiBean.verificaCaAreVoieUserulCurentPeTraningul(#id)")
     @Transactional
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
 
