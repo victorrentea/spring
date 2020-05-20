@@ -19,7 +19,7 @@ public class WelcomeInfo {
     private Map<String,String> localContactPhone; // per country
     // TODO HelpInfo help;
 
-    private List<Rec> rec;
+    private List<Rec> rec; //with .yaml
 
     @PostConstruct
     public void printMyself() {

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -27,6 +28,7 @@ public class DummyData {
 
 
 	@EventListener
+	@Transactional
 	public void initMockData(ContextRefreshedEvent event) {
 		System.out.println("Inserting dummy data");
 		Teacher t1 = new Teacher("Victor");

@@ -15,7 +15,9 @@ welcome:
   greeting: Hello YAML 3
   help-file: C:\Users\victo\Google Drive\CV+Acte\PFA\Offer - ALL.pdf
   support:
-    phone: 999999999,88888888
+    phone:
+      EN: 999999999,88888888
+      FR: 777777777
     email: a@b.com
   tenants:
     - service-class-name: com.example.demo.service.ROService2

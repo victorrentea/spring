@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -48,7 +49,7 @@ public class TrainingServiceTest {
 
     @Test
     // FIX1: arunci tot springu la gunoi dupa COMMITul tau. Problema: mai pierzi 5-15 sec sa reporneasca springul
-//    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void getAll() {
         Training training = new Training();
         training.setStartDate(LocalDate.now());

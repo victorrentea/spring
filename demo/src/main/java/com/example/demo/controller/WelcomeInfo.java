@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 //@JsonIgnoreProperties("$$beanFactory")
 //@Configuration
@@ -19,7 +20,6 @@ public class WelcomeInfo {
     private SupportInfo support;
     private File helpFile;
     private List<TenantServiceConfig> tenants;
-
 
     @JsonIgnore
     @Autowired
@@ -41,7 +41,7 @@ public class WelcomeInfo {
 
     @Data
     static class SupportInfo {
-        private List<String> phone;
+        private Map<String,List<String>> phone; //
         private String email;
     }
 
