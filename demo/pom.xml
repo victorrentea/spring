@@ -37,6 +37,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
 		<!-- cu spring boot, nu definesti tu explicit versiunile. Intai il lasi sa vezi daca iti pune singur versiunea -->
 
 
