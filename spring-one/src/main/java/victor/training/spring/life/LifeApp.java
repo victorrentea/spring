@@ -125,11 +125,10 @@ class WSClient {
 @RequiredArgsConstructor
 class OrderExporter {
    private final InvoiceExporter invoiceExporter;
-   private final ObjectFactory<LabelService> labelServiceFactory;
-
+   private final CountryRepo countryRepo;
    public void export(Locale locale) {
       log.debug("Running export in " + locale);
-      LabelService labelService = labelServiceFactory.getObject();
+      LabelService labelService = new LabelService(countryRepo);
       labelService.load(locale);
       log.debug("Origin Country: " + labelService.getCountryName("rO"));
       invoiceExporter.exportInvoice(labelService);
@@ -148,8 +147,6 @@ class InvoiceExporter {
 }
 
 @Slf4j
-@Service
-@Scope("prototype")
 class LabelService {
    private final CountryRepo countryRepo;
 
