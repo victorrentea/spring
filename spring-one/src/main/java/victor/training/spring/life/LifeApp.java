@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -124,11 +125,11 @@ class WSClient {
 @RequiredArgsConstructor
 class OrderExporter {
    private final InvoiceExporter invoiceExporter;
-   private final ApplicationContext spring;
+   private final ObjectFactory<LabelService> labelServiceFactory;
 
    public void export(Locale locale) {
       log.debug("Running export in " + locale);
-      LabelService labelService = spring.getBean(LabelService.class);
+      LabelService labelService = labelServiceFactory.getObject();
       labelService.load(locale);
       log.debug("Origin Country: " + labelService.getCountryName("rO"));
       invoiceExporter.exportInvoice(labelService);
