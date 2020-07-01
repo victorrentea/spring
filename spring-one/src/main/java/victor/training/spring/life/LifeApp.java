@@ -12,6 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +31,24 @@ public class LifeApp implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(LifeApp.class);
 	}
-	
+
+
+	private TransactionTemplate txTemplate;
+
+	@Autowired
+	public void initTxTemplate(PlatformTransactionManager transactionManager) {
+		txTemplate = new TransactionTemplate(transactionManager);
+		txTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+
+		// in codul tau:
+		txTemplate.execute(status -> {
+			//INSERT in tx noua
+			return null;
+		});
+	}
+
+
+
 	@Autowired 
 	private OrderExporter exporter;
 	
