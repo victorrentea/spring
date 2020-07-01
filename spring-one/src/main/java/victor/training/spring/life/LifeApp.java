@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -78,9 +79,9 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice();
+
+		log.debug("Origin Country: " + labelService.getCountryName(locale, "rO"));
+		invoiceExporter.exportInvoice(locale);
 	}
 }
 @Slf4j
@@ -89,13 +90,14 @@ class OrderExporter  {
 class InvoiceExporter {
 	private final LabelService labelService;
 
-	public void exportInvoice() {
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+	public void exportInvoice(Locale locale) {
+		log.debug("Invoice Country: " + labelService.getCountryName(locale, "ES"));
 	}
 }
 
 @Slf4j
 @Service
+@Scope("prototype")
 class LabelService {
 	private final CountryRepo countryRepo;
 	
@@ -106,12 +108,13 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	public void load(Locale locale) {
+	private void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
-	public String getCountryName(String iso2Code) {
+	public synchronized String getCountryName(Locale locale, String iso2Code) {
+		load(locale);
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
 	}
