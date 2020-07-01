@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@EnableCaching
 @SpringBootApplication
 public class DemoApplication {
 
@@ -58,6 +60,7 @@ class B2 {
    @Autowired
 //   @Qualifier("dr")
 //   private IRepo repo;
+
 
    // daca tot stii precis pe care-l vrei, prefera:
    private DummyRepo repo;
@@ -147,10 +150,15 @@ class X {
 
 @Service
     // <bean>
+   @RequiredArgsConstructor
 class XA {
+   private final Y y;
 
 }
 
 @Component
 class Y {
+   public Y() {
+      System.out.println("New y");
+   }
 }
