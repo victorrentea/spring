@@ -64,8 +64,8 @@ public class LifeApp implements CommandLineRunner {
 		//tipic noi facem persist de date dummy
 //		em.persist()
 
-		exporter.export(Locale.ENGLISH);
-		exporter.export(Locale.FRENCH);
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
