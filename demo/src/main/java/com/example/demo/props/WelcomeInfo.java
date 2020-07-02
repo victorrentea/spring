@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class WelcomeInfo {
 }
 @Data
 class HelpInfo {
-    private String helpUrl;
+    private URL helpUrl;
     private String iconUri;
 }
 
