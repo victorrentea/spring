@@ -42,11 +42,13 @@ public class TrainingController {
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
-	public void deleteTrainingById(Long id) {
+	@DeleteMapping("{id}")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	public void createTraining(TrainingDto dto) throws ParseException {
+	@PostMapping
+	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 }

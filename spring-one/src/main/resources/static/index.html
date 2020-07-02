@@ -144,7 +144,7 @@ function openEditTraining(trainingId) {
 			//au venit datele
 			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
-			// BUG
+			$("#editDescription").val(data.description);
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
 			$('#trainingMain').hide();
@@ -157,6 +157,7 @@ function updateTraining() {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
+			description:$("#editDescription").val(),
 			startDate:$("#editStartDate").val(),
 			teacherId:$("#editTeacher").val()
 		}),
