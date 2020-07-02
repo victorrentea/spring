@@ -153,7 +153,7 @@ class InvoiceExporter {
 
 @Slf4j
 @Service
-@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(scopeName = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class LabelService {
    private final CountryRepo countryRepo;
 

@@ -73,7 +73,7 @@ class UsingSpells {
     private List<Integer> childrenInts;
 
 
-    @PostConstruct
+//    @PostConstruct
     public void show() {
         System.out.println("-------------SPEL-----------");
         System.out.println("intProperty + 1 = " + s1);

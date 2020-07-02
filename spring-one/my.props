@@ -1,7 +1,5 @@
-spring.main.web-application-type=servlet
-
-welcome.welcomeMessage=Welcome to This Single Page App
-welcome.help.helpUrl=alt url
+welcome.welcomeMessage=Welcome to This Spring Realm
+welcome.help.helpUrl=about:blank
 welcome.help.iconUri=bebe
 welcome.supportUrls=google,stackoverflow,baeldung,spring.io
 welcome.localContactPhone.RO=+401312121414
