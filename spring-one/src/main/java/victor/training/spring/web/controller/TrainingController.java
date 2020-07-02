@@ -34,6 +34,9 @@ public class TrainingController {
 	// TODO [SEC] Check user manages teacher of this training
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+
+		
+
 		trainingService.updateTraining(id, dto);
 	}
 

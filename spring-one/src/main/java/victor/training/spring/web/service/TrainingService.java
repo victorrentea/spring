@@ -3,6 +3,8 @@ package victor.training.spring.web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.SpaException;
+import victor.training.spring.web.SpaException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -53,9 +55,14 @@ public class TrainingService {
         training.setTeacher(teacherRepo.getOne(dto.teacherId));
     }
 
-    private Date parseStartDate(TrainingDto dto) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        return format.parse(dto.startDate);
+    private Date parseStartDate(TrainingDto dto)  {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            format.setLenient(false);
+            return format.parse(dto.startDate);
+        } catch (ParseException e) {
+            throw new SpaException(ErrorCode.BAD_DATE_FORMAT, dto.startDate);
+        }
     }
 
     public void deleteById(Long id) {
@@ -64,7 +71,7 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new SpaException("poc", ErrorCode.DUPLICATE_TRAINING_NAME);
         }
         trainingRepo.save(mapToEntity(dto));
     }

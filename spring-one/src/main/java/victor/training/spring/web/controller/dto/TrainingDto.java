@@ -7,4 +7,5 @@ public class TrainingDto {
 	public String teacherName;
 	public String startDate;
 	public String description;
+	public String altCampNull;
 }
