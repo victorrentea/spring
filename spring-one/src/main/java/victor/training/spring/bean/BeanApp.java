@@ -1,52 +1,63 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 @SpringBootApplication
-public class BeanApp implements CommandLineRunner {
-    public static void main(String[] args) {
-        SpringApplication.run(BeanApp.class);
-    }
+public class BeanApp {
+   public static void main(String[] args) {
+      SpringApplication.run(BeanApp.class, args);
+   }
 
-    @Override
-    public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        conversation.start();
-        // TODO manage all with Spring
+   @Bean
+   public Artist carlaX() { // numele beanului -> numele metodei
+      return new Artist("Carla's Dreams");
+   }
 
-        // TODO alternative: "Mirabela Dauer" story :)
-    }
+   @Autowired
+   Artist car;
+
+   @Bean
+   public Concert driveIn() {
+      return new Concert("Drive-In-Carla", car);
+   }
+
+   @Bean
+   public Concert inCort() {
+      return new Concert("Carla-n-Cort", car);
+   }
+
+
 }
 
 @Data
-class Conversation {
-    private final Person one;
-    private final Person two;
-
-    public Conversation(Person one, Person two) {
-        this.one = one;
-        this.two = two;
-    }
-
-    public void start() {
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
-    }
+class Artist {
+   private final String name;
+   @PostConstruct
+   public void init() {
+      System.out.println("S-a nascut o stea");
+   }
 }
 
+// asta ar permite creerea a oricate instante. clientul va face getBean(ArtistProto.class).setName("Carla Clona")
+//@Component @Scope("prototype") @Data
+//class ArtistProto {
+//   private String name;
+//}
 
-class Person {
-    private final String name;
-
-    public Person(String name) {
-        this.name = name;
-    }
-    public String sayHello() {
-        return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
-    }
+@Data
+class Concert {
+   private final String name;
+   private final Artist artist;
 }
-
 
