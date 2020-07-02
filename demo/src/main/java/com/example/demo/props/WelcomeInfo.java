@@ -19,7 +19,7 @@ import java.util.Map;
 @Data
 @ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
-    private String welcomeMessage;
+    private String welcomeMessage = "sadsasad"; // default value
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
