@@ -57,28 +57,26 @@ class SpelConfiguration {
         return box;
     }
 }
-
-
+// <c:out value="request.bla.bla[1].name"/>
 @Component
 class UsingSpells {
     @Value("#{sandbox.intProperty + 1}")
     private String s1;
-    @Value("#{sandbox.randomToken()}")
+    @Value("#{sandbox.randomToken() != null ? 'YES':'NO'}")
     private String s2;
-    @Value("#{sandbox.stringProperty?.toUpperCase()?:'Ploua'}")
+    @Value("#{sandbox.stringProperty?.toUpperCase()?:'RAIN'}")
     private String s3;
-    @Value("#{sandbox.childList.?[intProperty gt 15]}")
+//    @Value("#{sandbox.childList?[]}")
     private List<SpELSandbox> children;
-    @Value("#{sandbox.childList.?[intProperty gt 15].![intProperty]}")
     private List<Integer> childrenInts;
 
 
-//    @PostConstruct
+    @PostConstruct
     public void show() {
         System.out.println("-------------SPEL-----------");
         System.out.println("intProperty + 1 = " + s1);
         System.out.println("stringProperty.randomToken() YES/NO = " + s2);
-        System.out.println("stringProperty.upperCase or 'RAIN' if null =  ");
+        System.out.println("stringProperty.upperCase or 'RAIN' if null =  " + s3);
         System.out.println("children with intProperty > 15 = " + children);
 		System.out.println("children with stringProperty containing '*e*' .intProperty = " + childrenInts);
 		manualSpELPlay();
