@@ -5,26 +5,35 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.service.TrainingService;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+@RestController
+@RequestMapping("/rest/trainings")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
 	// TODO [SEC] Restrict display for trainings of teachers of users
+//	@RequestMapping(path = "/rest/trainings", method = GET)
+	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
 	// TODO [SEC] Check user manages training of this training
-	public TrainingDto getTrainingById(Long id) {
+	@GetMapping("{id}")
+	public TrainingDto getTrainingById(@PathVariable Long id) {
 		return trainingService.getTrainingById(id);
 	}
 
 	// TODO [SEC] Check user manages teacher of this training
-	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+	@PutMapping("{id}")
+	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 
