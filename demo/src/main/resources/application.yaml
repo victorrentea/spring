@@ -1,0 +1,18 @@
+
+
+
+
+welcome:
+  welcomeMessage: Welcome to This Spring Realm
+  help:
+    helpUrl: about:blank
+    iconUri: bebe
+  supportUrls:
+    - google
+    - stackoverflow
+    - baeldung
+    - spring.io
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
+

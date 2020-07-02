@@ -1,8 +1,10 @@
 package com.example.demo.props;
 
+import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,15 +14,23 @@ import java.util.Map;
 @Slf4j
 @ToString
 @Component
+@Data
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
-    @Value("${welcome.welcomeMessage}")
     private String welcomeMessage;
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
-    // TODO HelpInfo help;
+    private HelpInfo help;
 
     @PostConstruct
     public void printMyself() {
         log.info("My props: " + this);
     }
 }
+@Data
+class HelpInfo {
+    private String helpUrl;
+    private String iconUri;
+}
+
+
