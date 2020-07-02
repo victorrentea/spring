@@ -1,16 +1,14 @@
 package victor.training.spring.web.controller;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.service.TrainingService;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 @RequestMapping("/rest/trainings")
@@ -35,7 +33,7 @@ public class TrainingController {
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 
-		
+
 
 		trainingService.updateTraining(id, dto);
 	}
@@ -53,5 +51,12 @@ public class TrainingController {
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
+	}
+	@GetMapping("tomorrow")
+	public LocalDate getTomorrow(@RequestParam String dateStr) {
+		LocalDate date = LocalDate.parse(dateStr);
+//	public LocalDate getTomorrow(@RequestParam LocalDate date) {
+//		LocalDate date = LocalDate.parse(dateStr);
+		return date.plusDays(1);
 	}
 }
