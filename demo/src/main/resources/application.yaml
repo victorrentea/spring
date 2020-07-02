@@ -15,4 +15,10 @@ welcome:
   localContactPhone:
     RO: +401312121414
     FR: +430123414123
+  wsClients:
+    - url: http://localhost:9090/one
+      name: one
+    - url: http://localhost:9090/two
+      name: two
+
 

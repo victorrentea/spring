@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class WelcomeInfo {
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
+//    private List<?> wsClients = new ArrayList<>();
 
     @PostConstruct
     public void printMyself() {
@@ -34,4 +36,9 @@ class HelpInfo {
     private String iconUri;
 }
 
+//@Data
+//class ClientConfig {
+//    private URL url;
+//    private String name;
+//}
 
