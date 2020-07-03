@@ -5,11 +5,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import victor.training.spring.async.AsyncApp;
 
 @EnableCaching
 @EnableSwagger2
 @SpringBootApplication
-@Import(DBConfig.class)
+@Import({DBConfig.class, AsyncApp.class})
 public class SpaApplication {
 
 	public static void main(String[] args) {

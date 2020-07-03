@@ -4,11 +4,13 @@ import com.sun.tracing.dtrace.FunctionAttributes;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -16,6 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.*;
 
@@ -46,6 +52,26 @@ public class AsyncApp {
 @Component
 @RequiredArgsConstructor
 class Drinker implements CommandLineRunner {
+
+	public void uploadFile(HttpServletRequest request) throws IOException {
+		File tempFile = Files.createTempFile("data", ".dat").toFile();
+		try (OutputStream tempOutputStream = new FileOutputStream(tempFile)) {
+			IOUtils.copy(request.getInputStream(), tempOutputStream);
+		}
+//		if (tempFile.length() > 10_000_000) {
+//			throw
+//		}
+		// procesezi ACUM sau chemand o @Async
+//		altaClasa.processFile(tempFile);
+	}
+
+	@Async // ! din alta clasa
+	public void processFile(File file) {
+
+	}
+
+
+
 	private final Barman barman;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
@@ -61,45 +87,12 @@ class Drinker implements CommandLineRunner {
 		CompletableFuture<DillyDilly> futureDilly = futureBeer
 			.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
 
-
 		futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
 
 		// barman.getOneBeer().get(); pt throttling de threaduri cand chemi un sistem extern
 
 		log.debug("Main-ul pleaca acasa");
 	}
-}
-
-@Data
-class DillyDilly {
-	private final Beer beer;
-	private final Vodka vodka;
-}
-
-@Slf4j
-@Service
-class Barman {
-	 // ganditi-va la un apel de REST catre un serviciu extern
-	@Async("barmanExecutor")
-	public CompletableFuture<Beer> getOneBeer() {
-		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
-		 return completedFuture(new Beer());
-	 }
-	 @Async("barmanExecutor")
-	 public CompletableFuture<Vodka> getOneVodka() {
-		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000);
-		 return completedFuture(new Vodka());
-	 }
-}
-
-@Data
-class Beer {
-}
-
-@Data
-class Vodka {
 }
 
 
