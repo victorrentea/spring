@@ -1,9 +1,12 @@
 package victor.training.spring.events.order;
 
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +39,7 @@ public class PlaceOrderApp implements CommandLineRunner {
 	private StockManagementService stockManagementService;
 
 	@Autowired
-	private InvoiceService invoiceService;
+	private ApplicationEventPublisher eventPublisher;
 
 	public void run(String... args) {
 		placeOrder();
@@ -44,10 +47,15 @@ public class PlaceOrderApp implements CommandLineRunner {
 
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
+//		repo.save(order) -->
 		long orderId = 13L;
 		stockManagementService.process(orderId);
-		invoiceService.sendInvoice(orderId);
+		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
 	}
+}
+@Value
+class OrderPlacedEvent {
+	long orderId;
 }
 
 @Slf4j
@@ -68,8 +76,9 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-	public void sendInvoice(long orderId) {
-		log.info("Generating invoice for order " + orderId);
+	@EventListener
+	public void sendInvoice(OrderPlacedEvent event) {
+		log.info("Generating invoice for order " + event.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
 	}
