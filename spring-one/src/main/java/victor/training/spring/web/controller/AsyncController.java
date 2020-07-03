@@ -30,7 +30,8 @@ public class AsyncController {
 
 //      futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
 
+      String message = "Savurez " + futureDilly.get();
       log.debug("Main-ul pleaca acasa");
-      return "Savurez " + futureDilly.get();
+      return message;
    }
 }
