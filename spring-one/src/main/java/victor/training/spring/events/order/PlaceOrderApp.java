@@ -50,7 +50,6 @@ public class PlaceOrderApp implements CommandLineRunner {
 		log.debug(">> PERSIST new Order");
 //		repo.save(order) -->
 		long orderId = 13L;
-//		stockManagementService.process(orderId);
 		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
 	}
 }
@@ -58,13 +57,13 @@ public class PlaceOrderApp implements CommandLineRunner {
 class OrderPlacedEvent {
 	long orderId;
 }
-
 @Slf4j
 @Service
 class StockManagementService {
 	private int stock = 3; // silly implem :D
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 
-	@Order(10)
 	@EventListener
 	public void process(OrderPlacedEvent event) {
 		log.info("Checking stock for products in order " + event.getOrderId());
@@ -73,15 +72,18 @@ class StockManagementService {
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
+		eventPublisher.publishEvent(new OrderInStockEvent(event.getOrderId()));
 	}
 }
-
+@Value
+class OrderInStockEvent {
+	long orderId;
+}
 @Slf4j
 @Service
 class InvoiceService {
-	@Order(20)
 	@EventListener
-	public void sendInvoice(OrderPlacedEvent event) {
+	public void sendInvoice(OrderInStockEvent event) {
 		log.info("Generating invoice for order " + event.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
