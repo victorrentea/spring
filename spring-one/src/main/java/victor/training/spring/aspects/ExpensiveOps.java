@@ -31,9 +31,7 @@ public /*final*/ class ExpensiveOps {
 
 //	@Cacheable("primes")
 	public /*final - silently doesnt proxy*/ Boolean isPrime(int n) {
-
 		new RuntimeException().printStackTrace();
-
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -51,7 +49,8 @@ public /*final*/ class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
+	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
