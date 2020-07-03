@@ -16,6 +16,8 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
@@ -69,9 +71,12 @@ public /*final*/ class ExpensiveOps {
          throw new RuntimeException(e);
       }
    }
+   @Autowired
+   CacheManager cm;
 
-   @CacheEvict("folders")
+//   @CacheEvict("folders")
    public void curataCachePtFolderul(File file) {
+      cm.getCache("folders").evict(file);
       // NOTHING TO DO. EMPTY METHOD. LET THE MAGIC HAPPEN.
    }
 }
