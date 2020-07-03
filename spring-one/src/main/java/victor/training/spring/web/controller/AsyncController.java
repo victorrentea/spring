@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import victor.training.spring.async.Barman;
 import victor.training.spring.async.Beer;
 import victor.training.spring.async.DillyDilly;
 import victor.training.spring.async.Vodka;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -20,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 public class AsyncController {
    private final Barman barman;
    @GetMapping
-   public String bea() throws ExecutionException, InterruptedException {
+   public DeferredResult<String> bea() throws ExecutionException, InterruptedException {
 
       CompletableFuture<Beer> futureBeer = barman.getOneBeer();
       CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
@@ -30,8 +32,15 @@ public class AsyncController {
 
 //      futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
 
-      String message = "Savurez " + futureDilly.get();
+
+      DeferredResult<String> deferred = new DeferredResult<>();
+
+      futureDilly.thenAccept(dilly -> {
+         deferred.setResult("Savurez " + dilly); // abia aici, 1 secunda dupa,
+         // ii scrii pe socket browserului raspunsul
+      });
       log.debug("Main-ul pleaca acasa");
-      return message;
+      return deferred;
+      // aici threadul se intoarce in ppol, langa fratii lui
    }
 }
