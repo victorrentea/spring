@@ -17,13 +17,19 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.config.AopConfigUtils;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 // TODO interface
 @Service
@@ -33,6 +39,7 @@ public /*final*/ class ExpensiveOps {
 
    private static final BigDecimal TWO = new BigDecimal("2");
 
+//   @Transactional(propagation = Propagation.REQUIRES_NEW)
    @Cacheable("primes")
    public /*final - silently doesnt proxy*/ Boolean isPrime(int n) {
       new RuntimeException().printStackTrace();
@@ -56,10 +63,26 @@ public /*final*/ class ExpensiveOps {
    @Autowired
    private ExpensiveOps myselfProxied;
 
+   TransactionTemplate txTemplate;
+
+//   @Component
+//   static class Alta {
+//      @
+//   }
+//
+//   @Autowired
+//   Alta alta;
+
+
    @Cacheable("folders")
    public String hashAllFiles(File folder) {
+//      txTemplate.sepr
+//      txTemplate.execute(status -> {
+//         isPrime(10000169);
+//         return null;})
 //      cm.getCache("folders").get(folder);// cam asta face proxy-ul
       System.out.println("oare ia din cache : " + myselfProxied.isPrime(10_000_169)); // NU IA DIN CACHE PENTRU CA NU MERGE PRIN PROXY LA METODA AIA
+
       log.debug("Computing hashAllFiles({})...", folder);
       try {
          MessageDigest md = MessageDigest.getInstance("MD5");
