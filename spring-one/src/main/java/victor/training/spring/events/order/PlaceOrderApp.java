@@ -49,7 +49,7 @@ public class PlaceOrderApp implements CommandLineRunner {
 		log.debug(">> PERSIST new Order");
 //		repo.save(order) -->
 		long orderId = 13L;
-		stockManagementService.process(orderId);
+//		stockManagementService.process(orderId);
 		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
 	}
 }
@@ -63,8 +63,9 @@ class OrderPlacedEvent {
 class StockManagementService {
 	private int stock = 3; // silly implem :D
 
-	public void process(long orderId) {
-		log.info("Checking stock for products in order " + orderId);
+	@EventListener
+	public void process(OrderPlacedEvent event) {
+		log.info("Checking stock for products in order " + event.getOrderId());
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
