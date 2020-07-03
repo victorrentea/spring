@@ -1,6 +1,7 @@
 package victor.training.spring.async;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -38,9 +39,9 @@ public class AsyncApp {
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 class Drinker implements CommandLineRunner {
-	@Autowired
-	private Barman barman;
+	private final Barman barman;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean

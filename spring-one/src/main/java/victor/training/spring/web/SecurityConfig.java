@@ -1,7 +1,9 @@
 package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
+@Profile("!local")
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  /*extends WebSecurityConfigurerAdapter*/ {
