@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import com.sun.tracing.dtrace.FunctionAttributes;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,16 +55,25 @@ class Drinker implements CommandLineRunner {
 		Thread.sleep(3000);
 		log.debug("Submitting my order to " + barman.getClass());
 
-		Future<Beer> futureBeer = barman.getOneBeer();
-		Future<Vodka> futureVodka = barman.getOneVodka();
+		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
-		Beer beer = futureBeer.get();
-		Vodka vodka = futureVodka.get();
+		CompletableFuture<DillyDilly> futureDilly = futureBeer
+			.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
+
+
+		futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
 
 		// barman.getOneBeer().get(); pt throttling de threaduri cand chemi un sistem extern
 
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+		log.debug("Main-ul pleaca acasa");
 	}
+}
+
+@Data
+class DillyDilly {
+	private final Beer beer;
+	private final Vodka vodka;
 }
 
 @Slf4j
