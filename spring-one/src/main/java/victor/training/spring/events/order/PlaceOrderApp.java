@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 //@EnableBinding({Queues.class})
@@ -46,11 +47,14 @@ public class PlaceOrderApp implements CommandLineRunner {
 		placeOrder();
 	}
 
+//	@Transactional // in aceasi tranzactie vor rula toate @EventListener-ele
+	// Daca aveai pe thread ceva date (thread/request scope), ele acum ajung si la Listeneri
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 //		repo.save(order) -->
 		long orderId = 13L;
 		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
+		log.debug("All done");
 	}
 }
 @Value
@@ -60,7 +64,7 @@ class OrderPlacedEvent {
 @Slf4j
 @Service
 class StockManagementService {
-	private int stock = 3; // silly implem :D
+	private int stock = 0; // silly implem :D
 
 	@EventListener
 	public OrderInStockEvent process(OrderPlacedEvent event) {
