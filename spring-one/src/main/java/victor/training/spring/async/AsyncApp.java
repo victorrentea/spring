@@ -52,15 +52,13 @@ class Drinker implements CommandLineRunner {
 	// TODO [3] Enable messaging...
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
-		log.debug("Submitting my order");
-
+		log.debug("Submitting my order to " + barman.getClass());
 
 		Future<Beer> futureBeer = barman.getOneBeer();
 		Future<Vodka> futureVodka = barman.getOneVodka();
 
 		Beer beer = futureBeer.get();
 		Vodka vodka = futureVodka.get();
-
 
 		// barman.getOneBeer().get(); pt throttling de threaduri cand chemi un sistem extern
 
@@ -93,3 +91,23 @@ class Beer {
 @Data
 class Vodka {
 }
+
+
+//@Service
+//class OrderService {
+//	private final OrderRepo orderRepo;
+//	private final CustomerRepo customerRepo;
+//
+//	public void n() {
+//
+//	}
+//}
+
+//@Service
+//class Class2Service {
+//	private final CustomerRepo customerRepo;
+//	private final AltService altService;
+//	public void m() {
+//
+//	}
+//}
