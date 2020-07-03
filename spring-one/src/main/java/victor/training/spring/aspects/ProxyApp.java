@@ -15,6 +15,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
@@ -59,15 +61,16 @@ public class ProxyApp implements CommandLineRunner {
       log.debug("Folder . MD5: ");
       log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
    }
-
-
 }
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
 
 @Slf4j
 @Component
 @Aspect
 class MethodInterceptor {
-	@Around("execution(* victor.training..*.*(..))")
+//	@Around("execution(* victor.training..*.*(..))")
+	@Around("execution(* *(..)) && @within(victor.training.spring.aspects.LoggedClass)")
    public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
 	   log.info("Calling method {}({})",
           pjp.getSignature().getName(),

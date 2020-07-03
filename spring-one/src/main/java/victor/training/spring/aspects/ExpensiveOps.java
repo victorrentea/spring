@@ -33,6 +33,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 // TODO interface
 @Service
+@LoggedClass
 //@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public /*final*/ class ExpensiveOps {
    private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
