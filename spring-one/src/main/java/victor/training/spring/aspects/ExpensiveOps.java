@@ -56,6 +56,7 @@ public /*final*/ class ExpensiveOps {
    @Cacheable("folders")
    public String hashAllFiles(File folder) {
 //      cm.getCache("folders").get(folder);// cam asta face proxy-ul
+      System.out.println("oare ia din cache : " + isPrime(10_000_169)); // NU IA DIN CACHE PENTRU CA NU MERGE PRIN PROXY LA METODA AIA
       log.debug("Computing hashAllFiles({})...", folder);
       try {
          MessageDigest md = MessageDigest.getInstance("MD5");
