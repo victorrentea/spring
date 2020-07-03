@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,7 @@ class OrderPlacedEvent {
 class StockManagementService {
 	private int stock = 3; // silly implem :D
 
+	@Order(10)
 	@EventListener
 	public void process(OrderPlacedEvent event) {
 		log.info("Checking stock for products in order " + event.getOrderId());
@@ -77,6 +79,7 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
+	@Order(20)
 	@EventListener
 	public void sendInvoice(OrderPlacedEvent event) {
 		log.info("Generating invoice for order " + event.getOrderId());
