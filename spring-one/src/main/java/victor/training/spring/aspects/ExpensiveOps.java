@@ -55,6 +55,7 @@ public /*final*/ class ExpensiveOps {
 
    @Cacheable("folders")
    public String hashAllFiles(File folder) {
+//      cm.getCache("folders").get(folder);// cam asta face proxy-ul
       log.debug("Computing hashAllFiles({})...", folder);
       try {
          MessageDigest md = MessageDigest.getInstance("MD5");
@@ -80,3 +81,4 @@ public /*final*/ class ExpensiveOps {
       // NOTHING TO DO. EMPTY METHOD. LET THE MAGIC HAPPEN.
    }
 }
+
