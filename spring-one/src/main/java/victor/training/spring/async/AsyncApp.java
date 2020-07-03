@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @EnableAsync
 @SpringBootApplication
@@ -49,8 +53,15 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
-		Beer beer = barman.getOneBeer();
-		Vodka vodka = barman.getOneVodka();
+
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+
+		Future<Beer> futureBeer = pool.submit(barman::getOneBeer);
+		Future<Vodka> futureVodka = pool.submit(barman::getOneVodka);
+
+		Beer beer = futureBeer.get();
+		Vodka vodka = futureVodka.get();
+
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 	}
 }
@@ -58,6 +69,8 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
+
+	 // ganditi-va la un apel de REST catre un serviciu extern
 	public Beer getOneBeer() {
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000);
