@@ -8,12 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@EnableAsync
 //@EnableBinding({Queues.class})
 @SpringBootApplication
 public class PlaceOrderApp implements CommandLineRunner {
@@ -67,6 +70,7 @@ class StockManagementService {
 	private int stock = 0; // silly implem :D
 
 	@EventListener
+	@Async
 	public OrderInStockEvent process(OrderPlacedEvent event) {
 		log.info("Checking stock for products in order " + event.getOrderId());
 		if (stock == 0) {
@@ -85,6 +89,7 @@ class OrderInStockEvent {
 @Service
 class InvoiceService {
 	@EventListener
+	@Async
 	public void sendInvoice(OrderInStockEvent event) {
 		log.info("Generating invoice for order " + event.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
