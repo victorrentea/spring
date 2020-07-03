@@ -61,18 +61,16 @@ class OrderPlacedEvent {
 @Service
 class StockManagementService {
 	private int stock = 3; // silly implem :D
-	@Autowired
-	private ApplicationEventPublisher eventPublisher;
 
 	@EventListener
-	public void process(OrderPlacedEvent event) {
+	public OrderInStockEvent process(OrderPlacedEvent event) {
 		log.info("Checking stock for products in order " + event.getOrderId());
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
-		eventPublisher.publishEvent(new OrderInStockEvent(event.getOrderId()));
+		return new OrderInStockEvent(event.getOrderId());
 	}
 }
 @Value
