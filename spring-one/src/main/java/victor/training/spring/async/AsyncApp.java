@@ -3,11 +3,12 @@ package victor.training.spring.async;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -15,10 +16,9 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
 @SpringBootApplication
@@ -28,10 +28,10 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor barmanExecutor(@Value("${barman.count}") int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(barmanCount);
+		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
@@ -54,13 +54,15 @@ class Drinker implements CommandLineRunner {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
 
-		ExecutorService pool = Executors.newFixedThreadPool(2);
 
-		Future<Beer> futureBeer = pool.submit(barman::getOneBeer);
-		Future<Vodka> futureVodka = pool.submit(barman::getOneVodka);
+		Future<Beer> futureBeer = barman.getOneBeer();
+		Future<Vodka> futureVodka = barman.getOneVodka();
 
 		Beer beer = futureBeer.get();
 		Vodka vodka = futureVodka.get();
+
+
+		// barman.getOneBeer().get(); pt throttling de threaduri cand chemi un sistem extern
 
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 	}
@@ -69,18 +71,18 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-
 	 // ganditi-va la un apel de REST catre un serviciu extern
-	public Beer getOneBeer() {
+	@Async("barmanExecutor")
+	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000);
-		 return new Beer();
+		 return completedFuture(new Beer());
 	 }
-	
-	 public Vodka getOneVodka() {
+	 @Async("barmanExecutor")
+	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
 		 ThreadUtils.sleep(1000);
-		 return new Vodka();
+		 return completedFuture(new Vodka());
 	 }
 }
 
