@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -52,11 +53,13 @@ public /*final*/ class ExpensiveOps {
       }
       return true;
    }
+   @Autowired
+   private ExpensiveOps myselfProxied;
 
    @Cacheable("folders")
    public String hashAllFiles(File folder) {
 //      cm.getCache("folders").get(folder);// cam asta face proxy-ul
-      System.out.println("oare ia din cache : " + isPrime(10_000_169)); // NU IA DIN CACHE PENTRU CA NU MERGE PRIN PROXY LA METODA AIA
+      System.out.println("oare ia din cache : " + myselfProxied.isPrime(10_000_169)); // NU IA DIN CACHE PENTRU CA NU MERGE PRIN PROXY LA METODA AIA
       log.debug("Computing hashAllFiles({})...", folder);
       try {
          MessageDigest md = MessageDigest.getInstance("MD5");
