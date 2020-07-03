@@ -1,7 +1,5 @@
 package victor.training.spring.aspects;
 
-import java.io.File;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,9 +28,10 @@ public class ProxyApp implements CommandLineRunner {
 	// Holy Domain Logic.
 	// Very precious things that I want to keep agnostic to technical details
 	@Autowired
-	private ExpensiveOps ops;
+	private ExpensiveOps ops;// = new ExpensiveOps();
 
 	public void run(String... args) {
+		log.debug("Oare eu cu cine vorbesc ?" + ops.getClass());
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
@@ -40,12 +39,12 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		
-		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
 
