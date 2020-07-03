@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import java.io.File;
+
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
 @SpringBootApplication
@@ -39,12 +41,16 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		
-//		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
-//		log.debug("Folder . MD5: ");
-//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-//		log.debug("Folder . MD5: ");
-//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming: cache invalidation and naming things\"");
+		log.debug("Folder . MD5: ");
+		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+
+		log.debug("Aflu ca s-a schimba un fisier (NIO)");
+		ops.curataCachePtFolderul(new File("."));
+
+		log.debug("Folder . MD5: ");
+		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
 
