@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RELEASE</version>
+        <version>2.3.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>victor.training.spring.ms</groupId>
@@ -13,8 +13,8 @@
     <version>0.0.1-SNAPSHOT</version>
 
 	<module>boot-service</module>
-	<!--<module>boot-config-server</module>
-	<module>boot-eureka</module>
+	<module>boot-config-server</module>
+	<!--<module>boot-eureka</module>
 	<module>boot-hystrix</module>
 	<module>boot-client</module>-->
 

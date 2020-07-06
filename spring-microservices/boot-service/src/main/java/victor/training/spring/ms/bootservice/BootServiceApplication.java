@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+
 @SpringBootApplication
 public class BootServiceApplication implements CommandLineRunner {
 
