@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class ReservationDto {
-   private Long id;
-   private String name;
+   public Long id;
+   public String name;
+   public ReservationDto() {} // for Jackson
    public ReservationDto(Reservation entity) {
       id = entity.getId();
       name = entity.getName();

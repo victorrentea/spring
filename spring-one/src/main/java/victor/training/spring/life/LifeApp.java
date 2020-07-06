@@ -124,7 +124,7 @@ class WSClient {
 @RequiredArgsConstructor
 class OrderExporter {
    private final InvoiceExporter invoiceExporter;
-   private final LabelService labelService;
+   private final ILabelService labelService;
 
    public void export(Locale locale) {
       try {
@@ -144,7 +144,7 @@ class OrderExporter {
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-	private final LabelService labelService;
+	private final ILabelService labelService;
 
    public void exportInvoice() {
       log.debug("Invoice Country: " + labelService.getCountryName("ES"));
@@ -153,8 +153,8 @@ class InvoiceExporter {
 
 @Slf4j
 @Service
-@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.NO) // nu mai merge jucaria
-class LabelService {
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.INTERFACES)
+class LabelService implements ILabelService{
    private final CountryRepo countryRepo;
 
    public LabelService(CountryRepo countryRepo) {
@@ -164,11 +164,13 @@ class LabelService {
 
    private Map<String, String> countryNames;
 
+   @Override
    public void load(Locale locale) {
       log.debug("LabelService.load() on instance " + this.hashCode());
       countryNames = countryRepo.loadCountryNamesAsMap(locale);
    }
 
+   @Override
    public String getCountryName(String iso2Code) { // seamana a getter
       log.debug("LabelService.getCountryName() on instance " + this.hashCode());
       return countryNames.get(iso2Code.toUpperCase());
