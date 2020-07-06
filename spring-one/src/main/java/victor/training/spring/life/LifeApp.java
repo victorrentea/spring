@@ -153,7 +153,7 @@ class InvoiceExporter {
 
 @Slf4j
 @Service
-@Scope(scopeName = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.NO) // nu mai merge jucaria
 class LabelService {
    private final CountryRepo countryRepo;
 
