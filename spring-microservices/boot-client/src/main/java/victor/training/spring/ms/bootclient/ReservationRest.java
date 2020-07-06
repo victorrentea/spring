@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +15,19 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 public class ReservationRest {
+   private final RestTemplate rest;
+
+   public ReservationRest(RestTemplate rest) {
+      this.rest = rest;
+   }
+
    @GetMapping("reservation-names")
-   public List<String> getNames() {
-      RestTemplate rest = new RestTemplate();
+   public String getNames() {
+
       // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
-      ResponseEntity<List<ReservationDto>> response = rest.exchange("http://localhost:8080/reservations",
+      ResponseEntity<List<ReservationDto>> response = rest.exchange(
+          "http://boot-service/reservations",
           HttpMethod.GET, null,
           new ParameterizedTypeReference<List<ReservationDto>>() {
           });
@@ -29,7 +35,7 @@ public class ReservationRest {
       return response.getBody()
           .stream()
           .map(ReservationDto::getName)
-          .collect(toList());
+          .collect(Collectors.joining(", "));
    }
 }
 

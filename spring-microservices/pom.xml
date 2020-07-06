@@ -14,8 +14,7 @@
 
 	<module>boot-service</module>
 	<module>boot-config-server</module>
-	<!--<module>boot-eureka</module>
-	<module>boot-hystrix</module>-->
+	<!--<module>boot-hystrix</module>-->
 	<module>boot-client</module>
 
 
