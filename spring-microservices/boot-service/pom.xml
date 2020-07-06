@@ -100,7 +100,8 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
+    <!-- resolves .cloud <dependency> versions -->
+      <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
