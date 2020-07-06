@@ -21,10 +21,7 @@ import org.springframework.boot.context.event.ApplicationContextInitializedEvent
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.*;
 import org.springframework.context.event.EventListener;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.SimpleThreadScope;
@@ -37,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@ComponentScan(scopedProxy = ScopedProxyMode.TARGET_CLASS)
 public class LifeApp implements CommandLineRunner {
    @Bean
    public static CustomScopeConfigurer defineThreadScope() {
@@ -153,7 +151,7 @@ class InvoiceExporter {
 
 @Slf4j
 @Service
-@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.INTERFACES)
+@Scope(scopeName = "thread")
 class LabelService implements ILabelService{
    private final CountryRepo countryRepo;
 
