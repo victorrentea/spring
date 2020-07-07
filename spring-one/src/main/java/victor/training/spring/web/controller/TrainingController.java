@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.service.TrainingService;
@@ -32,9 +33,6 @@ public class TrainingController {
 	// TODO [SEC] Check user manages teacher of this training
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-
-
-
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -43,6 +41,7 @@ public class TrainingController {
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

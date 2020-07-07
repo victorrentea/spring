@@ -3,6 +3,7 @@ package victor.training.spring.web;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
@@ -24,7 +25,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             // in viata reala, vrei CSRF activat : asta inseamna ca la orice request AJAX trimis trebuie sa adaugi un header CSRF ca protectie aditionala
             .authorizeRequests()
                 .mvcMatchers("unsecured/**").permitAll()
-                .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("USER")
                 .anyRequest().authenticated()
             .and()
             .formLogin()
