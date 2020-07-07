@@ -46,7 +46,8 @@ public class TrainingController {
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
-	@PreAuthorize("hasAuthority('deleteTraining')")
+//	@PreAuthorize("hasAuthority('deleteTraining') ")
+	@PreAuthorize("hasPermission(#id, 'TRAINING','delete')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		Training training = trainingRepo.findById(id).get();

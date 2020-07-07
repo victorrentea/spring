@@ -3,6 +3,8 @@ package victor.training.spring.web;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import victor.training.spring.web.security.CustomPermissionEvaluator;
 import victor.training.spring.web.security.DatabaseUserDetailsService;
 
 @EnableWebSecurity
@@ -32,6 +35,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             .formLogin()
             ;
     }
+
 
 
     // hashing:
