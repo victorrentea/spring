@@ -59,9 +59,10 @@ public class GatewayController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(jwtHeader, jwtToken);
+        // normal ar fi sa trimiti peste Authentication: Bearer <CARMAZ>
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("https://localhost:8080/ping"));
+                new URI("http://localhost:8080/ping"));
         // TODO switch to https
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 
