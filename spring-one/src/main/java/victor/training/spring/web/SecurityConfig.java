@@ -24,8 +24,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             // in viata reala, vrei CSRF activat : asta inseamna ca la orice request AJAX trimis trebuie sa adaugi un header CSRF ca protectie aditionala
             .authorizeRequests()
                 .mvcMatchers("unsecured/**").permitAll()
-                .anyRequest().authenticated()
                 .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("ADMIN")
+                .anyRequest().authenticated()
             .and()
             .formLogin()
             ;
