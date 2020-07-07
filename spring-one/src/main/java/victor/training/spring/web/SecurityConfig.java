@@ -21,7 +21,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
        http
             .csrf().disable()
             // in viata reala, vrei CSRF activat : asta inseamna ca la orice request AJAX trimis trebuie sa adaugi un header CSRF ca protectie aditionala
-//            .authorizeRequests().anyRequest().authenticated()
+            .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+            .and()
+            .formLogin()
             ;
     }
 
