@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@ToString
+@Data
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
-    @Value("${welcome.welcomeMessage}")
     private String welcomeMessage;
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country

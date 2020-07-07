@@ -29,10 +29,9 @@ public class TechnicalController {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
+	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
-	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public WelcomeInfo showWelcomeInfo(){
 		return welcomeInfo;

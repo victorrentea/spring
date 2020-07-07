@@ -6,11 +6,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.async.AsyncApp;
+import victor.training.spring.props.PropertiesApp;
 
 @EnableCaching
 @EnableSwagger2
 @SpringBootApplication
-@Import({DBConfig.class, AsyncApp.class})
+@Import({DBConfig.class, AsyncApp.class, PropertiesApp.class})
 public class SpaApplication {
 
 	public static void main(String[] args) {
