@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -18,7 +19,7 @@ public class TechnicalController {
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
 		// TODO implement me
-		return "TODO:user";
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 		// try getting the user from an Async task:
 		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}
