@@ -39,7 +39,7 @@ public class TrainingController {
 	}
 
 	// after switching to DatabaseUserDetailsService
-	// TODO [SEC] 1 Allow only for ROLE 'USER'
+	// TODO [SEC] 1 Allow only for ROLE 'ADMIN'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
