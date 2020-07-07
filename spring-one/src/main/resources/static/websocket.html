@@ -27,8 +27,10 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="name">What is your name?</label>
+                    <label for="name">Your name:</label>
                     <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                    <label for="bid">Your bid:</label>
+                    <input type="number" id="bid" class="form-control" placeholder="bid" value="100">
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
@@ -54,22 +56,23 @@
     function setConnected(connected) {
         $("#connect").prop("disabled", connected);
         $("#disconnect").prop("disabled", !connected);
+        $("#bid").prop("disabled", !connected);
         if (connected) {
             $("#conversation").show();
-        }
-        else {
+        } else {
             $("#conversation").hide();
         }
         $("#greetings").html("");
+
     }
 
     function connect() {
-        var socket = new SockJS('/gs-guide-websocket');
+        var socket = new SockJS('/auction-websocket');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/greetings', function (greeting) {
+            stompClient.subscribe('/topic/auction-messages', function (greeting) {
                 showGreeting(JSON.parse(greeting.body).content);
             });
         });
@@ -83,8 +86,12 @@
         console.log("Disconnected");
     }
 
-    function sendName() {
-        stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    function sendBid() {
+        stompClient.send("/app/hello", {}, JSON.stringify(
+            {
+                'name': $("#name").val(),
+                'bid': $("#bid").val()
+            }));
     }
 
     function showGreeting(message) {
@@ -95,9 +102,17 @@
         $("form").on('submit', function (e) {
             e.preventDefault();
         });
-        $( "#connect" ).click(function() { connect(); });
-        $( "#disconnect" ).click(function() { disconnect(); });
-        $( "#send" ).click(function() { sendName(); });
+        $("#connect").click(function () {
+            connect();
+        });
+        $("#disconnect").click(function () {
+            disconnect();
+        });
+        $("#send").click(function () {
+            sendBid();
+        });
+        $("#name").val("Guest-" + Math.floor((Math.random() * 100) + 1))
+        setConnected(false);
     });
 </script>
 </body>
