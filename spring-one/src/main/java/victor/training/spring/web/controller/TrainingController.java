@@ -46,7 +46,7 @@ public class TrainingController {
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('deleteTraining')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		Training training = trainingRepo.findById(id).get();
@@ -57,9 +57,6 @@ public class TrainingController {
 		if (!principal.getManagedTeacherIds().contains(training.getTeacher().getId())) {
 			throw  new RuntimeException("ia mana!");
 		}
-
-
-
 		trainingService.deleteById(id);
 	}
 
