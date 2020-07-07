@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import victor.training.spring.web.security.DatabaseUserDetailsService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -65,18 +66,18 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
 
     // *** Dummy users 100% in-mem
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
-        UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
-        return new InMemoryUserDetailsManager(userDetails, adminDetails);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
+//        UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
+//        return new InMemoryUserDetailsManager(userDetails, adminDetails);
+//    }
 
     // ... then, switch to loading user data from DB:
     // *** Also loading data from DB
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new DatabaseUserDetailsService();
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new DatabaseUserDetailsService();
+    }
 
 }
