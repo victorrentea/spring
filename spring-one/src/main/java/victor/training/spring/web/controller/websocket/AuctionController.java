@@ -55,4 +55,9 @@ public class AuctionController {
       }
    }
 
+   // app practice:
+   // - userul uploadeaza un fisier mare si vrea sa vada popup "Done" cand e gata.
+   // - ai vreun UI sexy care e actualizat realtime: GIS map in HTML5. -- ca sa eviti sute de browsere chemandu-te peste HTTP la fiecare secunda. ("polling")
+   // - live chat (latente zero)
+
 }
