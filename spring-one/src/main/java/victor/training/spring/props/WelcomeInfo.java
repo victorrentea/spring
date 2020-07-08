@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Data
+@Data // getters & setters mandatory!
 @Component
 public class WelcomeInfo {
     private String welcomeMessage;
