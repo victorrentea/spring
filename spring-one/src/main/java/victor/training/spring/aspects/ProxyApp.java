@@ -1,17 +1,23 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
-@EnableCaching 
+@EnableCaching (order = 1)
 @SpringBootApplication
 @Slf4j
 public class ProxyApp implements CommandLineRunner {
@@ -56,3 +62,14 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Component
+@Aspect
+class LoggingInterceptor {
+	@Order(10)
+	@Around("execution(* victor.training.spring.aspects.ExpensiveOps.*(..))")
+	public Object logCall(ProceedingJoinPoint pjp) throws Throwable {
+		System.out.println("Calling " + pjp.getSignature().getName() + " ( " + Arrays.toString(pjp.getArgs()) + " ) ");
+		Object result = pjp.proceed();
+		return result;
+	}
+}
