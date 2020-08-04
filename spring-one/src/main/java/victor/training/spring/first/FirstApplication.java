@@ -1,7 +1,6 @@
 package victor.training.spring.first;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 // [1] Injection: field, constructor, method; debate; mockito
