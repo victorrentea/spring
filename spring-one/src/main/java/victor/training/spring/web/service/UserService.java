@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
@@ -13,6 +14,7 @@ public class UserService  {
     private final UserRepo userRepo;
 
 
+    @Cacheable("usersCount")
     public long countUsers() {
         return userRepo.count();
     }
