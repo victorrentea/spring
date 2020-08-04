@@ -14,6 +14,8 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,9 +23,11 @@ public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
+
+	@Cacheable("primes")
 	public Boolean isPrime(int n) {
-		log.debug("Computing isPrime({})...", n);
+//		new RuntimeException().printStackTrace();
+		log.debug("Computing isPrime({})... on {} ", n, this);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -40,7 +44,8 @@ public class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
+	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
@@ -57,5 +62,10 @@ public class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@CacheEvict("folders")
+	public void killFolderCache(File folder) {
+		// *** Empty. Don not Touch. Let the magic happen. ***
 	}
 }

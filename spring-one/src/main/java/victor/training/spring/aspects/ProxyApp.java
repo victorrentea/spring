@@ -30,9 +30,12 @@ public class ProxyApp implements CommandLineRunner {
 	// Holy Domain Logic.
 	// Very precious things that I want to keep agnostic to technical details
 	@Autowired
-	private ExpensiveOps ops;
+	private ExpensiveOps ops = new ExpensiveOps();
+
+
 
 	public void run(String... args) {
+		log.debug("Oare ce mi-a dat springul este un proxy sau implm reala? " + ops.getClass());
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
@@ -44,6 +47,10 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+		log.debug("AICI detectez o modificare in folderul respectiv (NIO)");
+		// AICI
+		ops.killFolderCache(new File("."));
+
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
