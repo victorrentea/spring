@@ -34,6 +34,13 @@ public class Playground {
     }
     @Transactional
     public void transactionTwo() {
+        // ceva dubios care arunca exceptie
+        try {
+            other.bigBadWorkflow();
+        } catch (Exception e) {
+            other.saveError(e.getMessage());
+        }
+
         // TODO Repo API
         // TODO @NonNullApi
     }
@@ -42,11 +49,22 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
-    @Transactional(propagation = Propagation.NOT_SUPPORTED) //suspenda ex tranzactiei cu care ai venit, si executa fara
+    @Transactional(propagation = Propagation.REQUIRES_NEW) //suspenda ex tranzactiei cu care ai venit, si executa fara
     public void method() {
         repo.save(new Message("auto-commit"));
 
         throw new RuntimeException(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
     }
 
+
+
+    @Transactional
+    public void bigBadWorkflow() {
+        throw new IllegalArgumentException("ceva rau!");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(String message) {
+        repo.save(new Message(message));
+    }
 }
