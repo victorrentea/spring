@@ -37,9 +37,6 @@ public class PlaceOrderApp implements CommandLineRunner {
 	// TODO [opt] Transaction-scoped events
 
 
-	@Autowired
-	private InvoiceService invoiceService;
-
 	public void run(String... args) {
 		placeOrder();
 	}
@@ -55,8 +52,6 @@ public class PlaceOrderApp implements CommandLineRunner {
 
 		// queue 1:1
 //		publisher.publishEvent(new CheckStockCommand(orderId)); // un COMMAND: 1 listener, o actiune de facut
-
-		invoiceService.sendInvoice(orderId);
 	}
 }
 
@@ -85,8 +80,9 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-	public void sendInvoice(long orderId) {
-		log.info("Generating invoice for order " + orderId);
+	@EventListener
+	public void sendInvoice(OrderPlacedEvent orderPlacedEvent) {
+		log.info("Generating invoice for order " + orderPlacedEvent.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
 	}
