@@ -51,6 +51,9 @@ public class PlaceOrderApp implements CommandLineRunner {
 		// topic/ exchange
 		publisher.publishEvent(new OrderPlacedEvent(orderId)); // un EVENT // un raport indiferent, many possible (unknown) listeners
 
+//		getListenersForEvent(event.getClass()) : List<metode de chema> < gasite la scanarea de compoenente,
+//		ca sunt metode publice marcate cu @EventListenr
+
 		// queue 1:1
 //		publisher.publishEvent(new CheckStockCommand(orderId)); // un COMMAND: 1 listener, o actiune de facut
 	}
@@ -65,9 +68,10 @@ class OrderPlacedEvent {
 @Slf4j
 @Service
 class StockManagementService {
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	private int stock = 3; // silly implem :D
 
-	@Order(10)
 	@EventListener
 	public void process(OrderPlacedEvent orderPlacedEvent) {
 		log.info("Checking stock for products in order " + orderPlacedEvent.getOrderId());
@@ -76,17 +80,24 @@ class StockManagementService {
 		}
 		stock --;
 		log.info(">> PERSIST new STOCK!!");
+		publisher.publishEvent(new InvoiceOrderCommand(orderPlacedEvent.getOrderId()));
 	}
 }
+@Data
+class InvoiceOrderCommand {
+	private final long orderId;
+}
+
 // package .. invoicing;
 @Slf4j
 @Service
 class InvoiceService {
-	@Order(20)
 	@EventListener
-	public void sendInvoice(OrderPlacedEvent orderPlacedEvent) {
-		log.info("Generating invoice for order " + orderPlacedEvent.getOrderId());
+	public void sendInvoice(InvoiceOrderCommand command) {
+		log.info("Generating invoice for order " + command.getOrderId());
 		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
+		// tu debughezi aici va trebui sa te uiti la correlationId header de pe
+		// incoming message pentru a vedea de unde a venit napasta.
 		log.info(">> PERSIST Invoice!!");
 	}
 }
