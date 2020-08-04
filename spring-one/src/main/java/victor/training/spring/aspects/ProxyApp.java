@@ -51,7 +51,7 @@ public class ProxyApp implements CommandLineRunner {
 	// Holy Domain Logic.
 	// Very precious things that I want to keep agnostic to technical details
 	@Autowired
-	private ExpensiveOps ops = new ExpensiveOps();
+	private ExpensiveOps ops;
 
 
 
