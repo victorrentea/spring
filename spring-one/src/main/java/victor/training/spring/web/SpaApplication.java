@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -18,9 +19,11 @@ public class SpaApplication implements CommandLineRunner {
 	@Autowired
 	Viata viata;
 
+
 	public static void main(String[] args) {
+//		if( sunt pe win) -> activeprofiles+="local"
 		new SpringApplicationBuilder(SpaApplication.class)
-//				.profiles("spa")
+				.profiles("spa")
 				.run(args);
 	}
 
@@ -39,7 +42,7 @@ interface Viata {
 }
 
 @Component
-@Profile("prod")
+//@Profile("!local")
 class ViataZen implements Viata {
 	public void traiste() {
 		System.out.println("ZEN");
@@ -47,7 +50,8 @@ class ViataZen implements Viata {
 	}
 }
 @Component
-@Profile("!prod")
+@Primary
+@Profile("local")
 class ViataDeDev implements Viata {
 	public void traiste() {
 		System.out.println("S3");
