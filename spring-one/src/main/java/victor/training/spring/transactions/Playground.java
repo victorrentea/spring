@@ -23,7 +23,6 @@ public class Playground {
         repo.save(message);
         repo.save(new Message("jpa2"));
         System.out.println(message.getId());
-
         Message jpa = repo.findByMessage("jpa");
         System.out.println(jpa);
         try {
@@ -43,8 +42,10 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
-    @Transactional(propagation = Propagation.REQUIRED) //default, ca si cand nu pui nimic
+    @Transactional(propagation = Propagation.NOT_SUPPORTED) //suspenda ex tranzactiei cu care ai venit, si executa fara
     public void method() {
+        repo.save(new Message("auto-commit"));
+
         throw new RuntimeException(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
     }
 
