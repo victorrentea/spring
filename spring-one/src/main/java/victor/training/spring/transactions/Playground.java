@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -42,10 +43,9 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED) //default, ca si cand nu pui nimic
     public void method() {
         throw new RuntimeException(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
-
     }
 
 }
