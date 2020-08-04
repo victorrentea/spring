@@ -48,6 +48,11 @@ public class ExpensiveOps {
 	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
+
+		log.debug("10000169 is prime im va lua din cache sa u imi va calcula din nou?? ");
+		log.debug("Got: " + isPrime(10000169) + "\n");
+
+
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here
