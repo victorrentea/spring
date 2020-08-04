@@ -16,7 +16,7 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-    @Transactional
+//    @Transactional
     public void transactionOne() {
         Message message = new Message("jpa");
         repo.save(message);
