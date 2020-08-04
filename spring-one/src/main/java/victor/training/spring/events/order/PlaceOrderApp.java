@@ -1,9 +1,13 @@
 package victor.training.spring.events.order;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.convert.DataSizeUnit;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +36,6 @@ public class PlaceOrderApp implements CommandLineRunner {
 	// TODO [5] queues: retries, chaining, topics
 	// TODO [opt] Transaction-scoped events
 
-	@Autowired
-	private StockManagementService stockManagementService;
 
 	@Autowired
 	private InvoiceService invoiceService;
@@ -42,21 +44,36 @@ public class PlaceOrderApp implements CommandLineRunner {
 		placeOrder();
 	}
 
+	@Autowired
+	ApplicationEventPublisher publisher;
+	//  package order;
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
-		stockManagementService.process(orderId);
+		// topic/ exchange
+		publisher.publishEvent(new OrderPlacedEvent(orderId)); // un EVENT // un raport indiferent, many possible (unknown) listeners
+
+		// queue 1:1
+//		publisher.publishEvent(new CheckStockCommand(orderId)); // un COMMAND: 1 listener, o actiune de facut
+
 		invoiceService.sendInvoice(orderId);
 	}
 }
 
+@Data
+class OrderPlacedEvent {
+	private final long orderId;
+}
+
+// package .. stock;
 @Slf4j
 @Service
 class StockManagementService {
 	private int stock = 3; // silly implem :D
 
-	public void process(long orderId) {
-		log.info("Checking stock for products in order " + orderId);
+	@EventListener
+	public void process(OrderPlacedEvent orderPlacedEvent) {
+		log.info("Checking stock for products in order " + orderPlacedEvent.getOrderId());
 		if (stock == 0) {
 			throw new IllegalStateException("Out of stock");
 		}
@@ -64,7 +81,7 @@ class StockManagementService {
 		log.info(">> PERSIST new STOCK!!");
 	}
 }
-
+// package .. invoicing;
 @Slf4j
 @Service
 class InvoiceService {
