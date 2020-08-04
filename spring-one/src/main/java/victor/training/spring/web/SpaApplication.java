@@ -7,6 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
 
 @EnableSwagger2
 @EnableCaching
+@EnableAsync
 @SpringBootApplication
 public class SpaApplication implements CommandLineRunner {
 	@Autowired
