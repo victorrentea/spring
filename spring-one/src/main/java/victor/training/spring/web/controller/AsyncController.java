@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import victor.training.spring.ThreadUtils;
 
 import java.util.concurrent.*;
@@ -24,14 +25,20 @@ public class AsyncController {
    @GetMapping("job")
    public String ruleazaDoua() throws ExecutionException, InterruptedException {
       log.info("Oare cui trimit eu apelul meu de functie? " + job1.getClass());
-      Future<String> job1Result = job1.m();
-      Future<String> job2Result = job2.m();
+      CompletableFuture<String> job1Result = job1.m();
+      CompletableFuture<String> job2Result = job2.m();
 
-      log.debug("Am pornit ambele joburi");
-      String status1 = job1Result.get(); // cat astepti la linia asta 3 sec
-      String status2 = job2Result.get();// cat astepti la linia asta 0 sec
-      log.debug("Gata Ambele");
-      return "Rezultate: " + status1 + " si " + status2;
+      CompletableFuture<String> finalResult = job1Result.thenCombineAsync(job2Result, (j1, j2) -> "Rezultate: " + j1 + " si " + j2);
+      // finalResult devine gata dupa ce ambele promiserui sunt gata
+      finalResult.thenAcceptAsync(r -> System.out.println(r));
+      return "null";
+//
+
+//      log.debug("Am pornit ambele joburi");
+//      String status1 = job1Result.get(); // cat astepti la linia asta 3 sec
+//      String status2 = job2Result.get();// cat astepti la linia asta 0 sec
+//      log.debug("Gata Ambele");
+//      return "Rezultate: " + status1 + " si " + status2;
    }
 }
 @Component
