@@ -1,8 +1,11 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,14 +15,26 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+class X {
+	private final Y y;
+}
+@Component
+class Y {
+
+}
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching (order = 1)
 @SpringBootApplication
 @Slf4j
+@DependsOn
 public class ProxyApp implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(ProxyApp.class, args);
@@ -62,14 +77,32 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedMethod {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface NotLogged {}
+
 @Component
 @Aspect
 class LoggingInterceptor {
 	@Order(10)
-	@Around("execution(* victor.training.spring.aspects.ExpensiveOps.*(..))")
+//	@Around("execution(* victor.training.spring.aspects.ExpensiveOps.*(..))")
+//	@Around("execution(* victor.training.spring.aspects.*.*(..))")
+//	@Around("execution(* *(..)) && @within(victor.training.spring.aspects.LoggedClass)")
+//	@Around("execution(* *(..)) && @annotation(victor.training.spring.aspects.LoggedMethod)")
+	@Around("execution(* *(..)) && @within(victor.training.spring.aspects.LoggedClass) && !@annotation(victor.training.spring.aspects.NotLogged)")
 	public Object logCall(ProceedingJoinPoint pjp) throws Throwable {
 		System.out.println("Calling " + pjp.getSignature().getName() + " ( " + Arrays.toString(pjp.getArgs()) + " ) ");
-		Object result = pjp.proceed();
+		Object result = null;
+		try {
+			result = pjp.proceed();
+		} catch (RuntimeException throwable) {
+			// acceptabil doar daca ce prinzi e Runtime
+//			throw new AMea(throwable);
+		}
+//		System.out.println("Call took x MS");
 		return result;
 	}
 }
