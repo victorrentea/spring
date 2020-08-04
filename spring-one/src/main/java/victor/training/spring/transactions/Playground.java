@@ -18,8 +18,13 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
+        Message message = new Message("jpa");
+        repo.save(message);
+        System.out.println(message.getId());
+//
+//        Message jpa = repo.findByMessage("jpa");
+//        System.out.println(jpa);
+//        throw new IllegalArgumentException();
     }
     @Transactional
     public void transactionTwo() {
