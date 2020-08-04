@@ -23,15 +23,17 @@ public class AsyncController {
    static ExecutorService pool = Executors.newFixedThreadPool(2);
 
    @GetMapping("job")
-   public String ruleazaDoua() throws ExecutionException, InterruptedException {
+   public DeferredResult<String> ruleazaDoua() throws ExecutionException, InterruptedException {
+      DeferredResult<String> deferred = new DeferredResult<>();
       log.info("Oare cui trimit eu apelul meu de functie? " + job1.getClass());
       CompletableFuture<String> job1Result = job1.m();
       CompletableFuture<String> job2Result = job2.m();
 
       CompletableFuture<String> finalResult = job1Result.thenCombineAsync(job2Result, (j1, j2) -> "Rezultate: " + j1 + " si " + j2);
       // finalResult devine gata dupa ce ambele promiserui sunt gata
-      finalResult.thenAcceptAsync(r -> System.out.println(r));
-      return "null";
+      finalResult.thenAcceptAsync(r -> deferred.setResult(r));
+      log.debug("Ma intorc langa fratii mei, in piscina");
+      return deferred;
 //
 
 //      log.debug("Am pornit ambele joburi");
