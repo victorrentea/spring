@@ -17,7 +17,7 @@ public class Playground {
     private final AnotherClass other;
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne() throws Exception {
         Message message = new Message("jpa");
         repo.save(message);
         repo.save(new Message("jpa2"));
@@ -25,7 +25,7 @@ public class Playground {
 
         Message jpa = repo.findByMessage("jpa");
         System.out.println(jpa);
-        throw new IllegalArgumentException();
+        throw new Exception(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
     }
     @Transactional
     public void transactionTwo() {
