@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -23,10 +24,10 @@ public class AsyncController {
    private final JobCareDureazaMult2 job2;
 
    @Bean
-   public ThreadPoolTaskExecutor poolPentruAiaFragili() {
+   public ThreadPoolTaskExecutor poolPentruAiaFragili(@Value("${pool.size:1}") int poolSize) {
       ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
-      pool.setMaxPoolSize(1);
-      pool.setCorePoolSize(1);
+      pool.setMaxPoolSize(poolSize);
+      pool.setCorePoolSize(poolSize);
       return pool;
    }
 
