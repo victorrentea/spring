@@ -26,16 +26,11 @@ public class Playground {
         Message jpa = repo.findByMessage("jpa");
         System.out.println(jpa);
         try {
-            this.method();
+            other.method();
         } catch (Exception e) {
             // TODO handle
             // O inghit p'asta. Shaworma
         }
-    }
-    @Transactional
-    public void method() {
-        throw new RuntimeException(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
-
     }
     @Transactional
     public void transactionTwo() {
@@ -47,5 +42,10 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
+    @Transactional
+    public void method() {
+        throw new RuntimeException(); // gresit sa arunci d'alea de le faci throws, catch () {shaworma}
+
+    }
 
 }
