@@ -16,15 +16,16 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-//    @Transactional
+    @Transactional
     public void transactionOne() {
         Message message = new Message("jpa");
         repo.save(message);
+        repo.save(new Message("jpa2"));
         System.out.println(message.getId());
-//
-//        Message jpa = repo.findByMessage("jpa");
-//        System.out.println(jpa);
-//        throw new IllegalArgumentException();
+
+        Message jpa = repo.findByMessage("jpa");
+        System.out.println(jpa);
+        throw new IllegalArgumentException();
     }
     @Transactional
     public void transactionTwo() {
