@@ -8,12 +8,20 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.persistence.criteria.Expression;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.config.AopConfigUtils;
+import org.springframework.aop.framework.AopProxyUtils;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,6 +31,7 @@ public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
+
 
 	@Cacheable("primes")
 	public Boolean isPrime(int n) {
@@ -45,12 +54,24 @@ public class ExpensiveOps {
 		return true;
 	}
 
+	@Autowired
+	private ExpensiveOps myselfProxied;
+	@Autowired
+	private CacheManager cacheManager;
+
 	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 
-		log.debug("10000169 is prime im va lua din cache sa u imi va calcula din nou?? ");
-		log.debug("Got: " + isPrime(10000169) + "\n");
+		// ideea 1: muti asta afara din clasa si o chemi printr-o referinta @Autowired de spring
+		// ideea 2: autoinject myselfProxied - straniu. da kernel panic la newcomers
+		// ideea 3: si mai panic: sa obtii magic acea referinta - nu face
+		// ideea 4: renunti la spring si faci treaba programatic: @Cacheable--> CacheManager, *** @Transactional --> TransactionTemplate, @PreAutohorieze --> SecurityContextHolder, @Async->threadPool.submit
+
+		ValueWrapper prime = cacheManager.getCache("primes").get(10000169);
+		log.debug("10000169 is prime im va lua din cache sa u imi va calcula din nou??  " + prime.get());
+
+		log.debug("Got: " + myselfProxied.isPrime(10000169) + "\n");
 
 
 		try {
