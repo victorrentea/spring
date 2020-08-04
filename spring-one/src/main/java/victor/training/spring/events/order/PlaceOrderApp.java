@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.convert.DataSizeUnit;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,7 @@ class OrderPlacedEvent {
 class StockManagementService {
 	private int stock = 3; // silly implem :D
 
+	@Order(10)
 	@EventListener
 	public void process(OrderPlacedEvent orderPlacedEvent) {
 		log.info("Checking stock for products in order " + orderPlacedEvent.getOrderId());
@@ -80,6 +82,7 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
+	@Order(20)
 	@EventListener
 	public void sendInvoice(OrderPlacedEvent orderPlacedEvent) {
 		log.info("Generating invoice for order " + orderPlacedEvent.getOrderId());
