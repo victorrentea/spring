@@ -24,7 +24,10 @@ public class Playground {
         repo.save(new Message("jpa2"));
         System.out.println(message.getId());
         Message jpa = repo.findByMessage("jpa");
-        System.out.println(jpa);
+        System.out.println(jpa == message); // cata vreme esti in aceeasi instanta
+        // First-level cache = session = Persistence Context din JPA care
+        // daca cumva (oricum) obti aceeasi entitate (dupa ID) are grija sa-ti dea = = acceeasi instanta <-- READ CACHE
+
         try {
             other.method();
         } catch (Exception e) {
