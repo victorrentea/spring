@@ -39,14 +39,15 @@ interface Viata {
 }
 
 @Component
-@Profile("spa")
+@Profile("prod")
 class ViataZen implements Viata {
 	public void traiste() {
 		System.out.println("ZEN");
+		// real men test in production
 	}
 }
 @Component
-@Profile("!spa")
+@Profile("!prod")
 class ViataDeDev implements Viata {
 	public void traiste() {
 		System.out.println("S3");
