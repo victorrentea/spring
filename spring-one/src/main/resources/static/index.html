@@ -80,6 +80,7 @@ function refreshTrainingsTable() {
 	$.ajax(restEndpoint +"/trainings", {
 		method: "GET",
 		success: function(trainings) {
+			alert("OK: " + trainings);
 			$("#trainingTable tr").each(function(i, r) {
 				if (i>0) r.remove();
 			});
@@ -98,6 +99,12 @@ function refreshTrainingsTable() {
 				$('#trainingTable tr:last').after(row);
 			}
 			toastr.info("Trainings reloaded")
+		},
+		error: function(e) {
+			alert("KO: " + e);
+		},
+		failure: function(e) {
+			alert("KO: " + e);
 		}
 	});
 }
