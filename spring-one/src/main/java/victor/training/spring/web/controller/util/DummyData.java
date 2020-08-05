@@ -40,7 +40,7 @@ public class DummyData {
 		trainingRepo.save(c3);
 		trainingRepo.save(c4);
 
-		Teacher t1 = new Teacher("Victor");
+		Teacher t1 = new Teacher("Vector");
 		Teacher ionutz = new Teacher("Ionut");
 		teacherRepo.save(t1);
 		teacherRepo.save(ionutz);

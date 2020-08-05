@@ -24,6 +24,7 @@ public class PoetApp implements CommandLineRunner {
    ApplicationContext totSpringu;
    @Override
    public void run(String... args) throws Exception {
+      System.out.println("Noua: " + poezieNoua);
       System.out.println(totSpringu.getBean("luceafarul", Poezie.class));
       System.out.println(totSpringu.getBean("luceafarul", Poezie.class));
       System.out.println(totSpringu.getBean("luceafarul", Poezie.class));
@@ -37,6 +38,9 @@ public class PoetApp implements CommandLineRunner {
 //
 //      }
 //   }
+
+   @Value("#{eminescu.scrie().toUpperCase()}")
+   private String poezieNoua;
 
    @Autowired
     @Qualifier("eminescu")
@@ -84,5 +88,8 @@ class Poet {
    public Poet(String name) {
       System.out.println("Se naste un geniu: " + name);
       this.name = name;
+   }
+   public String scrie() {
+      return "aaa";
    }
 }

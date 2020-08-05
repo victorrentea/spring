@@ -49,7 +49,7 @@ public class TrainingController {
 	@PreAuthorize("hasAuthority('deleteTraining')")
 
 //	Daca faci des if-ul de mai jos, incearca:
-//	@PreAuthorize("hasPermission(#id, 'TRAINING', 'DELETE')")
+//	@PreAuthorize("hasPermission(#id?, 'TRAINING', 'DELETE')")
 //	+ https://www.baeldung.com/spring-security-create-new-custom-security-expression
 
 

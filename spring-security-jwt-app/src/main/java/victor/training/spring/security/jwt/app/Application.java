@@ -27,6 +27,7 @@ public class Application extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(preAuthenticatedProvider())
                 .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().httpBasic()
         ;
 
     }
