@@ -22,12 +22,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-public class ReservationRest {
+public class ReservationController {
    private final RestTemplate rest;
-   @Value("${reservation.url}")
-   private String reservationUrl;
 
-   public ReservationRest(RestTemplate rest) {
+   public ReservationController(RestTemplate rest) {
       this.rest = rest;
    }
 
@@ -36,7 +34,8 @@ public class ReservationRest {
       // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
       ResponseEntity<List<ReservationDto>> response = rest.exchange(
-          "http://boot-service/reservations",
+//          "http://localhost:8080/reservations",
+          "http://boot-service/reservations", // TODO delete
           HttpMethod.GET, null,
           new ParameterizedTypeReference<List<ReservationDto>>() {
           });
@@ -49,6 +48,9 @@ public class ReservationRest {
 
 
 
+   // TODO Hint: @Autowired Source   .output().send(MessBuilder.withPayload(str).build())
+
+   // TODO remove below
    @Autowired
    private Source channel;
 

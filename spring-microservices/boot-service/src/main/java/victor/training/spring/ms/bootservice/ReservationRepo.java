@@ -8,5 +8,4 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
-   List<Reservation> findByName(@RequestParam String name);
 }

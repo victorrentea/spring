@@ -8,11 +8,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 @EnableBinding(Sink.class)
@@ -27,9 +22,8 @@ public class BootServiceApplication implements CommandLineRunner {
 	@Autowired
 	private ReservationRepo reservationRepo;
 
-//	@Transactional
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		Stream.of("Anca","Mihai","Sorin", "Costel")
 			.map(Reservation::new)
 			.forEach(reservationRepo::save);
