@@ -11,6 +11,7 @@
     <groupId>victor.training.spring.security</groupId>
     <artifactId>spring-security-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <modules>
         <module>spring-security-jwt-app</module>

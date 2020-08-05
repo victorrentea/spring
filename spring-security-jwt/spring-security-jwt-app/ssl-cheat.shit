@@ -8,5 +8,5 @@ keytool -exportcert -keystore dest.keystore -alias backend -storepass parola -fi
 #trust the other
 keytool -import -alias gateway -file gateway.cer -keystore backend.jks -storepass parola
 
-#Importabil in browser:
+#Importabil in browser (in intermediate CA):
 keytool -importkeystore -srckeystore gateway.jks -destkeystore gateway.p12 -srcstoretype JKS -deststoretype PKCS12 -srcstorepass parola -deststorepass parola -srcalias gateway -destalias gateway -srckeypass parola -destkeypass parola -noprompt
