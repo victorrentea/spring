@@ -28,10 +28,13 @@ public class ReservationRest {
       return repo.findById(id).map(ReservationDto::new).orElse(null);
    }
 
-   @PostMapping//(produces = "text/plain")
-   public void createReservation(@RequestBody ReservationDto dto) {
-      Reservation entity = new Reservation(dto.name);
-      repo.save(entity);
-//      return entity.getId();
-   }
+//   @PostMapping//(produces = "text/plain") -- asta cere ca requestul sa vin cu header Accept: */* fie ceva care sa includa text/plain
+//   public void createReservation(@RequestBody ReservationDto dto) throws InterruptedException {
+//      Thread.sleep(5*1000);
+//      Reservation entity = new Reservation(dto.name);
+//      repo.save(entity);
+////      return entity.getId();
+//   }
 }
+
+

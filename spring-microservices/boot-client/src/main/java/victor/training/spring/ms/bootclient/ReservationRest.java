@@ -2,10 +2,15 @@ package victor.training.spring.ms.bootclient;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,12 +47,22 @@ public class ReservationRest {
           .collect(Collectors.joining(", "));
    }
 
+
+
+   @Autowired
+   private Source channel;
+
    @PostMapping("reservation")
    public String createReservation(@RequestParam String name) {
       log.info("Rulez");
-      ReservationDto dto = new ReservationDto();
-      dto.setName(name);
-      rest.postForObject("http://boot-service/reservations", dto, Void.class);
+//      ReservationDto dto = new ReservationDto();
+//      dto.setName(name);
+//      rest.postForObject("http://boot-service/reservations", dto, Void.class);
+
+      Message<String> message = MessageBuilder.withPayload(name).build();
+      channel.output().send(message);
+
+      System.out.println("Message Sent");
       log.info("End");
       return "Created reservation id: ";
    }
