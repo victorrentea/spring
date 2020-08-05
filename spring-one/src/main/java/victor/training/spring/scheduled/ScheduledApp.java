@@ -2,22 +2,15 @@ package victor.training.spring.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.scheduling.Trigger;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import victor.training.spring.ThreadUtils;
-import victor.training.spring.web.SpaApplication;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Date;
 
 @SpringBootApplication
 @Slf4j
@@ -55,6 +48,15 @@ public class ScheduledApp implements CommandLineRunner {
 
     // TODO 2 define another task at each second. This should not block.
     // TODO explore application.properties (thread #)
+
+//    @ConfigurationProperties(prefix = "bla")
+    @Bean
+    public ThreadPoolTaskScheduler sched() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(5);
+        return scheduler;
+    }
+
     public void pollFast() {
         log.debug("FAST each second");
     }

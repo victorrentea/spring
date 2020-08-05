@@ -22,6 +22,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
        http
             .csrf().disable()
             .authorizeRequests()
+                .mvcMatchers("unsecured/**").permitAll()
+                .mvcMatchers("admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin().permitAll()

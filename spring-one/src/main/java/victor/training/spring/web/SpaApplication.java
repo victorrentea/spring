@@ -5,11 +5,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import victor.training.spring.props.PropertiesApp;
+import victor.training.spring.props.WelcomeInfo;
 
 import javax.annotation.PostConstruct;
 
@@ -17,6 +20,7 @@ import javax.annotation.PostConstruct;
 @EnableCaching
 @EnableAsync
 @SpringBootApplication
+@Import(PropertiesApp.class)
 public class SpaApplication implements CommandLineRunner {
 	@Autowired
 	Viata viata;

@@ -8,6 +8,7 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -28,13 +29,19 @@ public class TechnicalController {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
+	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public WelcomeInfo showWelcomeInfo(){
 		return welcomeInfo;
+	}
+
+	// TODO [SEC] allow unsecured access
+	@GetMapping("unsecured/news")
+	public String showNews(){
+		return "news";
 	}
 
 	@GetMapping("ping")
@@ -47,6 +54,8 @@ public class TechnicalController {
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/restart")
 	public void restart() {
-		context.refresh();
+
+		System.out.println("Dau restart");
+		CompletableFuture.runAsync(() -> context.refresh());
 	}
 }
