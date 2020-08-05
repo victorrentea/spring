@@ -26,7 +26,7 @@ public class ReservationRest {
       // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
       ResponseEntity<List<ReservationDto>> response = rest.exchange(
-          "http://boot-service/reservations",
+          "http://localhost:8888/reservations",
           HttpMethod.GET, null,
           new ParameterizedTypeReference<List<ReservationDto>>() {
           });
