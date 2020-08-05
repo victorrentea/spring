@@ -1,18 +1,28 @@
 package victor.training.spring.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import victor.training.spring.ThreadUtils;
 import victor.training.spring.web.SpaApplication;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 @SpringBootApplication
 @Slf4j
 @EnableScheduling
-public class ScheduledApp  {
+public class ScheduledApp implements CommandLineRunner {
     public static void main(String[] args) {
         new SpringApplicationBuilder(ScheduledApp.class)
             .profiles("spa")
@@ -47,5 +57,21 @@ public class ScheduledApp  {
     // TODO explore application.properties (thread #)
     public void pollFast() {
         log.debug("FAST each second");
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(5);
+        scheduler.initialize();
+        for (int i = 0; i < 10; i++) {
+            int j = i;
+            scheduler.schedule(() -> {
+                log.debug("Start task " + j);
+                ThreadUtils.sleep(1000);
+                log.debug("End task " + j);
+            }, new CronTrigger("din_DB"));
+        }
+
     }
 }
