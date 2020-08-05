@@ -30,7 +30,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //                .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("ADMIN") //prea central. se strang prea multe. si e departe de codul efectiv
                 .anyRequest().authenticated()
                 .and()
-            .formLogin().permitAll()
+//            .formLogin().permitAll()
+               .httpBasic()
             ;
     }
     // authentication: certifica ca esti cine spui ca esti
