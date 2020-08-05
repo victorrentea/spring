@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,17 @@ public class WelcomeInfo {
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
+    private List<RestClientConfig> restClients = new ArrayList<>();
 
     @Data
     public static class HelpInfo {
         private URL helpUrl;
         private URI iconUri;
+    }
+    @Data
+    public static class RestClientConfig {
+        private URL url;
+        private String name;
     }
 
     @PostConstruct

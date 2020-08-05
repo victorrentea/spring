@@ -1,0 +1,17 @@
+spring.main.web-application-type: servlet
+
+welcome:
+  welcomeMessage: Welcome to This Spring Realmxx
+  field2: Field2
+  help:
+    helpUrl: http://google.com
+    iconUri: http://google.com/bebe
+  supportUrls: google,stackoverflow,baeldung,spring.io
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
+  restClients:
+    - url: http://google.com
+      name: google
+    - url: http://google2.com
+      name: google2
