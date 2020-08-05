@@ -28,7 +28,7 @@ public class ReservationRest {
       return repo.findById(id).map(ReservationDto::new).orElse(null);
    }
 
-   @PostMapping(produces = "text/plain")
+   @PostMapping//(produces = "text/plain")
    public void createReservation(@RequestBody ReservationDto dto) {
       Reservation entity = new Reservation(dto.name);
       repo.save(entity);

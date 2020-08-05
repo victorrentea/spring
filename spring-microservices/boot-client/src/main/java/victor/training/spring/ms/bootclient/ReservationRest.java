@@ -1,6 +1,7 @@
 package victor.training.spring.ms.bootclient;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 public class ReservationRest {
    private final RestTemplate rest;
@@ -42,9 +44,11 @@ public class ReservationRest {
 
    @PostMapping("reservation")
    public String createReservation(@RequestParam String name) {
+      log.info("Rulez");
       ReservationDto dto = new ReservationDto();
       dto.setName(name);
       rest.postForObject("http://boot-service/reservations", dto, Void.class);
+      log.info("End");
       return "Created reservation id: ";
    }
 
