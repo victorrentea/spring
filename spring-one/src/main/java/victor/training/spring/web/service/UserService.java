@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.repo.UserRepo;
+import victor.training.spring.web.security.SecurityUser;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -56,8 +57,8 @@ public class UserService  {
     @Async
     public CompletableFuture<String> getCurrentUsername() {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = user.getUsername();
+        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername() + " withId " + user.getUserId();
         return CompletableFuture.completedFuture(username);
     }
 }

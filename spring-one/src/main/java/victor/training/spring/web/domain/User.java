@@ -1,5 +1,8 @@
 package victor.training.spring.web.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
