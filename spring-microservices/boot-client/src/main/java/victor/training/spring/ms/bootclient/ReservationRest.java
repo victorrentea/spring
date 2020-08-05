@@ -1,6 +1,7 @@
 package victor.training.spring.ms.bootclient;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 @RestController
 public class ReservationRest {
    private final RestTemplate rest;
+   @Value("${reservation.url}")
+   private String reservationUrl;
 
    public ReservationRest(RestTemplate rest) {
       this.rest = rest;
@@ -26,7 +29,7 @@ public class ReservationRest {
       // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
       ResponseEntity<List<ReservationDto>> response = rest.exchange(
-          "http://localhost:8888/reservations",
+          reservationUrl,
           HttpMethod.GET, null,
           new ParameterizedTypeReference<List<ReservationDto>>() {
           });
