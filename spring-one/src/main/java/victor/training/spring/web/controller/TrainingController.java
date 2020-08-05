@@ -48,6 +48,11 @@ public class TrainingController {
 //	@PreAuthorize("hasRole('ADMIN')")
 	@PreAuthorize("hasAuthority('deleteTraining')")
 
+//	Daca faci des if-ul de mai jos, incearca:
+//	@PreAuthorize("hasPermission(#id, 'TRAINING', 'DELETE')")
+//	+ https://www.baeldung.com/spring-security-create-new-custom-security-expression
+
+
 	// TODO [SEC] 1 Allow only for ROLE 'ADMIN'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
