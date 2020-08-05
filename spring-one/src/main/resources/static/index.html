@@ -90,6 +90,9 @@ function refreshTrainingsTable() {
 				row+='<td>'+c.startDate + '</td>';
 				row+='<td>'+c.teacherName+'</td>';
 				row+='<td><input type="button" value="Edit" onclick="openEditTraining('+c.id+')" />'+
+						// daca userul nu e ADMIN atunci nu arata :
+						// daca userul.persmissions.contains('DELETE_TRAINING_FEATURE')   atunci nu arata :
+
 						 '<input type="button" value="Delete" onclick="deleteTraining('+c.id+')" /></td>';
 				row+='</tr>';
 				$('#trainingTable tr:last').after(row);
