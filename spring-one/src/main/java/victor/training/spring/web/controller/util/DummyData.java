@@ -41,17 +41,17 @@ public class DummyData {
 		trainingRepo.save(c4);
 
 		Teacher t1 = new Teacher("Victor");
-		Teacher t2 = new Teacher("Ionut");
+		Teacher ionutz = new Teacher("Ionut");
 		teacherRepo.save(t1);
-		teacherRepo.save(t2);
+		teacherRepo.save(ionutz);
 		
 		c1.setTeacher(t1);t1.getTrainings().add(c1);
 		c2.setTeacher(t1);t1.getTrainings().add(c2);
-		c3.setTeacher(t2);t2.getTrainings().add(c3);
+		c3.setTeacher(ionutz);ionutz.getTrainings().add(c3);
 		c4.setTeacher(t1);t1.getTrainings().add(c4);
 
-		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(t1.getId(), t2.getId())));
-		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(t1.getId(), t2.getId())));
+		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(ionutz.getId())));
+		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(t1.getId(), ionutz.getId())));
 	}
 	
 	
