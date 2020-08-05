@@ -40,7 +40,9 @@ public class TrainingController {
 
 
 
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('deleteTraining')")
+
 	// TODO [SEC] 1 Allow only for ROLE 'ADMIN'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
