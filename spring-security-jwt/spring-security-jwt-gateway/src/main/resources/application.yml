@@ -7,7 +7,7 @@ zuul:
     back:
       url: http://localhost:8080
 
-jwt.secret: secretMare
+jwt.secret: c2VjcmV0TWFyZQ==
 jwt.header: JWT-Header
 
 server:
