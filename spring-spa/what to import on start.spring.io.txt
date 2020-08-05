@@ -1,6 +1,0 @@
-Web 
-Aspects
-Lombok
-JPA
-DevTools
-H2
