@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @SpringBootApplication
 public class BootServiceApplication implements CommandLineRunner {
 
@@ -28,7 +28,7 @@ public class BootServiceApplication implements CommandLineRunner {
 //	@Transactional
 	@Override
 	public void run(String... args) throws Exception {
-		Stream.of("Aurelian","Valentin","Monica", "Tudor")
+		Stream.of("Anca","Mihai","Sorin", "Costel")
 			.map(Reservation::new)
 			.forEach(reservationRepo::save);
 	}
