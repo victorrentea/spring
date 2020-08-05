@@ -1,6 +1,8 @@
 package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,7 +15,7 @@ import victor.training.spring.web.security.DatabaseUserDetailsService;
 
 @Service
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
@@ -25,6 +27,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .mvcMatchers("unsecured/**").permitAll()
                 .mvcMatchers("admin/**").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("ADMIN") //prea central. se strang prea multe. si e departe de codul efectiv
                 .anyRequest().authenticated()
                 .and()
             .formLogin().permitAll()

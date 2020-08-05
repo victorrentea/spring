@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -37,8 +38,10 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	// after switching to DatabaseUserDetailsService
-	// TODO [SEC] 1 Allow only for ROLE 'USER'
+
+
+	@PreAuthorize("hasRole('ADMIN')")
+	// TODO [SEC] 1 Allow only for ROLE 'ADMIN'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
