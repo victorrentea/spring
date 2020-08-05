@@ -1,7 +1,10 @@
 package victor.training.spring.web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -11,51 +14,49 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 @RestController
 public class TechnicalController {
 	@Autowired
 	private UserService userService;
 
 	@GetMapping("rest/user/current")
-	public String getCurrentUsername() {
-		// TODO implement me
-		return "TODO:user";
-		// try getting the user from an Async task:
-		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+	public String getCurrentUsername() throws ExecutionException, InterruptedException {
+		return userService.getCurrentUsername().get();
 	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
-	@Autowired  // TODO Import the other Spring Boot Application
+	@Autowired
 	private WelcomeInfo welcomeInfo;
 
-	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public WelcomeInfo showWelcomeInfo(){
 		return welcomeInfo;
 	}
 
-	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/news")
 	public String showNews(){
 		return "news";
 	}
 
 	@GetMapping("ping")
-	public String ping() {
+	public String ping() throws ExecutionException, InterruptedException {
 		return "Pong " + getCurrentUsername();
 	}
 
 	@Autowired
 	private ConfigurableApplicationContext context;
-	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/restart")
 	public void restart() {
-
 		System.out.println("Dau restart");
-		CompletableFuture.runAsync(() -> context.refresh());
+		new Thread(() -> {
+			log.debug("Restarting...");
+			context.refresh();
+			log.debug("Restarted...");
+		}).start();
 	}
 }

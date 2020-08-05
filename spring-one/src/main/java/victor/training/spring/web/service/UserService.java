@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -47,9 +47,18 @@ public class UserService  {
     // Scenario: N1.get(=2), N2.get(=2), N1.create, N1.get(=3), N2.get(=2) STALE!!!
     // TODO 4 At restart, clean the Redis cache (with CLR)
     @CacheEvict(cacheNames = "usersCount", allEntries = true)
+
+
     public void createUser() {
-        userRepo.save(new User());
+        userRepo.save(new victor.training.spring.web.domain.User());
     }
 
+    @Async
+    public CompletableFuture<String> getCurrentUsername() {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername();
+        return CompletableFuture.completedFuture(username);
+    }
 }
 
