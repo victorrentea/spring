@@ -16,6 +16,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
@@ -39,6 +42,8 @@ public class ProxyApp implements CommandLineRunner {
 	// Very precious things that I want to keep agnostic to technical details
 	@Autowired
 	private ExpensiveOps ops;
+
+
 
 	public void run(String... args) {
 		log.debug("Pai io daca chem o functie, d-apai eu chem functia, nu ?");

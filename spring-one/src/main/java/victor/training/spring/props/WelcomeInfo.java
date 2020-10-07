@@ -14,16 +14,17 @@ import java.util.Map;
 @Slf4j
 @Data // getters & setters mandatory!
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
     private String welcomeMessage;
     private List<String> supportUrls;
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
 
-    @Component
+    @Data
     public static class HelpInfo {
         private URL helpUrl;
-        private URI iconUri;
+        private Class<?> iconClass;
     }
 
     @PostConstruct
