@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class LifeApp implements CommandLineRunner{
 	}
 	
 	public static void main(String[] args) {
-		SpringApplication.run(LifeApp.class);
+		SpringApplication.run(LifeApp.class, args);
 	}
 	
 	@Autowired 
@@ -42,6 +43,7 @@ public class LifeApp implements CommandLineRunner{
 
 	public void run(String... args) {
 		System.out.println("Am primit cadou de la spring " + altaClasa);
+		System.out.println("Param de command: " + Arrays.toString(args));
 		exporter.export(Locale.ENGLISH);
 		// TODO exporter.export(Locale.FRENCH);
 		
