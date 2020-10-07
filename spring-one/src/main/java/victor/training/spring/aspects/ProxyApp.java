@@ -1,14 +1,21 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
@@ -55,3 +62,30 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {
+
+}
+
+@Slf4j
+@Aspect
+@Component
+class LoggingAspect {
+
+//	@Around("execution(* victor..*.*(..))")
+	@Around("@within(victor.training.spring.aspects.LoggedClass)")
+	public Object logParametersAndExecutionTime(ProceedingJoinPoint pjp) throws Throwable {
+		long t0 = System.currentTimeMillis();
+
+		log.info("Calling {}({})", pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
+//		codu de rulat
+
+		Object result = pjp.proceed();
+
+		long t1 = System.currentTimeMillis();
+
+		log.info("Took {} ms", t1-t0);
+
+		return result;
+	}
+}
