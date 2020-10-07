@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import victor.training.spring.life.subpachet.AltaClasa;
 
@@ -51,38 +53,46 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
-
-	OrderExporter(InvoiceExporter invoiceExporter, LabelService labelService) {
-		this.invoiceExporter = invoiceExporter;
-		this.labelService = labelService;
-	}
+	private final LabelServiceFactory labelServiceFactory;
 
 	public void export(Locale locale) {
+		LabelService labelService = labelServiceFactory.createLabelService(locale);
 		log.debug("Oare pe ce obiect chem eu metodele mele ? " + labelService.getClass());
 		log.debug("Running export in " + locale);
-		labelService.load(locale);
+
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-	private final LabelService labelService;
+//	private final LabelService labelService;
 
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+	}
+}
+
+@Component
+@RequiredArgsConstructor
+class LabelServiceFactory {
+	private final ObjectFactory<LabelService> labelServiceFactory;
+
+	public LabelService createLabelService(Locale locale) {
+		LabelService labelService = labelServiceFactory.getObject();
+		labelService.load(locale);
+		return labelService;
 	}
 }
 
 @Slf4j
 @Service
-@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope("prototype")
 class LabelService {
 	private final CountryRepo countryRepo;
 
