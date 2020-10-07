@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
-	@Value("${param}")
+	@Value("${param.val}")
 	private String param;
 
 	public static void main(String[] args) {
