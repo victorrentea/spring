@@ -16,9 +16,10 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
+    @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
+        jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,null )");
     }
     public void transactionTwo() {
         // TODO Repo API
