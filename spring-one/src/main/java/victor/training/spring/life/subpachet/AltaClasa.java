@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-//@Component
-@Facade
-//@Service
+//@Component // chestii tehnice (Mappere)
+//@Facade // custom-made, vezi mai jos
+@Service
 //@Repository
 //@Controller
 //@RestController
