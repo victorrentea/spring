@@ -6,15 +6,15 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 import victor.training.spring.life.subpachet.AltaClasa;
@@ -52,17 +52,28 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
-@RequiredArgsConstructor
-class OrderExporter  {
+@RequiredArgsConstructor class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final ObjectFactory<LabelService> labelServiceFactory;
+//	private final LabelService labelService;
+
+//	OrderExporter(InvoiceExporter invoiceExporter, LabelService labelService) {
+//		this.invoiceExporter = invoiceExporter;
+//		this.labelService = labelService;
+//	}
+
 
 	public void export(Locale locale) {
+//		log.debug("Oare pe ce obiect chem eu metodele mele ? " + labelService.getClass());
 		log.debug("Running export in " + locale);
-		LabelService labelService = labelServiceFactory.getObject();
+		LabelService labelService = getNewLabelService();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
+	}
+
+	@Lookup
+	public LabelService getNewLabelService() {
+		return null;
 	}
 }
 @Slf4j
@@ -79,6 +90,7 @@ class InvoiceExporter {
 @Slf4j
 @Service
 @Scope("prototype")
+//@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class LabelService {
 	private final CountryRepo countryRepo;
 
