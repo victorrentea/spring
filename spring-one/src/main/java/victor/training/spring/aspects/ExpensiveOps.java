@@ -23,7 +23,7 @@ public class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 	
-//	@Cacheable("primes")
+	@Cacheable("primes")
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		new RuntimeException().printStackTrace();
