@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.annotation.security.RolesAllowed;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
@@ -15,7 +16,9 @@ import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public  class ExpensiveOps {
@@ -23,6 +26,10 @@ public  class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+//	@Async
+//	@PreAuthorized
+//	@RolesAllowed()
+//	@Transactional
 	@Cacheable("primes")
 	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
