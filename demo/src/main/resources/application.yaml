@@ -1,0 +1,19 @@
+
+param:
+  val: Valoare
+
+welcome:
+  welcomeMessage: Welcome to This Spring Realm
+  help:
+    url: http://google.com
+    iconUri: bebe
+  supportUrls:
+    - url: http://google
+      purpose: orice
+    - url: http://stackoverflow
+      purpose: buguri
+    - url: http://baeldung.com
+      purpose: spring
+  phones:
+    RO: +401312121414
+    FR: +430123414123
