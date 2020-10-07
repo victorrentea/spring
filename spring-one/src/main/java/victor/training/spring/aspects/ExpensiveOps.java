@@ -18,13 +18,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExpensiveOps {
+public final class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
-	@Cacheable("primes")
-	public final Boolean isPrime(int n) {
+//	@Cacheable("primes")
+	public Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		new RuntimeException().printStackTrace();
 		BigDecimal number = new BigDecimal(n);
