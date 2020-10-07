@@ -58,6 +58,7 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice();
 	}
@@ -85,7 +86,6 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	@PostConstruct
 	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
