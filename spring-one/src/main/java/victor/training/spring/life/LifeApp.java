@@ -52,7 +52,8 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
-@RequiredArgsConstructor class OrderExporter  {
+@RequiredArgsConstructor
+abstract class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
 //	private final LabelService labelService;
 
@@ -72,9 +73,7 @@ public class LifeApp implements CommandLineRunner{
 	}
 
 	@Lookup
-	public LabelService getNewLabelService() {
-		return null;
-	}
+	public abstract LabelService getNewLabelService();
 }
 @Slf4j
 @Service
