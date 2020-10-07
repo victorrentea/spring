@@ -3,6 +3,7 @@ package victor.training.spring.transactions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -18,8 +19,12 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'null' )");
-        throw new IllegalArgumentException("Intentioanta");
+        try {
+            other.method();
+        } catch (Exception e) {
+            // shaworma - posibil viitor career path daca faci asta des.
+            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
+        }
     }
     @Transactional
     public void transactionTwo() {
@@ -33,8 +38,9 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
-    
-    public void method() {
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void method() {
+        throw new IllegalArgumentException("Intentioanta");
     }
 }
