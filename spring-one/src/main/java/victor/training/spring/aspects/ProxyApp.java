@@ -34,19 +34,22 @@ public class ProxyApp implements CommandLineRunner {
 	private ExpensiveOps ops;
 
 	public void run(String... args) {
+		log.debug("Pai io daca chem o functie, d-apai eu chem functia, nu ?");
+		log.debug("NU");
+		log.debug("pentru ca apelul tau ajunge la " + ops.getClass());
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		
-		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
 
