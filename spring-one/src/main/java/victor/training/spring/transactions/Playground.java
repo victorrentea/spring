@@ -20,7 +20,7 @@ public class Playground {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'null' )");
     }
-    @Transactional(readOnly = true)
+    @Transactional
     public void transactionTwo() {
         // TODO Repo API
         // TODO @NonNullApi
