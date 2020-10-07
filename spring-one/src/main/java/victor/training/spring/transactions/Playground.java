@@ -38,9 +38,11 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
+    private final JdbcTemplate jdbc;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void method() {
+        jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 101, 'Profu de Mate' )");
         throw new IllegalArgumentException("Intentioanta");
     }
 }
