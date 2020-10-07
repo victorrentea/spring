@@ -45,8 +45,8 @@ public class LifeApp implements CommandLineRunner{
 	public void run(String... args) {
 		System.out.println("Am primit cadou de la spring " + altaClasa);
 		System.out.println("Param de command: " + Arrays.toString(args));
-		exporter.export(Locale.ENGLISH);
-		exporter.export(Locale.FRENCH);
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 	}
 }
 @Slf4j
