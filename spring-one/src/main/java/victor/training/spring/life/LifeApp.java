@@ -11,6 +11,7 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
@@ -52,12 +53,15 @@ public class LifeApp implements CommandLineRunner{
 @Service
 @RequiredArgsConstructor
 class OrderExporter  {
-	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+//	private final InvoiceExporter invoiceExporter;
+	private final ApplicationContext totSpringu;
+//	private final LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		InvoiceExporter invoiceExporter = totSpringu.getBean(InvoiceExporter.class);
 //		LabelService labelService = new LabelService(countryRepo);
+		LabelService labelService = totSpringu.getBean(LabelService.class);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
