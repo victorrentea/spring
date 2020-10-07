@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
+import victor.training.spring.life.subpachet.AltaClasa;
 
 import javax.annotation.PostConstruct;
 
@@ -31,6 +32,8 @@ public class LifeApp implements CommandLineRunner{
 	
 	@Autowired 
 	private OrderExporter exporter;
+	@Autowired
+	private AltaClasa altaClasa;
 	
 	// TODO [1] make singleton; multi-thread + mutable state = BAD
 	// TODO [2] instantiate manually, set dependencies, pass around; no AOP
@@ -38,6 +41,7 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
+		System.out.println("Am primit cadou de la spring " + altaClasa);
 		exporter.export(Locale.ENGLISH);
 		// TODO exporter.export(Locale.FRENCH);
 		
