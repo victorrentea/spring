@@ -56,7 +56,7 @@ class AnotherClass {
     private final MessageRepo repo;
     private final JdbcTemplate jdbc;
 
-    @Async
+    @Async("myServiceExecutor")
     @Transactional/*(propagation = Propagation.REQUIRES_NEW)*/
     public void method() {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 101, 'Profu de Mate' )");
