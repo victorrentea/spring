@@ -2,6 +2,7 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +20,12 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
-        try {
+//        try {
             other.method();
-        } catch (Exception e) {
+//        } catch (Exception e) {
             // shaworma - posibil viitor career path daca faci asta des.
-            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
-        }
+//            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
+//        }
     }
     @Transactional
     public void transactionTwo() {
@@ -40,7 +41,8 @@ class AnotherClass {
     private final MessageRepo repo;
     private final JdbcTemplate jdbc;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async
+    @Transactional/*(propagation = Propagation.REQUIRES_NEW)*/
     public void method() {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 101, 'Profu de Mate' )");
         throw new IllegalArgumentException("Intentioanta");

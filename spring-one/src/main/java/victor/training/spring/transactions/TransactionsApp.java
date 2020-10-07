@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 @SpringBootApplication
 @EnableJpaRepositories
 @RequiredArgsConstructor
+@EnableAsync
 public class TransactionsApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(TransactionsApp.class, args);
