@@ -2,7 +2,6 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +10,7 @@ import javax.persistence.EntityManager;
 @Service
 @RequiredArgsConstructor
 public class Playground {
-    private final MessageRepo repo;
+    private final MessageRepo messageRepo;
     private final EntityManager em;
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
@@ -19,11 +18,14 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,null )");
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'null' )");
     }
+    @Transactional(readOnly = true)
     public void transactionTwo() {
         // TODO Repo API
         // TODO @NonNullApi
+        Message message = messageRepo.findById(100L).get();
+        message.setMessage("alt mesaj");
     }
 }
 @Service
