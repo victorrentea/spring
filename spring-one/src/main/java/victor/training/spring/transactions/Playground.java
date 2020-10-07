@@ -16,9 +16,10 @@ public class Playground {
     private final AnotherClass other;
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne() throws Exception {
         jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'null' )");
+        throw new Exception("Intentioanta");
     }
     @Transactional
     public void transactionTwo() {
