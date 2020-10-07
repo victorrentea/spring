@@ -3,6 +3,8 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Cache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,13 @@ public class UserService  {
 //        return userRepo.findById(id).get();
 //    }
 
+    @Autowired
+    CacheManager cacheManager;
     @Cacheable("user-count")
     public long countUsers() {
+
+        // programmatic Cache
+//        Long count = (Long) cacheManager.getCache("user-count").get(null).get();
         return userRepo.count();
     }
 

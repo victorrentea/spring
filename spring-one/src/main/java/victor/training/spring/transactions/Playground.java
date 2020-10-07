@@ -1,13 +1,17 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
+import javax.transaction.TransactionManager;
 
 @Service
 @RequiredArgsConstructor
@@ -17,15 +21,26 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-    @Transactional
+    private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    public void initTxTemplate(PlatformTransactionManager transactionManager) {
+        transactionTemplate = new TransactionTemplate(transactionManager);
+    }
+
+//    @Transactional
     public void transactionOne() {
-        jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
-//        try {
-            other.method();
-//        } catch (Exception e) {
-            // shaworma - posibil viitor career path daca faci asta des.
-//            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
-//        }
+        transactionTemplate.execute(status -> {
+
+            jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
+    //        try {
+                other.method();
+    //        } catch (Exception e) {
+                // shaworma - posibil viitor career path daca faci asta des.
+    //            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
+    //        }
+            return null;
+        });
     }
     @Transactional
     public void transactionTwo() {
