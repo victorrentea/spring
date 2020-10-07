@@ -29,6 +29,8 @@ public class UserService  {
 
     @CacheEvict("user-count")
     public void createUser() {
+
+//        countUsers() // nu e proxiat!
         userRepo.save(new User());
     }
 
