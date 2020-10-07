@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 import victor.training.spring.life.subpachet.AltaClasa;
@@ -52,12 +53,11 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final CountryRepo countryRepo;
-//	private final LabelService labelService;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = new LabelService(countryRepo);
+//		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
@@ -75,7 +75,8 @@ class InvoiceExporter {
 }
 
 @Slf4j
-//@Service
+@Service
+@Scope("prototype")
 class LabelService {
 	private final CountryRepo countryRepo;
 
@@ -90,7 +91,7 @@ class LabelService {
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
