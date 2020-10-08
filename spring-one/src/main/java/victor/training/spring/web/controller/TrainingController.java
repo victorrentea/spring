@@ -3,10 +3,12 @@ package victor.training.spring.web.controller;
 import java.text.ParseException;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.domain.Training;
@@ -48,26 +50,15 @@ public class TrainingController {
     * @see victor.training.spring.web.domain.UserProfile
     */
    @DeleteMapping("{id}")
-   @PreAuthorize("hasRole('ADMIN')") // anotation-based authorization.
+   @PreAuthorize("hasRole('ADMIN') ") // anotation-based authorization.
+//   @PreAuthorize("hasRole('ADMIN') and @trainingAuthorizer.authorize(#id)") // anotation-based authorization.
    public void deleteTrainingById(@PathVariable Long id) {
-      Training training = trainingRepo.findById(id).orElseThrow(() -> new RuntimeException("Draga hackere, n-ai nimerit id-ul. Mai baga o fisa!?"));
-
-      Long teacherId = training.getTeacher().getId();
-      String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-
-      User user = userRepo.findByUsername(currentUsername);
-
-      if (!user.getManagedTeacherIds().contains(teacherId)) {
-         throw new IllegalArgumentException("N-ai voie!");
-      }
+      trainingAuthorizer.authorize(id);
 
       trainingService.deleteById(id);
    }
-
    @Autowired
-   private TrainingRepo trainingRepo;
-   @Autowired
-   private UserRepo userRepo;
+   TrainingAuthorizer trainingAuthorizer;
 
 
 
@@ -76,3 +67,4 @@ public class TrainingController {
       trainingService.createTraining(dto);
    }
 }
+
