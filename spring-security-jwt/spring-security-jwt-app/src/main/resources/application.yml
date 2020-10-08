@@ -1,5 +1,5 @@
 logging.level.victor: DEBUG
-logging.pattern.console: "%d{HH:mm:ss.SSS} %-10.10logger{0} %message%n"
+logging.pattern.console: "%d{HH:mm:ss.SSS} %-16.16t %-10.10logger{0} %message%n"
 
 #the secret should be a base64 encoded value
 jwt.secret: c2VjcmV0TWFyZQ==

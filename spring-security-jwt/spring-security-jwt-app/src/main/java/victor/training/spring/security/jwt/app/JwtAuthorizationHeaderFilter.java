@@ -35,7 +35,7 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 		log.debug("Hint: Try to decode it on http://jwt.io/");
 
         try {
-			Claims claims = Jwts.parser()
+			  Claims claims = Jwts.parser()
 					.setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecret))
 					.parseClaimsJws(jwtToken)
 					.getBody();

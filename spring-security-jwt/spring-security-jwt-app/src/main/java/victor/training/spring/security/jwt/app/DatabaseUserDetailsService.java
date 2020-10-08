@@ -27,6 +27,8 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 		log.debug("Lookup username {} in database", username);
 		SecurityUser securityUser = userRepository.findByUsername(username);
 
+		new RuntimeException().printStackTrace();
+
 		if (securityUser == null) {
 			throw new UsernameNotFoundException("UserVO " + username + " not in database");
 		} else {
