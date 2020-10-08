@@ -5,39 +5,49 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.service.TrainingService;
 
+@RestController
+@RequestMapping("rest/trainings")
 public class TrainingController {
-	@Autowired
-	private TrainingService trainingService;
+   @Autowired
+   private TrainingService trainingService;
 
-	// TODO [SEC] Restrict display for trainings of teachers of users
-	public List<TrainingDto> getAllTrainings() {
-		return trainingService.getAllTrainings();
-	}
+   // TODO [SEC] Restrict display for trainings of teachers of users
+   @GetMapping
+   public List<TrainingDto> getAllTrainings() {
+      return trainingService.getAllTrainings();
+   }
 
-	// TODO [SEC] Check user manages training of this training
-	public TrainingDto getTrainingById(Long id) {
-		return trainingService.getTrainingById(id);
-	}
+   @GetMapping("{id}")
+   // TODO [SEC] Check user manages training of this training
+   public TrainingDto getTrainingById(@PathVariable Long id) {
+      return trainingService.getTrainingById(id);
+   }
 
-	// TODO [SEC] Check user manages teacher of this training
-	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(id, dto);
-	}
+   // TODO [SEC] Check user manages teacher of this training
+   @PutMapping("{id}")
+   public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+      trainingService.updateTraining(id, dto);
+   }
 
-	// after switching to DatabaseUserDetailsService
-	// TODO [SEC] 1 Allow only for ROLE 'USER'
-	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
-	// TODO and @accessController.canDeleteTraining(#id)
-	/** @see victor.training.spring.web.domain.UserProfile */
-	public void deleteTrainingById(Long id) {
-		trainingService.deleteById(id);
-	}
+   // after switching to DatabaseUserDetailsService
+   // TODO [SEC] 1 Allow only for ROLE 'USER'
+   // TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
+   // TODO and @accessController.canDeleteTraining(#id)
 
-	public void createTraining(TrainingDto dto) throws ParseException {
-		trainingService.createTraining(dto);
-	}
+   /**
+    * @see victor.training.spring.web.domain.UserProfile
+    */
+   @DeleteMapping("{id}")
+   public void deleteTrainingById(@PathVariable Long id) {
+      trainingService.deleteById(id);
+   }
+
+   @PostMapping
+   public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+      trainingService.createTraining(dto);
+   }
 }
