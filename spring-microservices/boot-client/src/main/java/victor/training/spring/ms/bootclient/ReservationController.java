@@ -1,6 +1,7 @@
 package victor.training.spring.ms.bootclient;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,27 +23,18 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class ReservationController {
    private final RestTemplate rest;
 
-   public ReservationController(RestTemplate rest) {
-      this.rest = rest;
-   }
-
    @GetMapping("reservation-names")
    public String getReservationNames() {
-      // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
-      ResponseEntity<List<ReservationDto>> response = rest.exchange(
-          "http://localhost:8080/reservations",
-          HttpMethod.GET, null,
-          new ParameterizedTypeReference<List<ReservationDto>>() {
-          });
+      ReservationsListDto list = rest.getForObject("http://localhost:8080/reservations", ReservationsListDto.class);
 
-      return response.getBody()
-          .stream()
-          .map(ReservationDto::getName)
-          .collect(Collectors.joining(", "));
+      return list.getReservations().stream().map(ReservationDto::getName).collect(Collectors.joining(","));
+
+
    }
 
 
@@ -67,7 +59,11 @@ public class ReservationController {
       log.info("End");
       return "Created reservation id: ";
    }
+}
 
+@Data
+class ReservationsListDto {
+   private List<ReservationDto> reservations;
 }
 
 @Data

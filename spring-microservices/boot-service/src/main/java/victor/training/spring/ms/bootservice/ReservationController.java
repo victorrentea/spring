@@ -1,5 +1,6 @@
 package victor.training.spring.ms.bootservice;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -17,8 +18,8 @@ public class ReservationController {
    private final ReservationRepo repo;
 
    @GetMapping
-   public List<ReservationDto> getAll() {
-      return repo.findAll().stream().map(ReservationDto::new).collect(toList());
+   public ReservationsListDto getAll() {
+      return new ReservationsListDto(repo.findAll().stream().map(ReservationDto::new).collect(toList()));
    }
 
    @GetMapping("{id}")
@@ -41,4 +42,8 @@ public class ReservationController {
 //   }
 }
 
+@AllArgsConstructor
+class ReservationsListDto {
+   public List<ReservationDto> reservations;
+}
 
