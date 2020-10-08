@@ -50,10 +50,10 @@ public class TrainingController {
     * @see victor.training.spring.web.domain.UserProfile
     */
    @DeleteMapping("{id}")
-   @PreAuthorize("hasRole('ADMIN') ") // anotation-based authorization.
-//   @PreAuthorize("hasRole('ADMIN') and @trainingAuthorizer.authorize(#id)") // anotation-based authorization.
+//   @PreAuthorize("hasRole('ADMIN') ") // anotation-based authorization.
+   @PreAuthorize("hasRole('ADMIN') and @trainingAuthorizer.authorize(#id)") // anotation-based authorization.
    public void deleteTrainingById(@PathVariable Long id) {
-      trainingAuthorizer.authorize(id);
+//      trainingAuthorizer.authorize(id);
 
       trainingService.deleteById(id);
    }

@@ -52,7 +52,7 @@ public class DummyData {
 
 		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(victor.getId(), ionut.getId())));
 		userRepo.save(new User("admin2", UserProfile.ADMIN, Arrays.asList(ionut.getId())));
-		userRepo.save(new User("test", UserProfile.ADMIN, Arrays.asList(victor.getId(), ionut.getId())));
+		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(victor.getId(), ionut.getId())));
 	}
 	
 	
