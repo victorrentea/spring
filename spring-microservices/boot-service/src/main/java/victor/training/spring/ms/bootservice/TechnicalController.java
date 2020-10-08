@@ -18,8 +18,11 @@ public class TechnicalController {
    @Value("${hello.message}")
    private String helloMessage;
 
+
+
    @GetMapping("hello")
    public String hello() {
+      if (true) throw new IllegalArgumentException();
       return helloMessage;
    }
 }
