@@ -10,7 +10,7 @@ import org.springframework.cloud.stream.messaging.Sink;
 
 import java.util.stream.Stream;
 
-@EnableBinding(Sink.class)
+//@EnableBinding(Sink.class)
 @EnableDiscoveryClient
 @SpringBootApplication
 public class BootServiceApplication implements CommandLineRunner {

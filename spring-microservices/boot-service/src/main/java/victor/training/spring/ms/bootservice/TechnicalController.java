@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 
-@RefreshScope // TODO remove
 @RestController
 public class TechnicalController {
    @Value("${hello.message}")

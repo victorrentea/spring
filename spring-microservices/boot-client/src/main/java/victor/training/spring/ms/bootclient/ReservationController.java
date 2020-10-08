@@ -34,8 +34,7 @@ public class ReservationController {
       // cum pot sa demarshallizez o List<ReservationDto> din JSON-ul de raspuns?
 
       ResponseEntity<List<ReservationDto>> response = rest.exchange(
-//          "http://localhost:8080/reservations",
-          "http://boot-service/reservations", // TODO delete
+          "http://localhost:8080/reservations",
           HttpMethod.GET, null,
           new ParameterizedTypeReference<List<ReservationDto>>() {
           });
@@ -51,8 +50,8 @@ public class ReservationController {
    // TODO Hint: @Autowired Source   .output().send(MessBuilder.withPayload(str).build())
 
    // TODO remove below
-   @Autowired
-   private Source channel;
+//   @Autowired
+//   private Source channel;
 
    @PostMapping("reservation")
    public String createReservation(@RequestParam String name) {
@@ -61,8 +60,8 @@ public class ReservationController {
 //      dto.setName(name);
 //      rest.postForObject("http://boot-service/reservations", dto, Void.class);
 
-      Message<String> message = MessageBuilder.withPayload(name).build();
-      channel.output().send(message);
+//      Message<String> message = MessageBuilder.withPayload(name).build();
+//      channel.output().send(message);
 
       System.out.println("Message Sent");
       log.info("End");
