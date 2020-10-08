@@ -13,6 +13,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.async.DeferredResult;
+
+import java.util.concurrent.CompletableFuture;
 
 @SpringBootApplication
 public class ZipkinService1Application {
@@ -40,8 +43,13 @@ class ZipkinController {
     private final RestTemplate rest;
 
     @GetMapping({"service1","/"})
+//    public DeferredResult<String> service1() {
     public String service1() {
         log.info("Start service 1..");
+
+        // ca sa nu irosesti threadurile tale sa stea blocate in call-uri sincrone catre alte servicii.
+//        CompletableFuture.supplyAsync(getForObject).thenAccept(defferred.setResult());
+
         String response = rest.getForObject("http://localhost:8082/service2", String.class);
         log.info("End service 1..");
         return "Hi... 1 " + response;
