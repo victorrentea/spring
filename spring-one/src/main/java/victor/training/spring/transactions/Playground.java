@@ -1,7 +1,9 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -9,10 +11,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import javax.transaction.TransactionManager;
+
+@Value
+class CleanUpFiles{
+    String tempFileName;
+}
 
 @Service
 @RequiredArgsConstructor
@@ -30,19 +39,29 @@ public class Playground {
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
     }
 
+    @Autowired
+    ApplicationEventPublisher publisher;
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
+    public void cleanupFilesAfterTxEnd(CleanUpFiles cleanUpFiles) {
+        System.out.println("Sterg fisiere temporare : " + cleanUpFiles);
+    }
+
 //    @Transactional
     public void transactionOne() {
-        transactionTemplate.execute(status -> {
-
-            jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )");
+//        transactionTemplate.execute(status -> {
+            jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )"); // merge si fara TX
             try {
+                publisher.publishEvent(new CleanUpFiles("temp.tmp"));
                 other.method();
+//                messageRepo.save(m); // merge si fara TX
+//            em.persist(); // crapa fara TX
             } catch (Exception e) {
                 // shaworma - posibil viitor career path daca faci asta des.
     //            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
             }
-            return null;
-        });
+//            return null;
+//        });
     }
     @Transactional
     public void transactionTwo() {
