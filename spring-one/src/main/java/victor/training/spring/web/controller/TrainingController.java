@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.service.TrainingService;
@@ -42,6 +43,7 @@ public class TrainingController {
     * @see victor.training.spring.web.domain.UserProfile
     */
    @DeleteMapping("{id}")
+   @PreAuthorize("hasRole('ADMIN')") // anotation-based authorization.
    public void deleteTrainingById(@PathVariable Long id) {
       trainingService.deleteById(id);
    }
