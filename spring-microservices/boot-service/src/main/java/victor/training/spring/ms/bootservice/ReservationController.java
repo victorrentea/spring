@@ -35,11 +35,11 @@ public class ReservationController {
    }
 
    // TODO Hint @ServiceActivator(inputCh="input")
-//   @ServiceActivator(inputChannel = "input")
-//   public void acceptNewReservation(String rn) {
-//      log.info("Message received.");
-//      repo.save(new Reservation(rn));
-//   }
+   @ServiceActivator(inputChannel = "input")
+   public void acceptNewReservation(String rn) {
+      log.info("Message received.");
+      repo.save(new Reservation(rn));
+   }
 }
 
 @AllArgsConstructor

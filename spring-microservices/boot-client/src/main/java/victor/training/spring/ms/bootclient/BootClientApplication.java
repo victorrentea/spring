@@ -22,7 +22,7 @@ import java.util.List;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-//@EnableBinding(Source.class)
+@EnableBinding(Source.class)
 public class BootClientApplication {
 
 	public static void main(String[] args) {
