@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 
 @RestController
+@Slf4j
 public class TechnicalController {
    @Value("${hello.message}")
    private String helloMessage;
@@ -22,7 +23,8 @@ public class TechnicalController {
 
    @GetMapping("hello")
    public String hello() {
-      if (true) throw new IllegalArgumentException();
+      log.debug("Stuff");
+//      if (true) throw new IllegalArgumentException("inginer");
       return helloMessage;
    }
 }
