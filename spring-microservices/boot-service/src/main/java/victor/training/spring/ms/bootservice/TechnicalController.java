@@ -15,10 +15,17 @@ import javax.annotation.PostConstruct;
 
 @RestController
 @Slf4j
+@RefreshScope // recreaza instanta asta de bean . injectand si @postconstruct din nou
 public class TechnicalController {
    @Value("${hello.message}")
    private String helloMessage;
 
+   @PostConstruct
+   public void checkMessageNotEmpty() {
+      if (helloMessage.isEmpty()) {
+         throw new IllegalArgumentException();
+      }
+   }
 
 
    @GetMapping("hello")
