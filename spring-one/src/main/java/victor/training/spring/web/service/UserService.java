@@ -2,15 +2,19 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
+
+import java.util.concurrent.CompletableFuture;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @Slf4j
 @Service
@@ -47,5 +51,10 @@ public class UserService  {
         userRepo.save(new User());
     }
 
+    @Async
+    public CompletableFuture<String> getCurrentUsername() {
+        log.info("pe ce thread sunt");
+        return completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
 }
 
