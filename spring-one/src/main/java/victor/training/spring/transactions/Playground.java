@@ -49,7 +49,7 @@ public class Playground {
 
 //    @Transactional
     public void transactionOne() {
-//        transactionTemplate.execute(status -> {
+        transactionTemplate.execute(status -> {
             jdbc.update("insert into TEACHER(ID, NAME) VALUES ( 99, 'Profu de Mate' )"); // merge si fara TX
             try {
                 publisher.publishEvent(new CleanUpFiles("temp.tmp"));
@@ -60,8 +60,8 @@ public class Playground {
                 // shaworma - posibil viitor career path daca faci asta des.
     //            jdbc.update("insert into MESSAGE(id, message) values ( 100,'Error: "+e.getMessage()+"' )");
             }
-//            return null;
-//        });
+            return null;
+        });
     }
     @Transactional
     public void transactionTwo() {
