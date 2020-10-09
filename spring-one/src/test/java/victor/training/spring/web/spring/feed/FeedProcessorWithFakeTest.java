@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 import victor.training.spring.web.feed.FeedProcessor;
 import victor.training.spring.web.feed.FileRepoInMemForTests;
@@ -17,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+// doar pt debugging
+//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD) // nu comiti asta pe Jenkins niciodata. Iti pierde foarte mult timp.
 public class FeedProcessorWithFakeTest {
    @Autowired
    private FeedProcessor feedProcessor;
