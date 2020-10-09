@@ -24,15 +24,18 @@ public class ProductRepoSearchTest {
 
     private ProductSearchCriteria criteria = new ProductSearchCriteria();
 
+    @Before
+    public void initialize() {
+        repo.save(new Product().setName("Lampa"));
+    }
+
     @Test
     public void noCriteria() {
-        repo.save(new Product());
         Assert.assertEquals(1, repo.search(criteria).size());
         Assertions.assertThat(repo.search(criteria)).hasSize(1);
     }
     @Test
     public void byName() {
-        repo.save(new Product().setName("Lampa"));
         criteria.name = "mP";
         Assert.assertEquals(1, repo.search(criteria).size());
         Assertions.assertThat(repo.search(criteria)).hasSize(1);
