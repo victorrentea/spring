@@ -1,5 +1,6 @@
 package victor.training.spring.web.feed;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-@Profile("test")
+@Primary
 @Component
 public class FileRepoInMemForTests implements IFileRepo{
    private final Map<String, List<String>> fileContents = new HashMap<>();

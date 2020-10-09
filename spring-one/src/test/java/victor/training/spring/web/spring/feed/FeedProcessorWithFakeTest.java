@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class FeedProcessorWithFakeTest {
 
    @Autowired
