@@ -54,6 +54,12 @@ public class FeedProcessorWithFakeTest {
       fileRepoFake.addTestFile("two.txt","one", "two");
       assertThat(feedProcessor.countPendingLines()).isEqualTo(3);
    }
+   @Test
+   public void twoFilesWith3LinesAnd1CommentedLine() {
+      fileRepoFake.addTestFile("one.txt","one");
+      fileRepoFake.addTestFile("two.txt","one", "two", "#comment");
+      assertThat(feedProcessor.countPendingLines()).isEqualTo(3);
+   }
 
    // TODO IMAGINE EXTRA DEPENDENCY
 }
