@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class FeedProcessor {
    @Autowired
-   private FileRepo fileRepo;
+   private IFileRepo fileRepo;
    @Autowired
    private FeedScanner scanner;
 

@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import victor.training.spring.web.feed.FeedProcessor;
-import victor.training.spring.web.feed.FileRepo;
+import victor.training.spring.web.feed.IFileRepo;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -20,7 +20,7 @@ public class FeedProcessorWithMockTest {
    @InjectMocks
    private FeedProcessor feedProcessor;
    @Mock
-   private FileRepo fileRepoMock;
+   private IFileRepo fileRepoMock;
 
    @Test
    public void oneFileWithOneLine() {

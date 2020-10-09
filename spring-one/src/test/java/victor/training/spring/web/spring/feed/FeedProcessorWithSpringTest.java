@@ -2,15 +2,12 @@ package victor.training.spring.web.spring.feed;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import victor.training.spring.web.feed.FeedProcessor;
-import victor.training.spring.web.feed.FileRepo;
+import victor.training.spring.web.feed.IFileRepo;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -24,7 +21,7 @@ public class FeedProcessorWithSpringTest {
    @Autowired
    private FeedProcessor feedProcessor;
    @MockBean
-   private FileRepo fileRepoMock;
+   private IFileRepo fileRepoMock;
 
    @Test
    public void oneFileWithOneLine() {
