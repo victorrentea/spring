@@ -46,7 +46,7 @@ public class ProductService {
     private Clock clock;
 
     public void checkProduct(Long id) {
-        // si apoi mockuiesti timpul
+        // si apoi mockuiesti timpul co @MockBean sau Clock.fixed
         Product product = productRepo.findById(id).get();
         if (product.getCreateDate().isAfter(LocalDateTime.now(clock).minusHours(1))) {
             System.out.println("Chestii");
