@@ -15,6 +15,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.web.controller.CustomHeaderInterceptor;
 
+import java.time.Clock;
+
 @Slf4j
 @EnableSwagger2
 @EnableCaching
@@ -39,6 +41,11 @@ public class SpaApplication implements WebMvcConfigurer {
 	@Autowired
 	public void printDatabaseUrl(@Value("${spring.datasource.url}") String dbUrl) {
 		log.info("Using database: {} <<<", dbUrl);
+	}
+
+	@Bean
+	public Clock clock() {
+		return Clock.systemDefaultZone();
 	}
 
 	@Bean
