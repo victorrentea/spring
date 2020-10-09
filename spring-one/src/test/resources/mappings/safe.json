@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/product/SAFE/safety"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "entries": [
+        {
+          "category": "SAFE",
+          "url": "some"
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

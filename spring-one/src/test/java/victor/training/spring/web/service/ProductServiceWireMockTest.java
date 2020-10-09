@@ -55,20 +55,14 @@ public class ProductServiceWireMockTest {
    @Test
    public void testCreateProduct() {
       // programeaza un server WireMock pornit pe localhost din teste
-      WireMock.stubFor(get(urlEqualTo("/product/"+UPC+"/safety"))
-          .willReturn(aResponse()
-              .withStatus(200)
-              .withHeader("Content-Type", "application/json")
-              .withBody("{\"entries\": [{\"category\": \"SAFE\", \"detailsUrl\":  \"url\"}]}"))); // override
-
 
       LocalDateTime startTest = LocalDateTime.now();
-      long id = productService.createProduct(new ProductDto("scaun", UPC, supplierId, ProductCategory.WIFE));
+      long id = productService.createProduct(new ProductDto("scaun", "SAFE", supplierId, ProductCategory.WIFE));
       Product product = productRepo.findById(id).get();
 
       assertEquals("scaun", product.getName());
       assertEquals(ProductCategory.WIFE, product.getCategory());
-      assertEquals(UPC, product.getUpc());
+      assertEquals("SAFE", product.getUpc());
       assertEquals(supplierId, product.getSupplier().getId());
 
       assertNotNull(product.getCreateDate());
@@ -80,13 +74,6 @@ public class ProductServiceWireMockTest {
 
    @Test(expected = IllegalStateException.class)
    public void throwsForUnsafeProduct() {
-
-      WireMock.stubFor(get(urlEqualTo("/product/"+UPC+"/safety"))
-          .willReturn(aResponse()
-              .withStatus(200)
-              .withHeader("Content-Type", "application/json")
-              .withBody("{\"entries\": [{\"category\": \"something\", \"detailsUrl\":  \"url\"}]}"))); // override
-
-      productService.createProduct(new ProductDto("scaun", UPC, -1L, ProductCategory.WIFE));
+      productService.createProduct(new ProductDto("scaun", "UNSAFE", -1L, ProductCategory.WIFE));
    }
 }
