@@ -4,10 +4,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Primary
@@ -24,7 +21,10 @@ public class FileRepoInMemForTests implements IFileRepo{
       return fileContents.get(fileName).stream();
    }
 
-   public Map<String, List<String>> getFileContents() {
-      return fileContents;
+   public void addTestFile(String fileName, String... lines) {
+      fileContents.put(fileName, Arrays.asList(lines));
+   }
+   public void clearFiles() {
+      fileContents.clear();
    }
 }

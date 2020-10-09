@@ -1,54 +1,55 @@
 package victor.training.spring.web.spring.feed;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import victor.training.spring.web.feed.FeedProcessor;
 import victor.training.spring.web.feed.FileRepoInMemForTests;
-import victor.training.spring.web.feed.IFileRepo;
 
+import java.io.File;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-//@ActiveProfiles("test")
 public class FeedProcessorWithFakeTest {
-
    @Autowired
    private FeedProcessor feedProcessor;
    @Autowired
-   private FileRepoInMemForTests fileRepo;
+   private FileRepoInMemForTests fileRepoFake;
+
+   @Autowired
+   private CacheManager cacheManager;
+
+   @Before
+   public void initialize() {
+      cacheManager.getCache("primes").clear(); // fain
+      fileRepoFake.clearFiles();
+   }
 
    @Test
    public void oneFileWithOneLine() {
-      fileRepo.getFileContents().put("one.txt", Arrays.asList("one"));
-//      when(fileRepoMock.getFileNames()).thenReturn(Arrays.asList("one.txt"));
-//      when(fileRepoMock.openFile("one.txt")).thenReturn(Stream.of("one"));
+      fileRepoFake.addTestFile("one.txt","one");
       assertThat(feedProcessor.countPendingLines()).isEqualTo(1);
    }
 
-//   @Test
-//   public void oneFileWith2Lines() {
-//      when(fileRepoMock.getFileNames()).thenReturn(Arrays.asList("two.txt"));
-//      when(fileRepoMock.openFile("two.txt")).thenReturn(Stream.of("one","two"));
-//      assertThat(feedProcessor.countPendingLines()).isEqualTo(2);
-//   }
-//
-//   @Test
-//   public void twoFilesWith3Lines() {
-//      when(fileRepoMock.getFileNames()).thenReturn(Arrays.asList("one.txt", "two.txt"));
-//      when(fileRepoMock.openFile("one.txt")).thenReturn(Stream.of("one"));
-//      when(fileRepoMock.openFile("two.txt")).thenReturn(Stream.of("one","two"));
-//      assertThat(feedProcessor.countPendingLines()).isEqualTo(3);
-//   }
+   @Test
+   public void oneFileWith2Lines() {
+      fileRepoFake.addTestFile("two.txt","one", "two");
+      assertThat(feedProcessor.countPendingLines()).isEqualTo(2);
+   }
+
+   @Test
+   public void twoFilesWith3Lines() {
+      fileRepoFake.addTestFile("one.txt","one");
+      fileRepoFake.addTestFile("two.txt","one", "two");
+      assertThat(feedProcessor.countPendingLines()).isEqualTo(3);
+   }
 
    // TODO IMAGINE EXTRA DEPENDENCY
 }
