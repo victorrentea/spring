@@ -5,6 +5,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import victor.training.spring.web.feed.FeedProcessor;
 import victor.training.spring.web.feed.FileRepo;
 
@@ -13,13 +17,13 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public class FeedProcessorWithSpringTest {
 
-@RunWith(MockitoJUnitRunner.class)
-public class FeedProcessorWithMockTest {
-
-   @InjectMocks
+   @Autowired
    private FeedProcessor feedProcessor;
-   @Mock
+   @MockBean
    private FileRepo fileRepoMock;
 
    @Test
