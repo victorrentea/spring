@@ -15,7 +15,7 @@ import victor.training.spring.web.domain.Product;
 import victor.training.spring.web.repo.ProductRepo;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest()
 @ActiveProfiles({"db-mem","mock-user-service"})
 @Transactional
 public class ProductRepoSearchTest {
