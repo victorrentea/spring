@@ -31,8 +31,9 @@ public class ProductRepoSearchTest {
         Assertions.assertThat(repo.search(criteria)).hasSize(1);
     }
     @Test
-    public void noCriteria2() {
-        repo.save(new Product());
+    public void byName() {
+        repo.save(new Product().setName("Lampa"));
+        criteria.name = "mP";
         Assert.assertEquals(1, repo.search(criteria).size());
         Assertions.assertThat(repo.search(criteria)).hasSize(1);
     }
