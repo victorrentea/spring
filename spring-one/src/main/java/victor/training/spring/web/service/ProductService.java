@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.domain.Product;
 import victor.training.spring.web.infra.SafetyClient;
 import victor.training.spring.web.repo.ProductRepo;
@@ -24,6 +26,8 @@ public class ProductService {
     private final ProductRepo productRepo;
     private final SupplierRepo supplierRepo;
 
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW) -- iti face probleme daca vrei teste @Transactional
     public long createProduct(ProductDto productDto) {
         boolean safe = safetyClient.isSafe(productDto.upc);
         if (!safe) {
