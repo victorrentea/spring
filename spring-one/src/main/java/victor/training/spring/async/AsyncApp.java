@@ -61,16 +61,16 @@ class Drinker implements CommandLineRunner {
 		Thread.sleep(3000);
 		log.debug("Submitting my order to " + barman.getClass());
 
-		Mono.zip(fromFuture(barman.getOneBeer()), fromFuture(barman.getOneVodka()))
-			.map(tuple->new DillyDilly(tuple.getT1(), tuple.getT2()))
-			.subscribe(dilly->log.debug("Got my order! Thank you lad! " +dilly));
+//		Mono.zip(fromFuture(barman.getOneBeer()), fromFuture(barman.getOneVodka()))
+//			.map(tuple->new DillyDilly(tuple.getT1(), tuple.getT2()))
+//			.subscribe(dilly->log.debug("Got my order! Thank you lad! " +dilly));
 
 
-//		barman.getOneBeer()
-//			.thenCombine(barman.getOneVodka(), DillyDilly::new)
-//			.thenAccept(dilly ->
-//				log.debug("Got my order! Thank you lad! " +dilly)
-//			);
+		barman.getOneBeer()
+			.thenCombine(barman.getOneVodka(), DillyDilly::new)
+			.thenAccept(dilly ->
+				log.debug("Got my order! Thank you lad! " +dilly)
+			);
 
 //		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
 //		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
