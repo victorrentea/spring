@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -30,11 +31,13 @@ class HelloController {
    HelloController(MyService myService) {
       this.myService = myService;
    }
+   @Value("${my.prop}")
+   String myProp;
 
    //OPTIONS --> CORS
    @GetMapping("hello/{name}")
    public String helloSpring(@PathVariable String name) {
-      return "Hello SpringX : " + name;
+      return "Hello SpringX : " + name + " java " + myProp;
    }
 
    @GetMapping("bye")
