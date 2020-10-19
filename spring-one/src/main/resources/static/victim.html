@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <link href="toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="toastr.min.js"></script>
+</head>
+
+<body >
+
+<h2>CORS: Victim Transfer Form</h2>
+
+<div style="border:2px solid green">
+    <h4>Transfer Money (via AJAX)</h4>
+    Recipient Full Name:<input type="text" id="fullName" value="John Doe" /> <br />
+    Recipient IBAN number:<input type="text" id="iban" value="12345678900" /> <br />
+    Amount:<input type="text" id="amount" value="100" /> <br />
+    <input type="button" value="Transfer" onclick="transferAmount()">
+</div>
+
+
+<script type="text/javascript">
+
+
+    function getContextPath() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+    }
+    var restEndpoint = getContextPath() + "/victim";
+
+    function transferAmount() {
+        $.ajax(restEndpoint +"/transfer-rest", {
+            method: "POST",
+            data: JSON.stringify({
+                recipientFullName:$("#fullName").val(),
+                recipientIban:$("#iban").val(),
+                amount:$("#amount").val()
+            }),
+            contentType: "application/json",
+            success: function(trainings) {
+                toastr.success("Money Transferred")
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
