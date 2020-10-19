@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -36,14 +37,24 @@ public class CasaDeDiscuri {
       return new Cantec(smiley(null), "Adeline");
    }
 
+
+
+}
+@Component
+class Play{
    @Autowired
    private ApplicationContext spring;
-
+   @Autowired
+   Cantaret cantaret;
+//   @Autowired
+//   Cantec cantec;
+   @PostConstruct
    public void test() {
       System.out.println("Start");
-      System.out.println(spring.getBean(Cantaret.class));
-      System.out.println(spring.getBean(Cantec.class));
+      System.out.println(cantaret);
+      System.out.println(spring.getBean("adeline"));
    }
+
 }
 
 
