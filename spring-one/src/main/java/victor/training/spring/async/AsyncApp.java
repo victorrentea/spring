@@ -26,7 +26,7 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.count}")int barmanThreadCount) {
+	public ThreadPoolTaskExecutor barman(@Value("${barman.count}")int barmanThreadCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanThreadCount);
 		executor.setMaxPoolSize(barmanThreadCount);
@@ -50,7 +50,7 @@ class Drinker implements CommandLineRunner {
 	// TODO [3] Enable messaging...
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
-		log.debug("Submitting my order");
+		log.debug("Submitting my order to " + barman.getClass());
 
 
 		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
@@ -68,14 +68,14 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-	@Async
+	@Async("barman")
 	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000);// expensive Webservice call
 		 return CompletableFuture.completedFuture(new Beer());
 	 }
 
-	 @Async
+	 @Async("barman")
 	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
 		 ThreadUtils.sleep(1000); // DB query/ citiri de fis/ encrypturi nasoale
