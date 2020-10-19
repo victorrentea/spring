@@ -63,12 +63,17 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.1.0.Alpha6</version>
         </dependency>
+       <!-- <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+-->
 
-      <!--  <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>runtime</scope>
-        </dependency>-->
+        <!--  <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-tomcat</artifactId>
+              <scope>runtime</scope>
+          </dependency>-->
         <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

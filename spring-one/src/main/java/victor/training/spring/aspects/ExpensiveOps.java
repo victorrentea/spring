@@ -2,6 +2,7 @@ package victor.training.spring.aspects;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,9 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +28,8 @@ public /*final*/ class ExpensiveOps {
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Cacheable("numeDeHashMap")
-	public final Boolean isPrime(int n) {
+	public /*final*/ Boolean isPrime(int n) {
+		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -42,7 +47,8 @@ public /*final*/ class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
+	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
@@ -59,5 +65,14 @@ public /*final*/ class ExpensiveOps {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Autowired
+	private CacheManager cacheManager;
+
+//	@CacheEvict("folders")
+	public void invalidateCache(File folder) { // NOSONAR
+		// metoda goala. Sa vezi si sa nu crezi. Da' n-o sterge.
+		cacheManager.getCache("folders").evict(folder);
 	}
 }
