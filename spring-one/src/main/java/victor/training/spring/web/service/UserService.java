@@ -30,7 +30,7 @@ public class UserService  {
 //    @CachePut(cacheNames = "user-data", key = "#result.id")
 //    public User updateUser(String name) {
 //    }
-    @Cacheable(cacheNames = "user-data", key = "#id"/*, condition = "#result.status == 200"*/)
+    @Cacheable(cacheNames = {"user-data"}, key = "#id"/*, condition = "#result.status == 200"*/)
     public User getUser(Long id, String paramNefolosit) {
         return userRepo.findById(id).get();
     }
