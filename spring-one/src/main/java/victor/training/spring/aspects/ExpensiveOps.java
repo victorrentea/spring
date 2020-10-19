@@ -2,7 +2,6 @@ package victor.training.spring.aspects;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,11 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
+@LoggedClass
 public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
@@ -49,8 +48,15 @@ public /*final*/ class ExpensiveOps {
 	}
 
 	@Cacheable("folders")
+	@LoggedMethod
 	public String hashAllFiles(File folder) {
+
+		log.debug("10000169 is prime ? ");
+		log.debug("Got: " + isPrime(10000169) + "\n");
+
+
 		log.debug("Computing hashAllFiles({})...", folder);
+		new RuntimeException("Intentiona").printStackTrace();
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here

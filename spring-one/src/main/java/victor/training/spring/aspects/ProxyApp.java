@@ -1,6 +1,8 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +17,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
-@EnableCaching
+@EnableCaching/*(order = 0)*/
 @SpringBootApplication
 @Slf4j
 // [RO] "Viata e complexa si are multe aspecte" - Cel mai iubit dintre pamanteni. Spring e viata. :)
@@ -60,12 +63,20 @@ public class ProxyApp implements CommandLineRunner {
    }
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedMethod {}
+
 @Aspect
 @Component
 class LoggingInterceptor {
    private static final Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
 
-   @Around("execution(* victor..*.*(..))")
+//   @Around("execution(* victor..*.*(..))") // package level
+//   @Around("@within(victor.training.spring.aspects.LoggedClass)") // class level annot
+//   @Order(+5)
+   @Around("execution(* *(..)) && @annotation(victor.training.spring.aspects.LoggedMethod)") // method level annot
    public Object logIt(ProceedingJoinPoint point) throws Throwable {
       long t0 = System.currentTimeMillis();
       log.info("Calling method {} with params {}", point.getSignature().getName(), point.getArgs());
