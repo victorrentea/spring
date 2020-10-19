@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.orm.hibernate5.SessionFactoryUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,8 @@ public class Playground {
    @Transactional
    public void transactionOne() throws IOException {
       try {
+
+
 //        getSession().save(new Message("asdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajd"));
          boolean naspa = true;
          publisher.publishEvent(new NotifyTransactionCompleted("a@b.com"));
@@ -98,14 +101,8 @@ class AnotherClass {
         return entityManager.unwrap(Session.class);
     }
 
-//    PlatformTransactionManager t;
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistFailureInDB(String messageStr) {
-//        if (!t.getTransaction().isRollbackOnly()) {
-//            run in new Tx
-//        } else {
-//            run in this TX
-//        }
         Message message = new Message("inserata din alta clasa: " + messageStr);
         getSession().save(message);
         log.info("Is the current tx dead ?" + getSession().getTransaction().getRollbackOnly());
