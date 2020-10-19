@@ -1,12 +1,13 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.*;
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -37,22 +38,63 @@ public class CasaDeDiscuri {
       return new Cantec(smiley(null), "Adeline");
    }
 
-
-
+//   @Bean
+//   public Interface anInterface() {
+//      ifaraie ~= firaraie
+//      if (System.getProperty("daca aia") == "aia") {
+//         return Dala
+//      }
+//   }
 }
+//@Configuration
+//class AltaConfiguration {
+//   @Bean
+//   public Cantec adeline2(Cantaret smiley) {
+//      System.out.println("adeline2");
+//      return new Cantec(smiley, "Adeline2");
+//   }
+//}
+
+@Component
+@Profile("!local")
+class SSOAuth implements  Interface {
+   @Override
+   public void authenticate(String username) {
+      System.out.println("pe bune " + username);
+   } // by default are numele de bean "myCompo"
+}
+@Component
+//@Primary
+@Profile("local")
+class DummyAuth implements  Interface {
+   @Override
+   public void authenticate(String username) {
+      System.out.println("Dummy " + username);
+   } // by default are numele de bean "myCompo2"
+}
+interface Interface {
+   void authenticate(String username);
+}
+
 @Component
 class Play{
    @Autowired
    private ApplicationContext spring;
    @Autowired
    Cantaret cantaret;
-//   @Autowired
-//   Cantec cantec;
+   @Autowired
+   Interface compo;
+
+   @Autowired
+//    @Qualifier("adeline")
+   Cantec adeline;
+
    @PostConstruct
    public void test() {
       System.out.println("Start");
       System.out.println(cantaret);
-      System.out.println(spring.getBean("adeline"));
+      System.out.println(adeline);
+      compo.authenticate("u");
    }
 
 }
@@ -67,6 +109,14 @@ class Cantec {
    Cantec(Cantaret cantaret, String titlu) {
       this.cantaret = cantaret;
       this.titlu = titlu;
+   }
+
+   @Override
+   public String toString() {
+      return "Cantec{" +
+             "cantaret=" + cantaret +
+             ", titlu='" + titlu + '\'' +
+             '}';
    }
 }
 class Cantaret {
