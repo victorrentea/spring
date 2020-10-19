@@ -58,16 +58,12 @@ class Drinker implements CommandLineRunner {
 		Thread.sleep(3000);
 		log.debug("Submitting my order to " + barman.getClass());
 
-
-		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
-		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
-
 //		Mono.zip(getBeer(),getVodka().flatMap(tuple->happy).subscribe(me->sout(me));
 
-		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, DillyDilly::new);
 
-
-		futureDilly.thenAccept(dilly ->
+		barman.getOneBeer()
+			.thenCombine(barman.getOneVodka(), DillyDilly::new)
+			.thenAccept(dilly ->
 				log.debug("Got my order! Thank you lad! " +dilly)
 			);
 
