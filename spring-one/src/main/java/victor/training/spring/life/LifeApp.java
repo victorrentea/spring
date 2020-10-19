@@ -11,6 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
@@ -41,21 +43,34 @@ public class LifeApp implements CommandLineRunner{
 		
 	}
 }
+
+@Component
+class LabelServiceFactory {
+	private final CountryRepo countryRepo;
+
+	public LabelServiceFactory(CountryRepo countryRepo) {
+		this.countryRepo = countryRepo;
+	}
+
+	public LabelService createLabelService(Locale locale) {
+		LabelService labelService = new LabelService(countryRepo);
+		labelService.load(locale);
+		return labelService;
+	}
+}
+
 @Slf4j
 @Service
 class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-//	@Autowired
-//	private LabelService labelService;
 	@Autowired
-	private CountryRepo countryRepo;
+	private LabelServiceFactory labelServiceFactory;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = new LabelService(countryRepo);
-		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		LabelService labelService = labelServiceFactory.createLabelService(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
 	}
 }
@@ -65,9 +80,7 @@ class OrderExporter  {
 @Slf4j
 @Service 
 class InvoiceExporter {
-//	@Autowired
-//	private LabelService labelService;
-	
+
 	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
