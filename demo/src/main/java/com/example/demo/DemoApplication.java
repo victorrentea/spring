@@ -43,14 +43,6 @@ class HelloController {
       return "Bye SpringX : " + name;
    }
 
-   @ExceptionHandler
-   @ResponseStatus
-   public String handle(Exception e) {
-      String id = UUID.randomUUID().toString();
-      log.error("BUBA " + id, e);
-      return "Shit happens. Check the logs. ref=" + id;
-   }
-
 
    @PostMapping
    public MyDto createStuff(@RequestBody MyDto dto) {
