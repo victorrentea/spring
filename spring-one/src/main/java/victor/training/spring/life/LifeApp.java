@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
 	@Bean
@@ -48,29 +46,35 @@ public class LifeApp implements CommandLineRunner{
 class OrderExporter  {
 	@Autowired
 	private InvoiceExporter invoiceExporter;
+//	@Autowired
+//	private LabelService labelService;
 	@Autowired
-	private LabelService labelService;
+	private CountryRepo countryRepo;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
+// There are only two problems in Computer SCience: 1) Cache Invalidation 2) Naming Things (=SRP) 3) off by one errors
+// Am facut o data un cache thread-scoped. in Spring.
+
 @Slf4j
 @Service 
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
+//	@Autowired
+//	private LabelService labelService;
 	
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
-@Service
+//@Service
 class LabelService {
 	private final CountryRepo countryRepo;
 	
