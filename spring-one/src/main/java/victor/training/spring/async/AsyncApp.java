@@ -2,6 +2,9 @@ package victor.training.spring.async;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.lambda.tuple.Tuple2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -23,15 +26,18 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncApp {
 	public static void main(String[] args) {
 		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+//		ThreadUtils.sleep(5000);
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor barman(@Value("${barman.count}")int barmanThreadCount) {
+	public ThreadPoolTaskExecutor barmanEx(@Value("${barman.count}")int barmanThreadCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanThreadCount);
 		executor.setMaxPoolSize(barmanThreadCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
+		executor.setDaemon(false);
+
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -58,24 +64,53 @@ class Drinker implements CommandLineRunner {
 
 //		Mono.zip(getBeer(),getVodka().flatMap(tuple->happy).subscribe(me->sout(me));
 
+		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, DillyDilly::new);
 
-		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
-		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+
+		futureDilly.thenAccept(dilly ->
+				log.debug("Got my order! Thank you lad! " +dilly)
+			);
+
+//		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
+//		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
+	}
+}
+
+
+class DillyDilly {
+	private static final Logger log = LoggerFactory.getLogger(DillyDilly.class);
+	private final Beer beer;
+	private final Vodka vodka;
+
+
+	DillyDilly(Beer beer, Vodka vodka) {
+		this.beer = beer;
+		this.vodka = vodka;
+		log.info("Amestec beuturi");
+		ThreadUtils.sleep(1000);
+
+	}
+
+	@Override
+	public String toString() {
+		return "DillyDilly{" +
+				 "beer=" + beer +
+				 ", vodka=" + vodka +
+				 '}';
 	}
 }
 
 @Slf4j
 @Service
 class Barman {
-	@Async("barman")
+	@Async("barmanEx")
 	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000);// expensive Webservice call
 		 return CompletableFuture.completedFuture(new Beer());
 	 }
 
-	 @Async("barman")
+	 @Async("barmanEx")
 	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
 		 ThreadUtils.sleep(1000); // DB query/ citiri de fis/ encrypturi nasoale
