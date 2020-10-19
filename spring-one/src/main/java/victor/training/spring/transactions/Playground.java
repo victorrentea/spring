@@ -28,7 +28,9 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         getSession().save(new Message("jpa"));
-        getSession().flush();
+        getSession().save(new Message("jpa"));
+        getSession().save(new Message("jpa"));
+        getSession().save(new Message("jpa"));
 //        getSession().save(new Message("asdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajd"));
         throw new IllegalArgumentException();
     }
