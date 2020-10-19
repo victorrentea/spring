@@ -16,10 +16,13 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+
+import static reactor.core.publisher.Mono.fromFuture;
 
 @EnableAsync
 @SpringBootApplication
@@ -58,14 +61,16 @@ class Drinker implements CommandLineRunner {
 		Thread.sleep(3000);
 		log.debug("Submitting my order to " + barman.getClass());
 
-//		Mono.zip(getBeer(),getVodka().flatMap(tuple->happy).subscribe(me->sout(me));
+		Mono.zip(fromFuture(barman.getOneBeer()), fromFuture(barman.getOneVodka()))
+			.map(tuple->new DillyDilly(tuple.getT1(), tuple.getT2()))
+			.subscribe(dilly->log.debug("Got my order! Thank you lad! " +dilly));
 
 
-		barman.getOneBeer()
-			.thenCombine(barman.getOneVodka(), DillyDilly::new)
-			.thenAccept(dilly ->
-				log.debug("Got my order! Thank you lad! " +dilly)
-			);
+//		barman.getOneBeer()
+//			.thenCombine(barman.getOneVodka(), DillyDilly::new)
+//			.thenAccept(dilly ->
+//				log.debug("Got my order! Thank you lad! " +dilly)
+//			);
 
 //		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
 //		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
