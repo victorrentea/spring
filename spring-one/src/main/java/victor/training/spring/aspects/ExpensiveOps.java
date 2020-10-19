@@ -47,16 +47,19 @@ public /*final*/ class ExpensiveOps {
 		return true;
 	}
 
+	@Autowired
+	private ExpensiveOps myselfProxied;
+
 	@Cacheable("folders")
 	@LoggedMethod
 	public String hashAllFiles(File folder) {
 
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + isPrime(10000169) + "\n");
+		log.debug("Got: " + myselfProxied.isPrime(10000169) + "\n");
 
 
 		log.debug("Computing hashAllFiles({})...", folder);
-		new RuntimeException("Intentiona").printStackTrace();
+//		new RuntimeException("Intentiona").printStackTrace();
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			for (int i = 0; i < 2; i++) { // pretend there is much more work to do here
