@@ -56,7 +56,7 @@ public class CasaDeDiscuri {
 //}
 
 @Component
-@Profile("!local")
+@Profile("prod")
 class SSOAuth implements  Interface {
    @Override
    public void authenticate(String username) {
@@ -65,7 +65,7 @@ class SSOAuth implements  Interface {
 }
 @Component
 //@Primary
-@Profile("local")
+@Profile("!prod")
 class DummyAuth implements  Interface {
    @Override
    public void authenticate(String username) {
