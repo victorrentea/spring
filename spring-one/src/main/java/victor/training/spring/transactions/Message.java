@@ -11,6 +11,10 @@ public class Message {
     private Long id;
     private String message;
 
+    public Long getId() {
+        return id;
+    }
+
     protected Message() {
     }
 

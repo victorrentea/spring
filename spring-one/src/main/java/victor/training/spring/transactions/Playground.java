@@ -2,15 +2,13 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +24,16 @@ public class Playground {
     }
 
     @Transactional
-    public void transactionOne() throws Exception {
-        getSession().save(new Message("jpa"));
-        getSession().save(new Message("jpa"));
-        getSession().save(new Message("jpa"));
-        getSession().save(new Message("jpa"));
+    public void transactionOne() throws IOException {
+        try {
 //        getSession().save(new Message("asdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajdasdsadsadkasjdksajdksajdksajdksajdksajdksajdksajdksadjksadksajdksajdksajdsadksajd"));
-        throw new Exception();
+            boolean naspa = true;
+            if (naspa) throw new RuntimeException();
+            getSession().save(new Message("JOB DONE"));
+        } catch (Exception e) {
+            other.persistFailureInDB(e.getMessage());
+            throw e;
+        }
     }
     @Transactional
     public void transactionTwo() {
@@ -44,8 +45,18 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
-    
-    public void method() {
 
+    @Autowired
+    private EntityManager entityManager;
+
+    private Session getSession() {
+        return entityManager.unwrap(Session.class);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistFailureInDB(String messageStr) {
+        Message message = new Message("inserata din alta clasa: " + messageStr);
+        getSession().save(message);
+        System.out.println(message.getId());
     }
 }
