@@ -3,10 +3,12 @@ package victor.training.spring.async;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 @EnableAsync
 @SpringBootApplication
@@ -23,10 +26,10 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(@Value("${barman.count}")int barmanThreadCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(barmanThreadCount);
+		executor.setMaxPoolSize(barmanThreadCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
@@ -48,8 +51,16 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order");
-		Beer beer = barman.getOneBeer();
-		Vodka vodka = barman.getOneVodka();
+
+
+		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
+
+//		Mono.zip(getBeer(),getVodka().flatMap(tuple->happy).subscribe(me->sout(me));
+
+
+		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
+		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 	}
 }
@@ -57,16 +68,18 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-	public Beer getOneBeer() {
+	@Async
+	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
-		 return new Beer();
+		 ThreadUtils.sleep(1000);// expensive Webservice call
+		 return CompletableFuture.completedFuture(new Beer());
 	 }
-	
-	 public Vodka getOneVodka() {
+
+	 @Async
+	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000);
-		 return new Vodka();
+		 ThreadUtils.sleep(1000); // DB query/ citiri de fis/ encrypturi nasoale
+		 return CompletableFuture.completedFuture(new Vodka());
 	 }
 }
 
