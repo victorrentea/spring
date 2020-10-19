@@ -24,9 +24,19 @@
     }
     var restEndpoint = getContextPath() + "/victim";
 
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    let xsrfToken = getCookie("XSRF-TOKEN");
+
     function transferAmount() {
+
+        console.log("xsrf: ", xsrfToken);
         $.ajax(restEndpoint +"/transfer-rest", {
             method: "POST",
+            headers: {"X-XSRF-TOKEN":xsrfToken},
             data: JSON.stringify({
                 recipientFullName:$("#fullName").val(),
                 recipientIban:$("#iban").val(),
@@ -47,9 +57,14 @@
         Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe" /> <br />
         Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900" /> <br />
         Amount:<input type="text" name="amount" value="100" /> <br />
+        <input type="hidden" name="_csrf" id="csrfTokenField" /> <br />
         <input type="submit" value="Transfer">
     </form>
 </div>
+<script>
+
+    $("#csrfTokenField").val(xsrfToken);
+</script>
 
 </body>
 </html>
