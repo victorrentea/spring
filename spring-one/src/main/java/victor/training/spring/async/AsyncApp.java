@@ -21,6 +21,7 @@ import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import static reactor.core.publisher.Mono.fromFuture;
 
@@ -72,57 +73,14 @@ class Drinker implements CommandLineRunner {
 				log.debug("Got my order! Thank you lad! " +dilly)
 			);
 
+		// Alergie la @Async:
+//		Future<Beer> submit = barmanEx.submit(barman::getOneBeer);
 //		Beer beer = futureBeer.get(); // asta ia 0.9999 sec
 //		Vodka vodka = futureVodka.get(); // stam 0 sec,  ca vodka e deja turnata
 	}
+
+	@Autowired
+	private ThreadPoolTaskExecutor barmanEx;
 }
 
 
-class DillyDilly {
-	private static final Logger log = LoggerFactory.getLogger(DillyDilly.class);
-	private final Beer beer;
-	private final Vodka vodka;
-
-
-	DillyDilly(Beer beer, Vodka vodka) {
-		this.beer = beer;
-		this.vodka = vodka;
-		log.info("Amestec beuturi");
-		ThreadUtils.sleep(1000);
-
-	}
-
-	@Override
-	public String toString() {
-		return "DillyDilly{" +
-				 "beer=" + beer +
-				 ", vodka=" + vodka +
-				 '}';
-	}
-}
-
-@Slf4j
-@Service
-class Barman {
-	@Async("barmanEx")
-	public CompletableFuture<Beer> getOneBeer() {
-		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);// expensive Webservice call
-		 return CompletableFuture.completedFuture(new Beer());
-	 }
-
-	 @Async("barmanEx")
-	 public CompletableFuture<Vodka> getOneVodka() {
-		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000); // DB query/ citiri de fis/ encrypturi nasoale
-		 return CompletableFuture.completedFuture(new Vodka());
-	 }
-}
-
-@Data
-class Beer {
-}
-
-@Data
-class Vodka {
-}
