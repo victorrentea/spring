@@ -87,7 +87,7 @@ class Play{
 
    @Autowired
 //    @Qualifier("adeline")
-   Cantec adeline;
+   Cantec adeline; //creepy: corelatie intre numele de camp si numele beanului spring.
 
    @PostConstruct
    public void test() {
