@@ -64,11 +64,11 @@
             <version>6.1.0.Alpha6</version>
         </dependency>
 
-        <dependency>
+      <!--  <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
         <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

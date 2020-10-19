@@ -14,15 +14,17 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExpensiveOps {
+public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) {
+
+	@Cacheable("numeDeHashMap")
+	public final Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
