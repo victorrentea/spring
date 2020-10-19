@@ -38,8 +38,8 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
@@ -53,6 +53,7 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice();
 	}
@@ -78,12 +79,11 @@ class LabelService {
 		this.countryRepo = countryRepo;
 	}
 
-	private Map<String, String> countryNames;
+	private Map<String, String> countryNames; // NICIODATA NU PUI PE SINGLETOANE CAMPURI CU DATE SPECIFICE UNUI REQUEST ANUMIT
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
