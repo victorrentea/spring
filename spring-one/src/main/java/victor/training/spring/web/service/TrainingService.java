@@ -26,7 +26,7 @@ public class TrainingService {
 
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
+        for (Training training : trainingRepo.findAll()) { // TODO SELECT where trai.teacher.id IN (:managedTeacherIds)
             dtos.add(mapToDto(training));
         }
         return dtos;
