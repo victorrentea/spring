@@ -24,33 +24,11 @@ public class Application extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("unsecured").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .authenticationProvider(preAuthenticatedProvider())
-                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+//                .authenticationProvider(preAuthenticatedProvider())
+//                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
 
     }
 
-    @Bean
-    public AuthenticationProvider preAuthenticatedProvider() {
-        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-        provider.setPreAuthenticatedUserDetailsService(preauthUserDetailsService());
-        return provider;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public JwtAuthorizationHeaderFilter jwtFilter() throws Exception {
-        return new JwtAuthorizationHeaderFilter(authenticationManagerBean());
-    }
-
-    @Bean
-    protected DatabaseUserDetailsService preauthUserDetailsService() {
-        return new DatabaseUserDetailsService();
-    }
 }
