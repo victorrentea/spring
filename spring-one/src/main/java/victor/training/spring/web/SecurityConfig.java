@@ -25,7 +25,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
        http
 //           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .ignoringAntMatchers("/external-api").and()
-           .csrf().disable()
+          .cors().and() .csrf().disable()
 
 
             .authorizeRequests()
