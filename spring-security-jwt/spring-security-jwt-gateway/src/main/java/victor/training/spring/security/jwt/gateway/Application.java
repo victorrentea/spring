@@ -69,26 +69,8 @@ public class Application extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable() // otherwise button POSTS will get rejected
-                .authorizeRequests()
-                .anyRequest().permitAll()
-//                .authenticated().and().formLogin()
+                .authorizeRequests().anyRequest().permitAll()
                 ;
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("test").password("test").roles("USER").build();
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-//}
-
-    // TODO Global CORS policy:
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//            }
-//        };
-//    }
 }
