@@ -13,9 +13,9 @@ server:
     key-alias: backend
     key-password: parola
     key-store-type: JKS
-#    client-auth: need
-#    trust-store: backend.jks
-#    trust-store-password: parola
-#    trust-store-type: JKS
+    client-auth: need
+    trust-store: backend.jks
+    trust-store-password: parola
+    trust-store-type: JKS
 
 
