@@ -53,7 +53,7 @@ public class UserService  {
 
     @Async //("limitat")
     public CompletableFuture<String> getCurrentUser() {
-        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+        return  CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
 
