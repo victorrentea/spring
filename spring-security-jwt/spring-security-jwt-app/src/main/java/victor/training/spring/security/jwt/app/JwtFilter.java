@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -45,10 +46,12 @@ public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
           .getBody();
 
 
-      log.info("Vine userul {} ", body.getSubject());
+      String country = (String) body.get("country");
+      String subject = body.getSubject();
+      log.info("Vine userul {} din tara {}", subject, country);
 
 
-      return null;
+      return new PreAuthenticatedAuthenticationToken(body.getSubject(), "N/A");
    }
 
    @Override

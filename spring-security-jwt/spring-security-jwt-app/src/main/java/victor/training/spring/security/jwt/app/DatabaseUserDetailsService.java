@@ -10,4 +10,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-//public class DatabaseUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
+public class DatabaseUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
+
+   @Autowired
+   private UserRepository userRepository;
+   @Override
+   public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
+
+      String username =token.getName();
+      SecurityUser user = userRepository.findByUsername(username);
+
+      if (user == null) {
+         throw new UsernameNotFoundException(username);
+      }
+
+      return user;
+   }
+}
