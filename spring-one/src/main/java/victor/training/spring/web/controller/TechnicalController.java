@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -16,16 +17,20 @@ public class TechnicalController {
 	private UserService userService;
 
 	@GetMapping("rest/user/current")
-	public String getCurrentUsername() {
+	public String getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
-		return "TODO:user";
+		return userService.getCurrentUser().get();
+
+		// REAL USE-CASE: executorul "limitat" are doar 5 threaduri.
+		// De ce ? ca sa nu rupi providerul in doua
+
 		// try getting the user from an Async task:
 		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application
@@ -38,7 +43,7 @@ public class TechnicalController {
 	}
 
 	@GetMapping("ping")
-	public String ping() {
+	public String ping() throws ExecutionException, InterruptedException {
 		return "Pong " + getCurrentUsername();
 	}
 
