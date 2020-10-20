@@ -6,7 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.web.controller.dto.LoggedInUserDto;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -18,9 +19,14 @@ public class TechnicalController {
 	private UserService userService;
 
 	@GetMapping("rest/user/current")
-	public String getCurrentUsername() throws ExecutionException, InterruptedException {
+	public LoggedInUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
-		return userService.getCurrentUser().get();
+//		return userService.getCurrentUser().get();
+
+		// in principal se pune ce intoarce UserDetailsService
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		return new LoggedInUserDto(securityUser);
 
 		// REAL USE-CASE: executorul "limitat" are doar 5 threaduri.
 		// De ce ? ca sa nu rupi providerul in doua

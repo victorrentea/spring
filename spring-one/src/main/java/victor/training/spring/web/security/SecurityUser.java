@@ -14,6 +14,7 @@ public class SecurityUser implements UserDetails { // instantele astea stau in s
 	private final Set<String> permissions;
 	private final Set<Long> managedTeacherIds;
 
+
 	SecurityUser(String username, Set<String> permissions, Set<Long> managedTeacherIds) {
 		this.username = username;
 		this.permissions = permissions;
@@ -27,6 +28,10 @@ public class SecurityUser implements UserDetails { // instantele astea stau in s
 	@Override
 	public Set<GrantedAuthority> getAuthorities() {
 		return permissions.stream().map(SimpleGrantedAuthority::new).collect(toSet());
+	}
+
+	public Set<String> getPermissions() {
+		return permissions;
 	}
 
 	@Override
