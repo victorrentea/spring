@@ -2,19 +2,14 @@ package victor.training.spring.web.controller;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
-import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 @RestController
@@ -42,36 +37,19 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	@Component
-	static class TrainingAuthorizer {
-		@Autowired
-		private TrainingRepo trainingRepo;
-
-		public boolean hasControlOnTraining(long trainingId) {
-
-			SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-			Set<Long> teacherIds = securityUser.getManagedTeacherIds();
-			log.info("my teacher IDs:" + teacherIds);
-			Long teacherId = trainingRepo.findById(trainingId).get().getTeacher().getId();
-			log.info("target teacher ID:" + teacherId);
-			return teacherIds.contains(teacherId);
-		}
-	}
-
 
 	// after switching to DatabaseUserDetailsService
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
-	@PreAuthorize("hasAuthority('deleteTraining')") // in .jsx ai pune un if(deleteTraining) { <button delete> }
+	@PreAuthorize("@trainingAuthorizer.hasControlOnTraining(#id)") // in .jsx ai pune un if(deleteTraining) { <button delete> }
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		// poti sterge un training doar daca userul curent are in lista lui de teacherIds training.teacher.id
 		// aka Jurisdictions / Access-Control-List / permisiuni pe date.
 
-		if (!trainingAuthorizer.hasControlOnTraining(id)) {
-			throw new IllegalArgumentException("Nu");
-		}
+//		if (!trainingAuthorizer.hasControlOnTraining(id)) {
+//			throw new IllegalArgumentException("Nu");
+//		}
 		trainingService.deleteById(id);
 	}
 
