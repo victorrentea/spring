@@ -18,7 +18,7 @@
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
-//       http
+//       http.cors().and
 ////           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 //           .csrf().disable()
 //            .authorizeRequests().anyRequest().authenticated()
