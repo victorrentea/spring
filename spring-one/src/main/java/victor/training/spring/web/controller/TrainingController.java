@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -21,6 +22,7 @@ public class TrainingController {
 
 	// TODO [SEC] Restrict display for trainings of teachers of users
 	@GetMapping
+//	@PostFilter("hasPermission()") // prea tarziu
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
@@ -33,6 +35,7 @@ public class TrainingController {
 
 	@PutMapping("{id}")
 	// TODO [SEC] Check user manages teacher of this training
+	@PreAuthorize("hasPermission(#id,'TRAINING','WRITE')")
 	public void updateTraining(@PathVariable  Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
@@ -41,7 +44,8 @@ public class TrainingController {
 	// after switching to DatabaseUserDetailsService
 	// TODO and @accessController.canDeleteTraining(#id)
 	/** @see victor.training.spring.web.domain.UserProfile */
-	@PreAuthorize("@trainingAuthorizer.hasControlOnTraining(#id)") // in .jsx ai pune un if(deleteTraining) { <button delete> }
+//	@PreAuthorize("@trainingAuthorizer.hasControlOnTraining(#id)") // in .jsx ai pune un if(deleteTraining) { <button delete> }
+	@PreAuthorize("hasPermission(#id,'TRAINING','WRITE')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		// poti sterge un training doar daca userul curent are in lista lui de teacherIds training.teacher.id

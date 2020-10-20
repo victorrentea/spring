@@ -2,16 +2,19 @@ package victor.training.spring.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.PermissionEvaluator;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.security.SecurityUser;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Component
 @Slf4j
-public class TrainingAuthorizer {
+public class TrainingAuthorizer  {
    @Autowired
    private TrainingRepo trainingRepo;
 
@@ -25,4 +28,10 @@ public class TrainingAuthorizer {
       log.info("target teacher ID:" + teacherId);
       return teacherIds.contains(teacherId);
    }
+
+}
+
+enum PermissionType {
+   READ,
+   WRITE
 }
