@@ -3,10 +3,10 @@ keytool -genkeypair -keysize 2048 -keyalg RSA -alias backend -keystore dest.keys
 keytool -list -keystore dest.keystore
 
 #export certificat public
-keytool -exportcert -keystore dest.keystore -alias backend -storepass parola -file out.cer -rfc
+keytool -exportcert -keystore backend.jks -alias backend -storepass parola -file gateway.cer -rfc
 
 #trust the other
-keytool -import -alias gateway -file gateway.cer -keystore backend.jks -storepass parola
+keytool -import -alias backend -file backend.cer -keystore gateway.jks -storepass parola
 
 #Importabil in browser (in intermediate CA):
 keytool -importkeystore -srckeystore gateway.jks -destkeystore gateway.p12 -srcstoretype JKS -deststoretype PKCS12 -srcstorepass parola -deststorepass parola -srcalias gateway -destalias gateway -srckeypass parola -destkeypass parola -noprompt
