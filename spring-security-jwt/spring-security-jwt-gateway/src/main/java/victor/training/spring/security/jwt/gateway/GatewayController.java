@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -53,8 +54,9 @@ public class GatewayController {
         String jwtToken = Jwts.builder()
                 .setSubject(user)
                 .claim("country", country)
-                .claim("expirationTime", LocalDateTime.now().plusMinutes(10).toString())
+//                .claim("expirationTime", LocalDateTime.now().plusMinutes(10).toString())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
                 .compact();
         log.debug("JWT Token: " + jwtToken);
 

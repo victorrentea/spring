@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.servlet.Filter;
+
 @SpringBootApplication
 public class Application extends WebSecurityConfigurerAdapter {
 
@@ -25,10 +27,21 @@ public class Application extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
 //                .authenticationProvider(preAuthenticatedProvider())
-//                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
 
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() throws Exception {
+        return new JwtFilter(authenticationManagerBean());
     }
 
 }

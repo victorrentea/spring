@@ -28,6 +28,8 @@
             <artifactId>spring-security-jwt</artifactId>
             <version>1.0.10.RELEASE</version>
         </dependency>
+
+
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
