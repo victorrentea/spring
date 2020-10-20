@@ -1,6 +1,8 @@
 package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,7 +13,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Profile("local")
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
@@ -19,12 +22,20 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http
-           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/external-api").and()
-//           .csrf().disable()
-            .authorizeRequests().anyRequest().authenticated()
+//           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringAntMatchers("/external-api").and()
+           .csrf().disable()
+
+
+            .authorizeRequests()
+
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
+                .mvcMatchers("/unsecured/**").permitAll()
+                .anyRequest().authenticated()
+
        .and()
-       .formLogin().permitAll()
+//       .formLogin().permitAll()
+       .httpBasic()
             ;
     }
 

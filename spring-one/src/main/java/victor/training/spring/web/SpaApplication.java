@@ -7,10 +7,11 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.async.AsyncApp;
+import victor.training.spring.props.PropertiesApp;
 
 @EnableSwagger2
 @SpringBootApplication
-@Import(AsyncApp.class)
+@Import({AsyncApp.class, PropertiesApp.class})
 public class SpaApplication {
 
 	public static void main(String[] args) {

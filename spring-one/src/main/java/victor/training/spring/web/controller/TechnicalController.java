@@ -33,14 +33,6 @@ public class TechnicalController {
 		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
-	private WelcomeInfo welcomeInfo;
-
-	// TODO [SEC] allow unsecured access
-	@GetMapping("unsecured/welcome-info")
-	public WelcomeInfo showWelcomeInfo(){
-		return welcomeInfo;
-	}
 
 	@GetMapping("ping")
 	public String ping() throws ExecutionException, InterruptedException {
@@ -52,6 +44,7 @@ public class TechnicalController {
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/restart")
 	public void restart() {
-		context.refresh();
+//		context.refresh();
+		System.out.println("TAMPENII");
 	}
 }
