@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.Objects;
 
