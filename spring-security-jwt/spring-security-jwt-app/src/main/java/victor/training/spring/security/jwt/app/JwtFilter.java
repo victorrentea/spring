@@ -51,7 +51,7 @@ public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
       log.info("Vine userul {} din tara {}", subject, country);
 
 
-      return new PreAuthenticatedAuthenticationToken(body.getSubject(), "N/A");
+      return new JwtPrincipal(subject, country);
    }
 
    @Override

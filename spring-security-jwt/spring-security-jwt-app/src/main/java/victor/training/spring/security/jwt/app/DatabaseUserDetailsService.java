@@ -17,13 +17,14 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
    @Override
    public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
 
-      String username =token.getName();
-      SecurityUser user = userRepository.findByUsername(username);
+      JwtPrincipal principal = (JwtPrincipal) token.getPrincipal();
+
+      SecurityUser user = userRepository.findByUsername(principal.getUsername());
 
       if (user == null) {
-         throw new UsernameNotFoundException(username);
+         throw new UsernameNotFoundException(principal.getUsername());
       }
-
+      user.setCountry(principal.getCountry());
       return user;
    }
 }

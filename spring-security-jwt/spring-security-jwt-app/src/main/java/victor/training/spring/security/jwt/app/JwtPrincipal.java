@@ -1,10 +1,11 @@
 package victor.training.spring.security.jwt.app;
 
 import lombok.Data;
+import lombok.Value;
 
 import java.io.Serializable;
 
-@Data
+@Value
 public class JwtPrincipal implements Serializable {
-//   private final
+   String username, country;
 }
