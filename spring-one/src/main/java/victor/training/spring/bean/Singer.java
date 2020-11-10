@@ -3,9 +3,15 @@ package victor.training.spring.bean;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Data
 public class Singer {
    private final String name;
+   @PostConstruct
+   public void init() {
+      System.out.println("Urlu pe note!! Uaaa!");
+   }
 }
 
 @Data
@@ -15,7 +21,12 @@ class Song {
 }
 
 
-@Component
+//@Component
+//class oarecareFiecare {
+//
+//}
+
+@Component("iarta-ma")
 class OarecareFiecare {
 
 }

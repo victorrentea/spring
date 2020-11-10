@@ -25,8 +25,6 @@ public class AsyncApp {
 	public static void main(String[] args) {
 		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
 	}
-	@Value("${barman.count}")
-	private int barmanCount;
 
 	@Bean
 	public ThreadPoolTaskExecutor beerExecutor() {
@@ -40,7 +38,7 @@ public class AsyncApp {
 		return executor;
 	}
 	@Bean
-	public ThreadPoolTaskExecutor vodkaExecutor() {
+	public ThreadPoolTaskExecutor vodkaExecutor(@Value("${barman.count}") int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanCount);
 		executor.setMaxPoolSize(barmanCount);
