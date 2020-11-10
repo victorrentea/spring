@@ -15,6 +15,7 @@ public class TransactionsApp implements CommandLineRunner {
         SpringApplication.run(TransactionsApp.class, args);
     }
     private final Playground playground;
+    private final SpringDataJpa springDataJpa;
 
     @Override
     public void run(String... args) throws Exception {
@@ -29,7 +30,9 @@ public class TransactionsApp implements CommandLineRunner {
 //        String s = new TranzactiiSiExceptii(null).method();
 //        System.out.println(s.toUpperCase());
 
-        exceptii.method();
+//        exceptii.method();
+
+        springDataJpa.play();
     }
     @Autowired
     private TranzactiiSiExceptii exceptii;
