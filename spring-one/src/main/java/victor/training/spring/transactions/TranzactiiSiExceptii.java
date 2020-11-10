@@ -22,8 +22,12 @@ public class TranzactiiSiExceptii {
       try {
          alta.altaMetoda();
       } catch (Exception e) {
-         // va rog eu mult. Nu faceti NICIODATA ASA CEVA: 
+         // la intrarea in try acum tx exte MOARTA (sigur se ROLLBACK), dar inca umbla.
+         // va rog eu mult. Nu faceti NICIODATA ASA CEVA:
          e.printStackTrace(); // inghit exceptia
+
+         alta.persistError(e);
+
          // Shaworma-driven error handling
 //         throw new RuntimeException(e);
       }
@@ -36,10 +40,17 @@ public class TranzactiiSiExceptii {
 class Alta {
    private final MessageRepo repo;
 
+
    @Transactional(propagation = Propagation.REQUIRES_NEW)
+   public void persistError(Exception e) {
+      repo.save(new Message("Am primit eroare: " + e.getMessage()));
+   }
+   @Transactional
    public void altaMetoda() throws IOException {
       repo.save(new Message("A DOUA"));
-      throw new IllegalArgumentException();
+//      throw new IllegalArgumentException();
+//      throw new IOException();
+     throw new NullPointerException();
    }
 }
 
