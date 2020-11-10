@@ -18,11 +18,30 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
+        // ce e iai tranzactie, si are pH mic ?
+        //  A C I D
+        // Atomic
+        // Consistent = Nu incalci FK (de ex)
+        // Isolation = adica ceea ce tu faci in Tx ta nu vede altu pana n-ai comis-o
+        // Durabil = se scrie pe disk la commit.
+
+        // daca n-are tx, primeste o mica tranzactie doar pentru ea. (AUTO-COMMIT mode)
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )"); // plain old JDBC (ala de-l stie si profu tau)
+
+        // ORM : sa te minta ca-s doar obiecte:
+        // PK este generat automat dintr-o secventa din DB
+
+        em.persist(new Message("jpa")); // Java Persistence API 30%
+
+//        repo.save(new Message("jpa")); // Spring Data JPA 60%
     }
     @Transactional
     public void transactionTwo() {
+//        jdbc.update("update MESSAGE set message = 'DOI' where ID = 100");
+//
+//        Message message = repo.findById(1L).get();
+//        message.setMessage("DOI");
+
         // TODO Repo API
         // TODO @NonNullApi
     }

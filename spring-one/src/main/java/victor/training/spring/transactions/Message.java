@@ -18,4 +18,12 @@ public class Message {
         this.message = message;
     }
 
+    public Message setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }
