@@ -29,11 +29,12 @@ class A {
 //   @Autowired nu mai e nevoie din Spring 4.3
    public A(Singer singer) {
       this.singer = singer;
+
    }
 
    @PostConstruct
    public void init() {
-      System.out.println("RUN AT INIT2: "+ singer);
+      System.out.println("RUN AT INIT2: "+ singer.getAlta());
    }
 
 }
