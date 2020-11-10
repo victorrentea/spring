@@ -1,6 +1,7 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
@@ -36,6 +41,8 @@ public class ProxyApp implements CommandLineRunner {
 	public void run(String... args) {
 		//Ce face Spring pe sub
 //		ExpensiveOps altaInstanta = ops;
+
+
 //
 //		ops = new ExpensiveOps() {
 //			@Override
@@ -55,6 +62,16 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 
+
+		// Enhancer
+//		Callback interceptor = new MethodInterceptor() {
+//			@Override
+//			public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+//				// ma ui in cache. daca gasesc valoarea o intorc. daca nu, apelez mai departe metoda reala
+//				return null;
+//			}
+//		};
+//		ExpensiveOps proxy = (ExpensiveOps) Enhancer.create(ExpensiveOps.class, interceptor);
 
 
 		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
