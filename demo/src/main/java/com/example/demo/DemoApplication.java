@@ -41,7 +41,7 @@ public class DemoApplication implements CommandLineRunner {
 @RestController
  class Hello {
 	@GetMapping
-	String hello() {
+	String hello( 	) {
 		return "xyz";
 	}
 }
