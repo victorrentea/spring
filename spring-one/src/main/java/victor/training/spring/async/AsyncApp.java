@@ -28,12 +28,23 @@ public class AsyncApp {
 	private int barmanCount;
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor beerExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(8);
+		executor.setMaxPoolSize(8);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("beer-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor vodkaExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanCount);
 		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("barman-");
+		executor.setThreadNamePrefix("vodka-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -53,8 +64,8 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Thread.sleep(3000);
 		log.debug("Submitting my order " + barman.getClass());
-		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
-		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
+		CompletableFuture<Beer> futureBeer = barman.getOneBeerStupida();
+		CompletableFuture<Vodka> futureVodka = barman.getOneVodkaCPU();
 
 		log.debug("Astept sa vina beuturile. bat darabana");
 		Beer beer = futureBeer.get(); // 1sec
@@ -68,15 +79,15 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-	@Async
-	public CompletableFuture<Beer> getOneBeer() {
+	@Async("beerExecutor")
+	public CompletableFuture<Beer> getOneBeerStupida() {
 		 log.debug("Pouring Beer..."); // apel de REST externs
 		 ThreadUtils.sleep(1000);
 		 return CompletableFuture.completedFuture(new Beer());
 	 }
 
-	 @Async
-	 public CompletableFuture<Vodka> getOneVodka() {
+	 @Async("vodkaExecutor")
+	 public CompletableFuture<Vodka> getOneVodkaCPU() {
 		 log.debug("Pouring Vodka..."); // apel de REST externs
 		 ThreadUtils.sleep(1000);
 		 return CompletableFuture.completedFuture(new Vodka());
