@@ -16,7 +16,7 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-    @Transactional
+//    @Transactional
     public void transactionOne() {
         // ce e iai tranzactie, si are pH mic ?
         //  A C I D
@@ -31,9 +31,9 @@ public class Playground {
         // ORM : sa te minta ca-s doar obiecte:
         // PK este generat automat dintr-o secventa din DB
 
-        em.persist(new Message("jpa")); // Java Persistence API 30%
+//        em.persist(new Message("jpa")); // Java Persistence API 30%
 
-//        repo.save(new Message("jpa")); // Spring Data JPA 60%
+        repo.save(new Message("jpa")); // Spring Data JPA 60%
     }
     @Transactional
     public void transactionTwo() {
