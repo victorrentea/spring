@@ -1,9 +1,15 @@
 package victor.training.spring.aspects;
 
 import java.io.File;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +20,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
@@ -80,6 +87,23 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+	}
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface LoggedClass {
+}
+
+@Component
+@Aspect
+@Slf4j
+class LoggingAspect {
+//	@Around("execution(* victor..*DAO.*(..))") //class name conventions: urat
+//	@Around("execution(* victor..*.*(..))") // package scoped
+	@Around("execution(* *(..)) && @within(victor.training.spring.aspects.LoggedClass)") // class level annotations
+	public Object logCall(ProceedingJoinPoint pjp) throws Throwable {
+		// ce faci tu cu asteaa: logging, masori timpul, pre-check mai custom
+		log.debug("Calling method {} cu arg {}",pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
+		return pjp.proceed();
 	}
 }
 

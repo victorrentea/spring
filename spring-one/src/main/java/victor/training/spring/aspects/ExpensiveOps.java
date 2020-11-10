@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 //@Repository
 //@Configuration
+@LoggedClass
 public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
