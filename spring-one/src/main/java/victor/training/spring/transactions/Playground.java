@@ -63,19 +63,36 @@ public class Playground {
         repo.save(new Message("2"));
     }
     // cum modific cele doua mesaje, stiind ca au id-urile 1 si 2 in aceeasi tranzactie
-    @Transactional
+//    @Transactional
     public void test2() {
-        Message message1 = repo.findById(1L).get();
-        message1.setMessage("1`");
-        Message message2 = repo.findById(2L).get();
-        message2.setMessage("2`");
+        //tx1 start
+        other.test1_1();
+        //tx1 end
+
+        // tx2 start
+        other.test1_2();
+        // tx2 end
     }
+
 
 }
 @Service
 @RequiredArgsConstructor
 class AnotherClass {
     private final MessageRepo repo;
+
+
+    @Transactional
+    public void test1_1() {
+        Message message1 = repo.findById(1L).get();
+        message1.setMessage("1`");
+    }
+
+    @Transactional
+    public void test1_2() {
+        Message message2 = repo.findById(2L).get();
+        message2.setMessage("2`");
+    }
     
     public void method() {
 
