@@ -28,11 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 //@Repository
 //@Configuration
-public class ExpensiveOps {
+public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+	@Cacheable("primesX") // numele unui HashMap in care tin datele acestui cache. HashMap<Int, Boolean> primesX;
 	public /*final*/  Boolean isPrime(int n) { // atentie: final methods are silently NOT proxied !
 		return altaMetoda(n);
 	}
@@ -40,8 +41,6 @@ public class ExpensiveOps {
 	// silent fail: private methods are not proxied.
 	// silent fail#2 (cel mai cunoscut motiv de uraturi legate proxyuri: ele nu merg intre metode locale din aceeasi clasa)!!!
 	// daca chemi o met @Transactional, @PreAuthorized, @Cacheable, @Async, nimic  nu merge in apeluri de metode di naceeasi clasa
-
-	//@Cacheable("primesX") // numele unui HashMap in care tin datele acestui cache. HashMap<Int, Boolean> primesX;
 
 	public Boolean altaMetoda(int n) {
 		log.debug("Computing isPrime({})...", n);
