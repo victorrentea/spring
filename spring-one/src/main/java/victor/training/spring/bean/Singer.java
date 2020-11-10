@@ -29,8 +29,12 @@ class Alta {
 
 @Component
 class Ying {
-   @Autowired
-   Yang yang;
+   final Yang yang;
+
+   public Ying(Yang yang) {
+      this.yang = yang;
+   }
+
    @PostConstruct
    public void init() {
       System.out.println("RUN AT yang: " + yang.ying);
@@ -38,8 +42,12 @@ class Ying {
 }
 @Component
 class Yang {
-   @Autowired
-   Ying ying;
+   final Ying ying;
+
+   public Yang(Ying ying) {
+      this.ying = ying;
+   }
+
    @PostConstruct
    public void init() {
       System.out.println("RUN AT ying: "+ ying.yang);
