@@ -15,10 +15,10 @@ class Song {
 }
 
 
-//@Component
-//class Oarecare {
-//
-//}
+@Component
+class OarecareFiecare {
+
+}
 
 
 

@@ -52,5 +52,7 @@ class A {
       if (false) {
          System.out.println(delia);
       }
+
+      System.out.println(context.getBean("oarecareFiecare"));
    }
 }
