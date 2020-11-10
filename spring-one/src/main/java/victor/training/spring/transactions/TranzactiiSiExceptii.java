@@ -1,33 +1,17 @@
 package victor.training.spring.transactions;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor // constructor generat doar in bytecode (invizibil in cod)
 public class TranzactiiSiExceptii {
-   private B b;
+   private final MessageRepo repo;
 
-   public TranzactiiSiExceptii(B b) {
-      this.b = b;
-   }
-
-
-//   public TranzactiiSiExceptii(B b) {
-//      this.b = b;
-//   }
-
-   public String method() {
-      return "A";
+   @Transactional
+   public void method() {
+      repo.save(new Message("PRIMUL"));
+      throw new IllegalArgumentException();
    }
 }
-class B {
-
-}
-//
-//class ServDeBizTestul {
-//   @Mock TranzactiiSiExceptii mock;
-//   @InjectMocks ServDeBiz biz;
-//
-//   public void test() {
-//       // test fericit
-//   }
-//}

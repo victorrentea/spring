@@ -26,8 +26,8 @@ public class TransactionsApp implements CommandLineRunner {
 //        playground.test1();
 //        playground.test2();
 
-        String s = new TranzactiiSiExceptii(b).method();
-        System.out.println(s.toUpperCase());
+//        String s = new TranzactiiSiExceptii(null).method();
+//        System.out.println(s.toUpperCase());
 
         exceptii.method();
     }
