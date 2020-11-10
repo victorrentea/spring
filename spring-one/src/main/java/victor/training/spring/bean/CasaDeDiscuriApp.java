@@ -40,8 +40,7 @@ class A {
 
    // A (field injection)
    @Autowired
-   @Qualifier("delia")
-   private Singer ceNumeVreauEu;
+   private Singer delia; // daca field name = bean name, iti da acel bean name <- periculos (IMHO)
 
    @Autowired
    ApplicationContext context;
@@ -51,7 +50,7 @@ class A {
       // B: dynamic lookup
 //      Singer delia = context.getBean("Delia", Singer.class);
       if (false) {
-         System.out.println(ceNumeVreauEu);
+         System.out.println(delia);
       }
    }
 }
