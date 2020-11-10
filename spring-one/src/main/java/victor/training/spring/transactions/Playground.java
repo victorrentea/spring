@@ -50,6 +50,13 @@ public class Playground {
         repo.save(new Message("jpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpa")); // Spring Data JPA 60%
 
 
+        // TODO cand se rollbackuie
+        // alte atribute
+        // Spring Data JPA
+        // REQUIRES_NEW revamped.
+
+
+
         // TODO cine scrie si cand in baza modificarile pe entitatea incarcata in cadrul unei tranzactii - proxy-ul scrie modificarile in db
 
         // TODO Repo API

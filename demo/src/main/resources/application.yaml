@@ -4,3 +4,5 @@ alta.prop: 15
 logging:
   level:
     com.example.demo: DEBUG
+server:
+  port: 8081
