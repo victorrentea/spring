@@ -46,6 +46,7 @@ public class ProxyApp implements CommandLineRunner {
 //				return altaInstanta.isPrime(n);
 //			}
 //		};
+		log.debug("Oare cine e ops?:" + ops.getClass());
 
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
