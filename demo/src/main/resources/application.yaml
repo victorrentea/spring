@@ -1,3 +1,6 @@
 
 my.prop: 13
 alta.prop: 15
+logging:
+  level:
+    com.example.demo: DEBUG

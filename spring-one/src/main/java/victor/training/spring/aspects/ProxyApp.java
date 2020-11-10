@@ -34,13 +34,28 @@ public class ProxyApp implements CommandLineRunner {
 	private ExpensiveOps ops;
 
 	public void run(String... args) {
+		//Ce face Spring pe sub
+//		ExpensiveOps altaInstanta = ops;
+//
+//		ops = new ExpensiveOps() {
+//			@Override
+//			public Boolean isPrime(int n) {
+//				// ma uit in cache. Daca e ==> return
+//				// else
+////				return super.isPrime(n); // nu cheama super.isPrime ci:
+//				return altaInstanta.isPrime(n);
+//			}
+//		};
+
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
-		
+
+
+
 		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
 		log.debug("Folder . MD5: ");
 		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");

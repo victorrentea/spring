@@ -14,15 +14,32 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
-@Service
+@Component
+//@Service
+//@Controller
+//@RestController
+//@Repository
+//@Configuration
 public class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) {
+
+	public /*final*/  Boolean isPrime(int n) { // atentie: final methods are silently NOT proxied !
+		return altaMetoda(n);
+	}
+
+	// silent fail: private methods are not proxied.
+	@Cacheable("primesX") // numele unui HashMap in care tin datele acestui cache. HashMap<Int, Boolean> primesX;
+	private Boolean altaMetoda(int n) {
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -31,7 +48,7 @@ public class ExpensiveOps {
 		if (number.remainder(TWO).equals(BigDecimal.ZERO)) {
 			return false;
 		}
-		for (BigDecimal divisor = new BigDecimal("3"); 
+		for (BigDecimal divisor = new BigDecimal("3");
 			divisor.compareTo(number.divide(TWO)) < 0;
 			divisor = divisor.add(TWO)) {
 			if (number.remainder(divisor).equals(BigDecimal.ZERO)) {
@@ -40,7 +57,7 @@ public class ExpensiveOps {
 		}
 		return true;
 	}
-	
+
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
