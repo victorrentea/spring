@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -31,11 +33,18 @@ public class DemoApplication implements CommandLineRunner {
 
 	public void run(String... args) throws Exception {
 		System.out.println("Folosesc " + dataSource);
-		System.out.println("My prop: " + myProp);
+		System.out.println("My propsX: " + myProp);
 		System.out.println(authenticator);
 	}
 }
 
+@RestController
+ class Hello {
+	@GetMapping
+	String hello() {
+		return "xyz";
+	}
+}
 
 interface Authenticator {
 
@@ -43,8 +52,8 @@ interface Authenticator {
 @Profile("prod")
 @Component
 class SSOAuthenticator implements  Authenticator{
-	@Value("${in.folder}")
-	private File inFolder;
+//	@Value("${in.folder}")
+//	private File inFolder;
 }
 @Profile("!prod")
 @Component
