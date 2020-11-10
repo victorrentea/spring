@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 @Data
 public class Singer {
@@ -12,6 +13,12 @@ class Song {
    private final String name;
    private final Singer singer;
 }
+
+
+//@Component
+//class Oarecare {
+//
+//}
 
 
 

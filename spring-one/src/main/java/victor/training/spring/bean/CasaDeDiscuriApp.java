@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -36,12 +37,21 @@ public class CasaDeDiscuriApp {
 @Component
 class A {
    // o vreau pe Delia
+
+   // A (field injection)
    @Autowired
    @Qualifier("delia")
    private Singer ceNumeVreauEu;
 
+   @Autowired
+   ApplicationContext context;
+
    @PostConstruct
    public void init() {
-      System.out.println(ceNumeVreauEu);
+      // B: dynamic lookup
+//      Singer delia = context.getBean("Delia", Singer.class);
+      if (false) {
+         System.out.println(ceNumeVreauEu);
+      }
    }
 }
