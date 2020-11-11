@@ -10,18 +10,18 @@ import static java.util.stream.Collectors.toSet;
 
 public class SecurityUser implements UserDetails {
 	private final String username;
-	private final Set<String> permissions;
+	private final Set<String> authorities;
 	private final Set<Long> managedTeacherIds;
 
 
-	SecurityUser(String username, Set<String> permissions, Set<Long> managedTeacherIds) {
+	SecurityUser(String username, Set<String> authorities, Set<Long> managedTeacherIds) {
 		this.username = username;
-		this.permissions = permissions;
+		this.authorities = authorities;
 		this.managedTeacherIds = managedTeacherIds;
 	}
 
-	public Set<String> getPermissions() {
-		return permissions;
+	public Set<String> getAuthoritiesSet() {
+		return authorities;
 	}
 
 	public Set<Long> getManagedTeacherIds() {
@@ -30,7 +30,7 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public Set<GrantedAuthority> getAuthorities() {
-		return permissions.stream().map(SimpleGrantedAuthority::new).collect(toSet());
+		return authorities.stream().map(SimpleGrantedAuthority::new).collect(toSet());
 	}
 
 	@Override

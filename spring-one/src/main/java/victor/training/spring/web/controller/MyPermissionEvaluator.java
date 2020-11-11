@@ -57,7 +57,7 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
       if (permission == PermissionType.READ) {
          return true;
       }
-      if (!securityUser.getPermissions().contains("deleteTraining")) {
+      if (!securityUser.getAuthorities().contains("deleteTraining")) {
          return false;
       }
       Set<Long> teacherIds = securityUser.getManagedTeacherIds();

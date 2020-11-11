@@ -16,7 +16,7 @@ public class PermissionManager {  // nume default: permissionManager
       SecurityUser securityUser = (SecurityUser) SecurityContextHolder
           .getContext().getAuthentication().getPrincipal();
 
-      if (!securityUser.getPermissions().contains("deleteTraining")) {
+      if (!securityUser.getAuthorities().contains("deleteTraining")) {
          return false;
       }
 

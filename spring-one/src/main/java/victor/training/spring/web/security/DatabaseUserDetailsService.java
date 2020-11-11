@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
@@ -21,10 +20,10 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         User user = userRepository.getForLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not in database"));
 
-        log.debug("Successful login : " + user.getProfile().permissions);
+        log.debug("Successful login : " + user.getProfile().authorities);
         // WARNING: the implem of SecurtyUser class is hacked to expect the password of the user == its username
         return new SecurityUser(user.getUsername(),
-                user.getProfile().permissions,
+                user.getProfile().authorities,
                 user.getManagedTeacherIds());
     }
 

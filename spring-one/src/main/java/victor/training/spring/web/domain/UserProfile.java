@@ -2,7 +2,6 @@ package victor.training.spring.web.domain;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public enum UserProfile {
@@ -11,9 +10,9 @@ public enum UserProfile {
             "deleteTraining"),
     POWER("runSearch", "ADMIN",
             "deleteTraining");
-    public final Set<String> permissions;
+    public final Set<String> authorities;
 
-    UserProfile(String... permissions) {
-        this.permissions = new HashSet<>(Arrays.asList(permissions));
+    UserProfile(String... authorities) {
+        this.authorities = new HashSet<>(Arrays.asList(authorities));
     }
 }
