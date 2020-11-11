@@ -44,9 +44,10 @@ public class TechnicalController {
 
 	@Autowired
 	private ConfigurableApplicationContext context;
+
 	// TODO [SEC] URL-pattern restriction: admin/**
-	@GetMapping("admin/restart")
-	public void restart() {
-		context.refresh();
+	@GetMapping("admin/launch")
+	public String restart() {
+		return "What does this red button do?     ... [Missile Launched]";
 	}
 }
