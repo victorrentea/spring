@@ -5,19 +5,20 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
-
-import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("rest/trainings")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
+	@Autowired
+	private TrainingRepo trainingRepo;
 
 	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
@@ -38,15 +39,25 @@ public class TrainingController {
 	// TODO [SEC] 1 Allow only for ROLE 'ADMIN'
 	// TODO [SEC] 2 Authorize the user to have the authority 'deleteTraining'
 	// TODO and @accessController.canDeleteTraining(#id)
+	// TODO ai voie sa stergi un training doar daca ai 'deleteTraining'
+	    //  dar in plus teacherul acelui curs este in lista ta de teacheri manageuiti (de userul tau)
 	// TODO PermissionEvaluator
-   
+
+//	@Value("#{permissionManager.canDeleteTraining(1L)}")
+//	private String ceva;
+
 	/** @see victor.training.spring.web.domain.UserProfile */
 	@DeleteMapping("{id}")
 //	@PreAuthorize("hasRole('ADMIN')") // role-based security
-	@PreAuthorize("hasAuthority('deleteTraining')") // role-based security
+	@PreAuthorize("@permissionManager.canDeleteTraining(#id)") // role-based security
 	public void deleteTrainingById(@PathVariable Long id) {
+
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	PermissionManager permissionManager;
+
 
 	// De ce avem nevoie de un model de permisiuni, nu doar de roluri
 //	@PreAuthorize("hasAnyRole('ADMIN', 'ADMIN_CL', 'ADMIN_REG')")

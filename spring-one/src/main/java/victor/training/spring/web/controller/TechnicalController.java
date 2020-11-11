@@ -11,6 +11,7 @@ import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 
 @RestController
 public class TechnicalController {
