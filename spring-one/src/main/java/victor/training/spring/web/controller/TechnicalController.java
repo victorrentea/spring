@@ -2,9 +2,12 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -16,8 +19,13 @@ public class TechnicalController {
 
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
-		// TODO implement me
-		return "TODO:user";
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder
+			.getContext().getAuthentication().getPrincipal();
+//		ASTA NU: ci in loc, @PreAuthorize()
+//		if (!securityUser.getPermissions().contains("deleteTraining")) {
+//			throw new IllegalArgumentException();
+//		}
+		return securityUser.getUsername();
 		// try getting the user from an Async task:
 		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}

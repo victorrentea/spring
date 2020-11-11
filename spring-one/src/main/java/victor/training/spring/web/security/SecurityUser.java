@@ -13,10 +13,15 @@ public class SecurityUser implements UserDetails {
 	private final Set<String> permissions;
 	private final Set<Long> managedTeacherIds;
 
+
 	SecurityUser(String username, Set<String> permissions, Set<Long> managedTeacherIds) {
 		this.username = username;
 		this.permissions = permissions;
 		this.managedTeacherIds = managedTeacherIds;
+	}
+
+	public Set<String> getPermissions() {
+		return permissions;
 	}
 
 	public Set<Long> getManagedTeacherIds() {
