@@ -30,16 +30,7 @@ public class TechnicalController {
 //	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
-	// TODO [SEC] allow unsecured access
-	@GetMapping("unsecured/welcome-info")
-	public String showWelcomeInfo(){
-		return "Welcome. What's your temperature today?";
-	}
 
-	@GetMapping("unsecured/bye/info")
-	public String showByeMessage(){
-		return "Take care unde arunci masca.";
-	}
 
 	@GetMapping("ping")
 	public String ping() {
