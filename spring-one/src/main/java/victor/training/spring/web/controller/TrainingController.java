@@ -42,7 +42,8 @@ public class TrainingController {
    
 	/** @see victor.training.spring.web.domain.UserProfile */
 	@DeleteMapping("{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')") // role-based security
+	@PreAuthorize("hasAuthority('deleteTraining')") // role-based security
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

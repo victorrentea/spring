@@ -59,7 +59,7 @@ public class TrainingService {
         return format.parse(dto.startDate);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }

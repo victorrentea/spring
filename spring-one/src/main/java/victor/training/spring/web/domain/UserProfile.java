@@ -8,6 +8,8 @@ import java.util.Set;
 public enum UserProfile {
     USER("runSearch", "USER"),
     ADMIN("runSearch", "ADMIN",
+            "deleteTraining"),
+    POWER("runSearch", "ADMIN",
             "deleteTraining");
     public final Set<String> permissions;
 

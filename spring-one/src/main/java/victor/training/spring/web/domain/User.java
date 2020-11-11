@@ -1,9 +1,6 @@
 package victor.training.spring.web.domain;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
@@ -15,6 +12,7 @@ public class User {
     @GeneratedValue
     private Long id;
     private String username;
+    @Enumerated(EnumType.STRING)
     private UserProfile profile;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
