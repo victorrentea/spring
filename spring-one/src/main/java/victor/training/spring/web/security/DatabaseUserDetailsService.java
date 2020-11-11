@@ -1,6 +1,7 @@
 package victor.training.spring.web.security;
 
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Slf4j
 //@Component
@@ -25,6 +30,18 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         return new SecurityUser(user.getUsername(),
                 user.getProfile().authorities,
                 user.getManagedTeacherIds());
+    }
+
+
+    public void method() {
+
+        method2();
+    }
+
+    @SneakyThrows
+    public void method2() {
+//        FileInputStream fileInputStream = new FileInputStream("a.txt");
+        throw new IOException();
     }
 
 
