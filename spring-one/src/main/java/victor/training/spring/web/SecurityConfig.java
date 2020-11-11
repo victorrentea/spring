@@ -1,6 +1,8 @@
 package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,7 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
@@ -24,8 +26,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
 
            .authorizeRequests()
-           .mvcMatchers("unsecured/**").permitAll()
-           .anyRequest().authenticated()
+               .mvcMatchers("unsecured/**").permitAll()
+//               .mvcMatchers(HttpMethod.DELETE, "rest/trainings/delete/*").hasRole("ADMIN")
+                .mvcMatchers("admin/**").hasRole("ADMIN")
+               .anyRequest().authenticated()
 
 
        .and()
