@@ -22,7 +22,7 @@
 //        log.debug("Successful login");
 //        // WARNING: the implem of SecurtyUser class is hacked to expect the password of the user == its username
 //        return new SecurityUser(user.getUsername(),
-//                user.getProfile().permissions,
+//                user.getProfile().authorities,
 //                user.getManagedTeacherIds());
 //    }
 //
