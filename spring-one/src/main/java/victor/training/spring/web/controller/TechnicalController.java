@@ -1,14 +1,12 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 public class TechnicalController {
@@ -33,17 +31,15 @@ public class TechnicalController {
 
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
-	public WelcomeInfo showWelcomeInfo(){
-		return welcomeInfo;
+	public String showWelcomeInfo(){
+		// TODO return welcomeInfo;
+		return "Welcome! What's your temperature?";
 	}
 
 	@GetMapping("ping")
 	public String ping() {
 		return "Pong " + getCurrentUsername();
 	}
-
-	@Autowired
-	private ConfigurableApplicationContext context;
 
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/launch")
