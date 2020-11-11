@@ -22,6 +22,7 @@ public class TechnicalController {
 	public String getCurrentUsername() {
 		SecurityUser securityUser = (SecurityUser) SecurityContextHolder
 			.getContext().getAuthentication().getPrincipal();
+		System.out.println("HIT");
 //		ASTA NU: ci in loc, @PreAuthorize()
 //		if (!securityUser.getPermissions().contains("deleteTraining")) {
 //			throw new IllegalArgumentException();

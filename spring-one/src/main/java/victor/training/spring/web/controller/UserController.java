@@ -15,6 +15,7 @@ public class UserController {
 //    @RequestMapping(method = RequestMethod.GET)
     @GetMapping("users/count")
     public long count() {
+
         return service.countUsers();
     }
     @GetMapping("users/create")
