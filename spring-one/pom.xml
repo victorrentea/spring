@@ -139,21 +139,6 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-      <!--  <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring-boot-starter</artifactId>
-            <version>2.3.6.Final</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring-boot-starter</artifactId>
-            <version>1.0.6.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-spring-boot-starter-remote</artifactId>
-            <version>1.0.6.Final</version>
-        </dependency>
 
     </dependencies>
 
