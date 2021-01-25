@@ -1,6 +1,7 @@
 package victor.training.spring.async;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,19 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import static java.util.concurrent.CompletableFuture.completedFuture;
+import java.util.concurrent.*;
 
 @EnableAsync
 @SpringBootApplication
@@ -29,13 +24,12 @@ public class AsyncApp {
 		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
 	}
 
-	@Value("${barman.count}")
-	int barmanCount;
-	@Bean
-	public ThreadPoolTaskExecutor executor() {
+
+	@Bean // defined a spring bean named "executor" of type ThreadPoolTaskExceutor
+	public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanThreadCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(barmanCount);
-		executor.setMaxPoolSize(barmanCount);
+		executor.setCorePoolSize(barmanThreadCount);
+		executor.setMaxPoolSize(barmanThreadCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
@@ -47,49 +41,43 @@ public class AsyncApp {
 
 @Slf4j
 @Component
-class Beutor implements CommandLineRunner {
-	@Autowired
-	private Barman barman;
+@RequiredArgsConstructor
+class Drinker implements CommandLineRunner {
+	private final Barman barman;
+	private final ThreadPoolTaskExecutor pool;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	// TODO [3] Enable messaging...
 	public void run(String... args) throws Exception {
-		Thread.sleep(3000);
-		log.debug("Submitting my order");
+		log.info("Enter the bar");
 
-		CompletableFuture<Beer> futureBeer = barman.getOneBeer(); // 1 // voi va ganditi la apeluri de servicii web REST
-		CompletableFuture<Vodka> futureVodka = barman.getOneVodka(); // 2
-		// == Single din rxJava2
-		log.debug("A plecat fata cu comanda");
+//		ExecutorService pool = Executors.newFixedThreadPool(2);
 
-		futureBeer.thenCombine(futureVodka, DillyDilly::new)
-			.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
-		log.debug("ies");
+		Future<Beer> futureBeer = pool.submit(barman::getOneBeer);
+
+		Future<Vodka> futureVodka = pool.submit(barman::getOneVodka);
+
+		Beer beer = futureBeer.get(); // how much time it take to complete ? - 1
+		Vodka vodka = futureVodka.get();// how much time it take to complete ? - 0
+
+		log.info("Drinking {} and {}", beer, vodka );
 	}
-}
-@lombok.Value
-class DillyDilly {
-	Beer beer;
-	Vodka vodka
-	;
+
 }
 
 @Slf4j
 @Service
 class Barman {
-	@Async
-	public CompletableFuture<Beer> getOneBeer() {
+	public Beer getOneBeer() {
 		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
-		 return completedFuture(new Beer());
+		 ThreadUtils.sleep(1000); /// externa sytems (API, device, something remote that takes time to reply).
+		 return new Beer();
 	 }
-
-	@Async
-	public CompletableFuture<Vodka> getOneVodka() {
+	public Vodka getOneVodka() {
 		 log.debug("Pouring Vodka...");
 		 ThreadUtils.sleep(1000);
-		 return completedFuture(new Vodka());
+		return new Vodka();
 	 }
 }
 
