@@ -2,10 +2,10 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -16,33 +16,26 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        mapper.insert(new Message(1L, "ONE"));
-
-        Message message = mapper.select(1);
-        System.out.println(message);
-
         try {
-            another.insert();
+            another.riskyOperation();
         } catch (Exception e) {
-            //shaworma
-            e.printStackTrace();
+            mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
         }
-        mapper.insert(new Message(9L, "NINE"));
-
     }
-
     @Transactional
     public void transactionTwo() {
     }
 }
-
 @Service
 @RequiredArgsConstructor
 class AnotherClass {
     private final  SimpleExamplesMapper mapper;
 
     @Transactional//(propagation = Propagation.REQUIRES_NEW)
-    public void insert() {
-        mapper.insert(new Message(null, "ONE"));
+    public void riskyOperation() throws IOException {
+//        mapper.insert(new Message(null, "ONE"));
+
+        throw new NullPointerException();
+//        throw new IOException("File not founrd :bla bla"); // from my tests , this allows ERROR to be INSERTED
     }
 }
