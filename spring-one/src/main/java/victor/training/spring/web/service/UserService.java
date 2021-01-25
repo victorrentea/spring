@@ -69,12 +69,12 @@ public class UserService  {
 //    }
 
 
-    // Map<Tuple2<Long,LocalDateTime>, User<
+    // Map<RequestObj, User>
     @Cacheable(cacheNames = "users", key = "#id")
-    public User findById(long id, Object unused) { // Pro: you don't typically use ALL users list;
+    public User findById(RequestObj id, Object unused) { // Pro: you don't typically use ALL users list;
         //PRO + in case you want to invalidate, you selectively kill one user
         // expire individually the entries.
-        return userRepo.findById(id).get();
+        return userRepo.findById(id.getId()).get();
     }
 
     @Transactional

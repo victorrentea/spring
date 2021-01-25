@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
+import victor.training.spring.web.service.RequestObj;
 import victor.training.spring.web.service.UserService;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class UserController {
 
     @GetMapping("users/{id}")
     public User get(@PathVariable long id) {
-        return service.findById(id, LocalDateTime.now());
+        return service.findById(new RequestObj(id), LocalDateTime.now());
 //        return service.findAllUsers().get(id);
     }
 
