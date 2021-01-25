@@ -27,7 +27,11 @@ public class TransactionsApp implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("============= TRANSACTION ONE ==============");
-        playground.transactionOne();
+        try {
+            playground.transactionOne();
+        } catch (Exception e) {
+            //swallow // - long nights of debugging
+        }
         System.out.println("============= TRANSACTION TWO ==============");
         playground.transactionTwo();
         System.out.println("============= END ==============");

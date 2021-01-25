@@ -12,32 +12,45 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class Playground {
-    private final SimpleExamplesMapper mapper;
+    private final MyBatisMapper mapper;
     private final AnotherClass another;
+    private final NoTransactionalInBetween noTx;
 
     @Transactional
     public void transactionOne() {
         System.out.println("To who am I talking ? " + another.getClass());
+        mapper.insert(new Message(6l, "First"));
         try {
             another.riskyOperation();
         } catch (Exception e) {
             another.saveError(e);
         }
+        noTx.m();
     }
-
-
-    @Transactional
+    //    @Transactional
     public void transactionTwo() {
+        mapper.insert(new Message(19L,"Without TX"));
     }
 }
+
+@Service
+@RequiredArgsConstructor
+class NoTransactionalInBetween {
+    private final MyBatisMapper mapper;
+    public void m() {
+
+        mapper.insert(new Message(99L, "aa"));
+    }
+}
+
 @Service
 @RequiredArgsConstructor
 class AnotherClass {
-    private final  SimpleExamplesMapper mapper;
+    private final MyBatisMapper mapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void saveError(Exception e) {
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
         mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
     }
 
