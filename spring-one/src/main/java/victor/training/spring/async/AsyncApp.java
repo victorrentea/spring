@@ -66,17 +66,12 @@ class Drinker {
       log.info("Enter the bar: " + barman.getClass());
 
       CompletableFuture<Beer> futureBeer = barman.getOneBeer()
-          .thenApply(beer -> addIce(beer));
+          .thenApply(this::addIce);
+
       CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
-//		Beer beer = futureBeer.get(); // how much time it take to complete ? - 1 second.
-//		Vodka vodka = futureVodka.get();// how much time it take to complete ? - 0
-
-
       CompletableFuture<DillyDilly> futureDilly =
-          futureBeer.thenCombineAsync(futureVodka, (beer, vodka) ->
-
-          new DillyDilly(beer, vodka), barmanThreadPool);
+          futureBeer.thenCombineAsync(futureVodka, DillyDilly::new, barmanThreadPool);
 
       log.info("Http handler finished");
      return futureDilly;
