@@ -1,13 +1,20 @@
 package victor.training.spring.transactions;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.type.BlobInputStreamTypeHandler;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import victor.training.spring.ThreadUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 @Service
@@ -29,11 +36,36 @@ public class Playground {
         }
         noTx.m();
     }
-    //    @Transactional
-    public void transactionTwo() {
+    @Transactional
+    public void transactionTwo() throws IOException {
         mapper.insert(new Message(19L,"Without TX"));
+
+        // When uploading large blob or CLOB in database, DO NOT keep these in memory as String or byte[]
+        // is dangerous: what if the user upload a 1GB file tomorrow? --> Out Of Memory
+
+        deep();
+    }
+
+    private void deep() throws IOException {
+        // store the upload in a temp file.
+        File file = File.createTempFile("data", ".dat");
+        System.out.println("I want to make sure I clean this file at the end of Tx ");
+        publisher.publishEvent(     new CleanUpFileEvent(file));
+    }
+    private final ApplicationEventPublisher publisher;
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
+    public void handleCleanUp(CleanUpFileEvent event) {
+        System.out.println("Cleanin up after tx complettion: " + event.getFileToDeleteAfterTransaction());
     }
 }
+
+
+@Data
+class CleanUpFileEvent {
+    private final File fileToDeleteAfterTransaction;
+}
+
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +83,18 @@ class NoTransactionalInBetween {
 class AnotherClass {
     private final MyBatisMapper mapper;
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Exception e) {
 //        new RuntimeException().printStackTrace();
+        Message message = new Message();
+//        message.setBigText(new BlobInputStreamTypeHandler());
+
+
+
+
+
+//        String tenMB = files.read()
+
         mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
         ThreadUtils.sleep(1000L);
     }

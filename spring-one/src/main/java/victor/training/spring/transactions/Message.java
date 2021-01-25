@@ -13,6 +13,7 @@ public class Message {
     @GeneratedValue
     private Long id;
     private String message;
+    private String bigText; //  10 MB  CHARS- - > CLOB
 
     protected Message() {
     }
