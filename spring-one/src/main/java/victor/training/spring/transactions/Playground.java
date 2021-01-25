@@ -27,6 +27,7 @@ public class Playground {
             //shaworma
             e.printStackTrace();
         }
+        mapper.insert(new Message(9L, "NINE"));
 
     }
 
@@ -40,7 +41,7 @@ public class Playground {
 class AnotherClass {
     private final  SimpleExamplesMapper mapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional//(propagation = Propagation.REQUIRES_NEW)
     public void insert() {
         mapper.insert(new Message(null, "ONE"));
     }
