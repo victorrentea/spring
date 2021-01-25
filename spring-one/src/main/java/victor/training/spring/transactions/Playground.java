@@ -15,6 +15,7 @@ public class Playground {
     private final EntityManager em;
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
+//    private final MyBatisMapper mybatis;
 
     @Transactional
     public void transactionOne() {
@@ -30,7 +31,7 @@ public class Playground {
 
 
 @Service
-@RequiredArgsConstructor // generates constructor for all final fields, that Spring uses to inject dependencies
+@RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
 }
