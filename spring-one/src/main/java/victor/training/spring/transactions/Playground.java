@@ -36,6 +36,8 @@ public class Playground {
         }
         noTx.m();
     }
+
+
     @Transactional
     public void transactionTwo() throws IOException {
         mapper.insert(new Message(19L,"Without TX"));
@@ -83,22 +85,14 @@ class NoTransactionalInBetween {
 class AnotherClass {
     private final MyBatisMapper mapper;
 
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Exception e) {
 //        new RuntimeException().printStackTrace();
         Message message = new Message();
-//        message.setBigText(new BlobInputStreamTypeHandler());
-
-
-
-
-
-//        String tenMB = files.read()
-
         mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
         ThreadUtils.sleep(1000L);
     }
-
 
     @Transactional(rollbackFor = Exception.class)//(propagation = Propagation.REQUIRES_NEW)
     public void riskyOperation() throws IOException {
