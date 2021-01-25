@@ -2,9 +2,11 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.ThreadUtils;
 
 import java.io.IOException;
 
@@ -37,8 +39,9 @@ public class Playground {
 @RequiredArgsConstructor
 class NoTransactionalInBetween {
     private final MyBatisMapper mapper;
+    @Async
     public void m() {
-
+        ThreadUtils.sleep(1000L);
         mapper.insert(new Message(99L, "aa"));
     }
 }
@@ -52,6 +55,7 @@ class AnotherClass {
     public void saveError(Exception e) {
 //        new RuntimeException().printStackTrace();
         mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
+        ThreadUtils.sleep(1000L);
     }
 
 
