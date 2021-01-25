@@ -12,7 +12,7 @@ public class StartDatabase {
 		System.out.println("Check out folder: ~/source/db/database/db");
 		System.out.println("Started DB...");
 
-		org.h2.tools.Server.createTcpServer().start();
+		org.h2.tools.Server.createTcpServer("-ifNotExists").start();
 	}
 
 	private static void deletePreviousDBContents() {
