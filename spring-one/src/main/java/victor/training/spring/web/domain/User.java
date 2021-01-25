@@ -14,16 +14,22 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-    private String username;
+    private String username = "X";
     private UserProfile profile;
-    @ElementCollection
-    private Set<Long> managedTeacherIds = new HashSet<>();
+//    @ElementCollection
+//    private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
     public User(String username, UserProfile profile, List<Long> managedTeacherIds) {
         this.username = username;
         this.profile = profile;
-        this.managedTeacherIds = new HashSet<>(managedTeacherIds);
+//        this.managedTeacherIds = new HashSet<>(managedTeacherIds);
     }
 
     public String getUsername() {
@@ -34,9 +40,9 @@ public class User {
         return profile;
     }
 
-    public Set<Long> getManagedTeacherIds() {
-        return unmodifiableSet(managedTeacherIds);
-    }
+//    public Set<Long> getManagedTeacherIds() {
+//        return unmodifiableSet(managedTeacherIds);
+//    }
 
     public Long getId() {
         return id;

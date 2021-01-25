@@ -1,8 +1,10 @@
 package victor.training.spring.web;
 
+import org.infinispan.spring.starter.remote.InfinispanRemoteConfigurer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,4 +22,13 @@ public class SpaApplication {
 				.profiles("spa")
 				.run(args);
 	}
+
+//	@Bean
+//	public org.infinispan.client.hotrod.configuration.Configuration customConfiguration() {
+//		return new ConfigurationBuilder()
+//			.addServer()
+//			.host("127.0.0.1")
+//			.port(12345)
+//			.build();
+//	}
 }
