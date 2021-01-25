@@ -17,17 +17,14 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
+        System.out.println("To who am I talking ? " + another.getClass());
         try {
             another.riskyOperation();
         } catch (Exception e) {
-            saveError(e);
+            another.saveError(e);
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveError(Exception e) {
-        mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
-    }
 
     @Transactional
     public void transactionTwo() {
@@ -37,6 +34,13 @@ public class Playground {
 @RequiredArgsConstructor
 class AnotherClass {
     private final  SimpleExamplesMapper mapper;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(Exception e) {
+        new RuntimeException().printStackTrace();
+        mapper.insert(new Message(9L, "ERROR " + e.getMessage()));
+    }
+
 
     @Transactional(rollbackFor = Exception.class)//(propagation = Propagation.REQUIRES_NEW)
     public void riskyOperation() throws IOException {
