@@ -15,7 +15,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import victor.training.spring.ThreadUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -48,20 +50,25 @@ public class Playground {
         deep();
     }
 
+
     private void deep() throws IOException {
-        // store the upload in a temp file.
         File file = File.createTempFile("data", ".dat");
-        System.out.println("I want to make sure I clean this file at the end of Tx ");
-        publisher.publishEvent(     new CleanUpFileEvent(file));
+        log.debug("Created temp file : {}", file.getAbsolutePath());
+        publisher.publishEvent(new CleanUpFileEvent(file));
+
+        try (OutputStream os = new FileOutputStream(file)) {
+            // do stuff
+            // upload in DB
+        }
+        // transaction is not COMMITed here yet
     }
     private final ApplicationEventPublisher publisher;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     public void handleCleanUp(CleanUpFileEvent event) {
-        System.out.println("Cleanin up after tx complettion: " + event.getFileToDeleteAfterTransaction());
+        log.debug("Cleaning up files: {}", event.getFileToDeleteAfterTransaction());
     }
 }
-
 
 @Data
 class CleanUpFileEvent {
