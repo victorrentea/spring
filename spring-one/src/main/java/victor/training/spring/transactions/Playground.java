@@ -27,12 +27,10 @@ public class Playground {
         // TODO @NonNullApi
     }
 }
+
+
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor // generates constructor for all final fields, that Spring uses to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
-    
-    public void method() {
-
-    }
 }
