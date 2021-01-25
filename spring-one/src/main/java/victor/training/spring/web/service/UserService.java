@@ -6,12 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 @Service
@@ -22,7 +20,7 @@ public class UserService implements CommandLineRunner {
     @Async
     public Future<String> getCurrentUsername() {
         log.debug("pe ce thread sunt?");
-        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+        return null;//CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 
