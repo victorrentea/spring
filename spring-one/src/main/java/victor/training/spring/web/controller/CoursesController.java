@@ -41,6 +41,7 @@ public class CoursesController {
 
 	@PutMapping("{id}")
 	// TODO [SEC] Check user manages teacher of this course
+	@PreAuthorize("hasPermission(#id,'TRAINING','WRITE')")
 	public void updateCourse(@PathVariable Long id,@RequestBody CourseDto dto) throws ParseException {
 		courseService.updateCourse(id, dto);
 	}
@@ -48,8 +49,9 @@ public class CoursesController {
 	@DeleteMapping("{id}")
 	// TODO [SEC] Allow only for special permission
 //	@PreAuthorize("hasAuthority('deleteCourse')")
-	@PreAuthorize("@permissionManager.hasPermission(#id)")
-//	@PreAuthorize("hasPermission()")
+//	@PreAuthorize("@permissionManager.hasPermission(#id)")
+	@PreAuthorize("hasPermission(#id,'TRAINING','WRITE')")
+
 	public void deleteCourseById(@PathVariable Long id) {
 		// CHALLENGE: "only the user that manages a teacher can delete one of that theacher's courses"
 		courseService.deleteCourseById(id);
