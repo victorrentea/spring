@@ -11,7 +11,8 @@
 //import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 //
 //@EnableWebSecurity
-////@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Profile("!test")
 //public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //
 //    // TODO [SEC] Start with ROLE-based authorization on URL-patterns
