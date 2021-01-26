@@ -1,6 +1,7 @@
 package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import victor.training.spring.web.domain.Teacher;
 

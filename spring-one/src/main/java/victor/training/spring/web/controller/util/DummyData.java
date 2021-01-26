@@ -41,18 +41,18 @@ public class DummyData {
 		courseRepo.save(c3);
 		courseRepo.save(c4);
 
-		Teacher t1 = new Teacher("Victor");
-		Teacher t2 = new Teacher("Ionut");
-		teacherRepo.save(t1);
-		teacherRepo.save(t2);
+		Teacher victor = new Teacher("Victor");
+		Teacher ionut = new Teacher("Ionut");
+		teacherRepo.save(victor);
+		teacherRepo.save(ionut);
 		
-		c1.setTeacher(t1);t1.getCourses().add(c1);
-		c2.setTeacher(t1);t1.getCourses().add(c2);
-		c3.setTeacher(t2);t2.getCourses().add(c3);
-		c4.setTeacher(t1);t1.getCourses().add(c4);
+		c1.setTeacher(victor);victor.getCourses().add(c1);
+		c2.setTeacher(victor);victor.getCourses().add(c2);
+		c3.setTeacher(ionut);ionut.getCourses().add(c3);
+		c4.setTeacher(victor);victor.getCourses().add(c4);
 
-		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(t2.getId())).setName("CIA Admin"));
-		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(t1.getId(), t2.getId())).setName("Plutonierul de serviciu"));
+		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(ionut.getId())).setName("CIA Admin"));
+		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(victor.getId(), ionut.getId())).setName("Plutonierul de serviciu"));
 	}
 	
 	
