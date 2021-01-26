@@ -2,6 +2,8 @@ package victor.training.reservationmicroservice;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-
+@Slf4j
 @RequiredArgsConstructor
 @SpringBootApplication
 public class ReservationMicroserviceApplication implements CommandLineRunner {
@@ -24,13 +26,18 @@ public class ReservationMicroserviceApplication implements CommandLineRunner {
 		SpringApplication.run(ReservationMicroserviceApplication.class, args);
 	}
 
+	@Value("${message}")
+	private String per;
+
 	private final ReservationRepo repo;
 	@Override
 	public void run(String... args) throws Exception {
+		log.info("per: {}", per);
 		Stream.of("Stefania", "Dan", "Bianca", "Razvan").map(Reservation::new).forEach(repo::save);
 	}
 }
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/reservations")
@@ -39,6 +46,8 @@ class ReservationController {
 
 	@GetMapping
 	public List<ReservationDto> getAll() {
+		log.debug("get all ");
+
 		return repo.findAll().stream().map(ReservationDto::new).collect(toList());
 	}
 
