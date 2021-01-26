@@ -2,6 +2,7 @@ package victor.training.spring.web;
 
 import javafx.scene.chart.PieChart.Data;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,15 @@ import victor.training.spring.web.security.DatabaseUserDetailsService;
 //import victor.training.spring.web.security.DatabaseUserDetailsService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile("dummySecurity")
+class DummySecurityConfig  extends WebSecurityConfigurerAdapter {
+
+    // TODO [SEC] Start with ROLE-based authorization
+}
+//import victor.training.spring.web.security.DatabaseUserDetailsService;
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile("!dummySecurity")
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     // TODO [SEC] Start with ROLE-based authorization
@@ -32,6 +42,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                .mvcMatchers("/admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
             .and()
+//            .sessionManagement().maximumSessions(1).and()
+            .httpBasic().and()
             .formLogin().permitAll()
         ;
     }

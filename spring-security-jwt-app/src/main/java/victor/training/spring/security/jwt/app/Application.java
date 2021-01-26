@@ -21,8 +21,8 @@ public class Application extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("unsecured").permitAll()
-                .anyRequest().authenticated()
+                    .mvcMatchers("unsecured").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(preAuthenticatedProvider())
                 .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
@@ -30,6 +30,9 @@ public class Application extends WebSecurityConfigurerAdapter {
         ;
 
     }
+
+
+
 
     @Bean
     public AuthenticationProvider preAuthenticatedProvider() {
