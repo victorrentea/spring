@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -18,9 +19,7 @@ public class TechnicalController {
 
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() throws ExecutionException, InterruptedException {
-		// TODO implement me
-//		return SecurityContextHolder.getContext().getAuthentication().getName();
-		return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+		return userService.getCurrentUsername();
 	}
 
 //	@PostConstruct/

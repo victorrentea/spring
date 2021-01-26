@@ -23,7 +23,8 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         // WARNING: the implem of SecurtyUser class is hacked to expect the password of the user == its username
         return new SecurityUser(user.getUsername(),
                 user.getProfile().permissions,
-                user.getManagedTeacherIds());
+                user.getManagedTeacherIds(),
+               user.getName());
     }
 }
 

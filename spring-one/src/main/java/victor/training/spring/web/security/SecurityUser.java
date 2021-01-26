@@ -12,11 +12,17 @@ public class SecurityUser implements UserDetails {
 	private final String username;
 	private final Set<String> permissions;
 	private final Set<Long> managedTeacherIds;
+	private String name;
 
-	SecurityUser(String username, Set<String> permissions, Set<Long> managedTeacherIds) {
+	SecurityUser(String username, Set<String> permissions, Set<Long> managedTeacherIds, String name) {
 		this.username = username;
 		this.permissions = permissions;
 		this.managedTeacherIds = managedTeacherIds;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	/**

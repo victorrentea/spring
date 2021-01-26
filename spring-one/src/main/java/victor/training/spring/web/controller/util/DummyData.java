@@ -51,8 +51,8 @@ public class DummyData {
 		c3.setTeacher(t2);t2.getCourses().add(c3);
 		c4.setTeacher(t1);t1.getCourses().add(c4);
 
-		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(t2.getId())));
-		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(t1.getId(), t2.getId())));
+		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(t2.getId())).setName("CIA Admin"));
+		userRepo.save(new User("test", UserProfile.USER, Arrays.asList(t1.getId(), t2.getId())).setName("Plutonierul de serviciu"));
 	}
 	
 	

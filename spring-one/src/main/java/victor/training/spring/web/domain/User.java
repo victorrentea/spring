@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.*;
 
-import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
 
 @Entity
@@ -14,11 +13,21 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    private String name;
     private String username = "X";
     private UserProfile profile;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
+    }
+
+    public User setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setUsername(String username) {
