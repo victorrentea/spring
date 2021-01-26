@@ -1,12 +1,21 @@
 package victor.training.reservationclient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Cache.Channel;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,19 +25,37 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SpringBootApplication
-@RestController
-public class ReservationClientApplication {
 
+interface Queues {
+	public static final String CREATE_RESERVATION = "createres";
+	@Output(CREATE_RESERVATION)
+	MessageChannel createReservation();
+}
+
+
+@EnableDiscoveryClient
+@SpringBootApplication
+@EnableBinding(Queues.class)
+public class ReservationClientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ReservationClientApplication.class, args);
 	}
 
+	@Bean
+	@LoadBalanced
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+
+}
+@RequiredArgsConstructor
+@RestController
+class MyController {
+	private final RestTemplate rest;
+
 	@GetMapping
 	public String getReservationNames() {
-		RestTemplate rest = new RestTemplate();
-
-		var exchange = rest.exchange("http://localhost:8080/reservations", HttpMethod.GET, HttpEntity.EMPTY,
+		var exchange = rest.exchange("http://reservation-service/reservations", HttpMethod.GET, HttpEntity.EMPTY,
 			new ParameterizedTypeReference<List<ReservationDto>>() {
 			});// awful code to tell to .exchange the fact that I expect back a List<stuff>
 
@@ -37,16 +64,22 @@ public class ReservationClientApplication {
 			.collect(Collectors.joining(","));
 
 	}
+	private final Queues queues;
 	@GetMapping("create")
 	public void createReservation(@RequestParam String name) {
-		RestTemplate rest = new RestTemplate();
-
 		ReservationDto dto = new ReservationDto();
 		dto.name = name;
-		rest.postForEntity("http://localhost:8080/reservations", dto, Void.class);
+
+		queues.createReservation().send(MessageBuilder.withPayload(name).build());
+
+//		rest.postForEntity("http://reservation-service/reservations", dto, Void.class);
+		// what if this timeouts?
+		// A) the server is down: are you sure you want to emag 250 queues ~200 ; stockMgmSys is down.
+		    /// place orders can still happen ---> mssages piling up in queues, but not rejecting the WRITEs
+		// B) the server got my request, INSERTED the reservation, replied, but the reply got lost. <<<<
+		// C) your request got to the server machine, it stayed in the excecution queue for a while, but the the server went OutOfMemory
 
 	}
-
 }
 
 
