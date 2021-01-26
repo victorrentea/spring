@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class CoursesController {
 //	@PreAuthorize("hasRole('ADMIN')")
 	// DELETE COURSE FEATURE
 	// TODO [SEC] Allow only for special permission
+	@PreAuthorize("hasAuthority('deleteCourse')")
 	public void deleteCourseById(@PathVariable Long id) {
 //		helper.userHasRights(Features.DELETE_COURSE);
 		courseService.deleteCourseById(id);

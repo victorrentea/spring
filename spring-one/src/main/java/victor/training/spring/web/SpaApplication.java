@@ -3,8 +3,11 @@ package victor.training.spring.web;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.props.PropertiesApp;
 
@@ -20,6 +23,11 @@ public class SpaApplication {
 				.profiles("spa")
 				.run(args);
 	}
+
+//	@Bean
+//	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor delegate) {
+//		return new DelegatingSecurityContextAsyncTaskExecutor(delegate);
+//	}
 
 //	@Bean
 //	public org.infinispan.client.hotrod.configuration.Configuration customConfiguration() {

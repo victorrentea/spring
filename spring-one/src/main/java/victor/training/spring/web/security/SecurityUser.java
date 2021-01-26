@@ -41,6 +41,7 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public Set<GrantedAuthority> getAuthorities() {
+		// in Verint: SELECT From persmisson where permission.profile = user.profile
 		return permissions.stream().map(SimpleGrantedAuthority::new).collect(toSet());
 	}
 

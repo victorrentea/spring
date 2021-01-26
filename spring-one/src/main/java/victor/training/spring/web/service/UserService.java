@@ -16,7 +16,7 @@ import victor.training.spring.web.security.SecurityUser;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +24,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService  {
 
-    public String getCurrentUsername() {
+    @Async
+    public CompletableFuture<String> getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SecurityUser myDataFromLoginTime = (SecurityUser) authentication.getPrincipal();
         String currentUsername = authentication.getName();
 
         System.out.println("LAST_MODIFIED_BY = " +currentUsername);
-        return "Welcome " + myDataFromLoginTime.getName();
+        return CompletableFuture.completedFuture("Welcome " + myDataFromLoginTime.getName());
     }
 
     private final UserRepo userRepo;

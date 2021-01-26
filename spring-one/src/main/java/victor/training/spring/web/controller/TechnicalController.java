@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
+import javax.annotation.PostConstruct;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -18,10 +20,15 @@ public class TechnicalController {
 	UserService userService;
 
 	@GetMapping("rest/user/current")
-	public String getCurrentUsername() throws ExecutionException, InterruptedException {
+
+	public CompletableFuture<String> getCurrentUsername() throws ExecutionException, InterruptedException {
 		return userService.getCurrentUsername();
 	}
 
+	@PostConstruct
+	public void enableSecurityContextPropagationOverAsync() {
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	}
 //	@PostConstruct/
 
 	@Autowired
