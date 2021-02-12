@@ -1,21 +1,31 @@
 package victor.training.spring.transactions;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Message {
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String message;
+   @Id
+   @GeneratedValue
+   private Long id;
+   private String message;
+   private LocalDateTime createTime;
+   @ManyToOne
+   private Client client;
 
-    protected Message() {
-    }
+   protected Message() {
+   }
 
-    public Message(String message) {
-        this.message = message;
-    }
+   @PostLoad
+   public void afterSELECT() {}
+
+   @PrePersist
+   public void beforeInsert(){
+
+   }
+
+   public Message(String message) {
+      this.message = message;
+   }
 
 }
