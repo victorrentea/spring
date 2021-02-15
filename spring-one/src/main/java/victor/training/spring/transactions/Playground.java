@@ -1,6 +1,7 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,16 @@ import javax.persistence.EntityManager;
 public class Playground {
     private final MessageRepo repo;
     private final EntityManager em;
-    private final JdbcTemplate jdbc;
-    private final AnotherClass other;
-//    private final MyBatisMapper mybatis;
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         repo.save(new Message("jpa"));
+        System.out.println(repo.findByMessageLike("P"));
+        System.out.println(repo.finduMeu("P"));
+        String bum = StringUtils.repeat("a", 256);
+        repo.save(new Message(bum));
     }
+
     @Transactional
     public void transactionTwo() {
         // TODO Repo API
