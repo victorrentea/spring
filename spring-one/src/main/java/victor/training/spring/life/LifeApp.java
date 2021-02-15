@@ -4,6 +4,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +28,7 @@ public class LifeApp implements CommandLineRunner{
 	}
 	
 	public static void main(String[] args) {
-		SpringApplication.run(LifeApp.class);
+		SpringApplication.run(LifeApp.class, args);
 	}
 	
 	@Autowired 
@@ -43,9 +45,9 @@ public class LifeApp implements CommandLineRunner{
 		
 	}
 }
-@Slf4j
 @Service
 class OrderExporter  {
+	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
@@ -57,9 +59,9 @@ class OrderExporter  {
 		invoiceExporter.exportInvoice();
 	}
 }
-@Slf4j
-@Service 
+@Service
 class InvoiceExporter {
+	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
 	@Autowired
 	private LabelService labelService;
 	
@@ -68,9 +70,9 @@ class InvoiceExporter {
 	}
 }
 
-@Slf4j
 @Service
 class LabelService {
+	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {

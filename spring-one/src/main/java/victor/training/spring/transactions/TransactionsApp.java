@@ -1,6 +1,9 @@
 package victor.training.spring.transactions;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.With;
 import org.h2.util.CacheLRU;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,3 +37,11 @@ public class TransactionsApp implements CommandLineRunner {
     }
 }
 
+
+@Value
+class eX {
+    @NonNull
+        @With
+    String s;
+
+}
