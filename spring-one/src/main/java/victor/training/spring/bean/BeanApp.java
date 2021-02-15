@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -62,17 +66,39 @@ class Person {
 
 @Component
 class Tata {
-    @Autowired @Preferat
+    @Autowired
     private Copil mihai;
+    @Autowired
+    private List<Copil> toti;
+
+    @PostConstruct
+    public void method() {
+        System.out.println("Copilul servit este: " + mihai);
+        System.out.println("Toti copiiiiiii: " + toti);
+    }
 }
 
 interface Copil {
 }
 @Component
-@Preferat
-class MihaiViteazu implements Copil{}
+@Profile("!prod")
+class MihaiViteazu implements Copil{} // e preferatu acasa, pe masina, pe local
 @Component
-class Maria implements Copil {}
+@Profile("prod")
+class Maria implements Copil {} // e preferata in PROD
+
+
+@Profile("!prod")
+@Configuration
+class DummySecurityConfig {
+
+}
+@Profile("prod")
+@Configuration
+class SSOSecureLdapJWTSecurityConfig {
+
+}
+
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
