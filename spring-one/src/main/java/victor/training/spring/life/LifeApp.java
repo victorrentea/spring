@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -49,14 +50,13 @@ class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-
 	@Autowired
-	private ApplicationContext spring;
+	private ObjectFactory<LabelService> labelServiceFactory;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
 
-		LabelService labelService = spring.getBean(LabelService.class);
+		LabelService labelService = labelServiceFactory.getObject();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
