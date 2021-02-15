@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @SpringBootApplication
@@ -43,22 +43,39 @@ public class LifeApp implements CommandLineRunner{
 		
 	}
 }
+
+@Component
+class LabelServiceFactory {
+	private final CountryRepo countryRepo;
+	// daca sunt multe dependinte sau vreau sa mockuiesc LabelService cand testez OrderExporter
+
+	LabelServiceFactory(CountryRepo countryRepo) {
+		this.countryRepo = countryRepo;
+	}
+
+	public LabelService createLabelService(Locale locale) {
+		LabelService labelService = new LabelService(countryRepo);
+		labelService.load(locale);
+		return labelService;
+	}
+
+}
+
 @Service
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final InvoiceExporter invoiceExporter;
-	private final CountryRepo countryRepo;
+	private  final LabelServiceFactory labelServiceFactory;
 
-	public OrderExporter(InvoiceExporter invoiceExporter, CountryRepo countryRepo) {
+	public OrderExporter(InvoiceExporter invoiceExporter, LabelServiceFactory labelServiceFactory) {
 		this.invoiceExporter = invoiceExporter;
-		this.countryRepo = countryRepo;
+		this.labelServiceFactory = labelServiceFactory;
 	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
 
-		LabelService labelService = new LabelService(countryRepo);
-		labelService.load(locale);
+		LabelService labelService = labelServiceFactory.createLabelService(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
 	}
