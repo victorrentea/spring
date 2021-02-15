@@ -41,21 +41,20 @@ public class Playground {
         try {
             other.bum();
         } catch (Exception e) {
-            other.persistError(e.getMessage());
+            this.persistError(e.getMessage()); // nici un proxy nu poate interveni pe un apel local in aceeasi clasa
         }
+    }
+    @Transactional(propagation = Propagation.REQUIRES_NEW) //<<<<<<<<<<<
+    public void persistError(String errorMessage) {
+        repo.save(new Message("EROARE: " + errorMessage));
     }
 }
 @Service
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
-    @Transactional//(propagation = Propagation.REQUIRES_NEW) <<<<<<<<<<<
-    public void persistError(String errorMessage) {
-        repo.save(new Message("EROARE: " + errorMessage));
-    }
     @Transactional/// <<<<<<<<
     public void bum() throws IOException {
-         new RuntimeException().printStackTrace();
         boolean inProd = true;
         if (inProd){
             throw new NullPointerException(); // execeptie RUNTIME care trece prin proxy de Transacational distruge tranzactia
