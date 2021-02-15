@@ -109,12 +109,12 @@ class LabelService {
 	}
 	TransactionTemplate txTemplate;
 
-	@Autowired
-	public void initTxTemplate(PlatformTransactionManager transactionManager) {
-		this.txTemplate = new TransactionTemplate(transactionManager);
-		txTemplate.setPropagationBehaviorName("REQUIRES_NEW");
-		txTemplate.setTimeout(5);
-	}
+//	@Autowired
+//	public void initTxTemplate(PlatformTransactionManager transactionManager) {
+//		this.txTemplate = new TransactionTemplate(transactionManager);
+//		txTemplate.setPropagationBehaviorName("REQUIRES_NEW");
+//		txTemplate.setTimeout(5);
+//	}
 
 	private Map<String, String> countryNames; // crapa sonar https://rules.sonarsource.com/java/RSPEC-3749?search=injected
 
@@ -125,9 +125,9 @@ class LabelService {
 
 	public String getCountryName(String iso2Code) {
 
-		txTemplate.execute(status -> {
-			// fac chestii intr-o noua tranzactie;
-		});
+//		txTemplate.execute(status -> {
+//			// fac chestii intr-o noua tranzactie;
+//		});
 
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
