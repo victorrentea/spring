@@ -81,19 +81,19 @@ class Tata {
 interface Copil {
 }
 @Component
-@Profile("!prod")
+@Profile("localDev")
 class MihaiViteazu implements Copil{} // e preferatu acasa, pe masina, pe local
 @Component
-@Profile("prod")
+@Profile("!localDev")
 class Maria implements Copil {} // e preferata in PROD
 
 
-@Profile("!prod")
+@Profile("localDev")
 @Configuration
 class DummySecurityConfig {
 
 }
-@Profile("prod")
+@Profile("!localDev")
 @Configuration
 class SSOSecureLdapJWTSecurityConfig {
 
