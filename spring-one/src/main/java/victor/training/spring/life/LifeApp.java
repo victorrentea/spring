@@ -11,9 +11,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
@@ -44,51 +49,56 @@ public class LifeApp implements CommandLineRunner{
 	}
 }
 
-@Component
-class LabelServiceFactory {
-	private final CountryRepo countryRepo;
-	// daca sunt multe dependinte sau vreau sa mockuiesc LabelService cand testez OrderExporter
-
-	LabelServiceFactory(CountryRepo countryRepo) {
-		this.countryRepo = countryRepo;
-	}
-
-	public LabelService createLabelService(Locale locale) {
-		LabelService labelService = new LabelService(countryRepo);
-		labelService.load(locale);
-		return labelService;
-	}
-
-}
+//@Component
+//class LabelServiceFactory {
+//	private final CountryRepo countryRepo;
+//	// daca sunt multe dependinte sau vreau sa mockuiesc LabelService cand testez OrderExporter
+//
+//	LabelServiceFactory(CountryRepo countryRepo) {
+//		this.countryRepo = countryRepo;
+//	}
+//
+//	public LabelService createLabelService(Locale locale) {
+//		LabelService labelService = new LabelService(countryRepo);
+//		labelService.load(locale);
+//		return labelService;
+//	}
+//
+//}
 
 @Service
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final InvoiceExporter invoiceExporter;
-	private  final LabelServiceFactory labelServiceFactory;
+	private  final LabelService labelService;
 
-	public OrderExporter(InvoiceExporter invoiceExporter, LabelServiceFactory labelServiceFactory) {
+	public OrderExporter(InvoiceExporter invoiceExporter, LabelService labelService) {
 		this.invoiceExporter = invoiceExporter;
-		this.labelServiceFactory = labelServiceFactory;
+		this.labelService = labelService;
 	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-
-		LabelService labelService = labelServiceFactory.createLabelService(locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice(labelService);
+		invoiceExporter.exportInvoice();
 	}
 }
 @Service
 class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
+	private  final LabelService labelService;
 
-	public void exportInvoice(LabelService labelService) {
+	InvoiceExporter(LabelService labelService) {
+		this.labelService = labelService;
+	}
+	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
+@Service
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;// +6 de la nasu mare
@@ -97,6 +107,14 @@ class LabelService {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
 	}
+	TransactionTemplate txTemplate;
+
+	@Autowired
+	public void setTxTemplate(PlatformTransactionManager transactionManager) {
+		this.txTemplate = new TransactionTemplate(transactionManager);
+		txTemplate.setPropagationBehaviorName("REQUIRES_NEW");
+		txTemplate.setTimeout(5);
+	}
 
 	private Map<String, String> countryNames; // crapa sonar https://rules.sonarsource.com/java/RSPEC-3749?search=injected
 
@@ -104,8 +122,13 @@ class LabelService {
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
+
+		txTemplate.execute(status -> {
+			// fac chestii intr-o noua tranzactie;
+		});
+
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
 	}
