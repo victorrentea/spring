@@ -29,6 +29,7 @@ public class TransactionsApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("Proxulu de servicu: " + playground.getClass());
         System.out.println("============= TRANSACTION ONE ==============");
         playground.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
