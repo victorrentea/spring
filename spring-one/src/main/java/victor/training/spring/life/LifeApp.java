@@ -11,9 +11,7 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
@@ -48,15 +46,18 @@ public class LifeApp implements CommandLineRunner{
 @Service
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private ObjectFactory<LabelService> labelServiceFactory;
+	private final InvoiceExporter invoiceExporter;
+	private final CountryRepo countryRepo;
+
+	public OrderExporter(InvoiceExporter invoiceExporter, CountryRepo countryRepo) {
+		this.invoiceExporter = invoiceExporter;
+		this.countryRepo = countryRepo;
+	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
 
-		LabelService labelService = labelServiceFactory.getObject();
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
@@ -71,11 +72,9 @@ class InvoiceExporter {
 	}
 }
 
-@Service
-@Scope("prototype")
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
-	private final CountryRepo countryRepo;
+	private final CountryRepo countryRepo;// +6 de la nasu mare
 	
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
