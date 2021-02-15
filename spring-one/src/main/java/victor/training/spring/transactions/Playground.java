@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 
 @Service
@@ -67,8 +68,20 @@ public class Playground {
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
+
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
+//    @Autowired EntityManager entityManager;
+
     @Transactional/// <<<<<<<<
     public void bum() throws IOException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//entityManager.getTransaction().
+
+        entityManager.close();
+
         boolean inProd = true;
         if (inProd){
             throw new NullPointerException(); // execeptie RUNTIME care trece prin proxy de Transacational distruge tranzactia
