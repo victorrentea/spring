@@ -124,7 +124,10 @@ class LabelService {
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 
-	public String getCountryName(String iso2Code) {
+	public String getCountryName(String iso2Code/*, Locale locale*/) {
+//		if (countryNames == null) {
+//			countryNames =
+//		}
 
 //		txTemplate.execute(status -> {
 //			// fac chestii intr-o noua tranzactie;
