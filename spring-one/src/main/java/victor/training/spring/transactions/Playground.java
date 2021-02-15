@@ -1,10 +1,13 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -34,16 +37,36 @@ public class Playground {
         // TODO Repo API
         // TODO @NonNullApi
         System.out.println(message == m2);
+
+        try {
+            other.bum();
+        } catch (Exception e) {
+            other.persistError(e.getMessage());
+        }
     }
 }
-
-
 @Service
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
-    public Message surprizaCaIauDinAcelasiCache() {
+    @Transactional//(propagation = Propagation.REQUIRES_NEW) <<<<<<<<<<<
+    public void persistError(String errorMessage) {
+        repo.save(new Message("EROARE: " + errorMessage));
+    }
+    @Transactional/// <<<<<<<<
+    public void bum() throws IOException {
+         new RuntimeException().printStackTrace();
+        boolean inProd = true;
+        if (inProd){
+            throw new NullPointerException(); // execeptie RUNTIME care trece prin proxy de Transacational distruge tranzactia
+        }
+//        throw new IOException("File nu e"); // nu o distruge!?!!!!!! DE CE ?!!
+        // NU folosi exceptii checked. DE LOC. SUNT RElE> vechi. si o dovada ca Java e un lb din lume
+        //
+    }
 
-       return repo.findById(1L).get();
+
+    public Message surprizaCaIauDinAcelasiCache() {
+        return repo.findById(1L).get();
     }
 }
