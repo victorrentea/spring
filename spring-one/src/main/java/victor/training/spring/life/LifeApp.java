@@ -3,7 +3,6 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
@@ -40,8 +38,8 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		new Thread(() ->exporter.export(Locale.ENGLISH)).start();
+		new Thread(() ->exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
@@ -55,8 +53,9 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		labelService.load(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice(locale);
 	}
 }
 @Service
@@ -65,12 +64,14 @@ class InvoiceExporter {
 	@Autowired
 	private LabelService labelService;
 	
-	public void exportInvoice() {
+	public void exportInvoice(Locale locale) {
+		labelService.load(locale);
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Service
+@Scope("prototype")
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
@@ -80,12 +81,11 @@ class LabelService {
 		this.countryRepo = countryRepo;
 	}
 
-	private Map<String, String> countryNames;
+	private Map<String, String> countryNames; // crapa sonar https://rules.sonarsource.com/java/RSPEC-3749?search=injected
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
