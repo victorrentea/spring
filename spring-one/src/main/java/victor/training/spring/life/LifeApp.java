@@ -134,3 +134,13 @@ class LabelService {
 		return countryNames.get(iso2Code.toUpperCase());
 	}
 }
+
+class MyDao {
+//	@Autowired MyRequestContext requestContext; // care este Scope("thread")
+
+	public void insert() {
+	    // pe coloana CREATEDB_Y
+//		pui : requestContext.getCurrentUsername();
+		// iti da "jdoe" cand vii de pe http sau "sys" cand ai pornit din @Schedyled
+	}
+}
