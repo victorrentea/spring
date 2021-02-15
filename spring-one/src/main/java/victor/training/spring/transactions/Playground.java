@@ -1,10 +1,12 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -15,6 +17,7 @@ public class Playground {
     private final MessageRepo repo;
     private final EntityManager em;
     private final AnotherClass other;
+    private TransactionTemplate txTemplate;
 
     @Transactional
     public void transactionOne() {
@@ -44,10 +47,21 @@ public class Playground {
             this.persistError(e.getMessage()); // nici un proxy nu poate interveni pe un apel local in aceeasi clasa
         }
     }
-    @Transactional(propagation = Propagation.REQUIRES_NEW) //<<<<<<<<<<<
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW) //<<<<<<<<<<<
     public void persistError(String errorMessage) {
-        repo.save(new Message("EROARE: " + errorMessage));
+        txTemplate.execute(status -> {
+            repo.save(new Message("EROARE: " + errorMessage));
+            return null;
+        });
     }
+
+    	@Autowired
+	public void initTxTemplate(PlatformTransactionManager transactionManager) {
+		this.txTemplate = new TransactionTemplate(transactionManager);
+		txTemplate.setPropagationBehavior(Propagation.REQUIRES_NEW.value());
+		txTemplate.setTimeout(5);
+	}
 }
 @Service
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
