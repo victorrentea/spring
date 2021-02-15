@@ -1,0 +1,10 @@
+
+
+
+in:
+  folder: C:/workspace/spring
+  rate-millis: 5000
+  extensions: .csv,.txt,.xml
+  hello:
+    en: Hello world!
+    ro: Ce faci mancatz'as!
