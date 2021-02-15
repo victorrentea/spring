@@ -110,7 +110,7 @@ class LabelService {
 	TransactionTemplate txTemplate;
 
 	@Autowired
-	public void setTxTemplate(PlatformTransactionManager transactionManager) {
+	public void initTxTemplate(PlatformTransactionManager transactionManager) {
 		this.txTemplate = new TransactionTemplate(transactionManager);
 		txTemplate.setPropagationBehaviorName("REQUIRES_NEW");
 		txTemplate.setTimeout(5);
