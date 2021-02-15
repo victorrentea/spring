@@ -17,11 +17,11 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        repo.save(new Message("jpa"));
-        System.out.println(repo.findByMessageLike("P"));
-        System.out.println(repo.finduMeu("P"));
-        String bum = StringUtils.repeat("a", 256);
-        repo.save(new Message(bum));
+        repo.save(new Message("jpa")); // are @Transactional pe ea
+        System.out.println(repo.findByMessageLike("%p%"));
+        System.out.println(repo.finduMeu("%P%"));
+//        String bum = StringUtils.repeat("a", 256);
+//        repo.save(new Message(bum));
     }
 
     @Transactional
