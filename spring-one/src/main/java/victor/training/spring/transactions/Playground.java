@@ -47,13 +47,25 @@ class AnotherClass {
        return repo.findById(1L).get();
     }
 
+    private final EntityManager entityManager;
 
-    @Transactional
+//    @Transactional// (readOnly = true) nu mai tine nimic minte. Dar nici nu poti sa persisti ceva.
     public void citireMasiva() {
 
-        Stream<Message> si iteram pe el.
-                                         Hibernate-ul dragutzul, tinea cate o copie din fiecare entitate incarcata,
-            ca poate o schimb.
+//        For i 1..N/500
+//              incarca 500
+//
+//            INSERT INTO RECORD(ID,    IMPORT_START_TIMESTAMP)
+//
+//        Spring Batch
+//
+//
+//
+//        Stream<Message> si iteram pe el.
+//         Hibernate-ul dragutzul, tinea cate o copie din fiecare entitate incarcata,
+//            ca poate o schimb.
+
+//            em.detach(message); scoate copia din PersistenceContext
 
             Iar eu iteram pe 10.000.000 de entiti.
 
