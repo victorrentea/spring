@@ -2,10 +2,10 @@ package victor.training.spring.async;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -15,12 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
-import victor.training.spring.web.SpaApplication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +81,7 @@ class Drinker  {
 
 
    @GetMapping
-    public String beau() throws ExecutionException, InterruptedException {
+    public DillyDilly beau() throws ExecutionException, InterruptedException {
       log.debug("Submitting my order to "  +barman.getClass());
 
       Future<Beer> futureBeer = barman.getOneBeer();
@@ -91,18 +89,42 @@ class Drinker  {
 
       log.debug("A plecat fata cu comanda");
       // 2 blocarea threadului MEU pana cand ala e gata
-      Beer beer = futureBeer.get();
-      Vodka vodka = futureVodka.get();
+
+      Beer beer = futureBeer.get(); // HTTP thread sta blocat 1 sec
+      Vodka vodka = futureVodka.get(); // aici nu sta deloc
 
       List<Object> bauturi = Arrays.asList(beer, vodka);
       log.debug("Got my order! Thank you lad! " + bauturi);
       // 3 callbacks ---> Iad
-      return bauturi.toString();
+      return new DillyDilly(beer, vodka);
    }
 //   public void vreauOBere() throws ExecutionException, InterruptedException {
 //      Beer beer = barman.getOneBeer().get();
 //   }
 }
+
+
+class DillyDilly {
+   private static final Logger log = LoggerFactory.getLogger(DillyDilly.class);
+   private final Beer beer;
+   private final Vodka vodka;
+
+   DillyDilly(Beer beer, Vodka vodka) {
+      this.beer = beer;
+      this.vodka = vodka;
+      log.debug("Mixing Dilly");
+      ThreadUtils.sleep(1000);
+   }
+
+   public Beer getBeer() {
+      return beer;
+   }
+
+   public Vodka getVodka() {
+      return vodka;
+   }
+}
+
 @Slf4j
 @Service
 class Barman {
