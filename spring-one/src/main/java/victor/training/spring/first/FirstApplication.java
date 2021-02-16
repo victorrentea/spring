@@ -3,6 +3,7 @@ package victor.training.spring.first;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -22,4 +23,5 @@ public class FirstApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 
 	}
+
 }
