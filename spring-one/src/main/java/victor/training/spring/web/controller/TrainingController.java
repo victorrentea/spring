@@ -19,7 +19,7 @@ public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
-	@GetMapping
+	@GetMapping(produces = {"application/json","application/xml","text/json"})
 	// TODO [SEC] Restrict display for trainings of teachers of users
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
