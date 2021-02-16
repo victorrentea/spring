@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @EnableAsync
 @SpringBootApplication
@@ -42,15 +46,34 @@ class Drinker implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
 
+
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	// TODO [3] Enable messaging...
 	public void run(String... args) throws Exception {
-		Thread.sleep(3000);
+//		Thread.sleep(3000);
 		log.debug("Submitting my order");
-		Beer beer = barman.getOneBeer();
-		Vodka vodka = barman.getOneVodka();
+
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+
+		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
+		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
+
+		// 1 Polling: tot intreb: inevitabil cand taskul e finalizat pe alta masina si iti da API sa-; intrebi daca e gata.
+//		if (!futureVodka.isDone()) {
+//			ThreadUtils.sleep(100);
+//		}
+
+		// 2 blocarea threadului MEU pana cand ala e gata
+		Beer beer = futureBeer.get();
+		Vodka vodka = futureVodka.get();
+
+		pool.shutdown();
+
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+
+
+		// 3 callbacks ---> Iad
 	}
 }
 
@@ -59,7 +82,7 @@ class Drinker implements CommandLineRunner {
 class Barman {
 	public Beer getOneBeer() {
 		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
+		 ThreadUtils.sleep(1000); // inchipuiti aici orice NETWORK CALL: db, select in mongo, Files pe disk, send kafka
 		 return new Beer();
 	 }
 	
