@@ -10,15 +10,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
+import victor.training.spring.web.SpaApplication;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -29,7 +34,12 @@ import java.util.concurrent.Future;
     HibernateJpaAutoConfiguration.class})
 public class AsyncApp {
    public static void main(String[] args) {
-      SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+
+      new SpringApplicationBuilder(AsyncApp.class)
+          .profiles("spa")
+          .run(args);
+
+//      SpringApplication.run(AsyncApp.class, args); // Note: .close added to stop executors after CLRunner finishes
    }
 
    @Bean
@@ -59,8 +69,8 @@ public class AsyncApp {
 }
 
 @Slf4j
-@Component
-class Drinker implements CommandLineRunner {
+@RestController
+class Drinker  {
    @Autowired
    private Barman barman;
 
@@ -70,8 +80,10 @@ class Drinker implements CommandLineRunner {
    // TODO [1] inject and use a ThreadPoolTaskExecutor.submit
    // TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
    // TODO [3] Enable messaging...
-   public void run(String... args) throws Exception {
-//		Thread.sleep(3000);
+
+
+   @GetMapping
+    public String beau() throws ExecutionException, InterruptedException {
       log.debug("Submitting my order to "  +barman.getClass());
 
       Future<Beer> futureBeer = barman.getOneBeer();
@@ -82,8 +94,10 @@ class Drinker implements CommandLineRunner {
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();
 
-      log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+      List<Object> bauturi = Arrays.asList(beer, vodka);
+      log.debug("Got my order! Thank you lad! " + bauturi);
       // 3 callbacks ---> Iad
+      return bauturi.toString();
    }
 //   public void vreauOBere() throws ExecutionException, InterruptedException {
 //      Beer beer = barman.getOneBeer().get();
@@ -109,8 +123,10 @@ class Barman {
 
 @Data
 class Beer {
+   private final String type = "Blond";
 }
 
 @Data
 class Vodka {
+   private final String type = "tare";
 }
