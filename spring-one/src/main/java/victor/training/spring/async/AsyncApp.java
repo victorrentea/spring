@@ -30,7 +30,7 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int poolSize) {
+	public ThreadPoolTaskExecutor barmanPool(@Value("${barman.count}") int poolSize) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(poolSize);
 		executor.setMaxPoolSize(poolSize);
@@ -38,6 +38,19 @@ public class AsyncApp {
 		executor.setThreadNamePrefix("barman-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
+//		executor.setTaskDecorator();
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor executor2(@Value("${barman.count}") int poolSize) {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(poolSize);
+		executor.setMaxPoolSize(poolSize);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("barman-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+//		executor.setTaskDecorator();
 		return executor;
 	}
 
@@ -50,7 +63,7 @@ class Drinker implements CommandLineRunner {
 	private Barman barman;
 
 	@Autowired
-	private ThreadPoolTaskExecutor pool;
+	private ThreadPoolTaskExecutor barmanPool;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
@@ -59,8 +72,8 @@ class Drinker implements CommandLineRunner {
 //		Thread.sleep(3000);
 		log.debug("Submitting my order");
 
-		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
-		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
+		Future<Beer> futureBeer = barmanPool.submit(() -> barman.getOneBeer());
+		Future<Vodka> futureVodka = barmanPool.submit(() -> barman.getOneVodka());
 
 		// 1 Polling: tot intreb: inevitabil cand taskul e finalizat pe alta masina si iti da API sa-; intrebi daca e gata.
 //		if (!futureVodka.isDone()) {
