@@ -62,6 +62,12 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.4</version>
         </dependency>-->
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit</artifactId>
+            <version>0.14.1</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.jooq</groupId>

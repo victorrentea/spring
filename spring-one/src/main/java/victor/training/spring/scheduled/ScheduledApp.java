@@ -32,6 +32,7 @@ public class ScheduledApp  {
 
     // TODO 2 define another task at each second. This should not block.
     // TODO explore application.properties (thread #)
+    @Scheduled(cron = "${poll.fast.cron}")
     public void pollFast() {
         log.debug("FAST each second");
     }
