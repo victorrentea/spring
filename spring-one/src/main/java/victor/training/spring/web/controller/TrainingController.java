@@ -6,14 +6,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.service.TrainingService;
-
 @RestController
+//@EnableJpaRepositories
 @RequestMapping("/rest/trainings")
 public class TrainingController {
 	@Autowired
@@ -53,6 +54,7 @@ public class TrainingController {
 	}
 }
 
-@RepositoryRestResource(path = "/api/trainings")
-interface TrainingRestRepo extends CrudRepository<Training, Long> {}
 
+//@RepositoryRestResource(path = "/api/trainings")
+//interface TrainingRestRepository extends JpaRepository<Training, Long> {
+//}

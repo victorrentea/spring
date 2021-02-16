@@ -18,6 +18,11 @@ public class User {
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public User(String username, UserProfile profile, List<Long> managedTeacherIds) {
         this.username = username;
         this.profile = profile;
