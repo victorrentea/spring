@@ -46,6 +46,8 @@ class Drinker implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
 
+	@Autowired
+	private ThreadPoolTaskExecutor pool;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
@@ -53,8 +55,6 @@ class Drinker implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 //		Thread.sleep(3000);
 		log.debug("Submitting my order");
-
-		ExecutorService pool = Executors.newFixedThreadPool(2);
 
 		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
 		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
@@ -67,8 +67,6 @@ class Drinker implements CommandLineRunner {
 		// 2 blocarea threadului MEU pana cand ala e gata
 		Beer beer = futureBeer.get();
 		Vodka vodka = futureVodka.get();
-
-		pool.shutdown();
 
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 
