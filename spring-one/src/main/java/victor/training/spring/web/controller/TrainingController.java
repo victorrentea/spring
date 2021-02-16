@@ -5,26 +5,35 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.service.TrainingService;
 
+@RestController
+@RequestMapping("/rest/trainings")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
+	@GetMapping
 	// TODO [SEC] Restrict display for trainings of teachers of users
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
 	// TODO [SEC] Check user manages training of this training
-	public TrainingDto getTrainingById(Long id) {
+	@GetMapping("{id}")
+	public TrainingDto getTrainingById(@PathVariable Long id) {
 		return trainingService.getTrainingById(id);
 	}
 
 	// TODO [SEC] Check user manages teacher of this training
-	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+	@PutMapping("{id}")
+	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -33,11 +42,17 @@ public class TrainingController {
 	// TODO Requirement: A training can only be deleted by user managing the teacher of that training (User.getManagedTeachedIds)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
-	public void deleteTrainingById(Long id) {
+	@DeleteMapping("{id}")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	public void createTraining(TrainingDto dto) throws ParseException {
+	@PostMapping
+	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 }
+
+@RepositoryRestResource(path = "/api/trainings")
+interface TrainingRestRepo extends CrudRepository<Training, Long> {}
+
