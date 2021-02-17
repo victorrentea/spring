@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum UserProfile {
-    USER("runSearch", "USER"),
-    ADMIN("runSearch", "ADMIN",
-            "deleteTraining");
+    USER("runSearch"),
+    ADMIN("runSearch", "deleteTraining");
     public final Set<String> authorities;
 
     UserProfile(String... authorities) {
         this.authorities = new HashSet<>(Arrays.asList(authorities));
     }
+
+
 }

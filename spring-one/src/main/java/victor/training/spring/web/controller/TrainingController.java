@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.service.TrainingService;
+
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 //@EnableJpaRepositories
 @RequestMapping("/rest/trainings")
@@ -38,11 +42,20 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
+	// TODO Allow only for role 'ADMIN'
+	//  TODO ... or POWER or SUPER
 	// TODO Allow for authority 'deleteTraining'
 	// TODO Requirement: A training can only be deleted by user managing the teacher of that training (User.getManagedTeachedIds)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
+
+	// <c:if test="user.role == 'ADMIN' || user.role='POWER'"> <<<<<< ROLE-based authorization . e ok pt app mici cu putine roluri
+
+	// <c:if test="user.permission.canDelete">  <<<<< permission -based authorization: mai introduci un nivel de abstractie:
+			// calculezi valoarea "canDelete" o singura data si o folosesti si in JSP si pe backend
+
+
+	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language SpringEL SpEL
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

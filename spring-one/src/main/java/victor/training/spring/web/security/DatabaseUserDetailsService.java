@@ -19,11 +19,10 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         User user = userRepository.getForLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not in database"));
 
-        log.debug("Successful login");
+        log.debug("Successful login role " + user.getProfile());
         // WARNING: the implem of SecurtyUser class is hacked to expect the password of the user == its username
         return new SecurityUser(user.getUsername(),
-                user.getProfile().authorities,
-                user.getManagedTeacherIds());
+            user.getProfile(), user.getManagedTeacherIds());
     }
 
 
