@@ -1,4 +1,4 @@
-package victor.training.spring.events.order;
+package victor.training.spring.events;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
