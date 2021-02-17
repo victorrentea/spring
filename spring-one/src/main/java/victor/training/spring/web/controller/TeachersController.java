@@ -21,6 +21,7 @@ public class TeachersController {
 
 	@PostMapping
 	public void createTeacher(@RequestBody TeacherDto dto) {
+		System.out.println("Hello world");
 		service.createTeacher(dto);
 	}
 	

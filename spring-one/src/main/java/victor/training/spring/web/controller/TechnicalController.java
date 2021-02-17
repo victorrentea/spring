@@ -65,7 +65,7 @@ public class TechnicalController {
 	    // ma uit in /tmp daca mai e macar 10G de spatiu. daca nu -> mail
 	}
 
-	@PostMapping
+//	@PostMapping("upload")
 	public void uploadFile(HttpServletRequest request) throws IOException {
 
 		File tmpFile = Files.createTempFile("data", ".dat").toFile(); //    eg /tmp/data-001.dat  - Doamne ajuta sa ai quota acolo destula
