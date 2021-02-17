@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
@@ -10,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.security.SecurityUser;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Set;
 
 
@@ -71,4 +74,28 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
       log.info("target teacher ID:" + teacherId);
       return teacherIds.contains(teacherId);
    }
+}
+
+
+class X {
+   public void method2() {
+
+      Thread.currentThread().setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+         @Override
+         public void uncaughtException(Thread t, Throwable e) {
+
+         }
+      });
+      try {
+         method();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   @SneakyThrows
+   public void method() {
+      throw new IOException(); // el face throw la IOException oricum
+   }
+
 }

@@ -47,6 +47,8 @@ public class ReservationController {
    }
 
 
+   //  GET api.axway.com/countries-ms/     countries/1
+   // pe baza countries-ms   proxiaza requestul catre countries.intra/countries/1
 
    // TODO Hint: @Autowired Source   .output().send(MessBuilder.withPayload(str).build())
 
