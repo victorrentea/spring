@@ -57,6 +57,7 @@ public class TrainingController {
 	}
 
 	@PostMapping
+	@CrossOrigin("*")
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}

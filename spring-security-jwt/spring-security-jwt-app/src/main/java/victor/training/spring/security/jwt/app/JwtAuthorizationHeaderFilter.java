@@ -25,19 +25,19 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String jwtToken = request.getHeader(jwtHeader);
-        if (jwtToken == null) {
+        String jwtTokenString = request.getHeader(jwtHeader);
+        if (jwtTokenString == null) {
 			log.warn("Header {} not set", jwtHeader);
             return null;
         }
 
-        log.debug("Received Header: " + jwtToken);
+        log.debug("Received Header: " + jwtTokenString);
 		log.debug("Hint: Try to decode it on http://jwt.io/");
 
         try {
 			Claims claims = Jwts.parser()
 					.setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecret))
-					.parseClaimsJws(jwtToken)
+					.parseClaimsJws(jwtTokenString)
 					.getBody();
 
 			String country = (String) claims.get("country");

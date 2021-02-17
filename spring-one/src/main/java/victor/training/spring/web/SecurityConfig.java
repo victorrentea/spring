@@ -32,7 +32,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //                .mvcMatchers(HttpMethod.DELETE, "rest/trainings/*").hasRole("ADMIN")
                 .anyRequest().authenticated()
        .and()
-       .formLogin().permitAll()
+        .httpBasic()
+//       .formLogin().permitAll()
+
             ;
     }
 

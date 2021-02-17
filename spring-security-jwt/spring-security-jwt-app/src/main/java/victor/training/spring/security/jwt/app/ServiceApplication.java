@@ -12,16 +12,15 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @SpringBootApplication
-public class Application extends WebSecurityConfigurerAdapter {
+public class ServiceApplication extends WebSecurityConfigurerAdapter {
 
     public static void main(String[] args) throws Throwable {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ServiceApplication.class, args);
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("unsecured").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(preAuthenticatedProvider())
