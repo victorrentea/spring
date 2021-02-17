@@ -15,14 +15,14 @@
 //    private UserRepo userRepository;
 //
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        log.debug("Lookup username {} in database", username);
+//        log.debug("Looking username {} in database", username);
 //        User user = userRepository.getForLogin(username)
 //                .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not in database"));
 //
-//        log.debug("Successful login");
-//        // WARNING: the implem of SecurtyUser class is hacked to expect the password of the user == its username
+//        log.debug("Successful logged in " + user);
+//        // WARNING: the implem of SecurityUser class is hacked to expect the password of the user == its username
 //        return new SecurityUser(user.getUsername(),
-//                user.getProfile().authorities,
+//                user.getProfile(),
 //                user.getManagedTeacherIds());
 //    }
 //

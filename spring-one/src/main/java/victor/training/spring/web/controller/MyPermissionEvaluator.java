@@ -11,6 +11,9 @@
 //import java.io.Serializable;
 //import java.util.Set;
 //
+//enum PermissionType {
+//   WRITE, READ
+//}
 //@Slf4j
 //@Component
 //public class MyPermissionEvaluator implements PermissionEvaluator {
@@ -54,13 +57,14 @@
 //      if (permission == PermissionType.READ) {
 //         return true;
 //      }
-//      if (!securityUser.getPermissions().contains("deleteTraining")) {
+//      if (!securityUser.getProfile().authorities.contains("training.edit")) {
+//         log.debug("No authority to edit trainings");
 //         return false;
 //      }
 //      Set<Long> teacherIds = securityUser.getManagedTeacherIds();
-//      log.info("my teacher IDs:" + teacherIds);
+//      log.info("Current user manages teacher IDs = {}", teacherIds);
 //      Long teacherId = trainingRepo.findById(trainingId).get().getTeacher().getId();
-//      log.info("target teacher ID:" + teacherId);
+//      log.info("Training.teacher.id = {}", teacherId);
 //      return teacherIds.contains(teacherId);
 //   }
 //}

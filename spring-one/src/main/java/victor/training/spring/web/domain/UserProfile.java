@@ -5,9 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum UserProfile {
-    USER("runSearch", "USER"),
-    ADMIN("runSearch", "ADMIN",
-            "deleteTraining");
+    USER("search"),
+    ADMIN("search", "training.edit");
     public final Set<String> authorities;
 
     UserProfile(String... authorities) {

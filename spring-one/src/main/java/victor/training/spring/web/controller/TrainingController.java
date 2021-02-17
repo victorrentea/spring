@@ -29,8 +29,8 @@ public class TrainingController {
 	}
 
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
-	// TODO Allow for authority 'deleteTraining'
-	// TODO Requirement: A training can only be deleted by user managing the teacher of that training (User.getManagedTeachedIds)
+	// TODO Allow for authority 'training.edit'
+	// TODO Requirement: The current user manages the the teacher of that training (User.getManagedTeacherIds)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 	public void deleteTrainingById(Long id) {
