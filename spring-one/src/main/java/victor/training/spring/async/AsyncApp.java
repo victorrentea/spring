@@ -28,7 +28,7 @@ public class AsyncApp {
 		executor.setCorePoolSize(1);
 		executor.setMaxPoolSize(1);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("barman-");
+		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -44,9 +44,8 @@ class Drinker implements CommandLineRunner {
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
-	// TODO [3] Enable messaging...
+	// TODO [3] Messaging...
 	public void run(String... args) throws Exception {
-		Thread.sleep(3000);
 		log.debug("Submitting my order");
 		Beer beer = barman.getOneBeer();
 		Vodka vodka = barman.getOneVodka();
@@ -72,8 +71,10 @@ class Barman {
 
 @Data
 class Beer {
+	public static final String type = "blond";
 }
 
 @Data
 class Vodka {
+	public static final String type = "deadly";
 }
