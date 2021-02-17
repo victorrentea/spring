@@ -6,6 +6,7 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.security.SecurityUser;
 
@@ -47,6 +48,7 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
           targetId);
    }
 
+//   @Transactional//(isolation = Isolation)
    private boolean hasPrivilege(SecurityUser securityUser, String targetType, PermissionType permission, Serializable targetId) {
       switch (targetType) {
          case "TRAINING":
