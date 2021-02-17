@@ -25,7 +25,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
             .csrf().disable()
             .authorizeRequests()
-               .anyRequest().authenticated()
+                .mvcMatchers("admin/**").hasRole("ADMIN")
+                .mvcMatchers("unsecured/**").permitAll()
+                .anyRequest().authenticated()
        .and()
        .formLogin().permitAll()
             ;
