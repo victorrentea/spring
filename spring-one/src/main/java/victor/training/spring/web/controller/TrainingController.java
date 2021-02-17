@@ -55,7 +55,8 @@ public class TrainingController {
 			// calculezi valoarea "canDelete" o singura data si o folosesti si in JSP si pe backend
 
 
-	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language SpringEL SpEL
+//	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language SpringEL SpEL
+	@PreAuthorize("hasAuthority('deleteTraining')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
