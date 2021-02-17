@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import java.nio.channels.Channel;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class TechnicalController {
@@ -26,16 +28,15 @@ public class TechnicalController {
 	private UserService userService;
 
 	@GetMapping("rest/user/current")
-	public String getCurrentUsername() {
-		// TODO implement me
-		return "TODO:user";
+	public String getCurrentUsername() throws ExecutionException, InterruptedException {
+//		return SecurityContextHolder.getContext().getAuthentication().getName();
 		// try getting the user from an Async task:
-		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+		return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application
@@ -49,7 +50,7 @@ public class TechnicalController {
 	}
 
 	@GetMapping("ping")
-	public String ping() {
+	public String ping() throws ExecutionException, InterruptedException {
 		return "Pong " + getCurrentUsername();
 	}
 
@@ -65,7 +66,7 @@ public class TechnicalController {
 	    // ma uit in /tmp daca mai e macar 10G de spatiu. daca nu -> mail
 	}
 
-//	@PostMapping("upload")
+//	@PostMapping()
 	public void uploadFile(HttpServletRequest request) throws IOException {
 
 		File tmpFile = Files.createTempFile("data", ".dat").toFile(); //    eg /tmp/data-001.dat  - Doamne ajuta sa ai quota acolo destula

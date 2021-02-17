@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.controller.UserController;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -60,6 +64,12 @@ public class UserService {
     @CacheEvict(cacheNames = "user-data", allEntries = true)
     public void clearAllUserCache() {
         // EMPTY METHOD. DO NOT DELETE. LET THE MAGIC HAPPEN
+    }
+
+    @Async
+    public CompletableFuture<String> getCurrentUsername() {
+        log.debug("Din alt thread: ");
+        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
 
