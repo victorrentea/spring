@@ -5,20 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
-import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
-
-import javax.annotation.security.RolesAllowed;
 
 @RestController
 //@EnableJpaRepositories
@@ -59,30 +49,12 @@ public class TrainingController {
 
 
 //	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language SpringEL SpEL
-	@PreAuthorize("hasAuthority('deleteTraining')")
+//	@PreAuthorize("hasAuthority('deleteTraining') && @permissionChecker.checkPermission(#id)")
+	@PreAuthorize("hasPermission(#id, 'TRAINING', 'WRITE')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
-
-		checkPermission(id);
-
 		trainingService.deleteById(id);
 	}
-
-	private void checkPermission(Long id) {
-		Training training = repo.findById(id).get();// imi bag picioru'! De unde mama lui are asta ID-ul? nu-i intorc 404 ci ce-mi vine mai la indemana
-
-		Long teacherId = training.getTeacher().getId();
-
-		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-		if (!securityUser.getManagedTeacherIds().contains(teacherId)) {
-			throw new IllegalArgumentException("Ia mana!");
-		}
-	}
-
-	@Autowired
-	private TrainingRepo repo;
 
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
