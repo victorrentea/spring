@@ -8,16 +8,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
@@ -25,10 +21,10 @@ import java.security.KeyStore;
 
 //@EnableZuulProxy
 @SpringBootApplication
-public class Application extends WebSecurityConfigurerAdapter {
+public class GatewayApp extends WebSecurityConfigurerAdapter {
 
     public static void main(String[] args) throws Throwable {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(GatewayApp.class, args);
     }
 
     @Bean
@@ -70,7 +66,11 @@ public class Application extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable() // otherwise button POSTS will get rejected
                 .authorizeRequests()
-                .anyRequest().permitAll()
+                .anyRequest().permitAll().and()
+
+                // TODO enable form login
+//                TODO .addFilterBefore(loadDataFromServiceAndStoreInSession(), BasicAuthenticationFilter.class)
+
 //                .authenticated().and().formLogin()
                 ;
     }
