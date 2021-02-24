@@ -67,11 +67,3 @@ class C {
 
    }
 }
-@Service
-class B {
-   public boolean isPrime(int n) {
-      // ASDSAD
-      // ASDSAD
-      return true;
-   }
-}
