@@ -1,6 +1,7 @@
 package org.springframework.integration.samples.cafe.annotation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
@@ -24,6 +25,7 @@ import org.springframework.messaging.PollableChannel;
 //@IntegrationComponentScan("org.springframework.integration.samples.cafe") // sa scaneze si interfete @MessageGateway pt care sa creeze apoi proxyuri
 //@ComponentScan
 //@ImportResource("/META-INF/spring/integration/cafeDemo-annotation.xml") //inspiration
+
 public class CafeDemoConfig {
 
     @Autowired
@@ -53,6 +55,9 @@ public class CafeDemoConfig {
     public IntegrationFlow processColdDrinks() {
         return IntegrationFlows.from("coldDrinks")
                 .bridge(e -> e.poller(Pollers.fixedDelay(1000)))
+                .handle(barista, "prepareColdDrink")
+                .handle(barista, "prepareColdDrink")
+                .handle(barista, "prepareColdDrink")
                 .handle(barista, "prepareColdDrink")
                 .log(LoggingHandler.Level.WARN, "cold")
                 .channel("drinks")
