@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,26 +53,18 @@ class Person {
 
 @Component
 class Conversation {
-//    private final Person one;
-//    private final Person two;
-    private ApplicationContext spring;
+    private final Person one;
+    private final Person two;
 
-    //    public Conversation(Person one, Person two) {
-//        this.one = one;
-//        this.two = two;
-//    }
-    public Conversation(ApplicationContext spring) {
-        this.spring = spring;
+    public Conversation(@Qualifier("jane") Person one,@Qualifier("john") Person two) {
 
-//        this.one = john;
-//        this.two = jane;
+        this.one = one;
+        this.two = two;
     }
 
     public void start() {
-        Person john = this.spring.getBean("johnXOups", Person.class);
-        Person jane = spring.getBean("jane", Person.class);
-        System.out.println(john.sayHello());
-        System.out.println(jane.sayHello());
+        System.out.println(one.sayHello());
+        System.out.println(two.sayHello());
     }
 
 }
