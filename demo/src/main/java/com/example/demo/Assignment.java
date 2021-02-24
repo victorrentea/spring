@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -42,9 +43,9 @@ class C {
    private final S s;
    private final D d;
 
-   C(S s, D d) {
+   C(S s, ApplicationContext applicationContext) {
       this.s = s;
-      this.d = d;
+      this.d = applicationContext.getBean(D.class);
    }
 }
 
