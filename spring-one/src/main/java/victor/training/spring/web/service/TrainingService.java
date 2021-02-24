@@ -1,6 +1,12 @@
 package victor.training.spring.web.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.MyException;
@@ -10,22 +16,42 @@ import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+
+@Slf4j
+@Aspect
+@Component
+class LoggerInterceptor {
+    @Around("@annotation(victor.training.spring.web.service.Logged) || @within(victor.training.spring.web.service.Logged)")
+//    @Around("execution(* victor.training..*.*(..))")
+    public Object method(ProceedingJoinPoint pjp) throws Throwable {
+        log.info("Chem si io metoda asta {} cu param {}", pjp.getSignature().getName(),
+            Arrays.toString(pjp.getArgs()));
+        Object result = pjp.proceed();
+        return result;
+    }
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {}
+
+@Logged
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class TrainingService {
-    @Autowired
-    private TrainingRepo trainingRepo;
-    @Autowired
-    private TeacherRepo teacherRepo;
-    @Autowired
-    private EmailSender emailSender;
+    private final TrainingRepo trainingRepo;
+    private final TeacherRepo teacherRepo;
+    private final EmailSender emailSender;
 
+    @Logged
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
@@ -60,6 +86,7 @@ public class TrainingService {
         format.setLenient(false);
         return format.parse(dto.startDate);
     }
+
 
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
