@@ -1,7 +1,6 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -30,6 +32,11 @@ public class BeanApp implements CommandLineRunner {
             conversation.start();;
         System.out.println(spring.getBean("converSation"));
         System.out.println(client.loadUser("jdoe"));
+
+        System.out.println(spring.getBean("imperfect",CD.class));
+        System.out.println(spring.getBean("imperfect",CD.class));
+        System.out.println(spring.getBean("imperfect",CD.class));
+        System.out.println(spring.getBean("imperfect",CD.class));
     }
 
     @Bean
@@ -40,9 +47,54 @@ public class BeanApp implements CommandLineRunner {
     public Person jane() {
         return new Person("Jane");
     }
+    @Bean
+    public Singer carla() {
+        return new Singer("Carla's Dream");
+    }
+    @Bean
+    @Scope("prototype")
+    public CD imperfect() {
+        return new CD("Imperfect", carla());
+    }
 }
-interface UserClient {
 
+//class HACK extends BeanApp {
+//    @Override
+//    public Singer carla() {
+//        if (singleton ) return da din cache
+//        Singer carla = super.carla();
+//        rulPostConstruct(carla)
+//        return carla;
+//    }
+//}
+
+
+
+class Singer {
+    private final String name;
+
+    Singer(String name) {
+        this.name = name;
+        System.out.println("Se naste o stea");
+    }
+    @PostConstruct
+    public void init() {
+        System.out.println("UAAAA");
+    }
+}
+class CD {
+    private final String title;
+    private final Singer singer;
+
+    CD(String title, Singer singer) {
+        this.title = title;
+        this.singer = singer;
+        System.out.println("Generez o instanta de CD");
+    }
+}
+
+
+interface UserClient {
     int loadUser(String username);
 }
 @Component
@@ -76,6 +128,11 @@ class Person {
         System.out.println("new " + name);
         this.name = name;
     }
+    @PostConstruct
+    public void senaste() {
+        System.out.println("Uaaa");
+    }
+
     public String sayHello() {
         return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
     }
