@@ -56,10 +56,10 @@ class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(@Qualifier("jane") Person one,@Qualifier("john") Person two) {
+    public Conversation(Person jane,  Person john) {
 
-        this.one = one;
-        this.two = two;
+        this.one = jane;
+        this.two = john;
     }
 
     public void start() {
