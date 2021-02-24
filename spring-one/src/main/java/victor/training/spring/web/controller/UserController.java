@@ -14,6 +14,7 @@ public class UserController {
     public long count() {
         return service.countUsers();
     }
+
     @GetMapping("users/create")
     public void create() {
         service.createUser();
