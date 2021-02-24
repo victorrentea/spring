@@ -48,21 +48,17 @@ public class LifeApp implements CommandLineRunner{
 @Service
 @RequiredArgsConstructor
 class OrderExporter  {
-	private final LabelService labelService;
+	private final CountryRepo countryRepo;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 	}
 }
 
 @Slf4j
-@Service
 class LabelService {
 	private final CountryRepo countryRepo;
 	
