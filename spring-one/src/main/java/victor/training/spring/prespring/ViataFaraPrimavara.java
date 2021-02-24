@@ -34,6 +34,7 @@ class AltaClasa {
    }
 }
 
+
 @Service
 //@RequiredArgsConstructor // dovada ca limbajul Java are 25 de ani vechime
 class A implements CommandLineRunner {
