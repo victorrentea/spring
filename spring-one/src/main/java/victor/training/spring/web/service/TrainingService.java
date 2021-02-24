@@ -55,6 +55,7 @@ public class TrainingService {
 
     private Date parseStartDate(TrainingDto dto) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        format.setLenient(false);
         return format.parse(dto.startDate);
     }
 
@@ -70,6 +71,9 @@ public class TrainingService {
     }
 
     private TrainingDto mapToDto(Training training) {
+        if (training == null) {
+            return null;
+        }
         TrainingDto dto = new TrainingDto();
         dto.id = training.getId();
         dto.name = training.getName();
