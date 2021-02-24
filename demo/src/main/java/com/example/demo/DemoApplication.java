@@ -49,10 +49,17 @@ class PrimuRest {
 	@Value("${welcome.welcomeMessage}")
 	private String message;
 
+//	@Value("${PATH}")
+//	private String string;
+
 	@GetMapping("hello")
 	public String method() {
 	    return config.toString();
 	}
+//	@GetMapping("path")
+//	public String path() {
+//	    return string;
+//	}
 
 	// @ConfigurationProperties
 	// de unde vin proprietatile
