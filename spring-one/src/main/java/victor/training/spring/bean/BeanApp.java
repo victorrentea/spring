@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
@@ -16,17 +18,18 @@ public class BeanApp implements CommandLineRunner {
     }
 
     @Autowired
-    Conversation conversation;
+    ConverSation conversation;
+    @Autowired
+    ApplicationContext spring;
+    @Autowired
+    private UserClient client;
 
     @Override
     public void run(String... args) throws Exception {
-//        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-//        conversation.start();
-        // TODO manage all with Spring
         System.out.println("Until you do .getBean('str') the app works with a bug in prod");
             conversation.start();;
-
-
+        System.out.println(spring.getBean("converSation"));
+        System.out.println(client.loadUser("jdoe"));
     }
 
     @Bean
@@ -38,6 +41,33 @@ public class BeanApp implements CommandLineRunner {
         return new Person("Jane");
     }
 }
+interface UserClient {
+
+    int loadUser(String username);
+}
+@Component
+class UserManagementSystemClient implements UserClient{
+    @Override
+    public int loadUser(String username) {
+        // REST call
+        return 1;
+    }
+}
+
+@Primary
+@Profile("local")
+@Component
+class DummyUserClient implements UserClient{
+    public int loadUser(String username)  {
+        // load din properties file
+        return -1;
+    }
+}
+
+
+
+
+
 
 class Person {
     private final String name;
@@ -52,12 +82,11 @@ class Person {
 }
 
 @Component
-class Conversation {
+class ConverSation {
     private final Person one;
     private final Person two;
 
-    public Conversation(Person jane,  Person john) {
-
+    public ConverSation(Person jane,  Person john) {
         this.one = jane;
         this.two = john;
     }
@@ -66,5 +95,4 @@ class Conversation {
         System.out.println(one.sayHello());
         System.out.println(two.sayHello());
     }
-
 }
