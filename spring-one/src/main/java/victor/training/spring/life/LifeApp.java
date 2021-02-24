@@ -3,7 +3,6 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -13,8 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
@@ -46,9 +43,12 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
-@RequiredArgsConstructor
 class OrderExporter  {
 	private final CountryRepo countryRepo;
+
+	OrderExporter(CountryRepo countryRepo) {
+		this.countryRepo = countryRepo;
+	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
@@ -61,7 +61,7 @@ class OrderExporter  {
 @Slf4j
 class LabelService {
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;

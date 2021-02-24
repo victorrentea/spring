@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -21,7 +22,18 @@ public class BeanApp implements CommandLineRunner {
     }
 }
 
-@Data
+@Service
+class Person {
+    private final String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+    public String sayHello() {
+        return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
+    }
+}
+
 class Conversation {
     private final Person one;
     private final Person two;
@@ -35,18 +47,12 @@ class Conversation {
         System.out.println(one.sayHello());
         System.out.println(two.sayHello());
     }
-}
 
-
-class Person {
-    private final String name;
-
-    public Person(String name) {
-        this.name = name;
-    }
-    public String sayHello() {
-        return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
+    @Override
+    public String toString() {
+        return "Conversation{" +
+               "one=" + one +
+               ", two=" + two +
+               '}';
     }
 }
-
-
