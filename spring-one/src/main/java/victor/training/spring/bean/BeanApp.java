@@ -1,10 +1,12 @@
 package victor.training.spring.bean;
 
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -12,21 +14,35 @@ public class BeanApp implements CommandLineRunner {
         SpringApplication.run(BeanApp.class);
     }
 
+    @Autowired
+    Conversation conversation;
+
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        conversation.start();
+//        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+//        conversation.start();
         // TODO manage all with Spring
+        System.out.println("Until you do .getBean('str') the app works with a bug in prod");
+            conversation.start();;
 
-        // TODO alternative: "Mirabela Dauer" story :)
+
+    }
+
+    @Bean
+    public Person john() {
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
     }
 }
 
-@Service
 class Person {
     private final String name;
 
     public Person(String name) {
+        System.out.println("new " + name);
         this.name = name;
     }
     public String sayHello() {
@@ -34,25 +50,28 @@ class Person {
     }
 }
 
+@Component
 class Conversation {
-    private final Person one;
-    private final Person two;
+//    private final Person one;
+//    private final Person two;
+    private ApplicationContext spring;
 
-    public Conversation(Person one, Person two) {
-        this.one = one;
-        this.two = two;
+    //    public Conversation(Person one, Person two) {
+//        this.one = one;
+//        this.two = two;
+//    }
+    public Conversation(ApplicationContext spring) {
+        this.spring = spring;
+
+//        this.one = john;
+//        this.two = jane;
     }
 
     public void start() {
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
+        Person john = this.spring.getBean("johnXOups", Person.class);
+        Person jane = spring.getBean("jane", Person.class);
+        System.out.println(john.sayHello());
+        System.out.println(jane.sayHello());
     }
 
-    @Override
-    public String toString() {
-        return "Conversation{" +
-               "one=" + one +
-               ", two=" + two +
-               '}';
-    }
 }
