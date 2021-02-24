@@ -14,12 +14,12 @@ public class Playground {
     private final EntityManager em;
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
-    private final MyBatisMapper mybatis;
+//    private final MyBatisMapper mybatis;
 
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        mybatis.search(100);
+//        mybatis.search(100);
         repo.save(new Message("jpa"));
     }
     @Transactional

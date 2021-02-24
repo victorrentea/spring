@@ -2,7 +2,7 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.h2.util.CacheLRU;
-import org.mybatis.spring.annotation.MapperScan;
+//import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@MapperScan("victor.training.spring.transactions")
+//@MapperScan("victor.training.spring.transactions")
 
 @SpringBootApplication
 @EnableJpaRepositories
