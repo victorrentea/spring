@@ -1,17 +1,13 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,20 +56,39 @@ public class Playground {
     }
 
     @Transactional
-    public void transactionTwo() {
-
-        Message message = repo.findById(100L).get();
-
-        message.setMessage("Alt mesaj");
-
+    public void transactionTwo() throws Exception {
         // TODO Repo API
         // TODO @NonNullApi
+
+        other.salonulOval();
+        try {
+            apelHttp();
+        } catch (Exception e) {
+            other.persistErorr(e.getMessage());
+            throw e;
+        }
+        System.out.println("Aici ies");
+    }
+
+    private void apelHttp() throws Exception {
+//        throw new NullPointerException();
+        // Testul meu:
+        throw new Exception("Exc Checked");
     }
 }
-
 
 @Service
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
+    @Transactional
+    public void salonulOval() {
+        Message message = repo.findById(100L).get();
+        message.setMessage("Alt mesaj");
+
+    }
+
+    public void persistErorr(String message) {
+        repo.save(new Message("Eroare: " + message));
+    }
 }
