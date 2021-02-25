@@ -78,7 +78,7 @@ class Drinker implements CommandLineRunner {
 //}
 
 @Slf4j
-@ServiceA
+@Service
 class Barman {
 	@Async/*("executor")*/
 	public CompletableFuture<Beer> getOneBeer() {
