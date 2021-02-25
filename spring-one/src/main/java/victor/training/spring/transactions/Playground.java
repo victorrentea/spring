@@ -27,7 +27,7 @@ public class Playground {
 
     // JDBC
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void transactionOne() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", 100);
@@ -65,14 +65,22 @@ public class Playground {
         try {
             other.apelHttp();
         } catch (Exception e) {
-            other.persistErorr(e.getMessage());
+            other.persistErorr(e.getMessage()); //merge!
+//            this.persistErorr(e.getMessage()); // nu merge pt ca apelurile locale NU SUNT PROXIATE
+            // magia merge in spring (proxy) doar daca mergi la metoda printr-o referinta injectate de spring.
 //            throw e;
         }
         System.out.println("Aici ies");
     }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistErorr(String message) {
+        repo.save(new Message("Eroare: " + message));
+    }
 
-    @Transactional(readOnly = true)
+
+    @Transactional(readOnly = true) // stops auto-flush (NO UPDATES)
     public void transactionThree() throws Exception {
+
         Message message = repo.findById(101L).get();
         message.setMessage("din readonly");
 
@@ -92,6 +100,7 @@ class AnotherClass {
         message.setMessage("Alt mesaj");
 
     }
+
 
     @Transactional
     public void apelHttp() throws Exception {
