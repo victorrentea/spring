@@ -31,6 +31,8 @@ public class TransactionsApp implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("============= TRANSACTION ONE ==============");
         playground.transactionOne();
+        System.out.println("============= TRANSACTION 3 ==============");
+        playground.transactionThree();
         System.out.println("============= TRANSACTION TWO ==============");
         playground.transactionTwo();
         System.out.println("============= END ==============");

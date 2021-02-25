@@ -27,7 +27,7 @@ public class Playground {
 
     // JDBC
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void transactionOne() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", 100);
@@ -56,7 +56,7 @@ public class Playground {
         System.out.println("se termina metoda");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void transactionTwo() throws Exception {
         // TODO Repo API
         // TODO @NonNullApi
@@ -69,6 +69,14 @@ public class Playground {
 //            throw e;
         }
         System.out.println("Aici ies");
+    }
+
+    @Transactional(readOnly = true)
+    public void transactionThree() throws Exception {
+        Message message = repo.findById(101L).get();
+        message.setMessage("din readonly");
+
+        // repo.save(new Message("ceva"));
     }
 
 
