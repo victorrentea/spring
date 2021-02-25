@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -62,19 +63,15 @@ public class Playground {
 
         other.salonulOval();
         try {
-            apelHttp();
+            other.apelHttp();
         } catch (Exception e) {
             other.persistErorr(e.getMessage());
-            throw e;
+//            throw e;
         }
         System.out.println("Aici ies");
     }
 
-    private void apelHttp() throws Exception {
-//        throw new NullPointerException();
-        // Testul meu:
-        throw new Exception("Exc Checked");
-    }
+
 }
 
 @Service
@@ -88,6 +85,14 @@ class AnotherClass {
 
     }
 
+    @Transactional
+    public void apelHttp() throws Exception {
+        throw new NullPointerException();
+        // Testul meu:
+//        throw new Exception("Exc Checked");
+    }
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistErorr(String message) {
         repo.save(new Message("Eroare: " + message));
     }
