@@ -59,7 +59,13 @@ public class Playground {
         System.out.println("se termina metoda");
     }
 
+    @Transactional
     public void transactionTwo() {
+
+        Message message = repo.findById(100L).get();
+
+        message.setMessage("Alt mesaj");
+
         // TODO Repo API
         // TODO @NonNullApi
     }
