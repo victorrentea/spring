@@ -15,6 +15,8 @@ import victor.training.spring.web.repo.TrainingRepo;
 
 import java.text.ParseException;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @ActiveProfiles("db-mem")
 @Transactional
@@ -45,5 +47,9 @@ class TrainingServiceTest {
 
       service.updateTraining(id, dto);
       Mockito.verify(emailSenderMock).sendScheduleChangedEmail(Mockito.any(), Mockito.any(), Mockito.any());
+
+      Training training = repo.findById(id).get();
+
+      assertThat(training.getName()).isEqualTo("newName");
    }
 }
