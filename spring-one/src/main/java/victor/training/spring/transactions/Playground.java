@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 import java.util.HashMap;
@@ -105,6 +106,17 @@ public class Playground {
         // repo.save(new Message("ceva"));
     }
 
+    public void querying() {
+        // NICIODATA nu hardcodezi JPQL in cod --> @NamedQueries (JPA) sau mai bin @Query (spring) ca sa le poata valida la pornire
+//        TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m WHERE m.message = ?1", Message.class);
+//        query.setParameter(1, "ALO");
+//        List<Message> messages = query.getResultList();
+
+        List<Message> messages = repo.findWithMessage("ALO");
+
+        System.out.println(messages);
+
+    }
 
 }
 

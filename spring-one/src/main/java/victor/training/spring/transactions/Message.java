@@ -1,10 +1,11 @@
 package victor.training.spring.transactions;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+//@NamedQueries({
+//    @NamedQuery(name = "a", query = "SELECT m FROM Message m WHERE m.message = ?1")
+//})
 public class Message {
     @Id
     @GeneratedValue
