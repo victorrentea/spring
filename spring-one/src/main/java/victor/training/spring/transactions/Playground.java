@@ -1,14 +1,18 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,18 +69,32 @@ public class Playground {
         try {
             other.apelHttp();
         } catch (Exception e) {
-            other.persistErorr(e.getMessage()); //merge!
-//            this.persistErorr(e.getMessage()); // nu merge pt ca apelurile locale NU SUNT PROXIATE
+//            other.persistErorr(e.getMessage()); //merge!
+
+            transactionTemplate.execute(status -> {
+                // ai o noua tx separata
+                this.persistErorr(e.getMessage()); // nu merge pt ca apelurile locale NU SUNT PROXIATE
+                return null;
+            });
             // magia merge in spring (proxy) doar daca mergi la metoda printr-o referinta injectate de spring.
 //            throw e;
         }
         System.out.println("Aici ies");
     }
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Transactional(propagation = Propagation.REQUIRES_NEW) == degeaba daca o chemi local.
     public void persistErorr(String message) {
         repo.save(new Message("Eroare: " + message));
     }
 
+
+    private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    public void setTransactionTemplate(PlatformTransactionManager transactionManager) {
+        this.transactionTemplate = new TransactionTemplate(transactionManager);
+        transactionTemplate.setPropagationBehavior(Propagation.REQUIRES_NEW.value());
+
+    }
 
     @Transactional(readOnly = true) // stops auto-flush (NO UPDATES)
     public void transactionThree() throws Exception {
