@@ -2,10 +2,7 @@ package victor.training.spring.web.domain;
 
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -17,7 +14,7 @@ public class Training {
 	private String name;
 	private String description;
 	private Date startDate;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Teacher teacher;
 
 	
