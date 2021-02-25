@@ -116,6 +116,8 @@ public class Playground {
 
         System.out.println(messages);
 
+        System.out.println(repo.findByMessageLike("%L%"));
+
     }
 
 }
