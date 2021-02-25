@@ -107,7 +107,7 @@ public class Playground {
     }
 
     public void querying() {
-        // NICIODATA nu hardcodezi JPQL in cod --> @NamedQueries (JPA) sau mai bin @Query (spring) ca sa le poata valida la pornire
+        // NICIODATA nu hardcodezi JPQL FIXAX (constant) in cod --> @NamedQueries (JPA) sau mai bin @Query (spring) ca sa le poata valida la pornire
 //        TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m WHERE m.message = ?1", Message.class);
 //        query.setParameter(1, "ALO");
 //        List<Message> messages = query.getResultList();

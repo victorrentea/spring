@@ -1,5 +1,7 @@
 package victor.training.spring.web.domain;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
+@ToString
 public class Training {
 	@Id
 	@GeneratedValue
@@ -31,35 +34,35 @@ public class Training {
 		return id;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public final String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public final void setDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public final Date getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public final void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public final Teacher getTeacher() {
+	public Teacher getTeacher() {
 		return teacher;
 	}
 
-	public final void setTeacher(Teacher teacher) {
+	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
 

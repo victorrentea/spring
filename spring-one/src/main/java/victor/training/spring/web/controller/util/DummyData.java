@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import victor.training.spring.web.repo.UserRepo;
 import java.util.Arrays;
 import java.util.Date;
 
+@Profile("insertDummyData") // nu mai insera date decat daca ai pornit cu profilul asta activa (pe local)
 @Service
 public class DummyData {
 
