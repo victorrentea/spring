@@ -92,7 +92,7 @@ class AnotherClass {
 //        throw new Exception("Exc Checked");
     }
 
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistErorr(String message) {
         repo.save(new Message("Eroare: " + message));
     }
