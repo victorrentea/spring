@@ -66,9 +66,11 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new MyException(ErrorCode.DUPLICATE_NAME);
-        }
+//        if (trainingRepo.getByName(dto.name) != null &&
+//            !trainingRepo.getByName(dto.name).getId().equals(id)) {
+//            throw new MyException(ErrorCode.DUPLICATE_NAME);
+//        }
+
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
         training.setDescription(dto.description);
@@ -79,6 +81,7 @@ public class TrainingService {
         }
         training.setStartDate(newDate);
         training.setTeacher(teacherRepo.getOne(dto.teacherId));
+
     }
 
     private Date parseStartDate(TrainingDto dto) throws ParseException {

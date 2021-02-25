@@ -13,5 +13,6 @@ public class EmailSender {
     public void sendScheduleChangedEmail(Teacher teacher, String trainingName, Date newDate) {
         System.out.println("SENDING EMAIL TO TEACHER " + teacher.getName() + " for training " + trainingName + " moved to date " + newDate);
 
+        throw new RuntimeException("Nu merge din teste");
     }
 }
