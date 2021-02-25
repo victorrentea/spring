@@ -1,6 +1,8 @@
 package victor.training.spring.web.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,33 +19,27 @@ import java.text.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ActiveProfiles("db-mem")
-@Transactional
-class TrainingServiceTest {
+
+class TrainingServiceTest extends RepoTestBase {
    @Autowired
    private TrainingService service;
    @Autowired
    private TrainingRepo repo;
-
    @MockBean
    private EmailSender emailSenderMock;
 
-   @Autowired
-   private TeacherRepo teacherRepo;
+   @RegisterExtension
+  public WithCountryRefData withCountryRefData = new WithCountryRefData();
 
    @Test
    void updateTraining() throws ParseException {
-      Teacher teacher = new Teacher();
-      Long teacherId = teacherRepo.save(teacher).getId();
       Long id = repo.save(new Training("Old","OldDesc",null)).getId();
-
 
       TrainingDto dto = new TrainingDto();
       dto.name = "newName";
       dto.description = "newDesc";
       dto.startDate = "01-01-2021";
-      dto.teacherId = teacherId;
+      dto.teacherId = withCountryRefData.getTeacher().getId();
 
       service.updateTraining(id, dto);
       Mockito.verify(emailSenderMock).sendScheduleChangedEmail(Mockito.any(), Mockito.any(), Mockito.any());
