@@ -8,6 +8,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.ScheduledFuture;
 
@@ -23,11 +25,11 @@ public class AuctionController {
    private ScheduledFuture<?> nextEndAnnounce;
    private int endTicks;
 
-   @MessageMapping("/hello")
+   @MessageMapping("/bid")
    @SendTo("/topic/auction-messages")
    public synchronized AuctionMessage greeting(Bid newBid) {
       if (bestBid != null && bestBid.getBid() >= newBid.getBid()) {
-         return new AuctionMessage("Your bid is less then the current winner: " + bestBid);
+         return sendMessageToBrowser("Your bid is less then the current winner: " + bestBid);
       } else {
          bestBid = newBid;
          if (nextEndAnnounce != null) {
@@ -35,8 +37,14 @@ public class AuctionController {
          }
          nextEndAnnounce = taskScheduler.schedule(this::endTick, getNextEndAnnounce());
          endTicks = 3;
-         return new AuctionMessage(newBid.getBid() + " for " + newBid.getName() + "!");
+         return sendMessageToBrowser(newBid.getBid() + " for " + newBid.getName() + "!");
       }
+   }
+
+   private AuctionMessage sendMessageToBrowser(String message) {
+      DateTimeFormatter format = DateTimeFormatter.ofPattern("KK:mm:ss.SSS");
+      String messageWithTimestamp = LocalDateTime.now().format(format) + " " + message;
+      return new AuctionMessage(messageWithTimestamp);
    }
 
    private Date getNextEndAnnounce() {
@@ -46,7 +54,7 @@ public class AuctionController {
 
    private synchronized void endTick() {
       endTicks--;
-      AuctionMessage message = new AuctionMessage("Selling to " + bestBid.getName() + " for " + bestBid.getBid() + " ... " + labels[endTicks]);
+      AuctionMessage message = sendMessageToBrowser("Selling to " + bestBid.getName() + " for " + bestBid.getBid() + " ... " + labels[endTicks]);
       simpMessagingTemplate.convertAndSend("/topic/auction-messages", message);
       if (endTicks == 0) {
          bestBid = null;
