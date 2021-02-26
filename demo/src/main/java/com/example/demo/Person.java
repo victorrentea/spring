@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@XmlRootElement
+@XmlRootElement(name = "person")
 public class Person {
    @XmlElement
    private String name;
