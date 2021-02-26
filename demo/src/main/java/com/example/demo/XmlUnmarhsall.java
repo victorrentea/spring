@@ -11,10 +11,8 @@ public class XmlUnmarhsall {
                   "    <name>John</name>\n" +
                   "</person>";
 
-
       JAXBContext context = JAXBContext.newInstance("com.example.demo");
       Object ceva = context.createUnmarshaller().unmarshal(new StringReader(xml));
-
 
       System.out.println(ceva);
    }
