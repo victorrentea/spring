@@ -15,7 +15,7 @@ public class SpaApplication {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SpaApplication.class)
-				.profiles("spa")
+				.profiles("spa", "insertDummyData")
 				.run(args);
 	}
 

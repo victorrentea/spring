@@ -1,7 +1,9 @@
 package victor.training.spring.web.controller.dto;
 
-import java.io.Serializable;
+import lombok.ToString;
 
+import java.io.Serializable;
+@ToString
 public class TrainingDto implements Serializable {
 	public Long id;
 	public String name; //
