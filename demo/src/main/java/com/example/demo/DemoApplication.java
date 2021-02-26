@@ -3,6 +3,7 @@ package com.example.demo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +25,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 @EnableAsync
+@EnableScheduling
 @SpringBootApplication
 public class DemoApplication {
 
@@ -97,6 +104,8 @@ class PrimuRest {
 
 	@Autowired
 	private FileProcessor processor;
+	@Value("${stage.folder}")
+	private File stageFolder;
 
 	@PostMapping("upload")
 	public String upload(@RequestParam("fisier") MultipartFile file) throws IOException {
@@ -107,28 +116,36 @@ class PrimuRest {
 		}
 		// TODO faci ce ai de facut cu el: 1) il pui in DB 2) il trimiti pe SCP 3) il trimi catre alt API cu http request, 4) cozi 5) Il procesezi linie cu linie
 
-//		File stageFolder = new File("C:\\workspace\\spring\\demo\\stage");
-//		File toProcess = new File(stageFolder, file.getOriginalFilename());
-//
-//		Files.move(tempFile.toPath(), toProcess.toPath());
+		File toProcess = new File(stageFolder, UUID.randomUUID().toString() + "-" + file.getOriginalFilename());
 
-		processor.rasneste(tempFile);
+		Files.move(tempFile.toPath(), toProcess.toPath());
+
+//		processor.rasneste(tempFile);
 
 		return "Primit! E in procesare. " + file.getOriginalFilename() ;
 	}
 }
 
+@Slf4j
 @Component
 class FileProcessor {
+	@Value("${stage.folder}")
+	private File stageFolder;
 	@SneakyThrows
-	@Async
-	public void rasneste(File file) {
+	@Scheduled(fixedRate = 3000)
+	public void rasneste() {
+
+		if (stageFolder.listFiles().length == 0) {
+			log.info("no new files");
+			return;
+		}
+		File file = stageFolder.listFiles()[0];
 		try {
 			// logica multa de parsare
-
+			log.info("Found file to process: " + file.getAbsolutePath() );
 			Thread.sleep(5000);
 			File dest= new File("C:\\workspace\\spring\\demo\\up.jpg");
-			Files.copy(file.toPath(), dest.toPath());
+			Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			System.out.println("Gata");
 		} finally {
 			file.delete();
