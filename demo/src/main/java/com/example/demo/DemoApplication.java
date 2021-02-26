@@ -80,6 +80,7 @@ class PrimuRest {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasAuthority('areVoieSaLansezeFocoasele')")
 	@GetMapping("admin/prapad")
 	public String prapad() {
 		return "Le-am lansat";
