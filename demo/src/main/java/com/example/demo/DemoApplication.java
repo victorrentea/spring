@@ -53,23 +53,6 @@ class S {
 }
 
 
-@Data
-@Component
-@ConfigurationProperties(prefix = "welcome")
-class WelcomeConfig {
-	private String welcomeMessage;
-//	private int hostPort;
-	private List<String> supportUrls;
-	private Map<String, String> localContactPhone;
-	private HelpInfo help;
-	@Data
-	static class HelpInfo {
-		private URL helpUrl;
-		private String iconUri;
-	}
-}
-
-
 @RestController
 @RequiredArgsConstructor
 class PrimuRest {

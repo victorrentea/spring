@@ -2,6 +2,7 @@ package victor.training.spring.web.controller.websocket;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class NotificationController {
    private final SimpMessagingTemplate simpMessagingTemplate;
-
+private final ApplicationContext applicationContext;
    @GetMapping("notify")
    public void notifyAlLBrowsers() {
       log.info("notification sent ");
+//      applicationContext.getEnvironment().getProperty("arbitrar");
       simpMessagingTemplate.convertAndSend("/topic/notification", "Notificare");
    }
 
