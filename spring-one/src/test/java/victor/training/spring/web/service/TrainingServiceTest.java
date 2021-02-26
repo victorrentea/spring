@@ -24,12 +24,6 @@ import java.text.ParseException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Sql(value = "classpath:/reference-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@interface WithReferenceData {
-
-}
-
 class TrainingServiceTest extends RepoTestBase {
    @Autowired
    private TrainingService service;
