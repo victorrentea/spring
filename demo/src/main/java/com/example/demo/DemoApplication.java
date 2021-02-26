@@ -9,10 +9,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SpringBootApplication
@@ -70,8 +73,17 @@ class PrimuRest {
 //	    return string;
 //	}
 
+	@PostMapping
+	public String salut(@RequestBody SalutDto dto) {
+		return dto.salut.toUpperCase();
+	}
+
+
 	// @ConfigurationProperties
 	// de unde vin proprietatile
 }
 
+class SalutDto {
+	public String salut;
+}
 
