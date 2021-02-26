@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,9 +74,15 @@ class PrimuRest {
 //	    return string;
 //	}
 
-	@PostMapping
+	@PostMapping("api/salut")
 	public String salut(@RequestBody SalutDto dto) {
 		return dto.salut.toUpperCase();
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("admin/prapad")
+	public String prapad() {
+		return "Le-am lansat";
 	}
 
 
