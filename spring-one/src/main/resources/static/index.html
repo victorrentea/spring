@@ -21,6 +21,11 @@ html {
 	
 	
 	<div id="trainingMain" style="border:2px solid red">
+		<div id="searchDiv">
+			<label for="searchName">Name: </label><input id="searchName" type="text"/> <br />
+			<label for="searchTeacher">Teacher: </label><select id="searchTeacher" ></select> <br />
+			<input type="button" onclick="search()" />
+		</div>
 		<table id="trainingTable" border="1">
 			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
 		</table>
@@ -100,6 +105,10 @@ function refreshTrainingsTable() {
 			toastr.info("Trainings reloaded")
 		}
 	});
+}
+
+function search() {
+
 }
 refreshTrainingsTable();
 $.ajax(restEndpoint +"/user/current", {
