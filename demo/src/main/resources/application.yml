@@ -1,0 +1,12 @@
+welcome:
+  welcomeMessage: Welcome to This Spring Realm
+  help:
+    helpUrl: http://baeldung.com
+    iconUri: bebe
+  supportUrls: http://google.com,http://stackoverflow.com,http://baeldung.com
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
+
+
+in.folder.path: C:/workspace/spring/demo/in
