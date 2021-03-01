@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ interface EmailSender {
    void sendMail();
 }
 
-@Profile("!local")
 @Component
 class SMTPEmailSender implements EmailSender {
    @Override
@@ -32,6 +32,7 @@ class SMTPEmailSender implements EmailSender {
    }
 }
 @Profile("local")
+@Primary
 @Component
 class DummyEmailSender implements EmailSender {
    public void sendMail() {
