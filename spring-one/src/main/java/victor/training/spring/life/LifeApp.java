@@ -3,6 +3,7 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -38,39 +39,38 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice();
 	}
 }
 @Slf4j
-@Service 
+@Service
+@RequiredArgsConstructor
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
+	private final LabelService labelService;
 	
 	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
-
 @Slf4j
 @Service
-class LabelService {
+class LabelService { // by default Spring crreaza o sg instanta din aceasta clasa
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
@@ -80,10 +80,10 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	@PostConstruct
-	public void load() {
+//	@PostConstruct
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
