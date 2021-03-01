@@ -16,4 +16,5 @@ public class SpaApplication {
 				.run(args);
 	}
 
+
 }
