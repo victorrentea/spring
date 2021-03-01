@@ -12,7 +12,7 @@ public class SpaApplication {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SpaApplication.class)
-				.profiles("spa")
+				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
 				.run(args);
 	}
 
