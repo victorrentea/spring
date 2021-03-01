@@ -1,8 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.service.UserService;
 
 @RestController
@@ -18,4 +18,14 @@ public class UserController {
     public void create() {
         service.createUser();
     }
+
+    @GetMapping("users/{id}")
+    public UserDto get(@PathVariable long id) {
+        return service.getUser(id);
+    }
+    @PutMapping("users/{id}")
+    public void update(@PathVariable long id, @RequestBody UserDto dto) {
+        service.updateUser(id, dto.name);
+    }
+
 }
