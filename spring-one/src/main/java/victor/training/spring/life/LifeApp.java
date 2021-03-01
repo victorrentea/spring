@@ -10,15 +10,13 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @SpringBootApplication
+@ComponentScan(scopedProxy = ScopedProxyMode.TARGET_CLASS)
+//@EnableAspectJAutoProxy(proxyTargetClass = false)
 public class LifeApp implements CommandLineRunner{
 	@Bean
 	public static CustomScopeConfigurer defineThreadScope() {
@@ -72,8 +70,8 @@ class InvoiceExporter {
 }
 @Slf4j
 @Service
-@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
-class LabelService { // by default Spring crreaza o sg instanta din aceasta clasa
+@Scope("thread")
+class LabelService implements ILabelService { // by default Spring crreaza o sg instanta din aceasta clasa
 	private final CountryRepo countryRepo;
 
 	public LabelService(CountryRepo countryRepo) {
@@ -84,11 +82,13 @@ class LabelService { // by default Spring crreaza o sg instanta din aceasta clas
 	private Map<String, String> countryNames;
 
 //	@PostConstruct
+	@Override
 	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 
+	@Override
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
