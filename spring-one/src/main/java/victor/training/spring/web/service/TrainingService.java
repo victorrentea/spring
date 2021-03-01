@@ -3,6 +3,8 @@ package victor.training.spring.web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.MyException;
+import victor.training.spring.web.MyException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -41,7 +43,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(ErrorCode.DUPLICATED_TRAINING_NAME, dto.name);
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
@@ -72,7 +74,7 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(ErrorCode.DUPLICATED_TRAINING_NAME, dto.name);
         }
         trainingRepo.save(mapToEntity(dto));
     }
