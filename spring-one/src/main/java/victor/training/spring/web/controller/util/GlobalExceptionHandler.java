@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class GlobalExceptionHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-	
+
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = Exception.class)
 	public String defaultErrorHandler(HttpServletRequest request, Exception exception) throws Exception {

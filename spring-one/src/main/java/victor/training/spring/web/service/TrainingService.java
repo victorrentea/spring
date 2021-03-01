@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,8 +33,9 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+    public Optional<TrainingDto> getTrainingById(Long id) {
+        Optional<Training> trainingEntityOpt = trainingRepo.findById(id);
+        return trainingEntityOpt.map(this::mapToDto);
     }
 
     // TODO Test this!
@@ -55,7 +57,13 @@ public class TrainingService {
 
     private Date parseStartDate(TrainingDto dto) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        return format.parse(dto.startDate);
+
+        Date date = format.parse(dto.startDate);
+        String stringAgain = format.format(date);
+        if (!dto.startDate.equals(stringAgain)) {
+            throw new IllegalArgumentException("Invalid Date : " + dto.startDate);
+        }
+        return date;
     }
 
     public void deleteById(Long id) {
