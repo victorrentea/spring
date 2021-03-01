@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class B {
    public int method() {
-      throw new IllegalArgumentException();
+      return -5;
    }
 }

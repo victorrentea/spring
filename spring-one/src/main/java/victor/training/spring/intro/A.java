@@ -3,6 +3,8 @@ package victor.training.spring.intro;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @RequiredArgsConstructor
 public class A {
@@ -13,6 +15,11 @@ public class A {
       //mm
       return b.method() + 1;
       //logica
+   }
+
+   @PostConstruct
+   public void init() {
+      System.out.println("Aa");
    }
 }
 
