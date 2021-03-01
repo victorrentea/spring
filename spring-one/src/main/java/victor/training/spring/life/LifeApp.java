@@ -5,6 +5,7 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -39,8 +40,8 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
-		new Thread(() -> exporter.export(Locale.FRENCH)).start();
+//		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+//		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
@@ -50,11 +51,11 @@ public class LifeApp implements CommandLineRunner{
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
 //	private final LabelService labelService;
-	private final ApplicationContext applicationContext;
+	private final ObjectFactory<LabelService> labelServiceFactory;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = applicationContext.getBean(LabelService.class);
+		LabelService labelService = labelServiceFactory.getObject();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
