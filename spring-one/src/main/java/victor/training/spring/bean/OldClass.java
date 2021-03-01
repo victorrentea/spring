@@ -4,7 +4,7 @@ import victor.training.spring.ThreadUtils;
 
 // CAN'T TOUCH THIS !! Ta-na-na-na
 class OldClass {
-    private static OldClass INSTANCE;
+    private static OldClass INSTANCE = new OldClass();
     private OldClass() {
         currentCountry = geolocateCurrentCountry();
     }

@@ -33,6 +33,11 @@ public class BeanApp implements CommandLineRunner {
     }
 
     @Bean
+    public OldClass oldClass() {
+        return OldClass.getInstance();
+    }
+
+    @Bean
     // <bean id="john" class="victor.training.spring.bean.Person" c:name="John" />
     public Person john() {
         return new Person("John");
