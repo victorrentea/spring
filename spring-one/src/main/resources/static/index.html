@@ -21,24 +21,29 @@ html {
 	
 	
 	<div id="trainingMain" style="border:2px solid red">
+		<div id="searchDiv" style="border: 7px solid pink">
+			<label for="searchName">Name: </label><input id="searchName" type="text" size="10"/> <br />
+			<label for="searchTeacher">Teacher: </label><select id="searchTeacher" ></select> <br />
+			<input type="button" onclick="search()" value="Search" />
+		</div>
 		<table id="trainingTable" border="1">
 			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
 		</table>
 		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
 		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
 	</div>
-	
+
 	<div id="trainingNewDiv" style="display:none;border:2px solid green">
 		<h4>Create a New Training</h4>
 		Name:<input type="text" id="newName" /> <br />
 		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
-		
+
 		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
 		Teacher: <select id="newTeacher"></select> <br />
 		<input type="button" value="Create" onclick="createTraining()">
 		<input type="button" value="Cancel" onclick="$('#trainingNewDiv').hide();$('#trainingMain').show();">
 	</div>
-	
+
 	<div id="trainingEditDiv" style="display:none; border:2px solid blue">
 		<h4>Edit a Training</h4>
 		<input type="hidden" id="editTrainingId" />
@@ -65,7 +70,7 @@ html {
 
 function moveSelectedOptions(fromId, toId) {
 	var selectedValues = $(fromId).val()
-	for (var i=0;i<selectedValues.length;i++) {		
+	for (var i=0;i<selectedValues.length;i++) {
 		var $leftSel = $(fromId+" option[value='"+selectedValues[i]+"']");
 		$(toId).append('<option value="'+selectedValues[i]+'">'+$leftSel.text()+'</option>');
 		console.log($leftSel.html());
@@ -79,25 +84,44 @@ function getContextPath() {
 }
 var restEndpoint = getContextPath() + "/rest";
 
+function fillTable(trainings) {
+	$("#trainingTable tr").each(function (i, r) {
+		if (i > 0) r.remove();
+	});
+	for (var i = 0; i < trainings.length; i++) {
+		var c = trainings[i];
+		var row = '<tr id="' + c.id + '">';
+		row += '<td>' + c.name + '</td>';
+		row += '<td>' + c.startDate + '</td>';
+		row += '<td>' + c.teacherName + '</td>';
+		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
+				'<input type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+		row += '</tr>';
+		$('#trainingTable tr:last').after(row);
+	}
+}
+
 function refreshTrainingsTable() {
 	$.ajax(restEndpoint +"/trainings", {
 		method: "GET",
 		success: function(trainings) {
-			$("#trainingTable tr").each(function(i, r) {
-				if (i>0) r.remove();
-			});
-			for (var i=0; i<trainings.length;i++) {
-				var c = trainings[i];
-				var row = '<tr id="'+c.id+'">';
-				row+='<td>'+c.name+'</td>';
-				row+='<td>'+c.startDate + '</td>';
-				row+='<td>'+c.teacherName+'</td>';
-				row+='<td><input type="button" value="Edit" onclick="openEditTraining('+c.id+')" />'+
-						 '<input type="button" value="Delete" onclick="deleteTraining('+c.id+')" /></td>';
-				row+='</tr>';
-				$('#trainingTable tr:last').after(row);
-			}
+			fillTable(trainings);
 			toastr.info("Trainings reloaded")
+		}
+	});
+}
+
+function search() {
+	$.ajax(restEndpoint +"/trainings/search", {
+		method: "POST",
+		data: JSON.stringify({
+			name:$("#searchName").val(),
+			teacherId:$("#searchTeacher").val()
+		}),
+		contentType: "application/json",
+		success: function(trainings) {
+			fillTable(trainings);
+			toastr.info("Search results displayed")
 		}
 	});
 }
@@ -111,7 +135,7 @@ $("#newStartDate").val("01-01-2019");
 
 function populateTeacherCombo($teacherCombo) {
 	$teacherCombo.html("");
-	
+
 	$.ajax(restEndpoint + "/teachers", {
 		method: "GET",
 		success: function(teachers) {
@@ -123,6 +147,7 @@ function populateTeacherCombo($teacherCombo) {
 }
 populateTeacherCombo($("#newTeacher"));
 populateTeacherCombo($("#editTeacher"));
+populateTeacherCombo($("#searchTeacher"));
 
 
 function deleteTraining(id) {
