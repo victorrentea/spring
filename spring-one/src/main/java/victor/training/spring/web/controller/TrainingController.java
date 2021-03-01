@@ -13,17 +13,14 @@ public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
-	// TODO [SEC] Restrict display for trainings of teachers of users
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
-	// TODO [SEC] Check user manages training of this training
 	public TrainingDto getTrainingById(Long id) {
 		return trainingService.getTrainingById(id);
 	}
 
-	// TODO [SEC] Check user manages teacher of this training
 	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
