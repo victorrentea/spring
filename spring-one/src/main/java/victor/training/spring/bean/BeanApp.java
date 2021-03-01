@@ -46,18 +46,16 @@ public class BeanApp implements CommandLineRunner {
 @Service
 @Data
 class Conversation {
-    private final Person one;
-    private final Person two;
+    @Autowired
+    private Person john;
+    @Autowired
+    private Person jane;
 
-    public Conversation(@Qualifier("john") Person one, @Qualifier("jane")Person two) {
-        this.one = one;
-        this.two = two;
-    }
 
     public void start() {
         System.out.println("Incepe conversatia " + hashCode());
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
+        System.out.println(john.sayHello());
+        System.out.println(jane.sayHello());
     }
 }
 
