@@ -10,11 +10,11 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
@@ -49,27 +49,30 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+//	private final LabelService labelService;
+	private final ApplicationContext applicationContext;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = applicationContext.getBean(LabelService.class);
 		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-	private final LabelService labelService;
-	
-	public void exportInvoice() {
+//	private final LabelService labelService;
+
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 @Slf4j
 @Service
+@Scope("prototype")
 class LabelService { // by default Spring crreaza o sg instanta din aceasta clasa
 	private final CountryRepo countryRepo;
 	
@@ -85,7 +88,7 @@ class LabelService { // by default Spring crreaza o sg instanta din aceasta clas
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
