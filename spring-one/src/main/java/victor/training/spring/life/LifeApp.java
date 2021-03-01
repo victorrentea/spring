@@ -40,8 +40,8 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-//		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
-//		new Thread(() -> exporter.export(Locale.FRENCH)).start();
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
@@ -50,13 +50,13 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-//	private final LabelService labelService;
-	private final ObjectFactory<LabelService> labelServiceFactory;
+	private final CountryRepo countryRepo;
+	//	private final LabelService labelService;
+//	private final ObjectFactory<LabelService> labelServiceFactory;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = labelServiceFactory.getObject();
-		labelService.load(locale);
+		LabelService labelService = new LabelService(countryRepo.loadCountryNamesAsMap(locale));
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
 	}
@@ -72,22 +72,13 @@ class InvoiceExporter {
 	}
 }
 @Slf4j
-@Service
-@Scope("prototype")
+//@Service
+//@Scope("prototype")
 class LabelService { // by default Spring crreaza o sg instanta din aceasta clasa
-	private final CountryRepo countryRepo;
-	
-	public LabelService(CountryRepo countryRepo) {
-		System.out.println("+1 Label Service: " + this.hashCode());
-		this.countryRepo = countryRepo;
-	}
-
 	private Map<String, String> countryNames;
 
-//	@PostConstruct
-	public void load(Locale locale) {
-		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(locale);
+	public LabelService(Map<String, String> countryNames) {
+		this.countryNames = countryNames;
 	}
 
 	public String getCountryName(String iso2Code) {
