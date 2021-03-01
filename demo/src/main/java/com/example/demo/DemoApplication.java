@@ -2,13 +2,22 @@ package com.example.demo;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -22,10 +31,56 @@ public class DemoApplication {
 //"GET /hello"
 @RestController
 class Hello {
+
+	@Value("${in.folder.path}")
+	File path;
+
+	@Value("${welcome.welcomeMessage}")
+	String message;
+
+	@Value("${welcome.help.helpUrl}")
+	URL helpUrl;
+
+	@Value("${welcome.supportUrls}")
+	List<URL> websiteCsv;
+
+	@Value("#{'${welcome.supportUrls}'.split('\\s*;\\s*')}")
+	List<URL> websiteCsvWithSpEL;
+
+	List<URL> manualParse;
+
+	@Autowired
+	public void setManualParse( @Value("${welcome.supportUrls}") String s) {
+		this.manualParse = new ArrayList<>();
+		manualParse = Stream.of(s.split("\\s*;\\s*")).map(spec -> {
+			try {
+				return new URL(spec);
+			} catch (MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
+		}).collect(Collectors.toList());
+	}
+
+	// <c:out value="${request['data'].listField[0]}" /> <c
+
+	@PostConstruct
+	public void checkInFolder() {
+		if (!path.isDirectory()) {
+			throw new IllegalArgumentException("Invalid in folder : " + path.getAbsolutePath());
+		}
+	}
 //	@RequestMapping(method = RequestMethod.GET, path = "/hello")
 	@GetMapping( "hello")
-	public String method() {
-		return "Hello!";
+	public String method()  {
+		String s = "" ;
+
+		for (URL url : websiteCsvWithSpEL) {
+			s += " >>> " + url;
+		}
+		for (URL url : manualParse) {
+			s += " YYY " + url;
+		}
+		return "Hello!"  + path + " w "  + websiteCsv + "<br /> " + s ;
 	}
 }
 
