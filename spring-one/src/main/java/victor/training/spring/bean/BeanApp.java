@@ -2,13 +2,15 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -39,18 +41,32 @@ public class BeanApp implements CommandLineRunner {
     public Person jane() {
         return new Person("Jane");
     }
-
+    @Bean
+    @Scope("prototype")
+    public Conversation conversation() {
+        Person john = john();
+        System.out.println("Ce fel de jhon esti tu? " + john.getClass());
+        return new Conversation(john, jane());
+    }
 }
 
+//class DusmanuSpring extends BeanApp {
+//    @Override
+//    public Person jane() {
+//        return jane din cache;
+//    }
+//}
 
-@Service
-@Data
+
 class Conversation {
-    @Autowired
-    private Person john;
-    @Autowired
-    private Person jane;
+    private final Person john;
+    private final Person jane;
 
+    public Conversation(Person john, Person jane) {
+        System.out.println("New conver  "+ hashCode());
+        this.john = john;
+        this.jane = jane;
+    }
 
     public void start() {
         System.out.println("Incepe conversatia " + hashCode());
@@ -64,7 +80,12 @@ class Person {
     private final String name;
 
     public Person(String name) {
+        System.out.println("Creez pe " + name);
         this.name = name;
+    }
+    @PostConstruct
+    public void method() {
+        System.out.println("Oare eu cand rulez");
     }
 
     public String sayHello() {
