@@ -21,89 +21,101 @@ import java.util.concurrent.*;
 @SpringBootApplication
 public class AsyncApp {
 
-	public static void main(String[] args) {
-		new SpringApplicationBuilder(AsyncApp.class)
-			.profiles("spa")
-			.run(args);
-	}
+   public static void main(String[] args) {
+      new SpringApplicationBuilder(AsyncApp.class)
+          .profiles("spa")
+          .run(args);
+   }
 
-	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanCount) {
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(barmanCount);
-		executor.setMaxPoolSize(barmanCount);
-		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
-		executor.initialize();
-		executor.setWaitForTasksToCompleteOnShutdown(true);
-		return executor;
-	}
+   @Bean
+   public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanCount) {
+      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+      executor.setCorePoolSize(barmanCount);
+      executor.setMaxPoolSize(barmanCount);
+      executor.setQueueCapacity(500);
+      executor.setThreadNamePrefix("bar-");
+      executor.initialize();
+      executor.setWaitForTasksToCompleteOnShutdown(true);
+      return executor;
+   }
 
 }
 
 @Slf4j
 @RestController
 class Drinker {
-	@Autowired
-	private Barman barman;
-	@Autowired
-	ThreadPoolTaskExecutor pool;
+   @Autowired
+   ThreadPoolTaskExecutor pool;
+   @Autowired
+   private Barman barman;
 
-	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
-	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
-	// TODO [3] Messaging...
-	@GetMapping
-	public CompletableFuture<DillyDilly> getDrinks() throws ExecutionException, InterruptedException {
-		log.debug("Submitting my order to " + barman.getClass());
+   // TODO [1] inject and use a ThreadPoolTaskExecutor.submit
+   // TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
+   // TODO [3] Messaging...
+   @GetMapping
+   public CompletableFuture<DillyDilly> getDrinks() throws ExecutionException, InterruptedException {
+      log.debug("Submitting my order to " + barman.getClass());
 //		ExecutorService pool = Executors.newFixedThreadPool(2);
 
-		// 1 mangeuit pool cu spring DON
-		// 2 @Async DONE
-		// 3 Endpoint HTTP asincron --- Reactive Programming: non-blocking request handling
+      // 1 mangeuit pool cu spring DON
+      // 2 @Async DONE
+      // 3 Endpoint HTTP asincron --- Reactive Programming: non-blocking request handling
 
-		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
-		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
+      CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+      CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
-		log.debug("Aici a plecata fata cu comenzile mele");
+      log.debug("Aici a plecata fata cu comenzile mele");
 
-		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
+      CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
 
-		log.debug("Iese threadul de http din metoda. Poate deci servi alti clienti ");
+      log.debug("Iese threadul de http din metoda. Poate deci servi alti clienti ");
 
-		return futureDilly;
-	}
+      barman.injura("!!$^!%@^#!@%#!*%!@");
+
+      return futureDilly;
+   }
 }
 
 @Data
 class DillyDilly {
-	private final Beer beer;
-	private final Vodka vodka;
+   private final Beer beer;
+   private final Vodka vodka;
 }
 
 @Slf4j
 @Service
 class Barman {
-	@Async
-	public CompletableFuture<Beer> getOneBeer() {
-		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000); // RMI call
-		 return CompletableFuture.completedFuture(new Beer());
-	 }
+   @Async
+   public CompletableFuture<Beer> getOneBeer() {
+//      if (true) {
+//         throw new IllegalArgumentException("Nu mai e bere");
+//      }
+      log.debug("Pouring Beer...");
+      ThreadUtils.sleep(1000); // RMI call
+      return CompletableFuture.completedFuture(new Beer());
+   }
 
-	 @Async
-	 public CompletableFuture<Vodka> getOneVodka() {
-		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000); // SOAP call
-		 return CompletableFuture.completedFuture(new Vodka());
-	 }
+   @Async
+   public CompletableFuture<Vodka> getOneVodka() {
+      log.debug("Pouring Vodka...");
+      ThreadUtils.sleep(1000); // SOAP call
+      return CompletableFuture.completedFuture(new Vodka());
+   }
+
+   @Async
+   public void injura(String uratura) { // fire and forget
+      if (uratura != null) {
+         throw new IllegalArgumentException("Iti fac buzunar");
+      }
+   }
 }
 
 @Data
 class Beer {
-	public String type = "blond";
+   public String type = "blond";
 }
 
 @Data
 class Vodka {
-	public String type = "deadly";
+   public String type = "deadly";
 }
