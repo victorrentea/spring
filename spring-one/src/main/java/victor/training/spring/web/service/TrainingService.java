@@ -1,6 +1,11 @@
 package victor.training.spring.web.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.MyException;
@@ -10,14 +15,45 @@ import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
 
+import javax.servlet.*;
+import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+
+@Slf4j
+@Aspect // 1-2 per applicatie, maxim
+@Component
+class LoggingInterceptor {
+
+//    @Around("execution(* victor.training.spring.web..*.*(..))")
+//    @Around("@within(victor.training.spring.web.service.Logged)") // @ pe clasa
+    @Around("@annotation(victor.training.spring.web.service.Logged)") // @ pe metoda
+    public Object logCall(ProceedingJoinPoint pjp) throws Throwable {
+        if (log.isDebugEnabled()) {
+            log.debug("Calling {} ({})", pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
+        }  else {
+            log.info("Calling {}", pjp.getSignature().getName());
+        }
+
+        Object result = pjp.proceed();
+        log.info("Result: " + result);
+        return result;
+
+        // WARNING: sa nu te duca gandul sa faci un fel de custom execution profiler, sa vezi pe unde se pierde timp.
+        // Pentru asta ai deja in JVM Java Flight Recorder -- face fix asta
+    }
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {}
+
+
+@Slf4j
 @Service
+//@Logged
 @Transactional
 public class TrainingService {
     @Autowired
@@ -27,7 +63,9 @@ public class TrainingService {
     @Autowired
     private EmailSender emailSender;
 
+    @Logged
     public List<TrainingDto> getAllTrainings() {
+        new RuntimeException().printStackTrace();
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
             dtos.add(mapToDto(training));
@@ -36,12 +74,14 @@ public class TrainingService {
     }
 
     public Optional<TrainingDto> getTrainingById(Long id) {
+
         Optional<Training> trainingEntityOpt = trainingRepo.findById(id);
         return trainingEntityOpt.map(this::mapToDto);
     }
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new MyException(ErrorCode.DUPLICATED_TRAINING_NAME, dto.name);
         }

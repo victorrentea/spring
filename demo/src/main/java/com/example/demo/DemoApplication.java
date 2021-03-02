@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+@EnableCaching
 @SpringBootApplication
 public class DemoApplication {
 
@@ -27,7 +29,7 @@ public class DemoApplication {
 	}
 
 }
-
+//@RefreshScope
 //"GET /hello"
 @RestController
 class Hello {
@@ -71,8 +73,9 @@ class Hello {
 	}
 //	@RequestMapping(method = RequestMethod.GET, path = "/hello")
 	@GetMapping( "hello")
+	@Cacheable("Stuff")
 	public String method()  {
-		String s = "" ;
+		String s = message + "" ;
 
 		for (URL url : websiteCsvWithSpEL) {
 			s += " >>> " + url;

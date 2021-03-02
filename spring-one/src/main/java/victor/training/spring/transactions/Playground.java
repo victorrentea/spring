@@ -3,10 +3,12 @@ package victor.training.spring.transactions;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +86,7 @@ class CleanupAfterTransactionEvent {
    private final List<String> emailRecipientsToNotify;
 }
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
     // generates constructor for all final fields, used by Spring to inject dependencies
@@ -110,16 +112,28 @@ class AnotherClass {
       File tempFile = Files.createTempFile("a",".tmp").toFile();
 
       publisher.publishEvent(new CleanupAfterTransactionEvent(Arrays.asList(tempFile), Collections.singletonList("vrentea@ibm.com")));
+      log.debug("Inchid metoda");
+   }
+
+   @EventListener
+//   @Transactional(propagation = Propagation.REQUIRES_NEW)
+   public void imediatDupaAruncare(CleanupAfterTransactionEvent event) {
+      log.debug("Imediat acum");
+   }
+   @EventListener
+//   @Async
+   public void imediatDupaAruncare2(CleanupAfterTransactionEvent event) {
+      log.debug("Imediat acum2");
    }
 
    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
    public void cleanup(CleanupAfterTransactionEvent event) {
-      System.out.println("sending emails: " + event.getEmailRecipientsToNotify());
+      log.debug("sending emails: " + event.getEmailRecipientsToNotify());
    }
    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
    public void cleanupFiles(CleanupAfterTransactionEvent event) {
-      System.out.println("Cleaning files: " + event.getTemporaryFilesToDelete());
-      System.out.println(repo.findAll());
+      log.debug("Cleaning files: " + event.getTemporaryFilesToDelete());
+      log.debug(repo.findAll().toString());
    }
 
    @Autowired

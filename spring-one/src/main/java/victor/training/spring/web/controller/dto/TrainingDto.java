@@ -1,5 +1,8 @@
 package victor.training.spring.web.controller.dto;
 
+import lombok.ToString;
+
+@ToString
 public class TrainingDto {
 	public Long id;
 	public String name;
