@@ -3,18 +3,20 @@ package victor.training.spring.async;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
+import victor.training.spring.web.SpaApplication;
 
-import java.util.Arrays;
-import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -22,15 +24,18 @@ import java.util.concurrent.Future;
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
+
 	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+		new SpringApplicationBuilder(AsyncApp.class)
+			.profiles("spa")
+			.run(args);
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(barmanCount);
+		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
@@ -41,18 +46,25 @@ public class AsyncApp {
 }
 
 @Slf4j
-@Component
-class Drinker implements CommandLineRunner {
+@RestController
+class Drinker {
 	@Autowired
 	private Barman barman;
+	@Autowired
+	ThreadPoolTaskExecutor pool;
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	// TODO [3] Messaging...
-	public void run(String... args) throws Exception {
+	@GetMapping
+	public DillyDilly getDrinks() throws ExecutionException, InterruptedException {
 		log.debug("Submitting my order");
-		ExecutorService pool = Executors.newFixedThreadPool(2);
+//		ExecutorService pool = Executors.newFixedThreadPool(2);
 
+		// 1 mangeuit pool cu spring DON
+		// TODO 2 @Async
+		// TODO 3 Sa nu mai blochez de loc main()
+		// TODO 4 Endpoint HTTP asincron --- Reactive Programming: non-blocking request handling
 
 		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
 		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
@@ -62,8 +74,16 @@ class Drinker implements CommandLineRunner {
 		Beer beer = futureBeer.get(); // aici blochez threadul curent (main) - 1s
 		Vodka vodka = futureVodka.get(); // aici nu mai ma blochez de loc, vodka a fost turnata in parallel
 
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+		DillyDilly dilly = new DillyDilly(beer, vodka);
+		log.debug("Got my order! Thank you lad! " + dilly);
+		return dilly;
 	}
+}
+
+@Data
+class DillyDilly {
+	private final Beer beer;
+	private final Vodka vodka;
 }
 
 @Slf4j
@@ -84,10 +104,10 @@ class Barman {
 
 @Data
 class Beer {
-	public static final String type = "blond";
+	public String type = "blond";
 }
 
 @Data
 class Vodka {
-	public static final String type = "deadly";
+	public String type = "deadly";
 }
