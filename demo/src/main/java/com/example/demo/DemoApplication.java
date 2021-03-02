@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class DemoApplication {
 	}
 
 }
-//@RefreshScope
+@RefreshScope
 //"GET /hello"
 @RestController
 class Hello {
@@ -37,7 +38,7 @@ class Hello {
 	@Value("${in.folder.path}")
 	File path;
 
-	@Value("${welcome.welcomeMessage}")
+	@Value("${wel}")
 	String message;
 
 	@Value("${welcome.help.helpUrl}")
