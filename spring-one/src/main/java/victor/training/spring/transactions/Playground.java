@@ -37,9 +37,9 @@ public class Playground {
 //         this.riskyStep();// does not cause a rollback since no RuntimeException
          // goes through any Transactional proxy
 //         System.out.println(other.getClass());
-         other.riskyStep();
+//         other.riskyStep();
+         other.persistError("Test");
       } catch (Exception e) {
-         other.persistError(e.getMessage());
       }
       System.out.println("Ies din metoda");
    }
@@ -70,7 +70,7 @@ class AnotherClass {
 
    // vii cu Tx deja deschisa la metoda asta --->
    // ce diferenta mai e daca pui @Transactioanl pe asta
-   @Transactional(rollbackFor = Exception.class)
+   @Transactional// (rollbackFor = Exception.class)
    public void riskyStep() throws IOException {
       throw new IOException("");
    }
@@ -78,5 +78,6 @@ class AnotherClass {
    @Transactional(propagation = Propagation.REQUIRES_NEW)
    public void persistError(String message) {
       repo.save(new Message("EROARE din tx2: " + message));
+      throw new RuntimeException("Bum");
    }
 }
