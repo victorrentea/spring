@@ -28,12 +28,23 @@ public class AsyncApp {
    }
 
    @Bean
-   public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanCount) {
+   public ThreadPoolTaskExecutor beerPool(@Value("${beer.count:5}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setCorePoolSize(barmanCount);
       executor.setMaxPoolSize(barmanCount);
       executor.setQueueCapacity(500);
-      executor.setThreadNamePrefix("bar-");
+      executor.setThreadNamePrefix("beer-");
+      executor.initialize();
+      executor.setWaitForTasksToCompleteOnShutdown(true);
+      return executor;
+   }
+   @Bean
+   public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.count:20}") int barmanCount) {
+      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+      executor.setCorePoolSize(barmanCount);
+      executor.setMaxPoolSize(barmanCount);
+      executor.setQueueCapacity(500);
+      executor.setThreadNamePrefix("vodka-");
       executor.initialize();
       executor.setWaitForTasksToCompleteOnShutdown(true);
       return executor;
@@ -44,8 +55,6 @@ public class AsyncApp {
 @Slf4j
 @RestController
 class Drinker {
-   @Autowired
-   ThreadPoolTaskExecutor pool;
    @Autowired
    private Barman barman;
 
@@ -85,8 +94,8 @@ class DillyDilly {
 @Slf4j
 @Service
 class Barman {
-   @Async
-   public CompletableFuture<Beer> getOneBeer() {
+   @Async("beerPool")
+   public CompletableFuture<Beer> getOneBeer() { // throughput pt max 5 req paralelle - ca face spuma berea
 //      if (true) {
 //         throw new IllegalArgumentException("Nu mai e bere");
 //      }
@@ -95,8 +104,8 @@ class Barman {
       return CompletableFuture.completedFuture(new Beer());
    }
 
-   @Async
-   public CompletableFuture<Vodka> getOneVodka() {
+   @Async("vodkaPool")
+   public CompletableFuture<Vodka> getOneVodka() { // throughput pt max 20 req paralelle
       log.debug("Pouring Vodka...");
       ThreadUtils.sleep(1000); // SOAP call
       return CompletableFuture.completedFuture(new Vodka());
