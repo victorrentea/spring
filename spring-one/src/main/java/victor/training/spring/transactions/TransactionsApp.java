@@ -17,7 +17,7 @@ import javax.persistence.Id;
 
 
 @SpringBootApplication
-@EnableJpaRepositories
+//@EnableJpaRepositories
 @RequiredArgsConstructor
 public class TransactionsApp implements CommandLineRunner {
     public static void main(String[] args) {
