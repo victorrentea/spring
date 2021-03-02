@@ -15,7 +15,7 @@ import java.util.concurrent.ScheduledFuture;
 @RequiredArgsConstructor
 public class AuctionController {
    private final SimpMessagingTemplate simpMessagingTemplate;
-   private final TaskScheduler scheduler;
+   private final TaskScheduler taskScheduler;
    public static final String[] labels = {"SOLD!", "Twice", "Once"};
 
    // state, yes !
@@ -33,7 +33,7 @@ public class AuctionController {
          if (nextEndAnnounce != null) {
             nextEndAnnounce.cancel(false);
          }
-         nextEndAnnounce = scheduler.schedule(this::endTick, getNextEndAnnounce());
+         nextEndAnnounce = taskScheduler.schedule(this::endTick, getNextEndAnnounce());
          endTicks = 3;
          return new AuctionMessage(newBid.getBid() + " for " + newBid.getName() + "!");
       }
@@ -51,7 +51,7 @@ public class AuctionController {
       if (endTicks == 0) {
          bestBid = null;
       } else {
-         nextEndAnnounce = scheduler.schedule(this::endTick, getNextEndAnnounce());
+         nextEndAnnounce = taskScheduler.schedule(this::endTick, getNextEndAnnounce());
       }
    }
 

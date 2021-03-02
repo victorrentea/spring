@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.ManagedBean;
 
+
+// TODO add @EnableMBeanExport on @SpringBootApplication
 @Component
 @ManagedResource(
         objectName="bean:name=testBean4",
