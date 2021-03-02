@@ -4,8 +4,19 @@
 
 <mapper namespace="victor.training.spring.transactions.MyBatisMapper">
 
-  <select id="search" resultType="victor.training.spring.transactions.Message">
-	  SELECT id, message from MESSAGE where id = #{id}
+  <select id="search"
+          resultType="victor.training.spring.transactions.Message"
+        paramType="bla.bla.SearchCriteria">
+	  SELECT id, message
+
+
+	  from MESSAGE
+	  where id = #{id}
+
+
+
+
+
 	  <!--WHERE 1=1
 	  <if test="name != null">
 		  AND upper(name) like '%' || UPPER(#{name}) || '%'
