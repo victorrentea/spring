@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.integration.annotation.MessageEndpoint;
@@ -14,6 +15,7 @@ import org.springframework.messaging.SubscribableChannel;
 import victor.training.spring.messaging.alice.AliceApp;
 
 @Slf4j
+@EnableBinding(BobChannels.class)
 @SpringBootApplication
 public class BobApp implements CommandLineRunner {
    public static void main(String[] args) {
