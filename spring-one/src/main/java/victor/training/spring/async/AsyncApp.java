@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @EnableAsync
 @SpringBootApplication
@@ -47,8 +51,17 @@ class Drinker implements CommandLineRunner {
 	// TODO [3] Messaging...
 	public void run(String... args) throws Exception {
 		log.debug("Submitting my order");
-		Beer beer = barman.getOneBeer();
-		Vodka vodka = barman.getOneVodka();
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+
+
+		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
+		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
+
+		log.debug("Aici a plecata fata cu comenzile mele");
+
+		Beer beer = futureBeer.get(); // aici blochez threadul curent (main) - 1s
+		Vodka vodka = futureVodka.get(); // aici nu mai ma blochez de loc, vodka a fost turnata in parallel
+
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 	}
 }
@@ -58,13 +71,13 @@ class Drinker implements CommandLineRunner {
 class Barman {
 	public Beer getOneBeer() {
 		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
+		 ThreadUtils.sleep(1000); // RMI call
 		 return new Beer();
 	 }
 	
 	 public Vodka getOneVodka() {
 		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000);
+		 ThreadUtils.sleep(1000); // SOAP call
 		 return new Vodka();
 	 }
 }
