@@ -13,8 +13,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.WebAsyncTask;
 import victor.training.spring.ThreadUtils;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.*;
 
 @EnableAsync
