@@ -34,12 +34,13 @@ public class Playground {
    public void riskyStep() throws IOException {
       throw new RuntimeException("");
    }
-   @Transactional
+//   @Transactional
    public void transactionTwo() {
       Message message = repo.findById(1L).get();
 
       message.setMessage("nou mesaj");
       System.out.println("Ies din met");
+      repo.save(message);
       // TODO Repo API
       // TODO @NonNullApi
    }
