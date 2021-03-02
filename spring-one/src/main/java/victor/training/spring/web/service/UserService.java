@@ -28,11 +28,12 @@ public class UserService  {
         userRepo.save(new User("John-" + System.currentTimeMillis()));
     }
 
-    // TODO 5 key-cache
+    // TODO 5 key-based cache entries
 
     public UserDto getUser(long id) {
         return new UserDto(userRepo.findById(id).get());
     }
+
     public void updateUser(long id, String newName) {
         // TODO 6 update profile too -> pass Dto
         User user = userRepo.findById(id).get();
