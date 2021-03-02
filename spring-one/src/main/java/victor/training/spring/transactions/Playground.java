@@ -1,14 +1,26 @@
 package victor.training.spring.transactions;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.persistence.EntityManager;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +51,12 @@ public class Playground {
 //         System.out.println(other.getClass());
 //         other.riskyStep();
          other.persistError("Test");
+
+         // programatic tx management cu spring.
+//         txTemplate.execute (status -> {
+//            repo.save(new Message("EROARE din tx2: " + message));
+//            return null;
+//         })
       } catch (Exception e) {
       }
       System.out.println("Ies din metoda");
@@ -49,17 +67,23 @@ public class Playground {
       throw new RuntimeException("");
    }
 
-   //   @Transactional
+      @Transactional
    public void transactionTwo() {
       Message message = repo.findById(1L).get();
 
       message.setMessage("nou mesaj");
+      other.dinAceeasiTranzactieDarMaiAdanc();
       System.out.println("Ies din met");
-      repo.save(message);
-      // TODO Repo API
       // TODO @NonNullApi
    }
 }
+
+@Data
+class CleanupAfterTransactionEvent {
+   private final List<File> temporaryFilesToDelete;
+   private final List<String> emailRecipientsToNotify;
+}
+
 
 @Service
 @RequiredArgsConstructor
@@ -80,4 +104,26 @@ class AnotherClass {
       repo.save(new Message("EROARE din tx2: " + message));
       throw new RuntimeException("Bum");
    }
+
+   @SneakyThrows
+   public void dinAceeasiTranzactieDarMaiAdanc() {
+      File tempFile = Files.createTempFile("a",".tmp").toFile();
+
+      publisher.publishEvent(new CleanupAfterTransactionEvent(Arrays.asList(tempFile), Collections.singletonList("vrentea@ibm.com")));
+   }
+
+   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+   public void cleanup(CleanupAfterTransactionEvent event) {
+      System.out.println("sending emails: " + event.getEmailRecipientsToNotify());
+   }
+   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
+   public void cleanupFiles(CleanupAfterTransactionEvent event) {
+      System.out.println("Cleaning files: " + event.getTemporaryFilesToDelete());
+      System.out.println(repo.findAll());
+   }
+
+   @Autowired
+   ApplicationEventPublisher publisher;
+
+
 }
