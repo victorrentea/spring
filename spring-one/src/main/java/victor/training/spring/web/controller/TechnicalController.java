@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,11 +8,12 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class TechnicalController {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
 	@GetMapping("rest/user/current")
 	public String getCurrentUsername() {
@@ -25,6 +27,14 @@ public class TechnicalController {
 	public void enableSecurityContextPropagationOverAsync() {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
+
+	// TODO use authorities in FR
+//	@GetMapping("rest/user/current/authorities")
+//	public List<String> getCurrentUserAuthorities() throws Exception {
+//		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		return securityUserOnSession.getAuthorities().stream()
+//			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+//	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;

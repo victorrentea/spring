@@ -32,18 +32,18 @@ html {
 		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
 		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
 	</div>
-	
+
 	<div id="trainingNewDiv" style="display:none;border:2px solid green">
 		<h4>Create a New Training</h4>
 		Name:<input type="text" id="newName" /> <br />
 		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
-		
+
 		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
 		Teacher: <select id="newTeacher"></select> <br />
 		<input type="button" value="Create" onclick="createTraining()">
 		<input type="button" value="Cancel" onclick="$('#trainingNewDiv').hide();$('#trainingMain').show();">
 	</div>
-	
+
 	<div id="trainingEditDiv" style="display:none; border:2px solid blue">
 		<h4>Edit a Training</h4>
 		<input type="hidden" id="editTrainingId" />
@@ -70,7 +70,7 @@ html {
 
 function moveSelectedOptions(fromId, toId) {
 	var selectedValues = $(fromId).val()
-	for (var i=0;i<selectedValues.length;i++) {		
+	for (var i=0;i<selectedValues.length;i++) {
 		var $leftSel = $(fromId+" option[value='"+selectedValues[i]+"']");
 		$(toId).append('<option value="'+selectedValues[i]+'">'+$leftSel.text()+'</option>');
 		console.log($leftSel.html());
@@ -95,7 +95,7 @@ function fillTable(trainings) {
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
-				'<input type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}
@@ -131,11 +131,21 @@ $.ajax(restEndpoint +"/user/current", {
 	success: function(username) {
 		$("#username").text(username);
 	}});
+
+$.ajax(restEndpoint +"/user/current/authorities", {
+	method: "GET",
+	success: function(authorities) {
+		// authorities = list;
+		console.log(authorities);
+		if (! authorities.includes("training.edit")) {
+			$(".deleteButton").hide();
+		}
+	}});
 $("#newStartDate").val("01-01-2019");
 
 function populateTeacherCombo($teacherCombo) {
 	$teacherCombo.html("");
-	
+
 	$.ajax(restEndpoint + "/teachers", {
 		method: "GET",
 		success: function(teachers) {
@@ -210,7 +220,7 @@ function updateTraining() {
 function openCreateTraining() {
 	$("#newName").val("");
 	$("#newDescription").val("");
-	$("#newTeacher").val(null);
+	populateTeacherCombo($("#newTeacher"));
 	$('#trainingMain').hide();
 	$('#trainingNewDiv').show();
 }
