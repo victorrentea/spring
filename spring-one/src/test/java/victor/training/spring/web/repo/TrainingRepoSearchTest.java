@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Teacher;
 import victor.training.spring.web.domain.Training;
@@ -29,19 +30,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 //@RunWith(SpringRunner.class) // pt junit4
 @ActiveProfiles({"db-mem","test"})
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 //@CleanupData
+@Transactional
 class TrainingRepoSearchTest {
    @Autowired
    private TrainingRepo trainingRepo;
    @Autowired
    private TeacherRepo teacherRepo;
 
-//   @BeforeEach
-//   public void method() {
+   @BeforeEach
+   public void assumptions() {
+      assertThat(trainingRepo.findAll()).isEmpty();
 //      trainingRepo.deleteAll();
 //      teacherRepo.deleteAll();
-//   }
+   }
    @Test
    public void withoutCriteria() {
       trainingRepo.save(new Training("Spring"));

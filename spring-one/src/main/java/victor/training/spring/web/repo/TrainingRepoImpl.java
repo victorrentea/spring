@@ -2,6 +2,9 @@ package victor.training.spring.web.repo;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 
@@ -32,6 +35,20 @@ public class TrainingRepoImpl implements TrainingRepoCustom {
       for (String key : params.keySet()) {
           query.setParameter(key, params.get(key));
       }
-      return query.getResultList();
+      List<Training> resultList = query.getResultList();
+
+      other.lasaGunoi();
+      return resultList;
+   }
+   private final Other other;
+}
+
+@Component
+@RequiredArgsConstructor
+class Other {
+   private final EntityManager entityManager;
+   @Transactional(propagation = Propagation.REQUIRES_NEW)
+   public void lasaGunoi() {
+      entityManager.persist(new Training("Gunoi"));
    }
 }
