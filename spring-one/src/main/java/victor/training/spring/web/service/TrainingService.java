@@ -67,7 +67,7 @@ public class TrainingService {
 
     @Logged
     public List<TrainingDto> getAllTrainings() {
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
             dtos.add(mapToDto(training));
