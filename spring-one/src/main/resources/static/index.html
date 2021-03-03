@@ -95,7 +95,7 @@ function fillTable(trainings) {
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
-				'<input type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}
@@ -125,11 +125,21 @@ function search() {
 		}
 	});
 }
+// var authorities = [];
 refreshTrainingsTable();
 $.ajax(restEndpoint +"/user/current", {
 	method: "GET",
 	success: function(username) {
 		$("#username").text(username);
+	}});
+$.ajax(restEndpoint +"/user/current/authorities", {
+	method: "GET",
+	success: function(authorities) {
+		// authorities = list;
+		console.log(authorities);
+		if (! authorities.includes("training.edit")) {
+			$(".deleteButton").hide();
+		}
 	}});
 $("#newStartDate").val("01-01-2019");
 

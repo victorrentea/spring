@@ -1,14 +1,19 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RestController
 public class TechnicalController {
@@ -21,6 +26,12 @@ public class TechnicalController {
 //		return SecurityContextHolder.getContext().getAuthentication().getName();
 		// try getting the user from an Async task:
 			return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+	}
+	@GetMapping("rest/user/current/authorities")
+	public List<String> getCurrentUserAuthorities() throws ExecutionException, InterruptedException {
+		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return securityUserOnSession.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 	}
 
 	@PostConstruct
