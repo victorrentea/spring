@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
@@ -27,7 +29,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 //@RunWith(SpringRunner.class) // pt junit4
 @ActiveProfiles({"db-mem","test"})
-@CleanupData
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+//@CleanupData
 class TrainingRepoSearchTest {
    @Autowired
    private TrainingRepo trainingRepo;
