@@ -5,28 +5,40 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Teacher;
 import victor.training.spring.web.domain.Training;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Sql(scripts = "classpath:cleanup.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@interface CleanupData {
+
+}
+
+
 @SpringBootTest
 //@RunWith(SpringRunner.class) // pt junit4
 @ActiveProfiles({"db-mem","test"})
+@CleanupData
 class TrainingRepoSearchTest {
    @Autowired
    private TrainingRepo trainingRepo;
    @Autowired
    private TeacherRepo teacherRepo;
 
-   @BeforeEach
-   public void method() {
-      trainingRepo.deleteAll();
-      teacherRepo.deleteAll();
-   }
+//   @BeforeEach
+//   public void method() {
+//      trainingRepo.deleteAll();
+//      teacherRepo.deleteAll();
+//   }
    @Test
    public void withoutCriteria() {
       trainingRepo.save(new Training("Spring"));
