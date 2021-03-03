@@ -1,5 +1,6 @@
 package victor.training.spring.web;
 
+import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,20 @@ import javax.annotation.ManagedBean;
         persistLocation="foo",
         persistName="bar")
 public class SampleMBean {
+
+    int retriesCount;
     @ManagedOperation
     public void dummy() {
-        System.out.printf("Rulez on demand");
+        System.out.printf("Rulez on demand + " + retriesCount);
+    }
+
+    @ManagedAttribute
+    public int getRetriesCount() {
+        return retriesCount;
+    }
+
+    @ManagedAttribute
+    public void setRetriesCount(int retriesCount) {
+        this.retriesCount = retriesCount;
     }
 }
