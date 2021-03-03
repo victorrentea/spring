@@ -15,7 +15,7 @@ public class deceSpring implements CommandLineRunner {
    }
    @Autowired A a;
 
-//   @Transactional
+//   @Transactional(isolation = )
    @Override
    public void run(String... args) throws Exception {
       System.out.println("Call: " + a.method());

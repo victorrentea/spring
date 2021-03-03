@@ -2,9 +2,9 @@ package victor.training.spring.web.repo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -12,26 +12,18 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Teacher;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.service.KafkaClient;
-import victor.training.spring.web.service.TeacherService;
 import victor.training.spring.web.service.TrainingService;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
-@Sql(scripts = "classpath:cleanup.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@interface CleanupData {
 
-}
-
-
-class TrainingRepoSearchTest extends RepoTestBase {
+public class TrainingRepoSearch2Test extends RepoTestBase {
    @Autowired
    private TrainingRepo trainingRepo;
    @Autowired
