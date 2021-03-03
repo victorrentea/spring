@@ -59,11 +59,11 @@ public class TrainingController {
 	@DeleteMapping("{id}")
 //	@RolesAllowed("ADMIN")
 //	@PreAuthorize("hasRole('ADMIN')")
-	@PreAuthorize("hasAuthority('training.edit')")
+	@PreAuthorize("hasAuthority('training.edit') and @securityAccessService.canDeleteTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
-		if (!securityAccessService.canDeleteTraining(id)) {
-			throw new IllegalArgumentException("n-ai voie");
-		}
+//		if (!securityAccessService.canDeleteTraining(id)) {
+//			throw new IllegalArgumentException("n-ai voie");
+//		}
 
 		trainingService.deleteById(id);
 	}
