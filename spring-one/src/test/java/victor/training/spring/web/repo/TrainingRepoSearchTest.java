@@ -24,8 +24,8 @@ class TrainingRepoSearchTest {
 
    @BeforeEach
    public void method() {
-      teacherRepo.deleteAll();
       trainingRepo.deleteAll();
+      teacherRepo.deleteAll();
    }
    @Test
    public void withoutCriteria() {
