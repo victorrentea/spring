@@ -111,7 +111,7 @@ public class TrainingService {
     }
 //    @Secured("ADMIN")
 //    @PreAuthorize("hasRole('ADMIN')")
-    @PreAuthorize("hasAuthority('training.edit')")
+//    @PreAuthorize("hasAuthority('training.edit')")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }

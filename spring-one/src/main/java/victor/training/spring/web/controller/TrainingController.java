@@ -3,13 +3,19 @@ package victor.training.spring.web.controller;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.annotation.security.RolesAllowed;
@@ -53,12 +59,35 @@ public class TrainingController {
 	@DeleteMapping("{id}")
 //	@RolesAllowed("ADMIN")
 //	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('training.edit')")
 	public void deleteTrainingById(@PathVariable Long id) {
+		if (!securityAccessService.canDeleteTraining(id)) {
+			throw new IllegalArgumentException("n-ai voie");
+		}
+
 		trainingService.deleteById(id);
 	}
+	@Autowired
+	SecurityAccessService securityAccessService;
 
 	@PostMapping
 	public void createTraining(@RequestBody	 TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
+	}
+}
+@Component
+class SecurityAccessService {
+	@Autowired
+	TrainingRepo trainingRepo;
+
+	public boolean canDeleteTraining(Long id) {
+
+		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Set<Long> managedTeacherIds = securityUserOnSession.getManagedTeacherIds();
+
+		Training training = trainingRepo.findById(id).get();
+		Long teacherId = training.getTeacher().getId();
+
+		return managedTeacherIds.contains(teacherId);
 	}
 }
