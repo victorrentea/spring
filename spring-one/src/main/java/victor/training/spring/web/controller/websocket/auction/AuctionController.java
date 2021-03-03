@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller.websocket;
+package victor.training.spring.web.controller.websocket.auction;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
@@ -23,7 +23,7 @@ public class AuctionController {
    private ScheduledFuture<?> nextEndAnnounce;
    private int endTicks;
 
-   @MessageMapping("/hello")
+   @MessageMapping("/bid")
    @SendTo("/topic/auction-messages")
    public synchronized AuctionMessage greeting(Bid newBid) {
       if (bestBid != null && bestBid.getBid() >= newBid.getBid()) {

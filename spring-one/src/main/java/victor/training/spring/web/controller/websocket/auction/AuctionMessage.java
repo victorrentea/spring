@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller.websocket;
+package victor.training.spring.web.controller.websocket.auction;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

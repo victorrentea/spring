@@ -15,12 +15,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
     config.enableSimpleBroker("/topic"); // browsers listen to /topic/...
-    config.setApplicationDestinationPrefixes("/app"); // browsers send to /app/...
+    config.setApplicationDestinationPrefixes("/send"); // browsers send to /app/...
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/auction-websocket").withSockJS();
+    registry.addEndpoint("/websocket").withSockJS();
   }
 
 }

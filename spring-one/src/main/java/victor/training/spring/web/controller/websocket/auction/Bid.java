@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller.websocket;
+package victor.training.spring.web.controller.websocket.auction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
