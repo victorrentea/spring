@@ -16,8 +16,9 @@ public class Training {
 	private Date startDate;
 	@ManyToOne
 	private Teacher teacher;
+	private String createdByUsername;
 
-	
+
 	public Training() {
 	}
 	
@@ -73,6 +74,11 @@ public class Training {
 
 	public Training setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+		return this;
+	}
+
+	public Training createdBy(String createdByUsername) {
+		this. createdByUsername = createdByUsername;
 		return this;
 	}
 }

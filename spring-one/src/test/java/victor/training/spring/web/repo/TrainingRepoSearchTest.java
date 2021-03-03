@@ -13,9 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Teacher;
 import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.domain.User;
+import victor.training.spring.web.domain.UserProfile;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,17 +30,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 }
 
 
-@SpringBootTest
-//@RunWith(SpringRunner.class) // pt junit4
-@ActiveProfiles({"db-mem","test"})
-//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-//@CleanupData
-@Transactional
-class TrainingRepoSearchTest {
+class TrainingRepoSearchTest extends RepoTestBase {
    @Autowired
    private TrainingRepo trainingRepo;
    @Autowired
    private TeacherRepo teacherRepo;
+
 
    @BeforeEach
    public void assumptions() {
@@ -58,7 +56,7 @@ class TrainingRepoSearchTest {
       // given
       Teacher teacher = new Teacher();
       teacherRepo.save(teacher);
-      trainingRepo.save(new Training().setTeacher(teacher));
+      trainingRepo.save(new Training().setTeacher(teacher).createdBy("user"));
 
       // when
       TrainingSearchCriteria criteria = new TrainingSearchCriteria();

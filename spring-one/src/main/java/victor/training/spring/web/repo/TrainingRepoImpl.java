@@ -37,7 +37,7 @@ public class TrainingRepoImpl implements TrainingRepoCustom {
       }
       List<Training> resultList = query.getResultList();
 
-      other.lasaGunoi();
+//      other.lasaGunoi();
       return resultList;
    }
    private final Other other;
