@@ -1,6 +1,8 @@
 package victor.training.spring.web.repo;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,10 @@ class TrainingRepoTest {
    @Autowired
    private TrainingRepo repo;
 
+   @BeforeEach
+   public void method() {
+      repo.deleteAll();
+   }
    @Test
    public void search() {
       repo.save(new Training("Spring"));

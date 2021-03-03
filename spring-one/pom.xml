@@ -177,7 +177,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <!--<dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>oracle-xe</artifactId>
+            <version>1.15.2</version>
+        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
