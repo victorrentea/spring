@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -60,6 +61,7 @@ class LoggingInterceptor {
 @Slf4j
 @Service
 //@Logged
+@RequiredArgsConstructor
 @Transactional
 public class TrainingService {
     @Autowired
@@ -148,8 +150,12 @@ public class TrainingService {
     }
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+        client.logSearch(criteria);
         return trainingRepo.search(criteria)
             .stream().map(this::mapToDto)
             .collect(toList());
     }
+
+    private final KafkaClient client;
 }
+
