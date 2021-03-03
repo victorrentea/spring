@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.MyException;
 import victor.training.spring.web.MyException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
@@ -24,6 +25,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Slf4j
@@ -141,5 +145,11 @@ public class TrainingService {
         newEntity.setStartDate(parseStartDate(dto));
         newEntity.setTeacher(teacherRepo.getOne(dto.teacherId));
         return newEntity;
+    }
+
+    public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+        return trainingRepo.search(criteria)
+            .stream().map(this::mapToDto)
+            .collect(toList());
     }
 }

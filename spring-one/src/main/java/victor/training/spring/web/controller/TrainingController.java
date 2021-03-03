@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.security.SecurityUser;
@@ -74,6 +75,13 @@ public class TrainingController {
 	public void createTraining(@RequestBody	 TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
+
+	@PostMapping("search")
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
+
+
 }
 @Component
 class SecurityAccessService {

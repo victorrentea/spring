@@ -26,6 +26,17 @@ public class Training {
 		this.description = description;
 		this.startDate = startDate;
 	}
+	public Training(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Training{" +
+				 "id=" + id +
+				 ", name='" + name + '\'' +
+				 '}';
+	}
 
 	public Long getId() {
 		return id;
