@@ -70,9 +70,9 @@ public class Training {
 		return teacher;
 	}
 
-	public final void setTeacher(Teacher teacher) {
+
+	public Training setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+		return this;
 	}
-
-
 }
