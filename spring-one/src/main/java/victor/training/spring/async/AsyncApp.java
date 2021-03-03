@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -30,6 +31,7 @@ public class AsyncApp {
           .run(args);
    }
 
+   static ThreadLocal<String> threadLocal = ThreadLocal.withInitial(() -> "a");
    @Bean
    public ThreadPoolTaskExecutor beerPool(@Value("${beer.count:5}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -39,6 +41,20 @@ public class AsyncApp {
       executor.setThreadNamePrefix("beer-");
       executor.initialize();
       executor.setWaitForTasksToCompleteOnShutdown(true);
+      executor.setTaskDecorator(new TaskDecorator() { // propagare manuala de thread local peste @Async call
+         @Override
+         public Runnable decorate(Runnable runnable) {
+            String callerThreadValue = threadLocal.get(); // sunt in caller thread
+            return () -> {
+               threadLocal.set(callerThreadValue); // aici sunt in thr din pool
+               try {
+                  runnable.run();
+               } finally {
+                  threadLocal.remove();
+               }
+            };
+         }
+      });
       return executor;
    }
    @Bean
