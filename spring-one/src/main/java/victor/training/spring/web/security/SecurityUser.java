@@ -15,6 +15,7 @@ public class SecurityUser implements UserDetails {
 	private final String username;
 	private final UserProfile profile;
 	private final Set<Long> managedTeacherIds;
+	// TODO Locale userLocale // ca sa stii in ce limba export .csv
 
 	SecurityUser(String username, UserProfile profile, Set<Long> managedTeacherIds) {
 		this.username = username;
