@@ -12,6 +12,7 @@ public class CustomerDto {
     @NotBlank(groups = ActivationUC.class)
     public String name;
 
+//    @VisibleFor("PENTAGON")
     @ValidPostalCode(groups = ActivationUC.class)
     public String postalCode;
 }
