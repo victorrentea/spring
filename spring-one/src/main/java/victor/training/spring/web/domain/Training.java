@@ -13,7 +13,7 @@ public class Training {
 	private Long id;
 	private String name;
 	private String description;
-	private Date startDate;
+	private Date startDate = new Date();
 	@ManyToOne
 	private Teacher teacher;
 	private String createdByUsername;
