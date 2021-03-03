@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
@@ -11,6 +12,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -87,5 +89,9 @@ public class TrainingService {
         newEntity.setStartDate(parseStartDate(dto));
         newEntity.setTeacher(teacherRepo.getOne(dto.teacherId));
         return newEntity;
+    }
+
+    public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+        return Collections.emptyList(); // TODO
     }
 }

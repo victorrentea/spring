@@ -36,11 +36,6 @@ public class TechnicalController {
 		return "Welcome! What's your temperature?";
 	}
 
-	@GetMapping("ping")
-	public String ping() {
-		return "Pong " + getCurrentUsername();
-	}
-
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/launch")
 	public String restart() {

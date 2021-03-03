@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
 public class TrainingController {
@@ -36,5 +37,9 @@ public class TrainingController {
 
 	public void createTraining(TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
+	}
+
+	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
 	}
 }
