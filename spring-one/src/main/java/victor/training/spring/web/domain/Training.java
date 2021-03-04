@@ -63,5 +63,13 @@ public class Training {
 		this.teacher = teacher;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Training{" +
+				 "id=" + id +
+				 ", name='" + name + '\'' +
+				 ", description='" + description + '\'' +
+				 ", startDate=" + startDate +
+				 '}';
+	}
 }
