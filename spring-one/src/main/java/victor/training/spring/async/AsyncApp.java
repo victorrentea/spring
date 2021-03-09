@@ -71,10 +71,10 @@ class Barman {
 
 @Data
 class Beer {
-	public static final String type = "blond";
+	public final String type = "blond";
 }
 
 @Data
 class Vodka {
-	public static final String type = "deadly";
+	public final String type = "deadly";
 }
