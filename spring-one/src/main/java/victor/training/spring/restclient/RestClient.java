@@ -16,16 +16,16 @@ public class RestClient {
       RestTemplate rest = new RestTemplate();
 
       TrainingDto dto = rest.getForObject(
-          "http://localhost:8081/rest/trainings/{id}",
+          "http://localhost:8081/api/trainings/{id}",
           TrainingDto.class,1);
       System.out.println(dto);
 
       dto.name+="X";
       rest.postForObject(
-          "http://localhost:8081/rest/trainings",
+          "http://localhost:8081/api/trainings",
           dto, Void.class);
 
-      List listOfMaps = rest.getForObject("http://localhost:8081/rest/trainings",
+      List listOfMaps = rest.getForObject("http://localhost:8081/api/trainings",
           List.class);
 
       System.out.println(listOfMaps);
@@ -33,7 +33,7 @@ public class RestClient {
 
 
       RequestEntity<List<TrainingDto>> request = new RequestEntity<List<TrainingDto>>(HttpMethod.GET,
-          URI.create("http://localhost:8081/rest/trainings"));
+          URI.create("http://localhost:8081/api/trainings"));
       ResponseEntity<List<TrainingDto>> responseEntity = rest.exchange(request,
           new ParameterizedTypeReference<List<TrainingDto>>() { });
 

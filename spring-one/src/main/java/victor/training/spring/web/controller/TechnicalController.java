@@ -15,7 +15,7 @@ import java.util.List;
 public class TechnicalController {
 	private final UserService userService;
 
-	@GetMapping("rest/user/current")
+	@GetMapping("api/user/current")
 	public String getCurrentUsername() {
 		// TODO implement me
 		return "TODO:user";
@@ -29,7 +29,7 @@ public class TechnicalController {
 	}
 
 	// TODO use authorities in FR
-//	@GetMapping("rest/user/current/authorities")
+//	@GetMapping("api/user/current/authorities")
 //	public List<String> getCurrentUserAuthorities() throws Exception {
 //		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		return securityUserOnSession.getAuthorities().stream()

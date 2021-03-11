@@ -82,7 +82,7 @@ function moveSelectedOptions(fromId, toId) {
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
-var restEndpoint = getContextPath() + "/rest";
+var restEndpoint = getContextPath() + "/api";
 
 function fillTable(trainings) {
 	$("#trainingTable tr").each(function (i, r) {

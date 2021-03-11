@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TeacherDto;
 import victor.training.spring.web.service.TeacherService;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/rest/teachers")
+@RequestMapping("/api/teachers")
 public class TeachersController {
 	@Autowired
 	private TeacherService service;
@@ -20,7 +22,7 @@ public class TeachersController {
 	}
 
 	@PostMapping
-	public void createTeacher(@RequestBody TeacherDto dto) {
+	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
 		service.createTeacher(dto);
 	}
 	
