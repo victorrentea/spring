@@ -1,7 +1,7 @@
 
 1) make sure http://localhost:8081/actuator/prometheus returns data
-- management.endpoints.web.exposure.include=*
-  management.endpoint.prometheus.enabled=true
+management.endpoints.web.exposure.include=*
+management.endpoint.prometheus.enabled=true
   
 - in pom.xml:
 spring-boot-starter-actuator
@@ -17,6 +17,7 @@ add this to prometheus.yml as a child of `scrape_configs`
 ```
 
 3) start-grafana.bat
+login with admin/admin
 
 4) in grafana http://localhost:3000/
    (user/pass  admin/admin)
