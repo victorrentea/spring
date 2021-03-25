@@ -21,7 +21,7 @@ public class WelcomeInfo {
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
 
-    @Component
+    @Data
     public static class HelpInfo {
         private Integer appId;
         private File file;
@@ -29,6 +29,7 @@ public class WelcomeInfo {
 
     @PostConstruct
     public void printMyself() {
+        // TODO check the help.file exists
         log.debug("My props: " + this);
     }
 }
