@@ -31,7 +31,7 @@ public class Archeology implements CommandLineRunner {
 }
 
 @Service
-class Test1 {
+class Test1 { // default name of "test1"
 
    private final Other other;
    private final Other other2;

@@ -3,7 +3,6 @@ package victor.training.spring.life;
 import java.util.Locale;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,37 +40,42 @@ public class LifeApp implements CommandLineRunner{
 
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+		exporter.export(Locale.FRENCH);
 	}
 }
 @Service
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
+
+	public OrderExporter(InvoiceExporter invoiceExporter, LabelService labelService) {
+		this.invoiceExporter = invoiceExporter;
+		this.labelService = labelService;
+	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		labelService.load(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice();
 	}
 }
 @Service
 class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
-	@Autowired
-	private LabelService labelService;
-	
+	private final LabelService labelService;
+	public InvoiceExporter(LabelService labelService) {
+		this.labelService = labelService;
+	}
+
 	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Service
-class LabelService {
+class LabelService { // statefull of ... S...TATE
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
 	
@@ -82,10 +86,9 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
