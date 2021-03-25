@@ -24,7 +24,7 @@ public class NoPrototypeInjectedIntoSingletonValidator implements BeanPostProces
       String hostScopeName = beans.getBeanDefinition(beanName).getScope();
       log.info("Bean {} has scope {}", beanName, hostScopeName);
 
-      if (!hostScopeName.equals("singleton")) {
+      if (!"singleton".equals(hostScopeName)) {
          return bean; // nothing to do
       }
       for (Field field : bean.getClass().getDeclaredFields()) {
