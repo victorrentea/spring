@@ -22,8 +22,8 @@ public class UserService  {
 
     // TODO 1 Cacheable
     // TODO 2 EvictCache
-    // TODO 3 Show: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
-    // TODO 4 Enable Redis cache
+    // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
+    // TODO 4 Redis cache
     public void createUser() {
         userRepo.save(new User("John-" + System.currentTimeMillis()));
     }
