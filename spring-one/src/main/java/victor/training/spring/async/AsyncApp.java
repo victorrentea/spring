@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import victor.training.spring.ThreadUtils;
 
 import java.util.Arrays;
+import java.util.concurrent.Future;
 
 @EnableAsync
 @SpringBootApplication
@@ -23,10 +25,10 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(@Value("${barman.count}")int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(barmanCount);
+		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
@@ -38,17 +40,30 @@ public class AsyncApp {
 
 @Slf4j
 @Component
-class Drinker implements CommandLineRunner {
+class ProDrinker implements CommandLineRunner {
 	@Autowired
 	private Barman barman;
+	@Autowired
+	ThreadPoolTaskExecutor pool;
 
+//		ExecutorService pool = Executors.newFixedThreadPool(40);
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	// TODO [3] Messaging...
 	public void run(String... args) throws Exception {
 		log.debug("Submitting my order");
-		Beer beer = barman.getOneBeer();
-		Vodka vodka = barman.getOneVodka();
+
+
+		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
+		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
+
+		log.debug("The waiter left with my order....");
+
+		Vodka vodka = futureVodka.get();// .block
+		Beer beer = futureBeer.get();
+
+//		Beer beer = barman.getOneBeer();
+//		Vodka vodka = barman.getOneVodka();
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 	}
 }
@@ -58,13 +73,13 @@ class Drinker implements CommandLineRunner {
 class Barman {
 	public Beer getOneBeer() {
 		 log.debug("Pouring Beer...");
-		 ThreadUtils.sleep(1000);
+		 ThreadUtils.sleep(1000); // DB mongo
 		 return new Beer();
 	 }
 	
 	 public Vodka getOneVodka() {
 		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000);
+		 ThreadUtils.sleep(1000); // REST API
 		 return new Vodka();
 	 }
 }
