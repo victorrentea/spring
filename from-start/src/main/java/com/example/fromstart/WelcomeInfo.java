@@ -1,26 +1,31 @@
-package victor.training.spring.props;
+package com.example.fromstart;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolation;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
+@ConfigurationProperties(prefix = "welcome")
+//@Validated
 public class WelcomeInfo {
     private static final Logger log = LoggerFactory.getLogger(WelcomeInfo.class);
-    @Value("${welcome.welcomeMessage}")
+//    @NotBlank
     private String welcomeMessage;
     private List<URL> supportUrls;
     private Map<String,String> localContactPhone; // per country
+
     private HelpInfo help;
 
-    @Component
     public static class HelpInfo {
         private Integer appId;
         private File file;
@@ -47,13 +52,25 @@ public class WelcomeInfo {
         }
     }
 
+    @Autowired
+    javax.validation.Validator validator;
     @PostConstruct
     public void printMyself() {
-        log.debug("My props: " + this);
+        System.out.println("Validating with " + validator);
+        Set<ConstraintViolation<WelcomeInfo>> violations = validator.validate(this);
+        if (!violations.isEmpty()) {
+            throw new RuntimeException(violations.toString());
+        }
+
+        if (!help.file.exists()) {
+            throw new IllegalArgumentException();
+        }
+        log.info("My props: " + this);
     }
 
     public String toString() {
-        return String.format("WelcomeInfo{welcomeMessage='%s', supportUrls=%s, localContactPhone=%s, help=%s}", welcomeMessage, supportUrls, localContactPhone, help);
+        return String.format("WelcomeInfo{welcomeMessage='%s', supportUrls=%s, localContactPhone=%s, help=%s}",
+            welcomeMessage, supportUrls, localContactPhone, help);
     }
 
     public static Logger getLog() {

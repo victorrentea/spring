@@ -1,0 +1,9 @@
+welcome:
+#  welcome-message: Welcome to This Spring Realm
+  help:
+    app-id: 1251
+    file: C:\workspace\spring\from-start\pom.xml
+  supportUrls: http://google.com, http://stackoverflow.com, http://baeldung.com, http://spring.io
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
