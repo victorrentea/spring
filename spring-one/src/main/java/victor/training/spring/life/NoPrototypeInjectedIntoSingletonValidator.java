@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 
-@Component
+//@Component
 @Slf4j
 public class NoPrototypeInjectedIntoSingletonValidator implements BeanPostProcessor {
    private final ConfigurableListableBeanFactory beans;
