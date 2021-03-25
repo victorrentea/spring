@@ -3,7 +3,7 @@
 management.endpoints.web.exposure.include=*
 management.endpoint.prometheus.enabled=true
   
-- in pom.xml:
+- add to pom.xml:
 spring-boot-starter-actuator
 io.micronaut.micrometer:micronaut-micrometer-registry-prometheus:3.3.0
 

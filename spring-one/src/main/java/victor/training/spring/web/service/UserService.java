@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.UserDto;
@@ -30,6 +31,7 @@ public class UserService  {
 
     // TODO 5 key-based cache entries
 
+    @Cacheable("user-data")
     public UserDto getUser(long id) {
         return new UserDto(userRepo.findById(id).get());
     }
