@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,23 @@ public class AsyncApp {
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.count}")int barmanCount) {
+	public ThreadPoolTaskExecutor beerPool(@Value("${beer.count:1}")int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanCount);
 		executor.setMaxPoolSize(barmanCount);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
+		executor.setThreadNamePrefix("beer-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.count:4}")int barmanCount) {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(barmanCount);
+		executor.setMaxPoolSize(barmanCount);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("vodka-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -45,8 +57,8 @@ public class AsyncApp {
 class ProDrinker {
 	@Autowired
 	private Barman barman;
-	@Autowired
-	ThreadPoolTaskExecutor pool;
+//	@Autowired
+//	ThreadPoolTaskExecutor pool;
 
 //		ExecutorService pool = Executors.newFixedThreadPool(40);
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
@@ -60,8 +72,8 @@ class ProDrinker {
 		log.debug("Submitting my order");
 
 
-		CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.getOneBeer(), pool);
-		CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.getOneVodka(), pool);
+		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
 		log.debug("The waiter left with my order....");
 
@@ -101,16 +113,19 @@ class DillyDilly {
 @Slf4j
 @Service
 class Barman {
-	public Beer getOneBeer() {
+
+	@Async("beerPool")
+	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000); // DB mongo
-		 return new Beer();
+		 return CompletableFuture.completedFuture(new Beer());
 	 }
-	
-	 public Vodka getOneVodka() {
+
+	 @Async("vodkaPool")
+	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
 		 ThreadUtils.sleep(1000); // REST API
-		 return new Vodka();
+		 return CompletableFuture.completedFuture(new Vodka());
 	 }
 }
 
