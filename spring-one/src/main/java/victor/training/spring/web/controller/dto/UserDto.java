@@ -3,7 +3,9 @@ package victor.training.spring.web.controller.dto;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.domain.UserProfile;
 
-public class UserDto {
+import java.io.Serializable;
+
+public class UserDto implements Serializable {
    public Long id;
    public String name;
    public UserProfile profile;

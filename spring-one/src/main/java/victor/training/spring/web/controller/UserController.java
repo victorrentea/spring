@@ -39,5 +39,9 @@ public class UserController {
     public void update(@PathVariable long id, @RequestBody UserDto dto) {
         service.updateUser(id, dto.name);
     }
+    @GetMapping("users/{id}/update")
+    public void updateGet(@PathVariable long id) {
+        service.updateUser(id, "dto.name " +System.currentTimeMillis());
+    }
 
 }

@@ -1,11 +1,8 @@
 package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.config.AopConfigUtils;
-import org.springframework.aop.framework.AopConfigException;
-import org.springframework.aop.framework.AopContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,25 +15,19 @@ import victor.training.spring.web.repo.UserRepo;
 @Transactional
 public class UserService  {
     private final UserRepo userRepo;
-
-
-    @Autowired
-    private  UserService myselfProxied;
-
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
+
+    // Use cases:
+//    @Cacheable("country-names")
+//    public Map<Locale, Map<String, String>> method() {
+//
+//    }
+
     @Cacheable("user-count")
     public long countUsers() {
-//        UserService o = (UserService) AopContext.currentProxy();
-        return countUsers_();
-    }
-    // these never work if the method is called locall.
-//    @Transactional
-//    @Async
-//    @PreAuthorised("hasRole('ADMIN'")
-    public long countUsers_() {
         return userRepo.count();
     }
 
@@ -56,14 +47,20 @@ public class UserService  {
 
     // TODO 5 key-based cache entries
 
+    @Cacheable("user-data")
     public UserDto getUser(long id) {
         return new UserDto(userRepo.findById(id).get());
     }
 
-    public void updateUser(long id, String newName) {
+//    @CacheEvict(cacheNames = "user-data", key = "#id")
+    @CachePut(cacheNames = "user-data", key = "#id")
+    public UserDto updateUser(long id, String newName) {
         // TODO 6 update profile too -> pass Dto
         User user = userRepo.findById(id).get();
         user.setName(newName);
+        return new UserDto(user);
     }
+
+    // they will prefer ConcurrentHashMap instead of syncronizedMap()
 }
 
