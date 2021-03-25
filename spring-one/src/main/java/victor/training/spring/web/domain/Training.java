@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 @Entity
 public class Training {
 	@Id
@@ -76,5 +78,9 @@ public class Training {
 				 ", description='" + description + '\'' +
 				 ", startDate=" + startDate +
 				 '}';
+	}
+
+	public void addTags(Tag... newTags) {
+		tags.addAll(asList(newTags));
 	}
 }
