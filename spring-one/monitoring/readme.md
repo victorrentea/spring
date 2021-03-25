@@ -24,3 +24,5 @@ login with admin/admin
    Add a datasource to prometheus http://localhost:9090  Access=BROWSER!!
    
    Then add a Panel + a query like "http_server_requests_seconds_max"
+   rate(http_server_requests_seconds_count[1m])
+   cache_size   -- after adding cache management
