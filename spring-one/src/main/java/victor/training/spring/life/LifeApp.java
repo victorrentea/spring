@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
@@ -45,16 +47,16 @@ public class LifeApp implements CommandLineRunner{
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final InvoiceExporter invoiceExporter;
-	private final CountryRepo countryRepo;
+	private final ObjectFactory<LabelService> labelServiceFactory;
 
-	public OrderExporter(InvoiceExporter invoiceExporter, CountryRepo countryRepo) {
+	OrderExporter(InvoiceExporter invoiceExporter, ObjectFactory<LabelService> labelServiceFactory) {
 		this.invoiceExporter = invoiceExporter;
-		this.countryRepo = countryRepo;
+		this.labelServiceFactory = labelServiceFactory;
 	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = new LabelService(countryRepo);
+		LabelService labelService = labelServiceFactory.getObject();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice(labelService);
@@ -69,8 +71,8 @@ class InvoiceExporter {
 	}
 }
 
-//@Service
-
+@Service
+@Scope("prototype")
 class LabelService { // statefull of ... S...TATE
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
