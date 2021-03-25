@@ -1,0 +1,21 @@
+schema {
+    query: Query
+}
+
+type Query {
+    allTraining: [Training]
+    training(id: Int): Training
+}
+
+type Training {
+    id: Int
+    name: String
+    startDate: String
+    description: String
+    teacher: Teacher
+    tagList: [String]! #lazy loaded
+}
+type Teacher {
+    id: Int
+    name: String
+}

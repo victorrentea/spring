@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller.dto;
 
+import victor.training.spring.web.domain.Training;
+
 public class TrainingDto {
 	public Long id;
 	public String name;

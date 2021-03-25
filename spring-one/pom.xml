@@ -36,6 +36,20 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--graphql-->
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>5.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>11.0.0</version>
+        </dependency>
+
+
+
         <!--@Cacheable-->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,10 +1,9 @@
 package victor.training.spring.web.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Training {
@@ -16,6 +15,8 @@ public class Training {
 	private Date startDate;
 	@ManyToOne
 	private Teacher teacher;
+	@ManyToMany
+	private List<Tag> tags = new ArrayList<>();
 
 	
 	public Training() {
@@ -61,6 +62,10 @@ public class Training {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
 	}
 
 	@Override
