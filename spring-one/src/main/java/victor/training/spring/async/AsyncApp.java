@@ -75,6 +75,7 @@ class ProDrinker {
 		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
 		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
+
 		log.debug("The waiter left with my order....");
 
 
