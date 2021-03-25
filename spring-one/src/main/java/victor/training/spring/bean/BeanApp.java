@@ -21,7 +21,6 @@ public class BeanApp implements CommandLineRunner {
     }
 }
 
-@Data
 class Conversation {
     private final Person one;
     private final Person two;
@@ -34,6 +33,11 @@ class Conversation {
     public void start() {
         System.out.println(one.sayHello());
         System.out.println(two.sayHello());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Conversation{one=%s, two=%s}", one, two);
     }
 }
 
