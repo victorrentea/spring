@@ -15,7 +15,19 @@
     <properties>
         <java.version>8</java.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
+        <my.prop>x</my.prop>
     </properties>
+    <profiles>
+        <profile>
+            <id>local-build</id>
+            <properties>
+                   <my.prop>local-x</my.prop>
+            </properties>
+
+
+        </profile>
+
+    </profiles>
 
     <dependencies>
         <dependency>

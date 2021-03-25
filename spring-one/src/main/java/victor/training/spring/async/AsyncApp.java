@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -60,6 +62,12 @@ class ProDrinker {
 //	@Autowired
 //	ThreadPoolTaskExecutor pool;
 
+
+	@EventListener
+	public void method(ApplicationStartedEvent e) {
+		System.out.println("At startup");
+	}
+
 //		ExecutorService pool = Executors.newFixedThreadPool(40);
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
@@ -78,9 +86,9 @@ class ProDrinker {
 
 		log.debug("The waiter left with my order....");
 
-
+		barman.curseHim("#@&^$!$%&!$*!@*%!");
 		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
-		log.debug("EXITING HTTP THREAD");
+		log.debug("EXITING HTTP THREAD; Got home safely");
 		return futureDilly;
 	}
 }
@@ -114,6 +122,15 @@ class DillyDilly {
 @Slf4j
 @Service
 class Barman {
+
+
+	@Async
+	public void curseHim(String badWords) {
+		if (badWords.length() > 0) {
+			throw new RuntimeException();
+		}
+	}
+
 
 	@Async("beerPool")
 	public CompletableFuture<Beer> getOneBeer() {
