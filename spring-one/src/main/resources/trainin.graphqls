@@ -1,5 +1,6 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type Query {
@@ -17,5 +18,14 @@ type Training {
 }
 type Teacher {
     id: Int
+    name: String
+}
+type Mutation {
+    updateTraining(id: Int, startDate: String, name: String): Training
+    updateTrainingDTO(input: UpdateTrainingDTO): Training
+}
+input UpdateTrainingDTO {
+    id: Int
+    startDate: String
     name: String
 }
