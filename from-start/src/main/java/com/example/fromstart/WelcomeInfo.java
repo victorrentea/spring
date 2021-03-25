@@ -5,21 +5,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolation;
+import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 @ConfigurationProperties(prefix = "welcome")
-//@Validated
+@Validated
 public class WelcomeInfo {
     private static final Logger log = LoggerFactory.getLogger(WelcomeInfo.class);
-//    @NotBlank
+    @NotBlank
     private String welcomeMessage;
     private List<URL> supportUrls;
     private Map<String,String> localContactPhone; // per country
@@ -56,11 +56,11 @@ public class WelcomeInfo {
     javax.validation.Validator validator;
     @PostConstruct
     public void printMyself() {
-        System.out.println("Validating with " + validator);
-        Set<ConstraintViolation<WelcomeInfo>> violations = validator.validate(this);
-        if (!violations.isEmpty()) {
-            throw new RuntimeException(violations.toString());
-        }
+//        System.out.println("Validating with " + validator);
+//        Set<ConstraintViolation<WelcomeInfo>> violations = validator.validate(this);
+//        if (!violations.isEmpty()) {
+//            throw new RuntimeException(violations.toString());
+//        }
 
         if (!help.file.exists()) {
             throw new IllegalArgumentException();

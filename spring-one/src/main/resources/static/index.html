@@ -189,6 +189,11 @@ function openEditTraining(trainingId) {
 			$("#editTeacher").val(data.teacherId);
 			$('#trainingMain').hide();
 			$('#trainingEditDiv').show();
+		},
+		error: function(a,b,c) {
+			if (a.responseText) {
+				toastr.error(a.responseText);
+			}
 		}
 	});
 }

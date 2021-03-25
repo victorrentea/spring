@@ -1,5 +1,5 @@
 welcome:
-#  welcome-message: Welcome to This Spring Realm
+  welcome-message: Welcome to This Spring Realm
   help:
     app-id: 1251
     file: C:\workspace\spring\from-start\pom.xml
@@ -7,3 +7,13 @@ welcome:
   localContactPhone:
     RO: +401312121414
     FR: +430123414123
+
+#spring:
+#  datasource:
+#    type: com.zaxxer.hikari.util.DriverDataSource
+#spring:
+#  datasource:
+#    hikari:
+#      subClass:
+#        subPro
+#      auto-commit: false
