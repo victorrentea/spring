@@ -4,24 +4,26 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
 
-import java.util.Arrays;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
 	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+		new SpringApplicationBuilder(AsyncApp.class)
+			.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
+			.run(args);
 	}
 
 	@Bean
@@ -39,8 +41,8 @@ public class AsyncApp {
 }
 
 @Slf4j
-@Component
-class ProDrinker implements CommandLineRunner {
+@RestController
+class ProDrinker {
 	@Autowired
 	private Barman barman;
 	@Autowired
@@ -49,22 +51,50 @@ class ProDrinker implements CommandLineRunner {
 //		ExecutorService pool = Executors.newFixedThreadPool(40);
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
+
 	// TODO [3] Messaging...
-	public void run(String... args) throws Exception {
+
+	@GetMapping
+	public CompletableFuture<DillyDilly> drink() throws ExecutionException, InterruptedException {
+
 		log.debug("Submitting my order");
 
 
-		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
-		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
+		CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.getOneBeer(), pool);
+		CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.getOneVodka(), pool);
 
 		log.debug("The waiter left with my order....");
 
-		Vodka vodka = futureVodka.get();// .block
-		Beer beer = futureBeer.get();
 
-//		Beer beer = barman.getOneBeer();
-//		Vodka vodka = barman.getOneVodka();
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
+		log.debug("EXITING HTTP THREAD");
+		return futureDilly;
+	}
+}
+
+class DillyDilly {
+	private final Beer beer;
+	private final Vodka vodka;
+
+	DillyDilly(Beer beer, Vodka vodka) {
+		this.beer = beer;
+		this.vodka = vodka;
+	}
+
+	public Vodka getVodka() {
+		return vodka;
+	}
+
+	public Beer getBeer() {
+		return beer;
+	}
+
+	@Override
+	public String toString() {
+		return "DillyDilly{" +
+				 "beer=" + beer +
+				 ", vodka=" + vodka +
+				 '}';
 	}
 }
 
