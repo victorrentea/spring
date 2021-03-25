@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @SpringBootApplication
 public class LifeApp implements CommandLineRunner{
 	@Bean
@@ -47,38 +45,36 @@ public class LifeApp implements CommandLineRunner{
 class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+	private final CountryRepo countryRepo;
 
-	public OrderExporter(InvoiceExporter invoiceExporter, LabelService labelService) {
+	public OrderExporter(InvoiceExporter invoiceExporter, CountryRepo countryRepo) {
 		this.invoiceExporter = invoiceExporter;
-		this.labelService = labelService;
+		this.countryRepo = countryRepo;
 	}
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = new LabelService(countryRepo);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Service
 class InvoiceExporter {
 	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
-	private final LabelService labelService;
-	public InvoiceExporter(LabelService labelService) {
-		this.labelService = labelService;
-	}
 
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
-@Service
+//@Service
+
 class LabelService { // statefull of ... S...TATE
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
@@ -90,7 +86,7 @@ class LabelService { // statefull of ... S...TATE
 		log.debug("LabelService.load() on instance " + this.hashCode());
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
 		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
 		return countryNames.get(iso2Code.toUpperCase());
