@@ -27,19 +27,19 @@ public class Teacher {
 		return id;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public final List<Training> getTrainings() {
+	public List<Training> getTrainings() {
 		return trainings;
 	}
 
-	public final void setTrainings(List<Training> trainings) {
+	public void setTrainings(List<Training> trainings) {
 		this.trainings = trainings;
 	}
 

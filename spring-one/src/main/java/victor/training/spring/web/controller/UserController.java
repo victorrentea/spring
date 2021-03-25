@@ -9,15 +9,27 @@ import victor.training.spring.web.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
+//        = new UserService() {
+//        @Override
+//        public long countUsers() {
+//            // first check the cache if threr-> return from cache
+//            long ret = super.countUsers();
+//            // cache put (ret)
+//            return ret;
+//        }
+//    };
 
     @GetMapping("users/count")
     public long count() {
+        System.out.println("What you expect ; " + service.getClass());
         return service.countUsers();
     }
     @GetMapping("users/create")
     public void create() {
         service.createUser();
     }
+
+    /////////////////
 
     @GetMapping("users/{id}")
     public UserDto get(@PathVariable long id) {
