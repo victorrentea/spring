@@ -26,7 +26,11 @@ public class UserController {
     }
     @GetMapping("users/create")
     public void create() {
-        service.createUser();
+
+//        for (int i = 0; i < 100; i++) {
+            service.createUser();
+
+//        }
     }
 
     /////////////////
