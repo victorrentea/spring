@@ -1,19 +1,20 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
 	private final UserService userService;
+	private final ExpensiveApiClient apiClient;
+
 
 	@GetMapping("api/user/current")
 	public String getCurrentUsername() {

@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 import victor.training.spring.web.domain.*;
 import victor.training.spring.web.repo.TagRepo;
 import victor.training.spring.web.repo.TeacherRepo;
@@ -25,6 +28,7 @@ public class DummyData implements CommandLineRunner {
 	private final TeacherRepo teacherRepo;
 	private final TagRepo tagRepo;
 	private final UserRepo userRepo;
+	private final Environment environment;
 
 	@Override
 	@Transactional
@@ -61,7 +65,9 @@ public class DummyData implements CommandLineRunner {
 
 		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
 		userRepo.save(new User("user", UserProfile.USER, Arrays.asList(victor.getId(), ionut.getId())));
+		userRepo.flush();
+		log.info(">>> Spring-One Application started on {} <<<", environment.getProperty("local.server.port"));
 	}
-	
+
 	
 }

@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   prometheus:
-    network_mode: host
     image: prom/prometheus:latest
     ports:
       - 9090:9090
