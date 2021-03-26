@@ -88,8 +88,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.1.0.Alpha6</version>
         </dependency>
-
-        <!-- WEB -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mongodb</artifactId>
+            <version>1.15.2</version>
+            <scope>test</scope>
+        </dependency><!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
