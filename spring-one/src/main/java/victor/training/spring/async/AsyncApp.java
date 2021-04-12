@@ -4,34 +4,53 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
 
-import java.util.Arrays;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
 	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+
+		new SpringApplicationBuilder(AsyncApp.class)
+			.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
+			.run(args);
 	}
 
 
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.thread.count}") int maxPoolSize) {
+	public ThreadPoolTaskExecutor beerExecutor(@Value("${vodka.service.client.thread.count}") int maxPoolSize) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(maxPoolSize);
 		executor.setMaxPoolSize(maxPoolSize);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
+		executor.setThreadNamePrefix("b-");
+		executor.initialize();
+//		executor.setTaskDecorator();// geek stuff
+//		executor.setThreadFactory(() -> new Thread().setUncaughtExceptionHandler());
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor vodkaExecutor(@Value("${vodka.service.client.thread.count}") int maxPoolSize) {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(maxPoolSize);
+		executor.setMaxPoolSize(maxPoolSize);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("v-");
 		executor.initialize();
 //		executor.setTaskDecorator();// geek stuff
 //		executor.setThreadFactory(() -> new Thread().setUncaughtExceptionHandler());
@@ -43,42 +62,74 @@ public class AsyncApp {
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
-class ProDrinker implements CommandLineRunner {
+@RestController
+class ProDrinker  {
 	private final Barman barman;
-	private final ThreadPoolTaskExecutor executor;
 
 
 	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
 	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
 	// TODO [3] Messaging...
-	public void run(String... args) throws Exception {
+	@GetMapping("drinks")
+	public CompletableFuture<DillyDilly> method() throws ExecutionException, InterruptedException {
 		log.debug("Submitting my order");
 
-		Future<Beer> futureBeer = executor.submit(barman::getOneBeer);
-		Future<Vodka> futureVodka = executor.submit(barman::getOneVodka);
+		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
+		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (beer, vodka) -> new DillyDilly(beer, vodka));
 
-		Beer beer = futureBeer.get();
-		Vodka vodka = futureVodka.get();
+		futureDilly.thenAccept(dilly -> log.info("Drinking " + dilly));
+		futureDilly.thenRun(barman::callWife);
 
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+		log.info("main thread leaves the party");
+		return futureDilly;
+
+//		DillyDilly dillyDilly = futureDilly.get();
+//		return dillyDilly;
+//		Beer beer = futureBeer.get();
+//		Vodka vodka = futureVodka.get();
+//		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka))
 	}
 }
+@Slf4j
+@Data
+class DillyDilly {
+	private final Beer beer;
+	private final Vodka vodka;
+
+	DillyDilly(Beer beer, Vodka vodka) {
+		log.info("Mixking dilly");
+		ThreadUtils.sleep(1000);
+		this.beer = beer;
+		this.vodka = vodka;
+	}
+}
+
+// throttling
 
 @Slf4j
 @Service
 class Barman {
-	public Beer getOneBeer() {
+
+
+	@Async
+	public void callWife() { // fire and forget action
+		log.info("call wife: I'm coming home");
+	}
+
+	@Async("beerExecutor")
+	public CompletableFuture<Beer> getOneBeer() {  // === promises   q.all(q1,q2,q3).then(function() {})
 		 log.debug("Pouring Beer...");
 		 ThreadUtils.sleep(1000); // THE expensive get Policy call
-		 return new Beer();
+		 return completedFuture(new Beer());
 	 }
-	
-	 public Vodka getOneVodka() {
+
+	 @Async("vodkaExecutor")
+	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka...");
-		 ThreadUtils.sleep(1000); // some other expensive "micro"service
-		 return new Vodka();
+		 ThreadUtils.sleep(300); // some other expensive "micro"service
+		 return completedFuture(new Vodka());
 	 }
 }
 
