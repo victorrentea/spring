@@ -30,14 +30,20 @@ public class TrainingController {
 
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
-	@PutMapping("{id}")
+	@PutMapping("{id}") // == overwrite  (idempotent)
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
+
+	@PutMapping("{id}/name") // == overwrite  (idempotent)
+	public void updateTrainingName(@PathVariable Long id, @RequestBody String newName) throws ParseException {
+		// TODO
+	}
+
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.edit'
 	// TODO Requirement: The current user manages the the teacher of that training (User.getManagedTeacherIds)
@@ -49,7 +55,13 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
+//	@PostMapping("") // create a email with status = TO_SEND
+//	public void sendEmail() {
+//	}
+
 	// TODO
+//	@GetMapping("")  // ?name=bla&teascherId=13
+	@PostMapping("search")
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
