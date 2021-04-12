@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -52,6 +53,39 @@ class A {
 		throw new IllegalArgumentException();
 	}
 }
+
+
+//@RequiredArgsConstructor
+//@Component
+//class AA {
+//	private final BB b;
+//
+//	public AA(BB b) {
+//		this.b = b;
+//	}
+//
+//	@PostConstruct
+//	public void method() {
+//		System.out.println("Hello AA + " + b);
+//	}
+//}
+////@RequiredArgsConstructor
+//@Component
+//class BB {
+//	private final AA a;
+//
+//	public BB(AA a) {
+//		this.a = a;
+//	}
+//
+//	@PostConstruct
+//	public void method() {
+//		System.out.println("Hello BB " + a);
+//	}
+//}
+
+
+
 
 @RequiredArgsConstructor
 @Service
