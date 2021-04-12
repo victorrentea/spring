@@ -19,6 +19,8 @@ public class UserController {
         service.createUser();
     }
 
+    
+
     @GetMapping("users/{id}")
     public UserDto get(@PathVariable long id) {
         return service.getUser(id);

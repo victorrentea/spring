@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("api/trainings")
@@ -26,6 +29,11 @@ public class TrainingController {
 	@GetMapping("{id}")
 	public TrainingDto getTrainingById(@PathVariable Long id) {
 		return trainingService.getTrainingById(id);
+	}
+// AVOID this:
+	@GetMapping("{id}2")
+	public ResponseEntity<TrainingDto> getTrainingById2(@PathVariable Long id) {
+		return ok(trainingService.getTrainingById(id));
 	}
 
 	// TODO @Valid
