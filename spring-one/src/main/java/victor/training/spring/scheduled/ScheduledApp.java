@@ -25,8 +25,8 @@ public class ScheduledApp  {
     }
 
 
-//    @Scheduled(fixedRateString = "${poller.rate.millis}")
-    @Scheduled(cron = "${poller.rate.cron}")
+    @Scheduled(fixedRateString = "${poller.rate.millis}")
+//    @Scheduled(cron = "${poller.rate.cron}")
     // TODO 1 Should run every 5 seconds / configurable / cron "*/5 * * * * *"
     // TODO 3 Play with delays. cron vs fixedRate? Overlapping executions?
     // TODO 4 Should run on a separate 1-thread pool
@@ -38,6 +38,7 @@ public class ScheduledApp  {
 
     // TODO 2 define another task at each second. This should not block.
     // TODO explore application.properties (thread #)
+    @Scheduled(fixedRate = 1000)
     public void pollFast() {
         log.debug("FAST each second");
     }
