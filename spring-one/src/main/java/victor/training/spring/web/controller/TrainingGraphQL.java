@@ -61,6 +61,6 @@ class UpdateTrainingDTO{
 class TrainingResolver implements GraphQLResolver<Training> {
    private final TagRepo tagRepo;
    public List<String> tagList(Training training) {
-      return asList("a","b");
+      return tagRepo.findAllByTraining(training.getId()).stream().map(Tag::getName).collect(toList());
    }
 }
