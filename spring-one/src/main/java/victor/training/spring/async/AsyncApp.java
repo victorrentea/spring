@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
 @EnableAsync
+@EnableRetry
 @SpringBootApplication
 public class AsyncApp {
 	public static void main(String[] args) {
@@ -74,7 +78,7 @@ class ProDrinker  {
 	public CompletableFuture<DillyDilly> method() throws ExecutionException, InterruptedException {
 		log.debug("Submitting my order");
 
-		CompletableFuture<Beer> futureBeer = barman.getOneBeer();
+		CompletableFuture<Beer> futureBeer = barman.getOneBeer(UUID.randomUUID().toString());
 		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
 		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (beer, vodka) -> new DillyDilly(beer, vodka));
@@ -112,15 +116,19 @@ class DillyDilly {
 @Service
 class Barman {
 
-
 	@Async
 	public void callWife() { // fire and forget action
 		log.info("call wife: I'm coming home");
 	}
 
 	@Async("beerExecutor")
-	public CompletableFuture<Beer> getOneBeer() {  // === promises   q.all(q1,q2,q3).then(function() {})
-		 log.debug("Pouring Beer...");
+	@Retryable // << very powerful
+	public CompletableFuture<Beer> getOneBeer(String requestId) {  // === promises   q.all(q1,q2,q3).then(function() {})
+		log.debug("Pouring Beer... PUT to bar.com/beer/" + requestId);
+		if (Math.random() < .5) {
+			throw new IllegalArgumentException();
+		}
+		 log.debug("POST Poured Beer... ");
 		 ThreadUtils.sleep(1000); // THE expensive get Policy call
 		 return completedFuture(new Beer());
 	 }
