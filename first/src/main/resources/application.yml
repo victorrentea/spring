@@ -1,5 +1,4 @@
 logging.level.com.example.first:  DEBUG
-
 welcome:
   welcomeMessage: Welcome to This Spring Realm
   help:
@@ -10,3 +9,10 @@ welcome:
   localContactPhone:
     RO: +401312121414
     FR: +430123414123
+logging:
+  level: debug
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+logging.level.org.hibernate.SQL: DEBUG
