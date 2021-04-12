@@ -10,17 +10,23 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
 @Slf4j
+@EnableScheduling
 public class ScheduledApp  {
     public static void main(String[] args) {
         SpringApplication.run(ScheduledApp.class);
     }
 
+
+//    @Scheduled(fixedRateString = "${poller.rate.millis}")
+    @Scheduled(cron = "${poller.rate.cron}")
     // TODO 1 Should run every 5 seconds / configurable / cron "*/5 * * * * *"
     // TODO 3 Play with delays. cron vs fixedRate? Overlapping executions?
     // TODO 4 Should run on a separate 1-thread pool
@@ -36,3 +42,22 @@ public class ScheduledApp  {
         log.debug("FAST each second");
     }
 }
+@Slf4j
+@RestController
+class JobStartController {
+    @GetMapping("/job1/start")
+    public void lookIntoFolder() { // you can start manually  or
+        // crontab */5 * * * * curl -X GET http://localhost:8080/job1/start   >>> devops concern +1
+        // crontab */5 * * * * curl -X GET http://load-balancer/job1/start
+        log.debug("Looking into folder");
+        ThreadUtils.sleep(7000);
+        log.debug("DONE");
+    }
+}
+
+// What about cloud deployment (Load Balanced instances) >> which deployment will run the end of month exports ?
+// A) tarzan-style: let's create our tables, and throw dices.
+// B) Quartz:  + 20 tables in your schema
+// C) rely on some service offered by the Cloud provider
+
+// Spring Cloud Flow
