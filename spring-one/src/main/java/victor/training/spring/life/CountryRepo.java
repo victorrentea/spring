@@ -13,7 +13,8 @@ import java.util.Map;
 public class CountryRepo {
 	private final static Logger log = LoggerFactory.getLogger(CountryRepo.class);
 
-	public Map<String, String> loadCountryNamesAsMap(Locale locale) {
+
+	public Map loadCountryNamesAsMap(Locale locale) {
 		// connect to database, get data. fake some latency
 		log.debug("Loading country names for language: {} ...", locale );
 		ThreadUtils.sleep(2000);

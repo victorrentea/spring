@@ -20,6 +20,7 @@ public class UserService  {
 
     @Cacheable("user-count")
     public long countUsers() {
+
         return userRepo.count();
     }
 
@@ -39,6 +40,7 @@ public class UserService  {
         return new UserDto(userRepo.findById(id).get());
     }
 
+    @CacheEvict(value = "user-data", key = "#id")
     public void updateUser(long id, String newName) {
         // TODO 6 update profile too -> pass Dto
         User user = userRepo.findById(id).get();
