@@ -11,16 +11,16 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Configuration
-public class CacheMetricsConfig extends CachingConfigurerSupport {
-   @Value("${spring.cache.cache-names}")
-   private List<String> cacheNames;
-
-   @Bean
-   @Override
-   public CacheManager cacheManager() {
-      SimpleCacheManager cacheManager = new SimpleCacheManager();
-      cacheManager.setCaches(cacheNames.stream().map(ConcurrentMapCacheMetricsWrapper::new).collect(toList()));
-      return cacheManager;
-   }
-}
+//@Configuration
+//public class CacheMetricsConfig extends CachingConfigurerSupport {
+//   @Value("${spring.cache.cache-names}")
+//   private List<String> cacheNames;
+//
+//   @Bean
+//   @Override
+//   public CacheManager cacheManager() {
+//      SimpleCacheManager cacheManager = new SimpleCacheManager();
+//      cacheManager.setCaches(cacheNames.stream().map(ConcurrentMapCacheMetricsWrapper::new).collect(toList()));
+//      return cacheManager;
+//   }
+//}
