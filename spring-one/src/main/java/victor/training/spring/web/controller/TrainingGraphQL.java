@@ -61,6 +61,7 @@ class UpdateTrainingDTO{
 class TrainingResolver implements GraphQLResolver<Training> {
    private final TagRepo tagRepo;
    public List<String> tagList(Training training) {
+      System.out.println("Happens on demad");
       return asList("a","b");
    }
 }
