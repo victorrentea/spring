@@ -1,4 +1,4 @@
-logging.level.com.example.first:  DEBUG
+logging.level.com.example.first:  INFO
 welcome:
   welcomeMessage: Welcome to This Spring Realm
   help:
@@ -11,6 +11,11 @@ welcome:
     FR: +430123414123
 logging:
   level: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 spring:
   jpa:
     hibernate:

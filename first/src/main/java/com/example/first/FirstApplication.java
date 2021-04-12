@@ -1,6 +1,7 @@
 package com.example.first;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,7 @@ public class FirstApplication {
 }
 
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 class MyRestController {
@@ -25,6 +27,7 @@ class MyRestController {
 	private final WelcomeInfo welcomeInfo;
 	@GetMapping
 	public String method() {
+		log.debug("Some deep dark info about a bug you can't reproduce on your local");
 	    return message;
 	}
 }
