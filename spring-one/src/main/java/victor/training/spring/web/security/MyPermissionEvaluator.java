@@ -1,4 +1,4 @@
-//package victor.training.spring.web.controller;
+//package victor.training.spring.web.security;
 //
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
