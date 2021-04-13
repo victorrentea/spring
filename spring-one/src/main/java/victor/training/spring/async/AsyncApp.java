@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -79,6 +80,10 @@ class ProDrinker  {
 		log.debug("Submitting my order");
 
 		CompletableFuture<Beer> futureBeer = barman.getOneBeer(UUID.randomUUID().toString());
+
+//		RetryTemplate retryTemplate;
+//		retryTemplate.execute(() -> barman.getOneBeer(UUID.randomUUID().toString()))
+
 		CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
 
 		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (beer, vodka) -> new DillyDilly(beer, vodka));
@@ -115,16 +120,18 @@ class DillyDilly {
 @Slf4j
 @Service
 class Barman {
-
 	@Async
 	public void callWife() { // fire and forget action
 		log.info("call wife: I'm coming home");
 	}
 
 	@Async("beerExecutor")
-	@Retryable // << very powerful
+//	@Retryable // << very powerful
 	public CompletableFuture<Beer> getOneBeer(String requestId) {  // === promises   q.all(q1,q2,q3).then(function() {})
 		log.debug("Pouring Beer... PUT to bar.com/beer/" + requestId);
+
+
+
 		if (Math.random() < .5) {
 			throw new IllegalArgumentException();
 		}
