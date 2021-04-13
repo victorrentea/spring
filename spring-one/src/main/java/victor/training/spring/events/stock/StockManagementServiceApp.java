@@ -8,14 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.context.event.EventListener;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Service;
-import victor.training.spring.events.events.CheckStockForOrder;
-import victor.training.spring.events.events.OrderIsInStockEvent;
 
 
 interface StockChannels {
@@ -33,13 +30,13 @@ public class StockManagementServiceApp {
    public static void main(String[] args) {
        SpringApplication.run(StockManagementServiceApp.class, args);
    }
-   private int stock = 0; // silly implem :D
+   private int stock = 3; // silly implem :D
 
    @Autowired
    StockChannels channels;
 
-   @ServiceActivator(inputChannel = "oce_in")
-   public void process(String orderId) {
+   @ServiceActivator(inputChannel = "oce_in", outputChannel = "gi_out")
+   public Message<String> process(String orderId) {
       log.info("Checking stock for products in order " + orderId);
       if (stock == 0) {
          throw new IllegalStateException("Out of stock");
@@ -47,6 +44,6 @@ public class StockManagementServiceApp {
       stock--;
       log.info(">> PERSIST new STOCK!!");
 //      return new OrderIsInStockEvent(event.getOrderId());
-      channels.generateInvoice().send(MessageBuilder.withPayload("Order in STOCK " + orderId).build());
+      return MessageBuilder.withPayload("Order in STOCK " + orderId).build();
    }
 }
