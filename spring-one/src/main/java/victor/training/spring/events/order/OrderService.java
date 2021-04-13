@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import victor.training.spring.events.events.OrderCreatedEvent;
-import victor.training.spring.events.invoicing.InvoiceService;
+import victor.training.spring.events.events.CheckStockForOrder;
 
 @Service
 @Slf4j
@@ -19,6 +18,7 @@ public class OrderService {
       long orderId = 13L;
 //      invoiceService.sendInvoice(orderId);
 
-      eventPublisher.publishEvent(new OrderCreatedEvent(orderId));
+//      eventPublisher.publishEvent(new OrderCreatedEvent(orderId));// event
+      eventPublisher.publishEvent(new CheckStockForOrder(orderId));
    }
 }
