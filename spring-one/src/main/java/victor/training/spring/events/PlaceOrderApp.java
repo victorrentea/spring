@@ -20,12 +20,12 @@ public class PlaceOrderApp implements CommandLineRunner {
 		SpringApplication.run(PlaceOrderApp.class, args);
 	}
 
-//	@Bean
-//	public ApplicationEventMulticaster applicationEventMulticaster() {
-//		SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-//		eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-//		return eventMulticaster;
-//	}
+	@Bean
+	public ApplicationEventMulticaster applicationEventMulticaster() {
+		SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+		eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+		return eventMulticaster;
+	}
 
 
 	// TODO [1] Decouple using @EventListener and ApplicationEventPublisher
