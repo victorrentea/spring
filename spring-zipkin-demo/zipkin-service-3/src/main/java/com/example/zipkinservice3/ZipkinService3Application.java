@@ -63,6 +63,9 @@ class ZipkinController {
       List<String> responses4 = new ArrayList<>();
       for (int i = 0; i < 3; i++) { // famous N+1 queries problem, with REST
          log.info("{}: Calling service 4", i);
+         // http://car-service/chassis-number/{i}
+         // http://car-service/chassis-number/WW1,WW2,WW3
+         //
          responses4.add(rest.getForObject("http://localhost:8084/service4", String.class));
          log.info("{}: Calling service 4", i);
       }
