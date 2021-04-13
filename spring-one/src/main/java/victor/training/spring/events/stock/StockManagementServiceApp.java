@@ -22,16 +22,16 @@ public class StockManagementServiceApp {
    private int stock = 3; // silly implem :D
 
    @Bean
-   public Function<String, Message<String>> checkStock() {
-      return orderId -> {
-         log.info("Checking stock for products in order " + orderId);
+   public Function<Message<String>, Message<String>> checkStock() {
+      return orderCreatedEventMessage -> {
+         log.info("Checking stock for products in order " + orderCreatedEventMessage.getPayload());
          if (stock == 0) {
             throw new IllegalStateException("Out of stock");
          }
          stock--;
          log.info(">> PERSIST new STOCK!!");
 //      return new OrderIsInStockEvent(event.getOrderId());
-         return MessageBuilder.withPayload("Order in STOCK " + orderId).build();
+         return MessageBuilder.withPayload("Order in STOCK " + orderCreatedEventMessage).copyHeaders(orderCreatedEventMessage.getHeaders()).build();
       };
    }
 }
