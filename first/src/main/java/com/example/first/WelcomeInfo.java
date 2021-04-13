@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Component
 @ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
+    @NotNull
     private String welcomeMessage;
     private List<URL> supportUrls;
     private Map<String,String> localContactPhone; // per country

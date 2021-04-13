@@ -14,13 +14,12 @@ import victor.training.spring.web.repo.UserRepo;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService  {
+public /*final */class UserService  {
     private final UserRepo userRepo;
 
 
     @Cacheable("user-count")
-    public long countUsers() {
-
+    public /*final*/ long countUsers() {
         return userRepo.count();
     }
 
