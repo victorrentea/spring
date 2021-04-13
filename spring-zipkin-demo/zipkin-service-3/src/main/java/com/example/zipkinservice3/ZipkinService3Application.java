@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @EnableBinding(Sink.class)
@@ -61,12 +62,17 @@ class ZipkinController {
    public String service3() {
       log.info("Start service 3..");
       List<String> responses4 = new ArrayList<>();
-      for (int i = 0; i < 3; i++) { // famous N+1 queries problem, with REST
-         log.info("{}: Calling service 4", i);
-         responses4.add(rest.getForObject("http://localhost:8084/service4", String.class));
-         log.info("{}: Calling service 4", i);
+      List<Long> childrenIds = getChildren();
+      for (Long childId : childrenIds) { // famous N+1 queries problem, with REST
+         log.info("{}: Calling service 4", childId);
+         responses4.add(rest.getForObject("http://localhost:8084/service4/{id}", String.class, childId));
+         log.info("{}: Calling service 4", childId);
       }
       log.info("End service 3");
       return "3 " + String.join(" ", responses4);
+   }
+
+   private List<Long> getChildren() {
+      return Arrays.asList(1L,2L,3L);
    }
 }

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 @EnableBinding(Source.class)
@@ -37,9 +38,9 @@ public class ZipkinService4Application {
 class ZipkinController {
     private final Source channel;
 
-    @GetMapping(value = "/service4")
-    public String service4() {
-        log.info("Inside zipkinService 4..");
+    @GetMapping(value = "/service4/{id}")
+    public String service4(@PathVariable Long id) {
+        log.info("Inside zipkinService 4.. for id=" + id);
         log.info("Sending Message to Service 3");
         Message<String> message = MessageBuilder.withPayload("Hi From Service4!").build();
         channel.output().send(message);
