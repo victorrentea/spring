@@ -1,4 +1,4 @@
-package com.baeldung.keycloak;
+package victor.training.keycloak;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

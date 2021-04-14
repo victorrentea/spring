@@ -9,3 +9,8 @@ This module contains articles about Keycloak in Spring Boot projects.
 - [Keycloak User Self-Registration](https://www.baeldung.com/keycloak-user-registration)
 - [Customizing Themes for Keycloak](https://www.baeldung.com/spring-keycloak-custom-themes)
 
+
+
+Run keycloak: 
+
+C:\workspace\keycloak-12.0.4\bin\standalone.bat -Djboss.socket.binding.port-offset=100

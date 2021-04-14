@@ -1,4 +1,4 @@
-package com.baeldung.keycloak;
+package victor.training.keycloak;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
