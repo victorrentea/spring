@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller.websocket.auction;
+package victor.training.spring.websockets.auction;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
