@@ -7,13 +7,11 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
 	private final UserService userService;
-	private final ExpensiveApiClient apiClient;
 
 
 	@GetMapping("api/user/current")

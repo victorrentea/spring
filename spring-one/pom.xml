@@ -35,7 +35,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <!-- Enables auto-completion in IntelliJ based on @ConfigurationProperties -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
