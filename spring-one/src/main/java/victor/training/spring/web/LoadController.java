@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class LoadController {
-   private final ExpensiveApiClient apiClient;
    private final TransactedService transactedService;
 
    @GetMapping("load/conn-starve")
