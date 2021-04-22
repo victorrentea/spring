@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -46,9 +44,7 @@ public class Playground {
             other.methodSharingTransaction();
         } catch (Exception e) {
 //            myselfProxied.storeError(e.getMessage());
-            TransactionTemplate tx = new TransactionTemplate(transactionManager);
-            tx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-            tx.execute(status -> {
+            newTx.execute(status -> {
                 storeError("ERROR w tx template");
                 return null;
             });
@@ -61,13 +57,14 @@ public class Playground {
         System.out.println("END OF METHOD");
     }
 
-
+    @Autowired
+    private TransactionTemplate newTx;
 
     @Autowired
     private Playground myselfProxied;
 
-    @Autowired
-    PlatformTransactionManager transactionManager;
+//    @Autowired
+//    PlatformTransactionManager transactionManager;
 //    UserTransaction userTransaction;
 
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
