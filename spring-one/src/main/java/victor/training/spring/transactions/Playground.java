@@ -98,9 +98,10 @@ public class Playground {
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)//(readOnly = true)
     public void transactionOneBis() {
-        Message message = repo.findById(100L).get();
+//        Message message = repo.findById(100L).get();
+        Message message = repo.findWithTags(100L);
         message.setMessage("Surprise");
-        System.out.println("Entity got back");
+        System.out.println("Entity got back :" + message);
         for (Tag tag : message.getTags()) {
             System.out.println("Tag: " + tag.getName());
         }
@@ -109,8 +110,8 @@ public class Playground {
         System.out.println(message == messageBis);
 //        Connection connection;
 //        c.ab
-        repo.streamAll()
-            .forEach(System.out::println);
+//        repo.streamAll()
+//            .forEach(System.out::println);
     }
 
 }

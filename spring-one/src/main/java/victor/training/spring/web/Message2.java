@@ -10,13 +10,13 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
-public class Message {
+public class Message2 {
    @Id
    @GeneratedValue
    private Long id;
    private String message;
 
-   public Message(String message) {
+   public Message2(String message) {
       this.message = message;
    }
 }

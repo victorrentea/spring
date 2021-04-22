@@ -8,8 +8,9 @@ import java.util.stream.Stream;
 public interface MessageRepo extends JpaRepository<Message, Long> {
 
    Message findByMessage(String message);
-//   @Query("SELECT m from Message m LEFT JOIN FETCH m.message WHERE m.id=?1" )
-//   Message findWithTags(Long id);
+
+   @Query("SELECT m from Message m LEFT JOIN FETCH m.tags WHERE m.id=?1" )
+   Message findWithTags(Long id);
 
    @Query("FROM Message ")
    Stream<Message> streamAll();

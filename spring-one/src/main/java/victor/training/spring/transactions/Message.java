@@ -13,7 +13,8 @@ public class Message {
 //    @Basic(fetch = FetchType.LAZY)
 //    @Lob
     private String message;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection//(fetch = FetchType.EAGER)
+//    @Exclue
     private List<Tag> tags = new ArrayList<>();
 
 
