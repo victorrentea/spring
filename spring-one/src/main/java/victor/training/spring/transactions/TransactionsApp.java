@@ -17,10 +17,11 @@ public class TransactionsApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("What did Spring injected me ? " + playground.getClass());
         System.out.println("============= TRANSACTION ONE ==============");
         playground.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
-        playground.transactionTwo();
+        playground. transactionTwo();
         System.out.println("============= END ==============");
     }
 }
