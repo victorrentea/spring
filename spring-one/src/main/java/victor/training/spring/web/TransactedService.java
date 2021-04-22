@@ -12,6 +12,7 @@ public class TransactedService {
    private final MessageRepo messageRepo;
 
    public void flow() {
+      messageRepo.save(new Message2("aa"));
       String data = apiClient.blockingCall();
       messageRepo.save(new Message2(data));
    }
