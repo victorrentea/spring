@@ -3,7 +3,6 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -36,14 +35,6 @@ public class TechnicalController {
 //	}
 
 //	@Autowired  // TODO Import the other Spring Boot Application
-	private WelcomeInfo welcomeInfo;
-
-	// TODO [SEC] allow unsecured access
-	@GetMapping("unsecured/welcome-info")
-	public String showWelcomeInfo(){
-		// TODO return welcomeInfo;
-		return "Welcome! What's your temperature?";
-	}
 
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/launch")

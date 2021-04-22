@@ -1,16 +1,14 @@
 package victor.training.spring.web.controller;
 
-import java.text.ParseException;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
-import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("api/trainings")
