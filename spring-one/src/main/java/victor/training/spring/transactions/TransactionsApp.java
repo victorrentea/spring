@@ -6,17 +6,32 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
+@Async
 @SpringBootApplication
 @EnableJpaRepositories
 @RequiredArgsConstructor
 public class TransactionsApp  {
     public static void main(String[] args) {
         SpringApplication.run(TransactionsApp.class, args);
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor throttledTo20() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("long-");
+        executor.initialize();
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        return executor;
     }
 
     @Bean
@@ -42,6 +57,8 @@ class Cycles implements CommandLineRunner{
         System.out.println("What did Spring injected me ? " + playground.getClass());
         System.out.println("============= TRANSACTION ONE ==============");
         playground.transactionOne();
+        System.out.println("============= TRANSACTION ONE bis ==============");
+        playground.transactionOneBis();
         System.out.println("============= TRANSACTION TWO ==============");
         playground. transactionTwo();
         System.out.println("============= END ==============");

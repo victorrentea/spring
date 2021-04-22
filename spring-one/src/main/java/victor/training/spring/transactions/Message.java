@@ -1,6 +1,8 @@
 package victor.training.spring.transactions;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Message {
@@ -11,7 +13,18 @@ public class Message {
 //    @Basic(fetch = FetchType.LAZY)
 //    @Lob
     private String message;
-//    @OneTo
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
+
+
+    public Message setTags(List<Tag> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 
     protected Message() {
     }

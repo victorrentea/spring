@@ -1,6 +1,9 @@
 package victor.training.spring.transactions;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.stream.Stream;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
 
@@ -8,4 +11,6 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 //   @Query("SELECT m from Message m LEFT JOIN FETCH m.message WHERE m.id=?1" )
 //   Message findWithTags(Long id);
 
+   @Query("FROM Message ")
+   Stream<Message> streamAll();
 }
