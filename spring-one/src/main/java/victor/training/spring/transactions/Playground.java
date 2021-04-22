@@ -5,8 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -42,18 +45,34 @@ public class Playground {
         try {
             other.methodSharingTransaction();
         } catch (Exception e) {
-            myselfProxied.storeError(e.getMessage());
+//            myselfProxied.storeError(e.getMessage());
+            TransactionTemplate tx = new TransactionTemplate(transactionManager);
+            tx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            tx.execute(status -> {
+                storeError("ERROR w tx template");
+                return null;
+            });
         }
+//        Playground myselfProxied = (Playground) AopContext.currentProxy();
+        System.out.println("zombie? " + TransactionAspectSupport.currentTransactionStatus().isRollbackOnly());
+
         repo.save(new Message("new new"));
         System.out.println(repo.findByMessage("a"));
         System.out.println("END OF METHOD");
     }
 
+
+
     @Autowired
     private Playground myselfProxied;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Autowired
+    PlatformTransactionManager transactionManager;
+//    UserTransaction userTransaction;
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void storeError(String message) {
+
         Message entity = new Message("ERROR: " + message);
         repo.save(entity);
         entity.setMessage("ERROR DIFF");

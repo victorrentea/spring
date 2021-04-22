@@ -1,9 +1,6 @@
 package victor.training.spring.transactions;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Message {
@@ -11,7 +8,10 @@ public class Message {
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
+//    @Basic(fetch = FetchType.LAZY)
+//    @Lob
     private String message;
+//    @OneTo
 
     protected Message() {
     }
