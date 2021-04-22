@@ -2,11 +2,14 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -30,17 +33,32 @@ public class Playground {
         message.setMessage("Different");
         log.debug(message.getId() + " is the id");
 
-        repo.save(new Message("new new"));
 //        repo.save(new Message(null));
 //        System.out.println(repo.findByMessage("new new"));
 
 //        repo.save(message);
 //        repo.save(new Message("jpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpajpa"));
 
-        other.methodSharingTransaction();
+        try {
+            other.methodSharingTransaction();
+        } catch (Exception e) {
+            myselfProxied.storeError(e.getMessage());
+        }
+        repo.save(new Message("new new"));
+        System.out.println(repo.findByMessage("a"));
         System.out.println("END OF METHOD");
-
     }
+
+    @Autowired
+    private Playground myselfProxied;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void storeError(String message) {
+        Message entity = new Message("ERROR: " + message);
+        repo.save(entity);
+        entity.setMessage("ERROR DIFF");
+    }
+
 }
 
 class PlaygroundProxyPlay extends Playground {
@@ -63,7 +81,11 @@ class AnotherClass {
     private final MessageRepo repo;
 
     @Transactional
-    public void methodSharingTransaction() {
+    public void methodSharingTransaction() throws IOException {
+        new RuntimeException().printStackTrace();
         repo.save(new Message("happy"));
+        throw new RuntimeException("some reason");
     }
+
+
 }
