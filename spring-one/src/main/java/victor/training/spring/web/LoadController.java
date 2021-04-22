@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class LoadMonitoringController {
+public class LoadController {
    private final ExpensiveApiClient apiClient;
    private final TransactedService transactedService;
 
