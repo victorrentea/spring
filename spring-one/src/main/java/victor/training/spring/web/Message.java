@@ -1,4 +1,4 @@
-package victor.training.spring.web.domain;
+package victor.training.spring.web;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
