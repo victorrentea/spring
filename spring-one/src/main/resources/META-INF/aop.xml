@@ -1,0 +1,12 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+	<weaver>
+		<!--Restrict AspectJ Load Time Weaving to this package only-->
+		<include within="victor..*"/>
+	</weaver>
+
+	<aspects>
+		<!-- The lifecycle of this aspect is managed by AspectJ (new very early) -->
+		<!--<aspect name="victor.training.spring.aspects.CustomAspect"/>-->
+	</aspects>
+</aspectj>
