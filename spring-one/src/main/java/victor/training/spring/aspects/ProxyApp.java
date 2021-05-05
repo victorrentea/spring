@@ -31,7 +31,7 @@ public class ProxyApp implements CommandLineRunner {
 
  		log.debug("---- CPU Only Work = memoization");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + new ExpensiveOps().isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 
