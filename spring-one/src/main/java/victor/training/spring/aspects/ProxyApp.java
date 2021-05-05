@@ -1,16 +1,15 @@
 package victor.training.spring.aspects;
 
-import java.io.File;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@EnableAspectJAutoProxy(exposeProxy = true)
+import java.io.File;
+
+//@EnableAspectJAutoProxy(exposeProxy = true)
 @EnableCaching 
 @SpringBootApplication
 @Slf4j
