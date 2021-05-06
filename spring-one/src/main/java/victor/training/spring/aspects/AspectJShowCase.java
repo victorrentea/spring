@@ -5,7 +5,7 @@ public class AspectJShowCase {
    static {
       System.out.println("AGENT LOADED: " + isAspectJAgentLoaded());
    }
-   public static boolean isAspectJAgentLoaded() {
+   private static boolean isAspectJAgentLoaded() {
       try {
          org.aspectj.weaver.loadtime.Agent.getInstrumentation();
       } catch (NoClassDefFoundError | UnsupportedOperationException e) {

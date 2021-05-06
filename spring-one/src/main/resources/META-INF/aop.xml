@@ -7,6 +7,6 @@
 
 	<aspects>
 		<!-- The lifecycle of this aspect is managed by AspectJ (new very early) -->
-		<!--<aspect name="victor.training.spring.aspects.CustomAspect"/>-->
+		<!--<aspect name="victor.training.spring.aspects.MyAspect"/>-->
 	</aspects>
 </aspectj>
