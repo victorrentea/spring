@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingInterceptor {
-   @Around("execution(* victor..*.*(..))")
+//   @Around("execution(* victor..*.*(..))")
+//   @Around(" @within(victor.training.spring.aspects.Logged)")
+   @Around("@annotation(victor.training.spring.aspects.Logged)")
    public Object interceptAndLog(ProceedingJoinPoint pjp) throws Throwable {
       log.info("Calling method " + pjp.getSignature().getDeclaringType().getSimpleName() + "." + pjp.getSignature().getName());
       return pjp.proceed();

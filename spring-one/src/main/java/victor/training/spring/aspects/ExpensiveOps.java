@@ -22,6 +22,7 @@ public class ExpensiveOps {
 //	)
 //	@Retryable
 
+@Logged
 	@Cacheable("primes")
 	public Boolean isPrime(int n) {
 		new RuntimeException().printStackTrace();
