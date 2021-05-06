@@ -1,22 +1,25 @@
 package victor.training.spring.aspects;
 
-import java.lang.reflect.InvocationHandler;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
 public class ManualProxies {
    public static void main(String[] args) {
-      MathematicsImpl real = new MathematicsImpl();
-      InvocationHandler h = new InvocationHandler() {
+      Mathematics real = new Mathematics();
+
+      Callback callback = new MethodInterceptor() {
          @Override
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+         public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
             System.out.println("Intercept method call " + method.getName() + " with args " + Arrays.toString(args)) ;
             return method.invoke(real, args);
          }
       };
-      Mathematics math = (Mathematics) Proxy.newProxyInstance(ManualProxies.class.getClassLoader(),
-          new Class<?>[]{Mathematics.class}, h);
+      Mathematics math = (Mathematics) Enhancer.create(Mathematics.class, callback);
 
       demoTime(math);
 
@@ -32,20 +35,13 @@ public class ManualProxies {
    }
 }
 
-class MathematicsImpl implements Mathematics {
+class Mathematics {
 
-   @Override
    public int sum(int a, int b) {
       return a+b;
    }
 
-   @Override
    public int product(int a, int b) {
       return a*b;
    }
-}
-
-interface Mathematics {
-   int sum(int a, int b);
-   int product(int a, int b);
 }
