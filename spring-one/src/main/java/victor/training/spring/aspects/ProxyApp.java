@@ -6,12 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.AdviceMode;
 
-@EnableCaching
+@EnableCaching(mode = AdviceMode.ASPECTJ)
 @SpringBootApplication
 @Slf4j
-@EnableAspectJAutoProxy(exposeProxy = true)
 public class ProxyApp implements CommandLineRunner {
 
 	public static void main(String[] args) {
@@ -32,6 +31,7 @@ public class ProxyApp implements CommandLineRunner {
 
 	// Holy Domain Logic: Precious things that I want to keep agnostic to technical details
 	public void run(String... args) {
+		AspectJShowCase.staticMethod();
 		log.debug("Using class: " + ops.getClass());
 
  		log.debug("---- CPU Only Work = memoization");
@@ -39,7 +39,7 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
-		anotherClass.anotherMethod();
+		ops.anotherMethod();
 
 
 //		log.debug("---- Local copy of remote data ==> Possible inconsistencies");
