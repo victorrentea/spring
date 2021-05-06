@@ -5,9 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.AdviceMode;
 
-@EnableCaching(mode = AdviceMode.ASPECTJ)
+@EnableCaching
 @SpringBootApplication
 @Slf4j
 public class ProxyApp implements CommandLineRunner {
