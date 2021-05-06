@@ -6,11 +6,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.AdviceMode;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@EnableCaching(mode = AdviceMode.ASPECTJ)
+@EnableCaching(order = 2)
 @SpringBootApplication
 @Slf4j
+@EnableAspectJAutoProxy
 public class ProxyApp implements CommandLineRunner {
 
 	public static void main(String[] args) {
