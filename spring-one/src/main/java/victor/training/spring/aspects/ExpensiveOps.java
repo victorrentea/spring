@@ -1,8 +1,9 @@
 package victor.training.spring.aspects;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -10,9 +11,17 @@ import java.util.List;
 
 @Slf4j
 @Service
+//@Transactional
 public class ExpensiveOps {
 
-	@Cacheable("primes")
+//	@PreAuthorize()
+//	@Async
+//	@RolesAllowed(
+//
+//	)
+//	@Retryable
+
+//	@Cacheable("primes")
 	public Boolean isPrime(int n) {
 		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})...", n);
@@ -34,10 +43,12 @@ public class ExpensiveOps {
 		return true;
 	}
 
-	public void anotherMethod() {
-		log.debug("Entered another method");
-		log.debug("Got: " + isPrime(10000169) + "\n"); // a local method invocation is not proxied !!
-	}
+
+
+//	@Autowired
+//	private ExpensiveOps myselfProxied;
+
+
 	@Autowired
 	private UserRepo userRepo;
 
@@ -47,5 +58,21 @@ public class ExpensiveOps {
 
 	public void createUser(User user) {
 		userRepo.save(user);
+	}
+}
+
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+class BreakItForTheFramework {
+	private final ExpensiveOps ops;
+	private final CacheManager cacheManager;
+
+	public void anotherMethod() {
+		log.debug("Entered another method");
+//		cacheManager.getCache("primes").get()
+//		ExpensiveOps myselfProxied = (ExpensiveOps) AopContext.currentProxy();
+		log.debug("Got: " + ops.isPrime(10000169) + "\n"); // a local method invocation is not proxied !!
 	}
 }
