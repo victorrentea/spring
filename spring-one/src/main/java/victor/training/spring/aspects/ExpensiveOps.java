@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,15 @@ public /*final*/ class ExpensiveOps {
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+//	@Autowired
+//	private ExpensiveOps myselfProxied;
+
+	public  Boolean isPrime$(int n) {
+		ExpensiveOps myselfProxied = (ExpensiveOps) AopContext.currentProxy();
+
+		return myselfProxied.isPrime(n);
+	}
+
 	@Cacheable("nrprime")
 	public /*final*/ Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
@@ -32,7 +42,7 @@ public /*final*/ class ExpensiveOps {
 		if (number.remainder(TWO).equals(BigDecimal.ZERO)) {
 			return false;
 		}
-		for (BigDecimal divisor = new BigDecimal("3"); 
+		for (BigDecimal divisor = new BigDecimal("3");
 			divisor.compareTo(number.divide(TWO)) < 0;
 			divisor = divisor.add(TWO)) {
 			if (number.remainder(divisor).equals(BigDecimal.ZERO)) {
@@ -41,6 +51,8 @@ public /*final*/ class ExpensiveOps {
 		}
 		return true;
 	}
+
+
 	
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
