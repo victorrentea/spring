@@ -2,13 +2,16 @@ package victor.training.spring.life;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.SimpleThreadScope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -42,11 +45,14 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final CountryRepo countryRepo;
+//	private final LabelService labelService;
+//	private final ApplicationContext spring;
+	private final ObjectFactory<LabelService> labelServiceFactoryBean;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		LabelService labelService = new LabelService(countryRepo); // 3- : DI manual la folosire, nu merg proxy-uri, testare mai grea (ne mockuibil)
+//		LabelService labelService = spring.getBean(LabelService.class);
+		LabelService labelService = labelServiceFactoryBean.getObject();
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
 		invoiceExporter.exportInvoice(labelService);
@@ -62,6 +68,8 @@ class InvoiceExporter {
 }
 
 @Slf4j
+@Component
+@Scope("prototype")
 class LabelService {
 	private final CountryRepo countryRepo;
 
