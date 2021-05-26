@@ -42,31 +42,29 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+	private final CountryRepo countryRepo;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = new LabelService(countryRepo); // 3- : DI manual la folosire, nu merg proxy-uri, testare mai grea (ne mockuibil)
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-	private final LabelService labelService;
-
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
-@Service
 class LabelService {
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		System.out.println("+1 Label Service: " + this.hashCode());
 		this.countryRepo = countryRepo;
