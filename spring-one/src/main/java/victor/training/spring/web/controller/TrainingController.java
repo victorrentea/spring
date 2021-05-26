@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -22,15 +23,11 @@ public class TrainingController {
 
 	@GetMapping(value = "{id}")
 	public TrainingDto getTrainingById(@PathVariable Long id) {
-//		try {
 		return trainingService.getTrainingById(id);
-//		} catch (NoSuchElementException e) {
-//			return ResponseEntity.status(404).build();
-//		}
 	}
 
 	@PostMapping
-	public void createTraining( @RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@Validated @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
