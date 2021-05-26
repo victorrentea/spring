@@ -59,7 +59,8 @@ public class ProxyApp implements CommandLineRunner {
 @Component
 @Aspect
 class LoggingInterceptor {
-	@Around("execution(* victor..*.*(..))")
+//	@Around("execution(* victor..*.*(..))")
+	@Around("@within(victor.training.spring.aspects.Logged)")
 	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
 		log.debug("SRI: invoking method {} with arguments {}",
 			point.getSignature().getName(),
