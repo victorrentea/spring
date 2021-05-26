@@ -23,7 +23,7 @@ public class LifeApp implements CommandLineRunner{
 	public static CustomScopeConfigurer defineThreadScope() {
 		CustomScopeConfigurer configurer = new CustomScopeConfigurer();
 		// WARNING: Leaks memory. Prefer 'request' scope or read here: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/support/SimpleThreadScope.html
-		configurer.addScope("thread", new SimpleThreadScope());
+		configurer.addScope("thread", new ClearableThreadScope());
 		return configurer;
 	}
 	
