@@ -1,7 +1,5 @@
 package victor.training.spring.web.controller.dto;
 
-import victor.training.spring.web.domain.Training;
-
 import javax.validation.constraints.Size;
 
 public class TrainingDto {

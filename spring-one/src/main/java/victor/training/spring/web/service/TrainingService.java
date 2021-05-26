@@ -3,6 +3,8 @@ package victor.training.spring.web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.SpaException;
+import victor.training.spring.web.SpaException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
@@ -41,7 +43,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new SpaException(ErrorCode.DUPLICATE_NAME);
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
@@ -66,10 +68,17 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new SpaException(ErrorCode.DUPLICATE_NAME);
         }
         trainingRepo.save(mapToEntity(dto));
     }
+
+//    @org.junit.Test
+//    public void test() {
+//        for (ErrorCode value : ErrorCode.values()) {
+//            // TODO incearca sa rezolvi traducerea
+//        }
+//    }
 
     private TrainingDto mapToDto(Training training) {
         TrainingDto dto = new TrainingDto();

@@ -181,11 +181,17 @@ function openEditTraining(trainingId) {
 			//au venit datele
 			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
+			$("#editDescription").val(data.description);
 			// BUG
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
 			$('#trainingMain').hide();
 			$('#trainingEditDiv').show();
+		},
+		error: function(a,b,c) {
+			if (a.responseText) {
+				toastr.error(a.responseText);
+			}
 		}
 	});
 }
