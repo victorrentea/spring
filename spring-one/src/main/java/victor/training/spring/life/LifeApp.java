@@ -2,7 +2,6 @@ package victor.training.spring.life;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.SimpleThreadScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class LifeApp implements CommandLineRunner{
 	
 	@Autowired 
 	private OrderExporter exporter;
-	
+
 	public void run(String... args) {
 		new Thread(() ->exporter.export(Locale.ENGLISH)).start();
 		new Thread(() ->exporter.export(Locale.FRENCH)).start();
@@ -45,31 +45,31 @@ public class LifeApp implements CommandLineRunner{
 @RequiredArgsConstructor
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-//	private final LabelService labelService;
-//	private final ApplicationContext spring;
-	private final ObjectFactory<LabelService> labelServiceFactoryBean;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
+		log.debug("Spring cand ii cer un LabelService nu imi da exact o instanta de clasa concreta si imi strecoara un " + labelService.getClass());
 		log.debug("Running export in " + locale);
-//		LabelService labelService = spring.getBean(LabelService.class);
-		LabelService labelService = labelServiceFactoryBean.getObject();
 		labelService.load(locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice(labelService);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice();
 	}
 }
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class InvoiceExporter {
-	public void exportInvoice(LabelService labelService) {
+	private final LabelService labelService;
+	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
 @Component
-@Scope("prototype")
+
+@Scope(scopeName = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
+// @Scope("request") << USE THIS   < currentusername, current locale , timez, tenant, correlationId
 class LabelService {
 	private final CountryRepo countryRepo;
 
