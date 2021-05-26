@@ -4,7 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +21,16 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
-	
+
 	private static final BigDecimal TWO = new BigDecimal("2");
 
-//	@Autowired
-//	private ExpensiveOps myselfProxied;
-
-	public  Boolean isPrime$(int n) {
-		ExpensiveOps myselfProxied = (ExpensiveOps) AopContext.currentProxy();
-
-		return myselfProxied.isPrime(n);
-	}
+	@Autowired
+	CacheManager cacheManager;
 
 	@Cacheable("nrprime")
 	public /*final*/ Boolean isPrime(int n) {
 		log.debug("Computing isPrime({})...", n);
+		new RuntimeException().printStackTrace();
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -53,7 +49,7 @@ public /*final*/ class ExpensiveOps {
 	}
 
 
-	
+//	@Cacheable("folders")
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {

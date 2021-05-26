@@ -41,9 +41,9 @@ public class ProxyManual {
    }
 
    private static void bizLogic(ExpensiveOps ops) {
-      System.out.println(ops.isPrime$(2));
-      System.out.println(ops.isPrime$(3));
-      System.out.println(ops.isPrime$(4));
+      System.out.println(ops.isPrime(2));
+      System.out.println(ops.isPrime(3));
+      System.out.println(ops.isPrime(4));
       System.out.println(ops.hashAllFiles(new File(".")));
    }
 }

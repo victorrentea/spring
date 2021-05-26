@@ -1,11 +1,18 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication
@@ -31,11 +38,12 @@ public class ProxyApp implements CommandLineRunner {
 
 	public void run(String... args) {
 		log.debug("\n");
+		log.debug("Referinta data de spring este: " + ops.getClass());
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime$(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime$(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		
 //		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
 //		log.debug("Folder . MD5: ");
@@ -46,3 +54,18 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Order(1)
+@Slf4j
+@Component
+@Aspect
+class LoggingInterceptor {
+	@Around("execution(* victor..*.*(..))")
+	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
+		log.debug("SRI: invoking method {} with arguments {}",
+			point.getSignature().getName(),
+			Arrays.toString(point.getArgs()));
+
+		Object result = point.proceed();
+		return result;
+	}
+}
