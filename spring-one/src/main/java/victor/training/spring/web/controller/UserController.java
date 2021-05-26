@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.service.UserService;
@@ -19,9 +20,14 @@ public class UserController {
         service.createUser();
     }
 
+    @GetMapping("users/kill-cache")
+    @CacheEvict("user-count")
+    public void killCache() { // curl localhost:8080/users/kill-cache la finalul scriptului care baga inserturile
+    }
+
     @GetMapping("users/{id}")
     public UserDto get(@PathVariable long id) {
-        return service.getUser(id);
+        return new UserDto(service.getUser(id));
     }
     @PutMapping("users/{id}")
     public void update(@PathVariable long id, @RequestBody UserDto dto) {

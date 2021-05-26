@@ -3,10 +3,10 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
@@ -28,21 +28,24 @@ public class UserService  {
     // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
     // TODO 4 Redis cache
     @CacheEvict("user-count")
-    public void createUser() {
+    public void createUser() { // map.remove
         userRepo.save(new User("John-" + System.currentTimeMillis()));
     }
 
     // TODO 5 key-based cache entries
 
     @Cacheable("user-data")
-    public UserDto getUser(long id) {
-        return new UserDto(userRepo.findById(id).get());
+    public User getUser(long id) {
+        return userRepo.findById(id).get();
     }
 
-    public void updateUser(long id, String newName) {
+//    @CacheEvict(value = "user-data", key = "#id")
+    @CachePut(cacheNames = "user-data", key = "#id")
+    public User updateUser(long id, String newName) {
         // TODO 6 update profile too -> pass Dto
         User user = userRepo.findById(id).get();
         user.setName(newName);
+        return user;
     }
 }
 
