@@ -51,6 +51,18 @@ public class Playground {
     private final AnotherClass other;
     private final ParentRepo parentRepo;
 
+
+    @Transactional
+    public void methodWithTx() {
+        method();
+    }
+
+    public void method() {
+        // cod
+    }
+
+
+
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
