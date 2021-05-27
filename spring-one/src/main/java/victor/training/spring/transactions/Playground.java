@@ -25,13 +25,17 @@ public class Playground {
         repo.save(new Message("Spring Data JPA"));
 
         System.out.println(repo.findByMessage("JPA")); // causes a flush() pentru ca ceea ce avea de pus in baza ar putea influenta rez queryului.
-
         log.debug("Ies din metoda");
     }
 
 
     @Transactional
     public void transactionTwo() {
+
+        Message message = repo.findById(100L).get();
+
+        message.setMessage("alt mesaj");
+
         // TODO Repo API
         // TODO @NonNullApi
     }
