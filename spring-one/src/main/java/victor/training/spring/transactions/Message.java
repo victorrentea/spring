@@ -11,11 +11,14 @@ public class Message {
     private Long id;
     private String message;
 
-    protected Message() {
+    private Message() { // for hibernate only
     }
 
     public Message(String message) {
         this.message = message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
