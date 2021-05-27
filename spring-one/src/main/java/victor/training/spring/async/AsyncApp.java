@@ -4,15 +4,15 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +21,9 @@ import java.util.concurrent.CompletableFuture;
 @SpringBootApplication
 public class AsyncApp {
    public static void main(String[] args) {
-      SpringApplication.run(AsyncApp.class, args); // Note: .close added to stop executors after CLRunner finishes
+      new SpringApplicationBuilder(AsyncApp.class)
+          .profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
+          .run(args);
    }
 
    @Bean
@@ -35,6 +37,7 @@ public class AsyncApp {
       executor.setWaitForTasksToCompleteOnShutdown(true);
       return executor;
    }
+
    @Bean
    public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.count}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -51,8 +54,8 @@ public class AsyncApp {
 }
 
 @Slf4j
-@Component
-class Drinker implements CommandLineRunner {
+@RestController
+class Drinker {
    @Autowired
    private Barman barman;
 
@@ -62,34 +65,35 @@ class Drinker implements CommandLineRunner {
    // TODO [1] inject and use a ThreadPoolTaskExecutor.submit
    // TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
    // TODO [3] Messaging...
-   public void run(String... args) throws Exception {
+   @GetMapping
+   public CompletableFuture<DillyDilly> method() {
       log.debug("Submitting my order " + barman.getClass());
 
       CompletableFuture<Beer> futureBeer = barman.getOneBeer();
       CompletableFuture<Vodka> futureVodka = barman.getOneVodka();
-		log.debug("a plecat baiatu' cu comanda");
+      log.debug("a plecat baiatu' cu comanda");
 
 //		futureBeer.thenApply(beer -> puneGheata(bere))
 
 //		q.all(p1,p2, function(d1,d2) { } )
 
-		CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombineAsync(futureVodka, (b, v) -> new DillyDilly(b, v));
+      CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombineAsync(futureVodka, (b, v) -> new DillyDilly(b, v));
 
-		futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
+      futureDilly.thenAccept(dilly -> log.debug("Got my order! Thank you lad! " + dilly));
 
-		barman.injur("$@#$!%$^!&$^@!&$^!&@$^");
+      barman.injur("$@#$!%$^!&$^@!&$^!&@$^");
 
-		log.debug("plec.");
+      log.debug("plec.");
+      return futureDilly;
 
-
-		ThreadUtils.sleep(3000);
+//		ThreadUtils.sleep(3000);
    }
 }
 
 @Data
 class DillyDilly {
-	private final Beer beer;
-	private final Vodka vodka;
+   private final Beer beer;
+   private final Vodka vodka;
 
 }
 
@@ -102,9 +106,9 @@ class Barman {
    @Async("beerPool")
    public CompletableFuture<Beer> getOneBeer() {
       log.debug("Pouring Beer...");
-		if (true) {
-			throw new IllegalStateException("Nu mai e bere");
-		}
+//      if (true) {
+//         throw new IllegalStateException("Nu mai e bere");
+//      }
 
       ThreadUtils.sleep(1000); // external REST call
       log.debug("Pouring Beer Complete...");
@@ -119,11 +123,11 @@ class Barman {
    }
 
    @Async
-	public void injur(String uratura) {
-		if (uratura != null) {
-			throw new RuntimeException("Iti fac buzunar");
-		}
-	}
+   public void injur(String uratura) {
+      if (uratura != null) {
+         throw new RuntimeException("Iti fac buzunar");
+      }
+   }
 }
 
 @Data
