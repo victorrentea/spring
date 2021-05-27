@@ -1,6 +1,7 @@
 package victor.training.spring.transactions;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ class Child {
 @Service
 @RequiredArgsConstructor
 public class Playground {
+    @NonNull
     private final JdbcTemplate jdbc;
     private final EntityManager em;
     private final MessageRepo repo; // Spring Data JPA
@@ -53,6 +55,7 @@ public class Playground {
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         repo.save(new Message("null"));
+
 //        em.persist(new Message(null));
 
 //        try {
