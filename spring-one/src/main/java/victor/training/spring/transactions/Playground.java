@@ -29,11 +29,10 @@ public class Playground {
     }
 
 
-    @Transactional
+//    @Transactional(readOnly = true)
     public void transactionTwo() {
 
         Message message = repo.findById(100L).get();
-
         message.setMessage("alt mesaj");
 
         // TODO Repo API
