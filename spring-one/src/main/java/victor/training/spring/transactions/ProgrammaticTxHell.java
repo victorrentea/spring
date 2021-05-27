@@ -21,10 +21,14 @@ public class ProgrammaticTxHell {
    }
 
    private void a(Connection conn) throws SQLException {
+      conn.createStatement().executeQuery("INSERT ..."); // would this be commited?
       b(conn);
    }
 
    private void b(Connection conn) throws SQLException {
+      if (Math.random() < .5) {
+         conn.rollback();
+      }
       c(conn);
       conn.createStatement().executeQuery("INSERT ..."); // would this be commited?
    }
