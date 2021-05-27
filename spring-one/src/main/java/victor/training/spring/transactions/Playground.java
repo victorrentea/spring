@@ -74,12 +74,12 @@ public class Playground {
     }
 
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public void transactionTwo() {
 
         Message message = repo.findById(100L).get();
         message.setMessage("alt mesaj");
-        repo.save(message);
+//        repo.save(message);
 
         for (Parent parent : parentRepo.findAll()) {
             System.out.println("Parent children: " + parent.getChildren());
@@ -87,6 +87,13 @@ public class Playground {
     }
     @Transactional(rollbackFor = Exception.class)
     public void transactionThree(String mesajDePeCoada) throws IOException {
+        Message e1 = repo.findById(100L).get();
+        Message e2 = other.dinAltaParte();
+
+        System.out.println("a1" == "a" + 1);
+
+        System.out.println("Cum Doamne iarta-ma sunt astea == " + (e1==e2));
+
         try {
             Boolean eroare = true;
             repo.save(new Message("Am primit: " + mesajDePeCoada));
@@ -124,6 +131,11 @@ class AnotherClass {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     public void cleanupAfterThread(AfterTransactionEvent event) {
         System.out.println("ACUM STERG " + event);
+    }
+
+    public Message dinAltaParte() {
+        Message e2 = repo.findById(100L).get();
+        return e2;
     }
 
     class AfterTransactionEvent {
