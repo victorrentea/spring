@@ -35,6 +35,7 @@ public /*final*/ class ExpensiveOps {
 
 	@Cacheable("nrprime")
 	public /*final*/ Boolean isPrime(int n) {
+
 		log.debug("Computing isPrime({})...", n);
 		new RuntimeException().printStackTrace();
 		BigDecimal number = new BigDecimal(n);

@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 public class TeacherService {
     @Autowired
     private TeacherRepo teacherRepo;
+    @Autowired
+    IDoamne doamne;
 
     public List<TeacherDto> getAllTeachers() {
         return teacherRepo.findAll().stream().map(TeacherDto::new).collect(Collectors.toList());

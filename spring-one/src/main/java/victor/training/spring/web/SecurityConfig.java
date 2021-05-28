@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    // ... then, switch to loading user data from DB:
    // *** Also loading data from DB
     @Bean
+
     public UserDetailsService userDetailsService() {
         return new DatabaseUserDetailsService();
     }
