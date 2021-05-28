@@ -5,10 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -46,6 +50,10 @@ public class UserService  {
         User user = userRepo.findById(id).get();
         user.setName(newName);
         return user;
+    }
+    @Async
+    public CompletableFuture<String> methodaAsync() {
+        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
 
