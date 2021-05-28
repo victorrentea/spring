@@ -3,7 +3,7 @@
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
-//import victor.training.spring.web.domain.UserProfile;
+//import victor.training.spring.web.domain.UserRole;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -13,12 +13,12 @@
 //
 //public class SecurityUser implements UserDetails {
 //	private final String username;
-//	private final UserProfile profile;
+//	private final UserRole role;
 //	private final Set<Long> managedTeacherIds;
 //
-//	SecurityUser(String username, UserProfile profile, Set<Long> managedTeacherIds) {
+//	SecurityUser(String username, UserRole role, Set<Long> managedTeacherIds) {
 //		this.username = username;
-//		this.profile = profile;
+//		this.role = role;
 //		this.managedTeacherIds = managedTeacherIds;
 //	}
 //
@@ -31,9 +31,9 @@
 //		List<String> rolesAndAuthorities = new ArrayList<>();
 //
 //		// @PreAuthorize("hasRole('X')) assumes the roles name begins with ROLE_ (eg ROLE_X)
-//		rolesAndAuthorities.add("ROLE_"+profile.name());
+//		rolesAndAuthorities.add("ROLE_"+role.name());
 //
-//		rolesAndAuthorities.addAll(profile.authorities);
+//		rolesAndAuthorities.addAll(role.getAuthorities());
 //
 //		// NOTE: in practice you should choose ONE of the authorization models: ROLE-based or PERMISSION-based.
 //
@@ -46,8 +46,8 @@
 //		return "{noop}" + username; // FAKE LOGIN---  assumes all users have password = username
 //	}
 //
-//	public UserProfile getProfile() {
-//		return profile;
+//	public UserRole getRole() {
+//		return role;
 //	}
 //
 //	@Override

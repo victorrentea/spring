@@ -13,18 +13,18 @@ public class User {
     private String username;
     private String name;
     @Enumerated(EnumType.STRING)
-    private UserProfile profile;
+    private UserRole role;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
     }
     public User(String username) {
-        this(username, UserProfile.USER, emptyList());
+        this(username, username, UserRole.USER, emptyList());
     }
-    public User(String username, UserProfile profile, List<Long> managedTeacherIds) {
+    public User(String fullName, String username, UserRole role, List<Long> managedTeacherIds) {
         this.username = username;
-        this.name=username;
-        this.profile = profile;
+        this.name=fullName;
+        this.role = role;
         this.managedTeacherIds = new HashSet<>(managedTeacherIds);
     }
 
@@ -36,8 +36,8 @@ public class User {
         return username;
     }
 
-    public UserProfile getProfile() {
-        return profile;
+    public UserRole getRole() {
+        return role;
     }
 
     public Set<Long> getManagedTeacherIds() {
@@ -58,7 +58,7 @@ public class User {
         return "User{" +
                "id=" + id +
                ", username='" + username + '\'' +
-               ", profile=" + profile +
+               ", role=" + role +
                ", managedTeacherIds=" + managedTeacherIds +
                '}';
     }
