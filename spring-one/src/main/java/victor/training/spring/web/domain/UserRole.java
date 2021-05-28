@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public enum UserProfile {
+public enum UserRole {
     USER("search"),
     ADMIN("search", "training.edit");
     public final Set<String> authorities;
 
-    UserProfile(String... authorities) {
+    UserRole(String... authorities) {
         this.authorities = new HashSet<>(Arrays.asList(authorities));
     }
 }

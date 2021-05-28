@@ -52,4 +52,8 @@ public class TechnicalController {
 	public String restart() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}
+	@GetMapping("admin/callPresident")
+	public String call() {
+		return "jooohaaani s";
+	}
 }

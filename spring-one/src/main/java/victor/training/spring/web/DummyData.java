@@ -2,15 +2,10 @@ package victor.training.spring.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 import victor.training.spring.web.domain.*;
 import victor.training.spring.web.repo.TagRepo;
 import victor.training.spring.web.repo.TeacherRepo;
@@ -63,8 +58,8 @@ public class DummyData implements CommandLineRunner {
 		javaBasic.setTeacher(ionut);ionut.getTrainings().add(javaBasic);
 		patterns.setTeacher(victor);victor.getTrainings().add(patterns);
 
-		userRepo.save(new User("admin", UserProfile.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
-		userRepo.save(new User("user", UserProfile.USER, Arrays.asList(victor.getId(), ionut.getId())));
+		userRepo.save(new User("admin", UserRole.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
+		userRepo.save(new User("user", UserRole.USER, Arrays.asList(victor.getId(), ionut.getId())));
 		userRepo.flush();
 		log.info(">>> Spring-One Application started on {} <<<", environment.getProperty("local.server.port"));
 	}

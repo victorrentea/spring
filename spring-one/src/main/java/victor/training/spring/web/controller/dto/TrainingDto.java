@@ -13,7 +13,6 @@ public class TrainingDto {
 	public String startDate;
 	public String description;
 
-
 //	static {
 //		TrainingDto dto = new TrainingDto();
 //		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

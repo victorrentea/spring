@@ -2,15 +2,12 @@ package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import victor.training.spring.web.security.DatabaseUserDetailsService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -27,8 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
           .csrf().disable()
           .authorizeRequests()
-             .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN")
-             .mvcMatchers("api/trainings/**").hasAnyRole("USER","ADMIN")
+             .mvcMatchers("admin/**").hasAnyRole("ADMIN")
              .anyRequest().authenticated()
           .and()
           .formLogin().permitAll()
@@ -36,18 +32,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    }
 
    // *** Dummy users 100% in-mem
-   @Bean
-   public UserDetailsService userDetailsService() {
-      UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
-      UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
-      return new InMemoryUserDetailsManager(userDetails, adminDetails);
-   }
+//   @Bean
+//   public UserDetailsService userDetailsService() {
+//      UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
+//      UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
+//      return new InMemoryUserDetailsManager(userDetails, adminDetails);
+//   }
 
    // ... then, switch to loading user data from DB:
    // *** Also loading data from DB
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new DatabaseUserDetailsService();
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new DatabaseUserDetailsService();
+    }
 
 }

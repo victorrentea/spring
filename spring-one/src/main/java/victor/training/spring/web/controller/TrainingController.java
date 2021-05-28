@@ -1,15 +1,22 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -41,10 +48,23 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
+//	@RolesAllowed("ROLE_ADMIN")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('training.edit')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
+		Training training = trainingRepo.findById(id).get();
+		Long teacherId = training.getTeacher().getId();
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		SecurityUser currentUser = (SecurityUser) principal;
+		if (!currentUser.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("N-ai voie!");
+		}
+
 		trainingService.deleteById(id);
 	}
+	private final TrainingRepo trainingRepo;
 
 	@PostMapping("search")
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {

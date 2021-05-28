@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
+import victor.training.spring.web.security.SecurityUser;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -53,6 +54,12 @@ public class UserService  {
     }
     @Async
     public CompletableFuture<String> methodaAsync() {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SecurityUser deLaLoginPastratPeSesiune = (SecurityUser) principal;
+
+        System.out.println("Teacherii mei: " + deLaLoginPastratPeSesiune.getManagedTeacherIds());
+
         return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
