@@ -46,8 +46,8 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	// TODO
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+	@PostMapping("search")
+	public List<TrainingDto> search(@RequestBody  TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 }

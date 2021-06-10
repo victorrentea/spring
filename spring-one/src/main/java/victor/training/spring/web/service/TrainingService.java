@@ -6,15 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
+import victor.training.spring.web.repo.TrainingRepo;
 
+import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -92,6 +93,14 @@ public class TrainingService {
     }
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
-        return Collections.emptyList(); // TODO
+        List<Training> list = trainingRepo.search(criteria);
+
+        return list.stream().map( t -> {
+            TrainingDto dto = new TrainingDto();
+            dto.id = t.getId();
+            dto.name = t.getName();
+            return dto;
+
+        }).collect(Collectors.toList()); // TODO
     }
 }
