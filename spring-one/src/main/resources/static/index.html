@@ -2,8 +2,17 @@
 
 <head>
 <link href="toastr.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+	<link rel="stylesheet" href="editor.css">
+	<link rel="stylesheet"
+		  href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+		  integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+		  crossorigin="anonymous">
+
+
 <script type="text/javascript" src="toastr.min.js"></script>
+<script type="text/javascript" src="editor.js"></script>
+<script type="text/javascript" src="editor-class.js"></script>
 <style>
 html { 
   background: url(luxury-spa.jpg) no-repeat center center fixed; 
@@ -18,8 +27,13 @@ html {
 	
 	<h2>Single Page Application</h2>
 	<h3>Hello, <span id="username"></span> <input type="button" value="logout" onclick="window.location='logout'"/></h3>
-	
-	
+
+
+
+	<div id="ed-output"></div>
+
+
+
 	<div id="trainingMain" style="border:2px solid red">
 		<div id="searchDiv" style="border: 7px solid pink">
 			<label for="searchName">Name: </label><input id="searchName" type="text" size="10"/> <br />
@@ -36,7 +50,7 @@ html {
 	<div id="trainingNewDiv" style="display:none;border:2px solid green">
 		<h4>Create a New Training</h4>
 		Name:<input type="text" id="newName" /> <br />
-		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
+		Description:<textarea class="rich" id="newDescription" cols="40" rows="3"></textarea> <br />
 
 		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
 		Teacher: <select id="newTeacher"></select> <br />
@@ -48,12 +62,16 @@ html {
 		<h4>Edit a Training</h4>
 		<input type="hidden" id="editTrainingId" />
 		Name:<input type="text" id="editName" /> <br />
-		Description:<textarea id="editDescription" cols="40" rows="3"></textarea> <br />
+		Description:
+		<!--<textarea id="editDescription" class="rich" cols="40" rows="3"></textarea> <br />-->
+		<div id="editDescriptionRich" style=" width: 400px;"></div>
+		<div id="editDescriptionDiv" style="display: none"></div>
 		Start Date (dd-mm-yyyy):<input type="text" id="editStartDate" /> <br />
 		Teacher: <select id="editTeacher"></select><br />
 		<input type="button" value="Save" onclick="updateTraining()">
 		<input type="button" value="Cancel" onclick="$('#trainingEditDiv').hide();$('#trainingMain').show();">
 	</div>
+	<div id="viewDescription">Click to view description</div>
 
 	<div style="text-align: center; font-size: x-small">
 		Or some <a href="victim.html">Web Attacks</a>?
@@ -76,6 +94,9 @@ function moveSelectedOptions(fromId, toId) {
 }
 
 
+
+
+
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
@@ -88,7 +109,7 @@ function fillTable(trainings) {
 	for (var i = 0; i < trainings.length; i++) {
 		var c = trainings[i];
 		var row = '<tr id="' + c.id + '">';
-		row += '<td>' + c.name + '</td>';
+		row += '<td onclick="viewDescription('+c.id+')">' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
@@ -156,6 +177,7 @@ populateTeacherCombo($("#newTeacher"));
 populateTeacherCombo($("#editTeacher"));
 populateTeacherCombo($("#searchTeacher"));
 
+new BlackEdit('editDescriptionRich', "editDescriptionDiv").init(true);
 
 function deleteTraining(id) {
 	$.ajax(restEndpoint +"/trainings/"+id, {
@@ -172,6 +194,16 @@ function deleteTraining(id) {
 	});
 }
 
+
+// ---------- view description ------------------
+function viewDescription(trainingId) {
+	$.ajax(restEndpoint + "/trainings/"+trainingId, {
+		method: "GET",
+		success: function(data) {
+			$("#viewDescription").html($("<div />").html(data.description).text());
+		}});
+}
+
 //------------- TRAINING: UPDATE SCREEN --------------------
 
 function openEditTraining(trainingId) {
@@ -181,7 +213,10 @@ function openEditTraining(trainingId) {
 			//au venit datele
 			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
-			// BUG
+			// $("#editDescription").val(data.description);
+			$("#editDescriptionDiv").html(data.description)
+					[0].dispatchEvent(new KeyboardEvent('keyup', { 'keyCode': 65 }));
+
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
 			$('#trainingMain').hide();
@@ -194,6 +229,8 @@ function updateTraining() {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
+			// description:$("#editDescription").val(),
+			description:$("#editDescriptionDiv").html(),
 			startDate:$("#editStartDate").val(),
 			teacherId:$("#editTeacher").val()
 		}),

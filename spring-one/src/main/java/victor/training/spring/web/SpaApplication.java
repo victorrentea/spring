@@ -11,15 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpaApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(SpaApplication.class)
-				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
-				.run(args);
+		new SpringApplicationBuilder(SpaApplication.class).run(args);
 	}
 
 }
-//
-//@Service
-//class MyService {
-//	private boolean cr323;
-//
-//}

@@ -13,6 +13,7 @@ public class Training {
 	@GeneratedValue
 	private Long id;
 	private String name;
+	@Lob
 	private String description;
 	private Date startDate;
 	@ManyToOne

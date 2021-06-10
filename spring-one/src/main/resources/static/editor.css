@@ -1,0 +1,409 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  src: url(https://fonts.googleapis.com/css?family=Roboto);
+}
+
+.be-frame-manager img {
+  width: inherit;
+  min-width: 200px;
+}
+
+.be-container {
+  display: inline-block;
+  position: relative;
+  width: 500px;
+}
+
+.be-container .be {
+  font-family: 'Roboto', sans-serif;
+  display: block;
+  width: 100%;
+  -webkit-box-shadow: 0 0.25rem 0.5rem gray;
+          box-shadow: 0 0.25rem 0.5rem gray;
+  resize: both;
+}
+
+.be-container .be .be-btn {
+  font-size: 12px;
+  border: 0px;
+  padding: 5px 12px;
+  margin: 0;
+  cursor: pointer;
+  background: white;
+}
+
+.be-container .be .be-btn:hover {
+  outline: none;
+  background: lightgray;
+}
+
+.be-container .be .be-btn.active {
+  color: dodgerblue;
+}
+
+.be-container .be .be-tools {
+  padding: auto 10px;
+  width: 100%;
+  border-top: 5px solid dodgerblue;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.be-container .be .be-tools .be-basic-tools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-right: 1px solid lightgray;
+}
+
+.be-container .be .be-tools .be-advance-tools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.be-container .be .be-space {
+  font-family: sans-serif;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 300px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 5px;
+  overflow-wrap: break-word;
+  background: white;
+  border: 0;
+}
+
+.be-container .be #be-count {
+  position: absolute;
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  padding: 2px 5px 0 5px;
+  font-size: 0.8rem;
+  color: gray;
+  font-weight: 100;
+  bottom: 0;
+  right: 0;
+}
+
+.be-container .be-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.be-container .be-dropdown:hover .be-dropdown-toggler {
+  color: dodgerblue;
+}
+
+.be-container .be-dropdown:hover .be-dropdown-toggle {
+  display: block;
+}
+
+.be-container .be-dropdown:hover .be-dropdown-toggle.color-pallet-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  min-width: 126px;
+  padding: 3px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggler::after {
+  content: "";
+  border-top: 4px solid black;
+  border-bottom: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  position: absolute;
+  top: 13px;
+  right: 2px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggler.no-caret::after {
+  display: none;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle {
+  z-index: 1;
+  font-family: sans-serif;
+  display: none;
+  position: absolute;
+  background-color: white;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.be-container .be-dropdown .be-dropdown-toggle.be-hover-dropdown {
+  display: block;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item {
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item p,
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item h1,
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item h2,
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item h3,
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item h4,
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item h5 {
+  margin: 0;
+  padding: 0;
+  min-width: 200px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item i {
+  min-width: 100px;
+  padding: auto 40px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item:hover {
+  background: lightgray;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item.active {
+  background: lightgray;
+  opacity: 0.8;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .be-dropdown-item.color-pallet {
+  font-weight: 600;
+  text-align: center;
+  display: inline-block;
+  min-width: 36px;
+  min-height: 35px;
+  margin: 2px;
+  outline: 1px dotted gray;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle:last-child {
+  border-bottom: 2px solid dodgerblue;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 200px;
+  height: 100px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle form label {
+  text-align: center;
+  padding-top: 25px;
+  cursor: pointer;
+  width: 100%;
+  outline: 1.5px dashed gray;
+  margin: 10px;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle form label:hover {
+  background: #eee;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .url-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.be-container .be-dropdown .be-dropdown-toggle .url-input input {
+  display: block;
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid dodgerblue;
+  margin: auto 10px;
+}
+
+.be-popup {
+  background: white;
+  margin: 0 auto;
+  position: relative;
+  display: inline-block;
+  min-width: 100px;
+  border: 1px solid lightgray;
+  border-top: 4px solid dodgerblue;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 0 0.25rem 0.5rem gray;
+          box-shadow: 0 0.25rem 0.5rem gray;
+}
+
+.be-popup::after {
+  position: absolute;
+  content: "";
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid dodgerblue;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  top: -17px;
+  left: 47%;
+}
+
+.be-popup .be-popup-content {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.be-popup .be-popup-content .be-popup-topbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 24%;
+  border-bottom: 1px solid lightgray;
+}
+
+.be-popup .be-popup-content .be-popup-topbar .be-popup-topbar-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 35px;
+  width: 35px;
+  border-right: 1px solid lightgray;
+}
+
+.be-popup .be-popup-content .be-popup-topbar .be-popup-topbar-item button {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+  outline: none;
+}
+
+.be-popup .be-popup-content .be-popup-topbar .be-popup-topbar-item button:hover {
+  background: lightgray;
+}
+
+.be-popup .be-popup-content .be-popup-topbar .be-popup-topbar-item button.active {
+  color: dodgerblue;
+}
+
+.be-popup .be-popup-content .be-popup-action-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 76%;
+}
+
+.be-popup-content-wrapper {
+  display: inline-block;
+  width: 100%;
+}
+
+.be-popup-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.be-popup-form label {
+  text-align: center;
+  padding-top: 25px;
+  cursor: pointer;
+  width: 100%;
+  outline: 1.5px dashed gray;
+  margin: 10px;
+}
+
+.be-popup-form label:hover {
+  background: #eee;
+}
+
+.be-popup-input {
+  display: inline-block;
+  margin: 12px;
+  width: 90%;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid dodgerblue;
+}
+
+.be-popup-action-url-btn {
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+  padding: 5px 15px;
+  background: transparent;
+  border: 0;
+}
+
+.be-popup-action-url-btn:hover {
+  background: #eee;
+  color: dodgerblue;
+}
+
+#cover {
+  z-index: 10000;
+  resize: both;
+  overflow: auto;
+  position: absolute;
+  display: inline-block;
+  min-width: 25px;
+  min-height: 25px;
+  border: 2px solid dodgerblue;
+}
+
+#cover #left-top {
+  position: absolute;
+  border: 3px solid blue;
+  top: 0;
+  left: 0;
+}
+
+#cover #left-bottom {
+  position: absolute;
+  border: 3px solid blue;
+  bottom: 0;
+  left: 0;
+}
+
+#cover #right-top {
+  position: absolute;
+  border: 3px solid blue;
+  right: 0;
+  top: 0;
+}
+
+#cover #right-bottom {
+  position: absolute;
+  border: 3px solid lightgray;
+  right: 0;
+  bottom: 0;
+}
+/*# sourceMappingURL=editor.css.map */
