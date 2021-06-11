@@ -4,16 +4,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -44,11 +46,14 @@ public class GatewayController {
     @GetMapping("/")
     public String home(
             @RequestParam(defaultValue = "test") String user,
-            @RequestParam(defaultValue = "RO") String country
+            @RequestParam(defaultValue = "RO") String country,
+            HttpServletRequest request
             ) throws URISyntaxException {
 
         log.debug("Sending user id {}", user);
 
+//        Object country = request.getSession().getAttribute("country");
+//        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String jwtToken = Jwts.builder()
                 .setSubject(user)
