@@ -112,8 +112,8 @@ function fillTable(trainings) {
 		row += '<td onclick="viewDescription('+c.id+')">' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
-		row += '<td><input type="button" value="Edit" class="editButton" onclick="openEditTraining(' + c.id + ')" />' +
-				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+		row += '<td><input type="button" value="Edit" class="editButton" onclick="openEditTraining(\'' + c.id + '\')" />' +
+				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(\'' + c.id + '\')" /></td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}

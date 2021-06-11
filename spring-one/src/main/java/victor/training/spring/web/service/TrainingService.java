@@ -34,16 +34,16 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+    public TrainingDto getTrainingById(String id) {
+        return mapToDto(trainingRepo.findByExternalUUID(id));
     }
 
     // TODO Test this!
-    public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+    public void updateTraining(String id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).get();
+        Training training = trainingRepo.findByExternalUUID(id);
         training.setName(dto.name);
         training.setDescription(dto.description);
         // TODO implement date not in the past. i18n
@@ -60,8 +60,8 @@ public class TrainingService {
         return format.parse(dto.startDate);
     }
 
-    public void deleteById(Long id) {
-        trainingRepo.deleteById(id);
+    public void deleteById(String id) {
+        trainingRepo.deleteByExternalUUID(id);
     }
 
     public void createTraining(TrainingDto dto) throws ParseException {
@@ -73,7 +73,7 @@ public class TrainingService {
 
     private TrainingDto mapToDto(Training training) {
         TrainingDto dto = new TrainingDto();
-        dto.id = training.getId();
+        dto.id = training.getExternalUUID();
         dto.name = training.getName();
         dto.description = training.getDescription();
         dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
@@ -96,7 +96,7 @@ public class TrainingService {
 
         return list.stream().map( t -> {
             TrainingDto dto = new TrainingDto();
-            dto.id = t.getId();
+            dto.id = t.getExternalUUID();
             dto.name = t.getName();
             dto.teacherId = t.getTeacher().getId();
             dto.teacherName = t.getTeacher().getName();

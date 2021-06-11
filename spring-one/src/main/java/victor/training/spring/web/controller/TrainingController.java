@@ -30,7 +30,7 @@ public class TrainingController {
 
    @GetMapping("{id}")
 	@PreAuthorize("@securityService.hasAccessOnTraining(#id)")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
+	public TrainingDto getTrainingById(@PathVariable String id) {
       TrainingDto dto = trainingService.getTrainingById(id);
 
       PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
@@ -47,7 +47,7 @@ public class TrainingController {
 
    @PreAuthorize("hasAuthority('training.edit') && @securityService.hasAccessOnTraining(#id)")
    @PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable String id, @RequestBody TrainingDto dto) throws ParseException {
 
 //		HtmlPolicyBuilder html = new HtmlPolicyBuilder();
 //		html.allowElements("b", "i","u");
@@ -67,7 +67,7 @@ public class TrainingController {
 //	@PreAuthorize("hasRole('ADMIN')")
 //   @PreAuthorize("hasAuthority('training.delete') && @securityService.hasAccessOnTraining(#id)")
 //	@PreAuthorize("hasPermission(#id, 'TRAINING', 'DELETE')")
-   public void deleteTrainingById(@PathVariable Long id) {
+   public void deleteTrainingById(@PathVariable String id) {
 //      securityService.hasAccessOnTraining(id);
 
       trainingService.deleteById(id);
@@ -84,8 +84,8 @@ public class TrainingController {
 
 @Component
 class SecurityService {
-   public boolean hasAccessOnTraining(Long id) {
-      Training training = trainingRepo.findById(id).get();
+   public boolean hasAccessOnTraining(String id) {
+      Training training = trainingRepo.findByExternalUUID(id);
       SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       return securityUser.getManagedTeacherIds().contains(training.getTeacher().getId());
    }

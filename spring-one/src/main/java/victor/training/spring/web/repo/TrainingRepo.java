@@ -7,6 +7,12 @@ import victor.training.spring.web.domain.Training;
 public interface TrainingRepo extends JpaRepository<Training, Long>, TrainingRepoCustom {
     Training getByName(String name);
 
+    //    @Query
+//    Traininig findByExternallId(String uuid);
+    Training findByExternalUUID(String uuid);
+
+    void deleteByExternalUUID(String uuid);
+
     @Override
     @PreAuthorize("hasAuthority('training.delete') && @securityService.hasAccessOnTraining(#id)")
 
