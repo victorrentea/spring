@@ -65,7 +65,7 @@ public class TrainingController {
 
    @DeleteMapping("{id}")
 //	@PreAuthorize("hasRole('ADMIN')")
-   @PreAuthorize("hasAuthority('training.delete') && @securityService.hasAccessOnTraining(#id)")
+//   @PreAuthorize("hasAuthority('training.delete') && @securityService.hasAccessOnTraining(#id)")
 //	@PreAuthorize("hasPermission(#id, 'TRAINING', 'DELETE')")
    public void deleteTrainingById(@PathVariable Long id) {
 //      securityService.hasAccessOnTraining(id);

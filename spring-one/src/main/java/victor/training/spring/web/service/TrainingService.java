@@ -9,7 +9,6 @@ import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 
-import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,6 +98,9 @@ public class TrainingService {
             TrainingDto dto = new TrainingDto();
             dto.id = t.getId();
             dto.name = t.getName();
+            dto.teacherId = t.getTeacher().getId();
+            dto.teacherName = t.getTeacher().getName();
+            dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(t.getStartDate());
             return dto;
 
         }).collect(Collectors.toList()); // TODO
