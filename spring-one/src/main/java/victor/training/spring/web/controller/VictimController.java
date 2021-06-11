@@ -16,7 +16,7 @@ public class VictimController {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
    }
 
-   @CrossOrigin(origins = "http://localhost:8080")
+//   @CrossOrigin(origins = "http://localhost:8080")
    @PostMapping("transfer-form")
    public String transferForm(@ModelAttribute MoneyTransferRequest request) {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
