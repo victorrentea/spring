@@ -38,7 +38,7 @@ public class TrainingController {
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
-
+	@PreAuthorize("hasAuthority('training.edit')")
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 //		HtmlPolicyBuilder html = new HtmlPolicyBuilder();
