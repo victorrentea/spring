@@ -155,9 +155,9 @@ $.ajax(restEndpoint +"/user/current/authorities", {
 	success: function(authorities) {
 		// authorities = list;
 		console.log(authorities);
-		if (! authorities.includes("training.delete")) {
-			$(".deleteButton").hide();
-		}
+		// if (! authorities.includes("training.delete")) {
+		// 	$(".deleteButton").hide();
+		// }
 		if (! authorities.includes("training.edit")) {
 			$(".editButton").hide();
 		}
