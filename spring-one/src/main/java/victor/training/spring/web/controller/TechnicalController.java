@@ -1,13 +1,14 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,16 +17,20 @@ public class TechnicalController {
 
 
 	@GetMapping("api/user/current")
-	public String getCurrentUsername() {
+	public String getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
-		return "TODO:user";
+//		return "TODO:user";
+//		SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext().);
+
 		// try getting the user from an Async task:
-		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+//			return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+		return userService.manualThreadPools();
 	}
+
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	// TODO use authorities in FR

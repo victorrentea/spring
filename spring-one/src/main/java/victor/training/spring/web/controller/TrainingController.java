@@ -56,7 +56,8 @@ public class TrainingController {
 	// TODO PermissionEvaluator
 
 	@DeleteMapping("{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('training.delete')")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
