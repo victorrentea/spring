@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -35,19 +36,23 @@ public class TechnicalController {
 //			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 //	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
+	//	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
-	public String showWelcomeInfo(){
+	public String showWelcomeInfo() {
 		// TODO return welcomeInfo;
 		return "Welcome! What's your temperature?";
 	}
-
 	// TODO [SEC] URL-pattern restriction: admin/**
+//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("admin/launch")
 	public String restart() {
+		return "What does this red button do?     ... [Missile Launched]";
+	}
+	@GetMapping("admin/heapdumo")
+	public String heapdump() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}
 }

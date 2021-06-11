@@ -49,13 +49,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter /*implements W
 //    };
 //}
 
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
-
-
         org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:9999"));
@@ -83,10 +78,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter /*implements W
            .csrf().disable()
 
             .authorizeRequests()
+                .mvcMatchers("admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
        .and()
-           .httpBasic()
-//       .formLogin().permitAll()
+//           .httpBasic()
+       .formLogin().permitAll()
             ;
     }
 
