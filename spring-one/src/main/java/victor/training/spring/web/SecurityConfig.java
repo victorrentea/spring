@@ -3,43 +3,44 @@ package victor.training.spring.web;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Profile("!test")
-public class SecurityConfig  extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class SecurityConfig  extends WebSecurityConfigurerAdapter /*implements WebMvcConfigurer */{
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("http://localhost:8080");
-//        registry.addMapping("http://api.coface.com"); // aici deployezi tu
-        registry.addMapping("http://cdn.coface.com");
-    }
-
 //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-////HttpServletRequest request;
-////request.getSession().invalidate();
-//       http//.//cors().configurationSource().and()
-////           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-//
-//           .csrf().disable()
-//            .authorizeRequests()
-//               .anyRequest().authenticated()
-//       .and()
-//       .formLogin().permitAll()
-//            ;
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("http://localhost:8080");
+////        registry.addMapping("http://api.coface.com"); // aici deployezi tu
+//        registry.addMapping("http://cdn.coface.com");
 //    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+//HttpServletRequest request;
+//request.getSession().invalidate();
+       http//.//cors().configurationSource().and()
+           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+
+//           .csrf().disable()
+
+            .authorizeRequests()
+               .anyRequest().authenticated()
+       .and()
+       .formLogin().permitAll()
+            ;
+    }
 
     // *** Dummy users 100% in-mem
     @Bean
