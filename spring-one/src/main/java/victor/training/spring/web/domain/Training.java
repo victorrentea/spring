@@ -21,6 +21,8 @@ public class Training {
 	@ManyToOne
 	private Teacher teacher;
 	@ManyToMany
+//	@JsonIgnore
+//	@ToString.Exclude
 	private List<Tag> tags = new ArrayList<>();
 
 	public String getExternalUUID() {

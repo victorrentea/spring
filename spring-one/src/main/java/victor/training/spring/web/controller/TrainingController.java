@@ -14,6 +14,9 @@ import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.util.List;
 
@@ -30,12 +33,19 @@ public class TrainingController {
 
    @GetMapping("{id}")
 	@PreAuthorize("@securityService.hasAccessOnTraining(#id)")
-	public TrainingDto getTrainingById(@PathVariable String id) {
+	public TrainingDto getTrainingById(@PathVariable String id) throws IOException {
       TrainingDto dto = trainingService.getTrainingById(id);
 
       PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
       dto.description = sanitizer.sanitize(dto.description);
 
+//SecurityManager
+//      GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream("42.zip"));
+//      byte[] fourgb = IOUtils.toByteArray(gzipInputStream);
+//
+
+      ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("someObj.data"));
+//      Object necuratu = objectInputStream.readObject();
       return dto;
    }
 
