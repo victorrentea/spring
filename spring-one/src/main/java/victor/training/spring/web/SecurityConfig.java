@@ -17,7 +17,14 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile("!test")
+@Profile("local")
+ class SecurityConfigPtLocal  extends WebSecurityConfigurerAdapter /*implements WebMvcConfigurer */{
+
+}
+
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile("!local")
 public class SecurityConfig  extends WebSecurityConfigurerAdapter /*implements WebMvcConfigurer */{
 
     // TODO [SEC] Start with ROLE-based authorization on URL-patterns
@@ -78,7 +85,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter /*implements W
             .authorizeRequests()
                .anyRequest().authenticated()
        .and()
-       .formLogin().permitAll()
+           .httpBasic()
+//       .formLogin().permitAll()
             ;
     }
 
