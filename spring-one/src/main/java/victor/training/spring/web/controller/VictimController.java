@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("victim")
 public class VictimController {
+//   @CrossOrigin(origins = "http://127.0.0.1:9999") //
    @PostMapping("transfer-rest")
-//   @CrossOrigin(origins = "*",allowCredentials = "true")  //or  implement WebMvcConfigurer with @Configuration + cors
+//   @CrossOrigin(origins = "http://127.0.0.1:9999",allowCredentials = "true")  //or  implement WebMvcConfigurer with @Configuration + cors
    public void transferRest(@RequestBody MoneyTransferRequest request) {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
    }
