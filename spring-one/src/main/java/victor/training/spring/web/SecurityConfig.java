@@ -1,46 +1,58 @@
-//package victor.training.spring.web;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-//import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-//
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@Profile("!test")
-//public class SecurityConfig  extends WebSecurityConfigurerAdapter {
-//
-//    // TODO [SEC] Start with ROLE-based authorization on URL-patterns
-//
+package victor.training.spring.web;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile("!test")
+public class SecurityConfig  extends WebSecurityConfigurerAdapter/* implements WebMvcConfigurer*/ {
+
+    // TODO [SEC] Start with ROLE-based authorization on URL-patterns
+
 //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//       http.cors().and
-////           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-//           .csrf().disable()
-//            .authorizeRequests().anyRequest().authenticated()
-//       .and()
-//       .formLogin().permitAll()
-//            ;
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("http://localhost:8080");
+////        registry.addMapping("http://api.coface.com"); // aici deployezi tu
+//        registry.addMapping("http://cdn.coface.com");
 //    }
-//
-//    // *** Dummy users 100% in-mem
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+//HttpServletRequest request;
+//request.getSession().invalidate();
+       http//.//cors().configurationSource().and()
+//           .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+
+           .csrf().disable()
+            .authorizeRequests()
+               .anyRequest().authenticated()
+       .and()
+       .formLogin().permitAll()
+            ;
+    }
+
+    // *** Dummy users 100% in-mem
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
+        UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
+        return new InMemoryUserDetailsManager(userDetails, adminDetails);
+    }
+
+    // ... then, switch to loading user data from DB:
+    // *** Also loading data from DB
 //    @Bean
 //    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
-//        UserDetails adminDetails = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("ADMIN").build();
-//        return new InMemoryUserDetailsManager(userDetails, adminDetails);
+//        return new DatabaseUserDetailsService();
 //    }
-//
-//    // ... then, switch to loading user data from DB:
-//    // *** Also loading data from DB
-////    @Bean
-////    public UserDetailsService userDetailsService() {
-////        return new DatabaseUserDetailsService();
-////    }
-//
-//}
+
+}
