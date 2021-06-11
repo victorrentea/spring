@@ -1,6 +1,7 @@
 package victor.training.spring.web.repo;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.context.SecurityContextHolder;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
@@ -21,12 +22,20 @@ public class TrainingRepoImpl implements TrainingRepoCustom {
       String visibleTeacherIdCsv = securityUser.getManagedTeacherIds().stream().map(Objects::toString).collect(Collectors.joining(","));
       // DON'T DO THIS: JPQL injection!
       String jpql = "SELECT t FROM Training t " +
-                    "WHERE t.teacher.id IN (" + visibleTeacherIdCsv + ")";
-      jpql += " AND t.name = '" + criteria.name + "'";
+                    "WHERE t.teacher.id IN (" + visibleTeacherIdCsv + ") ";
+//      jpql += " AND t.name = '" + criteria.name + "'";
+      if (Strings.isNotBlank(criteria.name)) {
+      jpql += " AND t.name = :criteriaName ";
+
+      }
 //      jpql += " AND t.name = ' OR '1'='1'";
 
-      TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+       String sql =  " SELECT ***, FORM WHERE ORDER BY " + criteria.colValue; // colValue vine asa: ID; TRUNCATE USERS;
 
+      TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+      if (Strings.isNotBlank(criteria.name)) {
+         query.setParameter("criteriaName", criteria.name);
+      }
       return query.getResultList();
    }
 }

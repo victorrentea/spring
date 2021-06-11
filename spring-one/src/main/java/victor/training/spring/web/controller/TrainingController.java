@@ -25,7 +25,7 @@ public class TrainingController {
 
    @GetMapping
    public List<TrainingDto> getAllTrainings() {
-      return trainingService.getAllTrainings();
+      return trainingService.search(new TrainingSearchCriteria());
    }
 
    @GetMapping("{id}")
