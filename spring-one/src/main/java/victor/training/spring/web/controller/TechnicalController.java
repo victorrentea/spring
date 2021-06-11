@@ -1,14 +1,18 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,12 +38,12 @@ public class TechnicalController {
 	}
 
 	// TODO use authorities in FR
-//	@GetMapping("api/user/current/authorities")
-//	public List<String> getCurrentUserAuthorities() throws Exception {
-//		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		return securityUserOnSession.getAuthorities().stream()
-//			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-//	}
+	@GetMapping("api/user/current/authorities")
+	public List<String> getCurrentUserAuthorities() throws Exception {
+		SecurityUser securityUserOnSession = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return securityUserOnSession.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+	}
 
 	//	@Autowired  // TODO Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
