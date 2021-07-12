@@ -8,9 +8,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-@SpringBootApplication
+@Slf4j
+@SpringBootApplication // este un @Configuration
 public class BeanApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
@@ -34,6 +36,11 @@ public class BeanApp implements CommandLineRunner {
         conversation2.start();
     }
 
+}
+
+@Configuration
+class ConfigClass {
+
     @Bean // o singura instanta - singleton
     public Person john() {
         return new Person("John");
@@ -51,9 +58,11 @@ public class BeanApp implements CommandLineRunner {
         // CUM?
         // Metoda @Bean este overriden de catre spring (hackuita) pentru a NU chema direct new Person()
 
-
-        //Adica
-
+    }
+    @Bean
+    public Conversation conversation2() {
+        System.out.println("Cum mama masii merge ?");
+        return new Conversation(john(), jane()); // desi aici john() se cheama de 2 ori (pt ca sunt 2 convrsatii pornite),
     }
 }
 // nu am acces la codul de mai jos ----------------------- Intr-un jar.
@@ -86,14 +95,14 @@ class Person {
         return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
     }
 }
-
-class SubclasaFacutaDeSpring extends BeanApp {
-    @Override
-    public Person john() {
-        // if (e singleton si deja il am) {return din context }
-        // else
-            return super.john();
-        // pune in context si intoarce
-    }
-}
+//
+//class SubclasaFacutaDeSpring extends BeanApp {
+//    @Override
+//    public Person john() {
+//        // if (e singleton si deja il am) {return din context }
+//        // else
+//            return super.john();
+//        // pune in context si intoarce
+//    }
+//}
 

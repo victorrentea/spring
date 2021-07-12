@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -39,12 +40,10 @@ public class LifeApp implements CommandLineRunner{
 }
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class OrderExporter  { // 1 instanta !
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-//	private LabelService labelService;
-	private ApplicationContext spring;
+	private final InvoiceExporter invoiceExporter;
+	private final ApplicationContext spring;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
