@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -63,7 +64,7 @@ interface Curs {
 //class SMTPEmailNotificator implements EmailNotificator {
 @Component
 @Profile("p1")
-class Filozofie implements Curs {
+class Filozofie implements Curs, AsyncConfigurer {
    @Autowired
    ClasaCareDeCareNUStieSpring_CRAPA c;
    @Override
