@@ -65,7 +65,7 @@ class InvoiceExporter { // 1
 @Slf4j
 @Service
 @Scope("prototype")
-class LabelService { // 1
+class LabelService{ // N
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
