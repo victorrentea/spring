@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,45 +30,42 @@ public class LifeApp implements CommandLineRunner{
 	@Autowired 
 	private OrderExporter exporter;
 	
-	// TODO [1] make singleton; multi-thread + mutable state = BAD
-	// TODO [2] instantiate manually, set dependencies, pass around; no AOP
-	// TODO [3] prototype scope + ObjectFactory or @Lookup. Did you said "Factory"? ...
-	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
-
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+		new Thread(() -> exporter.export(Locale.ENGLISH)).start();
+		new Thread(() -> exporter.export(Locale.FRENCH)).start();
 	}
 }
 @Slf4j
 @Service
-class OrderExporter  {
+class OrderExporter  { // 1 instanta !
 	@Autowired
 	private InvoiceExporter invoiceExporter;
+//	@Autowired
+//	private LabelService labelService;
 	@Autowired
-	private LabelService labelService;
+	private CountryRepo countryRepo;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		LabelService labelService = new LabelService(countryRepo);
+		labelService.load(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @Slf4j
 @Service 
-class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
-	public void exportInvoice() {
+class InvoiceExporter { // 1
+//	@Autowired
+//	private LabelService labelService;
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
-@Service
-class LabelService {
+//@Service
+class LabelService { // 1
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
@@ -79,10 +75,9 @@ class LabelService {
 
 	private Map<String, String> countryNames;
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug("LabelService.load() on instance " + this.hashCode());
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
