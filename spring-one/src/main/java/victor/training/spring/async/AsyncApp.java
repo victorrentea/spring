@@ -30,7 +30,7 @@ public class AsyncApp {
    }
 
    @Bean
-   public ThreadPoolTaskExecutor beerPool( @Value("${beer.count}") int barmanCount) {
+   public ThreadPoolTaskExecutor beerPool(@Value("${beer.count}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setCorePoolSize(barmanCount);
       executor.setMaxPoolSize(barmanCount);
@@ -40,8 +40,9 @@ public class AsyncApp {
       executor.setWaitForTasksToCompleteOnShutdown(true);
       return executor;
    }
+
    @Bean
-   public ThreadPoolTaskExecutor vodkaPool( @Value("${vodka.count}") int barmanCount) {
+   public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.count}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setCorePoolSize(barmanCount);
       executor.setMaxPoolSize(barmanCount);
@@ -63,17 +64,20 @@ class Drinker implements CommandLineRunner {
    // TODO [1] inject and use a ThreadPoolTaskExecutor.submit
    // TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
    // TODO [3] Messaging...
+   //@GetMapping // upload file
    public void run(String... args) throws Exception {
       log.debug("Submitting my order");
-		// cat timp astept la aceasta linie
+      // cat timp astept la aceasta linie
       CompletableFuture<Beer> futureBeer = barman.getOneBeer(); // 0
       // nu te-ai blocat pana aici
       CompletableFuture<Vodka> futureVodka = barman.getOneVodka(); // 0
 
       Beer beer = futureBeer.get(); // 1 sec
-		Vodka vodka = futureVodka.get(); // ~0 sec pt ca vodka SE VA FI TURNAT in paralel cu berea de la linia precedenta
+      Vodka vodka = futureVodka.get(); // ~0 sec pt ca vodka SE VA FI TURNAT in paralel cu berea de la linia precedenta
 
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+      barman.injura("!&$@&@!&^$&@!&$"); // 0
+      log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+      System.out.println("Ma bag in patuc");
    }
 }
 
@@ -83,14 +87,25 @@ class Barman {
    @Async("beerPool")
    public CompletableFuture<Beer> getOneBeer() {
       log.debug("Pouring Beer...");
+//      if (true) {
+//      throw new RuntimeException("Fara ber!");
+//      }
       ThreadUtils.sleep(1000); // REST call / SOAL call
       return completedFuture(new Beer());
    }
+
    @Async("vodkaPool")
    public CompletableFuture<Vodka> getOneVodka() {
       log.debug("Pouring Vodka...");
       ThreadUtils.sleep(1000); // LONG DB QUERY
       return CompletableFuture.completedFuture(new Vodka());
+   }
+
+   @Async
+   public void injura(String uratura) { // fire and forget
+      if (uratura != null) {
+         throw new IllegalArgumentException("Iti fac buzunar!! Te casez. [rachetilor]");
+      }
    }
 }
 
