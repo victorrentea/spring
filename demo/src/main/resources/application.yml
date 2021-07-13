@@ -1,0 +1,20 @@
+
+fisier.path: fisier.txt
+config2: 42
+#config2: @prop.din.maven@
+
+
+logging.level.root: INFO
+logging.level.com.example: DEBUG
+
+
+welcome:
+  welcome-message: Welcome to This Spring Realm
+  help:
+    app-id: 7
+    file: c:/help-file.pdf
+    clazz: com.example.demo.WelcomeInfo
+  support-urls: http://google.com,  http://stackoverflow.com,http://baeldung.com,http://spring.io
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
