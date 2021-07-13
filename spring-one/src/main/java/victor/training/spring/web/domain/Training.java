@@ -8,6 +8,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 @Entity
+//@NamedQueries({
+//	@NamedQuery(name="unNumeIdiot",query = "SELECT t FROM Training t WHERE t.name = :name")
+//})
 public class Training {
 	@Id
 	@GeneratedValue

@@ -11,12 +11,13 @@ import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 
+import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,7 +43,8 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+        if (trainingRepo.getByName(dto.name) .isPresent() &&
+            !trainingRepo.getByName(dto.name).get().getId().equals(id)) {
             throw new MyException(ErrorCode.DUPLICATE_COURSE_NAME);
         }
         Training training = trainingRepo.findById(id).get();
@@ -62,12 +64,18 @@ public class TrainingService {
         return format.parse(dto.startDate);
     }
 
+    EntityManager em;
     public void deleteById(Long id) {
+        trainingRepo.findById(id);
+        em.createQuery("SELECT t FROM Training t WHERE t.name = :name")
+            .setParameter("name","JPA")
+            .executeUpdate();
+
         trainingRepo.deleteById(id);
     }
 
     public void createTraining(TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null) {
+        if (trainingRepo.getByName(dto.name).isPresent()) {
             throw new MyException(ErrorCode.DUPLICATE_COURSE_NAME);
         }
         trainingRepo.save(mapToEntity(dto));
@@ -94,7 +102,9 @@ public class TrainingService {
     }
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
-        return Collections.emptyList(); // TODO
+        return trainingRepo.search(criteria).stream()
+            .map(this::mapToDto)
+            .collect(Collectors.toList()); // TODO
     }
 
     @Transactional
