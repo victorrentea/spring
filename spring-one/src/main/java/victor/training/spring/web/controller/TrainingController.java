@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -34,8 +36,14 @@ public class TrainingController {
 	}
 
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
-		trainingService.createTraining(dto);
+	public ResponseEntity<String> createTraining(@RequestBody TrainingDto dto) throws ParseException {
+		try {
+			trainingService.createTraining(dto);
+			return ResponseEntity.ok("");
+		} catch (IllegalArgumentException e) {
+			// fac cumva intorc un raspuns care sa zica eroare.
+			return new ResponseEntity<String>("Naspa, exista deja cursul", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PutMapping("{id}/start-date")
