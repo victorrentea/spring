@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -40,6 +41,22 @@ class Compo {
 
 		System.out.println(file.getAbsolutePath());
 		System.out.println(universeAnswer);
+
+		B b = new B();
+		A a = new A(b);
+//		a.b = b;
 	}
 
 }
+
+@Component
+@RequiredArgsConstructor // geek
+class A {
+	private final B b;
+
+//	public A(B b) {
+//		this.b = b;
+//	}
+}
+@Component
+class B {}

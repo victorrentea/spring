@@ -31,6 +31,6 @@ public class WelcomeInfo {
     @PostConstruct
     public void printMyself() {
         // TODO check the help.file exists
-        log.debug("My props: \n" + this);
+        log.debug("My propsx: \n" + this);
     }
 }
