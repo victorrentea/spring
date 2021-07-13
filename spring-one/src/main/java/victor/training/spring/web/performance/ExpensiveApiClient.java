@@ -1,6 +1,5 @@
 package victor.training.spring.web.performance;
 
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class ExpensiveApiClient {
    @Async("customExecutor")
-   @Timed("external call")
+//   @Timed("external call")
    public CompletableFuture<String> asyncCall() {
       log.info("Calling async...");
       ThreadUtils.sleep(1000);

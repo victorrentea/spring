@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
+import victor.training.spring.web.repo.TrainingRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,5 +93,11 @@ public class TrainingService {
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
         return Collections.emptyList(); // TODO
+    }
+
+    @Transactional
+    public void updateTrainingStartDate(Long id, Date startDate) {
+        Training training = trainingRepo.findById(id).get();
+        training.setStartDate(startDate);
     }
 }

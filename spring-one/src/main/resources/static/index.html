@@ -181,6 +181,7 @@ function openEditTraining(trainingId) {
 			//au venit datele
 			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
+			$("#editDescription").val(data.description);
 			// BUG
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
@@ -195,6 +196,7 @@ function updateTraining() {
 		data: JSON.stringify({
 			name:$("#editName").val(),
 			startDate:$("#editStartDate").val(),
+			description:$("#editDescription").val(),
 			teacherId:$("#editTeacher").val()
 		}),
 		contentType: "application/json",
@@ -204,9 +206,9 @@ function updateTraining() {
 			$('#trainingEditDiv').hide();
 			refreshTrainingsTable();
 		},
-		error: function(a,b,c) {
-			if (a.responseText) {
-				toastr.error(a.responseText);
+		error: function(response,b,c) {
+			if (response.responseText) {
+				toastr.error(response.responseText);
 			}
 		}
 	});
