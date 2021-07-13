@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,17 +23,30 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 @EnableAsync
 @SpringBootApplication
 public class AsyncApp {
+
+
    public static void main(String[] args) {
       SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
    }
 
    @Bean
-   public ThreadPoolTaskExecutor executor() {
+   public ThreadPoolTaskExecutor beerPool( @Value("${beer.count}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-      executor.setCorePoolSize(1);
-      executor.setMaxPoolSize(1);
+      executor.setCorePoolSize(barmanCount);
+      executor.setMaxPoolSize(barmanCount);
       executor.setQueueCapacity(500);
-      executor.setThreadNamePrefix("bar-");
+      executor.setThreadNamePrefix("beer-");
+      executor.initialize();
+      executor.setWaitForTasksToCompleteOnShutdown(true);
+      return executor;
+   }
+   @Bean
+   public ThreadPoolTaskExecutor vodkaPool( @Value("${vodka.count}") int barmanCount) {
+      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+      executor.setCorePoolSize(barmanCount);
+      executor.setMaxPoolSize(barmanCount);
+      executor.setQueueCapacity(500);
+      executor.setThreadNamePrefix("vodka-");
       executor.initialize();
       executor.setWaitForTasksToCompleteOnShutdown(true);
       return executor;
@@ -56,7 +70,7 @@ class Drinker implements CommandLineRunner {
       // nu te-ai blocat pana aici
       CompletableFuture<Vodka> futureVodka = barman.getOneVodka(); // 0
 
-		Beer beer = futureBeer.get(); // 1 sec
+      Beer beer = futureBeer.get(); // 1 sec
 		Vodka vodka = futureVodka.get(); // ~0 sec pt ca vodka SE VA FI TURNAT in paralel cu berea de la linia precedenta
 
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
@@ -66,14 +80,13 @@ class Drinker implements CommandLineRunner {
 @Slf4j
 @Service
 class Barman {
-   @Async
+   @Async("beerPool")
    public CompletableFuture<Beer> getOneBeer() {
       log.debug("Pouring Beer...");
       ThreadUtils.sleep(1000); // REST call / SOAL call
       return completedFuture(new Beer());
    }
-
-   @Async
+   @Async("vodkaPool")
    public CompletableFuture<Vodka> getOneVodka() {
       log.debug("Pouring Vodka...");
       ThreadUtils.sleep(1000); // LONG DB QUERY
