@@ -1,27 +1,54 @@
 package victor.training.spring.aspects;
 
-import java.lang.reflect.InvocationHandler;
+import net.sf.cglib.proxy.Callback;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
-public class ProxyDeInterfete {
+public class ProxyDeInterfete { // acum de clase, fara nici o interfata
    public static void main(String[] args) {
 
-      MatematicaImpl impl = new MatematicaImpl();
+      Matematica impl = new Matematica();
 
-      InvocationHandler h = new InvocationHandler() {
+//      InvocationHandler h = new InvocationHandler() {
+//         @Override
+//         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//            System.out.println("Chemi metoda " + method.getName() + " cu param " + Arrays.toString(args));
+//            return method.invoke(impl, args);
+//         }
+//      };
+
+//      Matematica mateProxy = (Matematica) Proxy.newProxyInstance(
+//          ProxyDeInterfete.class.getClassLoader(),
+//          new Class<?>[]{ Matematica.class },
+//          h);
+
+      Callback callback = new MethodInterceptor() {
          @Override
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+         public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
             System.out.println("Chemi metoda " + method.getName() + " cu param " + Arrays.toString(args));
             return method.invoke(impl, args);
          }
       };
+//      Matematica mateProxy = new Matematica() {
+//         // subclasa generata dinamic de CGLIB
+//
+//         @Override
+//         public int suma(int a, int b) {
+//            return calback.invoke();
+//         }
+//
+//         @Override
+//         public int produs(int a, int b) {
+//            return super.produs(a, b);
+//         }
+//      };
 
-      Matematica mateProxy = (Matematica) Proxy.newProxyInstance(
-          ProxyDeInterfete.class.getClassLoader(),
-          new Class<?>[]{ Matematica.class },
-          h);
+      Matematica mateProxy = (Matematica) Enhancer.create(Matematica.class, callback);
+
       biz(mateProxy);
    }
 
@@ -36,21 +63,27 @@ public class ProxyDeInterfete {
       System.out.println(mate.produs(2,1));
    }
 }
-
-
-interface Matematica {
-   int suma(int a, int b);
-   int produs(int a, int b);
+class MatematicaHackedGenerataOnTheFlyDeCGLIB extends Matematica {
+   @Override
+   public int suma(int a, int b) {
+      return super.suma(a, b);
+   }
+   @Override
+   public int produs(int a, int b) {
+      return super.produs(a, b);
+   }
 }
 
-class MatematicaImpl implements Matematica {
-   @Override
+//interface Matematica {
+//   int suma(int a, int b);
+//   int produs(int a, int b);
+//}
+
+class Matematica/*Impl implements Matematica */{
    public int suma(int a, int b) {
       System.out.println("Nu pot sa cred!");
       return a + b;
    }
-
-   @Override
    public int produs(int a, int b) {
       return a * b;
    }
