@@ -28,7 +28,7 @@ public class TrainingController {
 
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@Valid @RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 

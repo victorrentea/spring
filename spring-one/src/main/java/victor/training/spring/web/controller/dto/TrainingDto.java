@@ -1,12 +1,12 @@
 package victor.training.spring.web.controller.dto;
 
 
-import victor.training.spring.web.validation.ValidTrainingName;
+import javax.validation.constraints.Size;
 
 public class TrainingDto {
 	public Long id;
-	@ValidTrainingName
-//	@Size(min = 3, max = 50)
+	@Size(min = 3, max = 50)
+//	@ValidTrainingName
 	public String name;
 	public Long teacherId;
 	public String teacherName;
