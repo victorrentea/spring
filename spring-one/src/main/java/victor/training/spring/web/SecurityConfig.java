@@ -28,7 +28,7 @@
 //            ;
 //    }
 //
-//    // *** Dummy users 100% in-mem
+//    // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
@@ -36,8 +36,7 @@
 //        return new InMemoryUserDetailsManager(userDetails, adminDetails);
 //    }
 //
-//    // ... then, switch to loading user data from DB:
-//    // *** Also loading data from DB
+//    // ... Load user data from DB:
 ////    @Bean
 ////    public UserDetailsService userDetailsService() {
 ////        return new DatabaseUserDetailsService();
