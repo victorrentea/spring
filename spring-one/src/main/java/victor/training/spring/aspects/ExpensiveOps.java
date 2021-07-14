@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
@@ -26,18 +27,15 @@ public/* final ERROR*/ class ExpensiveOps {
 	@Autowired
 	private CacheManager cacheManager;
 
-//	@Cacheable("primes")
+	@Cacheable("primes")
 	public /*final silently skipped*/ Boolean isPrime(int n) {
-
-		Boolean cached = cacheManager.getCache("primes").get(n, Boolean.class);
-		if (cached != null) {
-			return cached;
-		}
-
-
+//		Boolean cached = cacheManager.getCache("primes").get(n, Boolean.class);
+//		if (cached != null) {
+//			return cached;
+//		}
 
 		log.debug("Computing isPrime({})...", n);
-//		new RuntimeException("Intentionat, sa apara stack trace").printStackTrace();
+		new RuntimeException("Intentionat, sa apara stack trace").printStackTrace();
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -52,7 +50,7 @@ public/* final ERROR*/ class ExpensiveOps {
 				return false;
 			}
 		}
-		cacheManager.getCache("primes").put(n, true);
+//		cacheManager.getCache("primes").put(n, true);
 		return true;
 	}
 
