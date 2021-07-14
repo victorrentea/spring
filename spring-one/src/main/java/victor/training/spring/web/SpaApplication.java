@@ -3,6 +3,8 @@ package victor.training.spring.web;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableCaching
@@ -16,6 +18,10 @@ public class SpaApplication {
 				.run(args);
 	}
 
+	@Bean
+	public MethodValidationPostProcessor postProcessor1() {
+		return new MethodValidationPostProcessor();
+	}
 }
 //
 //@Service

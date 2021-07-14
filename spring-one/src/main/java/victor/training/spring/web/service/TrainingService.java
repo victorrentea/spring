@@ -12,6 +12,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+//@Validated
 public class TrainingService {
     @Autowired
     private TrainingRepo trainingRepo;
@@ -43,12 +45,12 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) .isPresent() &&
-            !trainingRepo.getByName(dto.name).get().getId().equals(id)) {
+        if (trainingRepo.getByName(dto.getName()) .isPresent() &&
+            !trainingRepo.getByName(dto.getName()).get().getId().equals(id)) {
             throw new MyException(ErrorCode.DUPLICATE_COURSE_NAME);
         }
         Training training = trainingRepo.findById(id).get();
-        training.setName(dto.name);
+        training.setName(dto.getName());
         training.setDescription(dto.description);
         // TODO implement date not in the past. i18n
         Date newDate = parseStartDate(dto);
@@ -74,8 +76,11 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
-    public void createTraining(TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name).isPresent()) {
+
+    public void createTraining(@Valid TrainingDto dto) throws ParseException {
+        System.out.println("Oare aici");
+        new RuntimeException().printStackTrace();
+        if (trainingRepo.getByName(dto.getName()).isPresent()) {
             throw new MyException(ErrorCode.DUPLICATE_COURSE_NAME);
         }
         trainingRepo.save(mapToEntity(dto));
@@ -84,7 +89,7 @@ public class TrainingService {
     private TrainingDto mapToDto(Training training) {
         TrainingDto dto = new TrainingDto();
         dto.id = training.getId();
-        dto.name = training.getName();
+        dto.setName(training.getName());
         dto.description = training.getDescription();
         dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
         dto.teacherId = training.getTeacher().getId();
@@ -94,7 +99,7 @@ public class TrainingService {
 
     private Training mapToEntity(TrainingDto dto) throws ParseException {
         Training newEntity = new Training();
-        newEntity.setName(dto.name);
+        newEntity.setName(dto.getName());
         newEntity.setDescription(dto.description);
         newEntity.setStartDate(parseStartDate(dto));
         newEntity.setTeacher(teacherRepo.getOne(dto.teacherId));

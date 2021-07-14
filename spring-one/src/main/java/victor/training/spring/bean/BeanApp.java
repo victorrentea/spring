@@ -39,6 +39,7 @@ public class BeanApp implements CommandLineRunner {
 }
 
 @Configuration
+//@Profile("asta")
 class ConfigClass {
 
     @Bean // o singura instanta - singleton

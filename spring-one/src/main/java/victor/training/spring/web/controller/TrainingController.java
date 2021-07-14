@@ -6,6 +6,7 @@ import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
@@ -34,7 +35,7 @@ public class TrainingController {
 	}
 
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@Valid @RequestBody TrainingDto dto) throws ParseException {
 //		try {
 			trainingService.createTraining(dto);
 //			return ResponseEntity.ok("");

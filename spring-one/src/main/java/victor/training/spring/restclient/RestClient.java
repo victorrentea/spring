@@ -20,7 +20,7 @@ public class RestClient {
           TrainingDto.class,1);
       System.out.println(dto);
 
-      dto.name+="X";
+      dto.setName(dto.getName() + "X");
       rest.postForObject(
           "http://localhost:8081/api/trainings",
           dto, Void.class);

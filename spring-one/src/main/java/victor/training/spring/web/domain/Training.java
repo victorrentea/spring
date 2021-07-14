@@ -1,6 +1,9 @@
 package victor.training.spring.web.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +18,9 @@ public class Training {
 	@Id
 	@GeneratedValue
 	private Long id;
+//	@Column(nullable = false) // NOT NULL
+	@NotNull
+	@Length(min = 2)
 	private String name;
 	private String description;
 	private Date startDate;
