@@ -1,7 +1,8 @@
 package victor.training.spring.web;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 @Profile("!test")
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
@@ -24,7 +25,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
            .csrf().disable()
            .authorizeRequests()
                .mvcMatchers("unsecured/**").anonymous()
-               .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN") // gunoi. prost. niciodata. DE CE ? ca e dparte de cod
+//               .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN") // gunoi. prost. niciodata. DE CE ? ca e dparte de cod
                .mvcMatchers("admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
            .and()

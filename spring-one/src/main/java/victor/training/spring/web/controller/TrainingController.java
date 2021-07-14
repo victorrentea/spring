@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -59,9 +60,12 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
-	@DeleteMapping("{id}/delete")
-//	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("{id}")
+//	@RolesAllowed("ROLE_ADMIN")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAuthority('DELETE_TRAINING')")
 	public void deleteTrainingById(@PathVariable Long id) {
+//		SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 		trainingService.deleteById(id);
 	}
 

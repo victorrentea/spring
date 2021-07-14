@@ -1,23 +1,42 @@
 package victor.training.spring.web.controller;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
 	private final UserService userService;
 
+	@Data
+	public static class UserDetailsDto {
+		private final String username;
+		private final List<String> roles;
+		public UserDetailsDto(Authentication user) {
+			username = user.getName();
+			roles = user.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
+		}
+	}
 
 	@GetMapping("api/user/current")
-	public String getCurrentUsername() {
-		// TODO implement me
-		return "TODO:user";
+	public UserDetailsDto getCurrentUsername() {
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+		return new UserDetailsDto(SecurityContextHolder.getContext().getAuthentication());
+
 		// try getting the user from an Async task:
 		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
 	}

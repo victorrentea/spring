@@ -6,7 +6,7 @@ import java.util.Set;
 
 public enum UserRole {
     USER("search"),
-    ADMIN("search", "training.delete");
+    ADMIN("search", "TRAINING_DELETE", "TRAINING_EDIT");
     private final Set<String> authorities;
 
     UserRole(String... authorities) {

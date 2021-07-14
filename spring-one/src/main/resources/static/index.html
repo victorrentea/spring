@@ -91,8 +91,13 @@ function fillTable(trainings) {
 		row += '<td>' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
-		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
-				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+		// if (/*currentFeatures.find("DELETE_TRAINING") */ true) {
+		if (/*currentRoles.find("ROLE_ADMIN") || currentRoles.find("ROLE_USER") || */ true) {
+			row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
+					'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+		} else {
+			row += '<td></td>'
+		}
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}
@@ -122,11 +127,13 @@ function search() {
 		}
 	});
 }
+var currentRoles = [];
 refreshTrainingsTable();
 $.ajax(restEndpoint +"/user/current", {
 	method: "GET",
-	success: function(username) {
-		$("#username").text(username);
+	success: function(user) {
+		$("#username").text(user.username);
+		currentRoles = user.roles;
 	}});
 
 $.ajax(restEndpoint +"/user/current/authorities", {
