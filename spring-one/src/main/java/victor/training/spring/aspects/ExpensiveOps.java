@@ -19,9 +19,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Service // singleton
+@Logged
 public/* final ERROR*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
-	
+
 	private static final BigDecimal TWO = new BigDecimal("2");
 
 	@Autowired

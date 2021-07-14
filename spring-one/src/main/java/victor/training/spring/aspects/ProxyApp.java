@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
@@ -51,16 +53,17 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
 @interface Logged {
-
 }
 
 @Slf4j
 @Aspect
 @Component
 class LoggingInterceptor {
-	@Around("execution(* victor..*.*(..) )")
-//	@Around("@annotation()")
+//	@Around("execution(* victor..*.*(..) )")
+//	@Around("@annotation(victor.training.spring.aspects.Logged)")
+	@Around("@within(victor.training.spring.aspects.Logged)")
 	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
 		log.info("Calling method {} with args {}",
 			point.getSignature().getName(),
