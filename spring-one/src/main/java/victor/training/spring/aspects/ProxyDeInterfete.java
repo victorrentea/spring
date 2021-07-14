@@ -22,11 +22,12 @@ public class ProxyDeInterfete {
           ProxyDeInterfete.class.getClassLoader(),
           new Class<?>[]{ Matematica.class },
           h);
-
       biz(mateProxy);
    }
 
    private static void biz(Matematica mate) {
+      System.out.println("Cum Doamne iarta-ma ruleaza ceva intre mine si mate.suma : " +
+                         "instanta de mate nu e ceea ce pare : " +mate.getClass());
       System.out.println(mate.suma(1,1));
       System.out.println(mate.suma(2,0));
       System.out.println(mate.suma(3,-1));
@@ -45,6 +46,7 @@ interface Matematica {
 class MatematicaImpl implements Matematica {
    @Override
    public int suma(int a, int b) {
+      System.out.println("Nu pot sa cred!");
       return a + b;
    }
 
