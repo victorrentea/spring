@@ -1,12 +1,18 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,11 +21,15 @@ public class TechnicalController {
 
 
 	@GetMapping("api/user/current")
-	public String getCurrentUsername() {
+	public LoggedInUserDto getCurrentUsername() {
 		// TODO implement me
-		return "TODO:user";
-		// try getting the user from an Async task:
-		//	return userService.getCurrentUsername().get(); // this only works due to the @PostConstruct below
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		LoggedInUserDto dto = new LoggedInUserDto();
+		dto.username = "TODO:username";
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		return dto;
+		// TODO How to propagate current user on thread over @Async calls?
 	}
 
 	@PostConstruct
@@ -35,7 +45,7 @@ public class TechnicalController {
 //			.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 //	}
 
-//	@Autowired  // TODO Import the other Spring Boot Application
+//	@Autowired  // TODO @Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
 	// TODO [SEC] allow unsecured access

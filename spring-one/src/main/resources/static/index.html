@@ -91,6 +91,7 @@ function fillTable(trainings) {
 		row += '<td>' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
+		if (currentUser.role === 'ROLE_ADMIN')
 		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
 				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
 		row += '</tr>';
@@ -123,10 +124,12 @@ function search() {
 	});
 }
 refreshTrainingsTable();
+var currentUser = {};
 $.ajax(restEndpoint +"/user/current", {
 	method: "GET",
-	success: function(username) {
-		$("#username").text(username);
+	success: function(user) {
+		currentUser = user;
+		$("#username").text(user.username);
 	}});
 
 $.ajax(restEndpoint +"/user/current/authorities", {
