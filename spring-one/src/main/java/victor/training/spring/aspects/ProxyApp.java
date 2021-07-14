@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Retention;
@@ -17,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
-@EnableCaching 
+@EnableCaching(order = 2)
 @SpringBootApplication
 @Slf4j
 // [RO] "Viata e complexa si are multe aspecte" - Cel mai iubit dintre pamanteni. Spring e viata. :)
@@ -40,7 +41,7 @@ public class ProxyApp implements CommandLineRunner {
 	private ExpensiveOps ops;
 
 	public void run(String... args) {
-//		ExpensiveOps ops = new ExpensiveOps();
+//		ExpensiveOps ops = new ExpensiveOps(); nu merge
 		log.debug("\n");
 		log.debug("ops injectat de spring este : " + ops.getClass());
  		log.debug("---- CPU Intensive ~ memoization?");
@@ -57,6 +58,7 @@ public class ProxyApp implements CommandLineRunner {
 @interface Logged {
 }
 
+@Order(1)
 @Slf4j
 @Aspect
 @Component

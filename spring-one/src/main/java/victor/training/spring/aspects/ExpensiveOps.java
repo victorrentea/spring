@@ -62,8 +62,11 @@ public/* final ERROR*/ class ExpensiveOps {
 		// Proxy-urile spring by default merg doar cand invoci o metoda
 		// pe o referinta luata de la spring
 		log.debug("10000169 is prime ? ");
-		log.debug("Got3: " + isPrime(10000169) + "\n");
+		log.debug("Got3: " + self.isPrime(10000169) + "\n");
 	}
+
+	@Autowired
+	private ExpensiveOps self;
 
 
 	public String hashAllFiles(File folder) {

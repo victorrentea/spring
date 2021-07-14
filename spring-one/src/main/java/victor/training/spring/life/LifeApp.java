@@ -47,6 +47,7 @@ class OrderExporter  { // 1 instanta !
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+
 		LabelService labelService = spring.getBean(LabelService.class); // ~ new doar ca spring o face
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));

@@ -33,19 +33,6 @@ public class ProxyDeInterfete { // acum de clase, fara nici o interfata
             return method.invoke(impl, args);
          }
       };
-//      Matematica mateProxy = new Matematica() {
-//         // subclasa generata dinamic de CGLIB
-//
-//         @Override
-//         public int suma(int a, int b) {
-//            return calback.invoke();
-//         }
-//
-//         @Override
-//         public int produs(int a, int b) {
-//            return super.produs(a, b);
-//         }
-//      };
 
       Matematica mateProxy = (Matematica) Enhancer.create(Matematica.class, callback);
 
