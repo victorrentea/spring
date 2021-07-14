@@ -48,8 +48,6 @@ public class TrainingController {
 	}
 
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
-		// ceva
-		// ceva2
 		return trainingService.search(criteria);
 	}
 }
