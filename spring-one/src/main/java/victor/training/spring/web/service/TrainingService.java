@@ -11,7 +11,6 @@ import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 
-import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,12 +65,13 @@ public class TrainingService {
         return format.parse(dto.startDate);
     }
 
-    EntityManager em;
+//    @Autowired
+//    EntityManager em;
     public void deleteById(Long id) {
-        trainingRepo.findById(id);
-        em.createQuery("SELECT t FROM Training t WHERE t.name = :name")
-            .setParameter("name","JPA")
-            .executeUpdate();
+//        trainingRepo.findById(id);
+//        em.createQuery("SELECT t FROM Training t WHERE t.name = :name")
+//            .setParameter("name","JPA")
+//            .executeUpdate();
 
         trainingRepo.deleteById(id);
     }
