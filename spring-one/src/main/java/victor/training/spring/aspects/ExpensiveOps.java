@@ -1,5 +1,14 @@
 package victor.training.spring.aspects;
 
+import org.apache.commons.io.FileUtils;
+import org.jooq.lambda.Unchecked;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.stereotype.Service;
+
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,22 +17,27 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.io.FileUtils;
-import org.jooq.lambda.Unchecked;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-@Service
-public class ExpensiveOps {
+@Service // singleton
+public/* final ERROR*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
 	
 	private static final BigDecimal TWO = new BigDecimal("2");
-	
-	public Boolean isPrime(int n) {
+
+	@Autowired
+	private CacheManager cacheManager;
+
+//	@Cacheable("primes")
+	public /*final silently skipped*/ Boolean isPrime(int n) {
+
+		Boolean cached = cacheManager.getCache("primes").get(n, Boolean.class);
+		if (cached != null) {
+			return cached;
+		}
+
+
+
 		log.debug("Computing isPrime({})...", n);
+//		new RuntimeException("Intentionat, sa apara stack trace").printStackTrace();
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
 			return true;
@@ -38,9 +52,21 @@ public class ExpensiveOps {
 				return false;
 			}
 		}
+		cacheManager.getCache("primes").put(n, true);
 		return true;
 	}
-	
+
+	public void oareMergeCacheableDacaInvocareaELocala_NU() {
+		// atunci cand invoci o metoda adnotata (eg @Transactional) din aceeasi clasa,
+		// adnotarea (Proxy-ul) nu functioneaza.
+
+		// Proxy-urile spring by default merg doar cand invoci o metoda
+		// pe o referinta luata de la spring
+		log.debug("10000169 is prime ? ");
+		log.debug("Got3: " + isPrime(10000169) + "\n");
+	}
+
+
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
