@@ -14,31 +14,28 @@
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 //@Profile("!test")
-//public class SecurityConfig  extends WebSecurityConfigurerAdapter {
+//public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //
-//    // TODO [SEC] Start with ROLE-based authorization on URL-patterns
+//   @Override
+//   protected void configure(HttpSecurity http) throws Exception {
+//      http
+//          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+//          .authorizeRequests().anyRequest().authenticated()
+//          .and()
+//          .formLogin().permitAll();
+//   }
 //
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//       http
-//           .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-//            .authorizeRequests().anyRequest().authenticated()
-//       .and()
-//       .formLogin().permitAll()
-//            ;
-//    }
+//   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
+//   @Bean
+//   public UserDetailsService userDetailsService() {
+//      UserDetails userDetails = User.withDefaultPasswordEncoder()
+//          .username("user").password("user").roles("USER").build();
+//      UserDetails adminDetails = User.withDefaultPasswordEncoder()
+//          .username("admin").password("admin").roles("ADMIN").build();
+//      return new InMemoryUserDetailsManager(userDetails, adminDetails);
+//   }
 //
-//    // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withDefaultPasswordEncoder()
-//            .username("user").password("user").roles("USER").build();
-//        UserDetails adminDetails = User.withDefaultPasswordEncoder()
-//            .username("admin").password("admin").roles("ADMIN").build();
-//        return new InMemoryUserDetailsManager(userDetails, adminDetails);
-//    }
-//
-//    // ... Load user data from DB:
+//   // ... Load user data from DB:
 ////    @Bean
 ////    public UserDetailsService userDetailsService() {
 ////        return new DatabaseUserDetailsService();

@@ -91,9 +91,12 @@ function fillTable(trainings) {
 		row += '<td>' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
-		if (currentUser.role === 'ROLE_ADMIN')
-		row += '<td><input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />' +
-				'<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" /></td>';
+		row += '<td>';
+		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
+		//if (currentUser.role === 'ROLE_ADMIN'))
+		//if (currentUser.authorities.includes('ROLE_ADMIN'))
+		row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}
@@ -123,24 +126,16 @@ function search() {
 		}
 	});
 }
-refreshTrainingsTable();
+
 var currentUser = {};
 $.ajax(restEndpoint +"/user/current", {
 	method: "GET",
 	success: function(user) {
 		currentUser = user;
 		$("#username").text(user.username);
+		refreshTrainingsTable(); //
 	}});
 
-$.ajax(restEndpoint +"/user/current/authorities", {
-	method: "GET",
-	success: function(authorities) {
-		// authorities = list;
-		console.log(authorities);
-		if (! authorities.includes("training.edit")) {
-			$(".deleteButton").hide();
-		}
-	}});
 $("#newStartDate").val("01-01-2019");
 
 function populateTeacherCombo($teacherCombo) {
@@ -158,6 +153,7 @@ function populateTeacherCombo($teacherCombo) {
 populateTeacherCombo($("#newTeacher"));
 populateTeacherCombo($("#editTeacher"));
 populateTeacherCombo($("#searchTeacher"));
+$("#searchTeacher").append("<option></option>")
 
 
 function deleteTraining(id) {

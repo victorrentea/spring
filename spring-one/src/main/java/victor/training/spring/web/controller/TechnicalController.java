@@ -1,9 +1,6 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -11,8 +8,7 @@ import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-
-import static java.util.stream.Collectors.toList;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,11 +19,10 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		// TODO implement me
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		LoggedInUserDto dto = new LoggedInUserDto();
 		dto.username = "TODO:username";
-		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
+		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 		return dto;
 		// TODO How to propagate current user on thread over @Async calls?
 	}

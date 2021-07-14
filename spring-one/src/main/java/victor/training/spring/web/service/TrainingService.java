@@ -1,13 +1,14 @@
 package victor.training.spring.web.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TeacherRepo;
+import victor.training.spring.web.repo.TrainingRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 public class TrainingService {
@@ -71,6 +73,8 @@ public class TrainingService {
         trainingRepo.save(mapToEntity(dto));
     }
 
+
+
     private TrainingDto mapToDto(Training training) {
         TrainingDto dto = new TrainingDto();
         dto.id = training.getId();
@@ -92,6 +96,8 @@ public class TrainingService {
     }
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+        log.debug("Search by " + criteria);
         return Collections.emptyList(); // TODO
     }
 }
+

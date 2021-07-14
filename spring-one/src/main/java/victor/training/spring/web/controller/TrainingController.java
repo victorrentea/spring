@@ -41,13 +41,12 @@ public class TrainingController {
 	// TODO The current user must manage the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
-	// TODO PermissionEvaluator
+	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	// TODO
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
