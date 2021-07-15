@@ -1,8 +1,12 @@
 package victor.training.spring.web.controller;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.MyException;
 import victor.training.spring.web.MyException.ErrorCode;
@@ -73,6 +77,7 @@ public class TrainingController {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 //	@PreAuthorize("hasAuthority('DELETE_TRAINING')")
 	public void deleteTrainingById(@PathVariable Long id) {
+		System.out.println(sesiune.getLastSearchCriteria());
 
 		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -100,13 +105,25 @@ public class TrainingController {
 	@Autowired
 	private TrainingRepo trainingRepo;
 
+	@Autowired
+	private DateleCustomPePeSesiune_ANTI_PATTERN sesiune;
+
 	// TODO
 	@PostMapping("search")
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
+		sesiune.setLastSearchCriteria(criteria.toString());
 		return trainingService.search(criteria);
 	}
 	@PostMapping("list")
 	public List<String> search(@RequestBody List<String> strings) {
 		return strings.stream().map(String::toUpperCase).collect(Collectors.toList());
 	}
+}
+
+
+@Component
+@Data
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+class DateleCustomPePeSesiune_ANTI_PATTERN {
+	private String lastSearchCriteria;
 }

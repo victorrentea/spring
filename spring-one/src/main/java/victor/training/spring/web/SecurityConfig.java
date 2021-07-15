@@ -27,6 +27,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                .mvcMatchers("admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
            .and()
+//           .sessionManagement().maximumSessions(1).and()
            .formLogin().permitAll()
             ;
     }

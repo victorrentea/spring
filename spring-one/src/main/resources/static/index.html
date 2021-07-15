@@ -167,6 +167,7 @@ populateTeacherCombo($("#searchTeacher"));
 function deleteTraining(id) {
 	$.ajax(restEndpoint +"/trainings/"+id, {
 		method: "DELETE",
+		// body: {lastSearchCriteria: {}},
 		success: function() {
 			toastr.success("Training deleted");
 			refreshTrainingsTable();
