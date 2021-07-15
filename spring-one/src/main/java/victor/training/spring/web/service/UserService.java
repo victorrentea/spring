@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ public class UserService  {
     private final UserRepo userRepo;
 
 
+    @Cacheable("users-count") // use-case: sa memorez in Java date care se modifica ff rar in DB
+    // eg: lista de countries, de currencyuri, de FEX (pe parcursul unei zile), lista de useri
     public long countUsers() {
         return userRepo.count();
     }
@@ -25,6 +28,7 @@ public class UserService  {
     // TODO 2 EvictCache
     // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
     // TODO 4 Redis cache
+    @CacheEvict("users-count")
     public void createUser() {
         userRepo.save(new User("John-" + System.currentTimeMillis()));
     }
