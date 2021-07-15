@@ -7,7 +7,8 @@ public class MyException extends RuntimeException {
 
    public enum ErrorCode {
       GENERAL,
-      DUPLICATE_COURSE_NAME
+      DUPLICATE_COURSE_NAME,
+      NOT_ALLOWED_TO_DELETE
    }
    private final ErrorCode code;
 //   private Object[] args;

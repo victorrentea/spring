@@ -2,9 +2,16 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.web.MyException;
+import victor.training.spring.web.MyException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.domain.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
@@ -12,6 +19,7 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -65,9 +73,30 @@ public class TrainingController {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 //	@PreAuthorize("hasAuthority('DELETE_TRAINING')")
 	public void deleteTrainingById(@PathVariable Long id) {
+
+		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		User user = userRepo.getForLogin(currentUsername).get(); // ineficient sa faci un SELECT in DB pentru userul curent.
+		// intr-o app web, userul curent trebuie pastrat in sesiunea curenta pus acolo de la login.
+		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
+
+		Training training = trainingRepo.findById(id).get();
+
+		Long teacherId = training.getTeacher().getId();
+
+		if (!managedTeacherIds.contains(teacherId)) {
+			throw new MyException(ErrorCode.NOT_ALLOWED_TO_DELETE);
+		}
+
 //		SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private TrainingRepo trainingRepo;
 
 	// TODO
 	@PostMapping("search")
