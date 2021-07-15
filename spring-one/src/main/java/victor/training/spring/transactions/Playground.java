@@ -55,10 +55,15 @@ public class Playground {
         repo.save(new Message("Sfarsit de drum bun."));
         System.out.println("Ies din metoda");
         System.out.println(repo.count());
-//        throw new RuntimeException("Ceva neasteptat!");
+        try {
+            other.altaMetodaCuTransactional();
+        } catch (Exception e) {
+            // swallow shaworma
+        }
     }
 }
 @Service
+@Transactional
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
@@ -67,5 +72,11 @@ class AnotherClass {
         System.out.println("Cate mesaje vad in baza " + repo.count());
         repo.save(new Message("parpad"));
         ThreadUtils.sleep(1000);
+    }
+
+//    @Transactional // aduce un proxy care rupe Tx curenta parvenita ei atunci cand iesi cu ex din metoda asta.
+//    @Cacheable("degeaba")
+    public int altaMetodaCuTransactional() {
+        throw new RuntimeException("Ceva neasteptat!");
     }
 }

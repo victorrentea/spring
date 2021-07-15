@@ -20,7 +20,11 @@ public class TransactionsApp implements CommandLineRunner {
         System.out.println("============= TRANSACTION ONE ==============");
         playground.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
-        playground.transactionTwo();
+        try {
+            playground.transactionTwo();
+        } catch (Exception e) {
+            // shaworma
+        }
         System.out.println("============= END ==============");
     }
 }
