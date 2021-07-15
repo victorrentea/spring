@@ -34,10 +34,7 @@ public class Playground {
 //    private Playground myself;
 //    @Transactional
     public void transactionOne() {
-        txTemplate.execute(status -> {
-            atomicaFrate();
-            return null;
-        });
+        txTemplate.executeWithoutResult(status -> atomicaFrate());
         other.parpad1();
         ThreadUtils.sleep(300);
 
@@ -48,13 +45,17 @@ public class Playground {
     public void atomicaFrate() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100, ? )", "ALO");
         repo.save(new Message("null"));
-        jdbc.update("insert into MESSAGE(id, message) values ( 105, null )");
+        jdbc.update("insert into MESSAGE(id, message) values ( 105, 'ceva frumos' )");
     }
 
     @Transactional
     public void transactionTwo() {
-        // TODO Repo API
-        // TODO @NonNullApi
+        System.out.println(repo.count());
+        repo.save(new Message("Inceput de drum bun."));
+        repo.save(new Message("Sfarsit de drum bun."));
+        System.out.println("Ies din metoda");
+        System.out.println(repo.count());
+//        throw new RuntimeException("Ceva neasteptat!");
     }
 }
 @Service
