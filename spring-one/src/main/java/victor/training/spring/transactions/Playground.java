@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import victor.training.spring.ThreadUtils;
@@ -58,15 +59,19 @@ public class Playground {
         try {
             other.altaMetodaCuTransactional();
         } catch (Exception e) {
-            // swallow shaworma
+            other.saveError(e);
         }
     }
+
 }
 @Service
-@Transactional
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(Exception e) {
+        repo.save(new Message("A aparut o eroare: " + e.getMessage()));
+    }
     @Async
     public void parpad1() {
         System.out.println("Cate mesaje vad in baza " + repo.count());
@@ -74,7 +79,7 @@ class AnotherClass {
         ThreadUtils.sleep(1000);
     }
 
-//    @Transactional // aduce un proxy care rupe Tx curenta parvenita ei atunci cand iesi cu ex din metoda asta.
+    @Transactional // aduce un proxy care rupe Tx curenta parvenita ei atunci cand iesi cu ex din metoda asta.
 //    @Cacheable("degeaba")
     public int altaMetodaCuTransactional() {
         throw new RuntimeException("Ceva neasteptat!");
