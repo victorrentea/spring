@@ -23,6 +23,7 @@ public class UserController {
     public UserDto get(@PathVariable long id) {
         return service.getUser(id);
     }
+
     @PutMapping("users/{id}")
     public void update(@PathVariable long id, @RequestBody UserDto dto) {
         service.updateUser(id, dto.name);
