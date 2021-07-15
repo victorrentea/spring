@@ -114,12 +114,12 @@ public class TrainingController {
 		sesiune.setLastSearchCriteria(criteria.toString());
 		return trainingService.search(criteria);
 	}
+
 	@PostMapping("list")
 	public List<String> search(@RequestBody List<String> strings) {
 		return strings.stream().map(String::toUpperCase).collect(Collectors.toList());
 	}
 }
-
 
 @Component
 @Data
