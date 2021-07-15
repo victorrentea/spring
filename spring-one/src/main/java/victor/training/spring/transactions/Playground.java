@@ -26,7 +26,7 @@ public class Playground {
     @Autowired
     public void setTxTemplate(PlatformTransactionManager txManager) {
         this.txTemplate = new TransactionTemplate(txManager);
-        txTemplate.setPropagationBehaviorName("REQUIRES_NEW");
+        txTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         txTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
     }
 
