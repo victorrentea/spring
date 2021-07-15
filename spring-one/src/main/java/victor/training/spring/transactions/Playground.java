@@ -15,10 +15,7 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-    @Transactional
     public void transactionOne() {
-//        Connection jdbcConnection;
-//        jdbcConnection.setAutoCommit(false);
         jdbc.update("insert into MESSAGE(id, message) values ( 100, ? )", "ALO");
         repo.save(new Message("null"));
         repo.save(new Message(null));
