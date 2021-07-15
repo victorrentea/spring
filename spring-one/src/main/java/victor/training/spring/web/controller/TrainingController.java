@@ -9,9 +9,9 @@ import victor.training.spring.web.MyException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.UserRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
@@ -76,9 +76,11 @@ public class TrainingController {
 
 		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		User user = userRepo.getForLogin(currentUsername).get(); // ineficient sa faci un SELECT in DB pentru userul curent.
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Set<Long> managedTeacherIds = securityUser.getManagedTeacherIds();
+//		User user = userRepo.getForLogin(currentUsername).get(); // ineficient sa faci un SELECT in DB pentru userul curent.
 		// intr-o app web, userul curent trebuie pastrat in sesiunea curenta pus acolo de la login.
-		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
+//		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
 
 		Training training = trainingRepo.findById(id).get();
 

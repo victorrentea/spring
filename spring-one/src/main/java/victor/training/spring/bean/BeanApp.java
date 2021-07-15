@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 
 @Slf4j
 @SpringBootApplication // este un @Configuration
+//@ComponentScan(basePackages = "victor")
 public class BeanApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
