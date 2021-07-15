@@ -22,7 +22,8 @@
 //          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 //          .authorizeRequests().anyRequest().authenticated()
 //          .and()
-//          .formLogin().permitAll();
+//          .formLogin().permitAll().and()
+//          .httpBasic();
 //   }
 //
 //   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION

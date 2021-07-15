@@ -30,7 +30,6 @@ public class UserService  {
     }
 
     // TODO 5 key-based cache entries
-
     @Cacheable("user-data")
     public UserDto getUser(long id) {
         return new UserDto(userRepo.findById(id).get());
