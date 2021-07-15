@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import victor.training.spring.ThreadUtils;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +82,8 @@ class AnotherClass {
 
     @Transactional // aduce un proxy care rupe Tx curenta parvenita ei atunci cand iesi cu ex din metoda asta.
 //    @Cacheable("degeaba")
-    public int altaMetodaCuTransactional() {
-        throw new RuntimeException("Ceva neasteptat!");
+    public int altaMetodaCuTransactional() throws IOException {
+//        throw new RuntimeException("Ceva neasteptat!");
+        throw new IOException("Ia uite frate, se commite desi sare exceptie din metoda cu @Transactional");
     }
 }
