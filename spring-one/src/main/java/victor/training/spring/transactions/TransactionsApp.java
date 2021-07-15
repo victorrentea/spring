@@ -2,8 +2,8 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @RequiredArgsConstructor
 public class TransactionsApp implements CommandLineRunner {
     public static void main(String[] args) {
-        SpringApplication.run(TransactionsApp.class, args);
+        new SpringApplicationBuilder(TransactionsApp.class).profiles("spa").run(args);
     }
     private final Playground playground;
 
