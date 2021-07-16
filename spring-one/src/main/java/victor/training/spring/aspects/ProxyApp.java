@@ -64,8 +64,8 @@ public class ProxyApp implements CommandLineRunner {
 @Component
 class LoggingInterceptor {
 //	@Around("execution(* victor..*.*(..) )")
-//	@Around("@annotation(victor.training.spring.aspects.Logged)")
-	@Around("@within(victor.training.spring.aspects.Logged)")
+//	@Around("@annotation(victor.training.spring.aspects.Logged)") // metode adnotate cu @Logged
+	@Around("@within(victor.training.spring.aspects.Logged)") // clase adnotate cu @Logged
 	public Object interceptAndLog(ProceedingJoinPoint point) throws Throwable {
 		log.info("Calling method {} with args {}",
 			point.getSignature().getName(),

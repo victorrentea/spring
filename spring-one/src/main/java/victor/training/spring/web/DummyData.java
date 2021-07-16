@@ -17,14 +17,19 @@ import java.util.Date;
 
 @Slf4j
 @Service
+	
 @RequiredArgsConstructor
-public class DummyData implements CommandLineRunner {
+public class DummyData extends Super2 implements CommandLineRunner {
 	private final TrainingRepo trainingRepo;
 	private final TeacherRepo teacherRepo;
 	private final TagRepo tagRepo;
 	private final UserRepo userRepo;
 	private final Environment environment;
 
+	@Transactional
+	public void method() {
+
+	}
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {

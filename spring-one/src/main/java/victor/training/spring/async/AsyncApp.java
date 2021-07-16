@@ -32,6 +32,7 @@ public class AsyncApp {
    }
 
    @Bean
+//   @ConfigurationProperties(prefix = "beer.pool")
    public ThreadPoolTaskExecutor beerPool(@Value("${beer.count}") int barmanCount) {
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setCorePoolSize(barmanCount);

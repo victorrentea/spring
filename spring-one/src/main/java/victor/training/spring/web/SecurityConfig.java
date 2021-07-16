@@ -7,7 +7,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import victor.training.spring.web.security.DatabaseUserDetailsService;
+
+import javax.servlet.Filter;
 
 
 @EnableWebSecurity
@@ -26,13 +29,21 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 //               .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN") // gunoi. prost. niciodata. DE CE ? ca e dparte de cod
                .mvcMatchers("admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
+
            .and()
+           .addFilterBefore(myFilter(), BasicAuthenticationFilter.class)
 //           .sessionManagement().maximumSessions(1).and()
            .formLogin().permitAll()
+       .and().httpBasic()
             ;
     }
 
-    // *** Dummy users 100% in-mem
+    @Bean
+   public Filter myFilter() {
+      return new MyFilter();
+   }
+
+   // *** Dummy users 100% in-mem
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        UserDetails userDetails = User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();

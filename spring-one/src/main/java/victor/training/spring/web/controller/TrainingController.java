@@ -51,7 +51,7 @@ public class TrainingController {
 	public void createTraining(@Valid @RequestBody TrainingDto dto) throws ParseException {
 //		try {
 			trainingService.createTraining(dto);
-//			return ResponseEntity.ok("");
+//			return RespotynseEnti.ok("");
 //		} catch (IllegalArgumentException e) {
 //			 fac cumva intorc un raspuns care sa zica eroare.
 //			return new ResponseEntity<String>("Naspa, exista deja cursul", HttpStatus.BAD_REQUEST);
