@@ -123,6 +123,9 @@ public class TrainingController {
 
 @Component
 @Data
+// springul cand vede ca chemi getLastSearchCriteria pe instanta injectata (proxy)
+// identifica pe threadul curent ce request HTTP se afla in executie
+// in sesiunea asociata acelui request gaseste apoi instanta efectiva asociata userului curent
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class DateleCustomPePeSesiune_ANTI_PATTERN {
 	private String lastSearchCriteria;
