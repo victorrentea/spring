@@ -1,5 +1,6 @@
 package victor.training.spring.first;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -105,5 +106,21 @@ class C1 implements  CI {
 }
 @Component
 class D {
+   @Autowired
+   private E e;
+   @PostConstruct
+   public void method() {
+      System.out.println("D has e = " + e);
+   }
+}
+
+@Component
+class E {
+   @Autowired
+   private D d;// :) ha ha
+   @PostConstruct
+   public void method() {
+      System.out.println("E has d = " + d);
+   }
 
 }
