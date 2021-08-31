@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -51,11 +50,13 @@ class OrderExporter  {
 //	private final LabelService labelService; // ANATHEMA : NEVER injecta prototype into a singleton
 //	private final ApplicationContext spring;
 	private final ObjectFactory<LabelService> labelServiceObjectFactory;
+	private final CountryRepo countryRepo;
 
-	public OrderExporter(InvoiceExporter invoiceExporter, ApplicationContext spring, ObjectFactory<LabelService> labelServiceObjectFactory) {
+	public OrderExporter(InvoiceExporter invoiceExporter, ApplicationContext spring, ObjectFactory<LabelService> labelServiceObjectFactory, CountryRepo countryRepo) {
 		this.invoiceExporter = invoiceExporter;
 		this.labelServiceObjectFactory = labelServiceObjectFactory;
 //		this.labelService = labelService;
+		this.countryRepo = countryRepo;
 	}
 
 	public void export(Locale locale) {
@@ -63,6 +64,7 @@ class OrderExporter  {
 		// BEFORE!!! TEMPORAL COUPLING
 //		LabelService labelService = spring.getBean(LabelService.class);
 		LabelService labelService = labelServiceObjectFactory.getObject();
+//		LabelService labelService = new LabelService(countryRepo, a, b);
 
 		labelService.load(locale);
 
@@ -85,8 +87,8 @@ class InvoiceExporter {
 }
 
 @Slf4j
-@Service
-@Scope("prototype") // not usually a good idea
+//@Service
+//@Scope("prototype") // not usually a good idea
 class LabelService {
 	private final CountryRepo countryRepo;
 	

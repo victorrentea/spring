@@ -1,10 +1,14 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
@@ -74,10 +78,11 @@ class B {
 //      this.c = c;
 //   }
 
-   //   @EventListener
-//   public void afterCreationOfB(ApplicationContextInitializedEvent event) {
-   @PostConstruct
-   public void method()  {
+   @EventListener
+   public void afterCreationOfB(ApplicationStartedEvent event) {
+//   @PostConstruct
+//      @Transactional
+//   public void method()  {
       System.out.println("Hello events ! " + c);
       c.logic();
    }
@@ -123,4 +128,14 @@ class E {
       System.out.println("E has d = " + d);
    }
 
+}
+
+@Component
+class MyFavourite implements CommandLineRunner {
+
+   @Override
+   @Transactional
+   public void run(String... args) throws Exception {
+      System.out.println("Startup");
+   }
 }
