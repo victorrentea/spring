@@ -1,0 +1,1 @@
+create table user(user varchar(20));

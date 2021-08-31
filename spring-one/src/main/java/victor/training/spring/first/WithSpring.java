@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,8 +68,8 @@ class B {
 //   EJB 2. // heavy, intrusive, xml, frustration, 5 classes for every logic class
 //   Bean  ~lighter than Enterprise Java Bean @Autowired
 
-   B(/*@Qualifier("classImpl2") */CI classImpl2, D d, ApplicationContext context) { // constructor injection
-      this.c = classImpl2;
+   B(/*@Qualifier("classImpl2") */CI ci, D d, ApplicationContext context) { // constructor injection
+      this.c = ci;
       this.d = d;
 //      context.getBean("myarbName")
 
@@ -95,20 +97,48 @@ class B {
 interface CI {
    void logic();
 }
+
+
+// src/test/java:
 //@Primary
+
 @Component
 class ClassImpl2 implements  CI {
    @Override
    public void logic() {
-      System.out.println("C2");
+      System.out.println("Logic depending on k8s");
    }
 }
+
+// src/main/java:
 @Component
+@Profile("prod")
+@Primary
+//@ConditionalOnBean(type = B.class)
 class C1 implements  CI {
    public void logic() {
-      System.out.println("C1");
+      System.out.println("logic to use on my beloved Local machine");
    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @Component
 class D {
    @Autowired

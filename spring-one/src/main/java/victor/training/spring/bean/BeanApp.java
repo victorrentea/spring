@@ -41,16 +41,11 @@ class MyConfig {
 //    @Qualifier("jane")
 //    private Person jane;
 
-    @Bean
-    public Conversation conversation(/*Person john, Person jane*/) {
-        System.out.println("C1");
-        return new Conversation(john(), jane());
-    }
-    @Bean
-    public Conversation conversation2(Person john, Person jane) {
-        System.out.println("C2");
-        return new Conversation(john(), jane());
-    }
+//    @Bean
+//    public Conversation conversation(/*Person john, Person jane*/) {
+//        System.out.println("C1");
+//        return new Conversation(john(), jane());
+//    }
     @Bean
     public Person john() {
         System.out.println("John is born");
@@ -82,13 +77,14 @@ class ForSimon {
 //    }
 //}
 @Data
+@Component
 class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(Person one, Person two) {
-        this.one = one;
-        this.two = two;
+    public Conversation(Person john, Person jane) {
+        this.one = john;
+        this.two = jane;
     }
 
     public void start() {
@@ -96,7 +92,6 @@ class Conversation {
         System.out.println(two.sayHello());
     }
 }
-
 
 class Person {
     private final String name;
