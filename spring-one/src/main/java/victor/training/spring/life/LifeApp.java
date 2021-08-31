@@ -57,7 +57,7 @@ class OrderExporter  {
 	}
 }
 @Slf4j
-@Service 
+@Service
 class InvoiceExporter {
 	@Autowired
 	private LabelService labelService;
@@ -73,7 +73,7 @@ class LabelService {
 	private final CountryRepo countryRepo;
 	
 	public LabelService(CountryRepo countryRepo) {
-		System.out.println("+1 Label Service: " + this.hashCode());
+		log.debug(this + ".new()");
 		this.countryRepo = countryRepo;
 	}
 
@@ -81,12 +81,15 @@ class LabelService {
 
 	@PostConstruct
 	public void load() {
-		log.debug("LabelService.load() on instance " + this.hashCode());
+		log.debug(this + ".load()");
 		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
 	}
 	
 	public String getCountryName(String iso2Code) {
-		log.debug("LabelService.getCountryName() on instance " + this.hashCode());
+		log.debug(this + ".getCountryName()");
 		return countryNames.get(iso2Code.toUpperCase());
+	}
+	public String toString() {
+		return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
 	}
 }
