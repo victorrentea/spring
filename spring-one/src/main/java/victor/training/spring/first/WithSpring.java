@@ -25,7 +25,6 @@ public class WithSpring {
 
 
 class A {
-
    private final B b;
 
    A(B b) {
