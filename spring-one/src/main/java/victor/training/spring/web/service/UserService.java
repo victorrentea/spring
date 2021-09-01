@@ -2,7 +2,10 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +13,12 @@ import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
+
 @Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Logged
 public class UserService  {
     private final UserRepo userRepo;
 
@@ -30,6 +35,15 @@ public class UserService  {
 //        return userRepo.count();
 //    }
 
+    @Autowired
+    private UserService iHopeMyBossDoesntSeeThis;
+
+    public long suprise() {
+//        UserService myselfProxied = (UserService) AopContext.currentProxy();
+
+        return iHopeMyBossDoesntSeeThis.countUsers();
+    }
+
     // TODO 1 Cacheable
     // TODO 2 EvictCache
     // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
@@ -42,14 +56,32 @@ public class UserService  {
     // TODO 5 key-based cache entries
     @Cacheable("user-data")
     public UserDto getUser(long id) {
-//        CacheManager
+        new RuntimeException("Intentional").printStackTrace();
         return new UserDto(userRepo.findById(id).get());
     }
 
-    public void updateUser(long id, String newName) {
+    @CacheEvict(value = "user-data",allEntries = true)
+    public void onBulkUpdateUsers() {
+    }
+
+    @Autowired
+    CacheManager cacheManager;
+
+    @CachePut(value = "user-data",key = "#id")
+    public UserDto updateUser(long id, String newName) {
         // TODO 6 update profile too -> pass Dto
+
+//        Cache cache = cacheManager.getCache("user-data");
+//        List<Long> updateIds;
+//        for (Long idd : updateIds) {
+////            (EHChacheCache)cache.getNativeCache().getentry.setTTl
+//            cache.evictIfPresent(idd);
+//        }
+
+
         User user = userRepo.findById(id).get();
         user.setName(newName);
+        return new UserDto(user);
     }
 }
 

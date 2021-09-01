@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.controller.GenericException;
+import victor.training.spring.web.controller.GenericException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
@@ -43,7 +45,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new GenericException(ErrorCode.DUPLICATED_TRAINING);
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
@@ -68,7 +70,7 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new GenericException(ErrorCode.DUPLICATED_TRAINING);
         }
         trainingRepo.save(mapToEntity(dto));
     }
