@@ -19,7 +19,7 @@ public class TrainingController {
 	private TrainingService trainingService;
 
 	@GetMapping
-	@PreAuthorize("hasRole('user')")
+	@PreAuthorize("hasRole('USER')")
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}

@@ -1,9 +1,11 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.representations.IDToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +16,7 @@ import victor.training.spring.web.service.UserService;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
@@ -24,13 +27,15 @@ public class TechnicalController {
 		// TODO implement me
 		LoggedInUserDto dto = new LoggedInUserDto();
 
-		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 
 		String username = principal.getName();
 		IDToken idToken = principal.getKeycloakSecurityContext().getIdToken();
 		String fullName = idToken.getName();
-		dto.username = fullName + "(" + username + ")";
-		System.out.println("Other claims (if sent by KeyCloak) " + idToken.getOtherClaims());
+		dto.username = fullName + " (" + username + ")";
+		log.info("Roles: " + authentication.getAuthorities());
+		log.info("Other claims (if sent by KeyCloak) " + idToken.getOtherClaims());
 
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
