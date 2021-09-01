@@ -15,11 +15,11 @@ import java.util.Collections;
 public class TechnicalController {
 	private final UserService userService;
 
-
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		// TODO implement me
 		LoggedInUserDto dto = new LoggedInUserDto();
+		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 		dto.username = "TODO:username";
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());

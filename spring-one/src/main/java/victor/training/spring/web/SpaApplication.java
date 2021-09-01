@@ -14,10 +14,9 @@ public class SpaApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SpaApplication.class)
 				.listeners(new TestDBConnection())
-				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
+				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps not to start :8080)
 				.run(args);
 	}
-
 
 
 }

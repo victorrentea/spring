@@ -12,5 +12,7 @@ This module contains articles about Keycloak in Spring Boot projects.
 
 
 Run keycloak: 
-
-C:\workspace\keycloak-12.0.4\bin\standalone.bat -Djboss.socket.binding.port-offset=100
+1. Make sure in standalone.bat JAVA_OPTS include -Djboss.socket.binding.port-offset=100
+2. Launch C:\workspace\keycloak-12.0.4\bin\standalone.bat
+3. Open http://localhost:8180 : login with initial1 / zaq1!QAZ
+4. Start this app and open the "internal app portal": http://localhost:8081
