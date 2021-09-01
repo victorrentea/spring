@@ -43,7 +43,7 @@ class KeyCloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
+        http. authorizeRequests()
             .antMatchers("/customers*", "/users*")
             .hasRole("user")
             .anyRequest()

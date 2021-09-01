@@ -1,5 +1,6 @@
 package victor.training.spring.web;
 
+import org.jetbrains.annotations.NotNull;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -16,6 +17,7 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -48,13 +50,20 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http
-            .csrf().disable()
+//            .csrf().disable() //
+            .csrf().csrfTokenRepository(csrfProtection()).and()
             .authorizeRequests()
             .mvcMatchers("/spa/**", "/api/**").authenticated()
             .mvcMatchers("/sso/**").permitAll()
-//            .hasRole("user")
-            .anyRequest().permitAll()
+            .anyRequest().permitAll() // js,css
         ;
+    }
+
+    @NotNull
+    private CookieCsrfTokenRepository csrfProtection() {
+        CookieCsrfTokenRepository csrfTokens = new CookieCsrfTokenRepository();
+        csrfTokens.setCookieHttpOnly(false);
+        return csrfTokens;
     }
 
     // needed to secure /spa/** but to leave /sso/** unsecured.
