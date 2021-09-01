@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import victor.training.spring.web.controller.util.TestDBConnection;
 
 @EnableCaching
 @EnableSwagger2
@@ -12,9 +13,12 @@ public class SpaApplication {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SpaApplication.class)
+				.listeners(new TestDBConnection())
 				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps)
 				.run(args);
 	}
+
+
 
 }
 //
