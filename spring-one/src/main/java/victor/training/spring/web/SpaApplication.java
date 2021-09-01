@@ -11,18 +11,22 @@ import victor.training.spring.web.controller.util.TestDBConnection;
 @SpringBootApplication
 public class SpaApplication {
 
-	public static void main(String[] args) {
-		new SpringApplicationBuilder(SpaApplication.class)
-				.listeners(new TestDBConnection())
-				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps not to start :8080)
-				.run(args);
-	}
+   public static void main(String[] args) {
+      new SpringApplicationBuilder(SpaApplication.class)
+          .listeners(new TestDBConnection())
+          .profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps not to start :8080)
+          .run(args);
+   }
 
+
+   //	@Bean
+   //	public WebMvcConfigurer corsConfigurer() {
+   //		return new WebMvcConfigurer() {
+   //			@Override
+   //			public void addCorsMappings(CorsRegistry registry) {
+   //				registry.addMapping("/api/**");
+   //			}
+   //		};
+   //	}
 
 }
-//
-//@Service
-//class MyService {
-//	private boolean cr323;
-//
-//}
