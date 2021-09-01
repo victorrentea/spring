@@ -1,16 +1,22 @@
 package victor.training.spring.web.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.domain.UserRole;
 import victor.training.spring.web.service.UserService;
 
 @RestController
-@RequiredArgsConstructor
 public class UserController {
     private final UserService service;
+
+    public UserController(UserService service) {
+        System.out.println("I am given by Spring the following UserService class:" + service.getClass());
+//        ConcurrentHashMap
+        this.service = service;
+    }
 
     @GetMapping("users/count")
     public long count() {
