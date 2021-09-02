@@ -16,6 +16,7 @@ import victor.training.spring.web.controller.dto.UserDto;
 import victor.training.spring.web.domain.User;
 import victor.training.spring.web.repo.UserRepo;
 
+import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -95,8 +96,14 @@ public class UserService  {
 
     @Async
     public CompletableFuture<String> getCurrentUsername() {
+//       if(true) throw new RuntimeException("e");
         return CompletableFuture.completedFuture(SecurityContextHolder.getContext()
             .getAuthentication().getName());
+    }
+
+    @Async
+    public void processUploadedFile(File file) {
+        throw new RuntimeException("e");
     }
 }
 

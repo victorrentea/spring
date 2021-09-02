@@ -27,15 +27,11 @@ public class SpaApplication  {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/**");//.allowedOrigins("http://cdn.picnic.com");
+				registry.addMapping("/api/**")
+					.allowCredentials(true) // also don't forget to add .cors() to spring security
+					.allowedOriginPatterns("http://localhost:9999*");// eg "http://cdn.picnic.com"
 			}
 		};
 	}
 
 }
-//
-//@Service
-//class MyService {
-//	private boolean cr323;
-//
-//}

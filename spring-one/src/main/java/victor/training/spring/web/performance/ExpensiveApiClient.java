@@ -17,7 +17,7 @@ public class ExpensiveApiClient {
    @Timed("external call")
    public CompletableFuture<String> asyncCall() {
       log.info("Calling async...");
-      ThreadUtils.sleep(1000);
+      ThreadUtils.sleep(1000); // imagine HTTP
       log.info("DONE");
       return CompletableFuture.completedFuture("data");
    }

@@ -31,6 +31,10 @@ public class TechnicalController {
 //		KeycloakPrincipal<KeycloakSecurityContext> principal = TODO SSO
 //		SecurityUser principal = TODO UserPassword
 
+
+//		File tempFile;
+//		userService.processUploadedFile(tempFile);
+
 		LoggedInUserDto dto = new LoggedInUserDto();
 
 		String currentUsername = userService.getCurrentUsername().get();//SecurityContextHolder.getContext().getAuthentication().getName();
@@ -74,6 +78,9 @@ public class TechnicalController {
 	@GetMapping("unsecured/welcome-info")
 	public String showWelcomeInfo(){
 		// TODO return welcomeInfo;
+		log.debug("Life-saviour debug message that you will" +
+					 "give up a kidney to have in that non-reproducible production" +
+					 "BUG");
 		return "Welcome! What's your temperature?";
 	}
 
