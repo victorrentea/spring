@@ -15,6 +15,7 @@ html {
 }
 </style>
 </head>
+
 <body >
 	
 	<h2>Single Page Application</h2>
@@ -66,6 +67,7 @@ html {
 
 <script type="text/javascript">
 
+
 function moveSelectedOptions(fromId, toId) {
 	var selectedValues = $(fromId).val()
 	for (var i=0;i<selectedValues.length;i++) {
@@ -104,8 +106,10 @@ function fillTable(trainings) {
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 		//if (currentUser.role === 'ROLE_ADMIN'))
-		//if (currentUser.authorities.includes('ROLE_ADMIN'))
-		row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+				// secured-for-role="ADMIN,POWER_USER" priviledge="training.delete"
+		if (currentUser.roles.includes('ROLE_ADMIN')) {
+			row += '<input  class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+		}
 		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);

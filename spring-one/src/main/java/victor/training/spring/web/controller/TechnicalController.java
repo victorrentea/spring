@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.representations.IDToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,10 +39,15 @@ public class TechnicalController {
 		IDToken idToken = principal.getKeycloakSecurityContext().getIdToken();
 		String fullName = idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase();
 
+		PicnicPrincipal picnicPrincipal;
 		System.out.println("Other details: " + idToken.getOtherClaims());
 
 		dto.username = fullName + " ("+currentUsername+")";
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
+		dto.roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+			.stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.toList());
+			;
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 		return dto;
 		// TODO How to propagate current user on thread over @Async calls?
@@ -70,7 +77,7 @@ public class TechnicalController {
 	}
 
 	// TODO [SEC] URL-pattern restriction: admin/**
-	@GetMapping("admin/launch")
+	@GetMapping("api/admin/launch")
 	public String restart() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}

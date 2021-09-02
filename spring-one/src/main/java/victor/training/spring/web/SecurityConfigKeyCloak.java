@@ -49,12 +49,14 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http
-//            .csrf().disable() //
-            .csrf().csrfTokenRepository(csrfProtection()).and()
+            .csrf().disable() //
+//            .csrf().csrfTokenRepository(csrfProtection()).and()
             .authorizeRequests()
-            .mvcMatchers("/spa/**", "/api/**").authenticated()
-            .mvcMatchers("/sso/**").permitAll()
-            .anyRequest().permitAll() // js,css
+//                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+                .mvcMatchers("/api/admin/**").hasRole("ADMIN")
+                .mvcMatchers("/spa/**", "/api/**").authenticated()
+                .mvcMatchers("/sso/**").permitAll()
+                .anyRequest().permitAll() // js,css
         ;
     }
 
