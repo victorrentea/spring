@@ -22,7 +22,7 @@
     function getContextPath() {
         return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
     }
-    var restEndpoint = getContextPath() + "/victim";
+    var restEndpoint = getContextPath() + "/api/victim";
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -53,7 +53,7 @@
 <br />
 <div style="border:2px solid green">
     <h4>Transfer Money (via FORM POST, XSRF)</h4>
-    <form method="post" action="/victim/transfer-form">
+    <form method="post" action="/api/victim/transfer-form">
         Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe" /> <br />
         Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900" /> <br />
         Amount:<input type="text" name="amount" value="100" /> <br />
