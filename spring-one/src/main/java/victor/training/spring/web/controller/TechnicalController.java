@@ -2,6 +2,10 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.IDToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -25,7 +29,17 @@ public class TechnicalController {
 //		SecurityUser principal = TODO UserPassword
 
 		LoggedInUserDto dto = new LoggedInUserDto();
-		dto.username = "TODO:username";
+
+		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		IDToken idToken = principal.getKeycloakSecurityContext().getIdToken();
+		String fullName = idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase();
+
+		System.out.println("Other details: " + idToken.getOtherClaims());
+
+		dto.username = fullName + " ("+currentUsername+")";
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 		return dto;
