@@ -80,6 +80,7 @@ function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
 var restEndpoint = getContextPath() + "/api";
+// var restEndpoint = "http://localhost:8080/api"; // for CORS
 
 function fillTable(trainings) {
 	$("#trainingTable tr").each(function (i, r) {
