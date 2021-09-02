@@ -2,12 +2,11 @@ package victor.training.spring.web.controller;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("victim")
+@RequestMapping("api/victim")
 public class VictimController {
    @PostMapping("transfer-rest")
 //   @CrossOrigin(origins = "*",allowCredentials = "true")  //or  implement WebMvcConfigurer with @Configuration + cors

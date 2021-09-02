@@ -15,6 +15,7 @@ import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class TechnicalController {
 	private final UserService userService;
 
 	@GetMapping("api/user/current")
-	public LoggedInUserDto getCurrentUsername() {
+	public LoggedInUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		// TODO implement me
 
 //		KeycloakPrincipal<KeycloakSecurityContext> principal = TODO SSO
@@ -32,7 +33,7 @@ public class TechnicalController {
 
 		LoggedInUserDto dto = new LoggedInUserDto();
 
-		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String currentUsername = userService.getCurrentUsername().get();//SecurityContextHolder.getContext().getAuthentication().getName();
 
 
 		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -55,7 +56,7 @@ public class TechnicalController {
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	// TODO use authorities in FR
