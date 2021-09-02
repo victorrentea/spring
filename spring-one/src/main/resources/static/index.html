@@ -81,6 +81,7 @@ function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
 var restEndpoint = getContextPath() + "/api";
+// var restEndpoint = "http://localhost:8080/api"; // when testing CORS
 
 // global interceptor to send back the CSRF token
 $(document).ajaxSend(function ( event, jqxhr, settings ) {
