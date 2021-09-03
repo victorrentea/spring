@@ -14,6 +14,7 @@ public class ProgrammaticTxHell {
 
       try {
          a(conn);
+         conn.commit();
       } finally {
          conn.rollback();
          conn.close();
