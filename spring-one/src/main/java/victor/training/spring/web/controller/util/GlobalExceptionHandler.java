@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
 		String userMessage = messageSource.getMessage(exception.getCode().name(), new String[]{"HARD_CODED_VALUE"}, request.getLocale());
 		return ResponseEntity
 			.status(exception.getCode().getHttpCode())
+//			.hea
 			.body(userMessage);
 	}
 

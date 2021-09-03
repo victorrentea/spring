@@ -14,12 +14,28 @@ import victor.training.spring.web.controller.util.TestDBConnection;
 @SpringBootApplication
 public class SpaApplication  {
 
+
+	@Bean
+	public void userCache() {
+//		new Cache() {
+//			Map<Role, Cache>
+//		}
+
+	}
+
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(SpaApplication.class)
 				.listeners(new TestDBConnection())
 				.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps not to start :8080)
 				.run(args);
 	}
+
+//	@Bean
+//	public void myFilter() {
+//		return new WebFilter() {
+//
+//		}
+//	}
 
 
 	@Bean

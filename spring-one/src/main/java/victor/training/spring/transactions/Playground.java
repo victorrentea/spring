@@ -45,7 +45,7 @@ public class Playground {
         }
         // at this point, the current Tx is "marked for rollback"
         jdbc.update("insert into MESSAGE(id, message) values ( ?,? )", 104, "More data");
-
+//        SecurityContextHolder.getContext().getAuthentication().getpr
     }
 
 //    @Transactional
