@@ -11,6 +11,7 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -36,12 +37,15 @@ public class TechnicalController {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String name = authentication.getName();
+		SecurityUser currentUser = (SecurityUser) authentication.getPrincipal();
 
 		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		String role = roles.get(0);
+		String role = roles.get(0).substring("ROLE_".length());
 		dto.username = name;
 		dto.role = role;
 		dto.authorities = Collections.emptyList();
+		dto.locale = currentUser.getLocale().getLanguage();
+		System.out.println(currentUser.getLocale().getLanguage());
 		return dto;
 		// TODO How to propagate current user on thread over @Async calls?
 	}

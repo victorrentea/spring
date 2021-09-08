@@ -12,6 +12,7 @@ public class User {
     private Long id;
     private String username;
     private String name;
+    private Locale locale;
     @Enumerated(EnumType.STRING)
     private UserRole role;
     @ElementCollection
@@ -26,6 +27,15 @@ public class User {
         this.name=fullName;
         this.role = role;
         this.managedTeacherIds = new HashSet<>(managedTeacherIds);
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public User setLocale(Locale locale) {
+        this.locale = locale;
+        return this;
     }
 
     public String getName() {
