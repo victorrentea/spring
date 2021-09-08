@@ -75,7 +75,7 @@ public class TrainingService {
 //    @PreAuthorize("hasAnyRole('ADMIN')")
 
     public void deleteById(Long id) {
-//        trainingSecurity.checkCanUpdateTraining(id);
+
         trainingRepo.deleteById(id);
     }
 

@@ -21,8 +21,11 @@ public class TrainingSecurity {
       }
    }
    public boolean canUpdateTraining(Long id) {
+
       SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
+
+//      securityUser.getAuthorities()
 
       Training training = trainingRepo.findById(id).get();
       Long teacherId = training.getTeacher().getId();

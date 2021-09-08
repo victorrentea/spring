@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.service.TrainingSecurity;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +41,15 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
+	//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER') and @trainingSecurity.canUpdateTraining(#id)")
+	//@CanUpdateTraining
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+//		trainingSecurity.checkCanUpdateTraining(id);
 		trainingService.updateTraining(id, dto);
 	}
+
+	@Autowired
+	TrainingSecurity trainingSecurity;
 
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.delete'
@@ -52,6 +59,7 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 //	@RolesAllowed("ROLE_ADMIN")
+//	@CanUpdateTraining
 	@PreAuthorize("hasAnyRole('ADMIN') and @trainingSecurity.canUpdateTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
 
