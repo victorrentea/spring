@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -9,13 +11,11 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -27,11 +27,19 @@ public class TrainingService {
     private TeacherRepo teacherRepo;
     @Autowired
     private EmailSender emailSender;
+    @Autowired
+    private TrainingSecurity trainingSecurity;
 
     public List<TrainingDto> getAllTrainings() {
+
+        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
+
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
-            dtos.add(mapToDto(training));
+            TrainingDto dto = mapToDto(training);
+            dto.canDelete = allowedTeacherIds.contains(training.getTeacher().getId());
+            dtos.add(dto);
         }
         return dtos;
     }
@@ -42,6 +50,7 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+        trainingSecurity.checkCanUpdateTraining(id);
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
@@ -63,7 +72,9 @@ public class TrainingService {
     }
 
 //    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("")
     public void deleteById(Long id) {
+        trainingSecurity.checkCanUpdateTraining(id);
         trainingRepo.deleteById(id);
     }
 

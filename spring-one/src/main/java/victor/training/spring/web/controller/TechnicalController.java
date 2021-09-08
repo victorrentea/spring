@@ -42,7 +42,7 @@ public class TechnicalController {
 		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		String role = roles.get(0).substring("ROLE_".length());
 		dto.username = name;
-		dto.role = role;
+		dto.role = currentUser.getRole().name();
 		dto.authorities = Collections.emptyList();
 		dto.locale = currentUser.getLocale().getLanguage();
 		System.out.println(currentUser.getLocale().getLanguage());
