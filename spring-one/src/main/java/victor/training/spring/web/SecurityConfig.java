@@ -20,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
           .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
           .authorizeRequests()
+//               .mvcMatchers(HttpMethod.DELETE, "/api/training/*").hasRole("ADMIN")
                .mvcMatchers("/admin/**").hasRole("ADMIN")
                .mvcMatchers("/unsecured/**").permitAll()
                .anyRequest().authenticated() // orice URL

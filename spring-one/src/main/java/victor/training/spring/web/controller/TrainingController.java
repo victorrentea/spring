@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -50,6 +51,9 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+//	@RolesAllowed("ROLE_ADMIN")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@AdminOnly
 	public void deleteTrainingById(@PathVariable Long id) {
 //		try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("sesiune.dat"))) {
 //			objectOutputStream.write(new Mare());

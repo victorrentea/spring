@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,8 @@ import victor.training.spring.web.service.UserService;
 import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,12 +30,18 @@ public class TechnicalController {
 		LoggedInUserDto dto = new LoggedInUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 //		HttpServletRequest request;
-//		request.getUserPrincipal()
+//		request.getPri
+//		request.getUserPrincipal().
+//		request.isUserInRole("USER")
 
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String name = authentication.getName();
+
+		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		String role = roles.get(0);
 		dto.username = name;
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		dto.role = role;
+		dto.authorities = Collections.emptyList();
 		return dto;
 		// TODO How to propagate current user on thread over @Async calls?
 	}
