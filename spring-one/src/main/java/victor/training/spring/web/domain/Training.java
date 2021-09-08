@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -15,6 +16,7 @@ public class Training {
 	private String name;
 	private String description;
 	private Date startDate;
+	private String externalUUID = UUID.randomUUID().toString();
 	@ManyToOne
 	private Teacher teacher;
 	@ManyToMany
@@ -23,7 +25,17 @@ public class Training {
 	
 	public Training() {
 	}
-	
+
+	public String getExternalUUID() {
+		return externalUUID;
+	}
+
+
+	public Training setExternalUUID(String externalUUID) {
+		this.externalUUID = externalUUID;
+		return this;
+	}
+
 	public Training(String name, String description, Date startDate) {
 		this.name = name;
 		this.description = description;

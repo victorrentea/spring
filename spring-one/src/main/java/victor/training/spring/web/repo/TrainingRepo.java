@@ -5,4 +5,6 @@ import victor.training.spring.web.domain.Training;
 
 public interface TrainingRepo extends JpaRepository<Training, Long> {
     Training getByName(String name);
+
+    Training findByExternalUUID(String uuid);
 }

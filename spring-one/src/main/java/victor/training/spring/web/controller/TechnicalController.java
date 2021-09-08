@@ -3,9 +3,12 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
+import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -67,6 +70,19 @@ public class TechnicalController {
 		// TODO return welcomeInfo;
 		return "Welcome! What's your temperature?";
 	}
+	@GetMapping("unsecured/gdpr")
+	public String gdprData(){
+		return "Welcome! What's your temperature?";
+	}
+	@GetMapping("unsecured/training/{uuid}")
+	public TrainingDto getTrainingUnsecured(@PathVariable String uuid){
+		return new TrainingDto(trainingRepo.findByExternalUUID(uuid));
+	}
+
+	private final TrainingRepo trainingRepo;
+
+
+
 
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/launch")
