@@ -52,12 +52,8 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 //	@RolesAllowed("ROLE_ADMIN")
-	@PreAuthorize("hasAnyRole('ADMIN')")
-//	@AdminOnlyr
+	@PreAuthorize("hasAnyRole('ADMIN') and @trainingSecurity.canUpdateTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
-//		try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("sesiune.dat"))) {
-//			objectOutputStream.write(new Mare());
-//		}
 
 		trainingService.deleteById(id);
 	}

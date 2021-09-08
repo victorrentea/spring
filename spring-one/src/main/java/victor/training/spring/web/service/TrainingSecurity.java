@@ -16,14 +16,17 @@ public class TrainingSecurity {
 
 
    public void checkCanUpdateTraining(Long id) {
+      if (!canUpdateTraining(id)) {
+         throw new RuntimeException("N-ai voie!");
+      }
+   }
+   public boolean canUpdateTraining(Long id) {
       SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
 
       Training training = trainingRepo.findById(id).get();
       Long teacherId = training.getTeacher().getId();
 
-      if (!allowedTeacherIds.contains(teacherId)) {
-         throw new RuntimeException("Not allowed");
-      }
+      return allowedTeacherIds.contains(teacherId);
    }
 }

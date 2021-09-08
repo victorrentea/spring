@@ -49,8 +49,9 @@ public class TrainingService {
     }
 
     // TODO Test this!
+    @PreAuthorize("@trainingSecurity.canUpdateTraining(#id)")
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        trainingSecurity.checkCanUpdateTraining(id);
+//        trainingSecurity.checkCanUpdateTraining(id);
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
@@ -72,9 +73,9 @@ public class TrainingService {
     }
 
 //    @PreAuthorize("hasAnyRole('ADMIN')")
-//    @PreAuthorize("")
+
     public void deleteById(Long id) {
-        trainingSecurity.checkCanUpdateTraining(id);
+//        trainingSecurity.checkCanUpdateTraining(id);
         trainingRepo.deleteById(id);
     }
 
