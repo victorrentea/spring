@@ -98,8 +98,11 @@ function fillTable(trainings) {
 		//if (currentUser.authorities.includes('ROLE_ADMIN'))
 
 		// if (currentUser.role === 'ADMIN' && c.canDelete ) {
+		// if (currentUser.role === 'ADMIN' || currentUser.role === 'POWER' ) {
+
+		if (currentUser.authorities.includes("training.delete")) {
 			row += '<input ng-visible-for="ADMIN" class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
-		// }
+		}
 		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);

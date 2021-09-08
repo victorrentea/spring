@@ -36,11 +36,11 @@ public class SecurityUser implements UserDetails {
 	@Override
 	public Set<GrantedAuthority> getAuthorities() {
 		List<String> rolesAndAuthorities = new ArrayList<>();
-
+		System.out.println("Query for authorities");
 		// @PreAuthorize("hasRole('X')) assumes the roles name begins with ROLE_ (eg ROLE_X)
 		rolesAndAuthorities.add("ROLE_"+role.name());
 
-		rolesAndAuthorities.addAll(role.getAuthorities());
+		rolesAndAuthorities.addAll(role.getFeatures());
 
 		// NOTE: in practice you should choose ONE of the authorization models: ROLE-based or PERMISSION-based.
 

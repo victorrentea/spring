@@ -60,6 +60,7 @@ public class DummyData implements CommandLineRunner {
 		patterns.setTeacher(victor);victor.getTrainings().add(patterns);
 
 		userRepo.save(new User("Boss", "admin", UserRole.ADMIN, Arrays.asList(victor.getId())).setLocale(Locale.ENGLISH)); // only manages Victor, not Ionut
+		userRepo.save(new User("Power", "power", UserRole.POWER, Arrays.asList(victor.getId())).setLocale(Locale.ENGLISH)); // only manages Victor, not Ionut
 		userRepo.save(new User("Clerk", "user", UserRole.USER, Arrays.asList(victor.getId(), ionut.getId())).setLocale(Locale.FRENCH));
 		userRepo.flush();
 		log.info(">>> Spring-One Application started on {} <<<", environment.getProperty("local.server.port"));

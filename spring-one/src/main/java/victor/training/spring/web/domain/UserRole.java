@@ -6,14 +6,15 @@ import java.util.Set;
 
 public enum UserRole {
     USER("training.search", "training.edit"),
-    ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit");
-    private final Set<String> authorities;
+    ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit"),
+    POWER("training.delete");
+    private final Set<String> features;
 
-    UserRole(String... authorities) {
-        this.authorities = new HashSet<>(Arrays.asList(authorities));
+    UserRole(String... features) {
+        this.features = new HashSet<>(Arrays.asList(features));
     }
 
-    public Set<String> getAuthorities() {
-        return authorities;
+    public Set<String> getFeatures() {
+        return features;
     }
 }

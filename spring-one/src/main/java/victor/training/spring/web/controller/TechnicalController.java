@@ -16,7 +16,6 @@ import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class TechnicalController {
 		String role = roles.get(0).substring("ROLE_".length());
 		dto.username = name;
 		dto.role = currentUser.getRole().name();
-		dto.authorities = Collections.emptyList();
+		dto.authorities = currentUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		dto.locale = currentUser.getLocale().getLanguage();
 		System.out.println(currentUser.getLocale().getLanguage());
 		return dto;
