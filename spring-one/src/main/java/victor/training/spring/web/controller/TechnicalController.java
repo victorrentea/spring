@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -8,6 +9,7 @@ import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -20,7 +22,11 @@ public class TechnicalController {
 		// TODO implement me
 		LoggedInUserDto dto = new LoggedInUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "TODO:username";
+//		HttpServletRequest request;
+//		request.getUserPrincipal()
+
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		dto.username = name;
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 		return dto;
@@ -43,6 +49,18 @@ public class TechnicalController {
 //	@Autowired  // TODO @Import the other Spring Boot Application
 	private WelcomeInfo welcomeInfo;
 
+	// JavaEE: Principal 
+//	Principal principle;
+//	{
+//		principle.getName();
+//	}
+	
+//	@GET // JAX-RS modul JavaEE de a implementa servicii REST
+//	@Resource
+	public void method(Principal principal) {
+		
+	}
+	
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public String showWelcomeInfo(){

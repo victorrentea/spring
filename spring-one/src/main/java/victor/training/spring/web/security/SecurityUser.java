@@ -42,8 +42,10 @@
 //
 //	@Override
 //	public String getPassword() {
-////		return "{bcrypt}^$!&^&$!^@"; // If persisting the user password, this returns the HASHED password stored in DB (prefixed with the hashing algo)
-//		return "{noop}" + username; // FAKE LOGIN---  assumes all users have password = username
+//		return "{bcrypt}$2a$12$/UuQGk7atO1V62.VKK47.emjlqPgAO8oyiOBG71cEk3q4lO6zmbo."; // If persisting the user password, this returns the HASHED password stored in DB (prefixed with the hashing algo)
+//      //means "macarena" bcrypted on https://bcrypt-generator.com/
+//
+////		return "{noop}" + username; // FAKE LOGIN---  assumes all users have password = username
 //	}
 //
 //	public UserRole getRole() {

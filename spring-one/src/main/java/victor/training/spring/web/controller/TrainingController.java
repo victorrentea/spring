@@ -6,6 +6,8 @@ import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
 
@@ -16,12 +18,17 @@ public class TrainingController {
 	private TrainingService trainingService;
 
 	@GetMapping
-	public List<TrainingDto> getAllTrainings() {
+	public List<TrainingDto> getAllTrainings(HttpServletRequest request) {
+		request.getSession()
+			.setAttribute("nisteData","10MB"); // x 1000
+
+		// Serialiable
 		return trainingService.getAllTrainings();
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
+	public TrainingDto getTrainingById(@PathVariable Long id,HttpServletRequest request) {
+		System.out.println(request.getSession().getAttribute("nisteData"));
 		return trainingService.getTrainingById(id);
 	}
 
@@ -44,10 +51,19 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
+//		try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("sesiune.dat"))) {
+//			objectOutputStream.write(new Mare());
+//		}
+
 		trainingService.deleteById(id);
 	}
 
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+}
+
+
+class Mare implements Serializable {
+	private String string;
 }
