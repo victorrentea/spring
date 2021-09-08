@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -61,7 +60,6 @@ public class FacadeLoggingInterceptor {
 			currentUsername, argListConcat);
    }
 
-   @NotNull
    private String getArgumentsString(ProceedingJoinPoint joinPoint) {
          return Stream.of(joinPoint.getArgs())
              .map(this::objectToJson)
