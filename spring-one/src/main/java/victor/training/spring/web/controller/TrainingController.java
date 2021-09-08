@@ -9,6 +9,7 @@ import victor.training.spring.web.service.TrainingSecurity;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
@@ -29,6 +30,7 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
+//		@PreAuthorize("@trainingSecurity.canUpdateTraining(#id)")
 	public TrainingDto getTrainingById(@PathVariable Long id,HttpServletRequest request) {
 		System.out.println(request.getSession().getAttribute("nisteData"));
 		return trainingService.getTrainingById(id);
@@ -43,8 +45,17 @@ public class TrainingController {
 	@PutMapping("{id}")
 	//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER') and @trainingSecurity.canUpdateTraining(#id)")
 	//@CanUpdateTraining
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto, HttpSession httpSession) throws ParseException {
 //		trainingSecurity.checkCanUpdateTraining(id);
+
+//		RestTemplate rest = new RestTemplate();
+//		ResponseEntity<String> response = rest.exchange(RequestEntity.post("")
+//			.header("Cookie", "JSESSIONID:",
+//					(String) httpSession.getAttribute("COOKIE_PT_SIS_INTERN")).body("a"), String.class);
+//
+//		response.getHeaders().get("Cookie");
+
+
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -63,6 +74,7 @@ public class TrainingController {
 //	@PreAuthorize("hasAnyRole('ADMIN', 'POWER')")// and @trainingSecurity.canUpdateTraining(#id)")
 	@PreAuthorize("hasAuthority('training.delete')")
 	public void deleteTrainingById(@PathVariable Long id) {
+
 
 		trainingService.deleteById(id);
 	}

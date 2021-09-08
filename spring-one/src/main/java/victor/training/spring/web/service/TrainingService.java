@@ -36,9 +36,10 @@ public class TrainingService {
         Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
 
         List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
+        for (Training training : trainingRepo.findAllForCurrentUser(securityUser.getManagedTeacherIds())) {
             TrainingDto dto = mapToDto(training);
             dto.canDelete = allowedTeacherIds.contains(training.getTeacher().getId());
+//            if (allowedTeacherIds.contains(training.getTeacher().getId()))
             dtos.add(dto);
         }
         return dtos;
