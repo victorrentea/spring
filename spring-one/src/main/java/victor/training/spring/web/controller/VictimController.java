@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/victim")
 public class VictimController {
    @PostMapping("transfer-rest")
-   // @CrossOrigin(origins = "*",allowCredentials = "true")
+//    @CrossOrigin(origins = "http://localhost:9999",allowCredentials = "true")
+//   @CrossOrigin(origins = "*") // api probabil unsecured deschis oricarei alte aplicatii angulare
    public void transferRest(@RequestBody MoneyTransferRequest request) {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
    }

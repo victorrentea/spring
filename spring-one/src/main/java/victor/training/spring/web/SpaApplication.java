@@ -22,16 +22,20 @@ public class SpaApplication {
    }
 
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/api/**")
-//					 .allowCredentials(true) // also don't forget to add .cors() to spring security
-//					 .allowedOriginPatterns("http://localhost:9999*");
-//			}
-//		};
-//	}
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+            // pentru cazul cand TOATE apiurile iti sunt chemate dintr-un angular livrat
+            // in browser de pe alt hostname decatc cel la care trimiti REST calls
+				registry.addMapping("/api/**")
+                .allowedMethods("POST","PUT","DELETE","GET")
+                .maxAge(60*30)
+					 .allowCredentials(true) // also don't forget to add .cors() to spring security
+					 .allowedOriginPatterns("http://localhost:9999*"); // https://cdn.unicredit.com
+			}
+		};
+	}
 
 }

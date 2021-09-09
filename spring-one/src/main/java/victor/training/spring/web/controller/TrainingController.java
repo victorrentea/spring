@@ -50,8 +50,9 @@ public class TrainingController {
 	@PutMapping("{id}")
 	//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER') and @trainingSecurity.canUpdateTraining(#id)")
 	//@CanUpdateTraining
+
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto, HttpSession httpSession) throws ParseException {
-		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS).and(Sanitizers.IMAGES);
 		dto.description = sanitizer.sanitize(dto.description);
 
 
