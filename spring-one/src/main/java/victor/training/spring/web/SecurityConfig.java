@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import victor.training.spring.web.security.DatabaseUserDetailsService;
 
 @EnableWebSecurity
@@ -16,7 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Override
    protected void configure(HttpSecurity http) throws Exception {
       http
-          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+          // Filter . doFilter (HttpServletReqiest r) r.getHeader();  r.getContentType(); r.getSession
+          .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
           .authorizeRequests()
 //               .mvcMatchers(HttpMethod.DELETE, "/api/training/*").hasRole("ADMIN")
                .mvcMatchers("/admin/**").hasRole("ADMIN")
