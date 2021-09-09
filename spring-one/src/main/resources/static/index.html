@@ -29,6 +29,7 @@ html {
 		<table id="trainingTable" border="1">
 			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
 		</table>
+		<div id="showRichDescription">innocent</div>
 		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
 		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
 	</div>
@@ -65,6 +66,19 @@ html {
 
 <script type="text/javascript">
 
+function getCookie(name) {
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	if (parts.length === 2) return parts.pop().split(';').shift();
+}
+let xsrfToken = getCookie("XSRF-TOKEN");
+
+$.ajaxSetup({
+	beforeSend: function (xhr,settings) {
+		xhr.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
+	}
+});
+
 function moveSelectedOptions(fromId, toId) {
 	var selectedValues = $(fromId).val()
 	for (var i=0;i<selectedValues.length;i++) {
@@ -74,7 +88,10 @@ function moveSelectedOptions(fromId, toId) {
 		$leftSel.remove();
 	}
 }
-
+function showDescription(richTextHtmlUnescaped) {
+	// sanitize richText
+	$("#showRichDescription").html(richTextHtmlUnescaped);
+}
 
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
@@ -88,8 +105,8 @@ function fillTable(trainings) {
 	});
 	for (var i = 0; i < trainings.length; i++) {
 		var c = trainings[i];
-		var row = '<tr id="' + c.id + '">';
-		row += '<td>' + c.name + '</td>';
+		var row = '<tr id="' + c.id + '" >';
+		row += '<td onclick="showDescription(\''+c.description+'\');">' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
@@ -190,6 +207,7 @@ function openEditTraining(trainingId) {
 			// BUG
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
+			$("#editDescription").val(data.description);
 			$('#trainingMain').hide();
 			$('#trainingEditDiv').show();
 		}
@@ -201,6 +219,7 @@ function updateTraining() {
 		data: JSON.stringify({
 			name:$("#editName").val(),
 			startDate:$("#editStartDate").val(),
+			description:$("#editDescription").val(),
 			teacherId:$("#editTeacher").val()
 		}),
 		contentType: "application/json",

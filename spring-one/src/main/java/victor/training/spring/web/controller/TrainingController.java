@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -25,7 +27,11 @@ public class TrainingController {
 			.setAttribute("nisteData","10MB"); // x 1000
 
 		// Serialiable
-		return trainingService.getAllTrainings();
+		List<TrainingDto> allTrainings = trainingService.getAllTrainings();
+//		for (TrainingDto t : allTrainings) {
+//			t.description = sanitizer.sanitize(t.description);
+//		}
+		return allTrainings;
 	}
 
 	@GetMapping("{id}")
@@ -45,7 +51,11 @@ public class TrainingController {
 	//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER') and @trainingSecurity.canUpdateTraining(#id)")
 	//@CanUpdateTraining
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto, HttpSession httpSession) throws ParseException {
-//		trainingSecurity.checkCanUpdateTraining(id);
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+
+
+		//		trainingSecurity.checkCanUpdateTraining(id);
 
 //		RestTemplate rest = new RestTemplate();
 //		ResponseEntity<String> response = rest.exchange(RequestEntity.post("")
