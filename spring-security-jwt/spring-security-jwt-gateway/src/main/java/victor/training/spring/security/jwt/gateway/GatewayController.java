@@ -4,14 +4,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -60,8 +61,9 @@ public class GatewayController {
         HttpHeaders headers = new HttpHeaders();
         headers.add(jwtHeader, jwtToken);
 
-        RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
-                new URI("http://localhost:8080/ping"));
+        RequestEntity<Object> requestEntity = new RequestEntity<>(headers,
+            HttpMethod.GET,
+                new URI("https://localhost:8080/ping"));
         // TODO switch to https
         ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
 

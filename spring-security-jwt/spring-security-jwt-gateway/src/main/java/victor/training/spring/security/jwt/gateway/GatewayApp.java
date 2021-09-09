@@ -13,7 +13,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
@@ -37,13 +36,13 @@ public class GatewayApp extends WebSecurityConfigurerAdapter {
     private void configure2SSL(RestTemplate restTemplate) {
         try {
             KeyStore keyStore = KeyStore.getInstance("jks");
-            try (InputStream inputStream = new ClassPathResource("gateway.jks").getInputStream()) {
-                keyStore.load(inputStream, "parola".toCharArray());
+            try (InputStream inputStream = new ClassPathResource("app2.jks").getInputStream()) {
+                keyStore.load(inputStream, "changeit".toCharArray());
             }
 
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder()
                     .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                    .loadKeyMaterial(keyStore, "parola".toCharArray()) // present certificate to server
+                    .loadKeyMaterial(keyStore, "changeit".toCharArray()) // present certificate to server
                     .build(),
                     NoopHostnameVerifier.INSTANCE);
 
