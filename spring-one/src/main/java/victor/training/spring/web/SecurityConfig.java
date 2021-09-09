@@ -1,16 +1,14 @@
 package victor.training.spring.web;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import victor.training.spring.web.security.DatabaseUserDetailsService;
 
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@Profile("local")
+// disable temporarily - use SSO instead.
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
@@ -27,6 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                .anyRequest().authenticated() // orice URL
           .and()
           .formLogin().permitAll().and()
+//          .addFilterBefore(new Filter() {
+//             @Override
+//             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+//
+//             }
+//          })
 //          .httpBasic()
           ;
    }
