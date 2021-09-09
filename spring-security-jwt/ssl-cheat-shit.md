@@ -1,9 +1,14 @@
 #Prerequisite Knowledge
 JKS=
+
 JKS Alias=
+
 JKS password(s)=
+
 JKS truststore vs keystore=
+
 KeyPair=
+
 Certificate=
 
 ** GOAL: Create 2 .jks files that both trust eachother using asymetric keys.
