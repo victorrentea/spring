@@ -50,7 +50,7 @@ public class TrainingService {
     }
 
     // TODO Test this!
-    @PreAuthorize("@trainingSecurity.canUpdateTraining(#id)")
+//    @PreAuthorize("@trainingSecurity.canUpdateTraining(#id)")
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
 //        trainingSecurity.checkCanUpdateTraining(id);
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
