@@ -2,7 +2,6 @@ package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -10,11 +9,13 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.security.SecurityUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,17 +32,19 @@ public class TrainingService {
 
     public List<TrainingDto> getAllTrainings() {
 
-        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
+//        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Set<Long> allowedTeacherIds = securityUser.getManagedTeacherIds();
 
-        List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAllForCurrentUser(securityUser.getManagedTeacherIds())) {
-            TrainingDto dto = mapToDto(training);
-            dto.canDelete = allowedTeacherIds.contains(training.getTeacher().getId());
-//            if (allowedTeacherIds.contains(training.getTeacher().getId()))
-            dtos.add(dto);
-        }
-        return dtos;
+//        List<TrainingDto> dtos = new ArrayList<>();
+//        for (Training training : trainingRepo.findAllForCurrentUser(securityUser.getManagedTeacherIds())) {
+//            TrainingDto dto = mapToDto(training);
+//            dto.canDelete = allowedTeacherIds.contains(training.getTeacher().getId());
+////            if (allowedTeacherIds.contains(training.getTeacher().getId()))
+//            dtos.add(dto);
+//        }
+//        return dtos;
+
+        return trainingRepo.findAll().stream().map(TrainingDto::new).collect(Collectors.toList());
     }
 
     public TrainingDto getTrainingById(Long id) {

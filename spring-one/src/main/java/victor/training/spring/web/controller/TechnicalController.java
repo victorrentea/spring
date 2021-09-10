@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +13,6 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -35,16 +36,26 @@ public class TechnicalController {
 //		request.isUserInRole("USER")
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String name = authentication.getName();
-		SecurityUser currentUser = (SecurityUser) authentication.getPrincipal();
-
 		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		String role = roles.get(0).substring("ROLE_".length());
+		String name = authentication.getName();
+
+		KeycloakPrincipal<KeycloakSecurityContext> keycloakUser  = (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 		dto.username = name;
-		dto.role = currentUser.getRole().name();
-		dto.authorities = currentUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-		dto.locale = currentUser.getLocale().getLanguage();
-		System.out.println(currentUser.getLocale().getLanguage());
+		dto.role = role;
+		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+
+		System.out.println(keycloakUser.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+
+
+		//		SecurityUser currentUser = (SecurityUser) authentication.getPrincipal();
+
+//		dto.username = name;
+//		dto.role = currentUser.getRole().name();
+//		dto.authorities = currentUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+//		dto.locale = currentUser.getLocale().getLanguage();
+//		System.out.println(currentUser.getLocale().getLanguage());
 		return dto;
 		// TODO How to propagate current user on thread over @Async calls?
 	}
