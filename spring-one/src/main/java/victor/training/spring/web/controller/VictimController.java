@@ -19,6 +19,15 @@ public class VictimController {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
       return "Done";
    }
+
+   @GetMapping("transfer-over-get-BAD")
+   public String transferForm(
+       @RequestParam("recipientName") String recipientName,
+       @RequestParam("recipientIBAN") String recipientIban,
+       @RequestParam("amount") String amount) {
+      log.warn("TransferringGET {} to {}, IBAN = {}", amount, recipientName, recipientIban);
+      return "Done";
+   }
 }
 
 @Data

