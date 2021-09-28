@@ -29,6 +29,15 @@ public class VictimController {
       return "Done";
    }
 
+   @GetMapping("transfer-over-get-BAD")
+   public String transferForm(
+       @RequestParam("recipientName") String recipientName,
+       @RequestParam("recipientIBAN") String recipientIban,
+       @RequestParam("amount") String amount) {
+      log.warn("TransferringGET {} to {}, IBAN = {}", amount, recipientName, recipientIban);
+      return "Done";
+   }
+
    @PostMapping("upload")
    public String upload(@RequestParam String fileName, @RequestParam MultipartFile file) throws IOException {
       log.debug("Uploading file name={} size={}", fileName, file.getSize());
