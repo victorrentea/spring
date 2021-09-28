@@ -6,22 +6,24 @@
     <script type="text/javascript" src="toastr.min.js"></script>
 </head>
 
-<body >
+<body>
 
 <h2>Victim Web Page</h2>
 
+<!-------------------- REST --------------------------->
 <div style="border:2px solid green">
     <h4>Transfer Money (via AJAX, CORS)</h4>
-    Recipient Full Name:<input type="text" id="fullName" value="John Doe" /> <br />
-    Recipient IBAN number:<input type="text" id="iban" value="12345678900" /> <br />
-    Amount:<input type="text" id="amount" value="100" /> <br />
+    Recipient Full Name:<input type="text" id="fullName" value="John Doe"/> <br/>
+    Recipient IBAN number:<input type="text" id="iban" value="12345678900"/> <br/>
+    Amount:<input type="text" id="amount" value="100"/> <br/>
     <input type="button" value="Transfer" onclick="transferAmount()">
 </div>
 
 <script type="text/javascript">
     function getContextPath() {
-        return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
     }
+
     var restEndpoint = getContextPath() + "/api/victim";
 
     function getCookie(name) {
@@ -29,35 +31,38 @@
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
     let xsrfToken = getCookie("XSRF-TOKEN");
 
     function transferAmount() {
 
         console.log("xsrf: ", xsrfToken);
-        $.ajax(restEndpoint +"/transfer-rest", {
+        $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
-            headers: {"X-XSRF-TOKEN":xsrfToken},
+            headers: {"X-XSRF-TOKEN": xsrfToken},
             data: JSON.stringify({
-                recipientFullName:$("#fullName").val(),
-                recipientIban:$("#iban").val(),
-                amount:$("#amount").val()
+                recipientFullName: $("#fullName").val(),
+                recipientIban: $("#iban").val(),
+                amount: $("#amount").val()
             }),
             contentType: "application/json",
-            success: function(trainings) {
+            success: function (trainings) {
                 toastr.success("Money Transferred")
             }
         });
     }
 </script>
 
-<br />
+
+<!-------------------- FORM --------------------------->
+<br/>
 <div style="border:2px solid green">
     <h4>Transfer Money (via FORM POST, XSRF)</h4>
     <form method="post" action="/api/victim/transfer-form">
-        Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe" /> <br />
-        Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900" /> <br />
-        Amount:<input type="text" name="amount" value="100" /> <br />
-        <input type="hidden" name="_csrf" id="csrfTokenField" /> <br />
+        Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe"/> <br/>
+        Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900"/> <br/>
+        Amount:<input type="text" name="amount" value="100"/> <br/>
+        <input type="hidden" name="_csrf" id="csrfTokenField"/> <br/>
         <input type="submit" value="Transfer">
     </form>
 </div>
@@ -66,5 +71,43 @@
     $("#csrfTokenField").val(xsrfToken);
 </script>
 
+<br/>
+<!-------------------- UPLOAD --------------------------->
+
+<div style="border:2px solid green">
+    <h4>Upload data file</h4>
+    <form method="post" action="/api/victim/upload" enctype="multipart/form-data">
+
+        Select data file:<input type="file" name="file"/> under name
+        <input type="text" name="fileName"/>
+        <input type="submit" value="Process">
+    </form>
+</div>
+<br/>
+<!-------------------- SQL-INJECTION --------------------------->
+
+<div style="border:2px solid green">
+    <h4>SQL Injection</h4>
+    <form method="get" action="/api/victim/sql-injection">
+        Enter name: <input type="text" name="name"/>
+        <input type="submit" value="Retrieve"> <br/>
+        Try: a'; INSERT into message(id,message) values (1,'x'); select 1 from dual where 'a'='
+    </form>
+</div>
+<br/>
+<!-------------------- SSRF --------------------------->
+
+<div style="border:2px solid green">
+    <h4>SSRF</h4>
+    <form method="get" action="/api/victim/fetch-image">
+        URL: <input type="text" name="url"/>
+        <input type="submit" value="Retrieve"> <br/>
+        <ul>
+            <li>expected use: http://img.championat.com/news/big/l/c/ujejn-runi_1439911080563855663.jpg</li>
+            <li>file access: file:///C:/workspace/spring/spring-one/pom.xml</li>
+            <li>port scan: http://localhost:6379/news/big/l/c/ujejn-runi_1439911080563855663.jpg</li>
+        </ul>
+    </form>
+</div>
 </body>
 </html>

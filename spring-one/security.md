@@ -1,0 +1,7 @@
+- SQL Injection
+- Filename injection + upload exploit
+- XSS (unsanitized rich text)
+- CSRF (form POST cross-domains)
+- CORS (AJAX requests CDN->API host)
+- Broken authorization (inconsistent FE/BE check)
+- SSRF (Server-side requests)
