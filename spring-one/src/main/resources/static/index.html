@@ -29,6 +29,7 @@ html {
 		<table id="trainingTable" border="1">
 			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
 		</table>
+		<div id="showRichDescription"><i>Click on a name to see its description here</i></div>
 		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
 		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
 	</div>
@@ -74,7 +75,19 @@ function moveSelectedOptions(fromId, toId) {
 		$leftSel.remove();
 	}
 }
+// Angular adds it automatically
+function getCookie(name) {
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	if (parts.length === 2) return parts.pop().split(';').shift();
+}
+let xsrfToken = getCookie("XSRF-TOKEN");
 
+$.ajaxSetup({
+	beforeSend: function (request) { // Pass through CSRF protection
+		// request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
+	}
+});
 
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
@@ -89,18 +102,22 @@ function fillTable(trainings) {
 	for (var i = 0; i < trainings.length; i++) {
 		var c = trainings[i];
 		var row = '<tr id="' + c.id + '">';
-		row += '<td>' + c.name + '</td>';
+		row += '<td onclick="showDescription(\''+c.description+'\');">' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 		//if (currentUser.role === 'ROLE_ADMIN'))
-		//if (currentUser.authorities.includes('ROLE_ADMIN'))
+		//if (currentUser.authorities.includes('training.delete'))
 		row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
 	}
+}
+function showDescription(richTextHtmlUnescaped) {
+	// TODO sanitize richText
+	$("#showRichDescription").html(richTextHtmlUnescaped);
 }
 
 function refreshTrainingsTable() {
