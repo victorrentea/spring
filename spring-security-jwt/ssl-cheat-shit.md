@@ -11,7 +11,7 @@ KeyPair=
 
 Certificate=
 
-** GOAL: Create 2 .jks files that both trust eachother using asymetric keys.
+** GOAL: Create 2 .jks files that both trust each other using asymetric keys.
 In other words: JKS1{privateKeyA, publicKeyB} and JKS2{privateKeyB, publicKeyA}
 Goal: Using JKS1 on Server1 and JKS2 on Server2 to allow 2-way SSL (client-cert authentication)
 
