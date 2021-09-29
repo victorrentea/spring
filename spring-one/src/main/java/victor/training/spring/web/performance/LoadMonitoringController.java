@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class LoadMonitoringController {
    private final ExpensiveApiClient apiClient;
    private final TransactedService transactedService;
@@ -18,6 +18,7 @@ public class LoadMonitoringController {
    public CompletableFuture<String> expensive() {
       return apiClient.asyncCall();
    }
+
    @GetMapping("load/conn-starve")
    public void starveConnections() {
        transactedService.flow();
