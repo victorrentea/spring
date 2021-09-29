@@ -55,7 +55,6 @@ public class TrainingController {
 	@PreAuthorize("hasAuthority('training.delete')")
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
-
 		trainingService.deleteById(id);
 	}
 

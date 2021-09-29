@@ -1,6 +1,5 @@
 package victor.training.spring.web;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import victor.training.spring.web.service.TrainingService;
 
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -28,15 +28,15 @@ public class ProductMvcTest {
 
     @WithMockUser
     @Test
-    public void testSearch() throws Exception {
+    public void deleteUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/trainings/1"))
-            .andExpect(status().is(Matchers.not(200)));
+            .andExpect(status().is(not(200)));
         verifyNoInteractions(trainingService);
     }
 
     @WithMockUser(authorities = "training.delete")
     @Test
-    public void testSearchOK() throws Exception {
+    public void deleteOK() throws Exception {
         mockMvc.perform(delete("/api/trainings/1"))
             .andExpect(status().is2xxSuccessful());
         verify(trainingService).deleteById(1L);
