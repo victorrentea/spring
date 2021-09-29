@@ -41,7 +41,7 @@ public class VictimController {
    @PostMapping("upload")
    public String upload(@RequestParam String fileName, @RequestParam MultipartFile file) throws IOException {
       log.debug("Uploading file name={} size={}", fileName, file.getSize());
-      File targetFile = new File("in/" + fileName);
+      File targetFile = new File("in/", fileName);
       System.out.println("Writing the file to " + targetFile.getAbsolutePath());
       try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
          IOUtils.copy(file.getInputStream(), outputStream);
@@ -49,11 +49,13 @@ public class VictimController {
       return "DONE";
    }
 
+
    @Autowired
    private JdbcTemplate jdbc;
    @GetMapping("sql-injection")
    public String sqlInjection(@RequestParam String name) throws IOException {
       Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE='" + name + "'", Integer.class);
+      // TODO think ORDER BY
       return "DONE; Found = " + n;
    }
 
