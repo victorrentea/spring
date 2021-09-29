@@ -16,6 +16,8 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -47,8 +49,18 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        // daca ai si REST si JSP:
+        CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+        csrfTokenRepository.setCookieHttpOnly(false);
+
+        // daca ai doar JSP
+        HttpSessionCsrfTokenRepository tokenRepository = new HttpSessionCsrfTokenRepository();
+
+        // daca ai DOAR REST (ng) : csrf().disable()
+
         http
-            .csrf().disable()
+//            .csrf().disable() // de obicei asa daca aplicatia ta expune doar servicii REST
+            .csrf().csrfTokenRepository(csrfTokenRepository).and()
             .authorizeRequests()
                 .mvcMatchers("/spa/**", "/api/**").authenticated()  //   /api/admin/x  - il lasa sa intre si pe USER
                 .mvcMatchers("/sso/**").permitAll()
