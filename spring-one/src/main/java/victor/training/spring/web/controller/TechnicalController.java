@@ -2,8 +2,6 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +11,7 @@ import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,16 +24,17 @@ public class TechnicalController {
 	private final UserService userService;
 
 	@GetMapping("api/user/current")
-	public LoggedInUserDto getCurrentUsername() {
+	public LoggedInUserDto getCurrentUsername(HttpSession session) {
+//		session.getAttribute("dinEntitlement");
 		LoggedInUserDto dto = new LoggedInUserDto();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		dto.username = authentication.getName();
 		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 
-		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+//		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
+//		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
 		return dto;
 	}
 
