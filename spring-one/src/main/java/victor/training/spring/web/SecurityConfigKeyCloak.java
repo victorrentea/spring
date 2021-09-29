@@ -66,6 +66,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //            .csrf().csrfTokenRepository(csrfTokenRepository).and()
             .authorizeRequests()
                 .mvcMatchers("/spa/**", "/api/**").authenticated()  //   /api/admin/x  - il lasa sa intre si pe USER
+//                .mvcMatchers("/api/admin/**").hasRole("ADMIN")  //   /api/admin/x  - il lasa sa intre si pe USER
                 .mvcMatchers("/sso/**").permitAll()
             .anyRequest().permitAll()
         ;
