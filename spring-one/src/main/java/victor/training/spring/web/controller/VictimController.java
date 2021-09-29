@@ -6,12 +6,12 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 
 @Slf4j
 @RestController
@@ -47,6 +47,9 @@ public class VictimController {
       }
       File targetFile = new File("in/", fileName);
       System.out.println("Writing the file to " + targetFile.getAbsolutePath());
+
+//      byte[] bytes = file.getBytes();
+
       try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
          IOUtils.copy(file.getInputStream(), outputStream);
       }
@@ -72,16 +75,17 @@ public class VictimController {
    @GetMapping(value = "fetch-image",produces = "image/jpeg")
    public byte[] fetchImage(@RequestParam String url) throws IOException {
       // stage 1 : allows access to file:///c:/...
-      return IOUtils.toByteArray(new URL(url).openStream());
+//      return IOUtils.toByteArray(new URL(url).openStream());
 
       // stage2 : blocks file accesses
-//      RestTemplate rest = new RestTemplate();
-//      return rest.getForObject(url, byte[].class);
+      if (!url.endsWith(".jpg")) {
+         throw new IllegalArgumentException("Should end in .jpg");
+      }
+//      url.startsWith("https:")
+      RestTemplate rest = new RestTemplate();
+      return rest.getForObject(url, byte[].class);
 
       // stage3: pattern match: still allows port scanning
-//      if (!url.endsWith(".jpg")) {
-//         throw new IllegalArgumentException("Should end in .jpg");
-//      }
    }
 }
 

@@ -116,7 +116,8 @@ function fillTable(trainings) {
 	}
 }
 function showDescription(richTextHtmlUnescaped) {
-	// TODO sanitize richText
+	// TODO sanitize richText  NU e suficient sa cureti aici.
+	//  Pt ca ramane gunoi <Script> in DB. Si cine stie cine mai citeste de acolo
 	$("#showRichDescription").html(richTextHtmlUnescaped);
 }
 
