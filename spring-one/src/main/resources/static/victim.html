@@ -38,7 +38,7 @@
 
         console.log("xsrf: ", xsrfToken);
 
-        // $.post
+        // $http.post
         $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
             headers: {"X-XSRF-TOKEN": xsrfToken},

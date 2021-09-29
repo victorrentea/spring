@@ -22,16 +22,16 @@ public class SpaApplication {
    }
 
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/api/**")
-//					 .allowCredentials(true) // also don't forget to add .cors() to spring security
-//					 .allowedOriginPatterns("http://localhost:9999*");
-//			}
-//		};
-//	}
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/api/**")
+					 .allowCredentials(true) // also don't forget to add .cors() to spring security
+					 .allowedOriginPatterns("http://localhost:9999*");
+			}
+		};
+	}
 
 }

@@ -59,8 +59,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         // daca ai DOAR REST (ng) : csrf().disable()
 
         http
-//            .csrf().disable() // de obicei asa daca aplicatia ta expune doar servicii REST
-            .csrf().csrfTokenRepository(csrfTokenRepository).and()
+            .cors().and()
+            .csrf().disable() // de obicei asa daca aplicatia ta expune doar servicii REST
+//            .csrf().csrfTokenRepository(csrfTokenRepository).and()
             .authorizeRequests()
                 .mvcMatchers("/spa/**", "/api/**").authenticated()  //   /api/admin/x  - il lasa sa intre si pe USER
                 .mvcMatchers("/sso/**").permitAll()
