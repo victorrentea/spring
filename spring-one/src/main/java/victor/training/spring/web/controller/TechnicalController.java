@@ -46,9 +46,5 @@ public class TechnicalController {
 		return "Welcome! What's your temperature?";
 	}
 
-	// TODO [SEC] URL-pattern restriction: admin/**
-	@GetMapping("admin/launch")
-	public String restart() {
-		return "What does this red button do?     ... [Missile Launched]";
-	}
 }
+
