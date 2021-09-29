@@ -108,8 +108,10 @@ function fillTable(trainings) {
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 		//if (currentUser.role === 'ROLE_ADMIN'))
-		//if (currentUser.authorities.includes('training.delete'))
-		row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+		// if (currentUser.authorities.includes('ROLE_ADMIN')
+		// 	|| currentUser.authorities.includes('ROLE_ADMIN_CL'))
+		if (currentUser.authorities.includes('training.delete')) // or ng:if or better: ng directive
+			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);

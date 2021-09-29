@@ -50,7 +50,6 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         http
             .csrf().disable()
             .authorizeRequests()
-                .mvcMatchers("/api/admin/**").hasRole("ADMIN") // incepi mereu de la cele mai 'specifice' / 'restrictionate'
                 .mvcMatchers("/spa/**", "/api/**").authenticated()  //   /api/admin/x  - il lasa sa intre si pe USER
                 .mvcMatchers("/sso/**").permitAll()
             .anyRequest().permitAll()
