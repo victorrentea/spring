@@ -41,7 +41,11 @@ public class VictimController {
    @PostMapping("upload")
    public String upload(@RequestParam String fileName, @RequestParam MultipartFile file) throws IOException {
       log.debug("Uploading file name={} size={}", fileName, file.getSize());
-      File targetFile = new File("in/" + fileName);
+//      String tempFileName = "tmp-" + UUID.randomUUID().toString() + ".tmp";
+      if (fileName.contains("/")) {
+         throw new IllegalArgumentException("Illegal name");
+      }
+      File targetFile = new File("in/", fileName);
       System.out.println("Writing the file to " + targetFile.getAbsolutePath());
       try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
          IOUtils.copy(file.getInputStream(), outputStream);
@@ -49,11 +53,19 @@ public class VictimController {
       return "DONE";
    }
 
+
+//   static class SearchCriteria {
+//      enum ColumnNames {
+//         first_name,
+//         last_name
+//      }
+//      ColumnNames sortColName;
+//   }
    @Autowired
    private JdbcTemplate jdbc;
    @GetMapping("sql-injection")
    public String sqlInjection(@RequestParam String name) throws IOException {
-      Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE='" + name + "'", Integer.class);
+      Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE=?", Integer.class, name);
       return "DONE; Found = " + n;
    }
 
