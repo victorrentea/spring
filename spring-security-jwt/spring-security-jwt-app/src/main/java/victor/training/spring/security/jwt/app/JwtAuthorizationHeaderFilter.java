@@ -16,8 +16,6 @@ import javax.xml.bind.DatatypeConverter;
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
 	@Value("${jwt.secret}")
 	private String jwtSecret;
-	@Value("${jwt.header}")
-	private String jwtHeader;
 
 	public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
 		setAuthenticationManager(authenticationManager);
@@ -25,12 +23,13 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 
 	@Override
 	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String jwtToken = request.getHeader(jwtHeader);
-        if (jwtToken == null) {
-			log.warn("Header {} not set", jwtHeader);
+        String headerValue = request.getHeader("Authorization");
+        if (headerValue == null) {
+			log.warn("Header {} not set", "Authorization");
             return null;
         }
 
+		String jwtToken = headerValue.substring("Bearer ".length());
         log.debug("Received Header: " + jwtToken);
 		log.debug("Hint: Try to decode it on http://jwt.io/");
 

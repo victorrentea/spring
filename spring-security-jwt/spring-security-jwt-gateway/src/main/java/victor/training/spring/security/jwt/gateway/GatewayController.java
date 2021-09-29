@@ -27,8 +27,6 @@ public class GatewayController {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
-    @Value("${jwt.header}")
-    private String jwtHeader;
 
     // TODO per-endpoint CORS policy via @CrossOrigin
     @RequestMapping("/resource")
@@ -59,7 +57,7 @@ public class GatewayController {
         log.debug("JWT Token: " + jwtToken);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(jwtHeader, jwtToken);
+        headers.add("Authorization", "Bearer " + jwtToken);
 
         RequestEntity<Object> requestEntity = new RequestEntity<>(headers, HttpMethod.GET,
                 new URI("http://localhost:8080/ping"));
