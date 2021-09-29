@@ -4,17 +4,19 @@ logging.pattern.console: "%d{HH:mm:ss.SSS} %-10.10logger{0} %message%n"
 #the secret should be a base64 encoded value
 jwt.secret: c2VjcmV0TWFyZQ==
 jwt.header: JWT-Header
+
+
 server:
   port: 8080
 #  ssl:
 #    enabled: true
-#    key-store: backend.jks
+#    key-store: classpath:backend.jks
 #    key-store-password: parola
 #    key-alias: spring-backend
 #    key-password: parola
 #    key-store-type: JKS
 #    client-auth: need
-#    trust-store: backend.jks
+#    trust-store: classpath:backend.jks
 #    trust-store-password: parola
 #    trust-store-type: JKS
 
