@@ -16,16 +16,15 @@
 
 package victor.training.spring.life;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.lang.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Silly but correct implementation of Thread scope that supports clearing of all data at the end.
@@ -37,7 +36,7 @@ public class ClearableThreadScope implements Scope {
 	private static final Log logger = LogFactory.getLog(ClearableThreadScope.class);
 
 	private static final ThreadLocal<Map<String, Object>> threadScope =
-			new NamedThreadLocal<Map<String, Object>>("SimpleThreadScope") {
+			new NamedThreadLocal<Map<String, Object>>("ClearableThreadScope") {
 				@Override
 				protected Map<String, Object> initialValue() {
 					return new HashMap<>();
@@ -68,8 +67,8 @@ public class ClearableThreadScope implements Scope {
 
 	@Override
 	public void registerDestructionCallback(String name, Runnable callback) {
-		logger.warn("SimpleThreadScope does not support destruction callbacks. " +
-				"Consider using RequestScope in a web environment.");
+		callback.run();
+		threadScope.get().remove(name);
 	}
 
 	@Override
