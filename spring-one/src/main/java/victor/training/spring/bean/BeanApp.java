@@ -47,12 +47,12 @@ public class BeanApp implements CommandLineRunner {
    }
 
    @Bean
-   public Conversation conversation() {
-      return new Conversation(jane(), john()); // apelul LOCAL catre jane() este interceptat. (Spring genereaza o subclasa la toate @Configuratin
+   public Conversation conversation(Person john) {
+      return new Conversation(jane(), john); // apelul LOCAL catre jane() este interceptat. (Spring genereaza o subclasa la toate @Configuratin
 }
    @Bean
-   public Conversation cearta() {
-      return new Conversation(jane(), john());
+   public Conversation cearta(Person john) {
+      return new Conversation(jane(), john);
    }
 }
 class SpringGeneratedSubclass extends BeanApp {
