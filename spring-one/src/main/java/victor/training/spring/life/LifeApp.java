@@ -8,6 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -43,30 +46,35 @@ public class LifeApp implements CommandLineRunner{
 	}
 }
 @Service
-class OrderExporter  {//1
+class OrderExporter  {
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
-	CountryRepo countryRepo;
+	private LabelService labelService;
 
+//	@GetMapping
 	public void export(Locale locale) {
-		LabelService labelService = new LabelService(countryRepo);
+		log.debug("Iata-l, unicul, inegalabilul, proxy: " + labelService.getClass());
+		// > 60% din dificultatae practica a springului consta in a intelege proxurile.
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice(labelService);
+		invoiceExporter.exportInvoice();
 	}
 }
 @Service
 class InvoiceExporter { //1
 	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
-
-	public void exportInvoice(LabelService labelService) {
+	@Autowired
+	private LabelService labelService;
+	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
-
+@Component
+//@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // va merge pentru app WEB daca apelul vine printrun @RestController
+@Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS) // custom scope
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
