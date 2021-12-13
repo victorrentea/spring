@@ -74,6 +74,7 @@ class InvoiceExporter { //1
 }
 @Component
 //@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // va merge pentru app WEB daca apelul vine printrun @RestController
+// preferi mereu REQUEST SCOPE - de sus. Pana crapa. Va merge daca folosesti obiectele LabelService doar din cadrul procesarii unor req web.
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS) // custom scope
 class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
