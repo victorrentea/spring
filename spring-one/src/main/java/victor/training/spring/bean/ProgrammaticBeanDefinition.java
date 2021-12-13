@@ -32,7 +32,6 @@ public class ProgrammaticBeanDefinition implements CommandLineRunner {
          }
          @Override
          public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
          }
       };
    }

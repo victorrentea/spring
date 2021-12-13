@@ -28,6 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @SpringBootApplication
 //@ComponentScan(basePackages = {"victor.training.spring.web","victor.training"})
+
 public class FirstApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);

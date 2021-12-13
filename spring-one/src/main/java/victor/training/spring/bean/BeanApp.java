@@ -6,6 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -36,11 +41,13 @@ public class BeanApp implements CommandLineRunner {
    }
 
    @Bean
+   @Order(20)
    public Person john() {
       return new Person("John");
    }
 
    @Bean
+   @Order(10)
 //    @Primary // pentru testare (to be continued Fri)
    public Person jane() {
       return new Person("Jane");
@@ -49,12 +56,25 @@ public class BeanApp implements CommandLineRunner {
    @Bean
    public Conversation conversation(Person john) {
       return new Conversation(jane(), john); // apelul LOCAL catre jane() este interceptat. (Spring genereaza o subclasa la toate @Configuratin
-}
+   }
+
    @Bean
    public Conversation cearta(Person john) {
       return new Conversation(jane(), john);
    }
 }
+
+@Component
+class PranzCorporate {
+   @Autowired
+   private List<Person> toti;
+
+   @PostConstruct
+   public void method() {
+      System.out.println("Pranz pe banii lui sefu: " + toti);
+   }
+}
+
 class SpringGeneratedSubclass extends BeanApp {
 //    @Override
 //    public Person jane() {
@@ -93,7 +113,7 @@ class Person {
    private final String name;
 
    public Person(String name) {
-       System.out.println("Se naste o mica stea : " + name);
+      System.out.println("Se naste o mica stea : " + name);
       this.name = name;
    }
 
