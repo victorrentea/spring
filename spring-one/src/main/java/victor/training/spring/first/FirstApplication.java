@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -67,7 +68,7 @@ class MyFacade {
 	private final MyService myService;
 	private final MyMapper myMapper;
 
-	MyFacade(MyService myService, MyMapper myMapper) {
+	public MyFacade(MyService myService, MyMapper myMapper) {
 		this.myService = myService;
 		this.myMapper = myMapper;
 	}
@@ -128,6 +129,12 @@ class MyMapper {
 //
 //	}
 }
+
+@Configuration
+class JavaSecurityConfig {
+}
+
+
 
 @Repository
 class MyRepo {
