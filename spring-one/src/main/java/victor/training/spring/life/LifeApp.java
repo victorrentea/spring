@@ -7,9 +7,7 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -49,14 +47,11 @@ class OrderExporter  {//1
 	private static final Logger log = LoggerFactory.getLogger(OrderExporter.class);
 	@Autowired
 	private InvoiceExporter invoiceExporter;
-//	@Autowired
-//	private LabelService labelService; // Insta1
-
 	@Autowired
-	private ApplicationContext springu;
+	CountryRepo countryRepo;
 
 	public void export(Locale locale) {
-		LabelService labelService = springu.getBean(LabelService.class);
+		LabelService labelService = new LabelService(countryRepo);
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
@@ -66,17 +61,13 @@ class OrderExporter  {//1
 @Service
 class InvoiceExporter { //1
 	private static final Logger log = LoggerFactory.getLogger(InvoiceExporter.class);
-//	@Autowired
-//	private LabelService labelService; // Insta2
-	
+
 	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
-@Scope("prototype")
-@Service
-class LabelService { //1
+class LabelService {
 	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
 	private final CountryRepo countryRepo;
 	
