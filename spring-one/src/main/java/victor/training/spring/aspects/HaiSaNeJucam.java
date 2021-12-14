@@ -1,28 +1,42 @@
 package victor.training.spring.aspects;
 
-import java.lang.reflect.InvocationHandler;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class HaiSaNeJucam {
 
    public static void main(String[] args) {
-      MatematicaImpl reala = new MatematicaImpl();
+      Matematica reala = new Matematica();
 
 
-      InvocationHandler handler = new InvocationHandler() {
+      // JDK proxies - doar pentru interfete
+//      InvocationHandler handler = new InvocationHandler() {
+//         @Override
+//         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//            System.out.println("SRI: ai invocat metoda " + method.getName() + " cu param " + Arrays.toString(args));
+//            return method.invoke(reala, args);
+//         }
+//      };
+//      Matematica matematica = (Matematica) java.lang.reflect.Proxy.newProxyInstance(
+//          HaiSaNeJucam.class.getClassLoader(),
+//          new Class<?>[]{Matematica.class},
+//          handler
+//      );
+
+      Callback callback = new MethodInterceptor() {
          @Override
-         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+         public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
             System.out.println("SRI: ai invocat metoda " + method.getName() + " cu param " + Arrays.toString(args));
             return method.invoke(reala, args);
          }
       };
+      Matematica matematica = (Matematica) Enhancer.create(Matematica.class, callback);
 
-      Matematica matematica = (Matematica) java.lang.reflect.Proxy.newProxyInstance(
-          HaiSaNeJucam.class.getClassLoader(),
-          new Class<?>[]{Matematica.class},
-          handler
-      );
 
       undevaInCodulTau(matematica);
    }
@@ -39,20 +53,12 @@ public class HaiSaNeJucam {
    }
 
 }
-// interface MyRepo extends JpaRepository<..> {}
-interface Matematica {
-   int suma(int a, int b);
-   int produs(int a, int b);
-}
 
-class MatematicaImpl implements Matematica {
-
-   @Override
+class Matematica {
    public int suma(int a, int b) {
       return a + b;
    }
 
-   @Override
    public int produs(int a, int b) {
       return a*b;
    }
