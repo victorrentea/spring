@@ -1,7 +1,5 @@
 package victor.training.spring.aspects;
 
-import java.io.File;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,19 +32,23 @@ public class ProxyApp implements CommandLineRunner {
 	private ExpensiveOps ops;
 
 	public void run(String... args) {
+		log.debug("Buna ziua dn proxy: " + ops.getClass());
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");
 		log.debug("10000169 is prime ? ");
-		log.debug("Got: " + ops.isPrime(10000169) + "\n");
+		log.debug("Got: " + ops.isPrime(10_000_169) + "\n");
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
-		
-		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+
+		ops.alta();
+
+
+//		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
+//		log.debug("Folder . MD5: ");
+//		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
 

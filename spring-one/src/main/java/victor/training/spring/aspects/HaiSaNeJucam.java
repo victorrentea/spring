@@ -37,6 +37,9 @@ public class HaiSaNeJucam {
       };
       Matematica matematica = (Matematica) Enhancer.create(Matematica.class, callback);
 
+      System.out.println("Instanta reala : " + reala);
+      System.out.println("Instanta proxy : " + matematica);
+      System.out.println("false : " + (reala == matematica));
 
       undevaInCodulTau(matematica);
    }
