@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -65,14 +68,27 @@ public class BeanApp implements CommandLineRunner {
 }
 
 @Component
-class PranzCorporate {
+class PranzCorporate implements  CommandLineRunner{
    @Autowired
    private List<Person> toti;
+
+   @Transactional
+//   @EventListener(ApplicationReadyEvent.class) // tarziu
+   @EventListener(ApplicationStartedEvent.class)
+   public void startupCuEvent() {
+
+   }
+   @Transactional
+   @Override
+   public void run(String... args) throws Exception {
+
+   }
 
    @PostConstruct
    public void method() {
       System.out.println("Pranz pe banii lui sefu: " + toti);
    }
+
 }
 
 class SpringGeneratedSubclass extends BeanApp {
