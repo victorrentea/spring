@@ -3,9 +3,10 @@ package victor.training.spring.web;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.web.controller.util.TestDBConnection;
 
@@ -21,7 +22,23 @@ public class SpaApplication {
           .run(args);
    }
 
+   @Bean
+   public MessageSource messageSource() {
+      ReloadableResourceBundleMessageSource messageSource
+          = new ReloadableResourceBundleMessageSource();
 
+      messageSource.setBasename("classpath:messages");
+      messageSource.setDefaultEncoding("UTF-8");
+      return messageSource;
+   }
+
+
+   @Bean
+   public LocalValidatorFactoryBean getValidator() {
+      LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+      bean.setValidationMessageSource(messageSource());
+      return bean;
+   }
 //	@Bean
 //	public WebMvcConfigurer corsConfigurer() {
 //		return new WebMvcConfigurer() {

@@ -35,6 +35,9 @@ public class UserService  {
 //    @Scheduled(cron = "* 2 * * 0 *")
     @CacheEvict(value = "user-count", allEntries = true)
     public void createUser(String username) {
+        if (username.length() < 3) {
+            throw new IllegalArgumentException("Mesaj frumos");
+        }
         userRepo.save(new User(username));
     }
 

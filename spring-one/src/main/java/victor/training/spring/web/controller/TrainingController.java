@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -32,7 +33,7 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id, @RequestBody @Validated TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 
