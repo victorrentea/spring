@@ -2,7 +2,10 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +44,19 @@ public class UserService  {
         return new UserDto(userRepo.findById(id).get());
     }
 
-    public void updateUser(long id, String newName) {
+    @Autowired
+    private CacheManager  cacheManager;
+
+//    @CacheEvict(value = "user-data", key = "#id")
+    @CachePut(value = "user-data", key = "#id") // in general de evitat, prefera Evict,
+    public UserDto updateUser(long id, String newName) {
+        // alternative programatic cache
+//        ValueWrapper cacheEntry = cacheManager.getCache("user-data").get(id);
+
         // TODO 6 update profile too -> pass Dto
         User user = userRepo.findById(id).get();
         user.setName(newName);
+        return new UserDto(user);
     }
 }
 
