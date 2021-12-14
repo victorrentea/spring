@@ -1,15 +1,23 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
-@EnableCaching 
+@EnableCaching
 @SpringBootApplication
 @Slf4j
 // [RO] "Viata e complexa si are multe aspecte" - Cel mai iubit dintre pamanteni. Spring e viata. :)
@@ -52,3 +60,24 @@ public class ProxyApp implements CommandLineRunner {
 	}
 }
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {
+}
+
+//@Order
+@Component
+@Aspect
+class LoggingInterceptor {
+//	@Around("execution(* victor..*DAO.*(..))")
+	@Around("@annotation(victor.training.spring.aspects.Logged) " + // metoda adnotata
+			  " ||  @within(victor.training.spring.aspects.Logged)"// clasa adnotata
+	)
+	public Object logAround(ProceedingJoinPoint point) throws Throwable {
+
+		System.out.println("Chem metoda " + point.getSignature().getName() + " cu param " + Arrays.toString(point.getArgs()));
+		Object result = point.proceed();
+ // TODO logeaza valoarea returntata, masor cat a luat delta millis,
+		return result;
+	}
+
+}

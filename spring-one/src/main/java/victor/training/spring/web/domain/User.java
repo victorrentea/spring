@@ -10,6 +10,7 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(nullable = false)
     private String username;
     private String name;
     @Enumerated(EnumType.STRING)

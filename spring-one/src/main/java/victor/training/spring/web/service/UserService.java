@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,9 @@ import victor.training.spring.web.repo.UserRepo;
 public class UserService  {
     private final UserRepo userRepo;
 
-
+    // special ca NU ARE PARAMETRII
+    // eg reale: @Cacheable("countries") List<Country> getAllCountries();
+    @Cacheable("user-count")
     public long countUsers() {
         return userRepo.count();
     }
@@ -25,8 +28,11 @@ public class UserService  {
     // TODO 2 EvictCache
     // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
     // TODO 4 Redis cache
-    public void createUser() {
-        userRepo.save(new User("John-" + System.currentTimeMillis()));
+//    @Scheduled(fixedRate = 5*60*1000)
+//    @Scheduled(cron = "* 2 * * 0 *")
+    @CacheEvict(value = "user-count", allEntries = true)
+    public void createUser(String username) {
+        userRepo.save(new User(username));
     }
 
     // TODO 5 key-based cache entries

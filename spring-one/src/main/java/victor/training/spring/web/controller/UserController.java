@@ -18,7 +18,11 @@ public class UserController {
     }
     @GetMapping("users/create")
     public void create() {
-        service.createUser();
+        String username = "John-" + System.currentTimeMillis();
+        if (Math.random() < 0.5) {
+            username = null;
+        }
+        service.createUser(username);
     }
 
     @GetMapping("users/{id}")
