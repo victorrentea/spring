@@ -185,6 +185,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
+        <!-- <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>2.15.0</version>
+            <type>pom</type>
+        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -225,6 +232,19 @@
                         <version>1.2.6.RELEASE</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <!-- scans dependencies for known vulnerabilities -->
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>6.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
