@@ -29,11 +29,14 @@ public class Playground {
 ////        connection.commit();
 //    }
 
+
+
     @Transactional
     public void transactionOne() {
         jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,? )", "ALO");
         entityManager.persist(new Message("JPA"));
-        messageRepo.save(new Message(null));
+        messageRepo.save(new Message("Spring Data"));
+        throw new NullPointerException("PANICA!"); // ex runtime cauzeaza rollback la Tx curenta
     }
 
     @Transactional
@@ -41,7 +44,15 @@ public class Playground {
         // TODO Repo API
         // TODO @NonNullApi
     }
+
+    public void proxyulSpringDeTransactional_pseudocod() {
+//        startTranscation = conn.setAutocommit(false)
+//        apelulReal();
+//        commit();
+    }
 }
+
+
 
 
 @Service
