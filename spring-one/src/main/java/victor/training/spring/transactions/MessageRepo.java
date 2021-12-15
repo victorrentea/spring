@@ -10,6 +10,9 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
    List<Message> cautaDupaNume(String namePart);
 
    List<Message> findAllByMessageContaining(String namePart);
+
+   @Query(value = "select count(*) from MESSAGE",nativeQuery = true)
+   int countNativ();
    // implementarea generata de spring va deduce JPQLul de executat din NUMELE metodei!
 
 

@@ -35,10 +35,13 @@ public class Playground {
     public void transactionOne() {
         jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,? )", "ALO");
         messageRepo.save(new Message("Primul insert"));
+//        System.out.println(messageRepo.findAll());
+        System.out.println(messageRepo.countNativ());
+//        jdbcTemplate.update("select count(*) from MESSAGE", "ALO");
         try {
             other.metoda();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 //        messageRepo.save(new Message(null));
         System.out.println("ies din metoda");
@@ -54,7 +57,7 @@ public class Playground {
 
     // cu JPA, la inchiderea TX, se face:
     // 1 se trimit toate INSERT-urile (din spatele unui persist/save) ==> periculos
-    // 2 se updateaza entitatile modificate in tx, mai putin cand ai @Tx(readOnly=true) sau faci entityManager.detach(entity)
+    // 2 se UPDATE entitatile modificate in tx, mai putin cand ai @Tx(readOnly=true) sau faci entityManager.detach(entity)
 
     public void proxyulSpringDeTransactional_pseudocod() {
         // if (propagation=REQUIRES_NEW && am tx pe thread) { suspend Tx si iau conn nou }
