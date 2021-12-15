@@ -19,24 +19,27 @@ private final AltaClasa altaClasa;
       } catch (Exception e) {
          // tx e moarta aici (zombie)
          System.err.println(e.getMessage());
-         saveError(e);
+         altaClasa.saveError(e);
       }
       repo.save(new Message("Met1 dupa"));
       System.out.println(repo.findAll());
       System.out.println("Oare ajung aici ");
    }
 
-   @Transactional(propagation = Propagation.REQUIRES_NEW) // NU MERGE!
-   // am vrut sa deschid tranzactie noua, dar nu a mers pentru ca a fost apel local. NU ai trecut prin nici un proxy injectat de spring
-   public void saveError(Exception e) {
-      repo.save(new Message("EROARE: " + e.getMessage()));
-   }
 }
 @Service
 @RequiredArgsConstructor
 class AltaClasa {
    private final MessageRepo repo;
 
+   // adnotarea (@Transactional, @Cacheable, @Timed..., @Aspect) este o CERERE de proxy!
+   // oriunde Spring va injecta AltaClasa, va da Proxy, nu instanta reala
+
+   @Transactional(propagation = Propagation.REQUIRES_NEW) // NU MERGE!
+   // am vrut sa deschid tranzactie noua, dar nu a mers pentru ca a fost apel local. NU ai trecut prin nici un proxy injectat de spring
+   public void saveError(Exception e) {
+      repo.save(new Message("EROARE: " + e.getMessage()));
+   }
    @Transactional // cheama proxy
    public void method() {
       repo.save(new Message("Met2"));

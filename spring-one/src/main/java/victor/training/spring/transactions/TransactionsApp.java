@@ -27,6 +27,7 @@ public class TransactionsApp implements CommandLineRunner {
         playground.transactionTwo();
         System.out.println("============= PLAY2 ==============");
         playground2.method();
+//        playground2.saveError(); // ar merge @Transactional
         System.out.println("============= END ==============");
     }
 
