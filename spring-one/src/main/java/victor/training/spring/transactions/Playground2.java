@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Service
 public class Playground2 {
@@ -34,12 +36,14 @@ private final AltaClasa altaClasa;
          // tx e moarta aici (zombie)
          System.err.println(e.getMessage());
 //         altaClasa.saveError(e);
+//         saveError(e);
          newTx.executeWithoutResult(s -> repo.save(new Message("EROARE: " + e.getMessage())));
       }
       repo.save(new Message("Met1 dupa"));
       System.out.println(repo.findAll());
       System.out.println("Oare ajung aici ");
    }
+
 }
 @Service
 @RequiredArgsConstructor
@@ -55,8 +59,11 @@ class AltaClasa {
       repo.save(new Message("EROARE: " + e.getMessage()));
    }
    @Transactional // cheama proxy
-   public void method() {
+   public void method() throws IOException {
       repo.save(new Message("Met2"));
-      throw new IllegalArgumentException("Exception");
+//      throw new IllegalArgumentException("Exception");
+      throw new IOException("Exception"); // cand proxyul de @Trasactional vede ca arunci checked exception (nu Runtime), NU marcheaza Tx curenta ca ROLLBACK_ONLY
    }
+   // **concluzia**: nu aruncati vreodata ex checked din @Transactional (sau de oriunde)
+
 }
