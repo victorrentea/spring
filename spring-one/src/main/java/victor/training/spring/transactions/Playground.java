@@ -36,6 +36,7 @@ public class Playground {
         jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,? )", "ALO");
         messageRepo.save(new Message("Primul insert"));
 //        System.out.println(messageRepo.findAll());
+//        entityManager.flush(); // doar cand combini JPA cu PL/SQL
         System.out.println(messageRepo.countNativ());
 //        jdbcTemplate.update("select count(*) from MESSAGE", "ALO");
         try {
@@ -86,6 +87,8 @@ class AnotherClass {
     public void metoda() {
 //        entityManager.persist(new Message("JPA"));
         repo.save(new Message("cu spring data care-si face Tx singur"));
+//        ThreadUtils.sleep(1000);
+//        rest.get() // 5 sec > potential perf issue ca blochezi cat astepti responseul 2 conexiuni odata!
         throw new IllegalArgumentException("Crapa-i-ar capul");
     }
 }
