@@ -31,29 +31,43 @@ public class Playground {
 //    }
 
 
-    @Transactional
+    @Transactional // PersistenceContext atasat
     public void transactionOne() {
         jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,? )", "ALO");
-//        try {
+        messageRepo.save(new Message("Primul insert"));
+        try {
             other.metoda();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        messageRepo.save(new Message(null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        messageRepo.save(new Message(null));
+        System.out.println("ies din metoda");
     }
     @Transactional
     public void transactionTwo() {
-        // TODO Repo API
-        // TODO @NonNullApi
-    }
+        Message message = messageRepo.findById(100L).get();
+        message.setMessage("Alt mesaj");
+        System.out.println("Dupa iesirea din fct");
+    }// la final, toate @Entity incarcate in @Transactional, daca au fost modificate
+    // se scriu la loc in baza cu UPDATE = aka "Dirty check pe entitati atasate"
+
+    // cu JPA, la inchiderea TX, se face:
+    // 1 se trimit toate INSERT-urile (din spatele unui persist/save) ==> periculos
+    // 2 se updateaza entitatile modificate in tx, mai putin cand ai @Tx(readOnly=true) sau faci entityManager.detach(entity)
+
     public void proxyulSpringDeTransactional_pseudocod() {
         // if (propagation=REQUIRES_NEW && am tx pe thread) { suspend Tx si iau conn nou }
+        // boolean createdTx = ....
         // conn = datasource.getConnection();
 //        startTranscation = conn.setAutocommit(false)
 //        try {
 //          apelulReal();
-//        }catch (Excetion ) {conn.rollback()}
-//        commit();
+//            if (createdTx) commit();
+//        }catch (Excetion ) {
+
+//          conn.rollback()
+//          }
+//
     }
 }
 
