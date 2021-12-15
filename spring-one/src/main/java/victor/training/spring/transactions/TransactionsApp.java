@@ -17,6 +17,7 @@ public class TransactionsApp implements CommandLineRunner {
         new SpringApplicationBuilder(TransactionsApp.class).profiles("spa").run(args);
     }
     private final Playground playground;
+    private final Playground2 playground2;
 
     @Override
     public void run(String... args) throws Exception {
@@ -24,6 +25,8 @@ public class TransactionsApp implements CommandLineRunner {
         playground.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
         playground.transactionTwo();
+        System.out.println("============= PLAY2 ==============");
+        playground2.method();
         System.out.println("============= END ==============");
     }
 
