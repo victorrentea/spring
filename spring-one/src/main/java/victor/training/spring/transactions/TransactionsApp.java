@@ -26,5 +26,15 @@ public class TransactionsApp implements CommandLineRunner {
         playground.transactionTwo();
         System.out.println("============= END ==============");
     }
+
+
+//    @Bean
+//    public DataSource oraDS() {
+//    }
+//    @Bean
+//    public PlatformTransactionManager oraTM() {
+//        PlatformTransactionManager tx = new PlatformTransactionManager();
+//        tx.set
+//    }
 }
 
