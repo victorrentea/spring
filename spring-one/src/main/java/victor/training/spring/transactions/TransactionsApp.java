@@ -5,7 +5,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @MapperScan("victor.training.spring.transactions")
 
@@ -31,7 +35,12 @@ public class TransactionsApp implements CommandLineRunner {
         System.out.println("============= END ==============");
     }
 
-
+@Bean
+public TransactionTemplate newTx(PlatformTransactionManager transactionManager) {
+    TransactionTemplate newTx = new TransactionTemplate(transactionManager);
+    newTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    return newTx;
+}
 //    @Bean
 //    public DataSource oraDS() {
 //    }

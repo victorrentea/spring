@@ -1,15 +1,29 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @RequiredArgsConstructor
 @Service
 public class Playground2 {
    private final MessageRepo repo;
 private final AltaClasa altaClasa;
+   private TransactionTemplate newTx;
+   @Autowired
+   public void initTxTemplate(PlatformTransactionManager transactionManager) {
+      newTx = new TransactionTemplate(transactionManager);
+      newTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+   }
+
+//   @Autowired
+//   TransactionTemplate newTx;
+
    @Transactional
    public void method() {
       System.out.println("E oare proxy: " + altaClasa.getClass());
@@ -19,13 +33,13 @@ private final AltaClasa altaClasa;
       } catch (Exception e) {
          // tx e moarta aici (zombie)
          System.err.println(e.getMessage());
-         altaClasa.saveError(e);
+//         altaClasa.saveError(e);
+         newTx.executeWithoutResult(s -> repo.save(new Message("EROARE: " + e.getMessage())));
       }
       repo.save(new Message("Met1 dupa"));
       System.out.println(repo.findAll());
       System.out.println("Oare ajung aici ");
    }
-
 }
 @Service
 @RequiredArgsConstructor
