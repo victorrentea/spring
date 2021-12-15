@@ -43,10 +43,11 @@ public class Playground {
 //        messageRepo.save(new Message(null));
         System.out.println("ies din metoda");
     }
-    @Transactional
+//    @Transactional
     public void transactionTwo() {
         Message message = messageRepo.findById(100L).get();
         message.setMessage("Alt mesaj");
+        messageRepo.save(message); // daca nu iti place auto-flush, scoti @Transactional si faci .save explicit (merge de fapt in JPA)
         System.out.println("Dupa iesirea din fct");
     }// la final, toate @Entity incarcate in @Transactional, daca au fost modificate
     // se scriu la loc in baza cu UPDATE = aka "Dirty check pe entitati atasate"
