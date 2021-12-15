@@ -34,11 +34,11 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,? )", "ALO");
-        try {
+//        try {
             other.metoda();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         messageRepo.save(new Message(null));
     }
     @Transactional
@@ -50,7 +50,9 @@ public class Playground {
         // if (propagation=REQUIRES_NEW && am tx pe thread) { suspend Tx si iau conn nou }
         // conn = datasource.getConnection();
 //        startTranscation = conn.setAutocommit(false)
-//        apelulReal();
+//        try {
+//          apelulReal();
+//        }catch (Excetion ) {conn.rollback()}
 //        commit();
     }
 }
