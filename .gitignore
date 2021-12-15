@@ -28,3 +28,4 @@ classes
 .class
 **/target/
 .mvn
+/demo/HELP.md
