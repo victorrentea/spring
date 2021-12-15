@@ -2,6 +2,9 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -10,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 @RequiredArgsConstructor
 @Service
@@ -40,12 +45,23 @@ private final AltaClasa altaClasa;
          newTx.executeWithoutResult(s -> repo.save(new Message("EROARE: " + e.getMessage())));
       }
       repo.save(new Message("Met1 dupa"));
+
+
+      Page<Message> page = repo.findAllByMessageContaining("et", PageRequest.of(0, 2, Direction.DESC, "message"));
+      System.out.println(page);
       System.out.println(repo.findAll());
       System.out.println("Oare ajung aici ");
    }
+   // SELECT .... LIMIT 4 OFFET 2
 
 }
 @Service
+   @Transactional // cheama proxy
+@Retention(RetentionPolicy.RUNTIME)
+@interface  Facade {
+}
+
+@Facade
 @RequiredArgsConstructor
 class AltaClasa {
    private final MessageRepo repo;
@@ -58,11 +74,11 @@ class AltaClasa {
    public void saveError(Exception e) {
       repo.save(new Message("EROARE: " + e.getMessage()));
    }
-   @Transactional // cheama proxy
    public void method() throws IOException {
       repo.save(new Message("Met2"));
 //      throw new IllegalArgumentException("Exception");
-      throw new IOException("Exception"); // cand proxyul de @Trasactional vede ca arunci checked exception (nu Runtime), NU marcheaza Tx curenta ca ROLLBACK_ONLY
+      if (true) throw new IOException("Exception"); // cand proxyul de @Trasactional vede ca arunci checked exception (nu Runtime), NU marcheaza Tx curenta ca ROLLBACK_ONLY
+      repo.save(new Message("Met2"));
    }
    // **concluzia**: nu aruncati vreodata ex checked din @Transactional (sau de oriunde)
 
