@@ -63,11 +63,11 @@ class AnotherClass {
     private final MessageRepo repo;
     private final EntityManager entityManager; // JPA
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED) // autocommit
-//    @Transactional(propagation = Propagation.REQUIRES_NEW) //
+//    @Transactional(propagation = Propagation.NOT_SUPPORTED) // autocommit
+    @Transactional(propagation = Propagation.REQUIRES_NEW) //
     public void metoda() {
 //        entityManager.persist(new Message("JPA"));
         repo.save(new Message("cu spring data care-si face Tx singur"));
-//        throw new IllegalArgumentException("Crapa-i-ar capul");
+        throw new IllegalArgumentException("Crapa-i-ar capul");
     }
 }
