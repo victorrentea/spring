@@ -37,6 +37,7 @@ public class SpaApplication {
    public LocalValidatorFactoryBean getValidator() {
       LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
       bean.setValidationMessageSource(messageSource());
+//      Writer writer = new BufferedWriter(new FileWriter("a.txt"));
       return bean;
    }
 //	@Bean
