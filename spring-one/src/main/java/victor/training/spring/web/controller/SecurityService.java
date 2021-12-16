@@ -13,12 +13,15 @@ public class SecurityService {
       this.trainingRepo = trainingRepo;
    }
 
-   public void checkPermissionOnTraining(Long trainingId) {
+   public void canDeleteTraining(Long trainingId) {
       Training training = trainingRepo.findById(trainingId).get();
 
       Long teacherId = training.getTeacher().getId();
 
       SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      if (!securityUser.getRole().getAuthorities().contains("training.delete")) {
+         throw new IllegalArgumentException("n-ai dreptul");
+      }
       if (!securityUser.getManagedTeacherIds().contains(teacherId)) {
          throw new IllegalArgumentException("N-ai jurizdictie sa stergi cursuri ale acestui profesor");
       }

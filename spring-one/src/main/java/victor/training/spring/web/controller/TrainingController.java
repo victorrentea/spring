@@ -54,7 +54,7 @@ public class TrainingController {
 		@RequestBody  @Valid TrainingDto dto) throws ParseException {
 //		dto.id = id; // lenient, hai ca ne intelege noi
 //		if (!dto.id.equals(id)) throw new IllegalArgumentException("Draga developer, id-urile tre sa fie egala"); // naspa
-		securityService.checkPermissionOnTraining(id);
+//		securityService.checkPermissionOnTraining(id);
 		trainingService.updateTraining(id, dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -65,10 +65,10 @@ public class TrainingController {
 	// TODO PermissionEvaluator
 
 //	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'SUPPORT')")
-	@PreAuthorize("hasAuthority('training.delete')")
+//	@PreAuthorize("hasAuthority('training.delete')")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
-		securityService.checkPermissionOnTraining(id);
+		securityService.canDeleteTraining(id);
 
 		trainingService.deleteById(id);
 	}
