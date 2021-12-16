@@ -4,13 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
@@ -22,6 +19,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
+	@Autowired
+	private SecurityService securityService;
 	@Autowired
 	private TrainingService trainingService;
 
@@ -55,7 +54,7 @@ public class TrainingController {
 		@RequestBody  @Valid TrainingDto dto) throws ParseException {
 //		dto.id = id; // lenient, hai ca ne intelege noi
 //		if (!dto.id.equals(id)) throw new IllegalArgumentException("Draga developer, id-urile tre sa fie egala"); // naspa
-
+		securityService.checkPermissionOnTraining(id);
 		trainingService.updateTraining(id, dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -69,18 +68,11 @@ public class TrainingController {
 	@PreAuthorize("hasAuthority('training.delete')")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
-
-		Training training = trainingRepo.findById(id).get();
-
-		Long teacherId = training.getTeacher().getId();
-
-		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if (!securityUser.getManagedTeacherIds().contains(teacherId)) {
-			throw new IllegalArgumentException("N-ai jurizdictie sa stergi cursuri ale acestui profesor");
-		}
+		securityService.checkPermissionOnTraining(id);
 
 		trainingService.deleteById(id);
 	}
+
 	private final TrainingRepo trainingRepo;
 
 	@PostMapping("search") // ar treb GET dar din motive tehnice (ca vreau sa trimit criteriile JSON in body, fac POST)
