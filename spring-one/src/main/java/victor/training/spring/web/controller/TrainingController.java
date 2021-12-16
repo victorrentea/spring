@@ -29,6 +29,7 @@ public class TrainingController {
 		return trainingService.getAllTrainings();
 	}
 
+	@PreAuthorize("hasPermission(#id, 'TRAINING', 'READ')")
 	@GetMapping("{id}")
 	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long id) {
 

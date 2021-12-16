@@ -21,7 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .authorizeRequests()
 //               .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN") // riscant!!
 //               .mvcMatchers("/admin/**", "/actuator/**").hasRole("ADMIN")
-               .anyRequest().authenticated()// musai sa vina ultimul ca Spring Sec le incearca secvential
+               .mvcMatchers("/v2/api-docs").permitAll()
+          .anyRequest().authenticated()// musai sa vina ultimul ca Spring Sec le incearca secvential
           .and()
           .formLogin().permitAll().and()
           .httpBasic();

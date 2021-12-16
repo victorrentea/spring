@@ -53,9 +53,9 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
    }
 
    private boolean hasTrainingPrivilege(SecurityUser securityUser, PermissionType permission, Long trainingId) {
-      if (permission == PermissionType.READ) {
-         return true;
-      }
+//      if (permission == PermissionType.READ) {
+//         return true;
+//      }
       // persmission based security
       if (permission == PermissionType.DELETE && !securityUser.getRole().getAuthorities().contains("training.delete")) {
          log.debug("No authority to edit trainings");

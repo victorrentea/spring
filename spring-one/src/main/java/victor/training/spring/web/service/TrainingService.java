@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.MyException;
@@ -11,6 +12,7 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,8 +33,12 @@ public class TrainingService {
 
     @Transactional(propagation = NOT_SUPPORTED)
     public List<TrainingDto> getAllTrainings() {
+        SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+
         List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
+        for (Training training : trainingRepo.findByTeacherIdIn(securityUser.getManagedTeacherIds())) {
             dtos.add(mapToDto(training));
         }
         return dtos;
