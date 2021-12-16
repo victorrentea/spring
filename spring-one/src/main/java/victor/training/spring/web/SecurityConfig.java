@@ -20,7 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    protected void configure(HttpSecurity http) throws Exception {
       http
           .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-          .authorizeRequests().anyRequest().authenticated()
+          .authorizeRequests()
+//               .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN") // riscant!!
+               .mvcMatchers("/admin/**", "/actuator/**").hasRole("ADMIN")
+               .anyRequest().authenticated()// musai sa vina ultimul ca Spring Sec le incearca secvential
           .and()
           .formLogin().permitAll().and()
           .httpBasic();

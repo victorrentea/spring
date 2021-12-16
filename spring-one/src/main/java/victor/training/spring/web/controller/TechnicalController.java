@@ -74,4 +74,8 @@ public class TechnicalController {
 	public String restart() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}
+	@GetMapping("admin/poll-in-folder")
+	public String poll() {
+		return "What does this red button do?     ... [Missile Launched]";
+	}
 }
