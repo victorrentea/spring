@@ -2,7 +2,6 @@ package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.MyException;
@@ -17,6 +16,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
+
 @Slf4j
 @Service
 @Transactional
@@ -28,6 +29,7 @@ public class TrainingService {
     @Autowired
     private EmailSender emailSender;
 
+    @Transactional(propagation = NOT_SUPPORTED)
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
@@ -36,6 +38,7 @@ public class TrainingService {
         return dtos;
     }
 
+    @Transactional(propagation = NOT_SUPPORTED)
     public Optional<TrainingDto> getTrainingById(Long id) {
         return trainingRepo.findById(id).map(e -> mapToDto(e));
     }
