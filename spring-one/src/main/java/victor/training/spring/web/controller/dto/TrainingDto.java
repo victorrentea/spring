@@ -11,6 +11,7 @@ public class TrainingDto {
 	public String name;
 	public Long teacherId;
 	public String teacherName;
+	public String externalSYstemUUID;
 	@NotNull
 	public String startDate;
 	public String description;
