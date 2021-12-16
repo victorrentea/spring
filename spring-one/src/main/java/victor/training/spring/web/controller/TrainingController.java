@@ -43,6 +43,7 @@ public class TrainingController {
 	}
 
 	@PutMapping ("{id}")// = OVERWRITE
+	@PreAuthorize("hasRole('ADMIN')")
 	public void updateTraining(
 		@PathVariable Long id,
 		@RequestBody  @Valid TrainingDto dto) throws ParseException {
