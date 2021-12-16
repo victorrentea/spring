@@ -1,13 +1,19 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
+
 import victor.training.spring.web.service.UserService;
 
+
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -15,22 +21,21 @@ import java.util.Collections;
 public class TechnicalController {
 	private final UserService userService;
 
+//	@PreAuthorize()
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		LoggedInUserDto dto = new LoggedInUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		dto.username = authentication.getName();
-//		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-//		dto.authorities = stripRolePrefix(authentication.getAuthorities());
-//    // Optional:
-//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-//		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-//		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+		dto.username = authentication.getName();
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+		// WARNING: sa lucrezi programatic cu rolul e bad practice in app mari
+
+		// e mai sigur sa implem authorizarea (are voie sa faca actiunea X) declarativ prin adnotari
+		// decat cu IF-uri.
+
+		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 		return dto;
 	}
 
