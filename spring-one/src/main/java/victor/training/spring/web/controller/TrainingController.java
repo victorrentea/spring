@@ -1,11 +1,16 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
@@ -13,6 +18,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -61,11 +67,21 @@ public class TrainingController {
 
 //	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'SUPPORT')")
 	@PreAuthorize("hasAuthority('training.delete')")
-
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
+
+		Training training = trainingRepo.findById(id).get();
+
+		Long teacherId = training.getTeacher().getId();
+
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (!securityUser.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("N-ai jurizdictie sa stergi cursuri ale acestui profesor");
+		}
+
 		trainingService.deleteById(id);
 	}
+	private final TrainingRepo trainingRepo;
 
 	@PostMapping("search") // ar treb GET dar din motive tehnice (ca vreau sa trimit criteriile JSON in body, fac POST)
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {

@@ -21,15 +21,14 @@ public class DatabaseUserDetailsService implements UserDetailsService {
    // atfel incat la req ulterioare, il ai deja in memorie.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("Looking username {} in database", username);
-        User user = userRepository.getForLogin(username)
+        User userEntity = userRepository.getForLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not in database"));
 
-        log.debug("Successful logged in " + user);
+        log.debug("Successful logged in " + userEntity);
         // WARNING: the implem of SecurityUser class is hacked to expect the password of the user == its username
-        return new SecurityUser(user.getUsername(),
-                user.getRole(),
-//                user.getLan
-                user.getManagedTeacherIds());
+        return new SecurityUser(userEntity.getUsername(),
+                userEntity.getRole(),
+                userEntity.getManagedTeacherIds());
     }
 
 
