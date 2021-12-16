@@ -47,6 +47,7 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
+	// TODO GET or POST ?
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
