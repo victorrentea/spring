@@ -1,8 +1,9 @@
 package victor.training.spring.web;
 
 public class MyException extends RuntimeException {
-   public MyException(ErrorCode errorCode) {
+   public MyException(ErrorCode errorCode, Object... args) {
       this.errorCode = errorCode;
+      this.args = args;
    }
 
    public MyException(String message, ErrorCode errorCode) {
@@ -44,4 +45,9 @@ public class MyException extends RuntimeException {
    }
 
    private final ErrorCode errorCode;
+   private /*final*/ Object[] args;
+
+   public Object[] getArgs() {
+      return args;
+   }
 }

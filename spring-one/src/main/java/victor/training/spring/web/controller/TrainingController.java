@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -9,6 +10,7 @@ import victor.training.spring.web.service.TrainingService;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/trainings")
@@ -22,8 +24,13 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
-		return trainingService.getTrainingById(id);
+	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long id) {
+
+		Optional<TrainingDto> dtoOpt = trainingService.getTrainingById(id);
+		if (!dtoOpt.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(dtoOpt.get());
 	}
 
 	// TODO @Valid

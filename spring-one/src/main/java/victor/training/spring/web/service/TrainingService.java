@@ -14,10 +14,7 @@ import victor.training.spring.web.repo.TrainingRepo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,8 +35,8 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+    public Optional<TrainingDto> getTrainingById(Long id) {
+        return trainingRepo.findById(id).map(e -> mapToDto(e));
     }
 
     // TODO Test this!
