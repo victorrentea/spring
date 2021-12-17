@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,13 +58,14 @@ public class BeanApp implements CommandLineRunner {
    }
 
    @Bean
-   public Conversation conversation(Person john) {
+   public Conversation conversation(Person john, @Value("${barman.thread.count}") Integer count) {
+      System.out.println("Springul va injecta magic count " + count);
       return new Conversation(jane(), john); // apelul LOCAL catre jane() este interceptat. (Spring genereaza o subclasa la toate @Configuratin
    }
 
    @Bean
    public Conversation cearta(Person john) {
-      return new Conversation(jane(), john);
+      return new Conversation(jane(), john).setCause(conversation(null, null));
    }
 }
 
@@ -109,6 +111,12 @@ class SpringGeneratedSubclass extends BeanApp {
 class Conversation {
    private final Person one;
    private final Person two;
+   private Conversation cause;
+
+   public Conversation setCause(Conversation cause) {
+      this.cause = cause;
+      return this;
+   }
 
    public Conversation(Person one, Person two) {
       this.one = one;
