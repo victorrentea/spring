@@ -40,6 +40,7 @@ public class ProxyApp implements CommandLineRunner {
 	private ExpensiveOps ops;
 
 	public void run(String... args) {
+//		ops = new ExpensiveOps();
 		log.debug("Buna ziua dn proxy: " + ops.getClass());
 		log.debug("\n");
  		log.debug("---- CPU Intensive ~ memoization?");

@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Execution(ExecutionMode.CONCURRENT)
 class Test3 {
 	private static final Logger log = LoggerFactory.getLogger(Test3.class);
+//@MockBean
+//Clasa c;
 
 	@Test
 	public void first() throws Exception{

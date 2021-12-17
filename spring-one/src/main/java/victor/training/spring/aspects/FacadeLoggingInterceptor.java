@@ -32,6 +32,7 @@ public class FacadeLoggingInterceptor {
       }
    }
 
+//   @Around("execution(* com.unicredit..adapter.*.*(..))")
    @Around("@within(victor.training.spring.aspects.Facade))")
    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
       logBefore(joinPoint);
