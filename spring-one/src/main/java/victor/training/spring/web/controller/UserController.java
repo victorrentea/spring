@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("create") // NOT FOLLOWING SEMANTICS OF HTTP VERBS: create should be a POST
     public void create() {
-        service.createUser();
+        service.createUser("John-" + System.currentTimeMillis());
     }
 
 
