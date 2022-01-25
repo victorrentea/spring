@@ -48,7 +48,7 @@ public class LifeApp implements CommandLineRunner{
 @Slf4j
 @Service
 class OrderExporter  {
-	private final InvoiceExporter invoiceExporter;
+	private final InvoiceExporter invoiceExporter; // deploy time failure if missing
 //	private final LabelService labelService; // 1
 	private final ApplicationContext applicationContext;
 
@@ -57,6 +57,9 @@ class OrderExporter  {
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		// 1: hidden in the code. dep is not obvious anymore at the class
+		// 2: risky to do getBean(class) instead of @Autowired dependency because you might get a runtime ex if the dep is not defined.
+//		InvoiceExporter invoiceExporter = applicationContext.getBean(InvoiceExporter.class);
 		invoiceExporter.exportInvoice(labelService);
 	}
 }
