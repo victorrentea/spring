@@ -16,21 +16,30 @@ import victor.training.spring.web.repo.UserRepo;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService  {
+public /*final*/ class UserService  {
     @Autowired
     private UserRepo userRepo;
 
     @Autowired
     private CacheManager cacheManager;
 
-    // List<Country> findAllCountries();
     @Cacheable("users-count")
-    public long countUsers() {
-//        cacheManager.getCache("users-count").get(null).get();
+//    @PreAuthorized()
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Aync
+//    @Retryable(3)
+    public   /*final*/  long countUsers() {
         log.debug("Calling service method");
-//        new RuntimeException().printStackTrace();
         return userRepo.count();
     }
+
+    public long oups() {
+        // calling an annotated method from the same class NEVER works in spring !
+        // other examples
+//        java.lang.reflect.Proxy.
+        return countUsers();
+    }
+
 // A proxy is an object besides the behavior of a bean
 // adds additional behavior to your methods
 
@@ -51,12 +60,13 @@ public class UserService  {
         return new UserDto(userRepo.findById(id).get());
     }
 
-    @CacheEvict(value = "user-data", key = "#id")
-    public void updateUser(long id, String newName) {
+    @CacheEvict(value = "user-data", key = "#userId")
+    // remove the entry from the cache named "user-data" that is under the key="<the value of the id param>"
+    public void updateUser(long userId, String newName) {
 //        cacheManager.getCache("user-data").evict(id);
 
         // TODO 6 update profile too -> pass Dto
-        User user = userRepo.findById(id).get();
+        User user = userRepo.findById(userId).get();
         user.setName(newName);
     }
 }

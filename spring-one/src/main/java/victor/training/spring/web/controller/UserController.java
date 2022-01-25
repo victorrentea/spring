@@ -19,7 +19,15 @@ public class UserController {
     public long count() {
         log.debug("My call goes to a proxy" + service.getClass());
         return service.countUsers();
+//        return service.oups();
     }
+
+
+
+
+
+
+
 
 
     @GetMapping("create") // NOT FOLLOWING SEMANTICS OF HTTP VERBS: create should be a POST

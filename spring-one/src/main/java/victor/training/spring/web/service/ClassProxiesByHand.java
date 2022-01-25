@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.InvocationHandler;
@@ -13,7 +14,10 @@ public class ClassProxiesByHand {
       Callback h = new InvocationHandler() {
          @Override
          public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-//            if (i have in cache(args)) return from cache;
+            if (method.isAnnotationPresent(Cacheable.class)) {
+               String cacheName = method.getAnnotation(Cacheable.class).value()[0];
+//               if (i have in cache(args)) return from cache;
+            }
             Object r = method.invoke(realBeanInstance, args);
 //            put in cache (args, r)
             return r;
