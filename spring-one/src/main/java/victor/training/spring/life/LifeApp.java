@@ -91,7 +91,7 @@ class LabelService {
 		this.countryRepo = countryRepo;
 	}
 
-
+//@PostConstruct
 	public void load(Locale locale) {
 		log.debug(this + ".load()");
 		// NEVER store request-specific data in a field of a singleton
