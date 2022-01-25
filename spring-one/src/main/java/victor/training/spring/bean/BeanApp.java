@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+
 // @Configuration
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -45,6 +47,18 @@ public class BeanApp implements CommandLineRunner {
     }
 }
 
+@Service
+class BadIdea {
+    @Autowired
+    private Person jane;
+    @Autowired
+    private BeanApp beanApp; // DON'T!
+
+    public void method() {
+//        beanApp.jane();
+    }
+}
+
 //class SpringHahahaha extends BeanApp {
 //    @Override
 //    public Person john() {
@@ -58,6 +72,7 @@ public class BeanApp implements CommandLineRunner {
 // ------------- you are not allowed to edit code below, because it's a library code --------------
 
 @Data
+//@Component
 class Conversation {
     private final Person one;
     private final Person two;

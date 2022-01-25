@@ -3,7 +3,7 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.props.WelcomeInfoProps;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
@@ -55,7 +55,7 @@ public class TechnicalController {
 //	}
 
 //	@Autowired  // TODO @Import the other Spring Boot Application
-	private WelcomeInfo welcomeInfo;
+	private WelcomeInfoProps welcomeInfoProps;
 
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,8 @@ import java.util.Map;
 @Slf4j
 @Data // getters & setters are mandatory!
 @Component
-public class WelcomeInfo {
+@ConfigurationProperties(prefix = "welcome")
+public class WelcomeInfoProps {
     private String welcomeMessage;
     private List<URL> supportUrls;
     private Map<String,String> localContactPhone; // per country
