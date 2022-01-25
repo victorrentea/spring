@@ -18,10 +18,13 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        mybatis.search(100);
         repo.save(new Message("jpa"));
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
+//        throw new IOException("Something"); // allows to commit Tx unless @Transactional(rollbackFor=Exception.class)
+        throw new RuntimeException("e");
     }
+    // commit at the end if everything goes well. On exception: rollback
+
     @Transactional
     public void transactionTwo() {
         // TODO Repo API

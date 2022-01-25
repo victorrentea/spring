@@ -16,14 +16,14 @@ public class TransactionsApp implements CommandLineRunner {
     public static void main(String[] args) {
         new SpringApplicationBuilder(TransactionsApp.class).profiles("spa").run(args);
     }
-    private final Playground playground;
+    private final Playground playgroundProxy;
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println("============= TRANSACTION ONE ==============");
-        playground.transactionOne();
+        playgroundProxy.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
-        playground.transactionTwo();
+        playgroundProxy.transactionTwo();
         System.out.println("============= END ==============");
     }
 }
