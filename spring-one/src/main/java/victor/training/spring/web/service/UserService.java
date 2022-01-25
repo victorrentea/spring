@@ -22,7 +22,7 @@ public class UserService  {
     @Cacheable("users-count")
     public long countUsers() {
         log.debug("Calling service method");
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
         return userRepo.count();
     }
 // A proxy is an object besides the behavior of a bean
