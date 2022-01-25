@@ -9,8 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 import java.util.Map;
@@ -51,9 +51,13 @@ class OrderExporter  {
 	private final InvoiceExporter invoiceExporter; // deploy time failure if missing
 //	private final LabelService labelService; // 1
 	private final ApplicationContext applicationContext;
+	private final CountryRepo countryRepo; // a1: I have to manual inject dep if I give up Spring
 
 	public void export(Locale locale) {
-		LabelService labelService = applicationContext.getBean(LabelService.class);
+//		LabelService labelService = applicationContext.getBean(LabelService.class);
+		LabelService labelService = new LabelService(countryRepo); // a2: HOW TO TEST? impossible to mock away labelService
+		// a3: not possible to proxy the labelService anymore
+
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
@@ -68,15 +72,14 @@ class OrderExporter  {
 @Service
 class InvoiceExporter {
 //	private final LabelService labelService; // 2
-
 	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
-@Service
-@Scope("prototype") // >> every time this bean is requested, a new instance is created
+//@Service
+//@Scope("prototype") // >> every time this bean is requested, a new instance is created
 //@Scope("request") // lives as long as the handling of a HTTP Request
 //@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS) // if there are 3 users logged in> you have 3 objects like this in memory
 class LabelService {
@@ -94,7 +97,9 @@ class LabelService {
 		// NEVER store request-specific data in a field of a singleton
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
+//	@Cacheable
+	@Transactional
 	public String getCountryName(String iso2Code) {
 		log.debug(this + ".getCountryName()");
 		return countryNames.get(iso2Code.toUpperCase());
