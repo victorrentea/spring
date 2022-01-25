@@ -1,15 +1,17 @@
 package victor.training.spring.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,52 +39,57 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+		new Thread(()->exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+//	private final LabelService labelService; // 1
+	private final ApplicationContext applicationContext;
 
 	public void export(Locale locale) {
+		LabelService labelService = applicationContext.getBean(LabelService.class);
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
+		labelService.load(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
-	public void exportInvoice() {
+//	private final LabelService labelService; // 2
+
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
 @Service
+@Scope("prototype") // >> every time this bean is requested, a new instance is created
+//@Scope("request") // lives as long as the handling of a HTTP Request
+//@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS) // if there are 3 users logged in> you have 3 objects like this in memory
 class LabelService {
 	private final CountryRepo countryRepo;
-	
+	private Map<String, String> countryNames;
+
 	public LabelService(CountryRepo countryRepo) {
 		log.debug(this + ".new()");
 		this.countryRepo = countryRepo;
 	}
 
-	private Map<String, String> countryNames;
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		// NEVER store request-specific data in a field of a singleton
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {

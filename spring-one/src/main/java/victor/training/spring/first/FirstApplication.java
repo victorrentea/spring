@@ -30,8 +30,12 @@ public class FirstApplication implements CommandLineRunner{
 	}
 }
 @RequiredArgsConstructor
-@Service
+@Service // by default = singleton life cycle = 1 instance / app
 class X {
+
+//	static int globalCounter;
+	int globalCounter; // always think of instance vars in a singleton as "static"
+
 //	@Autowired
 //	private Y y;
 	private final Y y;
