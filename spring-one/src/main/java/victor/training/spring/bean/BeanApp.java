@@ -1,9 +1,11 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -11,15 +13,35 @@ public class BeanApp implements CommandLineRunner {
         SpringApplication.run(BeanApp.class);
     }
 
+//    @Autowired
+//    private Person john;
+//    @Autowired
+//    private Person jane;
+    @Autowired
+    private Conversation conversation;
+
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         conversation.start();
-        // TODO manage all with Spring
-
-        // TODO alternative: "Mirabela Dauer" story :)
+    }
+    @Bean
+    public Person john() {
+        System.out.println("John is born!");
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        System.out.println("Jane is born!");
+        return new Person("Jane");
+    }
+    @Bean
+    public Conversation conversation(Person john, Person jane) {
+        return new Conversation(john, jane);
     }
 }
+
+
+// ------------- you are not allowed to edit code below, because it's a library code --------------
 
 @Data
 class Conversation {
