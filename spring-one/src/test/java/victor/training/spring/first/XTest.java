@@ -24,6 +24,7 @@ class XTest {
 //      X x = new X();
 //      x.y = ????
 
+
       when(y.something()).thenReturn(3);
 //      X x = new X();
       // reflection magic to inject the private dep
