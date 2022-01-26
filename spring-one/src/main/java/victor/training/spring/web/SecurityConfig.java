@@ -19,7 +19,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Override
    protected void configure(HttpSecurity http) throws Exception {
       http
-          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+
+          .csrf().disable() // << safe if you only expose REST endpoints
+          // prevents creating a JSESSIOID cookie + HttpSession for each incoming request that lives 30 min
+//          .sessionManagement()
+////            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .disable()  // only for browser-facing apps.
+
           .authorizeRequests()
 //            .mvcMatchers("admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()

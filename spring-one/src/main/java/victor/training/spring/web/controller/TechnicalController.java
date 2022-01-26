@@ -60,6 +60,7 @@ public class TechnicalController {
 //	@Autowired  // TODO @Import the other Spring Boot Application
 	private WelcomeInfoProps welcomeInfoProps;
 
+//	@CrossOrigin()
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome-info")
 	public String showWelcomeInfo(){
