@@ -1,7 +1,11 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +15,12 @@ import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
@@ -22,26 +30,29 @@ public class TechnicalController {
 	public LoggedInUserDto getCurrentUsername() {
 		LoggedInUserDto dto = new LoggedInUserDto();
 
-		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+//		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
+//		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		dto.username = authentication.getName();
-//		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-//		dto.authorities = stripRolePrefix(authentication.getAuthorities());
+		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+		dto.role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
+		dto.authorities = stripRolePrefix(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 //    // Optional:
-//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-//		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-//		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+
+		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>)
+			SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//		keycloakToken.getKeycloakSecurityContext().getIdToken().
+		dto.username = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
+		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
 		return dto;
 	}
 
-//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
-//		return authorities.stream()
-//			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
-//			.collect(toList());
-//	}
+	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+		return authorities.stream()
+			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
+			.collect(toList());
+	}
 
 	// TODO propagate current user on thread over @Async calls?
 	@PostConstruct
