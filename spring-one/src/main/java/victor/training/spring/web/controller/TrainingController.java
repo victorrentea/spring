@@ -4,9 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.web.controller.dto.State.DRAFT;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
@@ -34,12 +37,13 @@ public class TrainingController {
 
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining( @Validated(DRAFT.class) @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
-
+// PUT /api/trainings/5     {id:5, name...}   << REST,   PhD Fielding (author HTTP 25 years before)
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+		dto.id = id;
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -50,25 +54,31 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+	@PreAuthorize("@authorizationService.checkLevel1()") // SpEL
 	public void deleteTrainingById(@PathVariable Long id) {
-		authService.checkLevel1();
+
+		// jurisdictions
+		// > john is a manager for NL customers,
+		// > jane manages BE customer
+//		authService.checkLevel1();
 
 		trainingService.deleteById(id);
 	}
 
 	// TODO GET or POST ?
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+	@PostMapping("search") // tradeoffs to be able to send criterria in the body of the POST
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
 	@Autowired
-	private AuthService authService;
+	private AuthorizationService authorizationService;
 }
 @Slf4j
 @Component
-class AuthService {
+class AuthorizationService { // >>> name = "authService"
 
-	public void checkLevel1() {
+	public boolean checkLevel1() {
 		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>)
 			SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -76,8 +86,6 @@ class AuthService {
 		String accessLevel = (String) otherClaims.get("DOB");
 		log.warn("Accessing using level " + accessLevel);
 
-		if (!accessLevel.equals("level-1")) {
-			throw new IllegalArgumentException("NOT ALLOWED");
-		}
+		return accessLevel.equals("level-1");
 	}
 }

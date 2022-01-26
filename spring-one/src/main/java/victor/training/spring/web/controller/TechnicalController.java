@@ -17,6 +17,7 @@ import victor.training.spring.web.service.UserService;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,10 +38,16 @@ public class TechnicalController {
 		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
 		dto.role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
 		dto.authorities = stripRolePrefix(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-//    // Optional:
-
 		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>)
 			SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		Map<String, Object> otherClaims = keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims();
+		String accessLevel = (String) otherClaims.get("DOB");
+		dto.accessLevel = accessLevel;
+//    // Optional:
+
+//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>)
+//			SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 //		keycloakToken.getKeycloakSecurityContext().getIdToken().
 		dto.username = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
