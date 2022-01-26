@@ -1,8 +1,10 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfoProps;
 import victor.training.spring.web.controller.dto.LoggedInUserDto;
@@ -66,8 +68,20 @@ public class TechnicalController {
 	}
 
 	// TODO [SEC] URL-pattern restriction: admin/**
-	@GetMapping("admin/launch")
+	}
+
+@RestController
+@RequestMapping("admin")
+@PreAuthorize("hasRole('ADMIN')")
+class AdminController {
+	@GetMapping("for-ms1")
+	public String forOurClientMS() {
+		return "What does this red button do?     ... [Missile Launched]";
+	}
+	// TODO [SEC] URL-pattern restriction: admin/**
+	@GetMapping("launch")
 	public String restart() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}
+
 }
