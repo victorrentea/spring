@@ -19,8 +19,10 @@ public class TrainingDto {
 	public String name;
 	public Long teacherId;
 	public String teacherName;
-//	@AccessibleFor("ADMIN") // >>>> implement an ASPECT around all methods of a @RestController and post-process the returned value
+//	@AccessibleFor("ADMIN") // >>>> implement an @Aspect around all methods of a @RestController and post-process the returned value
 	// traversing the graph of objects using reflection and NULL-in the fields that Should NOT be sent
+
+	///https://www.youtube.com/watch?v=HbbvyZh3IZo&list=PLggcOULvfLL_MfFS_O0MKQ5W_6oWWbIw5&index=5&t=1s
 	public String startDate;
 	public String description;
 

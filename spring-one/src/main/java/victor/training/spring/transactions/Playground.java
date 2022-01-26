@@ -30,7 +30,8 @@ public class Playground {
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-    public void transactionOne() {
+        @Transactional
+    protected void transactionOne() {
 //        em.lock(message, LockModeType.PESSIMISTIC_WRITE);
         // SELECT FOR UPDATE * FROM MESSAGE WHERE ID = 1; COMMIT/ROLLBACK
         repo.save(new Message("jpa"));
