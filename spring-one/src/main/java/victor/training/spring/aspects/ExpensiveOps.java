@@ -4,27 +4,50 @@ import org.apache.commons.io.FileUtils;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {
+
+}
+
 @Service
-public class ExpensiveOps {
+	@Logged
+public /*final*/ class ExpensiveOps {
 	private final static Logger log = LoggerFactory.getLogger(ExpensiveOps.class);
-	
+
 	private static final BigDecimal TWO = new BigDecimal("2");
 
+	@Autowired
+	private CacheManager cacheManager;
+
+	//	@Async
+//	@PreAuthorize
+//	@Valid
+//	@Validated
+//	@Transactional
+//	@Retry
+//	@Timed
 	@Cacheable("primes") // imagine Map<Integer, Boolean> // infinite set
 	// by default the @Cacheable stores data in memory, without any limit on size > out of memory is possible in case of arbitrary keys in an infinite domain
-	public Boolean isPrime(int n) {
+	public /*final*/ Boolean isPrime(int n) {
+//		if (cacheManager.getCache("primes").get(n);) reutrn
+
+		new RuntimeException().printStackTrace();
 		log.debug("Computing isPrime({})...", n);
 		BigDecimal number = new BigDecimal(n);
 		if (number.compareTo(TWO) <= 0) {
@@ -40,9 +63,24 @@ public class ExpensiveOps {
 				return false;
 			}
 		}
+//		cacheManager.getCache("primes").put
 		return true;
 	}
-	
+
+
+	@Autowired
+//	private ApplicationContext applicationContext;
+	private ExpensiveOps myselfProxied; // WTF ??!?!
+
+	public Boolean secondMethod(String param, int n) {
+//		ExpensiveOps myselfProxied = applicationContext.getBean(ExpensiveOps.class);
+		System.out.println("OUT " + param);
+		return myselfProxied.isPrime(n); // NEVER GOES THROUGH ANY PROXY
+	}
+
+
+
+
 	public String hashAllFiles(File folder) {
 		log.debug("Computing hashAllFiles({})...", folder);
 		try {
