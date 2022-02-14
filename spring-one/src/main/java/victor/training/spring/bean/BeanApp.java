@@ -6,7 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication // is a @Configuration itself.
 public class BeanApp implements CommandLineRunner {
@@ -19,37 +20,45 @@ public class BeanApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         conversation.start();
-        // TODO manage all with Spring
     }
 //    When there is more than one bean of the same class type, there was an identifier that can be places for the @Bean instance
 
     @Bean
     public Person john() {
+        System.out.println("CALLING john()");
         return new Person("John");
     }
     @Bean
     public Person jane() {
         return new Person("Jane");
     }
-
-
-//    @Autowired
-//    @Qualifier("john")
-//    Person personA;
-//    @Autowired
-//    @Qualifier("jane") // 2+ matches for this injection point.
-//    Person personB;
-//    @Bean
-//    public Conversation conversation(/*Person personA, Person personB*/) {
-//        return new Conversation(personA, personB);
-//    }
+    @Bean
+    public Conversation conversation() {
+        return new Conversation(john(), jane()); // how the heck ?!!!
+    }
+    @Bean
+    public Conversation conversation2() {
+        return new Conversation(john(), jane()); // how the heck ?!!!
+    }
 }
+
+// every @Configuration is subclassed by spring dynamically . HUH?!
+//class Hack extends     BeanApp {
+//    @Override
+//    public Person john() {
+//        if (this bean is alread creeated ) {return the same instance;}
+//         else {
+//            r = super.john();
+//            process @Autowired; @PostConsturt....
+//            add to list of singletons
+//            return r
+//        }
+//    }
+//}
 
 //  --------- without touching the code below -------------
 
-@Component
 @Data
 class Conversation {
     private final Person one;
@@ -72,6 +81,10 @@ class Person {
 
     public Person(String name) {
         this.name = name;
+    }
+    @PostConstruct
+    public void post() {
+        System.out.println("@PostConstruct");
     }
     public String sayHello() {
         return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
