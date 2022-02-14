@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -9,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,31 +37,33 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+//		exporter.export(Locale.ENGLISH);
+//		exporter.export(Locale.FRENCH);
+		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+		new Thread(()->exporter.export(Locale.FRENCH)).start();
+
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		labelService.load(locale);
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice();
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
+	private final LabelService labelService;
+
 	public void exportInvoice() {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
@@ -71,18 +73,17 @@ class InvoiceExporter {
 @Service
 class LabelService {
 	private final CountryRepo countryRepo;
-	
+
 	public LabelService(CountryRepo countryRepo) {
 		log.debug(this + ".new()");
 		this.countryRepo = countryRepo;
 	}
 
-	private Map<String, String> countryNames;
+	private Map<String, String> countryNames; // in a singleton, never keep request-specific data
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.debug(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
