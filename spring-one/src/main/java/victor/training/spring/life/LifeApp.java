@@ -74,7 +74,7 @@ class InvoiceExporter {
 @Slf4j
 @Service
 @Scope("prototype") // tells spring to create a new instance *every time it needs one*
-class LabelService {
+class LabelService { // labelService
 	private final CountryRepo countryRepo;
 
 	public LabelService(CountryRepo countryRepo) {
