@@ -53,7 +53,7 @@ class OrderExporter  {
 	private final ApplicationContext applicationContext;
 
 	public void export(Locale locale) {
-		LabelService labelService = applicationContext.getBean(LabelService.class);
+		LabelService labelService = applicationContext.getBean(LabelService.class); // THE safe way to geta prototype instance each call.
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
