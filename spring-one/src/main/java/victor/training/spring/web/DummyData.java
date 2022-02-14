@@ -18,6 +18,7 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+//@Profile("localdev")
 public class DummyData implements CommandLineRunner {
 	private final TrainingRepo trainingRepo;
 	private final TeacherRepo teacherRepo;

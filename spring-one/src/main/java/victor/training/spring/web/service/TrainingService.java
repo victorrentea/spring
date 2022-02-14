@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingDto.ValidationGroup.CreateFlow;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
+@Validated
 public class TrainingService {
     @Autowired
     private TrainingRepo trainingRepo;
@@ -66,7 +70,7 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
-    public void createTraining(TrainingDto dto) throws ParseException {
+    public void createTraining(@Valid @Validated(CreateFlow.class) TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }

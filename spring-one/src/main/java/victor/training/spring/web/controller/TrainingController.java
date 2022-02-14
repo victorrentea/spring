@@ -1,8 +1,10 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
+import victor.training.spring.web.controller.dto.TrainingDto.ValidationGroup.UpdateFlow;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
@@ -10,7 +12,7 @@ import java.text.ParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("trainings")
+@RequestMapping("api/trainings")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
@@ -32,7 +34,7 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id,@Validated(UpdateFlow.class) @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -47,7 +49,7 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	@PostMapping // for technical reasons
+	@PostMapping("search") // for technical reasons
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}

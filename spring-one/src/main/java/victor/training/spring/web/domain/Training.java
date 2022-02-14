@@ -12,6 +12,7 @@ public class Training {
 	@Id
 	@GeneratedValue
 	private Long id;
+//	@Size(min = 3)
 	private String name;
 	private String description;
 	private Date startDate;
