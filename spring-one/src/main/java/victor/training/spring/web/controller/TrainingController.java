@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/trainings")
+@RequestMapping("trainings")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
@@ -20,9 +20,9 @@ public class TrainingController {
 		return trainingService.getAllTrainings();
 	}
 
-	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
-		return trainingService.getTrainingById(id);
+	@GetMapping("{trainingId}")
+	public TrainingDto getTrainingById(@PathVariable Long trainingId) {
+		return trainingService.getTrainingById(trainingId);
 	}
 
 	// TODO @Valid
@@ -35,20 +35,20 @@ public class TrainingController {
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
-
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.delete'
 	// TODO The current user must manage the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
-	// TODO PermissionEvaluator [GEEK]
+	// TODO PermissionEvaluator
+
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	// TODO GET or POST ?
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+	@PostMapping // for technical reasons
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 }
