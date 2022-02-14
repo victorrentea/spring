@@ -7,7 +7,9 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -41,7 +43,6 @@ public class LifeApp implements CommandLineRunner{
 //		exporter.export(Locale.FRENCH);
 		new Thread(()->exporter.export(Locale.ENGLISH)).start();
 		new Thread(()->exporter.export(Locale.FRENCH)).start();
-
 	}
 }
 @RequiredArgsConstructor
@@ -49,28 +50,28 @@ public class LifeApp implements CommandLineRunner{
 @Service
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+	private final ApplicationContext applicationContext;
 
 	public void export(Locale locale) {
+		LabelService labelService = applicationContext.getBean(LabelService.class);
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @RequiredArgsConstructor
 @Slf4j
 @Service
 class InvoiceExporter {
-	private final LabelService labelService;
-
-	public void exportInvoice() {
+	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
 @Slf4j
 @Service
+@Scope("prototype") // tells spring to create a new instance *every time it needs one*
 class LabelService {
 	private final CountryRepo countryRepo;
 
