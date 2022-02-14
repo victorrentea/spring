@@ -60,6 +60,10 @@ public class FirstApplication implements CommandLineRunner{
 class X {
 	private final Y y;
 
+//	@Value("${prop}")
+//	private String prop;
+
+
 	public int prod() {
 		return 1 + y.prod();
 	}

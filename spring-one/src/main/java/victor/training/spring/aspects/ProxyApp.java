@@ -19,7 +19,6 @@ import java.util.Arrays;
 @EnableCaching (order = 10)
 @SpringBootApplication
 @Slf4j
-// [RO] "Viata e complexa si are multe aspecte" - Cel mai iubit dintre pamanteni. Spring e viata. :)
 public class ProxyApp implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(ProxyApp.class, args);

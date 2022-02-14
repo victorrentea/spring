@@ -1,5 +1,7 @@
 package victor.training.spring.web.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
