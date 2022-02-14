@@ -41,8 +41,8 @@ public class LifeApp implements CommandLineRunner{
 	public void run(String... args) {
 //		exporter.export(Locale.ENGLISH);
 //		exporter.export(Locale.FRENCH);
-		new Thread(()->exporter.export(Locale.ENGLISH)).start();
-		new Thread(()->exporter.export(Locale.FRENCH)).start();
+//		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+//		new Thread(()->exporter.export(Locale.FRENCH)).start();
 	}
 }
 @RequiredArgsConstructor
@@ -57,12 +57,14 @@ class OrderExporter  {
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO"));
+
+//		InvoiceExporter invoiceExporter = applicationContext.getBean(InvoiceExporter.class); // BAD : hard to test, risky as the existence of that bean is checked only at runtime. not at startup.
 		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @RequiredArgsConstructor
 @Slf4j
-@Service
+//@Service
 class InvoiceExporter {
 	public void exportInvoice(LabelService labelService) {
 		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
