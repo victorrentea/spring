@@ -1,7 +1,6 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +11,8 @@ import javax.persistence.EntityManager;
 public class Playground {
     private final MessageRepo repo;
     private final EntityManager em;
-    private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-//    @Transactional
     public void transactionOne() {
         repo.save(new Message("Ok"));
         // there is a @Transactional inside the save() above that is commited separately from the save() below
