@@ -18,7 +18,7 @@ public class Playground {
     private final EntityManager em;
     private final AnotherClass other;
 
-    @Transactional
+//    @Transactional
     public void transactionOne() {
         repo.save(new Message("Ok"));
 //        repo.flush(); // bad practice. Instead, go through JPA and it will auto-flush, as belo
