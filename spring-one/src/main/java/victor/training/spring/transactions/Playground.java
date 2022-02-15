@@ -2,6 +2,7 @@ package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -19,13 +20,10 @@ public class Playground {
         try {
             other.bigNastyLogic();
         } catch (Exception e) {
-            repo.save(new Message("ERROR: " + e));
+            other.persistError(e);
         }
         System.out.println("End of method. The inserts happen AFTER this line.");
     }
-
-
-
     @Transactional
     public void transactionTwo() {
         // TODO Repo API
@@ -39,7 +37,16 @@ public class Playground {
 class AnotherClass {
     private final MessageRepo repo;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistError(Exception e) {
+        repo.save(new Message("ERROR: " + e));
+    }
+
+    @Transactional
     public void bigNastyLogic() {
-        throw new RuntimeException("BUM!");
+        repo.save(new Message("Stuff1"));
+        repo.save(new Message("Stuff2"));
+
+        if (true) throw new RuntimeException("BUM!");
     }
 }
