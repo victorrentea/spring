@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +27,10 @@ public class TechnicalController {
 		LoggedInUserDto dto = new LoggedInUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		dto.username = username;
-
-
-
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
+		dto.username = authentication.getName();
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
