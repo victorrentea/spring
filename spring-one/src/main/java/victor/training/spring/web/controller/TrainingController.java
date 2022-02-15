@@ -36,7 +36,8 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
-	@PreAuthorize("hasRole('ADMIN')") // the best
+//	@PreAuthorize("hasRole('ADMIN')") // the best
+	@PreAuthorize("hasRole('training.edit')")
 	public void updateTraining(@PathVariable Long id,@Validated(UpdateFlow.class) @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
@@ -51,7 +52,7 @@ public class TrainingController {
 
 //	@PreAuthorize("hasRole('ADMIN')") // the best
 //	@PreAuthorize("hasAnyRole('ADMIN', 'POWER_USER', 'SUPERWOMAN')") // the weakness of the role-based authorization >
-	@PreAuthorize("hasAuthority('training.delete')") // the weakness of the role-based authorization >
+	@PreAuthorize("hasRole('training.delete')") // the weakness of the role-based authorization >
 	// DRY violation : repeat this list in the ui button
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {

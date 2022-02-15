@@ -107,9 +107,14 @@ function fillTable(trainings) {
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
 
-		// if (currentUser.authorities.includes('training.edit'))
 		// if (['ROLE_ADMIN', 'ROLE_POWER_USER','ROLE_SUPERWOMAN'].includes(currentUser.role))
+
+
+
+		// if (currentUser.authorities.includes('training.edit'))
 			row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
+
+
 		if (currentUser.authorities.includes('training.delete'))
 		// if (currentUser.role === 'ROLE_ADMIN')
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
