@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -15,11 +16,22 @@ import java.util.Collections;
 public class TechnicalController {
 	private final UserService userService;
 
+
+//	public void methodInARepo() {
+//		System.out.println("INSERT INTO .... CREATED_BY = " + username);
+//	}
+
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		LoggedInUserDto dto = new LoggedInUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		dto.username = username;
+
+
+
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 

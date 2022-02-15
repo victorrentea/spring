@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/trainings")
+//@PreAuthorize("hasRole('ADMIN')")
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
@@ -44,8 +45,11 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
+//	@RolesAllowed("ROLE_ADMIN")
+//@PreAuthorize("hasRole('ADMIN')") // the best
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
+//		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities())
 		trainingService.deleteById(id);
 	}
 
