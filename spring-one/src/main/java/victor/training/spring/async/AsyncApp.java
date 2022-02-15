@@ -63,13 +63,11 @@ private ThreadPoolTaskExecutor pool;
 	public List<Object> drink() throws Exception {
 		log.debug("Submitting my order");
 
-		//
-
 		Future<Beer> futureBeer = pool.submit(() -> barman.getOneBeer());
 		Future<Vodka> futureVodka = pool.submit(() -> barman.getOneVodka());
 
-		Beer beer = futureBeer.get();
-		Vodka vodka = futureVodka.get();
+		Beer beer = futureBeer.get(); // how much time is the HTTP thread blocked here ? 1s
+		Vodka vodka = futureVodka.get(); // how much time is the HTTP thread blocked here ? 0s
 
 		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
 		return List.of(beer,vodka);
