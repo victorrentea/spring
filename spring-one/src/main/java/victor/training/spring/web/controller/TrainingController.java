@@ -29,6 +29,9 @@ public class TrainingController {
 		return trainingService.getTrainingById(trainingId);
 	}
 
+
+	///But as we see from the example - the resources are not there yet - the pouring is happening after the drinker gets the drinks . Is the ComputableFuture query returned with the computed drinks after all, or the data for the drinks themselves is returned in a secondary sent response?
+
 	// TODO @Valid
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
@@ -38,8 +41,6 @@ public class TrainingController {
 	@PutMapping("{id}")
 //	@PreAuthorize("hasRole('ADMIN')") // the best
 	@PreAuthorize("hasRole('training.edit')")
-
-
 	public void updateTraining(@PathVariable Long id,@Validated(UpdateFlow.class) @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}

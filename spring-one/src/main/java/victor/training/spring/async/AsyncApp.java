@@ -84,6 +84,22 @@ class Drinker {
 		log.debug("Got my order! ");
 		return futureDilly;
 	}
+
+//	public void method(HttpServletRequest request) {
+//		AsyncContext asyncContext = request.startAsync();
+//
+//// after this line, returning from this endpoint does NOT mean the response is ready and sent  to the client
+//		// the TCPIP conncetion remains open.
+//
+//
+//	// later, from another thread.
+//		asyncContext.getResponse().getWriter().write("STUFF");
+//		asyncContext.complete(); // flush and close the connection
+//
+//	}
+
+
+
 }
 
 @Data
