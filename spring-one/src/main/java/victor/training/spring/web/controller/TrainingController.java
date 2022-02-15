@@ -1,8 +1,10 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -70,32 +72,38 @@ public class TrainingController {
 	// ACL - Access COntrol LIst
 
 	public void deleteTrainingById(@PathVariable Long id) {
-		Training training = trainingRepo.findById(id).get();
-		Long teacherId = training.getTeacher().getId();
-
-		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		// option 1: the token might say that this user is in charge of REGION EMEA.
-		// option 2: search in my database what are the teachers for the username, in a USER table.
-		// 		< there is an endpoint to grant a user access to a teacher.
-
-		User user = userRepo.getForLogin(currentUsername).get();
-
-		if (!user.getManagedTeacherIds().contains(teacherId)) {
-			throw new IllegalArgumentException("NOT ALLOWED");
-		}
+		permissionManager.checkCanManageTraining(id);
 
 		trainingService.deleteById(id);
 	}
 
 	@Autowired
-	private TrainingRepo trainingRepo;
-	@Autowired
-	private UserRepo userRepo;
+	private PermissionManager permissionManager;
 
 
 	@PostMapping("search") // for technical reasons
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+}
+
+@RequiredArgsConstructor
+@Component
+class PermissionManager {
+	private final TrainingRepo trainingRepo;
+	private final UserRepo userRepo;
+
+	public void checkCanManageTraining(Long trainingId) {
+		Training training = trainingRepo.findById(trainingId).get();
+		Long teacherId = training.getTeacher().getId();
+
+		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		User user = userRepo.getForLogin(currentUsername).get();
+
+		if (!user.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("NOT ALLOWED");
+		}
+	}
+
 }
