@@ -17,6 +17,9 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
+        Message first = new Message("First");
+        repo.save(first);
+        System.out.println("Should be assigned : " + first.getId());
         repo.save(new Message(null));// when using JPA , any persist/merge
         // will only write into a WRITE CACHE = PersistenceContext that will be sent to DB over JDBC just at the end on the Tx.
         jdbc.update("insert into MESSAGE(id, message) values ( 100, ?)", "ALO");

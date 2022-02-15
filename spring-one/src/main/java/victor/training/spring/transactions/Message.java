@@ -20,6 +20,10 @@ public class Message {
         this.message = message;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
