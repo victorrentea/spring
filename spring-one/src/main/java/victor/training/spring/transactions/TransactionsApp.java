@@ -1,13 +1,11 @@
 package victor.training.spring.transactions;
 
 import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@MapperScan("victor.training.spring.transactions")
 
 @SpringBootApplication
 @EnableJpaRepositories

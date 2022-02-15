@@ -17,20 +17,9 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-
-        // level 1 plain JDBC
-//        Connection connection;
-//        connection.prepareStatement("")
-
-        // level 2 JDBCTemplate for direct SQL but helped by Spring
+        repo.save(new Message(null));// when using JPA , any persist/merge
+        // will only write into a WRITE CACHE = PersistenceContext that will be sent to DB over JDBC just at the end on the Tx.
         jdbc.update("insert into MESSAGE(id, message) values ( 100, ?)", "ALO");
-
-        // level 3 builds on Level1 ; Entity Manager = Session (hibernate)
-        // em.createNativeQuery("insert into MESSAGE(id, message) values ( 100, ?)") // bad practice when using JPA
-//        em.persist(new Message("plain JPA"));
-
-        // level 4 (on top of 3) = Spring Data
-        repo.save(new Message("jpa"));
     }
     @Transactional
     public void transactionTwo() {
