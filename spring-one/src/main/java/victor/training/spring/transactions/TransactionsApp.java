@@ -15,13 +15,18 @@ public class TransactionsApp implements CommandLineRunner {
         new SpringApplicationBuilder(TransactionsApp.class).profiles("spa").run(args);
     }
     private final Playground playground;
+    private final PlaygroundLazy playgroundLazy;
 
     @Override
     public void run(String... args) throws Exception {
+
+        playgroundLazy.transactionOne();
+        playgroundLazy.transactionTwo();
+
         System.out.println("============= TRANSACTION ONE ==============");
-//        playground.transactionOne();
+        playground.transactionOne();
         System.out.println("============= TRANSACTION TWO ==============");
-        playground.transactionTwo();
+//        playground.transactionTwo();
         System.out.println("============= END ==============");
     }
 }

@@ -1,9 +1,8 @@
 package victor.training.spring.transactions;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Message {
@@ -12,6 +11,18 @@ public class Message {
     private Long id;
     @Column(nullable = false)
     private String message;
+
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public Message addTag(String tag) {
+        tags.add(tag);
+        return this;
+    }
 
     private Message() { // for hibernate only
     }
