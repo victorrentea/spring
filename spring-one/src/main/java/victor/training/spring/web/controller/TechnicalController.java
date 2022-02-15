@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,10 @@ import victor.training.spring.web.controller.dto.LoggedInUserDto;
 import victor.training.spring.web.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,14 +33,14 @@ public class TechnicalController {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		dto.username = authentication.getName();
-		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
-
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		dto.username = authentication.getName();
 //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-//		dto.authorities = stripRolePrefix(authentication.getAuthorities());
+//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		dto.username = authentication.getName();
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 //    // Optional:
 //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
@@ -44,11 +48,11 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
-//		return authorities.stream()
-//			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
-//			.collect(toList());
-//	}
+	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+		return authorities.stream()
+			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
+			.collect(toList());
+	}
 
 	// TODO propagate current user on thread over @Async calls?
 	@PostConstruct

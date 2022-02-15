@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum UserRole {
-    USER("training.search", "training.edit"),
+    USER("training.search"),
     ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit");
     private final Set<String> authorities;
 
