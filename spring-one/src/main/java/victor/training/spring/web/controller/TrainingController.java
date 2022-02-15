@@ -1,19 +1,12 @@
 package victor.training.spring.web.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingDto.ValidationGroup.UpdateFlow;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.domain.Training;
-import victor.training.spring.web.domain.User;
-import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -65,21 +58,18 @@ public class TrainingController {
 
 //	@PreAuthorize("hasRole('ADMIN')") // the best
 //	@PreAuthorize("hasAnyRole('ADMIN', 'POWER_USER', 'SUPERWOMAN')") // the weakness of the role-based authorization >
-	@PreAuthorize("hasRole('training.delete')") // the weakness of the role-based authorization >
+	@PreAuthorize("hasRole('training.delete') and @permissionManager.checkCanManageTraining(#id)") // the weakness of the role-based authorization >
+//	@PreAuthorize("@permissionManager.canDeleteTraining(#id)") // the weakness of the role-based authorization >
 	// DRY violation : repeat this list in the ui button
+//	@PreAuthorize("hasPermission(#id, 'TRAINING', 'DELETE')") // delgate to a
 	@DeleteMapping("{id}")
 
+//	@PreAuthorize("hasRole('training.delete') and @permissionManager.checkCanManageTraining(#id)") // the weakness of the role-based authorization >
 	// ACL - Access COntrol LIst
 
 	public void deleteTrainingById(@PathVariable Long id) {
-		permissionManager.checkCanManageTraining(id);
-
 		trainingService.deleteById(id);
 	}
-
-	@Autowired
-	private PermissionManager permissionManager;
-
 
 	@PostMapping("search") // for technical reasons
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
@@ -87,23 +77,3 @@ public class TrainingController {
 	}
 }
 
-@RequiredArgsConstructor
-@Component
-class PermissionManager {
-	private final TrainingRepo trainingRepo;
-	private final UserRepo userRepo;
-
-	public void checkCanManageTraining(Long trainingId) {
-		Training training = trainingRepo.findById(trainingId).get();
-		Long teacherId = training.getTeacher().getId();
-
-		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		User user = userRepo.getForLogin(currentUsername).get();
-
-		if (!user.getManagedTeacherIds().contains(teacherId)) {
-			throw new IllegalArgumentException("NOT ALLOWED");
-		}
-	}
-
-}
