@@ -15,14 +15,11 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final AnotherClass other;
 
-    @Transactional
+//    @Transactional
     public void transactionOne() {
-        Message first = new Message("First");
-        repo.save(first);
-        System.out.println("Should be assigned : " + first.getId());
-        repo.save(new Message(null));// when using JPA , any persist/merge
-        // will only write into a WRITE CACHE = PersistenceContext that will be sent to DB over JDBC just at the end on the Tx.
-        jdbc.update("insert into MESSAGE(id, message) values ( 100, ?)", "ALO");
+        repo.save(new Message("Ok"));
+        // there is a @Transactional inside the save() above that is commited separately from the save() below
+        repo.save(new Message(null));
     }
     @Transactional
     public void transactionTwo() {
