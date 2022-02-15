@@ -56,15 +56,14 @@ public class Playground {
 
     @Transactional
     public void transactionTwo() {
-        // TODO Repo API
-        // TODO @NonNullApi
-
-        // So if a new transaction is opened in a class "instance"
-        // where a transaction already exists,
-        // no other transaction will be created -
-        //
-        // is it because of the relation of a transaction to a thread?
+        repo.save(new Message("Ok"));
+        localMethod();
     }
+
+    private void localMethod() {
+        repo.save(new Message(null));
+    }
+
 }
 
 
