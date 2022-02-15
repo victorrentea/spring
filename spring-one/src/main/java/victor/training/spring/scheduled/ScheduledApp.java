@@ -27,6 +27,11 @@ public class ScheduledApp  {
         log.debug("DONE");
     }
 
+    // it might be smarter instead of @Scheduled inside your app, to expose aaREST endpoint (accessible for localhost only)
+    // and hit it from a crontab * * * * *  curl localhost:8080/start-job1
+    // you can then ssh and curl to start it manually.
+
+
     // TODO 2 define another task at each second. This should not block.
     // TODO explore application.properties (thread #)
     public void pollFast() {
