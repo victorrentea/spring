@@ -19,7 +19,7 @@ public class PlaygroundLazy {
         Message message = repo.findById(messageId).get();
         System.out.println("Loaded from DB");
 
-        System.out.println(message.getTags());
+        System.out.println(message);
     }
 
 }
