@@ -13,11 +13,19 @@ public class Playground {
     private final EntityManager em;
     private final AnotherClass other;
 
+    @Transactional
     public void transactionOne() {
         repo.save(new Message("Ok"));
-        // there is a @Transactional inside the save() above that is commited separately from the save() below
-        repo.save(new Message(null));
+        try {
+            other.bigNastyLogic();
+        } catch (Exception e) {
+            repo.save(new Message("ERROR: " + e));
+        }
+        System.out.println("End of method. The inserts happen AFTER this line.");
     }
+
+
+
     @Transactional
     public void transactionTwo() {
         // TODO Repo API
@@ -30,4 +38,8 @@ public class Playground {
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
+
+    public void bigNastyLogic() {
+        throw new RuntimeException("BUM!");
+    }
 }
