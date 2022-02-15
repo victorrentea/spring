@@ -2,11 +2,16 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingDto.ValidationGroup.UpdateFlow;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.domain.Training;
+import victor.training.spring.web.domain.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -38,6 +43,8 @@ public class TrainingController {
 	@PutMapping("{id}")
 //	@PreAuthorize("hasRole('ADMIN')") // the best
 	@PreAuthorize("hasRole('training.edit')")
+
+
 	public void updateTraining(@PathVariable Long id,@Validated(UpdateFlow.class) @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
@@ -45,6 +52,10 @@ public class TrainingController {
 	// TODO Allow for authority 'training.delete'
 	// TODO The current user must manage the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
+
+	// DaTA-security: you are not allowed to delete a training unless you are a manager for the trainer doing the training
+
+
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
@@ -55,10 +66,33 @@ public class TrainingController {
 	@PreAuthorize("hasRole('training.delete')") // the weakness of the role-based authorization >
 	// DRY violation : repeat this list in the ui button
 	@DeleteMapping("{id}")
+
+	// ACL - Access COntrol LIst
+
 	public void deleteTrainingById(@PathVariable Long id) {
-//		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities())
+		Training training = trainingRepo.findById(id).get();
+		Long teacherId = training.getTeacher().getId();
+
+		String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		// option 1: the token might say that this user is in charge of REGION EMEA.
+		// option 2: search in my database what are the teachers for the username, in a USER table.
+		// 		< there is an endpoint to grant a user access to a teacher.
+
+		User user = userRepo.getForLogin(currentUsername).get();
+
+		if (!user.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("NOT ALLOWED");
+		}
+
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	private TrainingRepo trainingRepo;
+	@Autowired
+	private UserRepo userRepo;
+
 
 	@PostMapping("search") // for technical reasons
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
