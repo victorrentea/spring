@@ -22,7 +22,9 @@ public class TrainingDto {
 	public String name;
 	public Long teacherId;
 	public String teacherName;
+	@NotNull(message = "start.date")
 	public String startDate;
+	@NotNull
 	public String description;
 }
 
