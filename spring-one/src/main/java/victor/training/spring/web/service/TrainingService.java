@@ -48,10 +48,10 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+        Training training = trainingRepo.findById(id).get();
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
         training.setDescription(dto.description);
         // TODO implement date not in the past. i18n

@@ -1,8 +1,6 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +11,6 @@ import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("api/trainings")
@@ -28,12 +25,8 @@ public class TrainingController {
 	}
 
 	@GetMapping("{trainingId}")
-	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long trainingId) {
-		try {
-			return ResponseEntity.ok(trainingService.getTrainingById(trainingId));
-		} catch (NoSuchElementException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+	public TrainingDto getTrainingById(@PathVariable Long trainingId) {
+		return trainingService.getTrainingById(trainingId);
 	}
 
 
@@ -44,6 +37,8 @@ public class TrainingController {
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
+
+
 
 	@PutMapping("{id}")
 //	@PreAuthorize("hasRole('ADMIN')") // the best
