@@ -18,9 +18,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Override
    protected void configure(HttpSecurity http) throws Exception {
       http
+//          .addFilter(new Filter() { // web.xml <filter> - servlet filter
+//             @Override
+//             public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+//                HttpServletResponse r = (HttpServletResponse) response;
+//                r.addHeader();
+//             }
+//          })
           .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
           .authorizeRequests()
 
+//               .mvcMatchers("/actuator").hasRole("TECH_ROLE") // @PreAuthorize on the class level
 //               .mvcMatchers("/api/admin/**").hasRole("ADMIN") // @PreAuthorize on the class level
 //               .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN") // bad practice, risky.
                .anyRequest().authenticated()
