@@ -41,7 +41,9 @@ public class TrainingService {
     }
 
     public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+        return mapToDto(trainingRepo.findById(id).get()
+//            .orElseThrow(() -> new NotFoundException)
+        );
     }
 
     // TODO Test this!

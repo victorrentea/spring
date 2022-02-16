@@ -2,8 +2,6 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,8 +49,8 @@ public class TechnicalController {
 		Object principalOpaqueObject = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		//actual type depends on the underlying authentication strategy. (token, basic, api token ..)
 
-		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken = (KeycloakPrincipal<KeycloakSecurityContext>) principalOpaqueObject;
-		log.info("Extra data about the user from the token : " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken = (KeycloakPrincipal<KeycloakSecurityContext>) principalOpaqueObject;
+//		log.info("Extra data about the user from the token : " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
 		return dto;
 	}
 
