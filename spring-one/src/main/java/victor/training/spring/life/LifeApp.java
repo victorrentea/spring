@@ -1,15 +1,18 @@
 package victor.training.spring.life;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,52 +40,61 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+		new Thread(()->exporter.export(Locale.FRENCH)).start();
 	}
 }
 @Slf4j
 @Service
+//abstract
 class OrderExporter  {
+//	@Autowired
+//	private LabelService labelService;
+
+	// bad practice because it allows you fetch other things
+//	@Autowired
+//	private ApplicationContext applicationContext;
+
+	// more focused dependencies << USE THIS
 	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private ObjectFactory<LabelService> labelServiceObjectFactory;
+
+//	@Lookup
+//	public abstract LabelService getLabelService() ; // don't use, too magic !
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
+		LabelService labelService = labelServiceObjectFactory.getObject();  // ask for one
+//		LabelService labelService = getLabelService();  // ask for one
+		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
-	}
-}
-@Slf4j
-@Service
-class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
-	public void exportInvoice() {
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
-@Slf4j
+// SINGLETONS SHALL NOT HAVE STATE related to current request
+// >> because then a RACE CONDITION will appear in a multithredead env (like handlin Web requests)
+
 @Service
+@Scope(value = "prototype"/*proxyMode = ScopedProxyMode.TARGET_CLASS*/) // spring will create a NEW instance every time it needs to give you one.
+//other lifecycles than the defaulT(singleton):
+// - prototype : you need multiple instances of the same type
+// - request : one instance exists PER HTTP REQUEST
+// - session: one instance exists PER HTTP SESSION, but REST is stateless.
 class LabelService {
-	private final CountryRepo countryRepo;
-	
+	private static final Logger log = LoggerFactory.getLogger(LabelService.class);
+	private final CountryRepo countryRepo; // pointing to another stateLESS class is NOT state.
+
 	public LabelService(CountryRepo countryRepo) {
 		log.debug(this + ".new()");
 		this.countryRepo = countryRepo;
 	}
 
-	private Map<String, String> countryNames;
+	private Map<String, String> countryNames; // state in singleton
 
-	@PostConstruct
-	public void load() {
+//	@PostConstruct
+	public void load(Locale locale) {
 		log.debug(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
