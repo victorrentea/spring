@@ -1,9 +1,11 @@
 package victor.training.spring.bean;
 
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -11,17 +13,58 @@ public class BeanApp implements CommandLineRunner {
         SpringApplication.run(BeanApp.class);
     }
 
+    @Autowired
+    private Conversation conversation;
+
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         conversation.start();
-        // TODO manage all with Spring
-
-        // TODO alternative: "Mirabela Dauer" story :)
+    }
+}
+@Configuration
+class MyConfig {
+    @Bean
+    public Person john() {
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
+    }
+    @Bean // also singleton be default
+    public Conversation conversation() {
+        System.out.println("Dinner time");
+        return new Conversation(john(), jane());
+    }
+    @Bean // also singleton be default
+    public Conversation monologueInBathroom() { // name of the bean =  "monologueInBathroom"
+        System.out.println("Shower time");
+        return new Conversation(john(), john()); // calls to john() don't really go to line :27. Instead
+        // instead they are captured by Spring somehow
+    }
+    @Bean // also singleton be default
+//    public Conversation chatInCar(@Qualifier("john") Person one,@Qualifier("jane")  Person two) { // also works, but more clutter
+    public Conversation chatInCar(Person john, Person jane) { // simpler.
+        System.out.println("In car");
+        return new Conversation(john, jane);
     }
 }
 
-@Data
+//class RuntimeSubclass extends MyConfig {
+//    @Override
+//    public Person john() {
+//    @Override
+//    public Person john() {
+//    @Override
+//    public Person john() {
+//        if john is already created, retrun from cache
+//        return super.john();
+//    }
+//}
+// spring never instantiates MyConfig directly, but only new RuntimeSubclass()
+//===================================================
+// YOU ARE NOT ALLOWED TO CHANGE CODE BELOW (JAR)
+
 class Conversation {
     private final Person one;
     private final Person two;
@@ -35,15 +78,21 @@ class Conversation {
         System.out.println(one.sayHello());
         System.out.println(two.sayHello());
     }
+
+    public String toString() {
+        return "Conversation(one=" + this.one + ", two=" + this.two + ")";
+    }
 }
 
-
+// you need more than 1 instance of a class, but differently configured
 class Person {
     private final String name;
 
     public Person(String name) {
+        System.out.println( name + " is oborn");
         this.name = name;
     }
+
     public String sayHello() {
         return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
     }

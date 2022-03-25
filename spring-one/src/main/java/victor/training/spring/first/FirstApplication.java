@@ -39,8 +39,7 @@ public class FirstApplication implements CommandLineRunner{
 //		System.out.println(x.prod());
 	}
 }
-
-@RestController
+@RestController// ==> "xLikeInEnterprise" bean name
 class X {
 	// field injection
 //	@Autowired
