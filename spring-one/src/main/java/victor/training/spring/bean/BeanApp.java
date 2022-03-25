@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +17,18 @@ public class BeanApp implements CommandLineRunner {
     @Autowired
     private Conversation conversation;
 
+    @Value("#{john.name}") // SpEL
+    private String johnName;
+//    @Autowired
+//    public void setJohnName(Person john) {
+//        this.johnName = john.getName();
+//    }
+
     @Override
     public void run(String... args) throws Exception {
         conversation.start();
+        System.out.println("name : " + johnName);
+
     }
 }
 @Configuration
@@ -91,6 +101,10 @@ class Person {
     public Person(String name) {
         System.out.println( name + " is oborn");
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String sayHello() {
