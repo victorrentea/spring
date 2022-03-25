@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -69,8 +70,10 @@ class X {
 class Y {
 	private final Z z;
 	// constructor injection (no @Autowired needed since Spring 4.3)
-	public Y(Z z) {
+	public Y(Z z, @Value("${welcome.welcome-message}") String m) {
 		this.z = z;
+		//everything you need is here.
+		// @PostConstruct is an anti-pattern if using constructor-based injection as we USUALLY do.
 	}
 //	@Autowired
 //	private Z z;

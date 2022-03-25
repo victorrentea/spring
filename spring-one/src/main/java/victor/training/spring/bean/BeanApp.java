@@ -42,8 +42,8 @@ class MyConfig {
         return new Person("Jane");
     }
     @Bean // also singleton be default
-    public Conversation conversation() {
-        System.out.println("Dinner time");
+    public Conversation conversation(@Value("${john.name}") String name) {
+        System.out.println("Dinner time : " + name);
         return new Conversation(john(), jane());
     }
     @Bean // also singleton be default

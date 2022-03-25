@@ -107,7 +107,7 @@
         <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-4web</artifactId>
         </dependency>
         <!--Validation-->
         <dependency>
