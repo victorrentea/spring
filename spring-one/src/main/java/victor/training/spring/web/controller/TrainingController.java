@@ -9,6 +9,7 @@ import victor.training.spring.web.service.TrainingService;
 import java.text.ParseException;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -21,7 +22,7 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
+	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
 		return trainingService.getTrainingById(id);
 	}
 
