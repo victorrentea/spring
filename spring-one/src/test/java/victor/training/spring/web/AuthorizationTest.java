@@ -43,3 +43,16 @@
 //    }
 //
 //}
+
+
+//@RegisterExtension(YourOwn.class)
+//@SpringBootTest
+//class X {
+//   @RegEx
+//   @Test
+//   public void method() {
+//      start tst container
+//      get the vault url
+//      SpringApplication.run()
+//   }
+//}

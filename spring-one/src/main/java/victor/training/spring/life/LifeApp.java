@@ -44,6 +44,7 @@ public class LifeApp implements CommandLineRunner{
 		new Thread(()->exporter.export(Locale.FRENCH)).start();
 	}
 }
+
 @Slf4j
 @Service
 //abstract

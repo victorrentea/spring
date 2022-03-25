@@ -7,6 +7,9 @@ import org.springframework.core.env.Environment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+
+
 @Slf4j
 public class TestDBConnection implements ApplicationListener<ApplicationContextInitializedEvent> {
    public static void assertCanConnectToDB(Environment env) {
