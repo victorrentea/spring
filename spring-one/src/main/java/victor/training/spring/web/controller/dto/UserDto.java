@@ -7,6 +7,7 @@ public class UserDto {
    public Long id;
    public String name;
    public UserRole profile;
+//   public String lastChangeAuthor;
 
    public UserDto() {
    }

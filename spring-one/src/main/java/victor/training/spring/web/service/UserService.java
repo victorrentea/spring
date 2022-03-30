@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,16 @@ import victor.training.spring.web.repo.UserRepo;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Logged
 public class UserService  {
     private final UserRepo userRepo;
 
 
-    // getCountries getWarehouse
+//    @Cacheable("warehouse")
+//    public List<String> getAllWarehouses() {
+//        return repo.find();
+//    }
+
     @Cacheable("user-count")
     public long countUsers() {
         return userRepo.count();
@@ -55,10 +61,12 @@ public class UserService  {
         return new UserDto(userRepo.findById(id).get());
     }
 
-    public void updateUser(long id, String newName) {
-        // TODO 6 update profile too -> pass Dto
+//    @CacheEvict(value = "user-data", key = "#id")
+    @CachePut(value = "user-data", key = "#id")
+    public UserDto updateUser(long id, String newName) {
         User user = userRepo.findById(id).get();
         user.setName(newName);
+        return new UserDto(user);
     }
 
 
