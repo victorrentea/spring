@@ -31,15 +31,18 @@ public class Playground {
         System.out.println("End of method");
     }
 
-
+    @Transactional(readOnly = true) // ignored by JDBCtemplate.
     public void transactionTwo() {
         // now works in autocommit mode
         jdbc.update("insert into MESSAGE(id, message) values ( 601,'null')");
+        jdbc.update("insert into MESSAGE(id, message) values ( 602,'null')");
+        System.out.println("END Of method ?");
         // row is commited in DB.💗
     }
 }
 
 
+@Transactional
 @Service
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
