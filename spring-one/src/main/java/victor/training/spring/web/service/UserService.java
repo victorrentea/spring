@@ -51,7 +51,7 @@ public class UserService  {
 
 //    @CacheEvict("user-count")
     public void createUser() {
-        cacheManager.getCache("user-count").clear();
+        cacheManager.getCache("user-count").clear(); // programatic alternative to annotation.
         userRepo.save(new User("John-" + System.currentTimeMillis()));
     }
 
@@ -63,9 +63,11 @@ public class UserService  {
 
 //    @CacheEvict(value = "user-data", key = "#id")
     @CachePut(value = "user-data", key = "#id")
+    @Transactional
     public UserDto updateUser(long id, String newName) {
         User user = userRepo.findById(id).get();
-        user.setName(newName);
+        user.setName(null);
+//userRepo.save
         return new UserDto(user);
     }
 

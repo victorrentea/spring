@@ -11,6 +11,7 @@ public class User {
     @GeneratedValue
     private Long id;
     private String username;
+    @Column(nullable = false)
     private String name;
     @Enumerated(EnumType.STRING)
     private UserRole role;

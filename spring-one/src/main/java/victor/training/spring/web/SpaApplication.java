@@ -3,11 +3,14 @@ package victor.training.spring.web;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.web.controller.util.TestDBConnection;
 
-@EnableCaching
+@EnableCaching(order = 2)
 @EnableSwagger2
+
+@EnableTransactionManagement(order = 3)
 @SpringBootApplication
 public class SpaApplication {
 
