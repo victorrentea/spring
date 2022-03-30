@@ -41,12 +41,6 @@ public class ProxyApp implements CommandLineRunner {
 		log.debug("10000169 is prime ? ");
 		log.debug("Got: " + ops.isPrime(10000169) + "\n");
 		
-		log.debug("---- I/O Intensive ~ \"There are only two things hard in programming...\"");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
-		log.debug("Folder . MD5: ");
-		log.debug("Got: " + ops.hashAllFiles(new File(".")) + "\n");
 	}
 }
 
