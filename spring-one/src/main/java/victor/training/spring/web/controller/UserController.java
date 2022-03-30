@@ -20,6 +20,10 @@ public class UserController {
     public void create() {
         service.createUser();
     }
+    @GetMapping("users/create/many")
+    public void createMany() {
+        service.createManyUser();
+    }
 
     @GetMapping("users/{id}")
     public UserDto get(@PathVariable long id) {
