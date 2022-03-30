@@ -46,7 +46,7 @@ class AnotherClass {
     private final MessageRepo repo;
     private final JdbcTemplate jdbc;
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+//    @Transactional(propagation = Propagation.SUPPORTS)
     public void stuff() {
         throw new RuntimeException("BUM");
     }
