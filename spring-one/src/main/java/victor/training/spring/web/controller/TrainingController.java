@@ -77,6 +77,9 @@ public class TrainingController {
 		/*return (on webflux) */trainingService.updateTraining(id, dto);
 	}
 
+
+	// subpath
+
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.delete'
 	// TODO The current user must manage the the teacher of that training
@@ -85,7 +88,6 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

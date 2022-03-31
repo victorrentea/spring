@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +20,9 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		LoggedInUserDto dto = new LoggedInUserDto();
-		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		dto.username = authentication.getName();
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
 //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
