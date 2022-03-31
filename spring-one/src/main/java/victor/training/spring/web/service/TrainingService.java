@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.LocalizableException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.controller.util.TrainingId;
 import victor.training.spring.web.domain.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -36,14 +38,15 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).get());
+    public TrainingDto getTrainingById(TrainingId id) {
+        return mapToDto(trainingRepo.findById(id.id()).get());
     }
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new LocalizableException(LocalizableException.ErrorCode.DUPLICATED_NAME, dto.name);
+//            throw new IllegalArgumentException("Another training with that name already exists");
         }
         Training training = trainingRepo.findById(id).get();
         training.setName(dto.name);
@@ -68,12 +71,14 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+//            throw new DuplicateTrainingNameException("ErrorCode184");
+            throw new LocalizableException(LocalizableException.ErrorCode.DUPLICATED_NAME, dto.name);
         }
         trainingRepo.save(mapToEntity(dto));
     }
 
-
+//Map<? extends  RuntimeException, String> errorClassToHumanReadableMessage =
+//Map<ErrorCode, Map<Locale,String>> errorClassToHumanReadableMessage =
 
     private TrainingDto mapToDto(Training training) {
         TrainingDto dto = new TrainingDto();

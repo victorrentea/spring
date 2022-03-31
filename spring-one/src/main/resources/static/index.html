@@ -131,18 +131,27 @@ function refreshTrainingsTable() {
 }
 
 function search() {
-	$.ajax(restEndpoint +"/trainings/search", {
-		method: "POST",
-		data: JSON.stringify({
-			name:$("#searchName").val(),
-			teacherId:$("#searchTeacher").val()
-		}),
+
+	$.ajax(restEndpoint +"/trainings?name=" + $("#searchName").val() + "&teacherId=" + $("#searchTeacher").val(), {
+		method: "GET",
 		contentType: "application/json",
 		success: function(trainings) {
 			fillTable(trainings);
 			toastr.info("Search results displayed")
 		}
 	});
+	// $.ajax(restEndpoint +"/trainings/search", {
+	// 	method: "POST",
+	// 	data: JSON.stringify({
+	// 		name:$("#searchName").val(),
+	// 		teacherId:$("#searchTeacher").val()
+	// 	}),
+	// 	contentType: "application/json",
+	// 	success: function(trainings) {
+	// 		fillTable(trainings);
+	// 		toastr.info("Search results displayed")
+	// 	}
+	// });
 }
 
 var currentUser = {};

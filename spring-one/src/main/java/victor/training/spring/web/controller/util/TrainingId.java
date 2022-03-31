@@ -2,6 +2,7 @@ package victor.training.spring.web.controller.util;
 
 import java.util.Objects;
 
+// ID types. "microtype"
 public class TrainingId {
    private final long id;
 
