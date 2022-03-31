@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -18,8 +19,8 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public LoggedInUserDto getCurrentUsername() {
 		LoggedInUserDto dto = new LoggedInUserDto();
-		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
+		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
