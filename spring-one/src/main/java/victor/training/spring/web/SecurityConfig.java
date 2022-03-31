@@ -35,9 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    public UserDetailsService userDetailsService() {
       UserDetails userDetails = User.withDefaultPasswordEncoder()
           .username("user").password("user").roles("USER").build();
+      UserDetails power = User.withDefaultPasswordEncoder()
+          .username("power").password("power").roles("POWER").build();
       UserDetails adminDetails = User.withDefaultPasswordEncoder()
           .username("admin").password("admin").roles("ADMIN").build();
-      return new InMemoryUserDetailsManager(userDetails, adminDetails);
+      return new InMemoryUserDetailsManager(userDetails, adminDetails, power);
    }
 
    // ... Load user data from DB:
