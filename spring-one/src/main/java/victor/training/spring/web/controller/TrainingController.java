@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.SmartValidator;
 import org.springframework.validation.annotation.Validated;
@@ -83,6 +84,8 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

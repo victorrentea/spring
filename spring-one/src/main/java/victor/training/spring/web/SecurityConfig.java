@@ -21,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
           .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
           .authorizeRequests()
+               // avoid because URLs can change in code and get out of sync
+               //.mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasRole("ADMIN")
+//               .mvcMatchers("/admin/**").hasRole("ADMIN")
                .anyRequest().authenticated()
           .and()
           .formLogin().permitAll().and()
