@@ -31,8 +31,12 @@ public class Playground {
         System.out.println("End of method");
     }
 
-    @Transactional(readOnly = true) // ignored by JDBCtemplate.
+    // LOCK TABLE USERS -- table-level lock - very brutal.
+    // SELECT FOR UPDATE * FROM USERS where id = 1 - row-lock
+
+    @Transactional//(readOnly = true, isolation = Isolation.SERIALIZABLE) // ignored by JDBCtemplate.
     public void transactionTwo() {
+
         // now works in autocommit mode
         jdbc.update("insert into MESSAGE(id, message) values ( 601,'null')");
         jdbc.update("insert into MESSAGE(id, message) values ( 602,'null')");
