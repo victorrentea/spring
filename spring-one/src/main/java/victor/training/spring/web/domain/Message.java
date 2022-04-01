@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Data
+ @Data // typedef struct { } < NON OOP
 @NoArgsConstructor
 public class Message {
    @Id

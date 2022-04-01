@@ -1,31 +1,43 @@
 package victor.training.spring.events;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.ApplicationEventMulticaster;
-import org.springframework.context.event.SimpleApplicationEventMulticaster;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import victor.training.spring.ThreadUtils;
 
-import lombok.extern.slf4j.Slf4j;
+import static java.lang.Math.random;
 
 @Slf4j
+@EnableAsync
 //@EnableBinding({Queues.class})
 @SpringBootApplication
+@RestController
 public class PlaceOrderApp implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(PlaceOrderApp.class, args);
 	}
-	
-	@Bean
-    public ApplicationEventMulticaster applicationEventMulticaster() {
-        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
-        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
-        return eventMulticaster;
-    }
+
+	@GetMapping
+	public String method() {
+		return "a";
+	}
+
+//	@Bean
+//	public ApplicationEventMulticaster applicationEventMulticaster() {
+//		SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+//		eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+//		return eventMulticaster;
+//	}
 
 
 	// TODO [1] Decouple using @EventListener and ApplicationEventPublisher
@@ -36,21 +48,49 @@ public class PlaceOrderApp implements CommandLineRunner {
 	// TODO [5] queues: retries, chaining, topics
 	// TODO [opt] Transaction-scoped events
 
+
+	@Autowired
+	private OrderService orderService;
+
+	public void run(String... args) {
+		orderService.placeOrder();
+	}
+
+}
+@Service
+@Slf4j
+class OrderService {
 	@Autowired
 	private StockManagementService stockManagementService;
 
-	@Autowired
-	private InvoiceService invoiceService;
-
-	public void run(String... args) {
-		placeOrder();
-	}
-
-	private void placeOrder() {
+//	@Autowired
+//	private InvoiceService invoiceService;
+@Transactional
+	public void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
 		stockManagementService.process(orderId);
-		invoiceService.sendInvoice(orderId);
+//		invoiceService.sendInvoice(orderId);
+
+		// by default notifies all event listeners right here sync one after the other in this same thread
+		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
+		ThreadUtils.sleep(2000);
+		log.debug("Finish Place Order usecase");
+	}
+
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
+}
+
+class OrderPlacedEvent {
+	private final long orderId;
+
+	OrderPlacedEvent(long orderId) {
+		this.orderId = orderId;
+	}
+
+	public long getOrderId() {
+		return orderId;
 	}
 }
 
@@ -72,9 +112,15 @@ class StockManagementService {
 @Slf4j
 @Service
 class InvoiceService {
-	public void sendInvoice(long orderId) {
+//	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT) // send notificationo
+//	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION) // resource cleanup
+	@Transactional
+	@Async
+	@EventListener
+	public void sendInvoice(OrderPlacedEvent event) {
+		long orderId = event.getOrderId();
 		log.info("Generating invoice for order " + orderId);
-		// TODO what if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
+		  if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
 		log.info(">> PERSIST Invoice!!");
 	}
 }

@@ -1,5 +1,8 @@
 package victor.training.spring.web.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +10,8 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter// consider encapsulating changes
+@Getter
 @Entity
 public class Teacher {
 	@Id

@@ -6,4 +6,6 @@ public class LoggedInUserDto {
    public String username;
    public String role;
    public List<String> authorities;
+   public String fullName
+       ;
 }
