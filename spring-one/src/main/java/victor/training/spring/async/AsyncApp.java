@@ -4,33 +4,51 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.ThreadUtils;
+import victor.training.spring.web.SecurityConfig;
+import victor.training.spring.web.controller.util.TestDBConnection;
 
-import java.util.Arrays;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
 @EnableAsync
 @SpringBootApplication
+@Import(SecurityConfig.class)
 public class AsyncApp {
 	public static void main(String[] args) {
-		SpringApplication.run(AsyncApp.class, args).close(); // Note: .close added to stop executors after CLRunner finishes
+
+		new SpringApplicationBuilder(AsyncApp.class)
+			.listeners(new TestDBConnection())
+			.profiles("spa") // re-enables WEB nature (disabled in application.properties for the other apps not to start :8080)
+			.run(args);
 	}
 
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${thread.count}") int threadSize) {
+	public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.thread.count}") int threadSize) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(threadSize);
 		executor.setMaxPoolSize(threadSize);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
+		executor.setThreadNamePrefix("vodka-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor beerPool(@Value("${beer.thread.count}") int threadSize) {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(threadSize);
+		executor.setMaxPoolSize(threadSize);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("beer-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -39,29 +57,49 @@ public class AsyncApp {
 }
 
 @Slf4j
-@Component
-class Drinker implements CommandLineRunner {
+@RestController
+class Drinker {
 	@Autowired
 	private Barman barman;
 	@Autowired
-	private ThreadPoolTaskExecutor executor;
+	private ThreadPoolTaskExecutor vodkaPool;
+	@Autowired
+	private ThreadPoolTaskExecutor beerPool;
 
-	// TODO [1] inject and use a ThreadPoolTaskExecutor.submit
-	// TODO [2] make them return a CompletableFuture + @Async + asyncExecutor bean
-	// TODO [3] Messaging...
-	public void run(String... args) throws Exception {
+	@GetMapping("drink")
+	public CompletableFuture<UBoat> drink() {
 		log.debug("Submitting my order");
 
 //		Mono.fromCallable(() -> barman.getOneBeer())
 //			.subscribeOn(boundedElastic())
 
-		Future<Beer> futureBeer = executor.submit(() -> barman.getOneBeer()); // in webflux is an antipattern
-		Future<Vodka> futureVodka = executor.submit(() -> barman.getOneVodka());
+		// a safer, happir Mono
+//		parallelStream()
 
-		Beer beer = futureBeer.get();
-		Vodka vodka = futureVodka.get();
+		CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.getOneBeer(), beerPool); // in webflux is an antipattern
+		CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.getOneVodka(), vodkaPool);
+//		Mono.zip
+		CompletableFuture<UBoat> futureUBoat = futureBeer.thenCombine(futureVodka, (b, v) -> new UBoat(b, v));
 
-		log.debug("Got my order! Thank you lad! " + Arrays.asList(beer, vodka));
+		log.debug("Got my order! Thank you lad! " );
+		return futureUBoat;
+	}
+}
+
+class UBoat {
+	private final Beer beer;
+	private final Vodka vodka;
+	UBoat(Beer beer, Vodka vodka) {
+		this.beer = beer;
+		this.vodka = vodka;
+	}
+
+	public Vodka getVodka() {
+		return vodka;
+	}
+
+	public Beer getBeer() {
+		return beer;
 	}
 }
 
@@ -70,7 +108,10 @@ class Drinker implements CommandLineRunner {
 class Barman {
 	public Beer getOneBeer() {
 		 log.debug("Pouring Beer (REST call TAKES TIME)...");
-		 ThreadUtils.sleep(1000);
+		 // ~WebClient for non-webflux
+//		AsyncRestTemplate rest = new AsyncRestTemplate();
+//		CompletableFuture<ResponseEntity<Object>> completable = rest.exchange().completable();
+		ThreadUtils.sleep(1000);
 		 return new Beer();
 	 }
 	
