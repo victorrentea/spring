@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,7 @@ public class AsyncApp {
 		executor.setMaxPoolSize(threadSize);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("beer-");
+//		ex.std
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
@@ -68,7 +70,7 @@ class Drinker {
 
 	@GetMapping("drink")
 	public CompletableFuture<UBoat> drink() {
-		log.debug("Submitting my order");
+		log.debug("Submitting my order to this barman: " + barman.getClass());
 
 //		Mono.fromCallable(() -> barman.getOneBeer())
 //			.subscribeOn(boundedElastic())
@@ -76,10 +78,18 @@ class Drinker {
 		// a safer, happir Mono
 //		parallelStream()
 
-		CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.getOneBeer(), beerPool); // in webflux is an antipattern
-		CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.getOneVodka(), vodkaPool);
+//		CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.getOneBeer(), beerPool); // in webflux is an antipattern
+//		CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.getOneVodka(), vodkaPool);
+		CompletableFuture<UBoat> futureUBoat = null;
+		try {
+			CompletableFuture<Beer> futureBeer = barman.getOneBeer(); // in webflux is an antipattern
+			CompletableFuture<Vodka> futureVodka = barman.getOneVodka(), vodkaPool;
 //		Mono.zip
-		CompletableFuture<UBoat> futureUBoat = futureBeer.thenCombine(futureVodka, (b, v) -> new UBoat(b, v));
+			futureUBoat = futureBeer.thenCombine(futureVodka, (b, v) -> new UBoat(b, v));
+		} catch (Exception e) {
+			System.err.println("NO MORE BEER");
+			e.printStackTrace();
+		}
 
 		log.debug("Got my order! Thank you lad! " );
 		return futureUBoat;
@@ -106,19 +116,22 @@ class UBoat {
 @Slf4j
 @Service
 class Barman {
-	public Beer getOneBeer() {
+	@Async("beerPool")
+	public CompletableFuture<Beer> getOneBeer() {
 		 log.debug("Pouring Beer (REST call TAKES TIME)...");
 		 // ~WebClient for non-webflux
+		if (true) throw new RuntimeException("DRAMA: ouf of beer"); // NEVER THROW EX or BLOC in methods returning MONO/CF
 //		AsyncRestTemplate rest = new AsyncRestTemplate();
 //		CompletableFuture<ResponseEntity<Object>> completable = rest.exchange().completable();
 		ThreadUtils.sleep(1000);
-		 return new Beer();
+		 return CompletableFuture.completedFuture(new Beer());
 	 }
-	
-	 public Vodka getOneVodka() {
+
+	 @Async("vodkaPool")
+	 public CompletableFuture<Vodka> getOneVodka() {
 		 log.debug("Pouring Vodka (SOAP call, 'FAT SQL' DB) ...");
 		 ThreadUtils.sleep(1000);
-		 return new Vodka();
+		 return CompletableFuture.completedFuture(new Vodka());
 	 }
 }
 

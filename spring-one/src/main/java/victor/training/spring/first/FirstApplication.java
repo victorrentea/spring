@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.util.TestDBConnection;
@@ -108,5 +109,6 @@ class Z {
 //interface TrainingRepo extends JpaRepository<Training, Long> {}
 @Component
 @Retention(RetentionPolicy.RUNTIME)
+@Transactional
 @interface Facade {
 }
