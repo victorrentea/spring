@@ -20,6 +20,6 @@ import javax.annotation.ManagedBean;
 public class SampleMBean {
     @ManagedOperation
     public void dummy() {
-        System.out.printf("Rulez on demand");
+        System.out.println("Called over JMX");
     }
 }

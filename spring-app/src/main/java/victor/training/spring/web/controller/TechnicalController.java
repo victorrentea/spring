@@ -22,7 +22,8 @@ public class TechnicalController {
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		//<editor-fold desc="KeyCloak">
+		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		dto.username = authentication.getName();
 //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
@@ -30,6 +31,7 @@ public class TechnicalController {
 //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
 //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+		//</editor-fold>
 		return dto;
 	}
 
@@ -39,7 +41,6 @@ public class TechnicalController {
 //			.collect(toList());
 //	}
 
-	// TODO propagate current user on thread over @Async calls?
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);

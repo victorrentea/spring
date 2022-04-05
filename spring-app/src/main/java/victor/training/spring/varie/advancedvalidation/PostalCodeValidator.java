@@ -1,7 +1,5 @@
 package victor.training.spring.varie.advancedvalidation;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -13,7 +11,7 @@ public class PostalCodeValidator implements ConstraintValidator<ValidPostalCode,
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         System.out.println("Validating " + value);
-        if (StringUtils.isBlank(value)) {
+        if (value == null || value.isEmpty() || value.isBlank()) {
             return false;
         }
         return value.matches("\\d+");

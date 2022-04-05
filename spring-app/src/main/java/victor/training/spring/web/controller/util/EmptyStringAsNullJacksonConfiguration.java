@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +24,7 @@ public class EmptyStringAsNullJacksonConfiguration {
              @Override
              public String deserialize(JsonParser parser, DeserializationContext context) throws IOException {
                 String result = StringDeserializer.instance.deserialize(parser, context);
-                if (StringUtils.isEmpty(result)) {
+                if (result == null || result.isEmpty() || result.isBlank()) {
                    return null;
                 }
                 return result;

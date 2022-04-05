@@ -4,11 +4,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 @EnableCaching
-@EnableSwagger2
+//@EnableSwagger2
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
 public class Application {
