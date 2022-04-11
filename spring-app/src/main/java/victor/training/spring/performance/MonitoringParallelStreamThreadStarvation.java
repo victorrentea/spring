@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller;
+package victor.training.spring.performance;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
@@ -11,7 +11,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 @RestController
-public class Joaca {
+public class MonitoringParallelStreamThreadStarvation {
    @Autowired
    MeterRegistry registry;
 
