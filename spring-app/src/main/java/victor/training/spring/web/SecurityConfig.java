@@ -22,7 +22,7 @@
 //   protected void configure(HttpSecurity http) throws Exception {
 //      http
 //          .addFilterBefore(new InspectingFilter(), WebAsyncManagerIntegrationFilter.class)
-////          .cors().and()
+//          .cors().and()
 //          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 //          .authorizeRequests()
 //               .anyRequest().authenticated()
