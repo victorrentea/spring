@@ -1,10 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
@@ -46,13 +44,10 @@ public class TechnicalController {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
-	@Autowired
-	private WelcomeInfo welcomeInfo;
-
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome")
-	public WelcomeInfo showWelcomeInfo(){
-		return welcomeInfo;
+	public String showWelcomeInfo(){
+		return "Welcome. Here is the support phone in case you are unable to connect.";
 	}
 
 	// TODO [SEC] URL-pattern restriction: admin/**
