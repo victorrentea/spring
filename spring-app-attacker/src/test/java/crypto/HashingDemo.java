@@ -13,6 +13,10 @@ public class HashingDemo {
 	@Test
 	public void hashingDemo() throws NoSuchAlgorithmException {
 
+		System.out.println("Aa".hashCode());
+		System.out.println("BB".hashCode());
+
+
 		// get a message digest
 		System.out.println("one way only!");
 		hashText("The quick brown fox jumped over the lazy dog.");
