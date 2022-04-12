@@ -89,7 +89,8 @@ let xsrfToken = getCookie("XSRF-TOKEN");
 $.ajaxSetup({
 	beforeSend: function (request) { // Pass through CSRF protection
 		// request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
-	}
+	},
+	xhrFields: { withCredentials: true }, // CORS to add BE cookies to all requests
 });
 
 function getContextPath() {

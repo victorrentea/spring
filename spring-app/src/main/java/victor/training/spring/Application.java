@@ -20,20 +20,20 @@ public class Application {
           .run(args);
    }
 
-//
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/api/**")
-//					 .allowCredentials(true) // allows receiving session cookie
-//					 .allowedOriginPatterns("http://localhost:9999")
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/api/**")
+					 .allowCredentials(true) // allows receiving session cookie
 //					 .allowedOriginPatterns("http://localhost:8081") // NodeJS
-//            ;
-//                // also don't forget to add .cors() to spring security
-//			}
-//		};
-//	}
+					 .allowedOriginPatterns("http://*") // Too broad
+            ;
+                // also don't forget to add .cors() to spring security
+			}
+		};
+	}
 
 }
