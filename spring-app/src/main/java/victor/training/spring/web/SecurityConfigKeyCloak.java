@@ -52,7 +52,6 @@
 //            .authorizeRequests()
 //            .mvcMatchers("/spa/**", "/api/**").authenticated()
 //            .mvcMatchers("/sso/**").permitAll()
-////            .hasRole("user")
 //            .anyRequest().permitAll()
 //        ;
 //    }

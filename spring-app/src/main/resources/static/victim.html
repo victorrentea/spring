@@ -10,6 +10,23 @@
 
 <h2>Victim Web Page</h2>
 
+<!-------------------- FORM --------------------------->
+<br/>
+<div style="border:2px solid green">
+    <h4>Transfer Money (via FORM POST, XSRF)</h4>
+    <form method="post" action="/api/victim/transfer-form">
+        Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe"/> <br/>
+        Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900"/> <br/>
+        Amount:<input type="text" name="amount" value="100"/> <br/>
+        <input type="hidden" name="_csrf" id="csrfTokenField"/> <br/>
+        <input type="submit" value="Transfer">
+    </form>
+</div>
+
+<br/>
+
+
+
 <!-------------------- REST --------------------------->
 <div style="border:2px solid green">
     <h4>Transfer Money (via AJAX, CORS)</h4>
@@ -23,8 +40,8 @@
     function getContextPath() {
         return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
     }
-
-    var restEndpoint = getContextPath() + "/api/victim";
+    // var restEndpoint = getContextPath() + "/api/victim";
+    var restEndpoint = "http://localhost:8080/api/victim"; // to test CORS using a local NodeJS instance
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -40,6 +57,7 @@
         $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
             headers: {"X-XSRF-TOKEN": xsrfToken},
+            xhrFields: { withCredentials: true }, // CORS sending credentials
             data: JSON.stringify({
                 recipientFullName: $("#fullName").val(),
                 recipientIban: $("#iban").val(),
@@ -59,21 +77,7 @@
     $("#csrfTokenField").val(xsrfToken);
 </script>
 
-
-<!-------------------- FORM --------------------------->
-<br/>
-<div style="border:2px solid green">
-    <h4>Transfer Money (via FORM POST, XSRF)</h4>
-    <form method="post" action="/api/victim/transfer-form">
-        Recipient Full Name:<input type="text" name="recipientFullName" value="John Doe"/> <br/>
-        Recipient IBAN number:<input type="text" name="recipientIban" value="12345678900"/> <br/>
-        Amount:<input type="text" name="amount" value="100"/> <br/>
-        <input type="hidden" name="_csrf" id="csrfTokenField"/> <br/>
-        <input type="submit" value="Transfer">
-    </form>
-</div>
-
-<br/>
+<br />
 <!-------------------- UPLOAD --------------------------->
 
 <div style="border:2px solid green">
@@ -106,7 +110,7 @@
         <input type="submit" value="Retrieve"> <br/>
         <ul>
             <li>expected use: http://img.championat.com/news/big/l/c/ujejn-runi_1439911080563855663.jpg</li>
-            <li>file access: file:///C:/workspace/spring/spring-one/pom.xml</li>
+            <li>file access: file:///C:/workspace/spring/pom.xml  -- launch from curl</li>
             <li>port scan: http://localhost:6379/news/big/l/c/ujejn-runi_1439911080563855663.jpg</li>
         </ul>
     </form>

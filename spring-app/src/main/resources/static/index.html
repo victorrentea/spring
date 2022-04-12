@@ -95,8 +95,8 @@ $.ajaxSetup({
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
-var restEndpoint = getContextPath() + "/api";
-// var restEndpoint = "http://localhost:8080/api"; // for CORS
+// var restEndpoint = getContextPath() + "/api";
+var restEndpoint = "http://localhost:8080/api"; // to test CORS using a local NodeJS instance
 
 function fillTable(trainings) {
 	$("#trainingTable tr").each(function (i, r) {

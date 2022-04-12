@@ -18,14 +18,15 @@ import java.net.URL;
 @RequestMapping("api/victim")
 public class VictimController {
    @PostMapping("transfer-rest")
-   // @CrossOrigin(origins = "*",allowCredentials = "true")
+//    @CrossOrigin(originPatterns = {"http://*"},allowCredentials = "true") // OMG!
+//    @CrossOrigin(originPatterns = {"http://localhost:8081"},allowCredentials = "true") // only for NODE
    public void transferRest(@RequestBody MoneyTransferRequest request) {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
    }
 
    @PostMapping("transfer-form")
    public String transferForm(@ModelAttribute MoneyTransferRequest request) {
-      log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
+      log.warn("TransferringPOST {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
       return "Done";
    }
 
@@ -61,6 +62,7 @@ public class VictimController {
 
    @GetMapping(value = "fetch-image",produces = "image/jpeg")
    public byte[] fetchImage(@RequestParam String url) throws IOException {
+      log.info("Retrieving url: {}", url);
       // stage 1 : allows access to file:///c:/...
       return IOUtils.toByteArray(new URL(url).openStream());
 
