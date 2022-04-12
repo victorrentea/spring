@@ -7,16 +7,16 @@ jwt.secret: c2VjcmV0TWFyZQ==
 
 server:
   port: 8080
-#  ssl:
-#    enabled: true
-#    key-store: classpath:backend.jks
-#    key-store-password: parola
-#    key-alias: spring-backend
-#    key-password: parola
-#    key-store-type: JKS
-#    client-auth: need
-#    trust-store: classpath:backend.jks
-#    trust-store-password: parola
-#    trust-store-type: JKS
+  ssl:
+    enabled: true
+    key-store: classpath:backend.jks
+    key-store-password: parola
+    key-alias: spring-backend
+    key-password: parola
+    key-store-type: JKS
+    client-auth: need
+    trust-store: classpath:backend.jks
+    trust-store-password: parola
+    trust-store-type: JKS
 
 

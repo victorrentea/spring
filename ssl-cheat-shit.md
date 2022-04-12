@@ -27,6 +27,5 @@ keytool -exportcert -keystore dest.keystore -alias backend -storepass parola -fi
 #Import the public key from a certificate file (.cer) in the truststore of a JKS
 keytool -import -alias gateway -file gateway.cer -keystore backend.jks -storepass parola
 
-
 #[Optional] Export a certificate in a format that can be imported in Browser (in Intermediate CA)
 keytool -importkeystore -srckeystore gateway.jks -destkeystore gateway.p12 -srcstoretype JKS -deststoretype PKCS12 -srcstorepass parola -deststorepass parola -srcalias gateway -destalias gateway -srckeypass parola -destkeypass parola -noprompt

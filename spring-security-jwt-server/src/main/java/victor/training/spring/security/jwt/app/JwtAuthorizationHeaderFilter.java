@@ -14,41 +14,41 @@ import java.util.Base64;
 
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
-	@Value("${jwt.secret}")
-	private String jwtSecret;
+   @Value("${jwt.secret}")
+   private String jwtSecret;
 
-	public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
-		setAuthenticationManager(authenticationManager);
-	}
+   public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
+      setAuthenticationManager(authenticationManager);
+   }
 
-	@Override
-	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String headerValue = request.getHeader("Authorization");
-        if (headerValue == null) {
-			log.warn("Header {} not set", "Authorization");
-            return null;
-        }
-
+   @Override
+   protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+      String headerValue = request.getHeader("Authorization");
+      if (headerValue == null) {
+         log.warn("Header {} not set", "Authorization");
+         return null;
+      }
+		System.out.println(request.getUserPrincipal());
 		String jwtToken = headerValue.substring("Bearer ".length());
-        log.debug("Received Header: " + jwtToken);
-		log.debug("Hint: Try to decode it on http://jwt.io/");
+      log.debug("Received Header: " + jwtToken);
+      log.debug("Hint: Try to decode it on http://jwt.io/");
 
-        try {
-			Claims claims = Jwts.parser()
-					.setSigningKey(Base64.getDecoder().decode(jwtSecret))
-					.parseClaimsJws(jwtToken)
-					.getBody();
+      try {
+         Claims claims = Jwts.parser()
+             .setSigningKey(Base64.getDecoder().decode(jwtSecret))
+             .parseClaimsJws(jwtToken)
+             .getBody();
 
-			String country = (String) claims.get("country");
-			log.info("Attempting login with user={} and country={}", claims.getSubject(), country);
-			return new JwtPrincipal(claims.getSubject(), country);
-		} catch (UnsupportedJwtException jwtException) {
-			throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
-		}
-	}
+         String country = (String) claims.get("country");
+         log.info("Attempting login with user={} and country={}", claims.getSubject(), country);
+         return new JwtPrincipal(claims.getSubject(), country);
+      } catch (UnsupportedJwtException jwtException) {
+         throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
+      }
+   }
 
-	@Override
-	protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
-		return "N/A";
-	}
+   @Override
+   protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
+      return "N/A";
+   }
 }

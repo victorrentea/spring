@@ -66,28 +66,7 @@ public class JwtClientApp extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // otherwise button POSTS will get rejected
                 .authorizeRequests()
                 .anyRequest().permitAll().and()
-
-                // TODO enable form login
-//                TODO .addFilterBefore(loadDataFromServiceAndStoreInSession(), BasicAuthenticationFilter.class)
-
-//                .authenticated().and().formLogin()
                 ;
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.withDefaultPasswordEncoder().username("test").password("test").roles("USER").build();
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-//}
-
-    // TODO Global CORS policy:
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//            }
-//        };
-//    }
 }
