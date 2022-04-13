@@ -15,21 +15,9 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
 		CurrentUserDto dto = new CurrentUserDto();
-		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 		dto.username = "// TODO: get username";
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
-
-		//<editor-fold desc="KeyCloak">
-		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		dto.username = authentication.getName();
-//		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-//		dto.authorities = stripRolePrefix(authentication.getAuthorities());
-//    // Optional:
-//		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-//		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-//		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
-		//</editor-fold>
+		dto.role = "";
+		dto.authorities = Collections.emptyList();
 		return dto;
 	}
 

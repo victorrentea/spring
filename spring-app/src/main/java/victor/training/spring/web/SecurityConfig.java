@@ -21,14 +21,12 @@
 //   @Override
 //   protected void configure(HttpSecurity http) throws Exception {
 //      http
-//          .addFilterBefore(new InspectingFilter(), WebAsyncManagerIntegrationFilter.class)
-//          .cors().and()
-//          .csrf().disable() // or  .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+// // TODO CORS?
+// // TODO CSRF?
 //          .authorizeRequests()
 //               .anyRequest().authenticated()
 //          .and()
-//          .formLogin().permitAll().and()
-//          .httpBasic();
+// // TODO what authentication: form + basic here
 //   }
 //
 //   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION

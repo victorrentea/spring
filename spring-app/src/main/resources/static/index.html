@@ -62,10 +62,6 @@ html {
 	<div style="text-align: center; font-size: x-small">
 		Or some <a href="/v3/api-docs" target="_blank">Swagger / OpenAPI 3.0</a>?
 	</div>
-<!-- <search multiple="multiple" id="trainingAvailable"><option value="a">A</option><option value="b">B</option></search>
-<input type="button" name=">>" onclick="moveSelectedOptions('#trainingAvailable', '#trainingSelected')"/>
-<input type="button" name="<<" onclick="moveSelectedOptions('#trainingSelected', '#trainingAvailable')"/>
-<search multiple="multiple" id="trainingSelected"></search> -->
 
 <script type="text/javascript">
 
@@ -84,13 +80,16 @@ function getCookie(name) {
 	const parts = value.split(`; ${name}=`);
 	if (parts.length === 2) return parts.pop().split(';').shift();
 }
-let xsrfToken = getCookie("XSRF-TOKEN");
+// TODO get XSRF token
 
 $.ajaxSetup({
+
 	beforeSend: function (request) { // Pass through CSRF protection
-		// request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
+		// TODO add X-XSRF-TOKEN to every request out
 	},
-	xhrFields: { withCredentials: true }, // CORS to add BE cookies to all requests
+	xhrFields: {
+		// TODO Tell CORS to send to BE cookies to all requests
+	},
 });
 
 function getContextPath() {

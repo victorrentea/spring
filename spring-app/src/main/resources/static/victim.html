@@ -49,15 +49,16 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    let xsrfToken = getCookie("XSRF-TOKEN");
+    // TODO get csrf from cookie XSRF-TOKEN
+
 
     function transferAmount() {
 
         console.log("xsrf: ", xsrfToken);
         $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
-            headers: {"X-XSRF-TOKEN": xsrfToken},
-            xhrFields: { withCredentials: true }, // CORS sending credentials
+            // TODO  csrf
+            // TODO  cors cookie
             data: JSON.stringify({
                 recipientFullName: $("#fullName").val(),
                 recipientIban: $("#iban").val(),
