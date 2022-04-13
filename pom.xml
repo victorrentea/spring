@@ -21,6 +21,7 @@
    
     <modules>
         <module>spring-app</module>
+        <module>spring-app-static-frontend</module>
 		<module>spring-app-attacker</module>
 		<module>spring-security-jwt-client</module>
 		<module>spring-security-jwt-server</module>
