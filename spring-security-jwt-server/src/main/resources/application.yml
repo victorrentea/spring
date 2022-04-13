@@ -15,9 +15,9 @@ server:
     key-password: password
     key-store-type: JKS
 
-#    client-auth: need
-#    trust-store: classpath:backend.jks
-#    trust-store-password: parola
-#    trust-store-type: JKS
+    client-auth: need
+    trust-store: classpath:backend.jks
+    trust-store-password: password
+    trust-store-type: JKS
 
 

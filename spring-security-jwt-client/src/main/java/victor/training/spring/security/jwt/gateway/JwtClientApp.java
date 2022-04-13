@@ -42,7 +42,7 @@ public class JwtClientApp extends WebSecurityConfigurerAdapter {
 
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder()
                     .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-//                    .loadKeyMaterial(keyStore, "parola".toCharArray()) // present certificate to server
+//                    .loadKeyMaterial(keyStore, "password".toCharArray()) // present certificate to server
                     .build(),
                     NoopHostnameVerifier.INSTANCE);
 
