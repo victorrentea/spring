@@ -1,5 +1,6 @@
 package victor.training.spring;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,12 +22,15 @@ public class Application {
    }
 
    @Bean
-   public WebMvcConfigurer corsConfigurer() {
+   public WebMvcConfigurer corsConfigurer(@Value("${cdn.host:http://localhost:8081}") String cdnHost) {
       return new WebMvcConfigurer() {
          @Override
          public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/api/**")
-                .allowedOriginPatterns("http://localhost:8081")
+//                .allowedOriginPatterns("*") // too broad, and any JS from any malicious website out
+                // there can now fire AJAX calls to all your REST APIs
+
+                .allowedOriginPatterns(cdnHost)
                 .allowCredentials(true) // allows receiving session cookie
             ;
          }
