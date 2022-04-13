@@ -20,4 +20,16 @@ public class Application {
           .run(args);
    }
 
+   @Bean
+   public WebMvcConfigurer corsConfigurer() {
+      return new WebMvcConfigurer() {
+         @Override
+         public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/api/**")
+                .allowedOriginPatterns("http://localhost:8081")
+                .allowCredentials(true) // allows receiving session cookie
+            ;
+         }
+      };
+   }
 }

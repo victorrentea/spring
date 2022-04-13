@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import victor.training.spring.web.security.InspectingFilter;
@@ -20,13 +21,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
-      CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();
-      repo.setCookieHttpOnly(false);
-      http
-          // CSRF is enabled by default
-          .csrf().csrfTokenRepository(repo).and()
+//      CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();
+//      repo.setCookieHttpOnly(false);
+//      http
+//          .csrf().csrfTokenRepository(repo).and()
  // TODO CORS?
- // TODO CSRF?
+      http
+          .cors().and()
+          .addFilterBefore(new InspectingFilter(), BasicAuthenticationFilter.class)
+          .csrf().disable()
           .authorizeRequests()
                .anyRequest().authenticated()
           .and()

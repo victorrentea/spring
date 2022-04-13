@@ -89,6 +89,7 @@ $.ajaxSetup({
 		request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
 	},
 	xhrFields: {
+		withCredentials: true
 		// TODO Tell CORS to send to BE cookies to all requests
 	},
 });
