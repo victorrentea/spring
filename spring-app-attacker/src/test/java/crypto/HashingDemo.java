@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A small message digest demo.
@@ -15,6 +17,14 @@ public class HashingDemo {
 
 		System.out.println("Aa".hashCode());
 		System.out.println("BB".hashCode());
+
+		Map<String, Integer> map = new HashMap<>();
+		map.put("Aa", 1);
+		map.put("BB", 1);
+
+
+
+
 
 
 		// get a message digest

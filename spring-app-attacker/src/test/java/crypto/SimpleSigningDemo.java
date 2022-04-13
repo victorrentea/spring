@@ -32,6 +32,8 @@ public class SimpleSigningDemo {
         Utils.printByteArray("signature", signature);
 
 
+/// -=========== wild wild web
+
 
         //verification on the other end
         String receivedData = "ITKonekt is the worst!!!";
