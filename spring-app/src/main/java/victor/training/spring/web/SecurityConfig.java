@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import victor.training.spring.web.security.InspectingFilter;
 
 @EnableWebSecurity
@@ -19,8 +20,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
+      CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();
+      repo.setCookieHttpOnly(false);
       http
-          .csrf().disable()
+          // CSRF is enabled by default
+          .csrf().csrfTokenRepository(repo).and()
  // TODO CORS?
  // TODO CSRF?
           .authorizeRequests()

@@ -81,11 +81,12 @@ function getCookie(name) {
 	if (parts.length === 2) return parts.pop().split(';').shift();
 }
 // TODO get XSRF token
+var xsrfToken = getCookie("XSRF-TOKEN");
 
 $.ajaxSetup({
-
 	beforeSend: function (request) { // Pass through CSRF protection
 		// TODO add X-XSRF-TOKEN to every request out
+		request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
 	},
 	xhrFields: {
 		// TODO Tell CORS to send to BE cookies to all requests

