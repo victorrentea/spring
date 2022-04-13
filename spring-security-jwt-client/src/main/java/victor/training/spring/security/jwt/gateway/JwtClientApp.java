@@ -37,12 +37,12 @@ public class JwtClientApp extends WebSecurityConfigurerAdapter {
         try {
             KeyStore keyStore = KeyStore.getInstance("jks");
             try (InputStream inputStream = new ClassPathResource("gateway.jks").getInputStream()) {
-                keyStore.load(inputStream, "parola".toCharArray());
+                keyStore.load(inputStream, "password".toCharArray());
             }
 
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder()
                     .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                    .loadKeyMaterial(keyStore, "parola".toCharArray()) // present certificate to server
+//                    .loadKeyMaterial(keyStore, "parola".toCharArray()) // present certificate to server
                     .build(),
                     NoopHostnameVerifier.INSTANCE);
 
