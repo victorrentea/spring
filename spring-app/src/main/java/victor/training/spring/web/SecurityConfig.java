@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .addFilterBefore(new InspectingFilter(), BasicAuthenticationFilter.class)
           .csrf().disable()
           .authorizeRequests()
+               .mvcMatchers("/api/tickets/count").permitAll()
                .anyRequest().authenticated()
           .and()
           .formLogin().permitAll()

@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
@@ -19,6 +20,13 @@ public class TechnicalController {
 		dto.role = "";
 		dto.authorities = Collections.emptyList();
 		return dto;
+	}
+
+
+	@CrossOrigin(originPatterns = "**")
+	@GetMapping("api/tickets/count")
+	public Long getRemainingTickets() {
+		return 9L;
 	}
 
 //	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
