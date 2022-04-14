@@ -6,7 +6,7 @@ import java.util.*;
 import static java.util.Collections.*;
 
 @Entity
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -16,12 +16,12 @@ public class User {
     private UserRole role;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
-    public User() {
+    public UserEntity() {
     }
-    public User(String username) {
+    public UserEntity(String username) {
         this(username, username, UserRole.USER, emptyList());
     }
-    public User(String fullName, String username, UserRole role, List<Long> managedTeacherIds) {
+    public UserEntity(String fullName, String username, UserRole role, List<Long> managedTeacherIds) {
         this.username = username;
         this.name=fullName;
         this.role = role;
@@ -48,7 +48,7 @@ public class User {
         return id;
     }
 
-    public User setName(String name) {
+    public UserEntity setName(String name) {
         this.name = name;
         return this;
     }

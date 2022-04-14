@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import victor.training.spring.web.controller.TechnicalController;
+import victor.training.spring.web.security.DatabaseUserDetailsService;
 import victor.training.spring.web.security.InspectingFilter;
 
 @EnableWebSecurity
@@ -40,33 +41,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                .mvcMatchers(TechnicalController.API_TICKETS_COUNT_URL).permitAll()
                .anyRequest().authenticated()
           .and()
-          .formLogin().permitAll()
+          .formLogin().permitAll().and()
+          .httpBasic()
           ;
  // TODO what authentication: form + basic here
    }
 
    // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
-   @Bean
-   public UserDetailsService userDetailsService() {
-      UserDetails userDetails = User.withDefaultPasswordEncoder()
-          .username("user")
-          .password("user")
-          .roles("USER").build();
-      UserDetails adminDetails = User.withDefaultPasswordEncoder()
-          .username("admin")
-          .password("admin")
-          .roles("ADMIN").build();
-      UserDetails powerDetails = User.withDefaultPasswordEncoder()
-          .username("power")
-          .password("power")
-          .roles("POWER").build();
-      return new InMemoryUserDetailsManager(userDetails, adminDetails, powerDetails);
-   }
+//   @Bean
+//   public UserDetailsService userDetailsService() {
+//      UserDetails userDetails = User.withDefaultPasswordEncoder()
+//          .username("user")
+//          .password("user")
+//          .roles("USER").build();
+//      UserDetails adminDetails = User.withDefaultPasswordEncoder()
+//          .username("admin")
+//          .password("admin")
+//          .roles("ADMIN")
+//          .authorities("training.delete")
+//          .build();
+//      UserDetails powerDetails = User.withDefaultPasswordEncoder()
+//          .username("power")
+//          .password("power")
+//          .roles("POWER").build();
+//      return new InMemoryUserDetailsManager(userDetails, adminDetails, powerDetails);
+//   }
 
    // ... Load user data from DB:
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new DatabaseUserDetailsService();
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new DatabaseUserDetailsService();
+    }
 
 }

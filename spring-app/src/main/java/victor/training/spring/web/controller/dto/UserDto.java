@@ -1,6 +1,6 @@
 package victor.training.spring.web.controller.dto;
 
-import victor.training.spring.web.entity.User;
+import victor.training.spring.web.entity.UserEntity;
 import victor.training.spring.web.entity.UserRole;
 
 public class UserDto {
@@ -11,9 +11,9 @@ public class UserDto {
    public UserDto() {
    }
 
-   public UserDto(User user) {
-      id = user.getId();
-      name = user.getName();
-      profile = user.getRole();
+   public UserDto(UserEntity userEntity) {
+      id = userEntity.getId();
+      name = userEntity.getName();
+      profile = userEntity.getRole();
    }
 }

@@ -7,10 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.annotation.PostConstruct;
@@ -28,14 +30,17 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = trainingService.getCurrentUsername().get();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String role = authentication.getAuthorities().stream()
+//		dto.username = trainingService.getCurrentUsername().get();
+
+		SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+
+		dto.username = securityUser.getFullName() + "(" + securityUser.getUsername()+ ")";
+		dto.role = securityUser.getRole().name();
+
+		dto.authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.toList())
-			.get(0);
-		dto.role = role;
-		dto.authorities = Collections.emptyList();
+			.collect(Collectors.toList());
 		return dto;
 	}
 	@PostConstruct
