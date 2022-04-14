@@ -14,6 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import victor.training.spring.web.controller.TechnicalController;
 import victor.training.spring.web.security.InspectingFilter;
 
 @EnableWebSecurity
@@ -34,8 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .addFilterBefore(new InspectingFilter(), BasicAuthenticationFilter.class)
           .csrf().disable()
           .authorizeRequests()
-               .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
-               .mvcMatchers("/api/tickets/count").permitAll()
+//               .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//               .mvcMatchers("/admin/**").hasRole("ADMIN")
+               .mvcMatchers(TechnicalController.API_TICKETS_COUNT_URL).permitAll()
                .anyRequest().authenticated()
           .and()
           .formLogin().permitAll()

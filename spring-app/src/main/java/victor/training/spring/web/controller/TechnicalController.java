@@ -2,6 +2,8 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
+	public static final String API_TICKETS_COUNT_URL = "api/tickets/count";
 	@Autowired
 	private TrainingService trainingService;
 
@@ -33,7 +36,7 @@ public class TechnicalController {
 	}
 
 	@CrossOrigin(originPatterns = "**")
-	@GetMapping("api/tickets/count")
+	@GetMapping(API_TICKETS_COUNT_URL)
 	public Long getRemainingTickets() {
 		return 9L;
 	}
@@ -52,9 +55,19 @@ public class TechnicalController {
 		return "Welcome. Here is the support phone in case you are unable to connect.";
 	}
 
+}
+@RestController
+@Secured("ROLE_ADMIN")
+class AdminController {
 	// TODO [SEC] URL-pattern restriction: admin/**
 	@GetMapping("admin/launch")
 	public String restart() {
 		return "What does this red button do?     ... [Missile Launched]";
 	}
+
+	@GetMapping("admin/kill/one")
+	public String kill() {
+		return "kill";
+	}
+
 }

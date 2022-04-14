@@ -126,7 +126,7 @@ function showDescription(richTextHtmlUnescaped) {
 }
 
 function refreshTrainingsTable() {
-	$.ajax(restEndpoint +"/training", {
+	$.ajax(restEndpoint +"/trainings", {
 		method: "GET",
 		success: function(trainings) {
 			fillTable(trainings);
@@ -136,7 +136,7 @@ function refreshTrainingsTable() {
 }
 
 function search() {
-	$.ajax(restEndpoint +"/training/search", {
+	$.ajax(restEndpoint +"/trainings/search", {
 		method: "POST",
 		data: JSON.stringify({
 			name:$("#searchName").val(),
@@ -180,7 +180,7 @@ $("#searchTeacher").append("<option></option>")
 
 
 function deleteTraining(id) {
-	$.ajax(restEndpoint +"/training/"+id, {
+	$.ajax(restEndpoint +"/trainings/"+id, {
 		method: "DELETE",
 		success: function() {
 			toastr.success("Training deleted");
@@ -197,7 +197,7 @@ function deleteTraining(id) {
 //------------- TRAINING: UPDATE SCREEN --------------------
 
 function openEditTraining(trainingId) {
-	$.ajax(restEndpoint + "/training/"+trainingId, {
+	$.ajax(restEndpoint + "/trainings/"+trainingId, {
 		method: "GET",
 		success: function(data) {
 			//au venit datele
@@ -212,7 +212,7 @@ function openEditTraining(trainingId) {
 	});
 }
 function updateTraining() {
-	$.ajax(restEndpoint +"/training/" +$("#editTrainingId").val(), {
+	$.ajax(restEndpoint +"/trainings/" +$("#editTrainingId").val(), {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
