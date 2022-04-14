@@ -42,7 +42,6 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-//	@PreAuthorize("hasRole('ADMIN')")
 //	@Secured("ROLE_ADMIN") //add the ROLE_ prefix
 	// TODO Allow only for role 'ADMIN'
 	// TODO Allow for authority 'training.delete'
@@ -51,6 +50,7 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
