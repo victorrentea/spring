@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Configuration
+//@Configuration
 // https://stackoverflow.com/a/53665706
 public class FilterFieldsInResponseDtosJacksonConfig {
 

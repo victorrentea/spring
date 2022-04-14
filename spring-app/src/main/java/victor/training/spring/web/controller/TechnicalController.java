@@ -1,6 +1,9 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.IDToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +36,15 @@ public class TechnicalController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		dto.username = trainingService.getCurrentUsername().get();
 
-		SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 
-		dto.username = securityUser.getFullName() + "(" + securityUser.getUsername()+ ")";
-		dto.role = securityUser.getRole().name();
+		IDToken idToken = principal.getKeycloakSecurityContext().getIdToken();
+		String fullName = idToken.getName();
+		System.out.println("More: " +idToken.getOtherClaims());
+
+
+		dto.username = fullName + " as " + principal.getName();
+		dto.role = "N/A";
 
 		dto.authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
