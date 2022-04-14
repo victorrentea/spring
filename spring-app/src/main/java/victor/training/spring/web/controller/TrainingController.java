@@ -1,16 +1,21 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
+import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -37,6 +42,7 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
+	@PreAuthorize("hasAuthority('training.edit') and @featureAuthorizer.canUserChangeTraining(#id)")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
 		trainingService.updateTraining(id, dto);
@@ -52,7 +58,7 @@ public class TrainingController {
 	@DeleteMapping("{id}")
 //	@PreAuthorize("hasAnyRole('ADMIN')")
 
-	@PreAuthorize("hasAuthority('training.delete')")
+	@PreAuthorize("hasAuthority('training.delete') and @featureAuthorizer.canUserChangeTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
@@ -61,5 +67,22 @@ public class TrainingController {
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+
+}
+
+@Component
+class FeatureAuthorizer {
+	@Autowired
+	private TrainingRepo trainingRepo;
+
+	public boolean canUserChangeTraining(Long trainingId) {
+		Training training = trainingRepo.findById(trainingId).orElseThrow();
+		Long teacherId = training.getTeacher().getId();
+
+		SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Set<Long> managedTeacherIds = securityUser.getManagedTeacherIds();
+		return managedTeacherIds.contains(teacherId);
+	}
+
 
 }
