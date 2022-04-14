@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,7 +11,6 @@ import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
 import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.security.SecurityUser;
 import victor.training.spring.web.service.TrainingService;
 
@@ -31,13 +32,19 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+		TrainingDto dto = trainingService.getTrainingById(id);
+//		if () {
+//			dto.startDate = null;
+//		}
+		return dto;
 		//TODO if id is not found, return 404 status code
 	}
 
 	// TODO @Valid
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.createTraining(dto);
 	}
 
@@ -45,6 +52,9 @@ public class TrainingController {
 	@PreAuthorize("hasAuthority('training.edit') and @featureAuthorizer.canUserChangeTraining(#id)")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -58,6 +68,7 @@ public class TrainingController {
 	@DeleteMapping("{id}")
 //	@PreAuthorize("hasAnyRole('ADMIN')")
 
+//	@PreAuthorize("hasPermission(#id, 'TRAINING', 'WRITE')")
 	@PreAuthorize("hasAuthority('training.delete') and @featureAuthorizer.canUserChangeTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

@@ -13,11 +13,15 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.context.SecurityContextHolder;
+import victor.training.spring.web.security.SecurityUser;
+import victor.training.spring.web.security.VisibleFor;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 // https://stackoverflow.com/a/53665706
@@ -37,6 +41,22 @@ public class FilterFieldsInResponseDtosJacksonConfig {
                   }
                   String propertyNamesCsv = beanProperties.stream().map(BeanPropertyWriter::getName).collect(Collectors.joining(","));
                   System.out.println("SERIALIZING DTO " + beanDesc.getBeanClass().getSimpleName() + ": " + propertyNamesCsv);
+
+                  SecurityUser securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//                  securityUser.getRole()
+
+                  beanProperties = beanProperties.stream()
+                      .filter(prop -> {
+                         VisibleFor annotation = prop.getAnnotation(VisibleFor.class);
+                         if (annotation!=null) {
+                            System.out.println("FOUND " + prop);
+                            return List.of(annotation.value()).contains(securityUser.getRole());
+                         }
+                         return true;
+                      })
+                      .collect(Collectors.toList());
+
+
 //                  return Collections.emptyList();
                   return beanProperties;
                }
