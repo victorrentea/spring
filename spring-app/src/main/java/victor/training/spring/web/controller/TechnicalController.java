@@ -1,27 +1,36 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.service.TrainingService;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
+	@Autowired
+	private TrainingService trainingService;
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = "// TODO: get username";
+		dto.username = trainingService.getCurrentUsername().get();
 		dto.role = "";
 		dto.authorities = Collections.emptyList();
 		return dto;
 	}
-
+	@PostConstruct
+	public void enableSecurityContextPropagationOverAsync() {
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	}
 
 	@CrossOrigin(originPatterns = "**")
 	@GetMapping("api/tickets/count")
@@ -35,10 +44,7 @@ public class TechnicalController {
 //			.collect(toList());
 //	}
 
-	@PostConstruct
-	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-	}
+
 
 	// TODO [SEC] allow unsecured access
 	@GetMapping("unsecured/welcome")

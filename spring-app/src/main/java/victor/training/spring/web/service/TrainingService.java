@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static java.util.stream.Collectors.toList;
 
@@ -99,6 +102,13 @@ public class TrainingService {
         return trainingSearchRepo.search(criteria).stream()
             .map(this::mapToDto)
             .collect(toList());
+    }
+@Async
+    public CompletableFuture<String> getCurrentUsername() {
+        return CompletableFuture.completedFuture(SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getName());
     }
 }
 
