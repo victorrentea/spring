@@ -114,7 +114,7 @@ function fillTable(trainings) {
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 		//if (currentUser.authorities.includes('training.delete'))
 
-		if (currentUser.role === 'ROLE_ADMIN' || currentUser.role === 'ROLE_POWER' )
+		if (currentUser.role === 'ROLE_ADMIN'  )
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 		row += '</td>';
 		row += '</tr>';
