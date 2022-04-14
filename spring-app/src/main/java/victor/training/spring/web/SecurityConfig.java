@@ -16,7 +16,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import victor.training.spring.web.security.InspectingFilter;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+    prePostEnabled = true,
+   securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override

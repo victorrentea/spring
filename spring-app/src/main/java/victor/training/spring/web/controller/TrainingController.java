@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -40,6 +41,7 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	// TODO Allow only for role 'ADMIN'
 	// TODO Allow for authority 'training.delete'
 	// TODO Allow only if the current user manages the the teacher of that training
