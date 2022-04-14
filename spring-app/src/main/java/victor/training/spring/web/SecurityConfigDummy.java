@@ -43,7 +43,7 @@
 //      }
 //      @Override
 //      protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-//         String username = request.getParameter("user");
+//         String username = request.getParameter("user"); // /api/training/1?user=admin
 //         if (username == null || username.isBlank()) {
 //            log.error("No request param 'user' found on request");
 //            return null;

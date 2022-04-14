@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
@@ -54,6 +55,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
             .mvcMatchers("/spa/**", "/api/**").authenticated()
             .mvcMatchers("/sso/**").permitAll()
             .anyRequest().permitAll()
+
+            // saves memory :
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER) // if you authenticate every request in isolation based on tokens >> you don't need session
         ;
     }
 
