@@ -43,7 +43,7 @@ public class TrainingController {
 	}
 
 //	@PreAuthorize("hasRole('ADMIN')")
-	@Secured("ROLE_ADMIN") //add the ROLE_ prefix
+//	@Secured("ROLE_ADMIN") //add the ROLE_ prefix
 	// TODO Allow only for role 'ADMIN'
 	// TODO Allow for authority 'training.delete'
 	// TODO Allow only if the current user manages the the teacher of that training
