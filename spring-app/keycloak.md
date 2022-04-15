@@ -16,3 +16,7 @@ Run keycloak:
 2. Launch C:\workspace\keycloak-12.0.4\bin\standalone.bat
 3. Open http://localhost:8180 : login with initial1 / zaq1!QAZ
 4. Start this app and open the "internal app portal": http://localhost:8081
+
+
+
+To see access token, go to Clients > CLIENT > Clients Scopes > evaluate

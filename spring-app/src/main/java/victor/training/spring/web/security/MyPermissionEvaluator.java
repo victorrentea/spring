@@ -11,15 +11,15 @@ import victor.training.spring.web.security.SecurityUser;
 import java.io.Serializable;
 import java.util.Set;
 
-enum PermissionType {
-   WRITE, READ
-}
 @Slf4j
 @Component
 public class MyPermissionEvaluator implements PermissionEvaluator {
    @Autowired
    private TrainingRepo trainingRepo;
 
+   enum PermissionType {
+      WRITE, READ
+   }
    @Override
    public boolean hasPermission(
        Authentication auth, Object targetDomainObject, Object permission) {

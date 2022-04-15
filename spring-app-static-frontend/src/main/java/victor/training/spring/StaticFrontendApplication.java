@@ -14,15 +14,11 @@ public class StaticFrontendApplication  implements WebMvcConfigurer {
        SpringApplication.run(StaticFrontendApplication.class, args);
    }
 
-//}
-//@Profile("dev-machine")
-//class OnMyLocalConfig implements WebMvcConfigurer {
-
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
       File staticFolder = new File("spring-app/src/main/resources/static");
       if (!staticFolder.isDirectory()) {
-         System.err.println("Folder does not exist:" + staticFolder.getAbsolutePath());
+         throw new IllegalArgumentException("Folder to show static files from, does not exist:" + staticFolder.getAbsolutePath());
       }
       registry.addResourceHandler("/**").addResourceLocations(staticFolder.toURI().toString());
    }

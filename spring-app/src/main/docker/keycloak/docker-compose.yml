@@ -5,5 +5,9 @@ services:
     image: jboss/keycloak:latest
     environment:
       JAVA_OPTS: -Djboss.socket.binding.port-offset=100
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
     ports:
       - "8180:8180"
+    volumes:
+      - ./data:/tmp

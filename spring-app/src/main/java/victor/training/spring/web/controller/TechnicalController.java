@@ -43,12 +43,15 @@ public class TechnicalController {
 		System.out.println("More: " +idToken.getOtherClaims());
 
 
-		dto.username = fullName + " as " + principal.getName();
+		dto.username = principal.getName() + idToken.getEmail();
 		dto.role = "N/A";
+
+//		principal.getKeycloakSecurityContext().getToken().getre
 
 		dto.authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.toList());
+
 		return dto;
 	}
 	@PostConstruct
