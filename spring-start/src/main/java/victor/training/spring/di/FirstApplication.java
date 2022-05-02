@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -31,6 +32,9 @@ public class FirstApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
+//		Field f = X.class.getDeclaredField("y");
+//		f.setAccessible(true);
+//		f.set(x, new Y());
 		System.out.println(x.prod());
 	}
 }
