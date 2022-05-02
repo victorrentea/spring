@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Data // ! f important
 @Component
-@ConfigurationProperties(prefix = "cfg")
+@ConfigurationProperties
 public class ToateCfg {
    public enum ModelBMW {
       one,

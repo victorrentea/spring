@@ -23,6 +23,7 @@ public class App {
    public Cfg cfgOne() {
       return new Cfg();
    }
+
    @Bean
    @ConfigurationProperties(prefix = "cfg.map.two")
    public Cfg cfgTwo() {
