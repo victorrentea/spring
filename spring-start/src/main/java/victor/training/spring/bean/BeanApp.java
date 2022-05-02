@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,27 +38,27 @@ public class BeanApp implements CommandLineRunner {
 @Configuration
 class MyConfiguration {
     @Bean
-    public Person john() { // creezi manual un bean de tip Person numit "john"
+    public Person john(@Value("${person.john.name:NuMaFolosi}") String name) { // creezi manual un bean de tip Person numit "john"
         System.out.println("Se naste John 👶");
-        return new Person("John");
+        return new Person(name);
     }
 
     @Bean
 //    @Galben
-    public Person jane() {
-        return new Person("Jane");
+    public Person jane(@Value("${person.jane.name}") String name) {
+        return new Person(name /*si alte prop*/);
     }
 
     @Bean
     public Conversation cearta() {
         System.out.println("^!%$@!^(%*&!*^!");
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane(null));
     }
 
     @Bean
     public Conversation impacarea() {
         System.out.println("💘💘💘");
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane(null));
     }
 }
 
