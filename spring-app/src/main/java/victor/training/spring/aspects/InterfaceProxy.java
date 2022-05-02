@@ -1,6 +1,8 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -29,6 +31,7 @@ public class InterfaceProxy {
    }
 }
 
+//@Service
 class Clasa2 {
    private final Mate mate;
 
@@ -49,6 +52,7 @@ interface Mate {
    int suma(int a, int b);
    int produs(int a, int b);
 }
+//@Service
 class MateImpl implements Mate{
    @Override
    public int suma(int a, int b) {
@@ -68,3 +72,4 @@ class MateImpl implements Mate{
 // [4] Custom @Aspect, applied to methods in @Facade
 // [6] Tips: self proxy, debugging, final
 // [7] OPT: Manual proxying using BeanPostProcessor
+

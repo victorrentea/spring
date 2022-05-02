@@ -27,16 +27,18 @@ public class FirstApplication implements CommandLineRunner{
 	}
 
 	@Autowired
-	private X x;
+	private IX x;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(x.prod());
 	}
 }
-
+interface IX {
+	int prod();
+}
 @Service
-class X {
+class X implements IX {
 	// field injection
 	@Autowired
 	private Y y;
@@ -50,6 +52,7 @@ class X {
 	}
 
 
+	@Override
 	public int prod() {
 		return 1 + y.prod();
 	}
@@ -115,7 +118,7 @@ class Z {
 }
 
 
-//@Component
+@Component
 class Utility {
 	public int cevaStatic() {
 		return 1;
