@@ -37,12 +37,12 @@ class X {
 	@Autowired
 	private Y y;
 
-	// method (setter) injection
-	private Z z;
-	@Autowired
-	public void setZ(Z z) {
-		this.z = z;
-	}
+// method (setter) injection (rarely used)
+//	private Z z;
+//	@Autowired
+//	public void setZ(Z z) {
+//		this.z = z;
+//	}
 
 	public int prod() {
 		return 1 + y.prod();
