@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,14 @@ public class App {
    }
 
    @Bean
-   public Cfg cfgOne(@Value("${cfg.one.x}") int x, @Value("${cfg.one.y}") int y) {
-      return new Cfg(x,y);
+   @ConfigurationProperties(prefix = "cfg.one")
+   public Cfg cfgOne() {
+      return new Cfg();
    }
    @Bean
-
-   public Cfg cfgTwo(@Value("${cfg.two.x}") int x, @Value("${cfg.two.y}") int y) {
-      return new Cfg(x,y);
+   @ConfigurationProperties(prefix = "cfg.two")
+   public Cfg cfgTwo() {
+      return new Cfg();
    }
 }
 
