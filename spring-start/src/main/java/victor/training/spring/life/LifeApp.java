@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,12 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -46,29 +52,36 @@ public class LifeApp implements CommandLineRunner{
 @Service
 @RequiredArgsConstructor
 class OrderExporter  {
-	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+//	@Autowired
+//	@Lazy
+//	private LabelService labelService; //pacaleala: o singura data are nevoie Spr de o instanta de LabelService, pt ca OrderExporter e singleton.
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
 
 	public void export(Locale locale) {
+		// la fiecare invocare CERI springului o instanta noua, care ramane pe acel apel de functie. ("privata threadului curent")
+		LabelService labelService = applicationContext.getBean(LabelService.class);
 		log.debug("Running export in " + locale);
 		labelService.load(locale);
 		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
 	}
 }
-@Slf4j
-@Service
-@RequiredArgsConstructor
-class InvoiceExporter {
-	private final LabelService labelService;
-	
-	public void exportInvoice() {
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
-	}
-}
+//@Slf4j
+//@Service
+//@RequiredArgsConstructor
+//class InvoiceExporter {
+//	private final LabelService labelService;
+//
+//	public void exportInvoice() {
+//		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+//	}
+//}
 
 @Slf4j
-@Service // by default, toate beanurile spring sunt singletoane (1 instanta / aplicatie)
+//@Service // by default, toate beanurile spring sunt singletoane (1 instanta / aplicatie)
+//@Scope(value = "prototype") // de fiecare data cand spring va avea nevoie de o instanta din asta, va creea o noua instanta.
 class LabelService {
 	private final CountryRepo countryRepo;
 	
@@ -91,5 +104,29 @@ class LabelService {
 	}
 	public String toString() {
 		return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+	}
+}
+
+@Getter
+@Component
+@Scope(value = "request",proxyMode = ScopedProxyMode.TARGET_CLASS)
+class MetadateDeRequest {
+	private String username; // SecurityContextHolder.getContext().....
+	private Locale userLocale;
+	private int userTimezone;
+	private int userRole;
+
+	private int clientId; // NU-s mereu date pe toate fluxurile
+	private int accountId;// NU-s mereu date pe toate fluxurile
+}
+
+@Service
+class SOmeSerice {
+	@Autowired
+	private MetadateDeRequest metadate;
+
+	public void method() {
+		System.out.println(metadate.getUserLocale());
+		System.out.println(metadate.getAccountId());
 	}
 }
