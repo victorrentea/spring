@@ -1,10 +1,11 @@
 package victor.training.spring.di;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 // [1] Injection: field, constructor, method; debate; mockito
@@ -24,7 +25,6 @@ public class FirstApplication implements CommandLineRunner{
 	@Autowired
 	private X x;
 
-
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(x.prod());
@@ -37,10 +37,11 @@ class X {
 	@Autowired
 	private Y y;
 
-	// method (setter) injection
+//	// method (setter) injection
 	private Z z;
+
 	@Autowired
-	public void setZ(Z z) {
+	public void cumVreuEu(Z z) {
 		this.z = z;
 	}
 
@@ -48,7 +49,8 @@ class X {
 		return 1 + y.prod();
 	}
 }
-@Service
+@Service // Springul se va ocupa sa creeze si sa configureze (injecteze) acest obiect.
+//@RequiredArgsConstructor
 class Y {
 	private final Z z;
 
@@ -56,15 +58,32 @@ class Y {
 	public Y(Z z) {
 		this.z = z;
 	}
-
 	public int prod() {
+		System.out.println("Are y pe z? " + z.getClass());
 		return 1 + z.prod();
 	}
+	public int callback() {
+		return 0;
+	}
 }
-@Service
-class Z {
 
+@Service
+//@Lazy
+class Z {
+//	@Lazy
+	private final Y y;
+	public Z(@Lazy Y y) {
+		this.y = y;
+	}
 	public int prod() {
+		System.out.println("Are z pe y? " + y.getClass());
+		return Utility.cevaStatic() + y.callback();
+	}
+}
+
+
+class Utility {
+	public static int cevaStatic() {
 		return 1;
 	}
 }
