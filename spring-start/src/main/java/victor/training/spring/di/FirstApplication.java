@@ -94,10 +94,10 @@ class Y {
 class Z {
 //	@Lazy
 	private final Y y;
-//	private final Utility utility;
-	public Z(@Lazy Y y/*, Utility utility*/) {
+	private final Utility utility;
+	public Z(@Lazy Y y, Utility utility) {
 		this.y = y;
-//		this.utility = utility;
+		this.utility = utility;
 	}
 
 	@Autowired
@@ -107,7 +107,7 @@ class Z {
 		System.out.println("Asta se intampla la runtime cand vine un req pe web (eg)");
 		System.out.println("Are z pe y? " + y.getClass());
 
-		Utility utility = springContainer.getBean(Utility.class);
+		Utility utility = springContainer.getBean(Utility.class); // in general code smell < mai putin in integrari intre frameworkuri
 		// riscant pentru ca fetchul de ob la runtime poate crapa (eg ca nu ai definit beanul cautat).
 
 		return utility.cevaStatic() + y.callback();
