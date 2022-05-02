@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
     public static void main(String[] args) {
@@ -16,40 +19,65 @@ public class BeanApp implements CommandLineRunner {
     }
 
     @Autowired
-    Conversation conversation;
+    Conversation impacarea;
     @Override
     public void run(String... args) throws Exception {
 //        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        conversation.start();
+        impacarea.start();
         // TODO manage all with Spring
     }
 }
+
+//@Retention(RetentionPolicy.RUNTIME)
+//@Qualifier
+//@interface Galben{
+//
+//}
 
 @Configuration
 class MyConfiguration {
     @Bean
     public Person john() { // creezi manual un bean de tip Person numit "john"
+        System.out.println("Se naste John 👶");
         return new Person("John");
     }
 
     @Bean
+//    @Galben
     public Person jane() {
         return new Person("Jane");
     }
 
     @Bean
-    public Conversation cumVreaMuschiu() {
+    public Conversation cearta() {
+        System.out.println("^!%$@!^(%*&!*^!");
+        return new Conversation(john(), jane());
+    }
+
+    @Bean
+    public Conversation impacarea() {
+        System.out.println("💘💘💘");
         return new Conversation(john(), jane());
     }
 }
 
+//class HackarealaGenerataLaRuntime extends MyConfiguration {
+//    @Override
+//    public Person john() {
+//        if (am deja creat pe john) return din cache
+//             else
+//        return pun in mapa si intorc pe (super.john()) dupa ce-l injecteaza cum se cuvine;
+//    }
+//}
+
 
 // nu ai voie sa atingi clasa de mai jos
+@Component
 class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(Person john, Person jane) {
+    public Conversation(Person john,/*@Galben*/ Person jane) {
         this.one = john;
         this.two = jane;
     }
