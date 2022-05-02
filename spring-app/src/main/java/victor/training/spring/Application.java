@@ -15,12 +15,6 @@ import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 @SpringBootApplication
 public class Application {
 
-
-//	{
-//		AppConU
-//		WebApplicationContextUtils.
-//	}
-
    public static void main(String[] args) {
       new SpringApplicationBuilder(Application.class)
           .listeners(new TestDBConnectionInitializer())
@@ -28,19 +22,19 @@ public class Application {
    }
 
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/**")
-					 .allowCredentials(true) // allows receiving session cookie
-//					 .allowedOriginPatterns("http://localhost:8081") // NodeJS
-					 .allowedOriginPatterns("http://*") // Too broad
-            ;
-                // also don't forget to add .cors() to spring security
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/api/**")
+//					 .allowCredentials(true) // allows receiving session cookie
+////					 .allowedOriginPatterns("http://localhost:8081") // NodeJS
+//					 .allowedOriginPatterns("http://*") // Too broad
+//            ;
+//                // also don't forget to add .cors() to spring security
+//			}
+//		};
+//	}
 
 }
