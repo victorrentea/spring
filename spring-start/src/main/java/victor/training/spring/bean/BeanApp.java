@@ -1,6 +1,5 @@
 package victor.training.spring.bean;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -8,9 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -47,9 +44,9 @@ class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(@Qualifier("john") Person one, @Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
+    public Conversation(Person john, Person jane) {
+        this.one = john;
+        this.two = jane;
     }
 
     public void start() {
