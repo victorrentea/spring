@@ -31,15 +31,20 @@ class MyConfiguration {
     public Person john() { // creezi manual un bean de tip Person numit "john"
         return new Person("John");
     }
+
     @Bean
     public Person jane() {
         return new Person("Jane");
     }
 
+    @Bean
+    public Conversation cumVreaMuschiu() {
+        return new Conversation(john(), jane());
+    }
 }
 
 
-@Component
+// nu ai voie sa atingi clasa de mai jos
 class Conversation {
     private final Person one;
     private final Person two;
