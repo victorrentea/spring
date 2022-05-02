@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import victor.training.spring.vlad.ToateCfg.ModelBMW;
 
 import javax.annotation.PostConstruct;
 
@@ -18,12 +19,12 @@ public class App {
    }
 
    @Bean
-   @ConfigurationProperties(prefix = "cfg.one")
+   @ConfigurationProperties(prefix = "cfg.map.one")
    public Cfg cfgOne() {
       return new Cfg();
    }
    @Bean
-   @ConfigurationProperties(prefix = "cfg.two")
+   @ConfigurationProperties(prefix = "cfg.map.two")
    public Cfg cfgTwo() {
       return new Cfg();
    }
@@ -32,12 +33,14 @@ public class App {
 
 @Service
 class X1{
-   @Autowired
-   Cfg cfgOne;
+//   @Autowired
+//   Cfg cfgOne;
+@Autowired
+private ToateCfg toateCfg;
 
    @PostConstruct
    public void printCfg() {
-      System.out.println(cfgOne);
+      System.out.println(toateCfg.getMap().get(ModelBMW.one));
    }
 }
 @Service
