@@ -1,12 +1,16 @@
 package victor.training.spring.di;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -45,12 +49,16 @@ class X {
 		this.z = z;
 	}
 
+
 	public int prod() {
 		return 1 + y.prod();
 	}
 }
-@Service // Springul se va ocupa sa creeze si sa configureze (injecteze) acest obiect.
+
+
+
 //@RequiredArgsConstructor
+@Service
 class Y {
 	private final Z z;
 
@@ -58,6 +66,7 @@ class Y {
 	public Y(Z z) {
 		this.z = z;
 	}
+
 	public int prod() {
 		System.out.println("Are y pe z? " + z.getClass());
 		return 1 + z.prod();
@@ -67,23 +76,48 @@ class Y {
 	}
 }
 
-@Service
-//@Lazy
+//@Configuration contine metode @Bean
+//@Repository // citeste/scrie din DB . Nu prea le mai folosim daca lucram cu Spring Data JPA
+//@Controller // .jsp jsf velocity ? : genereaza HTML de pe server > nu prea e trendy. ci mai degraba ng/react/vue/
+//@RestController // API de REST ✅
+
+//@Component // tot restu
+//@Service // "domain logic"
+
+// a mea custom
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Adapter {
+}
+
+@Adapter
 class Z {
 //	@Lazy
 	private final Y y;
-	public Z(@Lazy Y y) {
+//	private final Utility utility;
+	public Z(@Lazy Y y/*, Utility utility*/) {
 		this.y = y;
+//		this.utility = utility;
 	}
+
+	@Autowired
+	ApplicationContext springContainer;
+
 	public int prod() {
+		System.out.println("Asta se intampla la runtime cand vine un req pe web (eg)");
 		System.out.println("Are z pe y? " + y.getClass());
-		return Utility.cevaStatic() + y.callback();
+
+		Utility utility = springContainer.getBean(Utility.class);
+		// riscant pentru ca fetchul de ob la runtime poate crapa (eg ca nu ai definit beanul cautat).
+
+		return utility.cevaStatic() + y.callback();
 	}
 }
 
 
+//@Component
 class Utility {
-	public static int cevaStatic() {
+	public int cevaStatic() {
 		return 1;
 	}
 }

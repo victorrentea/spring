@@ -5,6 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
@@ -13,6 +14,12 @@ import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
 public class Application {
+
+
+//	{
+//		AppConU
+//		WebApplicationContextUtils.
+//	}
 
    public static void main(String[] args) {
       new SpringApplicationBuilder(Application.class)
