@@ -37,7 +37,8 @@ public class Playground {
             saveError(e);
         }
         repo.save(new Message("dupa, da degeaba"));
-        System.out.println(repo.findAll()); // cauzeaza un auto-flush a tot ce avea de scris Hibernate in DB (1st level caching)
+//        System.out.println(repo.findAll()); // cauzeaza un auto-flush a tot ce avea de scris Hibernate in DB (1st level caching)
+        System.out.println("Sfarist metoda"); // autoflush by default se intampla DUPA iesirea din metoda
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Exception e) {
@@ -60,7 +61,7 @@ class AnotherClass {
     public void bizLogic(String mesaj_de_pe_coada) throws FileNotFoundException {
         repo.save(new Message("Chestii1 "));
         repo.save(new Message("Chestii2 "));
-        throw new RuntimeException("BUG");
+//        throw new RuntimeException("BUG");
 
 
 
