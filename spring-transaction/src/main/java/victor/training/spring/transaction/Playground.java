@@ -30,14 +30,15 @@ public class Playground {
     }
     @Transactional
     public void transactionTwo() {
-
+        repo.save(new Message("initial "));
         try {
             other.bizLogic("mesaj de pe coada");
         } catch (Exception e) {
             saveError(e);
         }
+        repo.save(new Message("dupa, da degeaba"));
+        System.out.println(repo.findAll()); // cauzeaza un auto-flush a tot ce avea de scris Hibernate in DB (1st level caching)
     }
-//    @TransactionAttribute()
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Exception e) {
         repo.save(new Message("CRAPAU: " + e.getMessage()));
@@ -48,7 +49,6 @@ public class Playground {
 @RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
 class AnotherClass {
     private final MessageRepo repo;
-
     @Transactional
     public void asaptea() {
 //        restTemplate.getForObject("REST CALL"); // 10s // WSDL evita apeluri HTTP din metode tranzactionale
@@ -56,16 +56,18 @@ class AnotherClass {
 //        repo.save(new Message(null));
     }
 
-//    @Transactional(/*readOnly = true,*/ rollbackFor = Exception.class)
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
     public void bizLogic(String mesaj_de_pe_coada) throws FileNotFoundException {
         repo.save(new Message("Chestii1 "));
         repo.save(new Message("Chestii2 "));
-        Message dinDb = repo.findById(100L).orElseThrow();
-        dinDb.setMessage("altul");
+        throw new RuntimeException("BUG");
+
+
+
+        //        Message dinDb = repo.findById(100L).orElseThrow();
+//        dinDb.setMessage("altul");
         // chiar si fara repo.save(dinDb), modificarea ajunge in DB: auto-flush
         // inserturi
-//        throw new RuntimeException("BUG");
 //        throw new FileNotFoundException("BUG");
     }
 
