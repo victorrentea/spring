@@ -43,6 +43,7 @@ class AltaClasa {
 	}
 }
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
@@ -61,10 +62,8 @@ public class TechnicalController {
 		String username = altaClasa.getLoggedInUsername().get();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Object opaqueSecurityPrincipal = authentication.getPrincipal();
-		KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) opaqueSecurityPrincipal;
-		IDToken idToken = keycloakPrincipal.getKeycloakSecurityContext().getIdToken();
-
-		dto.username = idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase() + "(" + username + ")";
+		String fullName = extractFullNameFromIDToken(opaqueSecurityPrincipal);
+		dto.username = fullName + "(" + username + ")";
 		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 
@@ -81,7 +80,18 @@ public class TechnicalController {
 		return dto;
 	}
 
-		private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+	private String extractFullNameFromIDToken(Object opaqueSecurityPrincipal) {
+		try {
+			KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal =(KeycloakPrincipal<KeycloakSecurityContext>)  opaqueSecurityPrincipal;
+			IDToken idToken = keycloakPrincipal.getKeycloakSecurityContext().getIdToken();
+			return idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase();
+		} catch (Exception e) {
+			log.warn("Not using keycloak: " + e, e );
+			return "";
+		}
+	}
+
+	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
 		return authorities.stream()
 			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
 			.collect(toList());
