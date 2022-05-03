@@ -1,4 +1,4 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,27 +11,22 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class Playground {
     private final MessageRepo repo;
-    private final EntityManager em;
+    private final EntityManager entityManager;
     private final JdbcTemplate jdbc;
-    private final AnotherClass other;
-    private final MyBatisMapper mybatis;
+    private final OtherClass other;
 
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        mybatis.search(100);
         repo.save(new Message("jpa"));
     }
     @Transactional
     public void transactionTwo() {
-        // TODO Repo API
-        // TODO @NonNullApi
     }
 }
 
-
 @Service
-@RequiredArgsConstructor // generates constructor for all final fields, used by Spring to inject dependencies
-class AnotherClass {
+@RequiredArgsConstructor
+class OtherClass {
     private final MessageRepo repo;
 }

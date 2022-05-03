@@ -1,15 +1,11 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@MapperScan("victor.training.spring.transaction") // mybatis [optional]
 @SpringBootApplication
-@EnableJpaRepositories
 @RequiredArgsConstructor
 public class TransactionsApp implements CommandLineRunner {
    public static void main(String[] args) {
