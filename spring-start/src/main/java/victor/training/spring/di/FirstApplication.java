@@ -24,7 +24,6 @@ public class FirstApplication implements CommandLineRunner{
 	@Autowired
 	private X x;
 
-
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(x.prod());

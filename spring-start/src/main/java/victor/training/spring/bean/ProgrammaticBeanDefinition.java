@@ -47,7 +47,6 @@ public class ProgrammaticBeanDefinition implements CommandLineRunner {
 class Minion {
    private final String name;
 
-
    Minion(String name) {
       this.name = name;
    }

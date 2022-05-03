@@ -14,10 +14,8 @@ public class BeanApp implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+        // TODO convince Spring to do for you the line above
         conversation.start();
-        // TODO manage all with Spring
-
-        // TODO alternative: "Mirabela Dauer" story :)
     }
 }
 
@@ -45,7 +43,7 @@ class Person {
         this.name = name;
     }
     public String sayHello() {
-        return "Hello! Here is " + name + " from " + OldClass.getInstance().getCurrentCountry();
+        return "Hello! Here is " + name;
     }
 }
 
