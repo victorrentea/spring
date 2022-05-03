@@ -1,4 +1,4 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Table;
 import java.io.FileNotFoundException;
 
 @Service

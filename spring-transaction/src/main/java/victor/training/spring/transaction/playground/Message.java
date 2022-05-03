@@ -1,4 +1,4 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

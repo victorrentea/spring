@@ -1,14 +1,8 @@
-package victor.training.spring.transaction.challenge;
+package victor.training.spring.transaction.exercises.propagation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Slf4j
 @Component
@@ -16,9 +10,9 @@ class PropagationExercises {
    @Autowired
    private AService service;
 
-   // TODO uncomment and try to determine for each flow:
-   // BEFORE WHAT METHOD DO NEW TRANSACTION START ?
-   //   @EventListener(ApplicationStartedEvent.class)
+   // TODO Determine for each flow: BEFORE WHAT METHOD DOES THE TRANSACTION START ?
+   // Hint: use p6spy to check your answer
+   // @EventListener(ApplicationStartedEvent.class) // uncomment
    public void onStartupCallAll() {
       System.out.println("! This method does NOT have a transaction open !");
       System.out.println("================ FLOW #1 ==================");

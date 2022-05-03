@@ -1,4 +1,4 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
