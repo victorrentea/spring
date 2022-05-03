@@ -23,9 +23,6 @@
         <module>spring-start</module>
         <module>spring-transaction</module>
         <module>spring-app</module>
-		<module>spring-app-attacker</module>
-		<module>spring-security-jwt-client</module>
-		<module>spring-security-jwt-server</module>
     </modules>
 
     <dependencyManagement>
