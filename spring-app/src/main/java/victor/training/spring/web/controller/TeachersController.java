@@ -10,6 +10,7 @@ import victor.training.spring.web.controller.dto.TeacherDto;
 import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.service.TeacherService;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 @RestController
@@ -17,13 +18,18 @@ import javax.validation.Valid;
 public class TeachersController {
 	@Autowired
 	private TeacherService service;
+
+	@PostConstruct
+	public void method() {
+		System.out.println("Oare cu ce service vorbesc ?" + service.getClass());
+	}
 	
 	@GetMapping
 	public List<TeacherDto> getAllTeachers() {
 		return service.getAllTeachers();
 	}
 	@GetMapping("{id}")
-	public TeacherDto getTeacherById(long id) {
+	public TeacherDto getTeacherById(@PathVariable long id) {
 		return service.getTeacherById(id);
 	}
 
