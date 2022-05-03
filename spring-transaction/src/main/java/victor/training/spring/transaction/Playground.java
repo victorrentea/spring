@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Table;
+import java.io.FileNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -54,12 +56,17 @@ class AnotherClass {
 //        repo.save(new Message(null));
     }
 
-    @Transactional
-    public void bizLogic(String mesaj_de_pe_coada) {
+//    @Transactional(/*readOnly = true,*/ rollbackFor = Exception.class)
+@Transactional
+    public void bizLogic(String mesaj_de_pe_coada) throws FileNotFoundException {
         repo.save(new Message("Chestii1 "));
         repo.save(new Message("Chestii2 "));
+        Message dinDb = repo.findById(100L).orElseThrow();
+        dinDb.setMessage("altul");
+        // chiar si fara repo.save(dinDb), modificarea ajunge in DB: auto-flush
         // inserturi
-        throw new RuntimeException("BUG");
+//        throw new RuntimeException("BUG");
+//        throw new FileNotFoundException("BUG");
     }
 
 
