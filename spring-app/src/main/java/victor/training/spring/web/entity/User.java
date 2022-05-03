@@ -6,6 +6,7 @@ import java.util.*;
 import static java.util.Collections.*;
 
 @Entity
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue

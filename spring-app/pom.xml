@@ -65,12 +65,12 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.199</version> <!-- supports -ifNotExists -->
+            <version>2.1.212</version> <!-- supports -ifNotExists -->
         </dependency>
         <dependency>
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
-            <version>3.0.0</version>
+            <version>3.9.1</version>
         </dependency>
 
         <dependency>

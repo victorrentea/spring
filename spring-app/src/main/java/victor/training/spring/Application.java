@@ -27,9 +27,9 @@ public class Application {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/api/**")
-					 .allowCredentials(true) // allows receiving session cookie
-//					 .allowedOriginPatterns("http://localhost:8081") // NodeJS
-					 .allowedOriginPatterns("http://*") // Too broad
+					 .allowCredentials(true) // allows receiving session cookie (if using cookies)
+					 .allowedOriginPatterns("http://localhost:8081") // NodeJS
+//					 .allowedOriginPatterns("http://*") // Too broad
             ;
                 // also don't forget to add .cors() to spring security
 			}
