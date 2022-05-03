@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
-@EnableCaching
+@EnableCaching(order = 20)
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
 public class Application {
