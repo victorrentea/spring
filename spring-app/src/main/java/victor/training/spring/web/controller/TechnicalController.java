@@ -18,7 +18,7 @@ public class TechnicalController {
 	public CurrentUserDto getCurrentUsername() {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
+		dto.username = "Gandam FRATE! ce misto sa fi stiut asta de la inceput Eroul Necunoscut // TODO: get username";
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 

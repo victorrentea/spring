@@ -8,11 +8,13 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.concurrent.CompletableFuture;
+
 import static java.lang.System.currentTimeMillis;
 
 @Slf4j
 @RestController
-public class DrinkerController {
+public class BetzavanController {
    @Autowired
    private Barman barman;
 
@@ -20,15 +22,20 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
-      log.debug("Submitting my order");
+   public CompletableFuture<DillyDilly> drink() throws Exception {
+      log.debug("Submitting my order CUM MERGE? Proxy:  "+ barman.getClass());
       long t0 = currentTimeMillis();
 
-      Beer beer = barman.pourBeer();
-      Vodka vodka = barman.pourVodka();
+      CompletableFuture<Beer> futureBeer = barman.pourBeer(); // cat dureaza asta? 0ms.
+      log.debug("Instant");
+      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
+
+
+      CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka,
+          (beer, vodka) -> new DillyDilly(beer, vodka));
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
-      return new DillyDilly(beer, vodka);
+      return futureDilly;
    }
 }
