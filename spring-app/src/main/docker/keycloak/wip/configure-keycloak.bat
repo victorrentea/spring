@@ -1,2 +1,0 @@
-
-docker run -e "KEYCLOAK_USER=initial1" -p "8180:8180" -e "JAVA_OPTS=-Djboss.socket.binding.port-offset=100" -e "KEYCLOAK_PASSWORD=zaq1!QAZ" -e "KEYCLOAK_IMPORT=/tmp/spa-realm.json" -v "./spa-realm.json:/tmp/spa-realm.json" jboss/keycloak
