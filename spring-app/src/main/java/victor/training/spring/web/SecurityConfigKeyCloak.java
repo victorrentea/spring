@@ -48,10 +48,10 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         // 1) user roles -> principal authorities
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // 2) user ROLES -> resolve locally through a Map<role,List<authorities>>
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RoleHierarchyAuthoritiesMapper(SecurityConfigKeyCloak::resolveAuthoritiesByRoles));
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RoleHierarchyAuthoritiesMapper(SecurityConfigKeyCloak::resolveAuthoritiesByRoles));
         auth.authenticationProvider(keycloakAuthenticationProvider);
 
         // 3) [pro] USE client-scoped roles (application-specific)
@@ -72,7 +72,13 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 
     public static List<GrantedAuthority> resolveAuthoritiesByRoles(Collection<? extends GrantedAuthority> roles) {
         List<String> featureAuthorities = roles.stream()
-            .flatMap(roleName -> UserRole.valueOf(roleName.getAuthority()).getAuthorities().stream())
+            .flatMap(roleName -> {
+                try {
+                    return UserRole.valueOf(roleName.getAuthority()).getAuthorities().stream();
+                } catch (IllegalArgumentException e) {
+                    return Stream.of();
+                }
+            })
             .collect(toList());
         return Stream.concat(roles.stream(), featureAuthorities.stream().map(SimpleGrantedAuthority::new)).collect(toList());
     }

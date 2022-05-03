@@ -17,7 +17,9 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -64,7 +66,7 @@ public class TechnicalController {
 
 		dto.username = idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase() + "(" + username + ")";
 		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -79,11 +81,11 @@ public class TechnicalController {
 		return dto;
 	}
 
-	//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
-//		return authorities.stream()
-//			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
-//			.collect(toList());
-//	}
+		private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+		return authorities.stream()
+			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
+			.collect(toList());
+	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
