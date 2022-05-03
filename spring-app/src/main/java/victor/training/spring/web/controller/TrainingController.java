@@ -37,6 +37,7 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
+//	@PreAuthorize("hasRole('ADMIN')")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
 		trainingService.updateTraining(id, dto);
@@ -50,7 +51,7 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 
 //	@Secured("ADMIN")
-//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

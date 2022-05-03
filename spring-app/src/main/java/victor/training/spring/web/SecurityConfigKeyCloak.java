@@ -51,7 +51,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         http
             .csrf().disable() // ok daca niciodata nu faci <form> <input type="submit"> catre server
             .authorizeRequests()
-                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
                 .mvcMatchers("/spa/**", "/api/**").authenticated()
 //                .mvcMatchers("/sso/**").permitAll()
                 .anyRequest().permitAll()
