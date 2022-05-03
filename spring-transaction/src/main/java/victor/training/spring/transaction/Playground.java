@@ -61,8 +61,8 @@ class AnotherClass {
     public void bizLogic(String mesaj_de_pe_coada) throws FileNotFoundException {
         repo.save(new Message("Chestii1 "));
         repo.save(new Message("Chestii2 "));
-//        throw new RuntimeException("BUG");
-
+        throw new RuntimeException("BUG");
+//
 
 
         //        Message dinDb = repo.findById(100L).orElseThrow();
