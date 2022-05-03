@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -51,7 +52,9 @@ public class TrainingController {
 	// TODO PermissionEvaluator [GEEK]
 
 //	@Secured("ADMIN")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('training.delete')")
+//	@PreAuthorize("@permissionManager.poateStergeTraining(#id)")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
@@ -62,4 +65,11 @@ public class TrainingController {
 		return trainingService.search(criteria);
 	}
 
+}
+
+@Component
+class PermissionManager {
+	public boolean poateStergeTraining(long trainingId) {
+		return true;
+	}
 }
