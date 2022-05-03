@@ -1,7 +1,11 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.IDToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -18,7 +22,17 @@ public class TechnicalController {
 	public CurrentUserDto getCurrentUsername() {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "Gandam FRATE! ce misto sa fi stiut asta de la inceput Eroul Necunoscut // TODO: get username";
+
+
+		// TODO: obtin user curent dintr-o metoda STATICA (😱)
+		// TODO: autorizare vs authentificare
+		// TODO autorizare in 5 moduri
+		// TODO mange-ui permisiuni de pe central.
+		Object opaqueSecurityPrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) opaqueSecurityPrincipal;
+
+		IDToken idToken = keycloakPrincipal.getKeycloakSecurityContext().getIdToken();
+		dto.username = idToken.getGivenName() + " " + idToken.getFamilyName().toUpperCase();
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 

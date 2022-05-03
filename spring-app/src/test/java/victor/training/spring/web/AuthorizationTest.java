@@ -34,7 +34,7 @@
 //        verifyNoInteractions(trainingService);
 //    }
 //
-//    @WithMockUser(authorities = "training.delete")
+//    @WithMockUser(roles = "training.delete")
 //    @Test
 //    public void testSearchOK() throws Exception {
 //        mockMvc.perform(delete("/api/trainings/1"))

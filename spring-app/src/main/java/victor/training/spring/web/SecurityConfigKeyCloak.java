@@ -48,11 +48,11 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http
-            .csrf().disable()
+            .csrf().disable() // ok daca niciodata nu faci <form> <input type="submit"> catre server
             .authorizeRequests()
-            .mvcMatchers("/spa/**", "/api/**").authenticated()
-            .mvcMatchers("/sso/**").permitAll()
-            .anyRequest().permitAll()
+                .mvcMatchers("/spa/**", "/api/**").authenticated()
+//                .mvcMatchers("/sso/**").permitAll()
+                .anyRequest().permitAll()
         ;
     }
 
