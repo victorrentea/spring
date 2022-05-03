@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
+// TODO fix tests
 @SpringBootApplication
 public class ExceptionsExercises {
 
