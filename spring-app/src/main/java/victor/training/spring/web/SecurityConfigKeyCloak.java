@@ -94,6 +94,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
                 .mvcMatchers("/spa/**", "/api/**").authenticated()
 //                .mvcMatchers("/sso/**").permitAll()
                 .anyRequest().permitAll()
+            .and().sessionManagement().disable()
         ;
     }
 
