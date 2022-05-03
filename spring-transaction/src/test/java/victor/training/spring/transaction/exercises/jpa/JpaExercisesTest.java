@@ -18,16 +18,15 @@ public class JpaExercisesTest {
    @Autowired
    JpaEntityRepo repo;
 
-   Long id;
-
    @BeforeEach
    final void before() {
       repo.deleteAll(); // explicit cleanup as tests cannot be @Transactional here
-      id = repo.save(new JpaEntity("name", 18, "tag1", "tag2")).getId();
    }
 
    @Test
    void changesToEntityAreAutoSaved() {
+      long id = repo.save(new JpaEntity("name")).getId();
+
       jpaExercises.changesToEntityAreAutoSaved(id);
 
       assertThat(repo.findById(id).orElseThrow().getName()).isNotEqualTo("name");
@@ -36,6 +35,8 @@ public class JpaExercisesTest {
    @Test
    @CaptureSystemOutput
    void lazyLoadingRequiresSurroundingTransaction(OutputCapture capture) {
+      long id = repo.save(new JpaEntity("name", "tag1", "tag2")).getId();
+
       jpaExercises.lazyLoadingRequiresSurroundingTransaction(id);
 
       assertThat(capture.toString()).contains("tag1,tag2");
@@ -51,6 +52,8 @@ public class JpaExercisesTest {
 
    @Test
    void firstLevelCache() {
+      long id = repo.save(new JpaEntity("name")).getId();
+
       boolean r = jpaExercises.firstLevelCache(id);
 
       assertThat(r).isTrue();

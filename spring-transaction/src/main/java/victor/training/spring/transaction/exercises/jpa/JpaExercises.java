@@ -25,7 +25,7 @@ public class JpaExercises {
 
    @Transactional
    public void prematureAutoFlushing() {
-      repo.save(new JpaEntity("new",18));
+      repo.save(new JpaEntity("newName"));
       // TODO cause the 1st level cache to be auto-flushed before the next line - try as many ways
       System.out.println("END OF METHOD"); // DO NOT CHANGE
    }

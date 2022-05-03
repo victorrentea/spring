@@ -17,15 +17,13 @@ public class JpaEntity {
    private Long id;
 
    private String name;
-   private int age;
    @ElementCollection
    private List<String> tags = new ArrayList<>();
 
    protected JpaEntity() {} // for Hibernate
 
-   public JpaEntity(String name, int age, String... tags) {
+   public JpaEntity(String name, String... tags) {
       this.name = name;
-      this.age = age;
       this.tags.addAll(List.of(tags));
    }
 
