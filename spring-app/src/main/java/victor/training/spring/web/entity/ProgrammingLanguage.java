@@ -1,18 +1,21 @@
 package victor.training.spring.web.entity;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Tag {
+@Data
+public class ProgrammingLanguage {
    @Id
    @GeneratedValue
    private Long id;
    private String name;
 
-   protected Tag() {}
-   public Tag(String name) {
+   protected ProgrammingLanguage() {}
+   public ProgrammingLanguage(String name) {
       this.name = name;
    }
 

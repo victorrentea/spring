@@ -8,10 +8,10 @@ import javax.validation.constraints.Size;
 public class TrainingDto {
 	public Long id;
 	@Size(min = 3, max = 50)
-//	@ValidTrainingName
 	public String name;
 	public ContractType level;
 	public Long teacherId;
+	public Long languageId;
 	public String teacherName;
 	public String startDate;
 	public String description;

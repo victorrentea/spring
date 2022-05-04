@@ -40,8 +40,8 @@ html {
 	<div id="trainingNewDiv" style="display:none;border:2px solid green">
 		<h4>Create a New Training</h4>
 		Name:<input type="text" id="newName" /> <br />
+		Language:<select id="newLanguage"></select> <br />
 		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
-
 		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
 		Teacher: <select id="newTeacher"></select> <br />
 		<input type="button" value="Create" onclick="createTraining()">
@@ -52,6 +52,7 @@ html {
 		<h4>Edit a Training</h4>
 		<input type="hidden" id="editTrainingId" />
 		Name:<input type="text" id="editName" /> <br />
+		Language:<select id="editLanguage"></select> <br />
 		Description:<textarea id="editDescription" cols="40" rows="3"></textarea> <br />
 		Start Date (dd-mm-yyyy):<input type="text" id="editStartDate" /> <br />
 		Teacher: <select id="editTeacher"></select><br />
@@ -158,22 +159,34 @@ $.ajax(restEndpoint +"/user/current", {
 
 $("#newStartDate").val("01-01-2019");
 
-function populateTeacherCombo($teacherCombo) {
-	$teacherCombo.html("");
-
+function populateTeacherSelect($teacherSelect) {
+	$teacherSelect.html("");
 	$.ajax(restEndpoint + "/teachers", {
 		method: "GET",
 		success: function(teachers) {
 			$.each(teachers, function (i, t) {
-			    $teacherCombo.append('<option value="'+t.id+'">'+t.name+'</option>');
+			    $teacherSelect.append('<option value="'+t.id+'">'+t.name+'</option>');
 			});
 		}
 	});
 }
-populateTeacherCombo($("#newTeacher"));
-populateTeacherCombo($("#editTeacher"));
-populateTeacherCombo($("#searchTeacher"));
+populateTeacherSelect($("#editTeacher"));
+populateTeacherSelect($("#searchTeacher"));
 $("#searchTeacher").append("<option></option>")
+
+
+function populateLanguageSelect($select) {
+	$select.html("");
+	$.ajax(restEndpoint + "/languages", {
+		method: "GET",
+		success: function(languages) {
+			$.each(languages, function (i, t) {
+				$select.append('<option value="'+t.id+'">'+t.name+'</option>');
+			});
+		}
+	});
+}
+populateLanguageSelect($("#editLanguage"));
 
 
 function deleteTraining(id) {
@@ -200,7 +213,8 @@ function openEditTraining(trainingId) {
 			//au venit datele
 			$("#editTrainingId").val(data.id);
 			$("#editName").val(data.name);
-			// BUG
+			$("#editLanguage").val(data.languageId);
+			$("#editDescription").val(data.description);
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
 			$('#trainingMain').hide();
@@ -213,8 +227,11 @@ function updateTraining() {
 		method: "PUT",
 		data: JSON.stringify({
 			name:$("#editName").val(),
+			languageId:$("#editLanguage").val(),
 			startDate:$("#editStartDate").val(),
-			teacherId:$("#editTeacher").val()
+			teacherId:$("#editTeacher").val(),
+			languageId:$("#editLanguage").val(),
+			description:$("#editDescription").val()
 		}),
 		contentType: "application/json",
 		success: function(data) {
@@ -234,9 +251,10 @@ function updateTraining() {
 // ------------- TRAINING: CREATE SCREEN --------------------
 
 function openCreateTraining() {
+	populateLanguageSelect($("#newLanguage"));
+	populateTeacherSelect($("#newTeacher"));
 	$("#newName").val("");
 	$("#newDescription").val("");
-	populateTeacherCombo($("#newTeacher"));
 	$('#trainingMain').hide();
 	$('#trainingNewDiv').show();
 }
@@ -245,6 +263,7 @@ function createTraining() {
 		data: JSON.stringify({
 			name:$("#newName").val(),
 			description:$("#newDescription").val(),
+			languageId:$("#newLanguage").val(),
 			startDate:$("#newStartDate").val(),
 			teacherId:$("#newTeacher").val()
 		}),

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.repo.ProgrammingLanguageRepo;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
@@ -26,6 +27,7 @@ import static java.util.stream.Collectors.toList;
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;
+    private final ProgrammingLanguageRepo languageRepo;
     private final TeacherRepo teacherRepo;
     private final EmailSender emailSender;
 
@@ -55,7 +57,8 @@ public class TrainingService {
             emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), newDate);
         }
         training.setStartDate(newDate);
-        training.setTeacher(teacherRepo.getOne(dto.teacherId));
+        training.setProgrammingLanguage(languageRepo.getById(dto.languageId));
+        training.setTeacher(teacherRepo.getById(dto.teacherId));
     }
 
     private Date parseStartDate(TrainingDto dto) throws ParseException {
@@ -81,6 +84,7 @@ public class TrainingService {
         dto.description = training.getDescription();
         dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
         dto.teacherId = training.getTeacher().getId();
+        dto.languageId = training.getProgrammingLanguage().getId();
         dto.teacherName = training.getTeacher().getName();
         return dto ;
     }
@@ -89,8 +93,9 @@ public class TrainingService {
         Training newEntity = new Training();
         newEntity.setName(dto.name);
         newEntity.setDescription(dto.description);
+        newEntity.setProgrammingLanguage(languageRepo.getById(dto.languageId));
         newEntity.setStartDate(parseStartDate(dto));
-        newEntity.setTeacher(teacherRepo.getOne(dto.teacherId));
+        newEntity.setTeacher(teacherRepo.getById(dto.teacherId));
         return newEntity;
     }
 
