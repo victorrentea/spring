@@ -19,9 +19,10 @@ public class MicroApp {
       return "Micro received " + SecurityContextHolder.getContext().getAuthentication().getName();
    }
 
-   @GetMapping("/api/teacher/{teacherId}/bio")
+   @GetMapping("/api/teachers/{teacherId}/bio")
    public String getTeacherBio(@PathVariable Long teacherId) throws InterruptedException {
       Thread.sleep(300);
-      return "Amazing bio for teacher " + teacherId + " retrieved from remote service";
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      return "Amazing bio for teacher " + teacherId + " retrieved from remote service for user " + username;
    }
 }

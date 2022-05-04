@@ -65,7 +65,8 @@ html {
 	<div style="text-align: center; font-size: small">
 		<a href="victim.html">Web Attacks</a> |
 		<a href="/v3/api-docs" target="_blank">OpenAPI 3.0</a> |
-		<a href="keycloak.html" target="_blank">Implicit Flow (Keycloak)</a> |
+		<a href="keycloak.html" target="_blank">Implicit Flow (Keycloak), when on CDN</a> |
+		<a href="/api/client-credentials" target="_blank">Client Credentials</a> |
 	</div>
 
 <script type="text/javascript">
@@ -92,6 +93,15 @@ $.ajaxSetup({
 		// request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
 	},
 	xhrFields: { withCredentials: true }, // CORS to add BE cookies to all requests
+});
+
+$(document).ajaxError( function(event,xhr,settings,thrownError) {
+	console.log("ERROR", event,xhr,settings,thrownError)
+	if (xhr.responseText) {
+		toastr.error(xhr.responseText);
+	} else {
+		toastr.error("ERROR");
+	}
 });
 
 function getContextPath() {

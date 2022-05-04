@@ -3,16 +3,19 @@ package victor.training.spring.events;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Slf4j
 @Component
-public class OrderService implements CommandLineRunner {
+public class OrderService  {
 	private final StockManagementService stockManagementService;
 	private final InvoiceService invoiceService;
 
-	public void run(String... args) {
+	@EventListener(ApplicationStartedEvent.class)
+	public void run() {
 		placeOrder();
 	}
 

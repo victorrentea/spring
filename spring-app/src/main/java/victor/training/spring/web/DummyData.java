@@ -2,6 +2,9 @@ package victor.training.spring.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.entity.*;
@@ -17,15 +20,12 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DummyData /*implements CommandLineRunner*/ {
+public class DummyData {
 	private final TrainingRepo trainingRepo;
 	private final TeacherRepo teacherRepo;
 	private final ProgrammingLanguageRepo languageRepo;
 	private final UserRepo userRepo;
-	private final Environment environment;
 
-//	@Override
-//	@Transactional
 	@PostConstruct
 	public void run() throws Exception {
 		log.info("Inserting dummy data");
@@ -61,8 +61,12 @@ public class DummyData /*implements CommandLineRunner*/ {
 		userRepo.save(new User("Boss", "admin", UserRole.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
 		userRepo.save(new User("Clerk", "user", UserRole.USER, Arrays.asList(victor.getId(), ionut.getId())));
 
-		log.info(">>> Spring-One Application started on {} <<<", environment.getProperty("local.server.port"));
 	}
 
-	
+	private final Environment environment;
+	@EventListener(ApplicationStartedEvent.class)
+	@Order
+	public void printAppStarted() {
+		log.info("🎈🎈🎈 Application started on {} 🎈🎈🎈", environment.getProperty("local.server.port"));
+	}
 }
