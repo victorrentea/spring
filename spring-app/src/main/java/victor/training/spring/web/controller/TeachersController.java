@@ -22,10 +22,6 @@ public class TeachersController {
 	public List<TeacherDto> getAllTeachers() {
 		return service.getAllTeachers();
 	}
-	@GetMapping("{id}")
-	public TeacherDto getTeacherById(long id) {
-		return service.getTeacherById(id);
-	}
 
 	//	@PostMapping
 	//	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
@@ -43,10 +39,4 @@ public class TeachersController {
 		String newName = "Teacher" + LocalDateTime.now();
 		service.updateTeacher(id, newName);
 	}
-
-	@GetMapping("by-contract/{contractType}")
-	public List<TeacherDto> getTeacherByContractType(@PathVariable ContractType contractType) {
-		return service.getTeacherByContractType(contractType);
-	}
-
 }

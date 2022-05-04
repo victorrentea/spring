@@ -18,7 +18,8 @@ public class LanguageController {
     private final ProgrammingLanguageRepo repo;
 
     @GetMapping
-    @Cacheable("languages")
+    // TODO cache
+    // TODO evict via dedicated endpoint (called from script)
     public List<LanguageDto> getAll() {
         return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
     }

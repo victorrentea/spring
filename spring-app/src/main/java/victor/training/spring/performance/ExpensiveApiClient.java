@@ -17,13 +17,13 @@ public class ExpensiveApiClient {
    @Timed("external call")
    public CompletableFuture<String> asyncCall() {
       log.info("Calling async...");
-      ThreadUtils.sleep(1000);
+      ThreadUtils.sleepq(1000);
       log.info("DONE");
       return CompletableFuture.completedFuture("data");
    }
    public String blockingCall() {
       log.info("Calling sync...");
-      ThreadUtils.sleep(1000);
+      ThreadUtils.sleepq(1000);
       log.info("DONE");
       return "data " + System.currentTimeMillis();
    }

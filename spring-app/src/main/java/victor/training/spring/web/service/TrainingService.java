@@ -30,6 +30,7 @@ public class TrainingService {
     private final ProgrammingLanguageRepo languageRepo;
     private final TeacherRepo teacherRepo;
     private final EmailSender emailSender;
+    private final TeacherBioClient teacherBioClient;
 
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
@@ -40,7 +41,9 @@ public class TrainingService {
     }
 
     public TrainingDto getTrainingById(Long id) {
-        return mapToDto(trainingRepo.findById(id).orElseThrow());
+        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
+        dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
+        return dto;
     }
 
     // TODO Test this!

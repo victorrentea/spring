@@ -1,8 +1,6 @@
 package victor.training.spring.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 import victor.training.spring.ThreadUtils;
 
@@ -15,7 +13,7 @@ public class ScheduledActions {
     // TODO 4 Should run on a separate 1-thread pool
     public void lookIntoFolder() {
         log.debug("Looking into folder");
-        ThreadUtils.sleep(7000);
+        ThreadUtils.sleepq(7000);
         log.debug("DONE");
     }
 

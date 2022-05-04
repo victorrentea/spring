@@ -2,7 +2,7 @@ package victor.training.spring;
 
 public class ThreadUtils {
 	
-	public static void sleep(long millis) {
+	public static void sleepq(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

@@ -11,6 +11,7 @@ public class TrainingDto {
 	public String name;
 	public ContractType level;
 	public Long teacherId;
+	public String teacherBio;
 	public Long languageId;
 	public String teacherName;
 	public String startDate;

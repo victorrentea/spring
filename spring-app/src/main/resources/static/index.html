@@ -56,6 +56,8 @@ html {
 		Description:<textarea id="editDescription" cols="40" rows="3"></textarea> <br />
 		Start Date (dd-mm-yyyy):<input type="text" id="editStartDate" /> <br />
 		Teacher: <select id="editTeacher"></select><br />
+		<b>Teacher Bio:</b> <br />
+		<div id="teacherBio"></div>
 		<input type="button" value="Save" onclick="updateTraining()">
 		<input type="button" value="Cancel" onclick="$('#trainingEditDiv').hide();$('#trainingMain').show();">
 	</div>
@@ -217,6 +219,7 @@ function openEditTraining(trainingId) {
 			$("#editDescription").val(data.description);
 			$("#editStartDate").val(data.startDate);
 			$("#editTeacher").val(data.teacherId);
+			$("#teacherBio").text(data.teacherBio);
 			$('#trainingMain').hide();
 			$('#trainingEditDiv').show();
 		}

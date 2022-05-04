@@ -18,14 +18,15 @@ public class TeacherService {
     @Autowired
     private TeacherRepo teacherRepo;
 
-    // TODO 1 Cacheable of 'static data'
+    // TODO Cacheable for list-of-all
     public List<TeacherDto> getAllTeachers() {
         return teacherRepo.findAll().stream().map(TeacherDto::new).collect(toList());
     }
 
-    // TODO 2 EvictCache
-    // TODO 3 Prove: Cache inconsistencies on multiple instances: start a 2nd instance usign -Dserver.port=8081
-    // TODO 4 Redis cache
+    // TODO EvictCache(all)
+    // TODO Prove stale cache on multiple instances: start a 2nd instance usign -Dserver.port=8081
+    // TODO Redis cache
+    // TODO custom aspects vs CacheInterceptor
     public void createTeacher(TeacherDto dto) {
         teacherRepo.save(new Teacher(dto.name));
     }
@@ -34,21 +35,8 @@ public class TeacherService {
         teacherRepo.deleteById(id);
     }
 
-    public List<TeacherDto> getTeacherByContractType(ContractType contractType) {
-        return teacherRepo.findByContractType(contractType)
-            .stream().map(TeacherDto::new)
-            .collect(toList());
-    }
-
-    // TODO 5 Keyed cache entries
-    @Cacheable("teacher-by-id")
-    public TeacherDto getTeacherById(long id) {
-        return new TeacherDto(teacherRepo.findById(id).orElseThrow());
-    }
-
     @Transactional
-    // TODO 6 what should I do here
-    // TODO 7 custom aspects
+    // TODO EvictCache
     public void updateTeacher(long id, String newName) {
         Teacher teacher = teacherRepo.findById(id).orElseThrow();
         teacher.setName(newName);
