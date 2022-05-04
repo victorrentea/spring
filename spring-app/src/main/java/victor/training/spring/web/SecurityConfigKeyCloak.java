@@ -49,6 +49,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         super.configure(http);
         http
             .csrf().disable()
+            .cors().and()
             .authorizeRequests()
             .mvcMatchers("/spa/**", "/api/**").authenticated()
             .mvcMatchers("/sso/**").permitAll()

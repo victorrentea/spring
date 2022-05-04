@@ -3,6 +3,7 @@ package victor.training.spring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
@@ -20,5 +21,9 @@ public class SpringAppCdn implements WebMvcConfigurer {
          throw new IllegalArgumentException("Folder to show static files from, does not exist:" + staticFolder.getAbsolutePath());
       }
       registry.addResourceHandler("/**").addResourceLocations(staticFolder.toURI().toString());
+   }
+   @Override
+   public void addViewControllers(ViewControllerRegistry registry) {
+      registry.addRedirectViewController("/","/index.html");
    }
 }
