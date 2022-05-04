@@ -107,6 +107,7 @@
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
+            <!-- OAuth2RestTemplate for Client Credentials flow -->
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>

@@ -37,6 +37,7 @@ public class TeacherBioClient {
     public String real(long teacherId) {
         try {
             RestTemplate rest = new RestTemplate();
+
             KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
               String accessToken = principal.getKeycloakSecurityContext().getTokenString();
