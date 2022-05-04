@@ -63,10 +63,5 @@ public class DummyData {
 
 	}
 
-	private final Environment environment;
-	@EventListener(ApplicationStartedEvent.class)
-	@Order
-	public void printAppStarted() {
-		log.info("🎈🎈🎈 Application started on {} 🎈🎈🎈", environment.getProperty("local.server.port"));
-	}
+
 }
