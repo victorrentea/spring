@@ -1,8 +1,11 @@
 package victor.training.spring.web.service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +41,18 @@ public class TeacherBioClient {
         try {
             RestTemplate rest = new RestTemplate();
 
-            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
-                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-              String accessToken = principal.getKeycloakSecurityContext().getTokenString();
-//            String accessToken = "joke";
-            Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + accessToken));
+            // 1 :)
+//            String bearerToken = "joke";
+
+            // 2 OAuth2
+//            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
+//                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+
+            // 3 Manual JWT
+            String bearerToken = createManualJwtToken();
+
+            Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
             ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
                     CollectionUtils.toMultiValueMap(header),
                     HttpMethod.GET,
@@ -51,5 +61,16 @@ public class TeacherBioClient {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Value("${jwt.signature.shared.secret.base64}")
+    private String jwtSecret;
+
+    private String createManualJwtToken() {
+        return Jwts.builder()
+                .setSubject(SecurityContextHolder.getContext().getAuthentication().getName())
+                .claim("country", "Country")
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 }
