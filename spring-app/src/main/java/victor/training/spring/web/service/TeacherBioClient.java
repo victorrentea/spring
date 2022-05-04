@@ -42,7 +42,7 @@ public class TeacherBioClient {
             RestTemplate rest = new RestTemplate();
 
             // 1 :)
-//            String bearerToken = "joke";
+            String bearerToken = "joke";
 
             // 2 OAuth2
 //            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
@@ -50,7 +50,7 @@ public class TeacherBioClient {
 //            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
             // 3 Manual JWT
-            String bearerToken = createManualJwtToken();
+//            String bearerToken = createManualJwtToken();
 
             Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
             ResponseEntity<String> response = rest.exchange(new RequestEntity<>(

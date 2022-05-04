@@ -34,17 +34,18 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>-->
-        <dependency>
-            <!-- 2) Play: manual validation of JWT token preauthentication -->
+
+       <!-- <dependency>
+            &lt;!&ndash; 2) Play: manual validation of JWT token preauthentication &ndash;&gt;
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
         <dependency>
-            <!-- for JWTS -->
+            &lt;!&ndash; for JWTS &ndash;&gt;
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
