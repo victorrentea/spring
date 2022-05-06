@@ -29,7 +29,7 @@ public class WelcomeInfo {
 
     @PostConstruct
     public void printMyself() {
-        // TODO check that help.file exists!
+        // TODO validate: that help.file exists!
         log.debug("My props: " + this);
     }
 }
