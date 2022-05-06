@@ -12,11 +12,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.annotation.Retention;
 import java.util.stream.Stream;
 
 import static java.lang.System.currentTimeMillis;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
