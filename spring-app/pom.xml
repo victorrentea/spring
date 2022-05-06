@@ -118,7 +118,11 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>-->
-
+        <dependency>
+            <!-- For distributed tracing of requests (printed after log level) -->
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
 
 
         <dependency>
