@@ -11,7 +11,6 @@
 //import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 //import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 //
-//@Configuration
 ////@EnableWebSecurity
 //public class JwtServerConfig extends WebSecurityConfigurerAdapter {
 //    @Override
