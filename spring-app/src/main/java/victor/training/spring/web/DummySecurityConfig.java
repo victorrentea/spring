@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -16,10 +17,20 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
+      CookieCsrfTokenRepository repo = new CookieCsrfTokenRepository();
+      repo.setCookieHttpOnly(false);
       http
 //          .addFilterBefore(new InspectingFilter(), WebAsyncManagerIntegrationFilter.class)
-          .cors().and()
-          .csrf().disable() // as I don't ever take <form> POSTs
+//          .cors().disable()
+//          .csrf().csrfTokenRepository(repo).and() // as I don't ever take <form> POST
+//
+//
+
+          .csrf().disable()
+          // it's ok to disable if you expose ONLY REST APIs (if you never are submitted a <form>
+              // if you only get AJAX calls, the risk translates to EVIL domain firing an AJAX request to VICTIM
+              // but here, CORS protects you (EVIL is blocked by the browser to talk to victim (unless victim agrees))
+
           .authorizeRequests().anyRequest().authenticated()
           .and()
           .formLogin().permitAll().and()

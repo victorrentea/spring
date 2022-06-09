@@ -30,7 +30,7 @@ public class ASymmetricEncryptionDemo {
         //encrypt
         Cipher cipher = Cipher.getInstance("RSA");
 
-        cipher.init(Cipher.ENCRYPT_MODE, keyPair.g1§§etPrivate());
+        cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPrivate());
 
         byte[] encryptedText = cipher.doFinal(text);
         Utils.printByteArray("ciphertext", encryptedText);
