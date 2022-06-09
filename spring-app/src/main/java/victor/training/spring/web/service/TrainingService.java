@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -90,7 +92,9 @@ public class TrainingService {
         TrainingDto dto = new TrainingDto();
         dto.id = training.getId();
         dto.name = training.getName();
-        dto.description = training.getDescription();
+//        dto.description = training.getDescription();
+        PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+        dto.description = sanitizer.sanitize(training.getDescription());
         dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
         dto.teacherId = training.getTeacher().getId();
         dto.languageId = training.getProgrammingLanguage().getId();

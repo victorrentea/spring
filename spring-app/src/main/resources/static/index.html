@@ -104,6 +104,7 @@ $(document).ajaxError( function(event,xhr,settings,thrownError) {
 	}
 });
 
+
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
@@ -131,7 +132,11 @@ function fillTable(trainings) {
 	}
 }
 function showDescription(richTextHtmlUnescaped) {
-	// TODO sanitize richText
+	// TODO sanitize richText .innerHtml=
+
+	// div.innerHTML=document.write(window.location.href.substr(window.location.href.indexOf('q=') + 2))
+
+	// $("#showRichDescription").html(window.location.href.substr(window.location.href.indexOf('q=') + 2));
 	$("#showRichDescription").html(richTextHtmlUnescaped);
 }
 

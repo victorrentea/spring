@@ -143,6 +143,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20200713.1</version>
+        </dependency>
+
+
         <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
         <!-- <dependency>
             <groupId>org.apache.logging.log4j</groupId>
