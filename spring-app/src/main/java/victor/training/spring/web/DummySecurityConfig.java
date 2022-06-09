@@ -33,7 +33,9 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 
           .authorizeRequests().anyRequest().authenticated()
           .and()
-          .formLogin().permitAll().and()
+          .formLogin().permitAll()
+              .defaultSuccessUrl("/",true)
+              .and()
           .httpBasic();
    }
 
