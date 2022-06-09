@@ -66,6 +66,9 @@
             contentType: "application/json",
             success: function (trainings) {
                 toastr.success("Money Transferred")
+            },
+            error: function (error) {
+                toastr.error("Failed");
             }
         });
     }
