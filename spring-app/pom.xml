@@ -151,12 +151,12 @@
 
 
         <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
-        <!-- <dependency>
+         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>2.15.0</version>
             <type>pom</type>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -180,7 +180,7 @@
                 <!-- scans dependencies for known vulnerabilities -->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>6.3.2</version>
+                <version>7.1.0</version>
                 <executions>
                     <execution>
                         <goals>
