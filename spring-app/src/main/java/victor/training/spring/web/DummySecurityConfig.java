@@ -10,10 +10,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
+
+   @Bean
+   public WebMvcConfigurer corsConfigurer() {
+      return new WebMvcConfigurer() {
+         @Override
+         public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/api/**")
+                    .allowedMethods("*")
+                    .allowCredentials(true) // allows receiving session cookie (if using cookies)
+                    .allowedOriginPatterns("http://localhost:8081") // eg NodeJS
+//					 .allowedOriginPatterns("http://*") // Too broad
+            ;
+            // also don't forget to add .cors() to spring security
+         }
+      };
+   }
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
@@ -24,7 +42,7 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 //          .cors().disable()
 //          .csrf().csrfTokenRepository(repo).and() // as I don't ever take <form> POST
 //
-//
+              .cors().and()
 
           .csrf().disable()
           // it's ok to disable if you expose ONLY REST APIs (if you never are submitted a <form>

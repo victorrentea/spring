@@ -18,7 +18,7 @@ import java.net.URL;
 @RequestMapping("api/victim")
 public class VictimController {
    @PostMapping("transfer-rest")
-//    @CrossOrigin(originPatterns = {"http://*"},allowCredentials = "true") // OMG!
+//    @CrossOrigin(originPatterns = {"http://*"},allowCredentials = "true") // OMG, NO!!
 //    @CrossOrigin(originPatterns = {"http://localhost:8081"},allowCredentials = "true") // only for NODE
    public void transferRest(@RequestBody MoneyTransferRequest request) {
       log.warn("Transferring {} to {}, IBAN = {}", request.getAmount(), request.getRecipientFullName(), request.getRecipientIban());
