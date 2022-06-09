@@ -22,7 +22,9 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
           .csrf().disable() // as I don't ever take <form> POSTs
           .authorizeRequests().anyRequest().authenticated()
           .and()
-          .formLogin().permitAll().and()
+          .formLogin().permitAll()
+              .defaultSuccessUrl("/",true)
+              .and()
           .httpBasic();
    }
 
