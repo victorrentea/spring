@@ -9,9 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.io.File;
 
 @SpringBootApplication
-public class SpringAppCdn implements WebMvcConfigurer {
+public class CdnApp implements WebMvcConfigurer {
    public static void main(String[] args) {
-       SpringApplication.run(SpringAppCdn.class, args);
+       SpringApplication.run(CdnApp.class, args);
    }
 
    @Override
