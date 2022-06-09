@@ -40,19 +40,19 @@ public class Application {
         log.info("🎈🎈🎈 Application started on {} in {} millis 🎈🎈🎈", environment.getProperty("local.server.port"), t1-t0);
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/api/**")
-//                        .allowCredentials(true) // allows receiving session cookie (if using cookies)
-//                        .allowedOriginPatterns("http://localhost:8081/") // NodeJS
-////					 .allowedOriginPatterns("http://*") // Too broad
-//                ;
-//                // also don't forget to add .cors() to spring security
-//            }
-//        };
-//    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowCredentials(true) // allows receiving session cookie (if using cookies)
+                        .allowedOriginPatterns("http://localhost:8081/") // NodeJS
+//					 .allowedOriginPatterns("http://*") // Too broad
+                ;
+                // also don't forget to add .cors() to spring security
+            }
+        };
+    }
 
 }

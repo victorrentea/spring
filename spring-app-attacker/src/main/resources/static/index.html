@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title>Attacker Site</title>
     <link href="toastr.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
     <script type="text/javascript" src="toastr.min.js"></script>
@@ -47,6 +48,9 @@
             contentType: "application/json",
             success: function(trainings) {
                 toastr.success("Money Transferred")
+            },
+            error: function (error) {
+                toastr.error("Failed");
             }
         });
     }
