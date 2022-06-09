@@ -20,6 +20,8 @@ public class SymmetricEncryptionCBCDemo {
     @Test
     public void testSymmetricEncryption() throws GeneralSecurityException {
 
+
+
         //make key
         KeyGenerator generator = KeyGenerator.getInstance("AES");
 
