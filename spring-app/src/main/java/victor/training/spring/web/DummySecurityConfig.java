@@ -18,7 +18,7 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
    protected void configure(HttpSecurity http) throws Exception {
       http
 //          .addFilterBefore(new InspectingFilter(), WebAsyncManagerIntegrationFilter.class)
-          .cors().and()
+//          .cors().and()
           .csrf().disable() // as I don't ever take <form> POSTs
           .authorizeRequests().anyRequest().authenticated()
           .and()
