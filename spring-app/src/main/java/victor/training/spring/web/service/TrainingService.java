@@ -42,7 +42,12 @@ public class TrainingService {
 
     public TrainingDto getTrainingById(Long id) {
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
-        dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
+        try {
+            dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
+        } catch (Exception e) {
+            log.error("Error retrieving bio", e);
+            dto.teacherBio = "<ERROR RETRIEVING TEACHER BIO (see logs)>";
+        }
         return dto;
     }
 
