@@ -39,7 +39,7 @@ public class TechnicalController {
 		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
 //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
-
+//keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims()
 		System.out.println(authentication.getAuthorities());
 
 		//<editor-fold desc="KeyCloak">

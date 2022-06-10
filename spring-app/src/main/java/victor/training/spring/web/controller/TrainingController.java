@@ -47,9 +47,10 @@ public class TrainingController {
 	}
 
 	@PutMapping("{trainingId}")
+//	@PreAuthorize("hasAuthority('training.edit') && @securityService.checkCanUpdateTraining(#trainingId)")
 	public void updateTraining(@PathVariable Long trainingId, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
-		securityService.checkCanUpdateTraining(trainingId);
+//		securityService.checkCanUpdateTraining(trainingId);
 
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
@@ -67,10 +68,10 @@ public class TrainingController {
 
 	//, 'POWER_USER'
 //	@PreAuthorize("hasAnyRole('ADMIN')") // Spring Expression Language (SpEL)
-	@PreAuthorize("hasAuthority('training.delete')")
+	@PreAuthorize("hasAuthority('training.delete') && @securityService.checkCanUpdateTraining(#trainingId)")
 	@DeleteMapping("{trainingId}/delete")
 	public void deleteTrainingById(@PathVariable Long trainingId) {
-		securityService.checkCanUpdateTraining(trainingId);
+//		securityService.checkCanUpdateTraining(trainingId);
 
 		trainingService.deleteById(trainingId);
 	}
@@ -88,16 +89,14 @@ private final SecurityService securityService;
 @Component
 @RequiredArgsConstructor
 class SecurityService {
-	public void checkCanUpdateTraining(Long trainingId) {
+	public boolean checkCanUpdateTraining(Long trainingId) {
 		Training training = trainingRepo.findById(trainingId).orElseThrow();
 		Long teacherId = training.getTeacher().getId();
 
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		User user = userRepo.getForLogin(username).orElseThrow();
-		if (!user.getManagedTeacherIds().contains(teacherId)) {
-			throw new IllegalArgumentException("Not allowed");
-		}
+		return user.getManagedTeacherIds().contains(teacherId);
 	}
 	private final TrainingRepo trainingRepo;
 	private final UserRepo userRepo;
