@@ -1,10 +1,13 @@
 package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -37,14 +40,17 @@ public class TeacherBioClient {
             RestTemplate rest = new RestTemplate();
 
             // 1 :)
-            String bearerToken = "joke";
+//            log.info("Sending bearer: JOKE");
+//            String bearerToken = "joke";
 
             // 2 OAuth2
-//            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
-//                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+            log.info("Sending bearer: <KeyCloak>");
+            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
             // 3 Manual JWT
+//            log.info("Sending bearer: <Manual>");
 //            String bearerToken = createManualJwtToken();
 
             Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
