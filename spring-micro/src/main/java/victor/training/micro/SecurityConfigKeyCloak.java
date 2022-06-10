@@ -44,7 +44,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         super.configure(http);
         http
             .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
 //                .sessionManagement().disable()
             .authorizeRequests().anyRequest().authenticated()
         ;

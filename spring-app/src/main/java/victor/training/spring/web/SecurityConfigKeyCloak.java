@@ -51,7 +51,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+        SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
+        simpleAuthorityMapper.setPrefix("");
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(simpleAuthorityMapper);
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
