@@ -1,19 +1,26 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
 
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -39,17 +46,20 @@ public class TrainingController {
 		trainingService.createTraining(dto);
 	}
 
-	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	@PutMapping("{trainingId}")
+	public void updateTraining(@PathVariable Long trainingId, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
+		securityService.checkCanUpdateTraining(trainingId);
+
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
 //		dto.description = dto.description.replace("<", "&lt;");
-		trainingService.updateTraining(id, dto);
+		trainingService.updateTraining(trainingId, dto);
 	}
 
 	// TODO Allow only for role 'ADMIN'
 	// TODO Allow for authority 'training.delete'
+
 	// TODO Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
@@ -58,14 +68,37 @@ public class TrainingController {
 	//, 'POWER_USER'
 //	@PreAuthorize("hasAnyRole('ADMIN')") // Spring Expression Language (SpEL)
 	@PreAuthorize("hasAuthority('training.delete')")
-	@DeleteMapping("{id}/delete")
-	public void deleteTrainingById(@PathVariable Long id) {
-		trainingService.deleteById(id);
+	@DeleteMapping("{trainingId}/delete")
+	public void deleteTrainingById(@PathVariable Long trainingId) {
+		securityService.checkCanUpdateTraining(trainingId);
+
+		trainingService.deleteById(trainingId);
 	}
+
+
+private final SecurityService securityService;
 
 	// TODO GET or POST ?
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
+}
+
+@Component
+@RequiredArgsConstructor
+class SecurityService {
+	public void checkCanUpdateTraining(Long trainingId) {
+		Training training = trainingRepo.findById(trainingId).orElseThrow();
+		Long teacherId = training.getTeacher().getId();
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		User user = userRepo.getForLogin(username).orElseThrow();
+		if (!user.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("Not allowed");
+		}
+	}
+	private final TrainingRepo trainingRepo;
+	private final UserRepo userRepo;
 }
