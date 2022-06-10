@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
+@RestController
 @Slf4j
 public class ClientCredentials {
    @Autowired
@@ -21,7 +21,7 @@ public class ClientCredentials {
    }
 
 
-//   @Configuratioon
+   @Configuration
    public static class ConfigureOAuth2RestTemplate {
       @Bean
       public OAuth2RestTemplate oauth2RestTemplate(OAuth2ProtectedResourceDetails details) {

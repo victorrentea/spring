@@ -75,15 +75,16 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //                .cors().disable()
             .authorizeRequests()
             .mvcMatchers("/spa/**", "/api/**").authenticated()
+//            .mvcMatchers("/").authenticated()
             .mvcMatchers("/sso/**").permitAll()
             .anyRequest().permitAll()
         ;
     }
 
     // needed to secure /spa/** but to leave /sso/** unsecured.
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addRedirectViewController("/","/spa"); // entering :8080 in bro-> redirect to :8080/spa
-//        registry.addViewController("/spa").setViewName("forward:/index.html"); // :8080/spa is served index.html
-//    }
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/","/spa"); // entering :8080 in bro-> redirect to :8080/spa
+        registry.addViewController("/spa").setViewName("forward:/index.html"); // :8080/spa is served index.html
+    }
 }
