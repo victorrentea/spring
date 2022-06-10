@@ -1,6 +1,11 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +14,8 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
+
+import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,9 +28,14 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =
+				(KeycloakPrincipal<KeycloakSecurityContext>) authentication
+		.getPrincipal();
+		System.out.println("access_token = " + keycloakToken.getKeycloakSecurityContext().getTokenString());
 		dto.username = someService.deep().get();
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
