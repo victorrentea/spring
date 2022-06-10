@@ -1,23 +1,27 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
+		static ThreadLocal<String> t;
+		private final SomeService someService;
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
+
+		dto.username = someService.deep().get();
 		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
 		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
 
@@ -34,15 +38,15 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+	//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
 //		return authorities.stream()
 //			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
 //			.collect(toList());
 //	}
 
 	@PostConstruct
-	public void enableSecurityContextPropagationOverAsync() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	public void enableSecurityContextPropagationOverAsync() { // dear beloved baeldung (Eugen Paraschiv)
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	// TODO [SEC] allow unsecured access
