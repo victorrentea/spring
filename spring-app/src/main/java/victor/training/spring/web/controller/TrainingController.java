@@ -55,7 +55,8 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 
-	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language (SpEL)
+	//, 'POWER_USER'
+	@PreAuthorize("hasAnyRole('ADMIN')") // Spring Expression Language (SpEL)
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
