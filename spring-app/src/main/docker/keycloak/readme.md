@@ -12,7 +12,8 @@
 - Access localhost:8080 and expect to be redirected to :8180
 
 
-
+### Troubleshooting
+- If you are stuck in an infinite redirect loop after arriving back from KC, check not to have Basic authenticaation shill sent bty Chrome. Try chrome://restart
 
 
 

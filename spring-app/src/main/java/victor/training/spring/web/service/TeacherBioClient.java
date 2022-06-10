@@ -18,6 +18,9 @@ import java.util.Map;
 @Component
 @Slf4j
 public class TeacherBioClient {
+    @Value("${jwt.signature.shared.secret.base64}")
+    private String jwtSecret;
+
     // TODO cacheable
     public String retrieveBiographyForTeacher(long teacherId) {
         log.debug("Calling external web endpoint... (takes time)");
@@ -37,14 +40,17 @@ public class TeacherBioClient {
             RestTemplate rest = new RestTemplate();
 
             // 1 :)
+            log.info("Sending bearer: JOKE");
             String bearerToken = "joke";
 
             // 2 OAuth2
+//            log.info("Sending bearer: <KeyCloak>");
 //            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
 //                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
             // 3 Manual JWT
+            //            log.info("Sending bearer: JOKE");
 //            String bearerToken = createManualJwtToken();
 
             Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
@@ -57,9 +63,6 @@ public class TeacherBioClient {
             throw new RuntimeException(e);
         }
     }
-
-    @Value("${jwt.signature.shared.secret.base64}")
-    private String jwtSecret;
 
 //    private String createManualJwtToken() {
 //        return Jwts.builder()
