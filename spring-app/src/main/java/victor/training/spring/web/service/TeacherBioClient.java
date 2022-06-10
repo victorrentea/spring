@@ -47,7 +47,7 @@ public class TeacherBioClient {
             log.info("Sending bearer: <KeyCloak>");
             KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+            String bearerToken = principal.getKeycloakSecurityContext().getTokenString(); // the access token I received at 8080 from KeyCloak
 
             // 3 Manual JWT
 //            log.info("Sending bearer: <Manual>");
