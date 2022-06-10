@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -76,7 +77,6 @@ public class TrainingService {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         return format.parse(dto.startDate);
     }
-
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }

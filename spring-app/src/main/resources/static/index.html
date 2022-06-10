@@ -207,7 +207,7 @@ populateLanguageSelect($("#editLanguage"));
 
 
 function deleteTraining(id) {
-	$.ajax(restEndpoint +"/trainings/"+id, {
+	$.ajax(restEndpoint +"/trainings/"+id +"/delete", {
 		method: "DELETE",
 		success: function() {
 			toastr.success("Training deleted");

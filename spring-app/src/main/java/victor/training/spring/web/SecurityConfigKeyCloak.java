@@ -74,7 +74,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
             .csrf().disable()
             .cors().and()
             .authorizeRequests()
-                .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "api/trainings/*").hasRole("ADMIN")
                 .mvcMatchers("/spa/**", "/api/**").authenticated()
                 .mvcMatchers("/sso/**").permitAll()
                 .anyRequest().permitAll()
