@@ -123,7 +123,7 @@ function fillTable(trainings) {
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
-		if (currentUser.role === 'ROLE_ADMIN')
+		if (['ROLE_ADMIN','POWER_USER'].includes(currentUser.role))
 			//if (currentUser.authorities.includes('training.delete'))
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 		row += '</td>';
