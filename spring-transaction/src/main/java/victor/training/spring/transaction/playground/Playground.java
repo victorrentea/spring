@@ -25,7 +25,7 @@ public class Playground {
         // Persistence COntext (aka Session) care functioneaza aici ca un WRITE CACHE
         // nu trimite direct INSERTUL ci asteapta sf tranzactiei cu succes.
         // de ce ? pt performanta. Va putea ulterior sa batchuiasca mai multe inserturi impreuna
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,null )");
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'null' )");
 
         // faci insert invalid aici dar crapa 7 metode mai sus cand se face in cele din urma COMMIT. ==> Uaaaa!! :((((9
         //entityManager.flush();// folosesti temporar, doar pt debug ca afecteaza perf
@@ -33,8 +33,11 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-    @Transactional
+//    @Transactional
     public void transactionTwo() {
+        Message message = repo.findById(100L).get();
+        System.out.println("Am datele. cica");
+        System.out.println(message.getTags());
     }
 }
 
