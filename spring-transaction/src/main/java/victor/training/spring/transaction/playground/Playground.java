@@ -35,11 +35,11 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-    @Transactional
+//    @Transactional
     public void transactionTwo() {
         Message message = repo.findCuTaguri(100L);
         message.setMessage("Altu");
-//        repo.save(message);
+        repo.save(message);
     }
 
 //@Transactional
