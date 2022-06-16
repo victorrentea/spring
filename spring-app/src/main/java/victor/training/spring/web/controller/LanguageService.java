@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +18,7 @@ public class LanguageService  {
     private final ProgrammingLanguageRepo repo;
     @Auditata("grav")
     @Cacheable("countries")
+    @Timed("getLanguage")
     public List<LanguageDto> getLanguages() {
         log.debug("in fct");
         new RuntimeException().printStackTrace();
