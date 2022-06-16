@@ -37,7 +37,10 @@ public class Application {
     @Order
     public void printAppStarted() {
         long t1 = currentTimeMillis();
-        log.info("🎈🎈🎈 Application started on {} in {} millis 🎈🎈🎈", environment.getProperty("local.server.port"), t1-t0);
+        log.info("🎈🎈🎈 Application started on port: {} connected to db: {} in {} millis 🎈🎈🎈",
+                environment.getProperty("local.server.port"),
+                environment.getProperty("spring.datasource.url"),
+                t1-t0);
     }
 
 //    @Bean
