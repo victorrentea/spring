@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,19 +26,23 @@ public class LanguageController {
     // TODO evict via dedicated endpoint (called from script)
     public List<LanguageDto> getAll() {
         log.debug("Chem fct pe " + languageService.getClass());
-        return getLanguages();
+        return selfProxied.getLanguages();
     }
+
+    @Autowired
+    private LanguageController selfProxied;
 
     @Cacheable("countries")
     public List<LanguageDto> getLanguages() {
         log.debug("in fct");
+        new RuntimeException().printStackTrace();
         return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
     }
 
 }
 
 
-//class Tzeapa extends LanguageService {
+//class Tzeapa extends LanguageService { // generata la runtime in JVM nu de catre javac
 //    @Override
 //    public List<LanguageDto> getLanguages() {
 //daca am in cache da din cacjhe altfel cheam-o si apoi pune0n cache
