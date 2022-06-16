@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import static org.springframework.transaction.annotation.Propagation.REQUIRED;
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Slf4j
 @Service
@@ -43,7 +41,7 @@ public class Playground {
         try {
             other.operatieRiscanta();
         } catch (Exception e) {
-            repo.save(new Message("Eroare mare : " + e.getMessage()));
+            other.saveError(e.getMessage());
         }
         System.out.println(repo.findAll());
     }
@@ -64,8 +62,13 @@ public class Playground {
 class OtherClass {
     private final MessageRepo repo;
 
-    @Transactional(propagation = REQUIRES_NEW)
+    @Transactional
     public void operatieRiscanta() {
         throw new RuntimeException("Method not implemented");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(String message) {
+        repo.save(new Message("Eroare mare : " + message));
     }
 }
