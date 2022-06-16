@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class LanguageService {
+public class LanguageService  {
     private final ProgrammingLanguageRepo repo;
-
+    @Auditata
     @Cacheable("countries")
     public List<LanguageDto> getLanguages() {
         log.debug("in fct");

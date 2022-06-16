@@ -17,7 +17,7 @@ import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import static java.lang.System.currentTimeMillis;
 
-@EnableCaching
+@EnableCaching(order = 20)
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
 @Slf4j
