@@ -2,14 +2,14 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.engine.Session;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRED;
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Slf4j
 @Service
@@ -35,14 +35,20 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-//    @Transactional
+    @Transactional
     public void transactionTwo() {
         Message message = repo.findCuTaguri(100L);
         message.setMessage("Altu");
-        repo.save(message);
+
+        try {
+            other.operatieRiscanta();
+        } catch (Exception e) {
+            repo.save(new Message("Eroare mare : " + e.getMessage()));
+        }
+        System.out.println(repo.findAll());
     }
 
-//@Transactional
+    //@Transactional
     public void celMaiFrecventAntiPatternCuTransactional() {
 //    Message praf = repo.findById(13L).get();
 //    new RestTemplate().get   (url) // e ok ei raspund in 2000ms
@@ -54,6 +60,12 @@ public class Playground {
 
 @Service
 @RequiredArgsConstructor
+//@Transactional
 class OtherClass {
     private final MessageRepo repo;
+
+    @Transactional(propagation = REQUIRES_NEW)
+    public void operatieRiscanta() {
+        throw new RuntimeException("Method not implemented");
+    }
 }
