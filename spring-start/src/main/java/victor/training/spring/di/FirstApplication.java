@@ -1,11 +1,24 @@
 package victor.training.spring.di;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -23,20 +36,33 @@ public class FirstApplication implements CommandLineRunner{
 
 	@Autowired
 	private X x;
+	@Autowired
+	private Y y;
+	@Autowired
+	OInterfata i ;
+	@Value("${prop}")
+	String p;
+	@Value("${prop2}")
+	String pneschimbata;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(x.prod());
+		System.out.println(i.getClass());
+		System.out.println(p);
+		System.out.println(pneschimbata);
 	}
 }
 
+@Slf4j
+@RequiredArgsConstructor
+//@Slf4j
 @Service
 class X {
 	// field injection
-	@Autowired
-	private Y y;
-
-// method (setter) injection (rarely used)
+	private final Y y;
+	private final Z z;
+	// method (setter) injection (rarely used)
 //	private Z z;
 //	@Autowired
 //	public void setZ(Z z) {
@@ -44,6 +70,7 @@ class X {
 //	}
 
 	public int prod() {
+		log.debug("ceva");
 		return 1 + y.prod();
 	}
 }
@@ -62,8 +89,32 @@ class Y {
 }
 @Service
 class Z {
+//	@Autowired
+//private Y y;
+	@Autowired
+	ApplicationContext applicationContext;
+	@Autowired
+	private Alta alta;
 
 	public int prod() {
+		Z z = applicationContext.getBean(Z.class);
+//		Alta alta = applicationContext.getBean(Alta.class);
 		return 1;
 	}
+}
+
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {
+}
+
+@Facade // Application Service (DDD)
+//@Service // business logic
+//	@Component // << ceva asa gen Util de nu8 stii unde sa pui o line de co d.. o lasi acolo
+//@Repository nu mai folosim de Sprjng data
+//@Controller nu mai folosim ca REST
+//@RestController REST
+//@Configuration
+class Alta {
+
 }

@@ -20,6 +20,9 @@
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //
 //@Configuration
+
+import org.springframework.context.annotation.Profile;
+
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 //@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
