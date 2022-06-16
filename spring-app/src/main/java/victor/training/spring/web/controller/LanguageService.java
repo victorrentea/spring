@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class LanguageService {
     private final ProgrammingLanguageRepo repo;
 
-//    @Cacheable("countries")
-//    public List<LanguageDto> getLanguages() {
-//        log.debug("in fct");
-//        return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
-//    }
+    @Cacheable("countries")
+    public List<LanguageDto> getLanguages() {
+        log.debug("in fct");
+        return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
+    }
 }
