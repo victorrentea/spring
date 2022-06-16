@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -37,7 +36,8 @@ public class TrainingController {
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
-		trainingService.updateTraining(id, dto);
+		dto.id = id;
+		trainingService.updateTraining(dto);
 	}
 
 	// TODO Allow only for role 'ADMIN'
