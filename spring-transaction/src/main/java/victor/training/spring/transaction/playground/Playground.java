@@ -33,10 +33,9 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-    @Transactional
+//    @Transactional
     public void transactionTwo() {
-        Message message = repo.findCuTaguri(100L);
-        message.setMessage("Altu");
+
 
         try {
             other.operatieRiscanta();
@@ -64,10 +63,14 @@ class OtherClass {
 
     @Transactional
     public void operatieRiscanta() {
+        Message message = repo.findCuTaguri(100L);
+        message.setMessage("Altu");
+        repo.save(new Message("El"));
+        repo.save(new Message("Ea"));
         throw new RuntimeException("Method not implemented");
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(String message) {
         repo.save(new Message("Eroare mare : " + message));
     }
