@@ -11,12 +11,14 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Data // getters & setters are mandatory!
+@ConfigurationProperties(prefix = "welcome")
 @Component
 public class WelcomeInfo {
-    private String welcomeMessage;
+    private String welcomeMessageX;
     private List<URL> supportUrls;
     private Map<String,String> localContactPhone; // per country
     private HelpInfo help;
@@ -31,5 +33,6 @@ public class WelcomeInfo {
     public void printMyself() {
         // TODO validate: that help.file exists!
         log.debug("My props: " + this);
+        Objects.requireNonNull(welcomeMessageX);
     }
 }

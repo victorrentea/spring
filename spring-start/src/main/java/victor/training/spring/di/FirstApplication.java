@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -68,13 +69,40 @@ class X {
 //	public void setZ(Z z) {
 //		this.z = z;
 //	}
+	@Autowired
+	private ApplicationContext applicationContext;
+//	@Autowired
+//	private PrototipuMeu prototipuMeu; // PRAF CVALE.
 
 	public int prod() {
 		log.debug("ceva");
+		PrototipuMeu nou = applicationContext.getBean(PrototipuMeu.class);// daca PrototipuMeu e @Scope("prototype") > obtii o instanta noua de fiecare data
+//		cuiva(nou);
 		return 1 + y.prod();
 	}
 }
 @Service
+@Scope("prototype")
+class PrototipuMeu {
+//	@Autowired
+	private String dateIntermediareDintrOProcesareComplexa;
+	private String currentUsername;// pe camp, STATE FULL  design
+
+	public void setCurrentUsername(String currentUsername) {
+		this.currentUsername = currentUsername;
+	}
+//@Transactional
+	public void curr() {
+		System.out.println(currentUsername);
+	}
+}
+
+@Service
+//@ApplicationScoped // CDI (JavaEE)
+//@Scope("singleton")
+//@Scope("prototype")
+//@Scope("session") .. a plecat starea ecranului in JS
+//@Scope("request") // fiecare request HTTP care vine primeste o instanta noua din asta. usecase: extragi din http request header si le pui pe bean request scoped pt ca mai apoi in acealsi thread WEB sa fie disponibile oricn vrea din app ta.
 class Y {
 	private final Z z;
 
