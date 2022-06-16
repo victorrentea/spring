@@ -29,15 +29,15 @@ public class LanguageController {
         return languageService.getLanguages();
     }
 
-//    @Autowired
-//    private LanguageController selfProxied; // solutie carpit
-//
-//    @Cacheable("countries")
-//    public List<LanguageDto> getLanguages() {
-//        log.debug("in fct");
-//        new RuntimeException().printStackTrace();
-//        return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
-//    }
+    @Autowired
+    private LanguageController selfProxied; // solutie carpit
+
+    @Cacheable("countries")
+    public List<LanguageDto> getLanguages() {
+        log.debug("in fct");
+        new RuntimeException().printStackTrace();
+        return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
+    }
 
 }
 
