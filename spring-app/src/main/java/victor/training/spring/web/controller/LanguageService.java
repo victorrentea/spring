@@ -21,7 +21,7 @@ public class LanguageService  {
     @Timed("getLanguage")
     public List<LanguageDto> getLanguages() {
         log.debug("in fct");
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
 
         return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
     }

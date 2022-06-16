@@ -23,7 +23,7 @@ public class TeacherBioClient {
         log.debug("Calling external web endpoint... (takes time)");
         ThreadUtils.sleepq(500);
 //        String result = dummy(teacherId);
-        String result = real(teacherId);
+        String result = dummy(teacherId);
         log.debug("Got result");
         return result;
     }
