@@ -33,7 +33,7 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-//    @Transactional
+    @Transactional
     public void transactionTwo() {
         Message message = repo.findById(100L).get();
         System.out.println("Am datele. cica");
