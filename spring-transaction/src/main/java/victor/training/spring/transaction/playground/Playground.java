@@ -38,6 +38,9 @@ public class Playground {
         Message message = repo.findCuTaguri(100L);
         System.out.println("Am datele. cica");
         System.out.println(message.getTags());
+
+
+        repo.save(new Message("O singura scriere"));
     }
 }
 
