@@ -18,7 +18,10 @@ public class AltaClasa {
 //        KeycloakPrincipal<KeycloakSecurityContext> principal =
 //                (KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        principal.getKeycloakSecurityContext().getIdToken().get
+
+        System.out.println("Oare ce mi-o fi injectat springu " + requestScopedBean.getClass());
+
         String tenantId = requestScopedBean.getTenantId();
-        log.debug("tenantu la final e " + tenantId);
+        log.debug("tenantu la final ex " + tenantId);
     }
 }

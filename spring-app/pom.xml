@@ -126,6 +126,7 @@
 
 
         <dependency>
+            <!-- la fiecare compile project face restart la app depl local. in plus, daca modific orice in /src/main/resources/static -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
