@@ -1,6 +1,7 @@
 package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -35,10 +36,11 @@ public class TeacherBioClient {
         return "Amazing bio for teacher " + teacherId;
     }
 
+    @Autowired
+    RestTemplate rest; // don't do "new RestTemplate()" but take it from Spring, to allow Sleuth to propagate 'traceId'
+
     public String real(long teacherId) {
         try {
-            RestTemplate rest = new RestTemplate();
-
             // 1 :)
             log.info("Sending bearer: JOKE");
             String bearerToken = "joke";
