@@ -19,7 +19,8 @@ html {
 	<h2>Single Page Application</h2>
 
 	<h3>Hello,
-		<!--<span id="username"></span> <input type="button" value="logout" onclick="window.location='logout'"/>-->
+		<span id="username"></span>
+		<!--<input type="button" value="logout" onclick="window.location='logout'"/>-->
 	</h3>
 	
 	
@@ -107,8 +108,8 @@ $(document).ajaxError( function(event,xhr,settings,thrownError) {
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
-// var restEndpoint = getContextPath() + "/api";
-var restEndpoint = "http://localhost:8080/api"; // to test CORS using a local NodeJS instance
+var restEndpoint = getContextPath() + "/api";
+// var restEndpoint = "http://localhost:8080/api"; // to test CORS using a local NodeJS instance/"cdn" app
 
 function fillTable(trainings) {
 	$("#trainingTable tr").each(function (i, r) {

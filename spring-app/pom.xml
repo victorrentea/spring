@@ -34,8 +34,9 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
         </dependency>
+
         <dependency>
-            <!-- Enables auto-completion in IntelliJ based on @ConfigurationProperties -->
+            <!-- Enables auto-completion in application.properties in IntelliJ based on @ConfigurationProperties -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
@@ -93,7 +94,7 @@
 
 
         <!-- security -->
-          <dependency>
+       <!--   <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -107,10 +108,10 @@
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <!-- OAuth2RestTemplate for Client Credentials flow -->
+            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow &ndash;&gt;
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--<dependency>
             &lt;!&ndash; Experiment: create and send JWT token to called APIs to carry user info &ndash;&gt;
@@ -118,23 +119,23 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>-->
+
         <dependency>
             <!-- For distributed tracing of requests (printed after log level) -->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <!-- @RefreshScope -->
+        <!--<dependency>
+            &lt;!&ndash; @RefreshScope &ndash;&gt;
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>
