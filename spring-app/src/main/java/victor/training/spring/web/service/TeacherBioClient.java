@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
-import victor.training.spring.ThreadUtils;
+import victor.training.spring.varie.ThreadUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;

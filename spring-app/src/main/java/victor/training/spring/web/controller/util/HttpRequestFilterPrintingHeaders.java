@@ -1,4 +1,4 @@
-package victor.training.spring.web.security;
+package victor.training.spring.web.controller.util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
-public class InspectingFilter implements Filter {
+public class HttpRequestFilterPrintingHeaders implements Filter {
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
       HttpServletRequest httpRequest = (HttpServletRequest) request;

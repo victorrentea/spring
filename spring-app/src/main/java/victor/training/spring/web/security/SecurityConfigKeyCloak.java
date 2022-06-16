@@ -1,4 +1,4 @@
-//package victor.training.spring.web;
+//package victor.training.spring.web.security;
 //
 //import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 //import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;

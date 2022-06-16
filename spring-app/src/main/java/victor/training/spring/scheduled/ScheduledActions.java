@@ -2,7 +2,7 @@ package victor.training.spring.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import victor.training.spring.ThreadUtils;
+import victor.training.spring.varie.ThreadUtils;
 
 @Slf4j
 @Component

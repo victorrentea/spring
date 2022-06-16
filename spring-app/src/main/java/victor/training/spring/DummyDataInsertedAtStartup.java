@@ -1,11 +1,7 @@
-package victor.training.spring.web;
+package victor.training.spring;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.entity.*;
 import victor.training.spring.web.repo.ProgrammingLanguageRepo;
@@ -20,7 +16,7 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DummyData {
+public class DummyDataInsertedAtStartup {
 	private final TrainingRepo trainingRepo;
 	private final TeacherRepo teacherRepo;
 	private final ProgrammingLanguageRepo languageRepo;

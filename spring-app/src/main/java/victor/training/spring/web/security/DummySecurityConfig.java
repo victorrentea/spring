@@ -1,4 +1,4 @@
-package victor.training.spring.web;
+package victor.training.spring.web.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

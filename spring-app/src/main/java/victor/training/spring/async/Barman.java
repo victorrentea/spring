@@ -2,7 +2,7 @@ package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import victor.training.spring.ThreadUtils;
+import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 
