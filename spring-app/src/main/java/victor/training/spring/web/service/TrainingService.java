@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,8 +61,9 @@ public class TrainingService {
 //    private CacheManager cacheManager;
 
     // TODO Test this!
-    @CacheEvict(value = "training-by-id", key = "#dto.id")
-    public void updateTraining(TrainingDto dto) throws ParseException {
+//    @CacheEvict(value = "training-by-id", key = "#dto.id")
+    @CachePut(value = "training-by-id", key = "#dto.id")
+    public TrainingDto updateTraining(TrainingDto dto) throws ParseException {
 //        TrainingDto o = cacheManager.getCache("training-by-id").get(dto.id).get();
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(dto.id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
@@ -77,6 +79,9 @@ public class TrainingService {
         training.setStartDate(newDate);
         training.setProgrammingLanguage(languageRepo.getById(dto.languageId));
         training.setTeacher(teacherRepo.getById(dto.teacherId));
+        // mai nasol design: pt cachePut, pt 1/10000 de improv perform
+        dto.creationDate = training.getCreationDate();
+        return dto;
     }
 
     private Date parseStartDate(TrainingDto dto) throws ParseException {

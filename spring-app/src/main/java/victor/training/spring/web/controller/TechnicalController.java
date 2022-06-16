@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -51,19 +53,28 @@ public class TechnicalController {
 		log.debug("tenantu la inceput e " + tenantId);
 		requestScopedBean.setTenantId(tenantId);
 //		tenantId
-		altaClasa.pesteMariSiLayereDiastanta();
+//		altaClasa.pesteMariSiLayereDiastanta();
 	}
 
+
+//	@Transactional // 2 pc (XA)
+//	public void method2() {
+//		db.save();
+//		rabbit.send();
+//	}
 //	@Value("${welcome.welcome-message}")
 //	String s;
 	@Autowired
 	private RequestScopedBean requestScopedBean;
 
-	@Autowired
-	private AltaClasa altaClasa;
+//	@Autowired
+//	private AltaClasa altaClasa;
 
-
-
+	@GetMapping("script-finished")
+	@CacheEvict(value = "training-by-id", allEntries = true)
+	public void cacheKill() {
+ 		// goala, da nu ma sterge, ca e magie in aer...
+	}
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsync() {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);

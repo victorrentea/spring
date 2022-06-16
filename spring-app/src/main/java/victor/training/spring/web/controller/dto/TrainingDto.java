@@ -4,6 +4,7 @@ package victor.training.spring.web.controller.dto;
 import victor.training.spring.web.entity.ContractType;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 public class TrainingDto {
 	public Long id;
@@ -16,4 +17,5 @@ public class TrainingDto {
 	public String teacherName;
 	public String startDate;
 	public String description;
+	public LocalDate creationDate;
 }

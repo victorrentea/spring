@@ -3,6 +3,7 @@ package victor.training.spring.web.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,6 +19,7 @@ public class Training {
 	private Teacher teacher;
 	@ManyToOne
 	private ProgrammingLanguage programmingLanguage;
+	private LocalDate creationDate = LocalDate.now();
 
 	public Training() {
 	}
