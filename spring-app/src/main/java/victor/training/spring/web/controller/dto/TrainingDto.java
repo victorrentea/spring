@@ -4,9 +4,10 @@ package victor.training.spring.web.controller.dto;
 import victor.training.spring.web.entity.ContractType;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TrainingDto {
+public class TrainingDto implements Serializable {
 	public Long id;
 	@Size(min = 3, max = 50)
 	public String name;

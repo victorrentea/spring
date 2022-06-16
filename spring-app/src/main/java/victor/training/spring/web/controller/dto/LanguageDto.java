@@ -2,7 +2,9 @@ package victor.training.spring.web.controller.dto;
 
 import victor.training.spring.web.entity.ProgrammingLanguage;
 
-public class LanguageDto {
+import java.io.Serializable;
+
+public class LanguageDto implements Serializable {
     public long id;
     public String name;
 
