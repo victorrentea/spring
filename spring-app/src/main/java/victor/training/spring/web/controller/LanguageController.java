@@ -17,6 +17,7 @@ import victor.training.spring.web.repo.ProgrammingLanguageRepo;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class LanguageController {
 
 @Retention(RetentionPolicy.RUNTIME)
 @interface Auditata {
-
+    String value();
 }
 
 @Slf4j
@@ -64,6 +65,9 @@ class AspectuMeu {
     @Around("@annotation(victor.training.spring.web.controller.Auditata)")
     public Object method(ProceedingJoinPoint pjp) throws Throwable {
         long t0 = currentTimeMillis();
+//        Method declaredMethod = pjp.getSignature().getDeclaringType().getDeclaredMethod(pjp.getSignature().getName());
+//        Auditata a = declaredMethod.getAnnotation(Auditata.class);
+//        a.value()
         Object result = pjp.proceed(); // aici chemi metoeda reala.
         long t1 = currentTimeMillis();
         log.debug("Metoda {} a durat {}  ms", pjp.getSignature().getName() , t1 - t0);

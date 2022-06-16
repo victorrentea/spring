@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class LanguageService  {
     private final ProgrammingLanguageRepo repo;
-    @Auditata
+    @Auditata("grav")
     @Cacheable("countries")
     public List<LanguageDto> getLanguages() {
         log.debug("in fct");
