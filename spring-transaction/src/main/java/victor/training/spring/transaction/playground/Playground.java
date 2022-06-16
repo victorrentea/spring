@@ -19,9 +19,13 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
-    @Transactional
+    @Transactional/*(timeout = 10)*/
     public void transactionOne() {
-        repo.save(new Message("a")); //asta nu scrie inca in DB ci il lasa in
+
+//        Thread.sleep(100);
+        Message m = new Message("a");
+        m.getTags().add("beton");
+        repo.save(m); //asta nu scrie inca in DB ci il lasa in
         // Persistence COntext (aka Session) care functioneaza aici ca un WRITE CACHE
         // nu trimite direct INSERTUL ci asteapta sf tranzactiei cu succes.
         // de ce ? pt performanta. Va putea ulterior sa batchuiasca mai multe inserturi impreuna
@@ -33,9 +37,10 @@ public class Playground {
         log.debug("Dupa ce ies din fct proxyul reia controlul si da commit la conn");
     }
 
-//    @Transactional
+    @Transactional
     public void transactionTwo() {
-
+        Message message = repo.findCuTaguri(100L);
+        message.setMessage("Altu");
 
         try {
             other.operatieRiscanta();
@@ -63,14 +68,14 @@ class OtherClass {
 
     @Transactional
     public void operatieRiscanta() {
-        Message message = repo.findCuTaguri(100L);
-        message.setMessage("Altu");
         repo.save(new Message("El"));
         repo.save(new Message("Ea"));
         throw new RuntimeException("Method not implemented");
     }
 
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    // merge si not supported pejntru8 ca save() din repo are el @Transactioal
+//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void saveError(String message) {
         repo.save(new Message("Eroare mare : " + message));
     }
