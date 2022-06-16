@@ -30,7 +30,7 @@ public class LanguageController {
     }
 
     @Autowired
-    private LanguageController selfProxied;
+    private LanguageController selfProxied; // solutie carpit
 
     @Cacheable("countries")
     public List<LanguageDto> getLanguages() {
