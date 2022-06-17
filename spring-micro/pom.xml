@@ -39,6 +39,20 @@
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
 
+        <!-- messages -->
+     <!--   <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+        </dependency>-->
+
 
         <dependency>
             <!-- 2) Play: manual validation of JWT token preauthentication -->
