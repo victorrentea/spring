@@ -19,9 +19,6 @@ public class DrinkerController {
    @Autowired
    private Barman barman;
 
-   @Autowired
-   private ThreadPoolTaskExecutor pool;
-
    // TODO [1] inject and submit work to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
@@ -30,8 +27,10 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Future<Beer> futureBeer = pool.submit(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = pool.submit(() -> barman.pourVodka());
+
+      // junioru contrariat: eu cand chem o functie, nu tre sa astept sa se termine ?
+      Future<Beer> futureBeer = barman.pourBeer(); // aplul asta NU executa de fapt nimic, doar scheduleaza un task de executat intr-un pool invizibil candva in viitor
+      Future<Vodka> futureVodka = barman.pourVodka();
 
       log.debug("Aici a plecat garcon cu comanda");
       Vodka vodka = futureVodka.get();
