@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,8 +29,8 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+	public TrainingDto getTrainingById(@PathVariable TrainingId /*long*/ id) {
+		return trainingService.getTrainingById(id.id());
 	}
 
 	// TODO @Valid
