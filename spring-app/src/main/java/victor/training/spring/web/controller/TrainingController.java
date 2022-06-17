@@ -1,21 +1,18 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 
 
 @RestController
@@ -57,7 +54,16 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
-	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER','ADMIN_SPITAL')")
+
+	// role mode
+//	@Secured("ADMIN")
+//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER','ADMIN_SPITAL')")
+
+	//authority model (mai fine grained)
+	@PreAuthorize("hasAuthority('ROLE_training.delete')")
+
+	// data security
+//	@PreAuthorize("@permissionGranter.areVoiePeTraininguId(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
@@ -68,4 +74,11 @@ public class TrainingController {
 		return trainingService.search(criteria);
 	}
 
+}
+
+@Component
+class PermissionGranter {
+	public boolean areVoiePeTraininguId(long id) {
+		return true; // SELECT sa vezi daca ai voie. daca poacientu e din eruopa
+	}
 }

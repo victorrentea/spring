@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,12 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +35,8 @@ public class TechnicalController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		dto.username = authentication.getName();
 		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		dto.authorities = stripRolePrefix(authentication.getAuthorities());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,11 +51,11 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
-//		return authorities.stream()
-//			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
-//			.collect(toList());
-//	}
+	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
+		return authorities.stream()
+			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
+			.collect(toList());
+	}
 
 	@GetMapping("request-scope")
 	public void method() {
