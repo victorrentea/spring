@@ -7,8 +7,8 @@
   - login with god/god
 - add realm, importing LearningRealm.json
 - add 2 users : user and admin
-  - Set them passwords
-  - Assign "USER" and "ADMIN" roles to then, respectively
+  - Assign them passwords
+  - Assign "USER" and "ADMIN" roles to them, respectively
 - Access localhost:8080 and expect to be redirected to :8180
 
 
