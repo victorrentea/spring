@@ -34,13 +34,14 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <!-- For distributed tracing of requests (printed after log level) -->
+            <!-- For distributed tracing of requests (printed after log level) adauga headere pe MESAGE trimise si pe REST request trimise. daca
+            gasesti libraria si pe partea cealalta va lua din header traceId si o va infinge in threadu curent, apoi in log Logback MDC-->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
 
         <!-- messages -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
@@ -51,7 +52,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-        </dependency>-->
+        </dependency>
 
 
         <dependency>
