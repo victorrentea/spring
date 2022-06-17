@@ -12,8 +12,11 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 public class Barman {
-   @Async
+   @Async("barPool")
    public CompletableFuture<Beer> pourBeer() {
+//      if (true) {
+//         throw new IllegalArgumentException("DRAMA: nu mai ebvere!!!!!!");
+//      }
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepq(1000);
       return CompletableFuture.completedFuture(new Beer());
@@ -23,5 +26,14 @@ public class Barman {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepq(1000);
       return CompletableFuture.completedFuture(new Vodka());
+   }
+
+   @Async
+   public void injura_FIRE_AND_FORGET(String s) {
+      ThreadUtils.sleepq(1000);
+      if (s != null) {
+         throw new IllegalArgumentException("iti fac buzuna / te casez");
+      }
+      log.debug("send email");
    }
 }

@@ -2,7 +2,6 @@ package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -27,10 +26,12 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-
       // junioru contrariat: eu cand chem o functie, nu tre sa astept sa se termine ?
       Future<Beer> futureBeer = barman.pourBeer(); // aplul asta NU executa de fapt nimic, doar scheduleaza un task de executat intr-un pool invizibil candva in viitor
       Future<Vodka> futureVodka = barman.pourVodka();
+      barman.injura_FIRE_AND_FORGET("!&^&!^*&^!&*^%(&(*^*($&!@)(*)(*(_!*");
+
+
 
       log.debug("Aici a plecat garcon cu comanda");
       Vodka vodka = futureVodka.get();

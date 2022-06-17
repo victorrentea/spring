@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public ThreadPoolTaskExecutor executor(@Value("${barman.count}") int barmanCount) {
+	public ThreadPoolTaskExecutor barPool(@Value("${barman.count}") int barmanCount) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barmanCount);
 		executor.setMaxPoolSize(barmanCount);
