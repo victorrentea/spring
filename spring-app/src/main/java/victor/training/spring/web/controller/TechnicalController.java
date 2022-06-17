@@ -8,7 +8,6 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,8 +18,10 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 		dto.username = "// TODO: get username";
-		dto.role = "";//authentication.getAuthorities().iterator().next().getAuthority();
-		dto.authorities = Collections.emptyList();//authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+		// A) role-based security
+//		dto.role = extractOneRole(authentication.getAuthorities());
+		// B) authority-based security
+//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -35,14 +36,25 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private List<String> stripRolePrefix(Collection<? extends GrantedAuthority> authorities) {
-//		return authorities.stream()
-//			.map(grantedAuthority -> grantedAuthority.getAuthority().substring("ROLE_".length()))
-//			.collect(toList());
+//	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+//		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+//		System.out.println(authorities.toString());
+//		List<String> roles = authorities.stream()
+//				.map(GrantedAuthority::getAuthority)
+//				.filter(authority -> authority.startsWith("ROLE_"))
+//				.map(authority -> authority.substring("ROLE_".length()))
+//				.collect(Collectors.toList());
+//		if (roles.size() == 2) {
+//			throw new IllegalArgumentException("Even though Spring allows a user to have multiple roles, we wont :)");
+//		}
+//		if (roles.size() == 0) {
+//			return null;
+//		}
+//		return roles.get(0);
 //	}
 
 	@PostConstruct
-	public void enableSecurityContextPropagationOverAsync() {
+	public void enableSecurityContextPropagationOverAsyncCalls() {
 //		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 

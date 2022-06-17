@@ -1,5 +1,4 @@
-<html>
-
+<html lang="en">
 <head>
 <link href="toastr.min.css" rel="stylesheet"/>
 <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
@@ -13,16 +12,16 @@ html {
   background-size: cover;
 }
 </style>
+	<title>SPA (8080)</title>
 </head>
 <body >
-	
-	<h2>Single Page Application</h2>
+	<h2>Welcome to SPA (Single Page Application)</h2>
 
 	<h3>Hello,
 		<span id="username"></span>
 		<!--<input type="button" value="logout" onclick="window.location='logout'"/>-->
 	</h3>
-	
+
 	
 	<div id="trainingMain" style="border:2px solid red">
 		<div id="searchDiv" style="border: 7px solid pink">
@@ -65,29 +64,24 @@ html {
 
 	<div style="text-align: center; background: white">
 		<a href="api/send-message">Send a message on a Queue</a> |
-		<a href="/v3/api-docs" target="_blank">See my OpenAPI 3.0</a> |||
+		<a href="api/drink">Async Flow</a> |
+		<a href="/v3/api-docs" target="_blank">See my OpenAPI 3.0</a> <br/>
 		<a href="victim.html">Web Attacks</a> |
 		<a href="keycloak.html" target="_blank">Implicit Flow (Keycloak), when on CDN</a> |
-		<a href="/api/client-credentials" target="_blank">Client Credentials</a> |
+		<a href="/api/client-credentials" target="_blank">Client Credentials</a> <br />
+		<span id="currentUserJson" style="font-size: small; color: gray"></span>
 	</div>
 
-<script type="text/javascript">
 
-function moveSelectedOptions(fromId, toId) {
-	var selectedValues = $(fromId).val()
-	for (var i=0;i<selectedValues.length;i++) {
-		var $leftSel = $(fromId+" option[value='"+selectedValues[i]+"']");
-		$(toId).append('<option value="'+selectedValues[i]+'">'+$leftSel.text()+'</option>');
-		console.log($leftSel.html());
-		$leftSel.remove();
-	}
-}
-// Angular adds it automatically
+	<script type="text/javascript">
+
+	// Angular adds it automatically
 function getCookie(name) {
 	const value = `; ${document.cookie}`;
 	const parts = value.split(`; ${name}=`);
 	if (parts.length === 2) return parts.pop().split(';').shift();
 }
+
 let xsrfToken = getCookie("XSRF-TOKEN");
 
 $.ajaxSetup({
@@ -109,6 +103,7 @@ $(document).ajaxError( function(event,xhr,settings,thrownError) {
 function getContextPath() {
    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
+
 var restEndpoint = getContextPath() + "/api";
 // var restEndpoint = "http://localhost:8080/api"; // to test CORS using a local NodeJS instance/"cdn" app
 
@@ -124,9 +119,11 @@ function fillTable(trainings) {
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
-		//if (currentUser.role === 'ROLE_ADMIN'))
+
+		//if (currentUser.role === 'ADMIN')
 		//if (currentUser.authorities.includes('training.delete'))
-		row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
+
 		row += '</td>';
 		row += '</tr>';
 		$('#trainingTable tr:last').after(row);
@@ -168,6 +165,7 @@ $.ajax(restEndpoint +"/user/current", {
 	success: function(user) {
 		currentUser = user;
 		$("#username").text(user.username);
+		$("#currentUserJson").text(JSON.stringify(user));
 		refreshTrainingsTable(); //
 	}});
 
@@ -254,11 +252,6 @@ function updateTraining() {
 			$('#trainingMain').show();
 			$('#trainingEditDiv').hide();
 			refreshTrainingsTable();
-		},
-		error: function(a,b,c) {
-			if (a.responseText) {
-				toastr.error(a.responseText);
-			}
 		}
 	});
 }
@@ -289,11 +282,6 @@ function createTraining() {
 			$('#trainingMain').show();
 			$('#trainingNewDiv').hide();
 			refreshTrainingsTable();
-		},
-		error: function(a,b,c) {
-			if (a.responseText) {
-				toastr.error(a.responseText);
-			}
 		}
 	});
 }

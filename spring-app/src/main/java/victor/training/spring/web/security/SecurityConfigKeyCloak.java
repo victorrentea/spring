@@ -1,5 +1,6 @@
 //package victor.training.spring.web.security;
 //
+//import lombok.extern.slf4j.Slf4j;
 //import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 //import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 //import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -12,12 +13,23 @@
 //import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+//import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 //import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 //import org.springframework.security.core.session.SessionRegistryImpl;
 //import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 //import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 //import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//import victor.training.spring.web.entity.UserRole;
+//
+//import java.net.URL;
+//import java.util.Collection;
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
 //
 //@Configuration
 //@EnableWebSecurity
@@ -26,9 +38,18 @@
 //class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
 //    // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
 //    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//    public void configureGlobal(AuthenticationManagerBuilder auth) {
 //        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+//
+//        // A) Role-based security : prefix every role in the token with "ROLE_"
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//
+//        // B) Authority-based security
+////        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
+//
+//        // B2) converting ROLE from token into local authorities
+////        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+//
 //        auth.authenticationProvider(keycloakAuthenticationProvider);
 //    }
 //
