@@ -36,12 +36,12 @@ public class DrinkerController {
       // junioru contrariat: eu cand chem o functie, nu tre sa astept sa se termine ?
       CompletableFuture<Beer> futureBeer = barman.pourBeer(); // aplul asta NU executa de fapt nimic, doar scheduleaza un task de executat intr-un pool invizibil candva in viitor
       CompletableFuture<Vodka> futureVodka = barman.pourVodka();
-//      barman.injura_FIRE_AND_FORGET("!&^&!^*&^!&*^%(&(*^*($&!@)(*)(*(_!*");
+      barman.injura_FIRE_AND_FORGET("!&^&!^*&^!&*^%(&(*^*($&!@)(*)(*(_!*");
 
 
 //      log.debug("Aici a plecat garcon cu comanda");
 //      Vodka vodka = futureVodka.get(); // 1 sec la tine in teste, 10 pe prod ca e viata
-//      Beer beer = futureBeer.get();
+      Beer beer = futureBeer.get();
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);

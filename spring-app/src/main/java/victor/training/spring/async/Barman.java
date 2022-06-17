@@ -37,7 +37,7 @@ public class Barman {
 
    @Async
    public void injura_FIRE_AND_FORGET(String s) {
-      ThreadUtils.sleepq(1000);
+//      ThreadUtils.sleepq(1000);
       if (s != null) {
          throw new IllegalArgumentException("iti fac buzuna / te casez");
       }

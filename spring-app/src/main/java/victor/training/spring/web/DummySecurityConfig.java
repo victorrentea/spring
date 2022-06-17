@@ -23,10 +23,12 @@
 //          .csrf().disable() // as I don't ever take <form> POSTs
 //          .authorizeRequests().anyRequest().authenticated()
 //          .and()
+//
 //          .formLogin().permitAll()
 //              .defaultSuccessUrl("/",true)
 //              .and()
-//          .httpBasic();
+//
+//          .httpBasic(); // <<< sis legacy dar atunci cand trimit pe header  trimiti useri tehnici apiKey:secret
 //   }
 //
 //   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION

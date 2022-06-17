@@ -1,11 +1,14 @@
 package victor.training.spring.web.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -40,13 +43,14 @@ public class TeacherBioClient {
         try {
 
             // 1 :)
-            String bearerToken = "joke";
+//            String bearerToken = "joke";
 
             // 2 OAuth2
-//            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
-//                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
+            log.debug("Acess tokenu meu este : " + bearerToken); // iti dai seama ce zice operations daca vede in log acces tokeni ?!
             // 3 Manual JWT
 //            String bearerToken = createManualJwtToken();
 
