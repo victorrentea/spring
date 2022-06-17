@@ -2,11 +2,11 @@ package victor.training.micro;
 
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -21,16 +21,16 @@ public class MessageListener {
         String reason;
     }
     @Bean
-    public Consumer<Message<TransferMessage>> paymentRequestSubscriber() {
+    public Function<Message<TransferMessage>, String> paymentRequestSubscriber() {
         return message -> {
-                doProcess(message);
+            log.debug("Processing " + message);
+//            throw new RuntimeException("INTENTIONAT crap " + message.getPayload());
+            String transactionId = UUID.randomUUID().toString();
+            log.debug("reply with " + transactionId);
+            return transactionId;
         };
     }
 
-    private void doProcess(Message<TransferMessage> message) {
-        log.debug("Processing " + message);
-        throw new RuntimeException("INTENTIONAT crap " + message.getPayload());
-    }
 
 //    public class CustomErrorHandler implements ErrorHandler {
 //        @Override
