@@ -18,22 +18,22 @@ import java.util.concurrent.TimeUnit;
 public class MonitoredThreadPoolConfig {
    private final MeterRegistry meterRegistry;
 
-   @Bean(initMethod = "initialize")
-   @ConfigurationProperties(prefix = "custom-executor")
-   public ThreadPoolTaskExecutor customExecutor() {
-      Timer timer = meterRegistry.timer("custom-executor-queue-wait");
-      // configured via custom-executor.* in application.properties
-      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-      executor.setTaskDecorator(runnable -> {
-         long t0 = System.currentTimeMillis(); // runs at submit() time
-         return () -> {
-            long t1 = System.currentTimeMillis(); // runs when task start being executed
-            timer.record(t1 - t0, TimeUnit.MILLISECONDS);
-            runnable.run();
-         };
-      });
-      return executor;
-   }
+//   @Bean(initMethod = "initialize")
+//   @ConfigurationProperties(prefix = "custom-executor")
+//   public ThreadPoolTaskExecutor customExecutor() {
+//      Timer timer = meterRegistry.timer("custom-executor-queue-wait");
+//      // configured via custom-executor.* in application.properties
+//      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//      executor.setTaskDecorator(runnable -> {
+//         long t0 = System.currentTimeMillis(); // runs at submit() time
+//         return () -> {
+//            long t1 = System.currentTimeMillis(); // runs when task start being executed
+//            timer.record(t1 - t0, TimeUnit.MILLISECONDS);
+//            runnable.run();
+//         };
+//      });
+//      return executor;
+//   }
 
    @Bean
    public TimedAspect timedAspect() {
