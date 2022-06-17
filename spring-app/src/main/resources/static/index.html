@@ -253,11 +253,6 @@ function updateTraining() {
 			$('#trainingMain').show();
 			$('#trainingEditDiv').hide();
 			refreshTrainingsTable();
-		},
-		error: function(a,b,c) {
-			if (a.responseText) {
-				toastr.error(a.responseText);
-			}
 		}
 	});
 }

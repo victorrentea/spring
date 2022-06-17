@@ -3,6 +3,7 @@ package victor.training.spring.web.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -12,6 +13,8 @@ public class Training {
 	@Id
 	@GeneratedValue
 	private Long id;
+	@NotNull
+	@Column(nullable = false)
 	private String name;
 	private String description;
 	private Date startDate;
