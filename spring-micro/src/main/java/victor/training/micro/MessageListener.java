@@ -23,11 +23,7 @@ public class MessageListener {
     @Bean
     public Consumer<Message<TransferMessage>> paymentRequestSubscriber() {
         return message -> {
-            try {
                 doProcess(message);
-            } catch (Exception e) {
-                log.error("Valeu",e); // asta va ACK catre Rabbvit ca ai mancat mesajul si el in sterge.
-            }
         };
     }
 
