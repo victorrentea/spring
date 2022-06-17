@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,9 +52,11 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
             .csrf().disable()
             .cors().and()
             .authorizeRequests()
-            .mvcMatchers("/spa/**", "/api/**").authenticated()
-            .mvcMatchers("/sso/**").permitAll()
-            .anyRequest().permitAll()
+                // prea usor de uitat:
+//                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+                .mvcMatchers("/spa/**", "/api/**").authenticated()
+                .mvcMatchers("/sso/**").permitAll()
+                .anyRequest().permitAll()
         ;
     }
 
