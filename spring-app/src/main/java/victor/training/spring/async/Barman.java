@@ -1,8 +1,11 @@
 package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.RestTemplate;
 import victor.training.spring.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
@@ -21,10 +24,14 @@ public class Barman {
       ThreadUtils.sleepq(1000);
       return CompletableFuture.completedFuture(new Beer());
    }
-   @Async
+   @Async("vodkaPool")
    public CompletableFuture<Vodka> pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
-      ThreadUtils.sleepq(1000);
+
+//      Mono < reactor, webflux. WebClient
+//      CompletableFuture<ResponseEntity<Object>> nonBlock =
+//              new AsyncRestTemplate().exchange().completable();
+      ThreadUtils.sleepq(500);
       return CompletableFuture.completedFuture(new Vodka());
    }
 
