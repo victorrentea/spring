@@ -1,13 +1,17 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -15,50 +19,51 @@ public class BeanApp implements CommandLineRunner {
         SpringApplication.run(BeanApp.class);
     }
 
-    @Autowired
-    private Person person;
-    @Autowired
-    private Person person2;
-
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println("Am primit 2 instante diferite de Person: " + person + " si  " + person2);
-        person.setName("John");
-        person2.setName("Jane");
-        Conversation conversation = new Conversation(person, person2);
-//                new Person().setName("John"),
-//                new Person().setName("Jane"));
-        conversation.start();
+
+//        conversation.start();
         // TODO convince Spring to do for you the line above
     }
 }
 
+@Configuration
+class OClasaConfiguration {
+    @Bean
+    public Person john() { // numele beanului definit = numele metodei
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
+    }
+}
+
 @Data
+@Component
 class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(Person one, Person two) {
-        this.one = one;
+    public Conversation( Person john, @Qualifier("jane") Person two) {
+        this.one = john;
         this.two = two;
     }
 
+//    @PostConstruct
+    @EventListener(ApplicationStartedEvent.class) // poate sapa aici daca vrei control mai fin asupra CAND rulezi in startup-ul springuluil
     public void start() {
+        System.out.println("Incepe discutia");
         System.out.println(one.sayHello());
         System.out.println(two.sayHello());
     }
 }
 
-
-@Component
-@Scope("prototype")
+// ne imaginam ca Person este dintr-un JAR, si nu poti sa ii modifici codul
 class Person {
-    private  String name;
-//    public Person(String name) {
-//        this.name = name;
-//    }
-    public void setName(String name) {
+    private final String name;
+    public Person(String name) {
         this.name = name;
     }
     public String sayHello() {

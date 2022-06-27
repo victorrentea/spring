@@ -44,6 +44,16 @@ class B { // 1 instanta
 // inchipuie-ti ca esti intr-o app web
 @Service
 @Scope("prototype") // ff periculos.
+//@ApplicationScoped
+
+// pentru app care genereaza HTML pe backend (JSP///_)
+
+//    @Scope("request") // fiecare request HTTP primeste propria instanta
+
+    // nu mai esti stateless : REST  tre sa fie stateless!!
+    // exemplu: userul selecteaza contul. apoi inca o valoare.
+    // iar in pagina urmatoare browserul trimite un alt req la BE si se asteapta ca BE sa tina minte selectia precedenta. = nu mai esti STATELESS
+//    @Scope("session") // fiecare HTTP session (cookie, dupa logare browserul primeste o sesiune) _ pe BE sta asociata cu acea sesiune un obiect
 class C {
     private String currentUsername;
 
