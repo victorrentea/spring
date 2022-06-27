@@ -13,9 +13,11 @@ public class BeanApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        // TODO convince Spring to do for you the line above
+        Conversation conversation = new Conversation(
+                new Person("John"),
+                new Person("Jane"));
         conversation.start();
+        // TODO convince Spring to do for you the line above
     }
 }
 
@@ -42,6 +44,7 @@ class Person {
     public Person(String name) {
         this.name = name;
     }
+
     public String sayHello() {
         return "Hello! Here is " + name;
     }
