@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 // [6] inject List<BeanI>
 
 @SpringBootApplication
+//@ComponentScan(basePackages = "")
 public class FirstApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
