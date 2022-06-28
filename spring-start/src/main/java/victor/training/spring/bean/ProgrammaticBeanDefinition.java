@@ -11,10 +11,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@SpringBootApplication
+@Configuration
 public class ProgrammaticBeanDefinition implements CommandLineRunner {
    public static void main(String[] args) {
        SpringApplication.run(ProgrammaticBeanDefinition.class, args);
