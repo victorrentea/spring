@@ -22,8 +22,9 @@ public class Playground {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         System.out.println("😁");
 
+        System.out.println(repo.findAllByMessage("ALO"));
+
         OtherClass.var.set("10");
-        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
         other.m();
         // ce sta pe tjhread:
         // 1) JDBC Connection < Transaction
@@ -48,6 +49,6 @@ class OtherClass {
         System.out.println("Date private ale threadului meu " + var.get());
         repo.save(new Message("tranzactia"));
         repo.save(new Message("count.amount -- "));
-        repo.save(new Message(null));
+//        repo.save(new Message(null));
     }
 }
