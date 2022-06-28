@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class Playground {
     private final MessageRepo repo;
@@ -30,7 +32,22 @@ public class Playground {
     }
 
     @Transactional
+    // nu are sens daca doar citesti date. ( in afara cazului cand te bazezi pe lazy load - mare greseala )
+    // nu are sens daca inserezi un singur obiect (repo.save are @Transactional inauntrul lui anyway)
     public void transactionTwo() {
+        Message message = repo.findById(100L).orElseThrow();
+
+        // ANTIPATTERN: a chema REST/SOAP/RMI in @Transactional method
+
+//        new RestTemplate().getForObject("url", CevaDto.class); // PERICULOS cand ai un use-case hot  care cheama alte API-uri!!
+// apel de retea ce dureaza ~10-20 ms in testele tale; pana-ntro zi, cand in prod raspunde 10 SECUNDE.
+
+        // inchipuie-ti 20 de apeluri simultane la acest endpoint toate stand sa asptept dupa cele 10 sec.
+        // app ta este KO : te-a invins. Orice acces vrei sa faci in baza nu mai e posibil
+            // Pentru ca toate cele 20 de connections din POOL sunt blocate. >> "Timeout waiting for connection"
+
+        repo.save(new Message("ceva nou"));
+        repo.save(new Message("ceva nou"));
     }
 }
 
