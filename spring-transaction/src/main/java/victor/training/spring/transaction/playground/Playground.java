@@ -18,8 +18,11 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
+        System.out.println("😁");
+
+        other.m();
     }
+
     @Transactional
     public void transactionTwo() {
     }
@@ -29,4 +32,11 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+
+    @Transactional // acest proxy acum NU creeaza nici nu comite/rollback tranzactia curenta,
+    // pentru ca propaga tranzactia venita din apelant.
+    public void m() {
+        repo.save(new Message("tranzactia"));
+        repo.save(new Message("count.amount -- "));
+    }
 }

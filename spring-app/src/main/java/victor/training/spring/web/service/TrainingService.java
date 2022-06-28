@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -40,6 +42,7 @@ public class TrainingService {
         return dtos;
     }
 
+    @Cacheable("training")
     public TrainingDto getTrainingById(Long id) {
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
         try {
@@ -51,6 +54,7 @@ public class TrainingService {
         return dto;
     }
 
+    @CacheEvict(value = "training",key = "#id") // Spring Expression Language: JSTL
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {

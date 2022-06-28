@@ -25,11 +25,16 @@ public class LanguageController {
     // TODO cache
     // TODO evict via dedicated endpoint (called from script)
     public List<LanguageDto> getAll() {
-        System.out.println("Vorbesc cu un proxy " + this.getClass());
-
-        return getAll2(); // PRINCIPALA TZEAPA CU  PROXY_URILE : nu merg pe apeluri LOCALE efectuate in aceeasi clasa
+        System.out.println("Vorbesc cu un proxy " + service.getClass());
+//new RuntimeException().printStackTrace();
+        return service.getAll2(); // PRINCIPALA TZEAPA CU  PROXY_URILE : nu merg pe apeluri LOCALE efectuate in aceeasi clasa
         // ca proxy-urile sa mearga (adnotarile pe metode), treubuie sa le chemi printr-o REFERINTA luata de la SPring (@AUtowired cumva)
     }
+    private final LanguageService service;
+}
+@Service
+@RequiredArgsConstructor
+class LanguageService {
     private final ProgrammingLanguageRepo repo;
 
     @Cacheable("languagesX")

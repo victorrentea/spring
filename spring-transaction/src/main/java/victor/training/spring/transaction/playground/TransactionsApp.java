@@ -16,6 +16,7 @@ public class TransactionsApp implements CommandLineRunner {
 
    @Override
    public void run(String... args) throws Exception {
+      // FARA TRANZACTIE PORNITA INCA! (ca si cum as fi chemat de un @RestController in urma unui apel HTTP)
       System.out.println("============= TRANSACTION ONE ==============");
       playground.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
