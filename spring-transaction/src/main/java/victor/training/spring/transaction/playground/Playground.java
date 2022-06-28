@@ -46,7 +46,8 @@ class OtherClass {
         throw new RuntimeException("BUM");
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void persistError(Exception e) {
         e.printStackTrace();
         Message errorToInsert = new Message("ERROR: " + e.getMessage());
