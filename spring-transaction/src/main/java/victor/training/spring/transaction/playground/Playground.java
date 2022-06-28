@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.sql.Connection;
 
 @Service
@@ -18,19 +19,13 @@ public class Playground {
     private final OtherClass other;
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne() throws IOException {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         System.out.println("😁");
 
         System.out.println(repo.findAllByMessage("ALO"));
 
-        OtherClass.var.set("10");
         other.m();
-        // ce sta pe tjhread:
-        // 1) JDBC Connection < Transaction
-        // 2) PersistenceContext(JPA)
-        // 3) Security Context (cine e logat, acceul la JWT token, usernameul)
-        // 4) Lomback MDC
     }
 
     @Transactional
@@ -42,13 +37,10 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    public static final ThreadLocal<String> var = new ThreadLocal<>(); //
-    // ceva in genul asta merge connectionul de JDBC intre metodele invocate intr-un flux.
 
-    public void m() {
-        System.out.println("Date private ale threadului meu " + var.get());
+    public void m() throws IOException {
         repo.save(new Message("tranzactia"));
         repo.save(new Message("count.amount -- "));
-//        repo.save(new Message(null));
+        throw new IOException("BUM");
     }
 }
