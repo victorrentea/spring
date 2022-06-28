@@ -26,9 +26,15 @@ public class BeanApp implements CommandLineRunner {
 
     @Autowired
     private ApplicationContext applicationContext;
-
+@Value("${USER}")
+String user;
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("Esti " + user);
+//        System.get
+
+
+
 
         System.out.println("Aici aplicatia a pornit cu succes");
 
