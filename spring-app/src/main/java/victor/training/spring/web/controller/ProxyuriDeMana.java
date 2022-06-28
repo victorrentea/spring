@@ -15,7 +15,7 @@ public class ProxyuriDeMana {
          // tu nu vei face asa ceva urmatorii 5 ani probabil
         // ma prefac c-as fi spring
 
-        Mate realObject = new Mate();
+        Mate realObject = new Mate(); // instanta 1 (reala)
 
         Callback h = new MethodInterceptor() {
             @Override
@@ -25,7 +25,7 @@ public class ProxyuriDeMana {
                 return method.invoke(realObject, args);
             }
         };
-        Mate proxy = (Mate) Enhancer.create(Mate.class, h);
+        Mate proxy = (Mate) Enhancer.create(Mate.class, h); // instanta 2 (proxy)
         Client client = new Client(proxy);
         client.clasa2();
     }

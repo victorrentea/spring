@@ -20,24 +20,20 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @RequestMapping("api/languages")
 public class LanguageController {
-    private final LanguageService service;
 
     @GetMapping
     // TODO cache
     // TODO evict via dedicated endpoint (called from script)
     public List<LanguageDto> getAll() {
-        System.out.println("Vorbesc cu un proxy " + service.getClass());
-        return service.getAll();
-    }
-}
+        System.out.println("Vorbesc cu un proxy " + this.getClass());
 
-@Service
-@RequiredArgsConstructor
-class LanguageService {
+        return getAll2(); // PRINCIPALA TZEAPA CU  PROXY_URILE : nu merg pe apeluri LOCALE efectuate in aceeasi clasa
+        // ca proxy-urile sa mearga (adnotarile pe metode), treubuie sa le chemi printr-o REFERINTA luata de la SPring (@AUtowired cumva)
+    }
     private final ProgrammingLanguageRepo repo;
 
     @Cacheable("languagesX")
-    public List<LanguageDto> getAll() {
+    public List<LanguageDto> getAll2() {
         System.out.println("Acum execut functia");
         return repo.findAll()
                 .stream()
