@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -55,7 +56,7 @@ public class VictimController {
    private JdbcTemplate jdbc;
    @GetMapping("sql-injection")
    public String sqlInjection(@RequestParam String name) throws IOException {
-      Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE='" + name + "'", Integer.class);
+      Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE=? ", Integer.class, name);
       // TODO think ORDER BY
       return "DONE; Found = " + n;
    }
@@ -64,11 +65,11 @@ public class VictimController {
    public byte[] fetchImage(@RequestParam String url) throws IOException {
       log.info("Retrieving url: {}", url);
       // stage 1 : allows access to file:///c:/...
-      return IOUtils.toByteArray(new URL(url).openStream());
+//      return IOUtils.toByteArray(new URL(url).openStream());
 
       // stage2 : blocks file accesses
-//      RestTemplate rest = new RestTemplate();
-//      return rest.getForObject(url, byte[].class);
+      RestTemplate rest = new RestTemplate();
+      return rest.getForObject(url, byte[].class);
 
       // stage3: pattern match: still allows port scanning
 //      if (!url.endsWith(".jpg")) {
