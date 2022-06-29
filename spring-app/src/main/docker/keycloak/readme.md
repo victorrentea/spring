@@ -1,17 +1,16 @@
 ## Spring Boot OAuth/OpenID Connect with Keycloak
 
 #### How to setup
-- Start Keycloak in a docker by running one of the command lines in the .bat files in your terminal
 - Make sure you have installed Docker Desktop
-- run start-docker.bat  (takes minutes)
-- Access KeyCloak admin console at localhost:8180
+- Start Keycloak in a docker by running one of the command lines in the .bat files in your terminal
+- Access KeyCloak admin console at http://localhost:8180
   - login with god/god
 - add realm, importing LearningRealm.json
 - add 2 users : user and admin
   - Assign them passwords
   - Assign "USER" and "ADMIN" roles to them, respectively
+- You go to Clients>spring-app>credentials tab> click "regenerate secret" > then copy the secret into application.properties
 - Access localhost:8080 and expect to be redirected to :8180
-
 
 
 
