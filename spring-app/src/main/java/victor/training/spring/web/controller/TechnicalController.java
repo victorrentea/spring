@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
@@ -31,11 +33,8 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
-		KeycloakPrincipal<KeycloakSecurityContext> principal =
-				(KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		printTheTokens();
 
-//		principal.getKeycloakSecurityContext().getIdToken().
-		System.out.println("JWT: "  + principal.getKeycloakSecurityContext().getIdTokenString());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		dto.username = authentication.getName();
 		// A) role-based security
@@ -55,6 +54,14 @@ public class TechnicalController {
 //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
 		//</editor-fold>
 		return dto;
+	}
+
+	private void printTheTokens() {
+		Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+		log.info("OpenID Connect Token: " + keycloakSecurityContext.getIdTokenString());
+		log.info("Access Token 👑: " + keycloakSecurityContext.getTokenString());
 	}
 
 	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
