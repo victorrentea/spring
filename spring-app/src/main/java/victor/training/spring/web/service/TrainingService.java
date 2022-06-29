@@ -34,7 +34,7 @@ public class TrainingService {
 
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
+        for (Training training : trainingRepo.findAll()) { // WHERE ....
             dtos.add(mapToDto(training));
         }
         return dtos;

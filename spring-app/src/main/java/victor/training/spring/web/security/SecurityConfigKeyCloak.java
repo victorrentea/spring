@@ -80,6 +80,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //                .mvcMatchers(HttpMethod.DELETE, "api/trainings/**").hasRole("ADMIN")
                 .mvcMatchers("/spa/**", "/api/**").authenticated()
                 .mvcMatchers("/sso/**").permitAll()
+                .mvcMatchers("/record/*").permitAll()
                 .anyRequest().permitAll()
         ;
     }
