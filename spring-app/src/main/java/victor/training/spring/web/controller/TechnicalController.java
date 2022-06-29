@@ -16,6 +16,7 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,12 +62,18 @@ public class TechnicalController {
 		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
 		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
 
-		log.info("OpenID Connect Token:\n" + /*prettyPrintJson(*/keycloakSecurityContext.getIdTokenString());
-		log.info("Access Token 👑:\n" + /*prettyPrintJson(*/keycloakSecurityContext.getTokenString());
+		log.info("\n-- OpenID Connect Token 👑: \n{}\n-- Decoded OpenID Connect Token body:\n{}",
+				keycloakSecurityContext.getIdTokenString(),
+				prettyPrintJson(keycloakSecurityContext.getIdTokenString()));
+		log.info("\n-- Access Token 👑: \n{}\n-- Decoded Access Token body:\n{}",
+				keycloakSecurityContext.getTokenString(),
+				prettyPrintJson(keycloakSecurityContext.getTokenString()));
 	}
 
-	private String prettyPrintJson(String idTokenString) throws JsonProcessingException {
-		Object json = new ObjectMapper().readValue(idTokenString, Object.class);
+	private String prettyPrintJson(String jwtString) throws JsonProcessingException {
+		String jwtBodyString = jwtString.split("\\.")[1];
+		String decodedBody = new String(Base64.getUrlDecoder().decode(jwtBodyString));
+		Object json = new ObjectMapper().readValue(decodedBody, Object.class);
 		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
 	}
 
