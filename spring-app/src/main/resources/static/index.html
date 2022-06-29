@@ -207,11 +207,6 @@ function deleteTraining(id) {
 		success: function() {
 			toastr.success("Training deleted");
 			refreshTrainingsTable();
-		},
-		error: function(a,b,c) {
-			if (a.responseText) {
-				toastr.error(a.responseText);
-			}
 		}
 	});
 }
