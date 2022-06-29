@@ -58,7 +58,7 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
 //	@Secured("ADMIN") // shorter if you use only ROLES
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER')")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
