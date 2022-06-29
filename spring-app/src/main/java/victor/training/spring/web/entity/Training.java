@@ -3,6 +3,8 @@ package victor.training.spring.web.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -11,7 +13,10 @@ public class Training {
 	@Id
 	@GeneratedValue
 	private Long id;
+	@Size(min = 3, max = 50)
+	@Column(nullable = false) // NOT NULL in DB
 	private String name;
+	@NotNull
 	private String description;
 	private Date startDate;
 	@ManyToOne
