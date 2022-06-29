@@ -45,6 +45,7 @@
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 //
 //        // B) Authority-based security
+//        // B1) extracting fine-grained authorities from the token (relies on 'composite' Roles in KeyCloak)
 ////        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 //
 //        // B2) converting ROLE from token into local authorities
