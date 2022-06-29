@@ -38,7 +38,7 @@ public class TechnicalController {
 
 		dto.username = username;
 		// A) role-based security
-//		dto.role = extractOneRole(authentication.getAuthorities());
+		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
 		dto.authorities = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -86,7 +86,8 @@ public class TechnicalController {
 				.map(authority -> authority.substring("ROLE_".length()))
 				.collect(Collectors.toList());
 		if (roles.size() == 2) {
-			throw new IllegalArgumentException("Even though Spring allows a user to have multiple roles, we wont :)");
+			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
+			return "N/A";
 		}
 		if (roles.size() == 0) {
 			return null;
