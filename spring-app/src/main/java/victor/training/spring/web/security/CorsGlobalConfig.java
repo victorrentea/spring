@@ -7,20 +7,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsGlobalConfig {
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            // allow anyone to call my endpoints invisibly (AJAX) if the user logged in my app anytime during the last 30 min
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedMethods("*")
-                        .allowCredentials(true) // allows receiving session cookie (if using cookies)
-                        .allowedOriginPatterns("http://*") // Too broad
-//                        .allowedOriginPatterns("http://localhost:8081") // eg NodeJS
-                ;
-                // also don't forget to add .cors() to spring security
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            // allow anyone to call my endpoints invisibly (AJAX) if the user logged in my app anytime during the last 30 min
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/api/**")
+//                        .allowedMethods("*")
+//                        .allowCredentials(true) // allows receiving session cookie (if using cookies)
+//                        .allowedOriginPatterns("http://*") // Too broad
+////                        .allowedOriginPatterns("http://localhost:8081") // eg NodeJS
+//                ;
+//                // also don't forget to add .cors() to spring security
+//            }
+//        };
+//    }
 }
