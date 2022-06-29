@@ -29,9 +29,12 @@ public class TechnicalController {
 
 		printTheTokens();
 
-		dto.username = "// TODO: get username";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+
+		dto.username = username;
 		// A) role-based security
-//		dto.role = extractOneRole(authentication.getAuthorities());
+		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
 //		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
