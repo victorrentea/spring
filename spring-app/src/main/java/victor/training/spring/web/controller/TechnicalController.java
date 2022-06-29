@@ -1,6 +1,9 @@
 package victor.training.spring.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
@@ -34,9 +37,10 @@ public class TechnicalController {
 
 		dto.username = username;
 		// A) role-based security
-		dto.role = extractOneRole(authentication.getAuthorities());
+//		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		dto.authorities = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -51,12 +55,19 @@ public class TechnicalController {
 		return dto;
 	}
 
+	@SneakyThrows
 	private void printTheTokens() {
 		Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
 		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
-		log.info("OpenID Connect Token: " + keycloakSecurityContext.getIdTokenString());
-		log.info("Access Token 👑: " + keycloakSecurityContext.getTokenString());
+
+		log.info("OpenID Connect Token:\n" + /*prettyPrintJson(*/keycloakSecurityContext.getIdTokenString());
+		log.info("Access Token 👑:\n" + /*prettyPrintJson(*/keycloakSecurityContext.getTokenString());
+	}
+
+	private String prettyPrintJson(String idTokenString) throws JsonProcessingException {
+		Object json = new ObjectMapper().readValue(idTokenString, Object.class);
+		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
 	}
 
 	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {

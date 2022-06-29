@@ -1,18 +1,19 @@
 package victor.training.spring.web.controller;
 
-import org.aspectj.lang.annotation.Aspect;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
-import victor.training.spring.web.entity.UserRole;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.validation.Valid;
@@ -23,10 +24,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.ok;
 
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings") // prefixul comun dupa [localhost:8080]
 public class TrainingController {
@@ -75,28 +76,45 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	// TODO Allow only for role 'ADMIN'
+	// TODO Allow only for role 'ADMIN' or 'POWER_USER'
 	// TODO Allow for authority 'training.delete'
-	// TODO Allow only if the current user manages the the teacher of that training
+	// TODO Allow any action only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
-	@DeleteMapping("{id}/delete")
+	@DeleteMapping("{trainingId}/delete")
 //	@Secured("ADMIN")
-	@PreAuthorize("hasRole('ADMIN')")
-	public void deleteTrainingById(@PathVariable Long id) {
-		trainingService.deleteById(id);
+//	@PreAuthorize("hasAnyRole('ADMIN','POWER_USER')")
+	@PreAuthorize("hasAuthority('training.delete') && @permissionChecker.hasAccessOnTraining(#trainingId)")
+
+	public void deleteTrainingById(@PathVariable Long trainingId) {
+
+		trainingService.deleteById(trainingId);
 	}
+
 
 	// TODO GET or POST ?
 	@PostMapping("search")
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
-
 }
 
+
+@RequiredArgsConstructor
 @Component
+class PermissionChecker {
+	private final UserRepo userRepo;
+	private final TrainingRepo trainingRepo;
+	public boolean hasAccessOnTraining(Long trainingId) {
+		User userFromMyDB = userRepo.getForLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
+		Training training = trainingRepo.findById(trainingId).orElseThrow();
+		return userFromMyDB.getManagedTeacherIds().contains(training.getTeacher().getId());
+	}
+}
+
+
+//@Component
 class BeanPostProcessorCareVerficaAdnotarile implements BeanPostProcessor {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
