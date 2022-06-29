@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -107,7 +109,13 @@ class PermissionChecker {
 	private final UserRepo userRepo;
 	private final TrainingRepo trainingRepo;
 	public boolean hasAccessOnTraining(Long trainingId) {
+		KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String language = (String) keycloakPrincipal.getKeycloakSecurityContext().getIdToken().getOtherClaims()
+				.get("language");
+
+		System.out.println("LAnguage = " +  language);
 		User userFromMyDB = userRepo.getForLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
+
 		Training training = trainingRepo.findById(trainingId).orElseThrow();
 		return userFromMyDB.getManagedTeacherIds().contains(training.getTeacher().getId());
 	}
