@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +34,10 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+
+        securedEnabled = true, // activate the appropriate PROXY for your methods
+        prePostEnabled = true)
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
     // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
@@ -72,9 +76,11 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
             .csrf().disable()
             .cors().and()
             .authorizeRequests()
-            .mvcMatchers("/spa/**", "/api/**").authenticated()
-            .mvcMatchers("/sso/**").permitAll()
-            .anyRequest().permitAll()
+                // avoid because it gets easily out of sync vs the actual url
+//                .mvcMatchers(HttpMethod.DELETE, "api/trainings/**").hasRole("ADMIN")
+                .mvcMatchers("/spa/**", "/api/**").authenticated()
+                .mvcMatchers("/sso/**").permitAll()
+                .anyRequest().permitAll()
         ;
     }
 

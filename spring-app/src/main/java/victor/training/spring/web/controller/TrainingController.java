@@ -3,6 +3,8 @@ package victor.training.spring.web.controller;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -55,7 +57,9 @@ public class TrainingController {
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator [GEEK]
-	@DeleteMapping("{id}")
+//	@Secured("ADMIN") // shorter if you use only ROLES
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

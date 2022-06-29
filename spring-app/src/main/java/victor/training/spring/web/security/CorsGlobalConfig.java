@@ -16,6 +16,7 @@ public class CorsGlobalConfig {
 //                registry.addMapping("/api/**")
 //                        .allowedMethods("*")
 //                        .allowCredentials(true) // allows receiving session cookie (if using cookies)
+//                        .allowedOriginPatterns("http://cdn.myapp.com") // OK
 //                        .allowedOriginPatterns("http://*") // Too broad
 ////                        .allowedOriginPatterns("http://localhost:8081") // eg NodeJS
 //                ;
