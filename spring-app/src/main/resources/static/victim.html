@@ -54,7 +54,7 @@
     function transferAmount() {
 
         console.log("xsrf: ", xsrfToken);
-        $.ajax(restEndpoint + "/transfer-rest", {
+        $.ajax(restEndpoint + "/transfer-rest", { // $http.post
             method: "POST",
             headers: {"X-XSRF-TOKEN": xsrfToken},
             xhrFields: { withCredentials: true }, // CORS sending credentials
