@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,13 +31,18 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
+		KeycloakPrincipal<KeycloakSecurityContext> principal =
+				(KeycloakPrincipal<KeycloakSecurityContext>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+//		principal.getKeycloakSecurityContext().getIdToken().
+		System.out.println("JWT: "  + principal.getKeycloakSecurityContext().getIdTokenString());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		dto.username = authentication.getName();
 		// A) role-based security
-		dto.role = extractOneRole(authentication.getAuthorities());
+		dto.role = null;// extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		dto.authorities = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
