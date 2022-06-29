@@ -49,10 +49,10 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // B) Authority-based security
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // B2) converting ROLE from token into local authorities
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
