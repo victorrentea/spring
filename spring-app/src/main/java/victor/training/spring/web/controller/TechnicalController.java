@@ -1,14 +1,23 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
@@ -17,6 +26,9 @@ public class TechnicalController {
 	public CurrentUserDto getCurrentUsername() {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
+
+		printTheTokens();
+
 		dto.username = "// TODO: get username";
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
@@ -36,22 +48,30 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-//		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-//		System.out.println(authorities.toString());
-//		List<String> roles = authorities.stream()
-//				.map(GrantedAuthority::getAuthority)
-//				.filter(authority -> authority.startsWith("ROLE_"))
-//				.map(authority -> authority.substring("ROLE_".length()))
-//				.collect(Collectors.toList());
-//		if (roles.size() == 2) {
-//			throw new IllegalArgumentException("Even though Spring allows a user to have multiple roles, we wont :)");
-//		}
-//		if (roles.size() == 0) {
-//			return null;
-//		}
-//		return roles.get(0);
-//	}
+	private void printTheTokens() {
+		Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+		log.info("OpenID Connect Token: " + keycloakSecurityContext.getIdTokenString());
+		log.info("Access Token 👑: " + keycloakSecurityContext.getTokenString());
+	}
+
+	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+		System.out.println(authorities.toString());
+		List<String> roles = authorities.stream()
+				.map(GrantedAuthority::getAuthority)
+				.filter(authority -> authority.startsWith("ROLE_"))
+				.map(authority -> authority.substring("ROLE_".length()))
+				.collect(Collectors.toList());
+		if (roles.size() == 2) {
+			throw new IllegalArgumentException("Even though Spring allows a user to have multiple roles, we wont :)");
+		}
+		if (roles.size() == 0) {
+			return null;
+		}
+		return roles.get(0);
+	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
