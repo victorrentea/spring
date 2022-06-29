@@ -40,12 +40,13 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	// TODO Allow only for role 'ADMIN'
+	// TODO Allow only for role 'ADMIN'. Then also 'POWER_USER'
 	// TODO Allow for authority 'training.delete'
-	// TODO Allow only if the current user manages the the teacher of that training
+	// TODO a) Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
+	//   OR b) Allow only if the current user manages the language of that training
 	// TODO @accessController.canDeleteTraining(#id)
-	// TODO PermissionEvaluator [GEEK]
+	// TODO see PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

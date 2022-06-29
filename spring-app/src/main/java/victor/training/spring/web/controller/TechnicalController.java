@@ -1,10 +1,6 @@
 package victor.training.spring.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,25 +8,26 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@Slf4j
 public class TechnicalController {
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
+//		JWTUtils.printTheTokens();
+
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-
-//		printTheTokens();
-
 		dto.username = "// TODO: get username";
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+//		dto.authorities = authentication.getAuthorities().stream()
+//				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,31 +42,8 @@ public class TechnicalController {
 		return dto;
 	}
 
-//@SneakyThrows
-//private void printTheTokens() {
-//	Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//	KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
-//	KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
-//
-//	log.info("\n-- OpenID Connect Token 👑: \n{}\n-- Decoded OpenID Connect Token body:\n{}",
-//			keycloakSecurityContext.getIdTokenString(),
-//			prettyPrintJson(keycloakSecurityContext.getIdTokenString()));
-//	log.info("\n-- Access Token 👑: \n{}\n-- Decoded Access Token body:\n{}",
-//			keycloakSecurityContext.getTokenString(),
-//			prettyPrintJson(keycloakSecurityContext.getTokenString()));
-//}
-//
-//	private String prettyPrintJson(String jwtString) throws JsonProcessingException {
-//		String jwtBodyString = jwtString.split("\\.")[1];
-//		String decodedBody = new String(Base64.getUrlDecoder().decode(jwtBodyString));
-//		Object json = new ObjectMapper().readValue(decodedBody, Object.class);
-//		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
-//	}
-
-
-//	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
 //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-//		System.out.println(authorities.toString());
 //		List<String> roles = authorities.stream()
 //				.map(GrantedAuthority::getAuthority)
 //				.filter(authority -> authority.startsWith("ROLE_"))

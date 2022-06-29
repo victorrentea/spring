@@ -6,6 +6,7 @@
 //import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 //import victor.training.spring.web.entity.UserRole;
 //
+//import java.util.Arrays;
 //import java.util.Collection;
 //import java.util.List;
 //import java.util.Optional;
@@ -20,7 +21,11 @@
 //                .filter(Optional::isPresent)
 //                .map(Optional::get)
 //                .collect(Collectors.toList());
-//        log.debug("Found roles in token: {}", matchingRoles);
+//        if (matchingRoles.size() != 1) {
+//            JWTUtils.printTheTokens();
+//            throw new IllegalArgumentException("No single role found in token that matches known roles " + Arrays.toString(UserRole.values()));
+//        }
+//        log.debug("Found role in token: {}", matchingRoles);
 //        return matchingRoles.stream()
 //                .flatMap(userRole -> userRole.getAuthorities().stream())
 //                .map(SimpleGrantedAuthority::new)
