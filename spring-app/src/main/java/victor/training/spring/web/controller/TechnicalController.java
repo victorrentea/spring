@@ -1,6 +1,9 @@
 package victor.training.spring.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +12,7 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Base64;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,13 +45,27 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	private void printTheTokens() {
-//		Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
-//		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
-//		log.info("OpenID Connect Token: " + keycloakSecurityContext.getIdTokenString());
-//		log.info("Access Token 👑: " + keycloakSecurityContext.getTokenString());
+//@SneakyThrows
+//private void printTheTokens() {
+//	Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//	KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+//	KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+//
+//	log.info("\n-- OpenID Connect Token 👑: \n{}\n-- Decoded OpenID Connect Token body:\n{}",
+//			keycloakSecurityContext.getIdTokenString(),
+//			prettyPrintJson(keycloakSecurityContext.getIdTokenString()));
+//	log.info("\n-- Access Token 👑: \n{}\n-- Decoded Access Token body:\n{}",
+//			keycloakSecurityContext.getTokenString(),
+//			prettyPrintJson(keycloakSecurityContext.getTokenString()));
+//}
+//
+//	private String prettyPrintJson(String jwtString) throws JsonProcessingException {
+//		String jwtBodyString = jwtString.split("\\.")[1];
+//		String decodedBody = new String(Base64.getUrlDecoder().decode(jwtBodyString));
+//		Object json = new ObjectMapper().readValue(decodedBody, Object.class);
+//		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
 //	}
+
 
 //	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
 //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
