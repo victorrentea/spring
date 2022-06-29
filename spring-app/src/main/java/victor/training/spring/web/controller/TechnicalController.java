@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +12,16 @@ import javax.annotation.PostConstruct;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class TechnicalController {
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
+
+//		printTheTokens();
+
 		dto.username = "// TODO: get username";
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
@@ -35,6 +40,14 @@ public class TechnicalController {
 		//</editor-fold>
 		return dto;
 	}
+
+//	private void printTheTokens() {
+//		Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+//		KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+//		log.info("OpenID Connect Token: " + keycloakSecurityContext.getIdTokenString());
+//		log.info("Access Token 👑: " + keycloakSecurityContext.getTokenString());
+//	}
 
 //	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
 //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
