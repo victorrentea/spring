@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.MyException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -44,7 +45,8 @@ public class TrainingService {
 
     @Cacheable("training")
     public TrainingDto getTrainingById(Long id) {
-        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
+        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow(
+                () -> new MyException(MyException.ErrorCode.NOT_FOUND)));
         try {
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
         } catch (Exception e) {
@@ -58,7 +60,7 @@ public class TrainingService {
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(MyException.ErrorCode.DUPLICATED_TRAINING_NAME);
         }
         Training training = trainingRepo.findById(id).orElseThrow();
         training.setName(dto.name);
@@ -84,7 +86,7 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(MyException.ErrorCode.DUPLICATED_TRAINING_NAME);
         }
         trainingRepo.save(mapToEntity(dto));
     }

@@ -4,6 +4,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.UserRole;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.List;
@@ -21,32 +23,54 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
+
 
 @RestController
-@RequestMapping("api/trainings")
+@RequestMapping("api/trainings") // prefixul comun dupa [localhost:8080]
 public class TrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
-	@GetMapping
+	@GetMapping // GET /api/trainings
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("{id}")  // GET /api/trainings/*
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+//		try {
+//			return ok(trainingService.getTrainingById(id));
+//		} catch (java.util.NoSuchElementException e) {
+//			return notFound().build();
+//			// overengineering daca singurul client al acestui
+//			// API este propriul tau FE
+//			// trup din trupul tau. Echiupa ta. Tu ca esti Full stack! 💪
+//
+//			// ARE SENS doar daca API-ul tau este contractual semnat agreat,. ai un WORD file/confluence in care publici api.
+//			// Exporti OpenAPI  3 din endpoint >> tre sa fii mai formal
+//		}
 		return trainingService.getTrainingById(id);
 		//TODO if id is not found, return 404 status code
 	}
 
+	// GET
+	// POST creezi
+	// PUT overwrite
+	// DELETE
+	// PATCH update partial
+	// TRACE never
+	// OPTIONS pt CORS
+
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id, @Valid @RequestBody TrainingDto dto) throws ParseException {
 		// TODO what if id != dto.id
 		trainingService.updateTraining(id, dto);
 	}
@@ -75,7 +99,7 @@ public class TrainingController {
 class BeanPostProcessorCareVerficaAdnotarile implements BeanPostProcessor {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("Scanning  bean  " + bean.getClass());
+//		System.out.println("Scanning  bean  " + bean.getClass());
 		for (Method method : bean.getClass().getMethods()) {
 			PreAuthorize a = method.getAnnotation(PreAuthorize.class);
 			if (a != null) {
