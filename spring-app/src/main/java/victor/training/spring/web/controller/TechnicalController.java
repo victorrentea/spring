@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
-import victor.training.spring.web.security.JWTUtils;
+//import victor.training.spring.web.security.JWTUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
-		JWTUtils.printTheTokens();
+//		JWTUtils.printTheTokens();
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();

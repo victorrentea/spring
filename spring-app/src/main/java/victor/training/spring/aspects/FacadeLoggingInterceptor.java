@@ -35,7 +35,7 @@ public class FacadeLoggingInterceptor {
       logBefore(joinPoint);
       long t0 = currentTimeMillis();
 		try {
-			Object returnedObject = joinPoint.proceed();
+			Object returnedObject = joinPoint.proceed(); // the actual method call happens here.
 			logAfter(joinPoint, returnedObject, t0);
          return returnedObject;
       } catch (Exception e) {

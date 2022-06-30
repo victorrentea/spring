@@ -24,13 +24,15 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
+            <!--si asta evident-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
-            <!-- monitoring performance with Micrometer -->
+            <!-- monitoring performance with Micrometer  ASTA prin actuator expui si metrici colectate din diversele librarii cu care lucrezi-->
             <groupId>io.micrometer</groupId>
+            <!--Frameworkul asta cum il pui deja iti hackuie app sa se injecteze si sa masoare automat o caruta de metrici-->
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -103,16 +105,16 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+      <!--  <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <!-- OAuth2RestTemplate for Client Credentials flow -->
+            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow &ndash;&gt;
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>
-
+-->
         <!--<dependency>
             &lt;!&ndash; Experiment: create and send JWT token to called APIs to carry user info &ndash;&gt;
             <groupId>io.jsonwebtoken</groupId>

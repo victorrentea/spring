@@ -8,6 +8,7 @@ services:
     volumes:
       - .:/etc/prometheus
 
+#scopu grafanei in viata e sa arate bine datele pe care le ia din Prometheus + sa trimita alerte cand anumite triggere se intampla
   grafana:
     image: grafana/grafana:latest
     ports:
