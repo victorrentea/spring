@@ -14,18 +14,27 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 @Slf4j
 @Service
 public class Barman {
-   @Async
-   public CompletableFuture<Beer> pourBeer() {
-      if (true) throw new RuntimeException("NU* MAI E BERE (*YT!#(&*^$%!&#*^$!*@&%^*");
+    @Async
+    public CompletableFuture<Beer> pourBeer() {
+//      if (true) throw new RuntimeException("NU* MAI E BERE (*YT!#(&*^$%!&#*^$!*@&%^*");
+        log.debug("Pouring Beer (SOAP CALL)...");
+        ThreadUtils.sleepq(1000);
+        return completedFuture(new Beer());
+    }
 
-      log.debug("Pouring Beer (SOAP CALL)...");
-      ThreadUtils.sleepq(1000);
-      return completedFuture(new Beer());
-   }
-   @Async
-   public CompletableFuture<Vodka> pourVodka() {
-      log.debug("Pouring Vodka (REST CALL)...");
-      ThreadUtils.sleepq(1000);
-      return CompletableFuture.completedFuture(new Vodka());
-   }
+    @Async
+    public CompletableFuture<Vodka> pourVodka() {
+        log.debug("Pouring Vodka (REST CALL)...");
+        ThreadUtils.sleepq(1000);
+        return CompletableFuture.completedFuture(new Vodka());
+    }
+
+    @Async
+    public void injura(String s) {
+       ThreadUtils.sleepq(1000);
+        if (s != null) {
+
+            throw new RuntimeException("Iti fac buzunar; Te casez.");
+        }
+    }
 }

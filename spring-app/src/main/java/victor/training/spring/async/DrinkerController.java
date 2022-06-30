@@ -33,6 +33,7 @@ public class DrinkerController {
 
       // cand ceri o executie asincrona cu threadpooluri in Java obtii un Future.
       //pe care poti ulterior sa blochezi sa astepti rezultatul
+//      executor.submit()
       CompletableFuture<Beer> futureBeer = barman.pourBeer();
       CompletableFuture<Vodka> futureVodka = barman.pourVodka();
       log.debug("A plecat garcon cu comanda");
@@ -45,6 +46,8 @@ public class DrinkerController {
 //                 return null;
 //              })
               ;
+
+      barman.injura("!*&*(&^(*&%*!&");
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
