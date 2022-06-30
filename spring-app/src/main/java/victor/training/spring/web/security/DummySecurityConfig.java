@@ -20,7 +20,11 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 //          .addFilterBefore(new HttpRequestFilterPrintingHeaders(), WebAsyncManagerIntegrationFilter.class)
 //          .cors().and()
           .csrf().disable() // as I don't ever take <form> POSTs
-          .authorizeRequests().anyRequest().authenticated()
+          .authorizeRequests()
+
+              .mvcMatchers("/api/load/*").permitAll()
+              .mvcMatchers("/actuator/**").permitAll()
+              .anyRequest().authenticated()
           .and()
           .formLogin().permitAll()
               .defaultSuccessUrl("/",true)
