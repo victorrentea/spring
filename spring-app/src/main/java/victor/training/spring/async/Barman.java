@@ -16,6 +16,8 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 public class Barman {
    @Async
    public CompletableFuture<Beer> pourBeer() {
+      if (true) throw new RuntimeException("NU* MAI E BERE (*YT!#(&*^$%!&#*^$!*@&%^*");
+
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepq(1000);
       return completedFuture(new Beer());

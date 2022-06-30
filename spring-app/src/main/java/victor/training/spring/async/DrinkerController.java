@@ -40,7 +40,11 @@ public class DrinkerController {
 //      Vodka vodka = futureVodka.get(); // aici HTTP threadul nu mai asteapta de loc. vodka e deja pregatita.
 
       CompletableFuture<DillyDilly> futureDilly = futureBeer
-              .thenCombineAsync(futureVodka, (b, v) -> new DillyDilly(b, v));
+              .thenCombineAsync(futureVodka, (b, v) -> new DillyDilly(b, v))
+//              .exceptionally(e -> {
+//                 return null;
+//              })
+              ;
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
