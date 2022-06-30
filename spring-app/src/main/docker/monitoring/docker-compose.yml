@@ -7,6 +7,7 @@ services:
       - 9090:9090
     volumes:
       - .:/etc/prometheus
+    container_name: prometheus
 
   grafana:
     image: grafana/grafana:latest
