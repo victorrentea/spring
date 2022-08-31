@@ -83,7 +83,7 @@ public class TrainingService {
     }
     @Cacheable("training-by-id")
     public TrainingDto getTrainingById(Long id) {
-        new RuntimeException().printStackTrace();
+//        new RuntimeException().printStackTrace();
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
         try {
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
