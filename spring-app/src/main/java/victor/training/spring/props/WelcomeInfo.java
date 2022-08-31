@@ -10,15 +10,17 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
 @Data // getters & setters are mandatory!
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
     private String welcomeMessage;
     private List<URL> supportUrls;
-    private Map<String,String> localContactPhone; // per country
+    private Map<Locale, String> localContactPhone; // per country
     private HelpInfo help;
 
     @Data
@@ -28,8 +30,10 @@ public class WelcomeInfo {
     }
 
     @PostConstruct
-    public void printMyself() {
-        // TODO validate: that help.file exists!
+    public void printMyselfAtStartup() {
+        // TODO validate help.file exists on disk
+        // TODO validate welcome message is not null and at least 10 chars
+        // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
         log.debug("My props: " + this);
     }
 }
