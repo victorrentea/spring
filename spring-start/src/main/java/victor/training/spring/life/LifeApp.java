@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,57 +40,41 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
-		
+		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+		new Thread(()->exporter.export(Locale.FRENCH)).start();
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
-		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
-		invoiceExporter.exportInvoice();
-	}
-}
-@Slf4j
-@Service
-class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
-	public void exportInvoice() {
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+		log.info("Running export in " + locale);
+		log.info("Origin Country: " + labelService.getCountryName(locale, "rO"));
 	}
 }
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class LabelService {
 	private final CountryRepo countryRepo;
-	
-	public LabelService(CountryRepo countryRepo) {
-		log.debug(this + ".new()");
-		this.countryRepo = countryRepo;
-	}
 
-	private Map<String, String> countryNames;
+	private final Map<Locale, Map<String, String>> countryNames = new HashMap<>(); // shared mutable data in a singleton, + multithread = RIP
 
 	@PostConstruct
 	public void load() {
-		log.debug(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		log.info(this + ".load()");
+		for (Locale locale : List.of(Locale.ENGLISH, Locale.FRENCH)) {
+			countryNames.put(locale, countryRepo.loadCountryNamesAsMap(locale));
+		}
 	}
 	
-	public String getCountryName(String iso2Code) {
-		log.debug(this + ".getCountryName()");
-		return countryNames.get(iso2Code.toUpperCase());
+	public String getCountryName(Locale locale, String iso2Code) {
+		log.info(this + ".getCountryName()");
+		return countryNames.get(locale).get(iso2Code.toUpperCase());
 	}
 	public String toString() {
 		return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
