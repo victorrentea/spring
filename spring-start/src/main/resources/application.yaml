@@ -1,3 +1,5 @@
+
+
 john.name: John
 welcome:
   welcomeMessage: Welcome to This Spring Realm
@@ -13,3 +15,10 @@ welcome:
     - http://baeldung.com
     - http://spring.io
 sched.cron: "-"
+debug: true
+
+
+spring:
+  datasource:
+    hikari:
+      connection-init-sql: /init.sql
