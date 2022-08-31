@@ -43,23 +43,12 @@ public class LanguageController {
 @RequiredArgsConstructor
 class LanguageService  {
     private final ProgrammingLanguageRepo repo;
-
     @Cacheable("languages")
     public List<ProgrammingLanguage> getEntities() {
         return repo.findAll();
     }
+
 }
 
-
-@RestController
-@RequiredArgsConstructor
-class AnotherController {
-    private final LanguageService languageService;
-
-    @GetMapping("two")
-    public List<ProgrammingLanguage> two() {
-        return languageService.getEntities();
-    }
-}
 
 

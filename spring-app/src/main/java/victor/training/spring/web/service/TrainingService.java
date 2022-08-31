@@ -72,6 +72,7 @@ public class TrainingService {
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
 
+
     public List<TrainingDto> getAllTrainings() {
 
         List<TrainingDto> dtos = new ArrayList<>();
