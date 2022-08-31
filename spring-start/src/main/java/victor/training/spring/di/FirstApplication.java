@@ -43,13 +43,12 @@ public class FirstApplication implements CommandLineRunner{
 }
 
 @Component
-@Retention(RetentionPolicy.RUNTIME)
 @interface ApplicationService {
 
 }
 
 //@Service // = business logic (the stuff in Confluence) Br-73
-//@ApplicationService // =
+@ApplicationService // =
 //
 //@Repository // access to DB but not necessary if you extend from JpaRepository
 //@Configuration //  [containing @Bean] not for containing biz logic, but for defining @Bean
@@ -59,7 +58,7 @@ public class FirstApplication implements CommandLineRunner{
 
 @Slf4j
 @RequiredArgsConstructor // invisible constructor
-@Component // = garbage not biz logic.
+//@Component // = garbage not biz logic.
 class X { // spring creates automatically 1 instance "singleton" life cycle.
 
 	// field
