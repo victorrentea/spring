@@ -97,7 +97,8 @@ class X { // spring creates automatically 1 instance "singleton" life cycle.
 @Service
 class Y {
 	private final Z z;
-
+//	@Autowired
+//	private X x;
 
 	// constructor injection (no @Autowired needed since Spring 4.3)
 	public Y(Z z) {

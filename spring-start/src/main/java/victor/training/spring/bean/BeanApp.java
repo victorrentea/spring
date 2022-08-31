@@ -3,6 +3,7 @@ package victor.training.spring.bean;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,14 +16,21 @@ import javax.annotation.PostConstruct;
 import java.time.Clock;
 import java.util.List;
 
+//@Qualifier
+//@interface JohnService {}
+
 @SpringBootApplication
 public class BeanApp {
+
+    public static final String REST_TEMPLATE_JOHN_SERVICE = "john";
+
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
 
-    @Bean
+    @Bean(name = REST_TEMPLATE_JOHN_SERVICE)
+//    @JohnService
     public Person john(@Value("${john.name}") String johnName) {
         System.out.println("in the john @Bean method");
         return new Person(johnName);
@@ -86,6 +94,8 @@ class SecondConfig implements CommandLineRunner{
 @Data
 //@Component
 class Conversation { // by default the name of this bean is = "conversation"
+//    @JohnService
+    @Qualifier(BeanApp.REST_TEMPLATE_JOHN_SERVICE)
     private final Person john;
     private final Person jane;
 
