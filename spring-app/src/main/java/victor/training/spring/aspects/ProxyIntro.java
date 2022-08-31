@@ -1,11 +1,26 @@
 package victor.training.spring.aspects;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
-        Maths maths = new Maths();
+        Maths maths = new Maths() {
+            @Override
+            public int sum(int a, int b) {
+                log.info("sum of " + a + " + " + b);
+                return super.sum(a, b);
+            }
+
+            @Override
+            public int product(int a, int b) {
+                log.info("product of " + a + " + " + b);
+                return super.product(a, b);
+            }
+        };
         SecondGrade secondGrade = new SecondGrade(maths);
 
+        // TODO maniac father wants to log all the math operations done during school
         secondGrade.mathClass();
     }
 
@@ -25,6 +40,7 @@ class SecondGrade {
     }
 }
 
+@Slf4j
 class Maths {
     public int sum(int a, int b) {
         return a + b;
