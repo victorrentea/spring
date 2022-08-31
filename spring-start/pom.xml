@@ -31,7 +31,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <!-- Enables auto-completion in IntelliJ based on @ConfigurationProperties -->
+            <!-- Enables auto-completion     in IntelliJ based on @ConfigurationProperties -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>

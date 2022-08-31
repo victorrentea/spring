@@ -4,12 +4,12 @@ welcome:
   help:
     app-id: 1251
     file: c:/help-file.pdf
-  supportUrls:
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
+  support-urls:
     - http://google.comOUPS
     - http://stackoverflow.com
     - http://baeldung.com
     - http://spring.io
-  localContactPhone:
-    RO: +401312121414
-    FR: +430123414123
 sched.cron: "-"
