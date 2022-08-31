@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class BeanApp {
@@ -23,6 +22,11 @@ public class BeanApp {
     @Bean
     public Person jane() { // method name = bean name
         return new Person("Jane");
+    }
+
+    @Bean
+    public Conversation conversation() {
+        return new Conversation(john(), jane());
     }
 }
 @Configuration
@@ -42,8 +46,7 @@ class SecondConfig implements CommandLineRunner{
 //
 
 @Data
-@Component
-
+//@Component
 class Conversation { // by default the name of this bean is = "conversation"
     private final Person john;
     private final Person jane;
