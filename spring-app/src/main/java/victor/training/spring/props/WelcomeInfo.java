@@ -20,7 +20,7 @@ import java.util.Map;
 public class WelcomeInfo {
     private String welcomeMessage;
     private List<URL> supportUrls;
-    private Map<Locale, String> localContactPhone; // per country
+    private Map<Locale, String> localContactPhone;
     private HelpInfo help;
 
     @Data
