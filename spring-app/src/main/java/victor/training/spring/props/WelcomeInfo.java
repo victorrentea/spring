@@ -16,7 +16,6 @@ import java.util.Map;
 @Slf4j
 @Data // getters & setters are mandatory!
 @Component
-@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
     private String welcomeMessage;
     private List<URL> supportUrls;
