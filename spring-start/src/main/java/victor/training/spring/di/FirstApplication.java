@@ -3,10 +3,15 @@ package victor.training.spring.di;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -28,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 // [6] inject List<BeanI>
 
 @SpringBootApplication
-public class FirstApplication implements CommandLineRunner{
+public class FirstApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
 	}
@@ -36,8 +41,10 @@ public class FirstApplication implements CommandLineRunner{
 	@Autowired
 	private X x;
 
-	@Override
-	public void run(String... args) throws Exception {
+	@EventListener(ApplicationStartedEvent.class)
+//	@EventListener(ApplicationStartingEvent.class)
+//	@EventListener(ApplicationReadyEvent.class)
+	public void run() throws Exception {
 		System.out.println(x.prod());
 	}
 }
@@ -48,7 +55,7 @@ public class FirstApplication implements CommandLineRunner{
 }
 
 //@Service // = business logic (the stuff in Confluence) Br-73
-@ApplicationService // =
+//@ApplicationService // =
 //
 //@Repository // access to DB but not necessary if you extend from JpaRepository
 //@Configuration //  [containing @Bean] not for containing biz logic, but for defining @Bean
@@ -58,7 +65,7 @@ public class FirstApplication implements CommandLineRunner{
 
 @Slf4j
 @RequiredArgsConstructor // invisible constructor
-//@Component // = garbage not biz logic.
+@Component // = garbage not biz logic.
 class X { // spring creates automatically 1 instance "singleton" life cycle.
 
 	// field
@@ -102,7 +109,16 @@ class Y {
 	}
 }
 @Service
+@RequiredArgsConstructor
 class Z {
+
+	@Value("${john.name}")
+	private final String s;
+
+	@PostConstruct
+	public void method() {
+		System.out.println("POST: " +s);
+	}
 
 	public int prod() {
 		return 1;

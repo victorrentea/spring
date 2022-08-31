@@ -28,7 +28,6 @@ public class Test2 {
                 @Override
                 public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
                     for (Class<?> declaredClass : Test2.class.getNestMembers()) {
-                        if (declaredClass.isan)
                         System.out.println("Found " + declaredClass);
                     }
 //                for (int i = 0; i < 50; i++) {
