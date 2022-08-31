@@ -1,0 +1,1 @@
+org.springframework.context.ApplicationListener=victor.training.spring.transaction.playground.InjectP6SpyApplicationListener

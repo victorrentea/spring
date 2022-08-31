@@ -2,14 +2,16 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp implements CommandLineRunner {
    public static void main(String[] args) {
-      SpringApplication.run(TransactionsApp.class, args);
+      new SpringApplicationBuilder(TransactionsApp.class)
+//              .listeners(new InjectP6SpyApplicationListener())
+              .run(args);
    }
 
    private final Playground playground;

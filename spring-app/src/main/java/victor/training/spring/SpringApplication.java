@@ -11,9 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
-import victor.training.spring.web.controller.util.InjectP6SpyInitializer;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import static java.lang.System.currentTimeMillis;
@@ -27,7 +25,7 @@ public class SpringApplication {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringApplication.class)
-                .listeners(new TestDBConnectionInitializer(), new InjectP6SpyInitializer())
+                .listeners(new TestDBConnectionInitializer()/*, new InjectP6SpyInitializer()*/)
                 .run(args);
     }
 
