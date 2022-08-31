@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
+
 @SpringBootApplication
 public class BeanApp {
     public static void main(String[] args) {
@@ -17,6 +20,7 @@ public class BeanApp {
 
     @Bean
     public Person john() {
+        System.out.println("in the john @Bean method");
         return new Person("John");
     }
     @Bean
@@ -25,18 +29,38 @@ public class BeanApp {
     }
 
     @Bean
-    public Conversation conversation() {
+    public Conversation conversation1() {
+        System.out.println("Conv1");
+        return new Conversation(john(), jane()); //
+        // the onmly place in spring where a local method call is intercepted
+    }
+    @Bean
+    public Conversation conversation2() {
+        System.out.println("Conv2");
         return new Conversation(john(), jane());
+    }
+}
+
+class WTF extends BeanApp{
+    @Override
+    public Person jane() {
+        return super.jane();
+    }
+
+    @Override
+    public Person john() {
+        // first i look in my singleton map. if i find john already created -> i'll give you that.
+        return super.john();
     }
 }
 @Configuration
 class SecondConfig implements CommandLineRunner{
     @Autowired
-    private Conversation conversation;
+    private List<Conversation> conversations;
     @Override
     public void run(String... args) throws Exception {
         // TODO convince Spring to do for you the line above
-        conversation.start();
+        System.out.println("Converasartion list " + conversations);
     }
 }
 
@@ -69,6 +93,12 @@ class Person {
     public Person(String name) {
         this.name = name;
     }
+
+    @PostConstruct
+    public void method() {
+        System.out.println(name + " is born");
+    }
+
     public String sayHello() {
         return "Hello! Here is " + name;
     }
