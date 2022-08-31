@@ -40,7 +40,7 @@ public class FirstApplication {
 //	@EventListener(ApplicationStartingEvent.class)
 //	@EventListener(ApplicationReadyEvent.class)
 	public void run() throws Exception {
-		System.out.println(x.prod());
+		System.out.println(" " + x.prod());
 	}
 }
 @Component
@@ -124,7 +124,7 @@ class Z {
 
 	@Scheduled(cron = "${sched.cron}")
 	public void cleanGarbage() {
-		System.out.println("plastic garbage out on Wed");
+		System.out.println("plastic without restart garbage out on Wed");
 	}
 	@PostConstruct
 	public void method() {

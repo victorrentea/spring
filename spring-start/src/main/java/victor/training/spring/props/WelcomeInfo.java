@@ -29,7 +29,9 @@ public class WelcomeInfo {
 
     @PostConstruct
     public void printMyself() {
-        // TODO validate: that help.file exists!
+        if (!help.file.exists()) {
+            throw new IllegalArgumentException("File not found : " +help.file);
+        }
         log.info("My props: " + this);
     }
 }
