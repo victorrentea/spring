@@ -1,9 +1,16 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -14,18 +21,49 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+
+ // TODO all the methods of the TrainingService need to be logged (params, return)
+
+@Slf4j
+@Aspect // custom aspect
+@Order(20)
+@Component
+class MyLoggingAspect {
+
+//    @Around("execution(* victor.training..TrainingService.*(..) )") // 10s way
+//    @Around("execution(* victor.training.spring.web.service..*(..) )") // 10s way
+    @Around("@within(victor.training.spring.web.service.Logged) ")
+//            "and ! @annotation(victor.training.spring.web.service.NotLogged)") // 10s way
+    public Object method(ProceedingJoinPoint pjp) throws Throwable {
+        log.info("calling " + pjp.getSignature().getName() + " with args " + Arrays.toString(pjp.getArgs()));
+        Object result = pjp.proceed();
+        log.info("returned " + result);
+        return result;
+    }
+}
+@Retention(RetentionPolicy.RUNTIME)
+@interface Logged {
+    }
+
+
+
+
 @RequiredArgsConstructor
 @Slf4j
 @Service
 @Transactional
+@Logged
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;
@@ -35,6 +73,7 @@ public class TrainingService {
     private final TeacherBioClient teacherBioClient;
 
     public List<TrainingDto> getAllTrainings() {
+
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
             dtos.add(mapToDto(training));
@@ -43,6 +82,7 @@ public class TrainingService {
     }
     @Cacheable("training-by-id")
     public TrainingDto getTrainingById(Long id) {
+        new RuntimeException().printStackTrace();
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
         try {
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
@@ -54,6 +94,8 @@ public class TrainingService {
     }
 
     // TODO Test this!
+//    @PreAuthorized
+//    @Transactional
     @CacheEvict(value = "training-by-id", key = "#id2")
     public void updateTraining(Long id2, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id2)) {

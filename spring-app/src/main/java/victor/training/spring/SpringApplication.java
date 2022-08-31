@@ -11,12 +11,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import static java.lang.System.currentTimeMillis;
-
-@EnableCaching
+//@EnableTransactionManagement(or)
+@EnableCaching(order = 100)
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
 @Slf4j
