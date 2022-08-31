@@ -1,12 +1,20 @@
 package victor.training.spring.web.controller.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Map;
+
 @Slf4j
 public class TestDBConnectionInitializer implements ApplicationListener<ApplicationContextInitializedEvent> {
    public static void assertCanConnectToDB(Environment env) {

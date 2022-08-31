@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-@Configuration
+//@Configuration
 @Slf4j
 public class AllPropsConfig {
     @ConfigurationProperties
