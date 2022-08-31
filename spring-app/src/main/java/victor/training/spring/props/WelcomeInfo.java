@@ -26,7 +26,7 @@ import java.util.Map;
 public class WelcomeInfo {
     @NotNull
     @Size(min = 5)
-    private String welcomeMessage;
+    private String welcomeMessage = "Hello world !";
     private List<URL> supportUrls;
     private Map<String, String> localContactPhone; // per country
     private HelpInfo help;
