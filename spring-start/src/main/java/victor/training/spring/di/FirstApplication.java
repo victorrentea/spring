@@ -4,24 +4,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -32,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 // [5] getBean
 // [6] inject List<BeanI>
 
+@EnableScheduling
 @SpringBootApplication
 public class FirstApplication {
 	public static void main(String[] args) {
@@ -48,7 +43,6 @@ public class FirstApplication {
 		System.out.println(x.prod());
 	}
 }
-
 @Component
 @interface ApplicationService {
 
@@ -78,44 +72,60 @@ class X { // spring creates automatically 1 instance "singleton" life cycle.
 //	}
 
 	// ctor injection is better when you create an instance without spring.
-	private final Y y; // + lombok = ❤️
+	private final IY oups; // + lombok = ❤️
 
 
 	@PostConstruct
 	public void method() {
-		System.out.println("why to do stuff at app startup: " + y.prod());
+		System.out.println("why to do stuff at app startup: " + oups.prod());
 		// example: some pre-calculatiuons, at startup, subscribe to topics, send a message "i'm alive", load a file,
 	}
 
 	public int prod() {
-		return 1 + y.prod();
+		return 1 + oups.prod();
 	}
 }
 
-
+interface IY {
+	int prod();
+}
 
 @Service
-class Y {
+@RequiredArgsConstructor
+class Y implements IY {
 	private final Z z;
-//	@Autowired
-//	private X x;
-
-	// constructor injection (no @Autowired needed since Spring 4.3)
-	public Y(Z z) {
-		this.z = z;
-	}
 
 	public int prod() {
+		System.out.println("DEFAULT IMPL");
 		return 1 + z.prod();
 	}
 }
+
+@Service
+@RequiredArgsConstructor
+@Primary
+@Profile("fr")
+class Gamma implements IY {
+
+	public int prod() {
+		System.out.println("Omlette au fromage 👏");
+		return 12;
+	}
+}
+
+
+
 @Service
 @RequiredArgsConstructor
 class Z {
 
-	@Value("${john.name}")
+	@Value("${john.name:defaultName}")
 	private final String s;
 
+	@Scheduled(cron = "${sched.cron}")
+	public void cleanGarbage() {
+		System.out.println("plastic garbage out on Wed");
+	}
 	@PostConstruct
 	public void method() {
 		System.out.println("POST: " +s);
@@ -125,3 +135,19 @@ class Z {
 		return 1;
 	}
 }
+
+@Profile("green")
+@Component
+class Grass {
+	@PostConstruct
+	public void method() {
+		System.out.println("Walk, don't smoke");
+	}
+}
+
+//@Profile("dummysecurityNOT_FOR_PRODUCTION") // okish
+@Profile("!prod") // this means that in production you should start the app
+	// with -Dspring.profiles.active=prod
+	// DO NOT DO THIS!! dangerois. someone might forget
+// http://localhost:8080?user=john#/path/angular
+class DummySecurityConfig {}
