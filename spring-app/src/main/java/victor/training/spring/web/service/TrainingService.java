@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -39,7 +41,7 @@ public class TrainingService {
         }
         return dtos;
     }
-
+    @Cacheable("training-by-id")
     public TrainingDto getTrainingById(Long id) {
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
         try {
@@ -52,11 +54,12 @@ public class TrainingService {
     }
 
     // TODO Test this!
-    public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+    @CacheEvict(value = "training-by-id", key = "#id2")
+    public void updateTraining(Long id2, TrainingDto dto) throws ParseException {
+        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id2)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).orElseThrow();
+        Training training = trainingRepo.findById(id2).orElseThrow();
         training.setName(dto.name);
         training.setDescription(dto.description);
         // TODO implement date not in the past using i18n error message
