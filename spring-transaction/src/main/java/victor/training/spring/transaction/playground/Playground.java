@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,12 +21,11 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
-
         try {
             other.bizFlow();
         } catch (Exception e) {
             log.error("BUM");
-            repo.save(new Message("Error: " + e.getMessage()));
+            saveError(e);
         }
         log.info("End of method  +" );
         // 0 p6spy
@@ -35,6 +35,12 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(Exception e) {
+        repo.save(new Message("Error: " + e.getMessage()));
+    }
+
     @Transactional
     public void transactionTwo() {
     }
