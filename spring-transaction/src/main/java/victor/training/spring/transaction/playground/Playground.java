@@ -38,6 +38,10 @@ public class Playground {
 
     @Transactional
     public void transactionTwo() {
+        Message message = repo.findById(100L).orElseThrow();
+        message.setMessage("Different"); // no .save() is required if you are within a @Transactional method.
+        // some are scared of this!
+        log.info("After in the proxy.");
     }
 }
 
@@ -50,9 +54,9 @@ class OtherClass {
         //risky business flow
         repo.save(new Message("Their stuff"));
         repo.save(new Message("Their stuff"));
-        if (Math.random() < .5) {
-            throw new IllegalArgumentException("BUM");
-        }
+//        if (Math.random() < .5) {
+//            throw new IllegalArgumentException("BUM");
+//        }
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
