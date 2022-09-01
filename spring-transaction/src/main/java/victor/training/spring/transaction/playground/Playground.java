@@ -26,7 +26,7 @@ public class Playground {
             log.error("BUM");
             repo.save(new Message("Error: " + e.getMessage()));
 
-
+//test
 
         }
         log.info("End of method  +" );
