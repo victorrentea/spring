@@ -13,6 +13,10 @@ public class Message {
     @Column(nullable = false)
     private String message;
 
+    public Long getId() {
+        return id;
+    }
+
     private Message() { // for hibernate only
     }
 
