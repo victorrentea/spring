@@ -23,26 +23,21 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
-        repo.save(new Message("null"));
-
-
-        // NEVER EVER throw a checked exception
-        try {
-            FileReader fileReader = new FileReader("c:\\workspace\\notonmac");
-            System.out.println(fileReader.read());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        new Thread(()->localMethodNextToMe()).start();
 
         log.info("End of method  +" );
         // 0 p6spy
-        // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
+        // 1 Cause a rollback by breaking NOT NULL, throw Runtime ROLLBACK, throw CHECKED COMMIT!!!
         // 2 Tx propagates with your calls (in your thread😱)
         // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+    private void localMethodNextToMe() {
+        repo.save(new Message(null));
+    }
+
     @Transactional
     public void transactionTwo() {
     }
