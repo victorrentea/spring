@@ -23,6 +23,13 @@ public class Playground {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         try {
             other.bizFlow();
+            log.info("SELECT COUNT(*) FROM MESSAGE");
+
+            // any JPQL, SQL, @Quert(native=true, they will cause a flush
+            log.info("n = " + repo.count());
+            repo.myCount();
+            repo.myCountNative();
+
         } catch (Exception e) {
             log.error("BUM");
             other.saveError(e);
@@ -52,7 +59,7 @@ class OtherClass {
         //risky business flow
         repo.save(new Message("Their stuff"));
         repo.save(new Message("Their stuff"));
-        throw new IllegalArgumentException("BUM");
+//        throw new IllegalArgumentException("BUM");
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
