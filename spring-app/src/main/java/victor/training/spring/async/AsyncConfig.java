@@ -12,7 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class AsyncConfig {
 	@Bean
 	@ConfigurationProperties(prefix = "bar.thread")
-	public ThreadPoolTaskExecutor barExecutor(@Value("${bar.thread.count}") int barThreadCount) {
+	public ThreadPoolTaskExecutor barExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setQueueCapacity(500);
 		executor.initialize();
