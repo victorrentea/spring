@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -60,6 +62,11 @@ public class TrainingController {
 	// TODO GET or POST ?
 	@PostMapping("search")
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
+	@GetMapping("search")
+	public List<TrainingDto> searchGet(TrainingSearchCriteria criteria) {
+		log.info("Criteria: " + criteria);
 		return trainingService.search(criteria);
 	}
 
