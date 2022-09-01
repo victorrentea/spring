@@ -2,6 +2,7 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.LobCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,21 +19,15 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
-    @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         try {
             other.bizFlow();
-            log.info("SELECT COUNT(*) FROM MESSAGE");
-
-            // any JPQL, SQL, @Quert(native=true, they will cause a flush
-            log.info("n = " + repo.count());
-            repo.myCount();
-            repo.myCountNative();
-
         } catch (Exception e) {
             log.error("BUM");
-            other.saveError(e);
+            repo.save(new Message("Error: " + e.getMessage()));
+
+
+
         }
         log.info("End of method  +" );
         // 0 p6spy
@@ -54,15 +49,16 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-//    @Transactional
+    private final JdbcTemplate jdbc;
+    @Transactional
     public void bizFlow() {
-        //risky business flow
+        jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         repo.save(new Message("Their stuff"));
         repo.save(new Message("Their stuff"));
-//        throw new IllegalArgumentException("BUM");
+        throw new IllegalArgumentException();
     }
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void saveError(Exception e) {
         repo.save(new Message("Error: " + e.getMessage()));
     }

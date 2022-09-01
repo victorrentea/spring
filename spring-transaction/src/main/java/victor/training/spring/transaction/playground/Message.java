@@ -1,9 +1,7 @@
 package victor.training.spring.transaction.playground;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Blob;
 
 @Entity
 public class Message {
@@ -11,7 +9,12 @@ public class Message {
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
+    @Lob
     private String message;
+
+//    @Lob
+//    private byte[] pdf;
+    private Blob pdf;
 
     public Long getId() {
         return id;
