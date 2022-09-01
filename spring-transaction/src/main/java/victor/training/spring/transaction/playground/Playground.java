@@ -21,13 +21,18 @@ public class Playground {
     private final OtherClass other;
 
     @Transactional
-    public void transactionOne() throws IOException {
+    public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         repo.save(new Message("null"));
 
 
-        FileReader fileReader = new FileReader("c:\\workspace\\notonmac");
-        System.out.println(fileReader.read());
+        // NEVER EVER throw a checked exception
+        try {
+            FileReader fileReader = new FileReader("c:\\workspace\\notonmac");
+            System.out.println(fileReader.read());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         log.info("End of method  +" );
