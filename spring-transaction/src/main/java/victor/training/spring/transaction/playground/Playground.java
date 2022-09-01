@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 @Slf4j
 @Service
@@ -25,12 +22,11 @@ public class Playground {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
 
         try {
-            bizFlow();
+            other.bizFlow();
         } catch (Exception e) {
             log.error("BUM");
             repo.save(new Message("Error: " + e.getMessage()));
         }
-
         log.info("End of method  +" );
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime ROLLBACK, throw CHECKED COMMIT!!!
@@ -39,15 +35,6 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-
-    private static void bizFlow() {
-        //risky business flow
-        if (Math.random() < .5) {
-            throw new IllegalArgumentException("BUM");
-        }
-    }
-
-
     @Transactional
     public void transactionTwo() {
     }
@@ -57,4 +44,13 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+    @Transactional
+    public void bizFlow() {
+        //risky business flow
+        repo.save(new Message("Their stuff"));
+        repo.save(new Message("Their stuff"));
+        if (Math.random() < .5) {
+            throw new IllegalArgumentException("BUM");
+        }
+    }
 }
