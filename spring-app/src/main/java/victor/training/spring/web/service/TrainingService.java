@@ -13,6 +13,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import victor.training.spring.web.MyException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -31,9 +33,10 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static victor.training.spring.web.MyException.ErrorCode.DUPLICATE_TRAINING_NAME;
 
 
- // TODO all the methods of the TrainingService need to be logged (params, return)
+// TODO all the methods of the TrainingService need to be logged (params, return)
 
 @Slf4j
 @Aspect // custom aspect
@@ -100,8 +103,11 @@ public class TrainingService {
     @CacheEvict(value = "training-by-id", key = "#id2")
     public void updateTraining(Long id2, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id2)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+//            throw new DuplicatedTrainingNameException(); // never
+            throw new MyException(DUPLICATE_TRAINING_NAME);
+//            throw new IllegalArgumentException("Another training with that name already exists");
         }
+//            throw new IllegalArgumentException("another exception");
         Training training = trainingRepo.findById(id2).orElseThrow();
         training.setName(dto.name);
         training.setDescription(dto.description);
@@ -124,9 +130,10 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
-    public void createTraining(TrainingDto dto) throws ParseException {
+    public void createTraining(@Validated TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(DUPLICATE_TRAINING_NAME);
+//            throw new IllegalArgumentException("Another training with that name already exists");
         }
         trainingRepo.save(mapToEntity(dto));
     }
