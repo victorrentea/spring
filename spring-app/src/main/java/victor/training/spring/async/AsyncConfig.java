@@ -19,6 +19,16 @@ public class AsyncConfig {
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
 	}
+	@Bean
+	public ThreadPoolTaskExecutor beerPool() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(500);
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
 }
 
 

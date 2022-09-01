@@ -34,19 +34,20 @@ public class DrinkerController {
         log.debug("Submitting my order");
         long t0 = currentTimeMillis();
 
-        log.debug("Here, the waiter left with my 2 commands");
+        log.debug("Here, the waiter left with my 2 commands : barman = " + barman.getClass());
 
-        CompletableFuture<Beer> beerCF = CompletableFuture.supplyAsync(() -> barman.pourBeer());
-        CompletableFuture<Vodka> vodkaCF = CompletableFuture.supplyAsync(() -> barman.pourVodka());
-
+        CompletableFuture<Beer> beerCF =  barman.pourBeer();
+        CompletableFuture<Vodka> vodkaCF =  barman.pourVodka();
 
         CompletableFuture<DillyDilly> dillyCF = beerCF.thenCombineAsync(vodkaCF,
                 (beer, vodka) -> new DillyDilly(beer, vodka));
 
-        barExecutor.submit(() -> barman.curse("$!#%!*%&!&*!")); // fire-and-forget action
+         barman.curse("$!#%!*%&!&*!"); // fire-and-forget action
 
         long t1 = currentTimeMillis();
         log.debug("Got my drinks in {} millis", t1 - t0);
         return dillyCF;
     }
 }
+
+/// throttling = protect fragile resources against high loads
