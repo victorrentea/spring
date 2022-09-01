@@ -10,6 +10,9 @@ import victor.training.spring.async.drinks.Vodka;
 @Service
 public class Barman {
    public Beer pourBeer() {
+//      if (true) {
+//         throw new IllegalArgumentException("Not more beer!");
+//      }
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepq(1000);
       return new Beer();
@@ -18,5 +21,10 @@ public class Barman {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepq(1000);
       return new Vodka();
+   }
+
+   public void curse(String curse) {
+      if (curse!=null)
+         throw new RuntimeException("kill ya");
    }
 }

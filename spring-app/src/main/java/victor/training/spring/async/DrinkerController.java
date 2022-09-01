@@ -44,6 +44,9 @@ public class DrinkerController {
         Beer beer = futureBeer.get(); // how much time does the HTTP thread wait here? 0 sec
 
 
+
+        barExecutor.submit(() -> barman.curse("$!#%!*%&!&*!")); // fire-and-forget action
+
         long t1 = currentTimeMillis();
         log.debug("Got my drinks in {} millis", t1 - t0);
         return new DillyDilly(beer, vodka);
