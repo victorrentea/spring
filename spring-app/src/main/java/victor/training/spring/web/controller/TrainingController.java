@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -24,6 +23,11 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+//		try {
+//			return ResponseEntity.ok(trainingService.getTrainingById(id));
+//		} catch (NoSuchElementException e) {
+//			return ResponseEntity.status(204).build();
+//		}
 		return trainingService.getTrainingById(id);
 		//TODO if id is not found, return 404 status code
 	}
