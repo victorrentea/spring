@@ -35,7 +35,6 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-
     @Transactional
     public void transactionTwo() {
         Message message = repo.findById(100L).orElseThrow();
@@ -44,19 +43,16 @@ public class Playground {
         log.info("After in the proxy.");
     }
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional
+//    @Transactional
     public void bizFlow() {
         //risky business flow
         repo.save(new Message("Their stuff"));
         repo.save(new Message("Their stuff"));
-//        if (Math.random() < .5) {
-//            throw new IllegalArgumentException("BUM");
-//        }
+        throw new IllegalArgumentException("BUM");
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
