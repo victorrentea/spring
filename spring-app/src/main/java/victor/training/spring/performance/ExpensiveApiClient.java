@@ -21,9 +21,11 @@ public class ExpensiveApiClient {
       log.info("DONE");
       return CompletableFuture.completedFuture("data");
    }
+
+   @Timed("mother")
    public String blockingCall() {
       log.info("Calling sync...");
-      ThreadUtils.sleepq(1000);
+      ThreadUtils.sleepq(10);
       log.info("DONE");
       return "data " + System.currentTimeMillis();
    }

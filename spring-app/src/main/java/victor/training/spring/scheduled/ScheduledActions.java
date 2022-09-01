@@ -1,6 +1,8 @@
 package victor.training.spring.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import victor.training.spring.varie.ThreadUtils;
 
@@ -11,8 +13,10 @@ public class ScheduledActions {
     // TODO 1 Should run every 5 seconds / configurable / cron "*/5 * * * * *"
     // TODO 3 Play with delays. cron vs fixedRate? Overlapping executions?
     // TODO 4 Should run on a separate 1-thread pool
-    public void lookIntoFolder() {
-        log.debug("Looking into folder");
+//    @Async
+//    @Scheduled(fixedRateString = "${rate.millis}")
+    public void lookIntoDatabase() {
+        log.info("Looking into folder");
         ThreadUtils.sleepq(7000);
         log.debug("DONE");
     }

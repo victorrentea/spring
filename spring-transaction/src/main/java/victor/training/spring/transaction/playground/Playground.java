@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,6 +40,11 @@ public class Playground {
     }
     @Transactional
     public void transactionTwo() {
+
+        Optional<Message> m = repo.getByMessageLikeIgnoreCase("9999");
+        System.out.println("Absent: " + m);
+        //        complexDarFlow(m);
+
         Message message = repo.findById(100L).orElseThrow();
         message.setMessage("Different"); // no .save() is required if you are within a @Transactional method.
         // some are scared of this!
@@ -55,7 +61,7 @@ class OtherClass {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         repo.save(new Message("Their stuff"));
         repo.save(new Message("Their stuff"));
-        throw new IllegalArgumentException();
+//        throw new IllegalArgumentException();
     }
 
 //    @Transactional(propagation = Propagation.NOT_SUPPORTED)
