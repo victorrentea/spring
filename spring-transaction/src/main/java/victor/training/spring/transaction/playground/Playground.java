@@ -55,7 +55,7 @@ class OtherClass {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void saveError(Exception e) {
         repo.save(new Message("Error: " + e.getMessage()));
     }
