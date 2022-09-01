@@ -36,7 +36,6 @@ public class TrainingController {
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-		// TODO what if id != dto.id
 		trainingService.updateTraining(id, dto);
 	}
 
