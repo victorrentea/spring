@@ -56,5 +56,6 @@ public class TrainingController {
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+	// Hint: try direcly @GetMapping with no @RequestBody annot
 
 }
