@@ -23,7 +23,13 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
-        new Thread(()->localMethodNextToMe()).start();
+
+        try {
+            bizFlow();
+        } catch (Exception e) {
+            log.error("BUM");
+            repo.save(new Message("Error: " + e.getMessage()));
+        }
 
         log.info("End of method  +" );
         // 0 p6spy
@@ -34,9 +40,13 @@ public class Playground {
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
 
-    private void localMethodNextToMe() {
-        repo.save(new Message(null));
+    private static void bizFlow() {
+        //risky business flow
+        if (Math.random() < .5) {
+            throw new IllegalArgumentException("BUM");
+        }
     }
+
 
     @Transactional
     public void transactionTwo() {
