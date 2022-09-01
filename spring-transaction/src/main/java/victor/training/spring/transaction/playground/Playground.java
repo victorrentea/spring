@@ -25,7 +25,7 @@ public class Playground {
             other.bizFlow();
         } catch (Exception e) {
             log.error("BUM");
-            saveError(e);
+            other.saveError(e);
         }
         log.info("End of method  +" );
         // 0 p6spy
@@ -34,11 +34,6 @@ public class Playground {
         // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveError(Exception e) {
-        repo.save(new Message("Error: " + e.getMessage()));
     }
 
     @Transactional
@@ -58,5 +53,10 @@ class OtherClass {
         if (Math.random() < .5) {
             throw new IllegalArgumentException("BUM");
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveError(Exception e) {
+        repo.save(new Message("Error: " + e.getMessage()));
     }
 }
