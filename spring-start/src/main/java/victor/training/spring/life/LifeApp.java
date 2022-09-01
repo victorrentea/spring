@@ -133,8 +133,6 @@ class MyFilter implements Filter {
     private final RequestContext context;
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-
         String tenantId = ((HttpServletRequest) request).getHeader("Tenant-Id");
         System.out.println("tentantId in filter: " + tenantId);
         context.setTenantId(tenantId);

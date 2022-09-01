@@ -12,9 +12,10 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Timed
+
 public class ExpensiveApiClient {
    @Async("customExecutor")
-   @Timed("external call")
    public CompletableFuture<String> asyncCall() {
       log.info("Calling async...");
       ThreadUtils.sleepq(1000);
@@ -22,7 +23,6 @@ public class ExpensiveApiClient {
       return CompletableFuture.completedFuture("data");
    }
 
-   @Timed("mother")
    public String blockingCall() {
       log.info("Calling sync...");
       ThreadUtils.sleepq(10);
