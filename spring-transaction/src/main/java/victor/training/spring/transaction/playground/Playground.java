@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -18,12 +21,15 @@ public class Playground {
     private final OtherClass other;
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne() throws IOException {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         repo.save(new Message("null"));
-        if (true) {
-            throw new IllegalArgumentException("Some validation failed later");
-        }
+
+
+        FileReader fileReader = new FileReader("c:\\workspace\\notonmac");
+        System.out.println(fileReader.read());
+
+
         log.info("End of method  +" );
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
