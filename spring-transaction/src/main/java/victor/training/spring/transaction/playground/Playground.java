@@ -21,6 +21,9 @@ public class Playground {
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( ?,'ALO' )", 100L);
         repo.save(new Message("null"));
+        if (true) {
+            throw new IllegalArgumentException("Some validation failed later");
+        }
         log.info("End of method  +" );
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
