@@ -1,23 +1,34 @@
 package victor.training.spring.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.util.Base64;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+class OtherService {
+
+	@Async
+	public  String getName() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+}
 
 @RequiredArgsConstructor
 @RestController
 @Slf4j
 public class TechnicalController {
+	private final OtherService otherService;
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
@@ -26,7 +37,10 @@ public class TechnicalController {
 
 //		printTheTokens();
 
-		dto.username = "// TODO: get username";
+		dto.username = otherService.getName();
+
+
+		
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
@@ -45,7 +59,7 @@ public class TechnicalController {
 		return dto;
 	}
 
-//@SneakyThrows
+	//@SneakyThrows
 //private void printTheTokens() {
 //	Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //	KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
@@ -87,7 +101,7 @@ public class TechnicalController {
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	@Autowired
