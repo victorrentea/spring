@@ -3,6 +3,7 @@ package victor.training.spring.bean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,6 +36,22 @@ public class ProgrammaticBeanDefinition implements CommandLineRunner {
          @Override
          public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 
+         }
+      };
+   }
+
+   @Bean
+   public BeanPostProcessor myBPP() {
+      return new BeanPostProcessor() {
+         @Override
+         public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+            return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
+         }
+
+         @Override
+         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+//            if bean is a RestControlelr, make sure (reflection) all public methods jave @PreAuthroized.
+            return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
          }
       };
    }

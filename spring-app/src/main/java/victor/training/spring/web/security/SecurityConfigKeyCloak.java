@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -73,6 +74,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         http
             .csrf().disable() //SAFE if you only expose REST endpoints and you never accept FORM POST
             .cors().and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
 //                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
                 .mvcMatchers("/spa/**", "/api/**").authenticated()

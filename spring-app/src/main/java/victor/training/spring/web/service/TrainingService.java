@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.Order;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -131,6 +132,7 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
+//    @Retryable
     public void createTraining(@Validated TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new MyException(DUPLICATE_TRAINING_NAME);

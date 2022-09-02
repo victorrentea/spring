@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
@@ -20,6 +21,9 @@ public class TestDBConnectionInitializer implements ApplicationListener<Applicat
    public static void assertCanConnectToDB(Environment env) {
       String url = env.getRequiredProperty("spring.datasource.url");
       try {
+
+//         ConfigurableApplicationContext c;
+//         c.getBeanFactory().regi
          Class.forName(env.getRequiredProperty("spring.datasource.driver-class-name"));
          log.debug("Trying to connect to {}", url);
          Connection connection = DriverManager.getConnection(url,
