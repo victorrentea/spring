@@ -43,14 +43,14 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
 
         // A) Role-based security : prefix every role in the token with "ROLE_"
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // B) Authority-based security
         // B1) extracting fine-grained authorities from the token (relies on 'composite' Roles in KeyCloak)
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // B2) converting ROLE from token into local authorities
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
