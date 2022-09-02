@@ -12,6 +12,8 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,8 +21,8 @@ import javax.annotation.PostConstruct;
 class OtherService {
 
 	@Async
-	public  String getName() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
+	public CompletableFuture<String> getName() {
+		return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }
 
@@ -31,13 +33,13 @@ public class TechnicalController {
 	private final OtherService otherService;
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
 //		printTheTokens();
 
-		dto.username = otherService.getName();
+		dto.username = otherService.getName().get();
 
 
 		
