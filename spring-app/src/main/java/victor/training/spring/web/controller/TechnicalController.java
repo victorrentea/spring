@@ -1,9 +1,16 @@
 package victor.training.spring.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +19,12 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,14 +48,14 @@ public class TechnicalController {
 		CurrentUserDto dto = new CurrentUserDto();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 
-//		printTheTokens();
+		printTheTokens();
 
 		dto.username = otherService.getName().get();
 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		
 		// A) role-based security
-//		dto.role = extractOneRole(authentication.getAuthorities());
+		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
 //		dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
@@ -61,45 +72,45 @@ public class TechnicalController {
 		return dto;
 	}
 
-	//@SneakyThrows
-//private void printTheTokens() {
-//	Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//	KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
-//	KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
-//
-//	log.info("\n-- OpenID Connect Token 👑: \n{}\n-- Decoded OpenID Connect Token body:\n{}",
-//			keycloakSecurityContext.getIdTokenString(),
-//			prettyPrintJson(keycloakSecurityContext.getIdTokenString()));
-//	log.info("\n-- Access Token 👑: \n{}\n-- Decoded Access Token body:\n{}",
-//			keycloakSecurityContext.getTokenString(),
-//			prettyPrintJson(keycloakSecurityContext.getTokenString()));
-//}
-//
-//	private String prettyPrintJson(String jwtString) throws JsonProcessingException {
-//		String jwtBodyString = jwtString.split("\\.")[1];
-//		String decodedBody = new String(Base64.getUrlDecoder().decode(jwtBodyString));
-//		Object json = new ObjectMapper().readValue(decodedBody, Object.class);
-//		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
-//	}
+	@SneakyThrows
+private void printTheTokens() {
+	Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+	KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+
+	log.info("\n-- OpenID Connect Token 👑: \n{}\n-- Decoded OpenID Connect Token body:\n{}",
+			keycloakSecurityContext.getIdTokenString(),
+			prettyPrintJson(keycloakSecurityContext.getIdTokenString()));
+	log.info("\n-- Access Token 👑: \n{}\n-- Decoded Access Token body:\n{}",
+			keycloakSecurityContext.getTokenString(),
+			prettyPrintJson(keycloakSecurityContext.getTokenString()));
+}
+
+	private String prettyPrintJson(String jwtString) throws JsonProcessingException {
+		String jwtBodyString = jwtString.split("\\.")[1];
+		String decodedBody = new String(Base64.getUrlDecoder().decode(jwtBodyString));
+		Object json = new ObjectMapper().readValue(decodedBody, Object.class);
+		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
+	}
 
 
-//	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-//		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-//		System.out.println(authorities.toString());
-//		List<String> roles = authorities.stream()
-//				.map(GrantedAuthority::getAuthority)
-//				.filter(authority -> authority.startsWith("ROLE_"))
-//				.map(authority -> authority.substring("ROLE_".length()))
-//				.collect(Collectors.toList());
-//		if (roles.size() == 2) {
-//			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
-//			return "N/A";
-//		}
-//		if (roles.size() == 0) {
-//			return null;
-//		}
-//		return roles.get(0);
-//	}
+	private String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+		System.out.println(authorities.toString());
+		List<String> roles = authorities.stream()
+				.map(GrantedAuthority::getAuthority)
+				.filter(authority -> authority.startsWith("ROLE_"))
+				.map(authority -> authority.substring("ROLE_".length()))
+				.collect(Collectors.toList());
+		if (roles.size() == 2) {
+			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
+			return "N/A";
+		}
+		if (roles.size() == 0) {
+			return null;
+		}
+		return roles.get(0);
+	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
