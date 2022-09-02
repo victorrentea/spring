@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // @RolesAllowed
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
     // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
@@ -74,7 +74,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
             .csrf().disable() //SAFE if you only expose REST endpoints and you never accept FORM POST
             .cors().and()
             .authorizeRequests()
-                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
                 .mvcMatchers("/spa/**", "/api/**").authenticated()
                 .mvcMatchers("/sso/**").permitAll()
                 .anyRequest().permitAll()
