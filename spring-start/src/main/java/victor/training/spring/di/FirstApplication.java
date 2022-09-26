@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import victor.training.spring.di.subp.Z;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -16,7 +20,7 @@ import org.springframework.stereotype.Service;
 // [6] inject List<BeanI>
 
 @SpringBootApplication
-public class FirstApplication implements CommandLineRunner{
+public class FirstApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
 	}
@@ -26,28 +30,37 @@ public class FirstApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
+		System.out.println("At startup ");
 		System.out.println(x.prod());
 	}
 }
 
 @Service
-class X {
-	// field injection
-	@Autowired
-	private Y y;
-
-// method (setter) injection (rarely used)
-//	private Z z;
-//	@Autowired
-//	public void setZ(Z z) {
-//		this.z = z;
-//	}
+record X(
+		Y y,
+		Z z
+) {
 
 	public int prod() {
 		return 1 + y.prod();
 	}
 }
-@Service
+
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Facade {
+
+}
+
+//@Service // /**/Business Logic (domain rules)
+//@Repository // DB access <
+//	//  import the repo into the configuration.
+//@Controller // not used anymore - the old way of generating webpages: jsp, jsf, vaadin, gwt, ....velocity
+//@RestController // REST APIs
+//@Component // garbage (unclear, technical)
+//
+//@Configuration // contains @Bean definitions, not application code
+@Facade
 class Y {
 	private final Z z;
 
@@ -58,12 +71,5 @@ class Y {
 
 	public int prod() {
 		return 1 + z.prod();
-	}
-}
-@Service
-class Z {
-
-	public int prod() {
-		return 1;
 	}
 }
