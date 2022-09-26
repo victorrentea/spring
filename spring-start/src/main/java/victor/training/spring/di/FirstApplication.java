@@ -1,26 +1,33 @@
 package victor.training.spring.di;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.di.subp.Z;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
-// [1] PostConstruct
+// [1] PostConstruct + EventListener + CommandLineRunner
 // [2] Qualifier
 // [3] Primary
 // [4] Profile
 // [5] getBean
 // [6] inject List<BeanI>
-
+@RestController
+@Import(
+		{victor.training.spring.di.X.class,
+				Y.class
+				}
+)
 @SpringBootApplication
-public class FirstApplication implements CommandLineRunner {
+public class FirstApplication /*implements CommandLineRunner*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
 	}
@@ -28,20 +35,26 @@ public class FirstApplication implements CommandLineRunner {
 	@Autowired
 	private X x;
 
-	@Override
-	public void run(String... args) throws Exception {
+	//	@Override
+	//	public void run(String... args) throws Exception { // #1
+	//	@PostConstruct // #2
+//	@EventListener(ApplicationStartedEvent.class)
+
+	@GetMapping
+	public void method() {
 		System.out.println("At startup ");
 		System.out.println(x.prod());
 	}
 }
 
-@Service
+//@Service
 record X(
-		Y y,
-		Z z
+		Y y
 ) {
 
 	public int prod() {
+
+
 		return 1 + y.prod();
 	}
 }
@@ -64,12 +77,18 @@ record X(
 class Y {
 	private final Z z;
 
-	// constructor injection (no @Autowired needed since Spring 4.3)
-	public Y(Z z) {
+	Y(Z z) {
 		this.z = z;
 	}
+	//	private final ApplicationContext applicationContext;
+//
+//	public Y(ApplicationContext applicationContext) {
+//		this.applicationContext = applicationContext;
+//	}
 
 	public int prod() {
+//		Z z = applicationContext.getBean(Z.class); // avoid : gets to runtime tiem erorrs, not deploy-time = BAD.
+
 		return 1 + z.prod();
 	}
 }
