@@ -8,6 +8,8 @@ services:
     volumes:
       - .:/etc/prometheus
     container_name: prometheus
+#    environment:
+#      john.name: John for this deploy
 
   grafana:
     image: grafana/grafana:latest

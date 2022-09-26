@@ -1,13 +1,20 @@
 package victor.training.spring.bean;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -15,8 +22,21 @@ public class BeanApp implements CommandLineRunner {
         SpringApplication.run(BeanApp.class);
     }
 
+
+//    @Bean
+//    HikariDataSource dataSource(DataSourceProperties properties) {
+//        HikariDataSource dataSource = .// my stuff roperties, HikariDataSource.class);
+//        if (StringUtils.hasText(properties.getName())) {
+//            dataSource.setPoolName(properties.getName());
+//        }
+//        return dataSource;
+//    }
+
+    @Value("${another.prop}")
+    private String unchanged;
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("unchanged " + unchanged);
 //        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         // TODO convince Spring to do for you the line above
 //        conversation.start();
@@ -25,7 +45,7 @@ public class BeanApp implements CommandLineRunner {
     ;
     @Bean
     public Person john(@Value("${john.name}") String johnName) {
-        System.out.println("John is born!");
+        System.out.println("John is born! : " + johnName);
         return new Person(johnName);
     }
     @Bean
@@ -96,6 +116,7 @@ class Conversation {
         this.john = john;
     }
 
+    @PostConstruct
     public void start() {
         System.out.println("Chat start ");
         System.out.println(jane.sayHello());
@@ -111,7 +132,7 @@ class Person {
         this.name = name;
     }
     public String sayHello() {
-        return "Hello! Here is " + name;
+        return "Hello! Here is " + name.toUpperCase();
     }
 
     @Override

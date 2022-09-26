@@ -4,8 +4,13 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -16,8 +21,12 @@ import java.util.Map;
 @Slf4j
 @Data // getters & setters are mandatory!
 @Component
+@ConfigurationProperties(prefix = "welcome")
+@Validated
 public class WelcomeInfo {
-    private String welcomeMessage;
+    @NotNull
+    @Size(min = 3)
+    private String welcomeMessage = "default welcome";
     private List<URL> supportUrls;
     private Map<Locale, String> localContactPhone;
     private HelpInfo help;
@@ -29,10 +38,21 @@ public class WelcomeInfo {
     }
 
     @PostConstruct
+    public void checkFIle() {
+        if (!help.file.isFile()) {
+            throw new IllegalArgumentException("BUM: not a file " + help.file);
+        }
+        System.out.println("Props: " +this);
+    }
+
+
+
+
+
+
+
+    @PostConstruct
     public void printMyselfAtStartup() {
-        // TODO validate help.file exists on disk
-        // TODO validate welcome message is not null and at least 10 chars
-        // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
         log.debug("My props: " + this);
     }
 }
