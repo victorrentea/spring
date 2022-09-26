@@ -1,6 +1,6 @@
 package victor.training.spring.bean;
 
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,49 +17,66 @@ public class BeanApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+//        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
         // TODO convince Spring to do for you the line above
-        conversation.start();
+//        conversation.start();
     }
 
+    @Value("${john.name}")
+    private String johnName;
     @Bean
     public Person john() {
-        return new Person("John");
+        return new Person(johnName);
     }
     @Bean
-    @Primary // every time there's a conflict involving this, this wins.
+    public Person spy() {
+        return new Person("Spy");
+    }
+    @Bean
+    @Primary
     public Person jane() {
         return new Person("Jane");
     }
-
+    @Bean
+    public Conversation conversation() {
+        Conversation conversation = new Conversation(john(), jane());
+        conversation.start();
+        return conversation;
+    }
 }
+
 
 @RestController
 class MyController {
-    private final Person person;
+    private final Person john;
 
-    MyController( Person person) {
-        this.person = person;
+private String currentUsername;
+
+    MyController( Person john) {
+        this.john = john;
     }
     @GetMapping
     public String method() {
-        return "different instance for each call ? " + person;
+        System.out.println(currentUsername);
+        return "different instance for each call ? " + john;
     }
 }
 
-@Data
-class Conversation {
-    private final Person one;
-    private final Person two;
 
-    public Conversation(Person one, Person two) {
-        this.one = one;
-        this.two = two;
+// imagine this class can't be changed:
+class Conversation {
+    private final Person jane;
+    private final Person john;
+
+    public Conversation(Person jane, Person john) { // @Qualifier / injection point name wins over @Primary
+        this.jane = jane;
+        this.john = john;
     }
 
     public void start() {
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
+        System.out.println("Chat start ");
+        System.out.println(jane.sayHello());
+        System.out.println(john.sayHello());
     }
 }
 
