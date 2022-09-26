@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -19,6 +20,9 @@ public class AsyncConfig {
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
 	}
+
+//	@Autowired
+//	ThreadPoolTaskExecutor executor;
 }
 
 

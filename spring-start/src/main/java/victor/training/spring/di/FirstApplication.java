@@ -3,6 +3,7 @@ package victor.training.spring.di;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,10 @@ public class FirstApplication /*implements CommandLineRunner*/ {
 	//	@PostConstruct // #2
 //	@EventListener(ApplicationStartedEvent.class)
 
+	@Bean
+	public Y y(Z z) {
+		return new Y(z);
+	}
 	@GetMapping
 	public void method() {
 		System.out.println("At startup ");
@@ -78,7 +83,7 @@ record X(
 //@Component // garbage (unclear, technical)
 //
 //@Configuration // contains @Bean definitions, not application code
-@Facade
+//@Facade
 class Y {
 	private final Z z;
 
