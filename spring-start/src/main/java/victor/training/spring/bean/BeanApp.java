@@ -22,10 +22,10 @@ public class BeanApp implements CommandLineRunner {
 //        conversation.start();
     }
 
-    @Value("${john.name}")
-    private String johnName;
+    ;
     @Bean
-    public Person john() {
+    public Person john(@Value("${john.name}") String johnName) {
+        System.out.println("John is born!");
         return new Person(johnName);
     }
     @Bean
@@ -39,11 +39,34 @@ public class BeanApp implements CommandLineRunner {
     }
     @Bean
     public Conversation conversation() {
-        Conversation conversation = new Conversation(john(), jane());
+        System.out.println("Conv1");
+        Conversation conversation = new Conversation(john(null), jane());
+        // #1 how is this possible? I pass null to a @Bean method, and that method actually runs with a non-null param
         conversation.start();
         return conversation;
     }
+    @Bean
+    public Conversation conversation2() {
+        System.out.println("Conv2");
+        Conversation conversation = new Conversation(john(null), jane());
+        // #2 no matter how many times i call john(), the john() method runs a single time ?!?!?!!
+        conversation.start();
+        return conversation;
+    }
+
+    // #1 and #2 are possible because spring creates a subclass of your @Configuration classes so that local method calls
+    // get intercepted !! ONLY HERE does a PROXY intercept LOCAL METHOD CALLS.!!
+
 }
+//class SpringUnderTheHood extends BeanApp {
+//    @Override
+//    public Person john(String johnName) {
+//        //heheheh
+//        if john is created already { return from cache }
+//         else
+//        return super.john(johnName from properties files);
+//    }
+//}
 
 
 @RestController
