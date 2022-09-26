@@ -22,6 +22,11 @@ public class LanguageController {
     // TODO cache
     // TODO evict via dedicated endpoint (called from script)
     public List<LanguageDto> getAll() {
-        return languageService.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
+        System.out.println("Who am I talking to ?  " + languageService.getClass());
+        return languageService.findAll()
+                .stream().map(LanguageDto::new).collect(Collectors.toList());
     }
 }
+// Spring will use a lib called CG lib to generate a subclass at runtime of your proxied classes,
+// then injecting this proxy instead of a ref to your class to anyone needing it
+//class
