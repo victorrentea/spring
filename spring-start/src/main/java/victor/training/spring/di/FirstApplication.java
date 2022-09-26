@@ -3,6 +3,7 @@ package victor.training.spring.di;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,14 @@ import java.lang.annotation.RetentionPolicy;
 // [6] inject List<BeanI>
 @RestController
 @Import(
-		{victor.training.spring.di.X.class,
-				Y.class
+		{
+				X.class,
+				Y.class,
+				Z.class
+
 				}
 )
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "notused")
 public class FirstApplication /*implements CommandLineRunner*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
