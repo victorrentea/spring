@@ -1,12 +1,11 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +27,7 @@ public class BeanApp implements CommandLineRunner {
         return new Person("John");
     }
     @Bean
+    @Primary // every time there's a conflict involving this, this wins.
     public Person jane() {
         return new Person("Jane");
     }
@@ -38,7 +38,7 @@ public class BeanApp implements CommandLineRunner {
 class MyController {
     private final Person person;
 
-    MyController( @Qualifier("jane") Person person) {
+    MyController( Person person) {
         this.person = person;
     }
     @GetMapping
@@ -72,6 +72,13 @@ class Person {
     }
     public String sayHello() {
         return "Hello! Here is " + name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+               "name='" + name + '\'' +
+               '}';
     }
 }
 
