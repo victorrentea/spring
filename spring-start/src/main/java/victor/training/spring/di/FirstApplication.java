@@ -30,6 +30,7 @@ import java.lang.annotation.RetentionPolicy;
 
 				}
 )
+//@ComponentScan(basePackages = "package.of.the.repo")
 @SpringBootApplication(scanBasePackages = "notused")
 public class FirstApplication /*implements CommandLineRunner*/ {
 	public static void main(String[] args) {
