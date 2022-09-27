@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -68,7 +70,9 @@ public class Playground {
 @Service
 @RequiredArgsConstructor
 class OtherClass {
+    private static final Logger log = LoggerFactory.getLogger(OtherClass.class);
     private final JdbcTemplate jdbc;
+    private final ApplicationEventPublisher eventPublisher;
 
 //    @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -78,6 +82,9 @@ class OtherClass {
     @Transactional
     public void method() {
         jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
+
+        eventPublisher.publishEvent(new SendEmailsAfterCommitEvent("a@b.com"));
+
         jdbc.update("insert into MESSAGE(id, message) values (2,?)", "met2 1");
         throw new RuntimeException("Somthing went bad"); // bad luck
     }
@@ -86,5 +93,13 @@ class OtherClass {
         return jdbc.update("insert into MESSAGE(id, message) values ( 999,? )", "Error: " + e);
     }
 
+    @EventListener
+    public void onEmailsToSend(SendEmailsAfterCommitEvent event) {
+        log.info("sending email to " + event.getEmail());
+    }
+    @EventListener
+    public void onEmailsToSend2(SendEmailsAfterCommitEvent event) {
+        log.info("sending email#2 to " + event.getEmail());
+    }
 
 }
