@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
+import zipkin2.Call;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -24,8 +29,10 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Beer beer = barman.pourBeer();
-      Vodka vodka = barman.pourVodka();
+      CompletableFuture<Beer> futureBeer = supplyAsync(() -> barman.pourBeer());
+      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka());
+      Beer beer = futureBeer.get(); // 1 sec
+      Vodka vodka = futureVodka.get(); // 0 sec
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
