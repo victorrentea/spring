@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.FileNotFoundException;
@@ -86,20 +88,23 @@ class OtherClass {
         eventPublisher.publishEvent(new SendEmailsAfterCommitEvent("a@b.com"));
 
         jdbc.update("insert into MESSAGE(id, message) values (2,?)", "met2 1");
-        throw new RuntimeException("Somthing went bad"); // bad luck
+//        throw new RuntimeException("Somthing went bad"); // bad luck
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int persistError(Exception e) {
         return jdbc.update("insert into MESSAGE(id, message) values ( 999,? )", "Error: " + e);
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onEmailsToSend(SendEmailsAfterCommitEvent event) {
+
         log.info("sending email to " + event.getEmail());
     }
-    @EventListener
-    public void onEmailsToSend2(SendEmailsAfterCommitEvent event) {
-        log.info("sending email#2 to " + event.getEmail());
-    }
+//    @EventListener
+//    @Async
+//    public void onEmailsToSend2(SendEmailsAfterCommitEvent event) {
+//        log.info("sending email#2 to " + event.getEmail());
+//        throw new IllegalArgumentException("WHAT DO YOU KNOW, email server down");
+//    }
 
 }
