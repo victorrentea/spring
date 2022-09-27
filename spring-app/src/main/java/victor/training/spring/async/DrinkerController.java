@@ -1,7 +1,6 @@
 package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -16,8 +15,11 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @Slf4j
 @RestController
 public class DrinkerController {
-   @Autowired
-   private Barman barman;
+   private final Barman barman;
+
+   public DrinkerController(Barman barman) {
+      this.barman = barman;
+   }
 
    // Java SE
 //   public static final ExecutorService barPool = Executors.newFixedThreadPool(100);
@@ -26,18 +28,18 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
-      log.debug("Submitting my order");
+   public CompletableFuture<DillyDilly> drink() throws Exception {
+      log.debug("Submitting my order to " + barman.getClass());
       long t0 = currentTimeMillis();
 
       CompletableFuture<Beer> futureBeer = barman.pourBeer();
       CompletableFuture<Vodka> futureVodka = barman.pourVodka();
-      Beer beer = futureBeer.get(); // 1 sec waiting for the thread coming from Tomcat << THIS, THIS!!
-      // the reason for WebFlux: blocking is limiting your and wasting resources under high pressure.
-      Vodka vodka = futureVodka.get(); // 0 sec
+
+      CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
-      return new DillyDilly(beer, vodka);
+//      return futureDillyMono.block();
+      return futureDilly;
    }
 }
