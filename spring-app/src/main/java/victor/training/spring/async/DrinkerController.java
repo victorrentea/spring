@@ -32,7 +32,9 @@ public class DrinkerController {
 
       CompletableFuture<Beer> futureBeer = barman.pourBeer();
       CompletableFuture<Vodka> futureVodka = barman.pourVodka();
-      Beer beer = futureBeer.get(); // 1 sec
+      Beer beer = futureBeer.get(); // 1 sec  << THIS, THIS!!
+      // the reason for WebFlux: blocking is limiting your and wasting resources under high pressure.
+
       Vodka vodka = futureVodka.get(); // 0 sec
 
       long t1 = currentTimeMillis();
