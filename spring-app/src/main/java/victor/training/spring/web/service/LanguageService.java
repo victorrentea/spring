@@ -2,12 +2,14 @@ package victor.training.spring.web.service;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.repo.ProgrammingLanguageRepo;
 
 import java.util.List;
 
 @Service
+
 public class LanguageService {
     private final ProgrammingLanguageRepo repo;
 
@@ -16,9 +18,10 @@ public class LanguageService {
     }
 
     @Cacheable("languages")
+    @Logged
     public List<ProgrammingLanguage> findAll() {
-        new RuntimeException("not thrown, just for demo").printStackTrace(
-        );
+//        new RuntimeException("not thrown, just for demo").printStackTrace(
+//        );
 
         return repo.findAll();
     }
