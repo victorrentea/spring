@@ -34,6 +34,7 @@ public class Playground {
             log.error("Oups: " + e);
             // NOTE: no rethrow; the ex dissapears.
         }
+        jdbc.update("insert into MESSAGE(id, message) values ( 101,? )", "why does this go to DB in a zombie TX?!");
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -51,7 +52,7 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
-//    @Transactional
+    @Transactional // kills the 'current' (caller) tx when an exception is thrown
     public void method() {
         jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
         jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
