@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 
 @Service
@@ -24,16 +25,16 @@ public class Playground {
 //        conn.rollback();
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne() throws FileNotFoundException {
         System.out.println("START OF METHOD");
 
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
-        try {
-            method();
-        } catch (Exception e) {
-            log.error("Oups: " + e);
-            // NOTE: no rethrow; the ex dissapears.
-        }
+//        try {
+            other.method();
+//        } catch (Exception e) {
+//            log.error("Oups: " + e);
+//             NOTE: no rethrow; the ex dissapears.
+//        }
         jdbc.update("insert into MESSAGE(id, message) values ( 101,? )", "why does this go to DB in a zombie TX?!");
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
@@ -42,11 +43,6 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
         System.out.println("END OF METHOD");
-    }
-    @Transactional // kills the 'current' (caller) tx when an exception is thrown
-    public void method() {
-        jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
-        jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
     }
     @Transactional
     public void transactionTwo() {
@@ -57,5 +53,11 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
+    @Transactional // kills the 'current' (caller) tx when an exception is thrown
+    public void method() throws FileNotFoundException {
+        jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
+//        jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
+        throw new FileNotFoundException();
+    }
 
 }
