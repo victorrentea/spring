@@ -32,6 +32,7 @@ public class Playground {
             other.method();
         } catch (Exception e) {
             log.error("Oups: " + e);
+            // NOTE: no rethrow; the ex dissapears.
         }
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
@@ -50,7 +51,7 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
-    @Transactional
+//    @Transactional
     public void method() {
         jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
         jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
