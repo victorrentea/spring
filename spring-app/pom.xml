@@ -69,6 +69,7 @@
             <version>2.1.212</version> <!-- supports -ifNotExists -->
         </dependency>
         <dependency>
+            <!-- a JDBC driver proxy that intercepts all statments, logs them, and then forwards them to the proper driver -->
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
