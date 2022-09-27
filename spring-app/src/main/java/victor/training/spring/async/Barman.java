@@ -3,6 +3,8 @@ package victor.training.spring.async;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
@@ -23,6 +25,10 @@ public class Barman {
    }
    @Async("vodkaPool")
    public CompletableFuture<Vodka> pourVodka() {
+//      RestTemplate rest = new RestTemplate();
+//      rest.getForObject("http://")
+//      new AsyncRestTemplate()
+//      WebClient
       log.debug("Pouring Vodka (long sql, REST CALL to an old system)...");
       ThreadUtils.sleepq(1000);
       return completedFuture(new Vodka());
