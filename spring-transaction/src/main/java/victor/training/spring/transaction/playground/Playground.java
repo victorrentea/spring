@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class Playground {
         System.out.println("START OF METHOD");
 
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
-        localMethodInTheSameClass();
+        other.notAnnotatedMethodWithinTheSameThread();
         try {
             other.method();
         } catch (Exception e) {
@@ -39,9 +37,7 @@ public class Playground {
         System.out.println("END OF METHOD");
     }
 
-    private int localMethodInTheSameClass() {
-        return jdbc.update("insert into MESSAGE(id, message) values ( 99,? )", "first");
-    }
+
 
 
     @Transactional
@@ -53,6 +49,10 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
+
+    public int notAnnotatedMethodWithinTheSameThread() {
+        return jdbc.update("insert into MESSAGE(id, message) values ( 99,? )", "first");
+    }
     @Transactional
     public void method() {
         jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
