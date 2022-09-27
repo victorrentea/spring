@@ -24,7 +24,7 @@ public class Playground {
 //        conn.commit();
 //        conn.rollback();
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void transactionOne() throws FileNotFoundException {
         System.out.println("START OF METHOD");
 
