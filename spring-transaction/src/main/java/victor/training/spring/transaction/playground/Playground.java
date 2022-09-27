@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,12 @@ public class Playground {
     private final OtherClass other;
 
     @Transactional
-    public void transactionOne() throws FileNotFoundException {
+    public void transactionOne() throws FileNotFoundException, InterruptedException {
         System.out.println("START OF METHOD");
 
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
         other.notAnnotatedMethodWithinTheSameThread();
+        Thread.sleep(100);
         try {
             other.method();
         } catch (Exception e) {
@@ -36,10 +38,6 @@ public class Playground {
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
         System.out.println("END OF METHOD");
     }
-
-
-
-
     @Transactional
     public void transactionTwo() {
     }
@@ -49,7 +47,7 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
-
+    @Async
     public int notAnnotatedMethodWithinTheSameThread() {
         return jdbc.update("insert into MESSAGE(id, message) values ( 99,? )", "first");
     }
