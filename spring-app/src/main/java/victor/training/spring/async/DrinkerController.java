@@ -21,8 +21,6 @@ public class DrinkerController {
 
    // Java SE
 //   public static final ExecutorService barPool = Executors.newFixedThreadPool(100);
-   @Autowired
-   public Executor barPool;
 
    // TODO [1] inject and submit work to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
@@ -32,8 +30,8 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      CompletableFuture<Beer> futureBeer = supplyAsync(() -> barman.pourBeer(), barPool);
-      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
+      CompletableFuture<Beer> futureBeer = barman.pourBeer();
+      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
       Beer beer = futureBeer.get(); // 1 sec
       Vodka vodka = futureVodka.get(); // 0 sec
 

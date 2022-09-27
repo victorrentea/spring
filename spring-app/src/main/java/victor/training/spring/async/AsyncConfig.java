@@ -11,13 +11,25 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public ThreadPoolTaskExecutor barPool(@Value("${bar.pool.size}") int barPoolSize) {
+	public ThreadPoolTaskExecutor beerPool(@Value("${beer.pool.size}") int barPoolSize) {
 //		Schedulers.newBoundedElastic
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(barPoolSize);
 		executor.setMaxPoolSize(barPoolSize);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
+		executor.setThreadNamePrefix("beer-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
+	@Bean
+	public ThreadPoolTaskExecutor vodkaPool(@Value("${vodka.pool.size}") int vodkaPoolSize) {
+//		Schedulers.newBoundedElastic
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(vodkaPoolSize);
+		executor.setMaxPoolSize(vodkaPoolSize);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("vodka-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
