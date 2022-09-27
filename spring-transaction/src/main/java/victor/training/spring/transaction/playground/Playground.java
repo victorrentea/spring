@@ -1,24 +1,38 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
 public class Playground {
+    private static final Logger log = LoggerFactory.getLogger(Playground.class);
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
+//        Connection conn;
+//        conn.setAutoCommit(false); // = START TRANSACTION
+//        conn.prepareStatement("").executeUpdate();
+//        conn.commit();
+//        conn.rollback();
 
     @Transactional
     public void transactionOne() {
         System.out.println("START OF METHOD");
+
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
-       other.method();
+        try {
+            other.method();
+        } catch (Exception e) {
+            log.error("Oups: " + e);
+        }
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -39,6 +53,6 @@ class OtherClass {
     @Transactional
     public void method() {
         jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
-        jdbc.update("insert into MESSAGE(id, message) values (2,?)", "met2 2");
+        jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
     }
 }
