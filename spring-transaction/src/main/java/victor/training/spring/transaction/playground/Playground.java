@@ -29,7 +29,7 @@ public class Playground {
 
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
         try {
-            other.method();
+            method();
         } catch (Exception e) {
             log.error("Oups: " + e);
             // NOTE: no rethrow; the ex dissapears.
@@ -43,6 +43,11 @@ public class Playground {
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
         System.out.println("END OF METHOD");
     }
+    @Transactional // kills the 'current' (caller) tx when an exception is thrown
+    public void method() {
+        jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
+        jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
+    }
     @Transactional
     public void transactionTwo() {
     }
@@ -52,9 +57,5 @@ public class Playground {
 class OtherClass {
     private final JdbcTemplate jdbc;
 
-    @Transactional // kills the 'current' (caller) tx when an exception is thrown
-    public void method() {
-        jdbc.update("insert into MESSAGE(id, message) values (1,?)", "met2 1");
-        jdbc.update("insert into MESSAGE(id, message) values (null,?)", "met2 2");
-    }
+
 }
