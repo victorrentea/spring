@@ -24,6 +24,7 @@ public class Playground {
         System.out.println("START OF METHOD");
 
         jdbc.update("insert into MESSAGE(id, message) values ( 100,? )", "first");
+        localMethodInTheSameClass();
         try {
             other.method();
         } catch (Exception e) {
@@ -36,6 +37,10 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
         System.out.println("END OF METHOD");
+    }
+
+    private int localMethodInTheSameClass() {
+        return jdbc.update("insert into MESSAGE(id, message) values ( 99,? )", "first");
     }
 
 
