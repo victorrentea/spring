@@ -1,43 +1,54 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+@Component
+class UserService {
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
+	@Async
+	public CompletableFuture<String> getUsername() {
+		log.debug("Am i in a different thread here ?");
+		return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+	}
+}
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
+	private final UserService service;
+
+	private static final Logger log = LoggerFactory.getLogger(TechnicalController.class);
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		dto.username = authentication.getName();
-		dto.role = authentication.getAuthorities()
+		dto.role = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
 				.stream().map(ga -> ga.toString())
 				.findFirst().get();
 
-
-
+		dto.username = service.getUsername().get();
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
 //		dto.authorities = authentication.getAuthorities().stream()
 //				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		dto.username = authentication.getName();
@@ -51,7 +62,9 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+
+
+	//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
 //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
 //		List<String> roles = authorities.stream()
 //				.map(GrantedAuthority::getAuthority)
@@ -70,7 +83,7 @@ public class TechnicalController {
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	@Autowired

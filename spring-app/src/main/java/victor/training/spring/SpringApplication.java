@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.GlobalExceptionHandler;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
@@ -19,6 +20,7 @@ import victor.training.spring.web.service.TrainingService;
 
 import static java.lang.System.currentTimeMillis;
 
+@EnableAsync
 @EnableCaching
 @EnableAspectJAutoProxy(exposeProxy = true) // allow to use AopContext.currentProxy()
 @SpringBootApplication
