@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Configuration
 public class SearchForRestControllerAdviceBeans_forDaniel {
-    @Bean
+//    @Bean
     public BeanPostProcessor method() {
 //        System.out.println("BPP in");
         return new BeanPostProcessor() {
