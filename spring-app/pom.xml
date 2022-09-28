@@ -110,15 +110,15 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <!-- OAuth2RestTemplate for Client Credentials flow -->
+            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow &ndash;&gt;
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--<dependency>
             &lt;!&ndash; Experiment: create and send JWT token to called APIs to carry user info &ndash;&gt;
