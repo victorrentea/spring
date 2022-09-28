@@ -21,6 +21,8 @@ import java.util.Map;
 public class TeacherBioClient {
     @Value("${jwt.signature.shared.secret.base64}")
     private String jwtSecret;
+    @Value("${teacher.bio.uri.base}")
+    private String teacherBioUriBase;
 
     // TODO cacheable
     public String retrieveBiographyForTeacher(long teacherId) {
@@ -59,7 +61,7 @@ public class TeacherBioClient {
             ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
                     CollectionUtils.toMultiValueMap(header),
                     HttpMethod.GET,
-                    new URI("http://localhost:8082/api/teachers/" + teacherId + "/bio")), String.class);
+                    new URI(teacherBioUriBase + "/api/teachers/" + teacherId + "/bio")), String.class);
             return response.getBody();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
