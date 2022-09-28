@@ -1,14 +1,19 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.ServerResponse;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -23,19 +28,18 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+	public TrainingDto getTrainingById(@PathVariable TrainingId id) {
 		return trainingService.getTrainingById(id);
-		//TODO if id is not found, return 404 status code
 	}
 
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody  TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id, @RequestBody @Validated(TrainingDto.ForUpdateFlow.class) TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -51,8 +55,11 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	// TODO GET or POST ?
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+	// GET + body = risky
+	// GET search?name=JPA&trainigId=3 ..... 2000 char max in URL + pain on client
+	// POST pragmatic
+	@PostMapping("search")
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 	// Hint: try direcly @GetMapping with no @RequestBody annot

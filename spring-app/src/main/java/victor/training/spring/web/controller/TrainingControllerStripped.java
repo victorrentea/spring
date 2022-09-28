@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -17,7 +18,7 @@ public class TrainingControllerStripped {
 	}
 
 	public TrainingDto getTrainingById(Long id) {
-		return trainingService.getTrainingById(id);
+		return trainingService.getTrainingById(new TrainingId(id));
 	}
 
 	// TODO @Valid

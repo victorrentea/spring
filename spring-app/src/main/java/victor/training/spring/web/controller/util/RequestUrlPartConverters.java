@@ -16,4 +16,6 @@ public class RequestUrlPartConverters implements WebMvcConfigurer {
         registry.addConverter(String.class, TrainingId.class, TrainingId::new);
         registry.addConverter(String.class, LocalDate.class, LocalDate::parse);
     }
+
+
 }
