@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
@@ -21,8 +22,12 @@ public class TechnicalController {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
+		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+
+
 		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
-		dto.username = "// TODO: get username";
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
