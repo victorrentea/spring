@@ -38,8 +38,10 @@ public class TechnicalController {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.role = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-				.stream().map(ga -> ga.toString())
+		dto.role = SecurityContextHolder.getContext()
+				.getAuthentication().getAuthorities()
+				.stream()
+				.map(ga -> ga.toString().substring("ROLE_".length()))
 				.findFirst().get();
 
 		dto.username = service.getUsername().get();
