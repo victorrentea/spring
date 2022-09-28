@@ -68,7 +68,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //                .cors().and() // only used in SPApps that are delivered to browser from a different host (cdn.picnic..) than the host hosting the APIS (api.picnic..)
                 .authorizeRequests()
 
-                    .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+                    .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAnyRole("ADMIN","POWER")
 
                     .mvcMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // for ADMIN only!
                     .mvcMatchers("/api/admin/**").hasRole("ADMIN") // for ADMIN only!
