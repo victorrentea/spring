@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +23,11 @@ public class TechnicalController {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		dto.username = authentication.getName();
+		dto.role = authentication.getAuthorities()
+				.stream().map(ga -> ga.toString())
+				.findFirst().get();
 
 
 
