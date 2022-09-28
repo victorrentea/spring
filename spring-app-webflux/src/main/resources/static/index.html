@@ -120,7 +120,7 @@ function fillTable(trainings) {
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 
-		if (currentUser.authorities.includes('training.delete'))
+		//if (currentUser.authorities.includes('training.delete'))
 		// if (currentUser.role === 'ADMIN' )
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 
@@ -202,7 +202,7 @@ populateLanguageSelect($("#editLanguage"));
 
 
 function deleteTraining(id) {
-	$.ajax(restEndpoint +"/trainings/"+id + "/delete", {
+	$.ajax(restEndpoint +"/trainings/"+id , {
 		method: "DELETE",
 		success: function() {
 			toastr.success("Training deleted");

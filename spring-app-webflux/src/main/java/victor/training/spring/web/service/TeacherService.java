@@ -20,8 +20,8 @@ public class TeacherService {
         return teacherRepo.findAll().map(TeacherDto::new);
     }
 
-    public void createTeacher(TeacherDto dto) {
-        teacherRepo.save(new Teacher(dto.name));
+    public Mono<Teacher> createTeacher(TeacherDto dto) {
+        return teacherRepo.save(new Teacher(dto.name));
     }
 
     public void updateTeacher(long id, String newName) {

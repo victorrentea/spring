@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import victor.training.spring.web.controller.dto.LanguageDto;
 import victor.training.spring.web.service.LanguageService;
 import victor.training.spring.web.service.ServiceInterface;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,10 +19,10 @@ public class LanguageController {
     @GetMapping
     // TODO cache
     // TODO evict via dedicated endpoint (called from script)
-    public List<LanguageDto> getAll() {
+    public Flux<LanguageDto> getAll() {
         System.out.println("Who am I talking to ?  " + languageService.getClass());
         return languageService.findAll()
-                .stream().map(LanguageDto::new).collect(Collectors.toList());
+                .map(LanguageDto::new);
     }
 
     @GetMapping("test")
