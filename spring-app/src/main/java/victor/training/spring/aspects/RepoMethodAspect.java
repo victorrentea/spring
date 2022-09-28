@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class RepoMethodAspect {
-    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))")
+//    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))")
     public Object interceptRepoMethod(ProceedingJoinPoint pjp) throws Throwable {
         log.debug("Calling repo method: {}.{}", pjp.getSignature().getDeclaringTypeName(), pjp.getSignature().getName());
         return pjp.proceed();

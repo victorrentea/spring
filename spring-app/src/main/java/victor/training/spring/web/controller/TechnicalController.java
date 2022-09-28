@@ -21,8 +21,9 @@ public class TechnicalController {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		// SSO: KeycloakPrincipal<KeycloakSecurityContext>
 		dto.username = "// TODO: get username";
+
+
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
