@@ -23,6 +23,7 @@
         <module>spring-start</module>
         <module>spring-transaction</module>
         <module>spring-app</module>
+        <module>spring-app-webflux</module>
         <module>spring-micro</module>
     </modules>
 
