@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.di.subp.Z;
@@ -58,9 +56,12 @@ public class FirstApplication /*implements CommandLineRunner*/ {
 }
 
 //@Service
-record X(
-		Y y
-) {
+class X {
+	private final 	Y y;
+
+	X(Y y) {
+		this.y = y;
+	}
 
 	public int prod() {
 
