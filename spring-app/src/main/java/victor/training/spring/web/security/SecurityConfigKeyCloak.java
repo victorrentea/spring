@@ -37,14 +37,14 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
         // A) Role-based security : prefix every role in the token with "ROLE_"
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // B) Authority-based security
         // B1) Extracting fine-grained authorities from Access Token (relies on KeyCloak composite Roles)
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // B2) converting ROLE from token into local authorities (eg via a local enum)
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
@@ -68,10 +68,10 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 //                .cors().and() // only used in SPApps that are delivered to browser from a different host (cdn.picnic..) than the host hosting the APIS (api.picnic..)
                 .authorizeRequests()
 
-                    .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAnyRole("ADMIN","POWER")
+//                    .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAnyRole("ADMIN")
 
-                    .mvcMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // for ADMIN only!
-                    .mvcMatchers("/api/admin/**").hasRole("ADMIN") // for ADMIN only!
+//                    .mvcMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN") // for ADMIN only!
+//                    .mvcMatchers("/api/admin/**").hasRole("ADMIN") // for ADMIN only!
                 // both mean that in Authentication.getAuthorities there is a GrantedAuthority with "ROLE_ADMIN" inside
 
                     .mvcMatchers("/spa/**", "/api/**").authenticated()

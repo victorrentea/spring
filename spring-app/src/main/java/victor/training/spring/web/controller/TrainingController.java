@@ -2,6 +2,9 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.ServerResponse;
@@ -50,7 +53,11 @@ public class TrainingController {
 	//   OR b) Allow only if the current user manages the language of that training
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
-	@DeleteMapping("{id}")
+	@DeleteMapping("{id}/delete")
+//	@Secured({"ADMIN"})
+//	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language (SpEL) between the quotes.
+	@PreAuthorize("hasAuthority('training.delete')")
+//	@PostAuthorize()
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

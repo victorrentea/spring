@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Component
 class UserService {
@@ -38,8 +41,9 @@ public class TechnicalController {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.role = SecurityContextHolder.getContext()
-				.getAuthentication().getAuthorities()
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+		dto.role = authentication.getAuthorities()
 				.stream()
 				.map(ga -> ga.toString().substring("ROLE_".length()))
 				.findFirst().get();
@@ -49,8 +53,8 @@ public class TechnicalController {
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream()
-//				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		dto.authorities = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //		dto.username = authentication.getName();
