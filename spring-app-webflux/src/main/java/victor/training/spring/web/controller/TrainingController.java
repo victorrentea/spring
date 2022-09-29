@@ -29,7 +29,10 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	public Mono<TrainingDto> getTrainingById(@PathVariable TrainingId id) {
-		return trainingService.getTrainingById(id);
+		return trainingService.getTrainingById(id)
+				.name("getTrainingBy-nam1")
+				.metrics()
+				;
 	}
 
 	// TODO @Valid
