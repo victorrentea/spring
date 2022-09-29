@@ -1,6 +1,6 @@
 reactive:
     - why WebFlux (slow loris)
-    - migrate crud-style service to reactive
+    - migrate crud-style service to reactive - 1h
     - write a webflux filter
     - reactive aspect
     - run 2 calls in parallel

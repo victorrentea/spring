@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import victor.training.spring.web.controller.dto.LanguageDto;
+import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.service.LanguageService;
 
 @RestController
@@ -17,7 +18,9 @@ public class LanguageController {
     @GetMapping
     public Flux<LanguageDto> getAll() {
         System.out.println("Who am I talking to ?  " + languageService.getClass());
-        return languageService.findAll()
-                .map(LanguageDto::new);
+        Flux<ProgrammingLanguage> flux = languageService.findAll();
+        System.out.println("What instance of flux is this ?? " +
+                           System.identityHashCode(flux));
+        return flux.map(LanguageDto::new);
     }
 }

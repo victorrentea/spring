@@ -56,14 +56,14 @@ public class TrainingService_Reactive {
                 .flatMap(e -> trainingRepo.save(e));
     }
 
-    private Training changeEntity(Training training, TrainingDto dto) {
-        training.setName(dto.name);
-        training.setDescription(dto.description);
-        training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        training.setProgrammingLanguageId(dto.languageId);
-        training.setTeacherId(dto.teacherId);
-        return training;
-    }
+        private Training changeEntity(Training training, TrainingDto dto) {
+            training.setName(dto.name);
+            training.setDescription(dto.description);
+            training.setStartDate(LocalDate.parse(dto.startDate, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            training.setProgrammingLanguageId(dto.languageId);
+            training.setTeacherId(dto.teacherId);
+            return training;
+        }
 
 
     public Mono<Void> deleteById(Long id) {

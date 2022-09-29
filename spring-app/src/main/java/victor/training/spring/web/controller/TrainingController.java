@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -36,6 +37,7 @@ public class TrainingController {
 	}
 
 	// TODO @Valid
+	@Timed("create-flow")
 	@PostMapping
 	public void createTraining(@RequestBody  TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);

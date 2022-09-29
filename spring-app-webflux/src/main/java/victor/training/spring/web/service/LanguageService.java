@@ -21,7 +21,10 @@ public class LanguageService {
     @Cacheable("languages")
     @Logged
     public Flux<ProgrammingLanguage> findAll() {
-        log.debug("Get languages"); // how many times does the query run ? check logs
-        return repo.findAll();
+         // how many times does the query run ? check logs
+        return repo.findAll()
+                .doOnSubscribe(s -> log.debug("Get languages"))
+                .cache()
+                ;
     }
 }

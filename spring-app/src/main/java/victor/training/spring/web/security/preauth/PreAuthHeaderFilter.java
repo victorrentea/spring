@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.web.client.AsyncRestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
     public PreAuthHeaderFilter(AuthenticationManager authenticationManager) {
         setAuthenticationManager(authenticationManager);
+
+//        new AsyncRestTemplate().exchange().completable()
     }
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override

@@ -27,6 +27,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @Transactional
 @Validated
+@Service
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;

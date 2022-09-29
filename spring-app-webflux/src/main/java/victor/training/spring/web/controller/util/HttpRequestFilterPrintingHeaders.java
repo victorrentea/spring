@@ -10,10 +10,25 @@ import reactor.core.publisher.Mono;
 
 import java.util.stream.Collectors;
 
-//@Slf4j
-//@Component
-//public class HttpRequestFilterPrintingHeaders implements Filter {
-//}
+import static java.lang.System.currentTimeMillis;
+
+@Slf4j
+@Component
+public class HttpRequestFilterPrintingHeaders implements WebFilter {
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+//        log.info("Request header: " +exchange.getRequest().getHeaders().keySet());
+
+        exchange.getResponse().getHeaders().add("X-Resp", "surprise");
+        return chain.filter(exchange)
+                .then(Mono.deferContextual(context -> {
+                    System.out.println("took " + (currentTimeMillis() -(Long)context.get("t0")));
+                    return Mono.empty();
+                }))
+                .then()
+                .contextWrite(context -> context.put("t0", currentTimeMillis()));
+    }
+}
 
 
 // TODO victorrentea 2022-09-29: 1) print req headers
