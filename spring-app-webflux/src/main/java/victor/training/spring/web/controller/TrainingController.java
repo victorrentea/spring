@@ -9,7 +9,7 @@ import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
 import victor.training.spring.web.entity.TrainingId;
-import victor.training.spring.web.service.TrainingService;
+import victor.training.spring.web.service.TrainingService_Reactive;
 
 import java.text.ParseException;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("api/trainings")
 public class TrainingController {
 	@Autowired
-	private TrainingService trainingService;
+	private TrainingService_Reactive trainingService;
 
 	@GetMapping
 	public Flux<TrainingDto> getAllTrainings() {

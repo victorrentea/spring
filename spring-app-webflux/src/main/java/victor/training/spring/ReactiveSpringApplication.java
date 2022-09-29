@@ -14,7 +14,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
-import victor.training.spring.web.service.TrainingService;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -23,7 +22,6 @@ import static java.lang.System.currentTimeMillis;
 @EnableAsync
 @EnableCaching
 @SpringBootApplication
-@Import(TrainingService.class)
 @Slf4j
 public class ReactiveSpringApplication {
     public static final long t0 = currentTimeMillis();
