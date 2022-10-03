@@ -7,23 +7,30 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 @SpringBootApplication
-public class BeanApp implements CommandLineRunner {
+public class BeanApp /*implements CommandLineRunner*/ {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
-    @Autowired
-//    @Lazy // nu e bine pe app noi, ca designul e praf => spargi in clase mai mici
-    private Conversation cearta;
+//    @Autowired
+////    @Lazy // nu e bine pe app noi, ca designul e praf => spargi in clase mai mici
+//    private Conversation cearta;
 
-    @Override
-    public void run(String... args) throws Exception {
-//        Conversation conversation = new Conversation(/*new Person("John"), new Person("Jane")*/);
-        // TODO convince Spring to do for you the line above
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @GetMapping
+    public void apiRest() {
+        // risc: app porneste, dar crapa la call mai tarziu.
+        Conversation cearta = applicationContext.getBean("cearta", Conversation.class);
         cearta.start();
     }
 }
@@ -40,7 +47,7 @@ class MyConfig {
         return new Person("Jane");
     }
     @Bean
-    public Conversation cearta() {
+    public Conversation blamestorming() {
         System.out.println("cearta");
         return new Conversation(john(null), jane());
     }
