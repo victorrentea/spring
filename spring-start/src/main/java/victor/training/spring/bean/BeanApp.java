@@ -6,13 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+//@EnableAsync
+//@EnableScheduling
+//@EnableCaching
 @SpringBootApplication
 public class BeanApp /*implements CommandLineRunner*/ {
     public static void main(String[] args) {
@@ -23,6 +30,8 @@ public class BeanApp /*implements CommandLineRunner*/ {
 ////    @Lazy // nu e bine pe app noi, ca designul e praf => spargi in clase mai mici
     private Conversation blamestorming;
 
+    @Value("${alta.prop}")
+    int x;
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -36,8 +45,9 @@ public class BeanApp /*implements CommandLineRunner*/ {
 @Configuration
 class MyConfig {
     @Bean
-    public Person john(@Value("${john.name:John}") String johnName) { // singleton
-        System.out.println("Aici se naste John👶");
+    public Person john(@Value("${john.name}") String johnName) { // singleton
+        System.out.println("Aici se naste " + johnName + "👶");
+//        System.getPr
         return new Person(johnName);
     }
     // DOar intre apelurile de metode @Bean se intampla ca SPring sa-ti intercepteze apelurile si sa le fure sa faca magie. In nici un alt punct dinSpring, apeluri locale nu pot fi interceptate.
