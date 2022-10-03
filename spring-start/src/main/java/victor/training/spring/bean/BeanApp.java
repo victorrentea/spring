@@ -1,16 +1,14 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class BeanApp implements CommandLineRunner {
@@ -42,20 +40,16 @@ class MyConfig {
     }
 }
 
+@RequiredArgsConstructor
 @Data
 @Component
 class Conversation {
-    private final Person one;
-    private final Person two;
-
-    public Conversation(@Qualifier("john") Person one, @Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
-    }
+    private final Person john;
+    private final Person jane;
 
     public void start() {
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
+        System.out.println(john.sayHello());
+        System.out.println(jane.sayHello());
     }
 }
 
