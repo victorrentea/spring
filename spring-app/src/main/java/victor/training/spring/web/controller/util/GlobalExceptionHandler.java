@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class GlobalExceptionHandler {
 
 	@ResponseStatus(INTERNAL_SERVER_ERROR) // http response status
-	@ExceptionHandler(value = Exception.class)
+	@ExceptionHandler(Exception.class)
 	public String defaultErrorHandler(Exception exception, HttpServletRequest request) throws Exception {
 		log.error(exception.getMessage(), exception);
 		// you may want to translate a message code in the request.getLocale() / OpenID user token
