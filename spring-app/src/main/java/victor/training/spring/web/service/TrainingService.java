@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,7 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
+    @Timed("create-training")
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");

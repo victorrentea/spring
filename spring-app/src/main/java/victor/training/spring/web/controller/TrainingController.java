@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.aspects.Logged;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
@@ -10,7 +11,7 @@ import victor.training.spring.web.service.TrainingService;
 import java.text.ParseException;
 import java.util.List;
 
-
+@Logged
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -31,9 +32,14 @@ public class TrainingController {
 	// TODO @Valid
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+		alta();
 		trainingService.createTraining(dto);
 	}
 
+	public void alta() {
+		System.out.println("Alta functie: o functie chemata in acceeasi clasa NU poate fi" +
+						   " interceptata de SPring AOP");
+	}
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);

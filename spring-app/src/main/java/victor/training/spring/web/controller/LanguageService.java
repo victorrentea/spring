@@ -20,7 +20,7 @@ public class LanguageService {
     @Cacheable("languages")
     public List<LanguageDto> findAll() {
         System.out.println("QUERY LA DB");
-        if (true) throw new RuntimeException("intentioant");
+//        if (true) throw new RuntimeException("intentioant");
         return repo.findAll().stream().map(LanguageDto::new).collect(toList());
 
     }
