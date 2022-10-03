@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.aspects.Logged;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -35,6 +36,16 @@ public class TrainingController {
 		alta();
 		trainingService.createTraining(dto);
 	}
+
+//	@Scheduled(fixedDelay = 60*1000) // rau ca ce: doua pod-uri ar putea
+//	// simultan sa incerce acelasi rand NOT DONE
+//	public void laFiecareMinutIaDinBazaSiIncearcaANAF() {
+//		call anaf
+//		daca ok marchez in DB status=DONE
+//	}
+	// mai bine inloc de scheduled, faci un endpoint si-l chemi o data pe
+	// clusterul tau la ora potrivita (din exterior)
+	// daca vrei scheduling pe cloud > shedlock: https://www.baeldung.com/shedlock-spring
 
 	public void alta() {
 		System.out.println("Alta functie: o functie chemata in acceeasi clasa NU poate fi" +

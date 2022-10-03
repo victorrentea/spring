@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,12 @@ public class LanguageController {
 //        System.out.println("Oare cu cine vorbesc? "
 //                           + service.getClass());
         return service.findAll();
+    }
+    // curl
+    @GetMapping("cache/kill")
+    @CacheEvict("languages")
+    public void killCache() {
+        // metoda goala: nu ma sterge. lasa magia sa lucreze.........
     }
 }
 
