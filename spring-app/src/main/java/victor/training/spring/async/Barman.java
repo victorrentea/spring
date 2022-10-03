@@ -14,14 +14,14 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 @Slf4j
 @Service
 public class Barman {
-   @Async
+   @Async("barPool")
    public CompletableFuture<Beer> pourBeer()  {
 //      if (true) throw new RuntimeException("NU MAI E BERE in Vama");
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepq(1000);
       return completedFuture(new Beer());
    }
-   @Async
+   @Async("beerPool")
    public CompletableFuture<Vodka> pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepq(1000);
