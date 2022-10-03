@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -35,6 +36,9 @@ public class FirstApplication /*implements CommandLineRunner*/{
 		SpringApplication.run(FirstApplication.class);
 	}
 
+
+	@Autowired
+	private DataSource dataSource;
 	@Autowired
 	private X x;
 
