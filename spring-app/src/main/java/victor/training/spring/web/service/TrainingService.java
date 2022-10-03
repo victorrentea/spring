@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,10 @@ public class TrainingService {
 
     @Autowired
     private CacheManager cacheManager;
+
+//    @CachePut(value = "teacher-by-id", key = "#id")
+//    public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+        // evita 1 sg apel de retea pentru urmatorul caller care vine
 
     @CacheEvict(value = "teacher-by-id", key = "#id")
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
