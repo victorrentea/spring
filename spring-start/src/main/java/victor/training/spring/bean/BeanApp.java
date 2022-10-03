@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -20,9 +19,9 @@ public class BeanApp /*implements CommandLineRunner*/ {
         SpringApplication.run(BeanApp.class);
     }
 
-//    @Autowired
+    @Autowired
 ////    @Lazy // nu e bine pe app noi, ca designul e praf => spargi in clase mai mici
-//    private Conversation cearta;
+    private Conversation blamestorming;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -30,14 +29,14 @@ public class BeanApp /*implements CommandLineRunner*/ {
     @GetMapping
     public void apiRest() {
         // risc: app porneste, dar crapa la call mai tarziu.
-        Conversation cearta = applicationContext.getBean("cearta", Conversation.class);
-        cearta.start();
+//        Conversation cearta = applicationContext.getBean("cearta", Conversation.class);
+        blamestorming.start();
     }
 }
 @Configuration
 class MyConfig {
     @Bean
-    public Person john(@Value("${john.name}") String johnName) { // singleton
+    public Person john(@Value("${john.name:John}") String johnName) { // singleton
         System.out.println("Aici se naste John👶");
         return new Person(johnName);
     }
