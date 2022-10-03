@@ -1,39 +1,52 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.aspects.Logged;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+@RequiredArgsConstructor
 @Logged
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
-	@Autowired
-	private TrainingService trainingService;
+	private final TrainingService trainingService;
 
 	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
+	// asa nu:
+//	@GetMapping("{id}")
+//	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable TrainingId id) {
+//		try {
+//			return ResponseEntity.ok(trainingService.getTrainingById(id));
+//		} catch (NoSuchElementException e) {
+//			return ResponseEntity.status(404)
+////					.header("Ceva", "frumos💐")
+//					.build();
+//		}
+//	}
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+	public TrainingDto getTrainingById(@PathVariable TrainingId id) {
 		return trainingService.getTrainingById(id);
-		//TODO if id is not found, return 404 status code
 	}
-
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
-		alta();
+	public void createTraining(@RequestBody @Validated TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
@@ -52,7 +65,7 @@ public class TrainingController {
 						   " interceptata de SPring AOP");
 	}
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+	public void updateTraining(@PathVariable Long id,  @Validated @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -68,7 +81,10 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	// TODO GET or POST ?
+	//3: (fitza) GET BODY de request
+	//1: @PostMapping("search") // pragmatic, pe Roy, da-l in masa
+	//2: GET ?a=1&b=c
+	@GetMapping("search") // merge sa ia automat din ?  bla=&bla=...
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}

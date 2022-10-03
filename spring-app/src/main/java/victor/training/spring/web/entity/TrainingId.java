@@ -15,7 +15,10 @@ public class TrainingId { // ID type pattern
    public long id() {
       return id;
    }
-
+// WARNING: nu ma sterge ca sprigu nu mai merge alfel
+//   public static TrainingId valueOf(String value) {
+//      return new TrainingId(value);
+//   }
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
