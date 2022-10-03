@@ -29,15 +29,15 @@ public class BeanApp implements CommandLineRunner {
 }
 @Configuration
 class MyConfig {
-
-    @Bean
-    public Person jane() {
-        return new Person("Jane");
-    }
     @Bean
     public Person john(@Value("${john.name}") String johnName) { // singleton
         System.out.println("Aici se naste John👶");
         return new Person(johnName);
+    }
+    // DOar intre apelurile de metode @Bean se intampla ca SPring sa-ti intercepteze apelurile si sa le fure sa faca magie. In nici un alt punct dinSpring, apeluri locale nu pot fi interceptate.
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
     }
     @Bean
     public Conversation cearta() {
