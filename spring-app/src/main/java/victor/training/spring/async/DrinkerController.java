@@ -33,8 +33,16 @@ public class DrinkerController {
       long t0 = currentTimeMillis();
 
 
-      CompletableFuture<Beer> futureBeer = supplyAsync(() -> barman.pourBeer(), barPool);
-      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
+      CompletableFuture<Beer> futureBeer = null;
+      try {
+         System.out.println("Oare cum e posibil? eu chem o functie, si aia nu ruleaza ?");
+         System.out.println("Oare barmanul cine este ? " + barman.getClass());
+         futureBeer = barman.pourBeer();
+      } catch (Exception e) {
+         // toDO
+         System.out.println("NICIODATA NU INTRA AICI! DE CE ?!!!");
+      }
+      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
 
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();
