@@ -1,11 +1,13 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +17,12 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
+    //@TransactionAttribute (EJB)
     @Transactional
     public void transactionOne() {
         repo.insertNativ();
         repo.save(new Message("null"));
-        // causes a flush
-        // orice query: System.out.println(repo.findAll());
-        // repo.flush();
-        System.out.println("Ies din metoda. Ma intorc la 👻 proxy"); // write-behind
-//        throw new IllegalArgumentException("Exceptie valeu!");
+        throw new RuntimeException(new IOException("Exceptie valeu!"));
     }
 
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
