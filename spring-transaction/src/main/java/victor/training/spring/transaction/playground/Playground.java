@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionExecution;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,12 +76,7 @@ class OtherClass {
 //                transaction.setRollbackOnly();
 
         TransactionTemplate txTemplate = new TransactionTemplate(transactionManager);
-//        txTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        txTemplate.executeWithoutResult(status -> {
-            status.setRollbackOnly();
-            // linia 1
-            // linia 2
-        });
+        txTemplate.executeWithoutResult(TransactionExecution::setRollbackOnly);
 
 //        eventPublisher.publishEvent(new EventuMeu("nu")); // sync public
 //        if (true) {
