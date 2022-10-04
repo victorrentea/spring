@@ -19,7 +19,7 @@ public class TransactionsApp implements CommandLineRunner {
    // @GetMapping
    @Override
    public void run(String... args) throws Exception {
-      System.out.println("============= TRANSACTION ONE ==============");
+      System.out.println("============= TRANSACTION ONEXX ==============");
       playground.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
 //      playground.transactionTwo();
