@@ -17,15 +17,15 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
+        repo.insertNativ();
         repo.save(new Message("jpa"));
+    }
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
         // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
-    }
     @Transactional
     public void transactionTwo() {
     }

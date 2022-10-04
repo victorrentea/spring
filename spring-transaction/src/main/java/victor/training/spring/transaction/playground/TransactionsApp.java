@@ -14,6 +14,7 @@ public class TransactionsApp implements CommandLineRunner {
 
    private final Playground playground;
 
+   // @GetMapping
    @Override
    public void run(String... args) throws Exception {
       System.out.println("============= TRANSACTION ONE ==============");
