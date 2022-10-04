@@ -22,7 +22,7 @@ public class Playground {
         // causes a flush
         // orice query: System.out.println(repo.findAll());
         // repo.flush();
-        System.out.println("Ies din metoda. Ma intorc la 👻 proxy");
+        System.out.println("Ies din metoda. Ma intorc la 👻 proxy"); // write-behind
 //        throw new IllegalArgumentException("Exceptie valeu!");
     }
 
