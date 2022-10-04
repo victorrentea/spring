@@ -19,13 +19,13 @@ public class DisplayAllActualPropertiesConfig {
         return new Properties();
     }
 
-    @Bean
-    public String test() {
-        log.info("All props: \n" + allProps().entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Object::toString)))
-                .map(e -> e.getKey() + " = " + e.getValue())
-                .collect(Collectors.joining("\n")));
-        return "DONE";
-    }
+//    @Bean
+//    public String test() {
+//        log.info("All props: \n" + allProps().entrySet()
+//                .stream()
+//                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Object::toString)))
+//                .map(e -> e.getKey() + " = " + e.getValue())
+//                .collect(Collectors.joining("\n")));
+//        return "BOU";
+//    }
 }
