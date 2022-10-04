@@ -18,7 +18,8 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.insertNativ();
-        repo.save(new Message(null));
+        repo.save(new Message("null"));
+        throw new NullPointerException();
     }
 
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
