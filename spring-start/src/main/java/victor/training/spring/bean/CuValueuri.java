@@ -20,15 +20,6 @@ public class CuValueuri {
     private final String p2;
     private final X x;
 
-//    public CuValueuri(
-//            @Value("${welcome.help.app-id}") String p1,
-//            @Value("${welcome.help.file}")String p2,
-//            X x) {
-//        this.p1 = p1;
-//        this.p2 = p2;
-//        this.x = x;
-//    }
-
     @PostConstruct
     public void method() {
         System.out.println("injected :" + this);

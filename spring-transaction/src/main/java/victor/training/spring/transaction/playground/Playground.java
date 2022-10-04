@@ -2,14 +2,19 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -40,18 +45,30 @@ public class Playground {
 //    public void transactionTwo() {
 //    }
 }
+
+@Value
+class EventuMeu {
+    String marire;
+}
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+    private final ApplicationEventPublisher eventPublisher;
     @Transactional
     public void bizLogic() {
         repo.save(new Message("Business Data1"));
         repo.save(new Message("Business Data2"));
-        if (true) {
-            throw new IllegalArgumentException("BUG!");
-        }
+        eventPublisher.publishEvent(new EventuMeu("nu")); // sync public
+//        if (true) {
+//            throw new IllegalArgumentException("BUG!");
+//        }
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onEvent(EventuMeu eventuMeu) {
+        log.info("dupa commit trimit mailuri! : "+eventuMeu.getMarire());
     }
 
     public void saveError(Exception e) {
