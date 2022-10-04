@@ -21,10 +21,12 @@ public class Playground {
     private final OtherClass other;
 
     //@TransactionAttribute (EJB)
+    @SneakyThrows
     @Transactional
     public void transactionOne() {
         repo.insertNativ();
         other.oAltaMetoda();
+        Thread.sleep(100);
     }
 
     // 2 Tx propagates with your calls (in your thread😱)
