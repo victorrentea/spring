@@ -19,7 +19,11 @@ public class Playground {
     public void transactionOne() {
         repo.insertNativ();
         repo.save(new Message("null"));
-        throw new NullPointerException();
+        // causes a flush
+        // orice query: System.out.println(repo.findAll());
+        // repo.flush();
+        System.out.println("Ies din metoda. Ma intorc la 👻 proxy");
+//        throw new IllegalArgumentException("Exceptie valeu!");
     }
 
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
