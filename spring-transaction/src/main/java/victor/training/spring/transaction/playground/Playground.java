@@ -18,9 +18,9 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.insertNativ();
-        repo.save(new Message("jpa"));
+        repo.save(new Message(null));
     }
-        // 0 p6spy
+
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
         // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
