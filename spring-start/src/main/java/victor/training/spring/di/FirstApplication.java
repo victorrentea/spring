@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 // [4] Profile
 // [5] getBean
 // [6] inject List<BeanI>
+// [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner{
@@ -32,11 +33,11 @@ public class FirstApplication implements CommandLineRunner{
 
 @Service
 class X {
-	// field injection
+	// #1 field injection
 	@Autowired
 	private Y y;
 
-// method (setter) injection (rarely used)
+// #2 method (setter) injection (rarely used)
 //	private Z z;
 //	@Autowired
 //	public void setZ(Z z) {
@@ -51,7 +52,7 @@ class X {
 class Y {
 	private final Z z;
 
-	// constructor injection (no @Autowired needed since Spring 4.3)
+	// #3 constructor injection (no @Autowired needed since Spring 4.3)
 	public Y(Z z) {
 		this.z = z;
 	}
