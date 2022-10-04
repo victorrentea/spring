@@ -23,7 +23,6 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
-    @Transactional
     public void transactionOne() { // ascultam mesaje de pe cozi
         try {
             other.bizLogic();
@@ -55,7 +54,6 @@ class OtherClass {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError(Exception e) {
         repo.save(new Message("VALEU: EROARE: " + e.getMessage()));
     }
