@@ -5,6 +5,7 @@ import java.util.Objects;
 public class TrainingId { // ID type pattern
    private final long id;
 
+   @SuppressWarnings("unused")  // Spring uses this to map from a url part into a TrainingId
    public TrainingId(String id) {
       this(Long.parseLong(id));
    }
