@@ -2,6 +2,9 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.security.SecurityUtil;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
@@ -42,10 +45,16 @@ public class TechnicalController {
 	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 		JWTUtils.printTheTokens();
 
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//String s = SecurityUtil.getCUrrentUserEmail();
+		KeycloakPrincipal<KeycloakSecurityContext> kcPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+
+		String email  = kcPrincipal.getKeycloakSecurityContext().getToken().getEmail();
+
 		CurrentUserDto dto = new CurrentUserDto();
 		log.info("Inainte");
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		dto.username= authentication.getName();
+		dto.username= authentication.getName() + " " + email;
 //		dto.username = altaComponenta.getUsername().get(); //ok
 
 //		dto.username = CompletableFuture.supplyAsync(() -> // KO: curge informatia despre user de la un req la altul
@@ -55,8 +64,8 @@ public class TechnicalController {
 		// A) role-based security
 		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream()
-//				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		dto.authorities = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
