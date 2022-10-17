@@ -30,13 +30,15 @@ public class FacadeLoggingInterceptor {
       }
    }
 
-   @Around("@within(victor.training.spring.aspects.Facade))")
+
+//   @Around("@within(victor.training.spring.aspects.Facade))") // logeaza metodele chemate din orice clasa adnotata cu @Facade
+   @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // logeaza metodele adnotate cu ce zic aici
    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
       logBefore(joinPoint);
       long t0 = currentTimeMillis();
 		try {
-			Object returnedObject = joinPoint.proceed();
-			logAfter(joinPoint, returnedObject, t0);
+			Object returnedObject = joinPoint.proceed(); // las apelul sa mearga mai departe catre clasa
+			logAfter(joinPoint, returnedObject, t0); // logez dupa, rezultatul
          return returnedObject;
       } catch (Exception e) {
          long deltaMillis = currentTimeMillis() - t0;
@@ -53,7 +55,8 @@ public class FacadeLoggingInterceptor {
 
       String currentUsername = "SecurityContextHolder.getContext().getName()"; // TODO
 
-      log.debug("Invoking {}.{}(..) (user:{}): {}", joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(),
+       String calledMethodName = joinPoint.getTarget().getClass().getSimpleName();
+       log.debug("Invoking {}.{}(..) (user:{}): {}", calledMethodName, joinPoint.getSignature().getName(),
 			currentUsername, argListConcat);
    }
 

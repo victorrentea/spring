@@ -51,16 +51,25 @@ class SecondGrade {
 }
 // @Service
 /*final*/ class Maths { // ex runtime
-//    @Transactional
-    public final int sum(int a, int b) { // silent ignore!
+    @Transactional
+    public /*final*/ int sum(int a, int b) { // silent ignore!
         // chestii deschizi / inchizi sesiuni
         //
+        if (true) {
+            throw new IllegalArgumentException("Intentionat");
+        }
         return a + b;
     }
 
     public int product(int a, int b) {
         // chestii
-        return a * b;
+
+        int produs = 0;
+        for (int i = 0; i < a; i++) {
+            produs = sum(produs, b); // principalul pitfall din Proxyuri de spring este ca apeluri in cadrul aceleiasi clase NU POT FI INTERCEPTATE.
+        }
+        return produs;
+//        return a * b;
     }
 }
 

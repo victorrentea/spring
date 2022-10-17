@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.aspects.Facade;
+import victor.training.spring.aspects.LoggedMethod;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -22,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Slf4j
-@Service
+@Facade
 @Transactional
 public class TrainingService {
     private final TrainingRepo trainingRepo;
@@ -32,6 +34,7 @@ public class TrainingService {
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
 
+    @LoggedMethod
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
