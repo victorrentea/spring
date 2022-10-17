@@ -1,16 +1,30 @@
 package victor.training.spring.aspects;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Service;
+
+@SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
         Maths maths = new Maths();
         SecondGrade secondGrade = new SecondGrade(maths);
+        new ProxyIntro().run(secondGrade);
+    }
 
+//    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
+
+    @Autowired
+    public void run(SecondGrade secondGrade) {
+        System.out.println("At runtime...");
         secondGrade.mathClass();
     }
 
 }
 
+// @Service
 class SecondGrade {
     private final Maths maths;
 
@@ -25,6 +39,7 @@ class SecondGrade {
     }
 }
 
+// @Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
