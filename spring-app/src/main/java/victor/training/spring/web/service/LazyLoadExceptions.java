@@ -14,7 +14,7 @@ import java.util.List;
 public class LazyLoadExceptions {
     private final TeacherRepo teacherRepo;
 
-
+    @Transactional // fix1 prost
     @Scheduled(initialDelay = 1000, fixedDelay = 10000000)
     public void method() {
         System.out.println("ONCE!");
