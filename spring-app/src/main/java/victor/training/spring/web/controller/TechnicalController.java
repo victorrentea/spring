@@ -1,28 +1,48 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+@Component
+@Slf4j
+class AltaComponenta {
+	@Async
+	public CompletableFuture<String> getUsername() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		log.info("Chiar am plecat pe al thread? " + context.getAuthentication());
+		return CompletableFuture.completedFuture(context.getAuthentication().getName());
+	}
+}
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
+	private final AltaComponenta altaComponenta;
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = "// TODO: get username";
+		log.info("Inainte");
+//		dto.username = altaComponenta.getUsername().get();
 
+		dto.username = CompletableFuture.supplyAsync(() ->
+				SecurityContextHolder.getContext().getAuthentication().getName()
+		).get();
 
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
@@ -43,7 +63,8 @@ public class TechnicalController {
 		return dto;
 	}
 
-//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+
+	//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
 //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
 //		List<String> roles = authorities.stream()
 //				.map(GrantedAuthority::getAuthority)
@@ -62,7 +83,7 @@ public class TechnicalController {
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	@Autowired
