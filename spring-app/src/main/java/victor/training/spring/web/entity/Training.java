@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Data // not in prod
-public class Training {
+public class Training { // copilu
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -16,7 +16,7 @@ public class Training {
 	private Date startDate;
 	@ManyToOne
 	private Teacher teacher;
-	@ManyToOne
+	@ManyToOne // uneori Hibernate aduce si @..ToOne cu query-uri succesive
 	private ProgrammingLanguage programmingLanguage;
 
 	public Training() {

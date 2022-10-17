@@ -23,7 +23,7 @@ public class Teacher {
 
 	@BatchSize(size = 100)
 	@OneToMany(mappedBy = "teacher"
-			,fetch = FetchType.EAGER
+//			,fetch = FetchType.EAGER
 			) // fix2:
 		//1) ineficient memorie/CPU/GC: TOT TIMPUL cand scoti Teacher, aduce si traingurile lui >
 			// aduci Teacheri pe multe alte use caseuri? Daca da> ineficient.
