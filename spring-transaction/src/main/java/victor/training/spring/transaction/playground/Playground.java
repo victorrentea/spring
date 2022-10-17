@@ -15,7 +15,7 @@ public class Playground {
     private final JdbcTemplate jdbc;
     private final OtherClass other;
 
-    @Transactional
+    @Transactional // face ca tot sau nimic ce e in metoda se va persista
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         repo.save(new Message("jpa"));
@@ -26,6 +26,8 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+
     @Transactional
     public void transactionTwo() {
     }

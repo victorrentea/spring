@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@RequiredArgsConstructor
+@RequiredArgsConstructor // genereaza ctor lipsa
 public class TransactionsApp implements CommandLineRunner {
    public static void main(String[] args) {
       SpringApplication.run(TransactionsApp.class, args);

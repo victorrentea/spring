@@ -64,3 +64,9 @@
 //      return tagRepo.findAllByTraining(training.getId()).stream().map(Tag::getName).collect(toList());
 //   }
 //}
+
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.Value;
+
