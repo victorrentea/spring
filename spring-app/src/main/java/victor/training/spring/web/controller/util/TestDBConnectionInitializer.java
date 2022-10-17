@@ -10,7 +10,11 @@ import java.sql.DriverManager;
 @Slf4j
 public class TestDBConnectionInitializer implements ApplicationListener<ApplicationContextInitializedEvent> {
    public static void assertCanConnectToDB(Environment env) {
-      String url = env.getRequiredProperty("spring.datasource.url");
+      String url = env.getProperty("spring.datasource.url");
+      if (url == null) {
+         log.info("Nothing to do: using in-memory db?");
+         return;
+      }
       try {
          Class.forName(env.getRequiredProperty("spring.datasource.driver-class-name"));
          log.debug("Trying to connect to {}", url);
