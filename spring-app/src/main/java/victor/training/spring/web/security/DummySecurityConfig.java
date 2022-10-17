@@ -19,7 +19,7 @@
 //      http
 ////          .addFilterBefore(new HttpRequestFilterPrintingHeaders(), WebAsyncManagerIntegrationFilter.class)
 ////          .cors().and()
-//          .csrf().disable() // as I don't ever take <form> POSTs
+//          .csrf().disable() // OK since I don't ever take <form> POSTs
 //          .authorizeRequests().anyRequest().authenticated()
 //          .and()
 //          .formLogin().permitAll()
