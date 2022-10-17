@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class RolesFromTokenToLocalAuthorities implements GrantedAuthoritiesMapper {
     @Override
     public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        log.debug("Input authorities: " + authorities);
         List<UserRole> matchingRoles = authorities.stream()
                 .map(a -> UserRole.valueOfOpt(a.getAuthority()))
                 .filter(Optional::isPresent)
@@ -25,11 +26,12 @@ public class RolesFromTokenToLocalAuthorities implements GrantedAuthoritiesMappe
             JWTUtils.printTheTokens();
             throw new IllegalArgumentException("No single role found in token that matches known roles " + Arrays.toString(UserRole.values()));
         }
-        log.info("Found role in token: {}", matchingRoles);
-        return matchingRoles.stream()
+        List<SimpleGrantedAuthority> resolveAuthorities = matchingRoles.stream()
                 .flatMap(userRole -> userRole.getAuthorities().stream())
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+        log.debug("Output authorities (roles:{}) = {}", matchingRoles, resolveAuthorities);
+        return resolveAuthorities;
     }
 
 }
