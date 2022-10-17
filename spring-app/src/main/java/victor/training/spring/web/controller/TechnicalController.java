@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,10 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.JWTUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -34,11 +40,12 @@ public class TechnicalController {
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
-//		JWTUtils.printTheTokens();
+		JWTUtils.printTheTokens();
 
 		CurrentUserDto dto = new CurrentUserDto();
 		log.info("Inainte");
-		dto.username= SecurityContextHolder.getContext().getAuthentication().getName();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		dto.username= authentication.getName();
 //		dto.username = altaComponenta.getUsername().get(); //ok
 
 //		dto.username = CompletableFuture.supplyAsync(() -> // KO: curge informatia despre user de la un req la altul
@@ -46,7 +53,7 @@ public class TechnicalController {
 //		).get();
 
 		// A) role-based security
-//		dto.role = extractOneRole(authentication.getAuthorities());
+		dto.role = extractOneRole(authentication.getAuthorities());
 		// B) authority-based security
 //		dto.authorities = authentication.getAuthorities().stream()
 //				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -65,22 +72,22 @@ public class TechnicalController {
 	}
 
 
-	//	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-//		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-//		List<String> roles = authorities.stream()
-//				.map(GrantedAuthority::getAuthority)
-//				.filter(authority -> authority.startsWith("ROLE_"))
-//				.map(authority -> authority.substring("ROLE_".length()))
-//				.collect(Collectors.toList());
-//		if (roles.size() == 2) {
-//			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
-//			return "N/A";
-//		}
-//		if (roles.size() == 0) {
-//			return null;
-//		}
-//		return roles.get(0);
-//	}
+		public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+		List<String> roles = authorities.stream()
+				.map(GrantedAuthority::getAuthority)
+				.filter(authority -> authority.startsWith("ROLE_"))
+				.map(authority -> authority.substring("ROLE_".length()))
+				.collect(Collectors.toList());
+		if (roles.size() == 2) {
+			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
+			return "N/A";
+		}
+		if (roles.size() == 0) {
+			return null;
+		}
+		return roles.get(0);
+	}
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
