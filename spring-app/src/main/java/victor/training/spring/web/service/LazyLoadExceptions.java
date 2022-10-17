@@ -16,7 +16,7 @@ public class LazyLoadExceptions {
     private final TeacherRepo teacherRepo;
 
 //    @Transactional // fix1 pros:
-    @Scheduled(initialDelay = 1000, fixedDelay = 10000000)
+//    @Scheduled(initialDelay = 1000, fixedDelay = 10000000)
     public void method() {
         creepy();
     }

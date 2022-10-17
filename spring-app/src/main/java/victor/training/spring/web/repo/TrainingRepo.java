@@ -15,7 +15,7 @@ public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecific
 //    @Query("SELECT new org.pack.proj.MyDto(t.id, t.name, t.teacher.name) FROM Training t")
 //    List<MyDto> selectDto();
 
-    @Query("SELECT t.id, t.name, t.teacher.name FROM Training t" +
+    @Query("SELECT t FROM Training t" +
 //           " LEFT JOIN FETCH t.programmingLanguage" +
            " LEFT JOIN FETCH t.teacher")
     List<Training> findDedicat();
