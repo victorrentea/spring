@@ -19,8 +19,10 @@ public class Teacher {
 	private ContractType contractType;
 
 	private String name;
+
 	@OneToMany(mappedBy = "teacher")
 	private List<Training> trainings = new ArrayList<>();
+	// hibernate va pune un PersistentBag/Set pe post de List
 
 	protected Teacher() {}
 	
