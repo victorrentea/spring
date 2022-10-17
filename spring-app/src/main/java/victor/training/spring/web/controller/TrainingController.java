@@ -34,6 +34,7 @@ public class TrainingController {
 		trainingService.createTraining(dto);
 	}
 
+	// @PreAuthorized("@permissionValidator.checkCanUpdateTraining()") // @Service PermissionValidator
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
@@ -50,6 +51,7 @@ public class TrainingController {
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
+
 
 	// TODO GET or POST ?
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
