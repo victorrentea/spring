@@ -11,7 +11,8 @@ public interface TeacherRepo extends JpaRepository<Teacher, Long> {
    List<Teacher> findByContractType(ContractType contractType);
 
    @Query("SELECT te FROM Teacher te" +
-          " LEFT JOIN FETCH te.trainings tr" +
-          " LEFT JOIN FETCH tr.programmingLanguage")
+          " LEFT JOIN FETCH te.trainings tr" 
+//          " LEFT JOIN FETCH tr.programmingLanguage"
+   )
    List<Teacher> findAllWithChildren();
 }

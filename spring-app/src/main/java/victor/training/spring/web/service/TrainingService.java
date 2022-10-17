@@ -76,7 +76,7 @@ public class TrainingService {
             emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), newDate);
         }
         training.setStartDate(newDate);
-        training.setProgrammingLanguage(languageRepo.getById(dto.languageId));
+        training.setProgrammingLanguageId(dto.languageId);
         training.setTeacher(teacherRepo.getById(dto.teacherId));
     }
 
@@ -103,7 +103,7 @@ public class TrainingService {
         dto.description = training.getDescription();
         dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
         dto.teacherId = training.getTeacher().getId();
-        dto.languageId = training.getProgrammingLanguage().getId();
+        dto.languageId = training.getProgrammingLanguageId();
         dto.teacherName = training.getTeacher().getName();
         return dto ;
     }
@@ -112,7 +112,7 @@ public class TrainingService {
         Training newEntity = new Training();
         newEntity.setName(dto.name);
         newEntity.setDescription(dto.description);
-        newEntity.setProgrammingLanguage(languageRepo.getById(dto.languageId));
+        newEntity.setProgrammingLanguageId(dto.languageId);
         newEntity.setStartDate(parseStartDate(dto));
         newEntity.setTeacher(teacherRepo.getById(dto.teacherId));
         return newEntity;

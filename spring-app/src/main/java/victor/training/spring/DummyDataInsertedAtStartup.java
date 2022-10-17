@@ -34,19 +34,19 @@ public class DummyDataInsertedAtStartup {
 
 		Training spring = new Training("Spring Framework", new Date(System.currentTimeMillis()+10*24*60*60*1000L))
 				.setDescription("All about Spring")
-				.setProgrammingLanguage(java)
+				.setProgrammingLanguageId(java.getId())
 				.setTeacher(victor);
 		Training jpa = new Training("JPA", new Date(System.currentTimeMillis()+2*24*60*60*1000L))
 				.setDescription("The coolest standard in Java EE")
-				.setProgrammingLanguage(java)
+				.setProgrammingLanguageId(java.getId())
 				.setTeacher(victor);
 		Training javaBasic = new Training("Java Basic", new Date(System.currentTimeMillis()+20*24*60*60*1000L))
 				.setDescription("The new way of doing Single Page Applications")
-				.setProgrammingLanguage(java)
+				.setProgrammingLanguageId(java.getId())
 				.setTeacher(ionut);
 		Training patterns = new Training("Design Patterns", new Date(System.currentTimeMillis()+2*24*60*60*1000L))
 				.setDescription("Design Thinking")
-				.setProgrammingLanguage(php)
+				.setProgrammingLanguageId(php.getId())
 				.setTeacher(victor);
 
 		trainingRepo.save(spring);
