@@ -23,7 +23,7 @@
 //
 //@Configuration
 //@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 //@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 //class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
 //
