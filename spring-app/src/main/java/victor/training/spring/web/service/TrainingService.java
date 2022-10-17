@@ -37,7 +37,15 @@ public class TrainingService {
     @LoggedMethod
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
+//        for (Training training : trainingRepo.findAll()) { // rezulta intrun JPQL = " SELECT t from Training t" ===> sql:
+        for (Training training : trainingRepo.findDedicat()) { // rezulta intrun JPQL = " SELECT t from Training t" ===> sql:
+            //SELECT training0_.id AS id1_4_,
+            //       training0_.description AS descript2_4_,
+            //       training0_.name AS name3_4_,
+            //       training0_.programming_language_id AS programm5_4_,
+            //       training0_.start_date AS start_da4_4_,
+            //       training0_.teacher_id AS teacher_6_4_
+            //  FROM training training0_
             dtos.add(mapToDto(training));
         }
         return dtos;

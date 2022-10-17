@@ -15,9 +15,9 @@ public class Training { // copilu
 	private String description;
 	private Date startDate;
 	@ManyToOne
-	private Teacher teacher;
+	private Teacher teacher; // +1 query cand aduc 1 training
 	@ManyToOne // uneori Hibernate aduce si @..ToOne cu query-uri succesive
-	private ProgrammingLanguage programmingLanguage;
+	private ProgrammingLanguage programmingLanguage;  // +1 query cand aduc 1 training
 
 	public Training() {
 	}
