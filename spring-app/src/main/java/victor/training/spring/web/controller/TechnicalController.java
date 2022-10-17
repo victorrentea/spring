@@ -38,11 +38,12 @@ public class TechnicalController {
 
 		CurrentUserDto dto = new CurrentUserDto();
 		log.info("Inainte");
-//		dto.username = altaComponenta.getUsername().get();
+		dto.username= SecurityContextHolder.getContext().getAuthentication().getName();
+//		dto.username = altaComponenta.getUsername().get(); //ok
 
-		dto.username = CompletableFuture.supplyAsync(() ->
-				SecurityContextHolder.getContext().getAuthentication().getName()
-		).get();
+//		dto.username = CompletableFuture.supplyAsync(() -> // KO: curge informatia despre user de la un req la altul
+//				SecurityContextHolder.getContext().getAuthentication().getName()
+//		).get();
 
 		// A) role-based security
 //		dto.role = extractOneRole(authentication.getAuthorities());
