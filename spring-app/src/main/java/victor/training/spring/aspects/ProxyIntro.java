@@ -4,6 +4,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
@@ -49,9 +50,9 @@ class SecondGrade {
     }
 }
 // @Service
-class Maths {
+/*final*/ class Maths { // ex runtime
 //    @Transactional
-    public int sum(int a, int b) {
+    public final int sum(int a, int b) { // silent ignore!
         // chestii deschizi / inchizi sesiuni
         //
         return a + b;
