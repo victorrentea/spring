@@ -14,7 +14,7 @@ public class ProxyIntro {
         new ProxyIntro().run(secondGrade);
     }
 
-//    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
+    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 
     @Autowired
     public void run(SecondGrade secondGrade) {
@@ -24,7 +24,7 @@ public class ProxyIntro {
 
 }
 
-// @Service
+@Service
 class SecondGrade {
     private final Maths maths;
 
@@ -39,7 +39,7 @@ class SecondGrade {
     }
 }
 
-// @Facade
+@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
