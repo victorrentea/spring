@@ -33,7 +33,7 @@ public class DummyDataInsertedAtStartup {
 		Teacher ionut = teacherRepo.save(new Teacher("Ionut").setContractType(ContractType.PART));
 
 		Training spring = new Training("Spring Framework", new Date(System.currentTimeMillis()+10*24*60*60*1000L))
-				.setDescription("All about Spring")
+				.setDescription("All about <b>Spring</b>")
 				.setProgrammingLanguageId(java.getId())
 				.setTeacher(victor);
 		Training jpa = new Training("JPA", new Date(System.currentTimeMillis()+2*24*60*60*1000L))
