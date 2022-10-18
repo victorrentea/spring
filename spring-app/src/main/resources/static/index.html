@@ -115,7 +115,7 @@ function fillTable(trainings) {
 	for (var i = 0; i < trainings.length; i++) {
 		var c = trainings[i];
 		var row = '<tr id="' + c.id + '">';
-		row += '<td onclick="showDescription(\''+c.description+'\');">' + c.name + '</td>';
+		row += '<td style="cursor:pointer;" onclick="showDescription(\''+c.description+'\');">' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
