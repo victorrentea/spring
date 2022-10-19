@@ -60,15 +60,16 @@
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
-//        http
-//                .csrf().disable()
-//                .cors().and()
-//                .authorizeRequests()
-//                .mvcMatchers("/spa/**", "/api/**").authenticated()
-//                .mvcMatchers("/sso/**").permitAll()
-//                .anyRequest().permitAll()
-//        ;
+//        super.configure(http); // critical, defer to KC a lot of work
+//
+//        http.csrf().disable(); // OK since I never take <form> POSTs
+//
+//        // http.cors(); // needed only if .js files are served by a CDN (eg)
+//
+//        http.authorizeRequests()
+//                    .mvcMatchers("/spa/**", "/api/**").authenticated()
+//                    .mvcMatchers("/sso/**").permitAll()
+//                    .anyRequest().permitAll();
 //    }
 //
 //    // needed to secure /spa/** but to leave /sso/** unsecured.

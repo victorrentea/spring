@@ -14,19 +14,19 @@
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 //public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 //
-//   @Override
-//   protected void configure(HttpSecurity http) throws Exception {
-//      http
-////          .addFilterBefore(new HttpRequestFilterPrintingHeaders(), WebAsyncManagerIntegrationFilter.class)
-////          .cors().and()
-//          .csrf().disable() // OK since I don't ever take <form> POSTs
-//          .authorizeRequests().anyRequest().authenticated()
-//          .and()
-//          .formLogin().permitAll()
-//              .defaultSuccessUrl("/",true)
-//              .and()
-//          .httpBasic();
-//   }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable(); // OK since I never take <form> POSTs
+//
+//        http.cors(); // needed only if .js files are served by a CDN (eg)
+//
+//        http.authorizeRequests()
+//                .anyRequest().authenticated();
+//
+//        http.formLogin().defaultSuccessUrl("/", true);
+//
+//        http.httpBasic(); // also accept Authorization: Basic ...
+//    }
 //
 //   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
 //   @Bean
