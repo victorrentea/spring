@@ -80,8 +80,8 @@ public class TechnicalController {
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername(HttpSession session) throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
-		log.debug("Cookie " + session.getId());
-		session.invalidate();
+//		log.debug("Cookie " + session.getId());
+//		session.invalidate();
 
 		dateleMele.set("sunt bou " + LocalDateTime.now());
 		log.info("eu chiar " + dateleMele);
