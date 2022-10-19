@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 import victor.training.spring.web.security.JWTUtils;
@@ -77,6 +77,14 @@ public class TechnicalController {
 	public void method() {
 //		ThreadUtils.sleepq(3000);
 		log.info("Oare chiar " + dateleMele.get());
+
+	}
+
+
+	@PostMapping("/prefs/{username}")
+	@PreAuthorize("principal.username == #username")
+	public void setPrefs(@PathVariable String username, @RequestBody String noilePref) {
+
 
 	}
 
