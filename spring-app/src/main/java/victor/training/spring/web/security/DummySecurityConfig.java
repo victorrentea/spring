@@ -1,6 +1,7 @@
 package victor.training.spring.web.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+
+import static org.springframework.http.HttpMethod.DELETE;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // @Secured @PreAuthorized
@@ -31,11 +34,18 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 //      http.cors(); // copii si eu dupa alta app care merge :)
 
 
+
 //      http.csrf().csrfTokenRepository(csrfTokenRepository);
 
       http.csrf().disable(); // ca nu fac POST ci doar AJAX
 
-      http.authorizeRequests().anyRequest().authenticated();
+      http.authorizeRequests()
+
+              // NICIODATA! reject la PR
+              .mvcMatchers(DELETE, "/api/trainings/*").hasRole("ADMIN")
+              .anyRequest().authenticated()
+
+      ;
 
       http.formLogin().permitAll().defaultSuccessUrl("/",true);
 
