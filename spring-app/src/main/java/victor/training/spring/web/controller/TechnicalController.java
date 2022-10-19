@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 public class TechnicalController {
 
-	static String dateleMele;
+	 String dateleMele;
 
 	public void method() {
 		ThreadUtils.sleepq(3000);
