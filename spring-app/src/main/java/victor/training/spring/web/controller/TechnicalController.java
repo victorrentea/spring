@@ -1,27 +1,44 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
+import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
 
+	static String dateleMele;
+
+	public void method() {
+		ThreadUtils.sleepq(3000);
+		log.info("Oare chiar " + dateleMele);
+
+	}
+
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
 //		JWTUtils.printTheTokens();
+		dateleMele = "sunt bou " + LocalDateTime.now();
+		log.info("eu chiar " + dateleMele);
+		method();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = "// TODO: get username";
+		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
 
 
 		// A) role-based security
