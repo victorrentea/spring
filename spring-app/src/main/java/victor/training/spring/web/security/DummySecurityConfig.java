@@ -42,7 +42,7 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
       http.authorizeRequests()
 
               // NICIODATA! reject la PR
-              .mvcMatchers(DELETE, "/api/trainings/*").hasRole("ADMIN")
+//              .mvcMatchers(DELETE, "/api/trainings/*").hasRole("ADMIN")
               .anyRequest().authenticated()
 
       ;
