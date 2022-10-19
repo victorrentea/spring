@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import victor.training.spring.web.security.JWTUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RunAs;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -81,10 +83,10 @@ public class TechnicalController {
 	}
 
 
-	@PostMapping("/prefs/{username}")
-	@PreAuthorize("principal.username == #username")
-	public void setPrefs(@PathVariable String username, @RequestBody String noilePref) {
-
+	@PostMapping("/prefs")
+//	@PreAuthorize("principal.username == #username")
+	public void setPrefs(@RequestBody String noilePref, Principal principal) {
+		String username = principal.getName();
 
 	}
 
