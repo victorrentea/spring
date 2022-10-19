@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.JWTUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RunAs;
@@ -84,7 +85,7 @@ public class TechnicalController {
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername(HttpSession session) throws ExecutionException, InterruptedException {
-//		JWTUtils.printTheTokens();
+		JWTUtils.printTheTokens();
 //		log.debug("Cookie " + session.getId());
 //		session.invalidate();
 
@@ -103,9 +104,11 @@ public class TechnicalController {
 		// A) role-based security
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		dto.role = extractOneRole(authentication.getAuthorities());
+
 		// B) authority-based security
-//		dto.authorities = authentication.getAuthorities().stream()
-//				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+//		List<String>  [ "ROLE_ADMIN", "training.delete"
+		dto.authorities = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
 		//<editor-fold desc="KeyCloak">
 		//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
