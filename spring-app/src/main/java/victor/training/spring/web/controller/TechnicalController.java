@@ -15,6 +15,8 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RunAs;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -48,6 +50,7 @@ class ConfiguMeu {
 		return executor;
 	}
 }
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -75,8 +78,11 @@ public class TechnicalController {
 	ThreadPoolTaskExecutor executorCePropagaUserul;
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
+	public CurrentUserDto getCurrentUsername(HttpSession session) throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
+		log.debug("Cookie " + session.getId());
+		session.invalidate();
+
 		dateleMele.set("sunt bou " + LocalDateTime.now());
 		log.info("eu chiar " + dateleMele);
 		method();
