@@ -3,14 +3,20 @@ package victor.training.spring.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -43,6 +49,8 @@ public class TrainingController {
 
 	// TODO Allow only for role 'ADMIN'. Then also 'POWER_USER'
 	// TODO Allow for authority 'training.delete'
+
+
 	// TODO a) Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	//   OR b) Allow only if the current user manages the language of that training
@@ -54,8 +62,25 @@ public class TrainingController {
 //	@PreAuthorize("hasRole('ADMIN')")
 	@PreAuthorize("hasAuthority('training.delete')")
 	public void deleteTrainingById(@PathVariable Long id) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepo.getForLogin(username).orElseThrow();
+		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
+
+
+		Training training = trainingRepo.findById(id).orElseThrow();
+
+		if (!managedTeacherIds.contains(training.getTeacher().getId())) {
+			throw new IllegalArgumentException("Ia mana !");
+		}
+
+
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	private  UserRepo userRepo;
+	@Autowired
+	private TrainingRepo trainingRepo;
 
 	// TODO GET or POST ?
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {

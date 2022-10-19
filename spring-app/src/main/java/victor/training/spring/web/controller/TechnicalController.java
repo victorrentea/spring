@@ -83,12 +83,12 @@ public class TechnicalController {
 	}
 
 
-	@PostMapping("/prefs")
-//	@PreAuthorize("principal.username == #username")
-	public void setPrefs(@RequestBody String noilePref, Principal principal) {
-		String username = principal.getName();
-
-	}
+//	@PostMapping("/prefs")
+////	@PreAuthorize("principal.username == #username")
+//	public void setPrefs(@RequestBody String noilePref, Principal principal) {
+//		String username = principal.getName();
+//
+//	}
 
 	@Autowired
 	ThreadPoolTaskExecutor executorCePropagaUserul;
