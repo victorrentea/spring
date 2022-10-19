@@ -28,7 +28,7 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 //          .csrf().disable() // OK since I don't ever take <form> POSTs
 
       // Filtru de CORS nu merge decat daca zici asta.
-      http.cors(); // copii si eu dupa alta app care merge :)
+//      http.cors(); // copii si eu dupa alta app care merge :)
 
 
 //      http.csrf().csrfTokenRepository(csrfTokenRepository);
