@@ -15,6 +15,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,14 +43,17 @@ public class TechnicalController {
 	}
 
 	@GetMapping("api/user/current")
-	public CurrentUserDto getCurrentUsername() {
+	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
 		dateleMele.set("sunt bou " + LocalDateTime.now());
 		log.info("eu chiar " + dateleMele);
 		method();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+		dto.username =
+				CompletableFuture.supplyAsync(
+						() -> SecurityContextHolder.getContext().getAuthentication().getName())
+				.get(); // like a bull
 
 
 		// A) role-based security
