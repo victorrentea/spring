@@ -48,7 +48,7 @@ public class TrainingController {
 	//   OR b) Allow only if the current user manages the language of that training
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
-	@DeleteMapping("{id}")
+	@DeleteMapping("{id}/delete")
 //	@Secured("ADMIN")
 //	@PreAuthorize("hasRole('ADMIN')")
 	public void deleteTrainingById(@PathVariable Long id) {
