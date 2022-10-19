@@ -26,6 +26,8 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 
       http.formLogin().permitAll().defaultSuccessUrl("/",true);
 
+      http.addFilter(new ApiKeyFilter());
+
       http.httpBasic();
    }
 
