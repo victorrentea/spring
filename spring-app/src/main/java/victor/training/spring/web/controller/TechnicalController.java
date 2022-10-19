@@ -22,18 +22,28 @@ import java.util.stream.Collectors;
 @RestController
 public class TechnicalController {
 
-	 String dateleMele;
+	// ce e aia :
+	// @Gill: sunt holurile normale de apeluri de functii decente, la vedere, cu param
+	// si mai exista si aerisirea (canalu secret) prin care poti pasa date dintr-o functie in alta
+	//   cata vreme ramai pe acelasi thread.
+	// de ce ne doare? unde sunt folsoite astea ?
+	//    1 SecurityContextHolder.getContext()
+	//    2 JDBC Connection tine starea connex pe threadlocal ==> nu pot scrie pe aceeasi DB conn din 2 threaduri
+	//    3 @Transactional - rranzactia curenta
+	//    4 Logback MDC   %X google
+	//    5 @Scope("request") pe care pui storeId / tenantId
+	 private static final ThreadLocal<String> dateleMele = new ThreadLocal<>();
 
 	public void method() {
-		ThreadUtils.sleepq(3000);
-		log.info("Oare chiar " + dateleMele);
+//		ThreadUtils.sleepq(3000);
+		log.info("Oare chiar " + dateleMele.get());
 
 	}
 
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() {
 //		JWTUtils.printTheTokens();
-		dateleMele = "sunt bou " + LocalDateTime.now();
+		dateleMele.set("sunt bou " + LocalDateTime.now());
 		log.info("eu chiar " + dateleMele);
 		method();
 
