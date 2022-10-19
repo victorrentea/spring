@@ -59,6 +59,9 @@ public class TrainingController {
 	//   OR b) Allow only if the current user manages the language of that training
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
+
+	// TODO nu vrea nici macar sa vezi cursurile altor teacheri. tenanti
+	// ADAUGI in WHERE clauses.
 	@DeleteMapping("{id}/delete")
 
 //	@Secured({"ROLE_ADMIN"})
