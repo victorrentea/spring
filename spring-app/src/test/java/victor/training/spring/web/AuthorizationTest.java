@@ -7,10 +7,10 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.security.test.context.support.WithMockUser;
-//import org.springframework.test.context.ActiveProfiles;
 //import org.springframework.test.web.servlet.MockMvc;
 //import victor.training.spring.web.service.TrainingService;
 //
+//import static org.hamcrest.Matchers.not;
 //import static org.mockito.Mockito.verify;
 //import static org.mockito.Mockito.verifyNoInteractions;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -18,7 +18,6 @@
 //
 //@SpringBootTest
 //@AutoConfigureMockMvc
-//@ActiveProfiles("spa")
 //public class AuthorizationTest {
 //    @Autowired
 //    private MockMvc mockMvc;
@@ -26,19 +25,23 @@
 //    @MockBean
 //    private TrainingService trainingService;
 //
-//    @WithMockUser
+//    @WithMockUser(roles = "USER")
 //    @Test
-//    public void testSearch() throws Exception {
-//        mockMvc.perform(delete("/api/trainings/1"))
-//            .andExpect(status().is(Matchers.not(200)));
+//    public void userCanSearch() throws Exception {
+//        mockMvc.perform(delete("/api/trainings/1")).andExpect(status().is2xxSuccessful());
+//    }
+//
+//    @WithMockUser(roles = "USER")
+//    @Test
+//    public void userCannotDelete() throws Exception {
+//        mockMvc.perform(delete("/api/trainings/1")).andExpect(status().is(not(200)));
 //        verifyNoInteractions(trainingService);
 //    }
 //
-//    @WithMockUser(authorities = "training.delete")
+//    @WithMockUser(roles = "ADMIN", authorities = "training.delete")
 //    @Test
-//    public void testSearchOK() throws Exception {
-//        mockMvc.perform(delete("/api/trainings/1"))
-//            .andExpect(status().is2xxSuccessful());
+//    public void adminCanDelete() throws Exception {
+//        mockMvc.perform(delete("/api/trainings/1")).andExpect(status().is2xxSuccessful());
 //        verify(trainingService).deleteById(1L);
 //    }
 //
