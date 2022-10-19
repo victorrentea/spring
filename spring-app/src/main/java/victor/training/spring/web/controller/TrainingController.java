@@ -44,6 +44,8 @@ public class TrainingController {
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+		hasEditRightsOnTraining(id);
+
 		trainingService.updateTraining(id, dto);
 	}
 
@@ -62,6 +64,13 @@ public class TrainingController {
 //	@PreAuthorize("hasRole('ADMIN')")
 	@PreAuthorize("hasAuthority('training.delete')")
 	public void deleteTrainingById(@PathVariable Long id) {
+		hasEditRightsOnTraining(id);
+
+
+		trainingService.deleteById(id);
+	}
+
+	private void hasEditRightsOnTraining(Long id) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userRepo.getForLogin(username).orElseThrow();
 		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
@@ -72,9 +81,6 @@ public class TrainingController {
 		if (!managedTeacherIds.contains(training.getTeacher().getId())) {
 			throw new IllegalArgumentException("Ia mana !");
 		}
-
-
-		trainingService.deleteById(id);
 	}
 
 	@Autowired
