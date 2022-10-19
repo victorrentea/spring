@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,15 +19,18 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
+      CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+      csrfTokenRepository.setCookieHttpOnly(false);
       http
 //          .addFilterBefore(new HttpRequestFilterPrintingHeaders(), WebAsyncManagerIntegrationFilter.class)
 //          .cors().and()
-          .csrf().disable() // OK since I don't ever take <form> POSTs
+//          .csrf().disable() // OK since I don't ever take <form> POSTs
+              .csrf().csrfTokenRepository(csrfTokenRepository).and()
           .authorizeRequests().anyRequest().authenticated();
 
       http.formLogin().permitAll().defaultSuccessUrl("/",true);
 
-//      http.addFilter(new ApiKeyFilter());
+      http.addFilter(new ApiKeyFilter());
 
       http.httpBasic();
    }
