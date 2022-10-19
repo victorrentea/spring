@@ -3,22 +3,51 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskDecorator;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
-import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import javax.annotation.PostConstruct;
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
+
+@Configuration
+class ConfiguMeu {
+	@Bean
+	public ThreadPoolTaskExecutor executorCePropagaUserul() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor(); // de ob pus in context ca @Bean
+		executor.setMaxPoolSize(2);
+		executor.setCorePoolSize(2);
+		executor.setTaskDecorator(new TaskDecorator() {
+			@Override
+			public Runnable decorate(Runnable originalTask) {
+				// rulez in threadul vechi (calleru)
+				SecurityContext context = SecurityContextHolder.getContext();
+				return ()-> {
+					// restore user on thread --- rulez in threadul nou
+					SecurityContextHolder.setContext(context);
+					try {
+						originalTask.run();
+					} finally {
+						// ca altfel alt task dupa mine ar putea gasi credentialele altui user!!!
+						SecurityContextHolder.clearContext();
+					}
+				};
+			}
+		});
+		executor.initialize();
+		return executor;
+	}
+}
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -42,6 +71,9 @@ public class TechnicalController {
 
 	}
 
+	@Autowired
+	ThreadPoolTaskExecutor executorCePropagaUserul;
+
 	@GetMapping("api/user/current")
 	public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
 //		JWTUtils.printTheTokens();
@@ -50,9 +82,10 @@ public class TechnicalController {
 		method();
 
 		CurrentUserDto dto = new CurrentUserDto();
-		dto.username =
-				CompletableFuture.supplyAsync(
-						() -> SecurityContextHolder.getContext().getAuthentication().getName())
+
+		dto.username = CompletableFuture.supplyAsync(() ->
+								SecurityContextHolder.getContext().getAuthentication().getName(),
+						executorCePropagaUserul)
 				.get(); // like a bull
 
 
@@ -94,7 +127,8 @@ public class TechnicalController {
 
 	@PostConstruct
 	public void enableSecurityContextPropagationOverAsyncCalls() {
-//		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+		// de la baeldung.com citire pt @Async calls.
+		SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 	}
 
 	@Autowired
