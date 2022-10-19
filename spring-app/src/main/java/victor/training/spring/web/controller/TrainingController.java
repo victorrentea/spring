@@ -43,8 +43,9 @@ public class TrainingController {
 	}
 
 	@PutMapping("{id}")
+	@PreAuthorize("@securityManager.hasEditRightsOnTraining(#id)")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-		hasEditRightsOnTraining(id);
+//		hasEditRightsOnTraining(id);
 
 		trainingService.updateTraining(id, dto);
 	}
@@ -62,31 +63,16 @@ public class TrainingController {
 
 //	@Secured({"ROLE_ADMIN"})
 //	@PreAuthorize("hasRole('ADMIN')")
-	@PreAuthorize("hasAuthority('training.delete')")
+	@PreAuthorize("hasAuthority('training.delete') " +
+				  "&& @securityManager.hasEditRightsOnTraining(#id)")
 	public void deleteTrainingById(@PathVariable Long id) {
-		hasEditRightsOnTraining(id);
+//		hasEditRightsOnTraining(id);
 
 
 		trainingService.deleteById(id);
 	}
 
-	private void hasEditRightsOnTraining(Long id) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		User user = userRepo.getForLogin(username).orElseThrow();
-		Set<Long> managedTeacherIds = user.getManagedTeacherIds();
 
-
-		Training training = trainingRepo.findById(id).orElseThrow();
-
-		if (!managedTeacherIds.contains(training.getTeacher().getId())) {
-			throw new IllegalArgumentException("Ia mana !");
-		}
-	}
-
-	@Autowired
-	private  UserRepo userRepo;
-	@Autowired
-	private TrainingRepo trainingRepo;
 
 	// TODO GET or POST ?
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
