@@ -20,7 +20,7 @@ public class MonitoredThreadPoolConfig {
 
    @Bean(initMethod = "initialize")
    @ConfigurationProperties(prefix = "custom-executor")
-   public ThreadPoolTaskExecutor customExecutor() {
+   public ThreadPoolTaskExecutor monitoredExecutor() {
       Timer timer = meterRegistry.timer("custom-executor-queue-wait");
       // configured via custom-executor.* in application.properties
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
