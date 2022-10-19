@@ -51,10 +51,17 @@ public class VictimController {
    }
 
 
+   enum SelectableColumn {
+      ID, NAME, PHONE_NUMBER
+   }
+
    @Autowired
    private JdbcTemplate jdbc;
    @GetMapping("sql-injection")
    public String sqlInjection(@RequestParam String name) throws IOException {
+
+//      String coloanaVenitaDinJSCaCicaOVrea = "hacke";
+//      SelectableColumn.valueOf(coloanaVenitaDinJSCaCicaOVrea) // whitelistezi ce adaugi cu + la sSQL
       Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM MESSAGE WHERE MESSAGE='" + name + "'", Integer.class);
       // TODO think ORDER BY
       return "DONE; Found = " + n;
