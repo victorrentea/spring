@@ -2,7 +2,6 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -49,13 +48,13 @@ public class BeanApp {
 class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu lower lainceput
 
     @Autowired
-    @Qualifier("cearta")
-    private Conversation unaDintreEle;
+//    @Qualifier("cearta")
+    private Conversation cearta; // recent @Qualifier nu mai e necesar dc numele
+    // 'punctului de injectie' matcheuieste numele beanului -> se prinde
 
     @PostConstruct
     public void run() throws Exception {
-        // TODO convince Spring to do for you the line above
-        unaDintreEle.start();
+        cearta.start();
     }
 }
 
