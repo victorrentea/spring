@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
 @Aspect
-@Component
+//@Component
 public class LoggingAspect {
     private final ObjectMapper jackson = new ObjectMapper();
 
@@ -44,13 +45,18 @@ public class LoggingAspect {
         }
 
         try {
+            // connection.setAutoCommit(false) === start tx
+            //am in cache? return
+            // are voie ?
             Object returnedObject = joinPoint.proceed(); // allow the call to propagate to original (intercepted) method
 
             if (log.isDebugEnabled()) {
                 log.debug("Returned value: {}", jsonify(returnedObject));
             }
+            // connection.commit
             return returnedObject;
         } catch (Exception e) {
+            // connection.rollback
             log.error("Threw exception {}: {}", e.getClass(), e.getMessage());
             throw e;
         }
