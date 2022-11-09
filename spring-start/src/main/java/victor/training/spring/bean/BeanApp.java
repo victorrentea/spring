@@ -88,11 +88,13 @@ class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu low
     public void run() throws Exception {
 //        ConfigResolver c = applicationContext.getBean("nume", ConfigResolver.class); // riscant pentru ca nu e
         // deploy-time checked cum sunt injectiile
-
+        System.out.println("Incotro merg: " + muschi);
         System.out.println("config=" + configResolver.config());
         System.out.println("Toate beanurile de tipul Person in lista: " + people);
         orice.start();
     }
+    @Value("${muschiu.meu}")
+    private String muschi;
 }
 
 @Data
