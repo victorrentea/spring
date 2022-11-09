@@ -13,7 +13,7 @@ import subp.X;
 // [2] Qualifier
 // [6] inject List<BeanI>
 
-// [3] Primary =
+// [3] Primary = cand ai mai multe beanuri care se potrivesc pe un punct de injectie cel marcat cu @Primary va castiga
 // [4] Profile
 // [5] getBean
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties

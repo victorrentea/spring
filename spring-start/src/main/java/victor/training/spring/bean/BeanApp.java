@@ -3,10 +3,13 @@ package victor.training.spring.bean;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +23,8 @@ public class BeanApp {
     }
 
     @Bean
-    public Conversation conversation() { // numele bean = numele metodei
+    @Primary
+    public Conversation impacare() { // numele bean = numele metodei
         System.out.println("impacarea");
         return new Conversation(john(), jane());
     }
@@ -68,16 +72,18 @@ class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu low
 
     @Autowired
     private List<Person> people;
-
+    @Autowired
+    private ConfigResolver configResolver;
     @Autowired
 //    @Qualifier("cearta")
-    private Conversation cearta; // recent @Qualifier nu mai e necesar dc numele
+    private Conversation orice; // recent @Qualifier nu mai e necesar dc numele
     // 'punctului de injectie' matcheuieste numele beanului -> se prinde
 
     @PostConstruct
     public void run() throws Exception {
+        System.out.println("config=" + configResolver.config());
         System.out.println("Toate beanurile de tipul Person in lista: " + people);
-        cearta.start();
+        orice.start();
     }
 }
 
@@ -110,4 +116,25 @@ class Person {
     }
 }
 
+interface ConfigResolver {
+    String config();
+}
+// Use-case: daca in functie de unde deployez vreau una sau alta, folsoesc profile
+// polymorphism
+@Primary
+@Profile("prod")
+@Component
+class COnfigResolverDeProd implements ConfigResolver{
+    @Override
+    public String config() {
+        return "prod";
+    }
+}
 
+@Component
+class ConfigResolverDeLocal implements ConfigResolver{
+    @Override
+    public String config() {
+        return "HAPPY";
+    }
+}
