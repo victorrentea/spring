@@ -20,6 +20,11 @@
             <artifactId>lombok</artifactId>
             <!--<version>1.18.6</version>-->
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -27,6 +32,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- restarteaza automat app pe local cand orice fisier din target/ s-a schibma adica la compile/build -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
