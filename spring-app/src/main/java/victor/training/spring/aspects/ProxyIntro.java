@@ -60,6 +60,7 @@ class SecondGrade {
     }
 
     public void mathClass() {
+        Maths maths = new Maths();
         System.out.println("Puen mana pe Vasilica: " + maths.getClass());
         System.out.println(maths.sum(2, 4));
         System.out.println(maths.sum(1, 5));
@@ -67,13 +68,16 @@ class SecondGrade {
     }
 }
 
-@Facade
+@Service
 /*final */class Maths { // <- nu porneste springu
+//    @Transactional
     /*final*/ public int sum(int a, int b) { // <- silently ignored (BUG)?
         return a + b;
     }
+
+    @LoggedMethod
     public int product(int a, int b) {
-         new RuntimeException().printStackTrace();
+//         new RuntimeException().printStackTrace();
 //        return a * b;
         int produs = 0;
         for (int i = 0; i < a; i++) {

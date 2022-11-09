@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.joining;
 
 @Slf4j
 @Aspect
-//@Component
+@Component
 public class LoggingAspect {
     private final ObjectMapper jackson = new ObjectMapper();
 
@@ -31,10 +31,12 @@ public class LoggingAspect {
         }
     }
 
-    @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
+//    @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
 //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
 //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
-//    @Around("execution(* ..*.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous
+
+//    @Around("execution(* *.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous
+//    @Around("execution(* victor.training.spring.web..*.*(..))") // orice metoda chemata dintr-o clasa de sub pachetul web.
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
         if (log.isDebugEnabled()) {
