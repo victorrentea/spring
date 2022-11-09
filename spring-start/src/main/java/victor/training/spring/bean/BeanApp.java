@@ -4,8 +4,10 @@ import lombok.Data;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -79,8 +81,14 @@ class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu low
     private Conversation orice; // recent @Qualifier nu mai e necesar dc numele
     // 'punctului de injectie' matcheuieste numele beanului -> se prinde
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @PostConstruct
     public void run() throws Exception {
+//        ConfigResolver c = applicationContext.getBean("nume", ConfigResolver.class); // riscant pentru ca nu e
+        // deploy-time checked cum sunt injectiile
+
         System.out.println("config=" + configResolver.config());
         System.out.println("Toate beanurile de tipul Person in lista: " + people);
         orice.start();
@@ -122,7 +130,9 @@ interface ConfigResolver {
 // Use-case: daca in functie de unde deployez vreau una sau alta, folsoesc profile
 // polymorphism
 @Primary
-@Profile("prod")
+//@Profile("prod")  NEVER// mesaj: # I don’t always test my code, but when I do, I do it in production. YOLO
+// R: te dau afar: prea riscant.
+@Profile("!local")
 @Component
 class COnfigResolverDeProd implements ConfigResolver{
     @Override
