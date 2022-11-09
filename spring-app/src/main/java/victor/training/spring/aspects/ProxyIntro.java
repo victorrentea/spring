@@ -1,30 +1,34 @@
 package victor.training.spring.aspects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication
+//@SpringBootApplication
+@Slf4j
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
-        Maths maths = new Maths();
+        Maths maths = new Maths(){
+            @Override
+            public int sum(int a, int b) {
+                log.info("Calculeaza fata sum " + a + " si  " + b);
+                return super.sum(a, b);
+            }
+        };
         SecondGrade secondGrade = new SecondGrade(maths);
         new ProxyIntro().run(secondGrade);
     }
 
     //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 
-    @Autowired
+//    @Autowired
     public void run(SecondGrade secondGrade) {
         System.out.println("At runtime...");
         secondGrade.mathClass();
     }
-
 }
 
-@Service
+//-------- nu ai voie sa atingi nimic de mai jos -----
+//@Service
 class SecondGrade {
     private final Maths maths;
 
