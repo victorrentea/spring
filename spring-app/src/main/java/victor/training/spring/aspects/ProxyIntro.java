@@ -1,20 +1,34 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 //@SpringBootApplication
 @Slf4j
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
-        Maths maths = new Maths(){
+        Maths maths = new Maths();
+
+        Callback handler = new MethodInterceptor() {
             @Override
-            public int sum(int a, int b) {
-                log.info("Calculeaza fata sum " + a + " si  " + b);
-                return super.sum(a, b);
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+                System.out.println("Cheama fata metoda " + method.getName() + " cu param " + Arrays.toString(args));
+                Object r = method.invoke(maths, args);
+                System.out.println("I-a dat fetii " + r);
+                return r;
             }
         };
-        SecondGrade secondGrade = new SecondGrade(maths);
+
+        Maths proxy = (Maths) Enhancer.create(Maths.class, handler);
+
+        SecondGrade secondGrade = new SecondGrade(proxy);
         new ProxyIntro().run(secondGrade);
     }
 
@@ -37,6 +51,7 @@ class SecondGrade {
     }
 
     public void mathClass() {
+        System.out.println("Puen mana pe Vasilica: " + maths.getClass());
         System.out.println(maths.sum(2, 4));
         System.out.println(maths.sum(1, 5));
         System.out.println(maths.product(2, 3));
