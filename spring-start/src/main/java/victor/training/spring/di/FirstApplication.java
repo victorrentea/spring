@@ -9,7 +9,8 @@ import subp.X;
 
 // [1] Injection: field, constructor, method; debate;
 // 			mockito - injecteaza in acelasi mod
-// [1] PostConstruct
+// [1] PostConstruct & co
+
 // [2] Qualifier
 // [3] Primary
 // [4] Profile

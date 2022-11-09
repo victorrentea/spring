@@ -11,6 +11,11 @@ import victor.training.spring.di.Z;
 // semantica = layere
 //@Service // defineste un bean in context de tip "X"
 //@Repository // nu mai e necesar daca folosesti spring  Data (extinzi din JpaRepository/ Mongo.. / CrudRepository)
+    // * chichitza: orice tip de exceptie JPA/Mongo/ arunci dintr-o clasa marcata cu @Repository este automat wrapuita intr-o
+    //  exceptie de Spring DATA! (o ex 'standard' spring'
+    // util cand lucrezi manual cu EntityManager, Session, Mongo direct driver (interact cu persit neintermediate de spring)
+            // JdbcTemplate (al spring) iti arunca direct ex springului
+    // = AOP (interceptie de metode) selectiv in fct de LAYER!!
 @RequiredArgsConstructor
 @Slf4j
 @Mapper
