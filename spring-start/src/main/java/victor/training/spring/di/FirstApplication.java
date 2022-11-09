@@ -31,9 +31,3 @@ public class FirstApplication implements CommandLineRunner{
 		System.out.println(x.prod());
 	}
 }
-//@Configuration// nu pentru clase ce contin logica de-a mea, ci doar pentru a defini @Bean sau ajusta defaulturi de prin spring
-
-// semantica = layere
-//@Service // defineste un bean in context de tip "X"
-//@Repository // nu mai e necesar daca folosesti spring  Data (extinzi din JpaRepository/ Mongo.. / CrudRepository)
-
