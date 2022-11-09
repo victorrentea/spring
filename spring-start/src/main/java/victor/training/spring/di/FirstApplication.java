@@ -10,12 +10,12 @@ import subp.X;
 // [1] Injection: field, constructor, method; debate;
 // 			mockito - injecteaza in acelasi mod
 // [1] PostConstruct & co
-
 // [2] Qualifier
-// [3] Primary
+// [6] inject List<BeanI>
+
+// [3] Primary =
 // [4] Profile
 // [5] getBean
-// [6] inject List<BeanI>
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
 @SpringBootApplication

@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @SpringBootApplication
 @Configuration // (proxyBeanMethods = false) // in cele din e si asta
@@ -65,12 +67,16 @@ class SubclasaPeInserat extends BeanApp {
 class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu lower lainceput
 
     @Autowired
+    private List<Person> people;
+
+    @Autowired
 //    @Qualifier("cearta")
     private Conversation cearta; // recent @Qualifier nu mai e necesar dc numele
     // 'punctului de injectie' matcheuieste numele beanului -> se prinde
 
     @PostConstruct
     public void run() throws Exception {
+        System.out.println("Toate beanurile de tipul Person in lista: " + people);
         cearta.start();
     }
 }
@@ -91,7 +97,7 @@ class Conversation {
     }
 }
 
-
+@ToString
 class Person {
     private final String name;
 
