@@ -5,6 +5,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -19,6 +20,9 @@ public class ProxyIntro {
         Callback handler = new MethodInterceptor() {
             @Override
             public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+                if (method.isAnnotationPresent(Transactional.class)) {
+                    System.out.println("E transactionala frate");
+                }
                 System.out.println("Cheama fata metoda " + method.getName() + " cu param " + Arrays.toString(args));
                 Object r = method.invoke(maths, args);
                 System.out.println("I-a dat fetii " + r);
@@ -52,20 +56,29 @@ class SecondGrade {
 
     public void mathClass() {
         System.out.println("Puen mana pe Vasilica: " + maths.getClass());
-        System.out.println(maths.sum(2, 4));
-        System.out.println(maths.sum(1, 5));
+//        System.out.println(maths.sum(2, 4));
+//        System.out.println(maths.sum(1, 5));
         System.out.println(maths.product(2, 3));
     }
 }
 
 @Facade
-class Maths {
-    public int sum(int a, int b) {
+/*final */class Maths { // <- nu porneste springu
+    @Transactional
+    /*final*/ public int sum(int a, int b) { // <- silently ignored (BUG)?
         return a + b;
     }
-
+//    @Transactional
     public int product(int a, int b) {
-        return a * b;
+//        return a * b;
+        int produs = 0;
+
+        for (int i = 0; i < a; i++) {
+            produs = sum(produs, b); // APELUL LOCAL (in aceeasi clasa) NU POATE FI INTERCEPTAT de spring pentru ca
+            // proxy-ul sta INAINTEA CLASEI
+        }
+
+        return produs;
     }
 }
 
