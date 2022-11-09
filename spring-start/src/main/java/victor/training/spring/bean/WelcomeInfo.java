@@ -16,7 +16,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
+@Data
+class Pereche{
+    private String a,b;
+}
 @Slf4j
 @Data // getters & setters are mandatory! !!
 @Component
@@ -29,6 +32,16 @@ public class WelcomeInfo {
     private List<URL> supportUrls;
     private Map<Locale, String> localContactPhone;
     private HelpInfo help;
+
+    private List<String> listPrim;
+    private List<Pereche> list;
+
+
+//    @Value("${docker.prop:x}")
+//    String ceva;
+//    public boolean suntInDocker() {
+//        return !ceva .equals("x");
+//    }
 
     @Data
     public static class HelpInfo {
