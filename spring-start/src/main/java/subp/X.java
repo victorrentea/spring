@@ -2,7 +2,9 @@ package subp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import victor.training.spring.di.Y;
+import victor.training.spring.di.Z;
 
 //@Configuration// nu pentru clase ce contin logica de-a mea, ci doar pentru a defini @Bean sau ajusta defaulturi de prin spring
 
@@ -18,14 +20,17 @@ import victor.training.spring.di.Y;
 //@RestController // intoarce JSON -> SinglePageApp (ng, react, vue)
 public class X {
     // #1 field injection = cel mai frecvent in codebaseul azi
-    private final Y y;
+    private Y y;
 
     // #2 method (setter) injection (rarely used)
     //	private Z z;
-    //	@Autowired
-    //	public void setZ(Z z) {
-    //		this.z = z;
-    //	}
+    @Autowired
+    public void orice(Y y, Z z) {
+        this.y =y;
+        System.out.println("si z" + z);
+    }
+
+
 
     public int prod() {
         return 1 + y.prod();
