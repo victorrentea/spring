@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,34 +12,50 @@ import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 //@Configuration // in cele din e si asta
-public class BeanApp  {
+public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
     @Bean
-    public Conversation conversation() {
+    public Conversation conversation() { // numele bean = numele metodei
         return new Conversation(a(), b());
     }
+    @Bean
+    public Conversation cearta() {
+        return new Conversation(a(), b());
+    }
+
     @Bean
     public Person a() {
         return new Person("John");
     }
+
     @Bean
     public Person b() {
         return new Person("Jane");
     }
+// in realitate
+//    @Bean
+//    public ThreadPoolTaskExecutor method() {
+//        ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+//        threadPool.setCorePoolSize(10);
+//        threadPool.setQueueCapacity(100);
+//        return threadPool;
+//    }
 }
+
 @Component
-class Startup {
+class StartUp { // numele ei default este = "startUp" (exactNumele clasei cu lower lainceput
 
     @Autowired
-    private Conversation conversation;
+    @Qualifier("cearta")
+    private Conversation unaDintreEle;
 
     @PostConstruct
     public void run() throws Exception {
         // TODO convince Spring to do for you the line above
-        conversation.start();
+        unaDintreEle.start();
     }
 }
 
@@ -65,6 +82,7 @@ class Person {
     public Person(String name) {
         this.name = name;
     }
+
     public String sayHello() {
         return "Hello! Here is " + name;
     }
