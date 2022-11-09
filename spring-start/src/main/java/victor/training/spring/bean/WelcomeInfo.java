@@ -24,7 +24,7 @@ import java.util.Map;
 public class WelcomeInfo {
     @NotNull
     @NotBlank
-    private String welcomeMessage;
+    private String welcomeMessage = "Default value";
     private List<URL> supportUrls;
     private Map<Locale, String> localContactPhone;
     private HelpInfo help;

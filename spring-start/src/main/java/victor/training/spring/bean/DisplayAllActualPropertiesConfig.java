@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-@Configuration
+//@Configuration
 @Slf4j
 public class DisplayAllActualPropertiesConfig {
     @ConfigurationProperties // ii spune lui spring sa injecteze ORICE PROPRIETATE POATE
