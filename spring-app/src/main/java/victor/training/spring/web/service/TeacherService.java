@@ -19,9 +19,16 @@ public class TeacherService {
     private TeacherRepo teacherRepo;
 
     // TODO Cacheable for list-of-all
+    @Cacheable("profi")
     public List<TeacherDto> getAllTeachers() {
         return teacherRepo.findAll().stream().map(TeacherDto::new).collect(toList());
     }
+
+
+
+
+
+
 
     // TODO EvictCache(all)
     // TODO Prove stale cache on multiple instances: start a 2nd instance usign -Dserver.port=8081

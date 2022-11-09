@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import victor.training.spring.web.controller.dto.TeacherDto;
@@ -17,26 +18,15 @@ import javax.validation.Valid;
 public class TeachersController {
 	@Autowired
 	private TeacherService service;
-	
+
 	@GetMapping
 	public List<TeacherDto> getAllTeachers() {
 		return service.getAllTeachers();
 	}
 
-	//	@PostMapping
-	//	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
-	@GetMapping("create") // easier to demo in BROWSER
-	public void createTeacher() {
-		TeacherDto dto = new TeacherDto();
-		dto.name = "Teacher" + LocalDateTime.now();
-		service.createTeacher(dto);
-	}
-
-	//	@PutMapping
-	//	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
-	@GetMapping("{id}/update") // easier to demo in BROWSER
-	public void updateTeacher(@PathVariable long id) {
-		String newName = "Teacher" + LocalDateTime.now();
-		service.updateTeacher(id, newName);
+	@GetMapping("evict-cache")
+	@CacheEvict("profi")
+	public void killCache() {
+		// nimic aici. da' n-o sterge, let the magic hapen !
 	}
 }
