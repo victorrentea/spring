@@ -20,20 +20,14 @@ import static java.util.stream.Collectors.joining;
 @Aspect
 @Component
 public class LoggingAspect {
-    private final ObjectMapper jackson = new ObjectMapper();
-
-    @PostConstruct
-    public void configureMapper() {
-        if (log.isTraceEnabled()) {
-            log.trace("JSON serialization will be indented");
-            jackson.enable(SerializationFeature.INDENT_OUTPUT);
-        }
-    }
 
     @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
-//    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
-//    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
-//    @Around("execution(* ..*.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous
+    //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
+    //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
+
+    // -- DANGER ZONE --
+    //    @Around("execution(* victor.training.spring.web..*.*(..))") // any method of any class in a sub-package of 'web'
+    //    @Around("execution(* *.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous😱
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
         if (log.isDebugEnabled()) {
@@ -56,6 +50,14 @@ public class LoggingAspect {
         }
     }
 
+    private final ObjectMapper jackson = new ObjectMapper();
+    @PostConstruct
+    public void configureMapper() {
+        if (log.isTraceEnabled()) {
+            log.trace("JSON serialization will be indented");
+            jackson.enable(SerializationFeature.INDENT_OUTPUT);
+        }
+    }
     private String jsonify(Object object) {
         if (object == null) {
             return "<null>";
