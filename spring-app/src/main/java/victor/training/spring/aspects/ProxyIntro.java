@@ -8,8 +8,10 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -51,7 +53,7 @@ public class ProxyIntro {
 }
 
 //-------- nu ai voie sa atingi nimic de mai jos -----
-@Service
+@Facade
 class SecondGrade {
     private final Maths maths;
 
@@ -60,28 +62,29 @@ class SecondGrade {
     }
 
     public void mathClass() {
-        Maths maths = new Maths();
-        System.out.println("Puen mana pe Vasilica: " + maths.getClass());
+//        Maths maths = new Maths();
+        System.out.println("Pune mana pe Vasilica: " + maths.getClass());
         System.out.println(maths.sum(2, 4));
         System.out.println(maths.sum(1, 5));
         System.out.println(maths.product(2, 3));
     }
 }
 
-@Service
+@Facade
 /*final */class Maths { // <- nu porneste springu
-//    @Transactional
+    @Transactional
     /*final*/ public int sum(int a, int b) { // <- silently ignored (BUG)?
         return a + b;
     }
-
+    @Autowired
+    Maths maths;
     @LoggedMethod
     public int product(int a, int b) {
 //         new RuntimeException().printStackTrace();
 //        return a * b;
         int produs = 0;
         for (int i = 0; i < a; i++) {
-            produs = sum(produs, b); // APELUL LOCAL (in aceeasi clasa) NU POATE FI INTERCEPTAT de spring pentru ca
+            produs = maths.sum(produs, b); // APELUL LOCAL (in aceeasi clasa) NU POATE FI INTERCEPTAT de spring pentru ca
             // proxy-ul sta INAINTEA CLASEI
         }
         return produs;
