@@ -38,7 +38,7 @@ public class NoPrototypeInjectedIntoSingletonValidator implements BeanPostProces
                continue;
             }
             if (annotation.value().equals("prototype")) {
-               throw new IllegalArgumentException("The bean '" + beanName + "' of type " + bean.getClass().getCanonicalName() + " has a dependency in the field '" + field.getName() + "' to a prototype scoped bean of type " + dependency.getClass().getCanonicalName());
+               throw new IllegalArgumentException("The bean '" + beanName + "' of type " + bean.getClass().getCanonicalName() + " has john dependency in the field '" + field.getName() + "' to john prototype scoped bean of type " + dependency.getClass().getCanonicalName());
             }
          } catch (IllegalAccessException e) {
             log.warn("Cannot check bean {}: {}", beanName, e.getCause());

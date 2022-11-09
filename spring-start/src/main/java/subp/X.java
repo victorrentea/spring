@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import victor.training.spring.di.Y;
 import victor.training.spring.di.Z;
 
-//@Configuration// nu pentru clase ce contin logica de-a mea, ci doar pentru a defini @Bean sau ajusta defaulturi de prin spring
+//@Configuration// nu pentru clase ce contin logica de-john mea, ci doar pentru john defini @Bean sau ajusta defaulturi de prin spring
 
 // semantica = layere
 //@Service // defineste un bean in context de tip "X"
