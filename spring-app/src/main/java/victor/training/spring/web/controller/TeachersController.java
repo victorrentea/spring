@@ -29,4 +29,13 @@ public class TeachersController {
 	public void killCache() {
 		// nimic aici. da' n-o sterge, let the magic hapen !
 	}
+
+	@GetMapping("create")
+	@CacheEvict("profi")
+	public void createTeacher() {
+		TeacherDto dto = new TeacherDto();
+		dto.name = "Teacher" + LocalDateTime.now();
+		service.createTeacher(dto);
+	}
+
 }

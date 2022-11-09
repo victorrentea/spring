@@ -1,11 +1,14 @@
 package victor.training.spring.web.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +18,22 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+@RequiredArgsConstructor
+//@Component
+class CacheaHeater {
+    private final TeacherBioClient client;
 
+    private static final long[] teacherids={1L,2L};
+
+//    @Scheduled(fixedRate = 5*60*1000)
+    @Scheduled(cron = "${cache.cald.cron}")
+    public void tinaCacheCald() {
+        for (long id : teacherids) {
+            client.retrieveBiographyForTeacher(id);
+        }
+    }
+
+}
 @Component
 @Slf4j
 public class TeacherBioClient {
@@ -26,7 +44,7 @@ public class TeacherBioClient {
     private String teacherBioUriBase;
 
 
-    // TODO cacheable
+    @Cacheable("bio")
     public String retrieveBiographyForTeacher(long teacherId) {
         log.debug("Calling external web endpoint... (takes time)");
         ThreadUtils.sleepq(500);
