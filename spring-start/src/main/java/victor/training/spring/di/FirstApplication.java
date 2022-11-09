@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.ComponentScan;
+import subp.X;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"subp", "victor.training.spring.di"})
 public class FirstApplication implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(FirstApplication.class);
@@ -30,41 +31,9 @@ public class FirstApplication implements CommandLineRunner{
 		System.out.println(x.prod());
 	}
 }
+//@Configuration// nu pentru clase ce contin logica de-a mea, ci doar pentru a defini @Bean sau ajusta defaulturi de prin spring
 
-@Service
-class X {
-	// #1 field injection
-	@Autowired
-	private Y y;
+// semantica = layere
+//@Service // defineste un bean in context de tip "X"
+//@Repository // nu mai e necesar daca folosesti spring  Data (extinzi din JpaRepository/ Mongo.. / CrudRepository)
 
-// #2 method (setter) injection (rarely used)
-//	private Z z;
-//	@Autowired
-//	public void setZ(Z z) {
-//		this.z = z;
-//	}
-
-	public int prod() {
-		return 1 + y.prod();
-	}
-}
-@Service
-class Y {
-	private final Z z;
-
-	// #3 constructor injection (no @Autowired needed since Spring 4.3)
-	public Y(Z z) {
-		this.z = z;
-	}
-
-	public int prod() {
-		return 1 + z.prod();
-	}
-}
-@Service
-class Z {
-
-	public int prod() {
-		return 1;
-	}
-}
