@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import subp.X;
 
-// [1] Injection: field, constructor, method; debate; mockito
+// [1] Injection: field, constructor, method; debate;
+// 			mockito - injecteaza in acelasi mod
 // [1] PostConstruct
 // [2] Qualifier
 // [3] Primary
