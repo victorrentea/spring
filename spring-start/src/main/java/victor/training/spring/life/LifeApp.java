@@ -6,14 +6,29 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
-@SpringBootApplication
+// bazele unei extensii la spring company-wide. mm-commons-0.1.jar
+@Configuration
+@ConditionalOnProperty(name = "pace", havingValue = "true",matchIfMissing = true) // ~ @Profile
+class MyAutoConfig {
+	@PostConstruct
+	public void method() {
+		System.out.println("E PACE!");
+	}
+}
+
+@SpringBootApplication // 1
 public class LifeApp implements CommandLineRunner{
 	@Bean
 	public static CustomScopeConfigurer defineThreadScope() {
@@ -28,8 +43,7 @@ public class LifeApp implements CommandLineRunner{
 		SpringApplication.run(LifeApp.class);
 	}
 	
-	@Autowired 
-	private OrderExporter exporter;
+
 	
 	// TODO [1] make singleton; multi-thread + mutable state = BAD
 	// TODO [2] instantiate manually, set dependencies, pass around; no AOP
@@ -39,12 +53,37 @@ public class LifeApp implements CommandLineRunner{
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
 		// TODO exporter.export(Locale.FRENCH);
-		
+
+		// ASA SE FOLOSESTE CORECT UN SCOPE PROTOTYPE: II CERI REPETAT LUI SPRING INSTANTE
+		OrderExporter exporter1 = applicationContext.getBean(OrderExporter.class);
+		System.out.println(exporter1);
+		OrderExporter exporter2 = applicationContext.getBean(OrderExporter.class);
+		System.out.println(exporter2);
+
+		// DE CE SA EVITATI PROTOTYPE:
+		// 1. E STATEFUL -> GREU DE MENTINUT
+		// 2. TZAPA CAND INJECTEZI UN PROTO INTR-UN SINGLETON -> INJECTIA SE FACE O SINGURA DATA -> 1 SINGURA INSTANTA DE PROTO VA FI CREATA
 	}
+
+	@Autowired
+	private OrderExporter exporter; // DACA ASTA E PROTOTYPE => ITI IEI TZAPA
+
+	@Autowired
+	private ApplicationContext applicationContext;
 }
 @Slf4j
 @Service
+//@Scope("singleton") // default 1 instanta creata  / clasa
+//@Scope("prototype") // ori de cate ori spring are nevoie de o instanta, va creea una noua
+//@Scope("request") // 1 instanta / http request
 class OrderExporter  {
+	// date pe campuri!?! = stateful = BAD!
+	private String currentUsername;
+	private String userLocale;
+	private String shoppingCart ;
+
+
+
 	@Autowired
 	private InvoiceExporter invoiceExporter;
 	@Autowired
@@ -52,7 +91,7 @@ class OrderExporter  {
 
 	public void export(Locale locale) {
 		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		log.debug("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice();
 	}
 }
