@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,8 @@ public class WelcomeInfo {
 
     @Data
     public static class HelpInfo {
-        private Integer appId;
+        private Integer appId; // app porneste chiar daca nu e spec app-id nicaieri in props. daca faceai
+//        @Value("${app-id}") Integer appId; // app NU porneste  daca nu e spec app-id nicaieri
 //        @CustomValidator // gandam style
         private File file;
     }
