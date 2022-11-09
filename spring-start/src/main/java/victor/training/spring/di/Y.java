@@ -2,6 +2,7 @@ package victor.training.spring.di;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import subp.X;
 
 @Service
 public class Y {
@@ -12,6 +13,11 @@ public class Y {
 //    public Y(Z z) {
 //        this.z = z;
 //    }
+
+    @Autowired
+    public void method(X x) {
+        System.out.println("La startup: " + x);
+    }
 
     public int prod() {
         System.out.println(z);
