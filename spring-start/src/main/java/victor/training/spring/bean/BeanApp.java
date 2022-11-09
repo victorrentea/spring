@@ -2,11 +2,9 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +18,15 @@ public class BeanApp  {
 
     @Bean
     public Conversation conversation() {
-        return new Conversation(new Person("John"), new Person("Jane"));
+        return new Conversation(a(), b());
+    }
+    @Bean
+    public Person a() {
+        return new Person("John");
+    }
+    @Bean
+    public Person b() {
+        return new Person("Jane");
     }
 }
 @Component
