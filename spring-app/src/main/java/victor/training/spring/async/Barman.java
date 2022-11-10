@@ -15,9 +15,9 @@ public class Barman {
     @Async("bar")
     public CompletableFuture<Beer> pourBeer() {
         log.debug("Pouring Beer (SOAP/WSDL -guvern -dark CALL)...");
-        if (true) {
-            throw new IllegalStateException("NU mai e bere!");
-        }
+//        if (true) {
+//            throw new IllegalStateException("NU mai e bere!");
+//        }
         ThreadUtils.sleepq(1000);
         return CompletableFuture.completedFuture(new Beer());
     }
