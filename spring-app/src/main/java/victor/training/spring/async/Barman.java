@@ -30,7 +30,7 @@ public class Barman {
     // chemi o metoda @Async ce intoarce void din endpointul tau
     // = "Fire-and-forget pattern"
     // @Async + void = ❤️ Springu automat logheaza exceptii aparute in log
-    @Async
+    @Async("bar") // poti sa-l pui pe "bar" ThrPTExecutor
     public void injura(String uratura) {
         log.info("AICI");
         throw new IllegalArgumentException("Iti fac buzunar!");
