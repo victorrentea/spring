@@ -87,6 +87,12 @@
 
         <!-- swagger/open api3 -->
         <dependency>
+            <!-- daca te duci la http://localhost:8080/v3/api-docs vei gasi un open-api extras prin reflection de
+             spring din @RestControllere si structurile intoarse/primite, pe care il vei da politicos
+              tutoror celor ce vor sa consume API-ul tau.
+
+              Ei, daca sunt destepti, is vor genera cod client (structuri de date, interfete) prin care iti
+              vor chema API-ul fara riscul de typo-uri in diverse locuri -->
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.6</version>
