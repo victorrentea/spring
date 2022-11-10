@@ -28,11 +28,6 @@ public class TrainingControllerStripped implements TrainingControllerStrippedApi
 		return trainingService.getTrainingById(id);
 	}
 
-//	public void method(HttpServletResponse response) {
-//		response.getWriter() // jackson sa scrii datele ca JSON pe writer
-//		response.setTrailerFields();
-//
-//	}
 	public void createTraining(TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
