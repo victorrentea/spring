@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import victor.training.spring.web.entity.Training;
 
-import java.util.List;
-
 public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecificationExecutor<Training> {
-    Training getByName(String name);
+    boolean existsByName(String name);
+    //@Query("SELECT 1 FROM Training where name = ?1 AND id != ?2
+    boolean existsByNameAndIdNot(String newName, Long updatedId);
 }

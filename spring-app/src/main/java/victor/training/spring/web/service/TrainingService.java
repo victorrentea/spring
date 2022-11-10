@@ -53,7 +53,8 @@ public class TrainingService {
 
     // TODO Test this!
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+        if (trainingRepo.existsByNameAndIdNot(dto.name, id)) {
+//        if (trainingRepo.existsByName(dto.name) != null &&  !trainingRepo.existsByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
         Training training = trainingRepo.findById(id).orElseThrow();
@@ -79,7 +80,7 @@ public class TrainingService {
     }
 
     public void createTraining(TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null) {
+        if (trainingRepo.existsByName(dto.name)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
         trainingRepo.save(mapToEntity(dto));
