@@ -32,6 +32,7 @@ public class Playground {
         repo.save(new Message("unu"));
         other.metoda();
         log.info("Ies din metoda");
+        // [Write-Behind] JPA face INSERTURILE dupa ce iese din functie. cand tu faci .save() JPA doar pune in PersistenceContext
     }
 
     @Transactional
