@@ -44,10 +44,13 @@ public class Playground {
         repo.save(new Message("unu"));
     }
 
+    @Transactional
+    //    @Transactional(readOnly = true) // JPA intelege sa nu faca INSERT/UPDATE/DELETE (ci doar pt niste magie de JPA)
     public void transactionTwo() {
+
         Message message = repo.findById(1L).orElseThrow();
         message.setMessage("Altul!");
-        repo.save(message); // aici .save functioneaza nu ca INSERT ci ca UPDATE
+        //        repo.save(message); // aici .save functioneaza nu ca INSERT ci ca UPDATE
         // programmatic update . no magic
     }
 }

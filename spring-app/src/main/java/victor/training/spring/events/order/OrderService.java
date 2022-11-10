@@ -1,18 +1,20 @@
-package victor.training.spring.events;
+package victor.training.spring.events.order;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import victor.training.spring.events.events.OrderPlacedEvent;
+import victor.training.spring.events.invoice.InvoiceService;
+import victor.training.spring.events.stock.StockManagementService;
 
 @RequiredArgsConstructor
 @Slf4j
 @Component
 public class OrderService  {
-	private final StockManagementService stockManagementService;
-	private final InvoiceService invoiceService;
+	private final ApplicationEventPublisher eventPublisher; // spring
 
 	@EventListener(ApplicationStartedEvent.class)
 	public void run() {
@@ -22,8 +24,8 @@ public class OrderService  {
 	private void placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
-		stockManagementService.process(orderId);
-		invoiceService.sendInvoice(orderId);
+		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));//  >> AICI ruleaza spring toate handlerele unu dupa alu
+		log.debug("<< END placeOrder");
 	}
 }
 
