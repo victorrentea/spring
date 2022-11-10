@@ -39,8 +39,8 @@ public class DrinkerController {
       Future<Vodka> futureVodka = threadPool.submit(() -> barman.pourVodka());
       log.debug("Aici a plecat chelnerul cu AMBELE COMENZI odata");
 
-      Beer beer = futureBeer.get(); // cat timp sta aici blocat threadul
-      Vodka vodka = futureVodka.get();
+      Beer beer = futureBeer.get(); // cat timp sta aici blocat threadul Tomcatului ? -> 1 sec
+      Vodka vodka = futureVodka.get(); //cat timp sta aici blocat -> 0s: vodka deja e turnata
 
       long t1 = currentTimeMillis(); // TODO @Timed
 
