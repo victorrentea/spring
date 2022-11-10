@@ -29,8 +29,13 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.save(new Message("unu"));
-        other.metoda();
-
+        try {
+            other.metoda();
+        } catch (Exception e) {
+            // TODO aflu maine
+        }
+        repo.save(new Message("trei, dupa ce Tx a explodat"));
+        System.out.println("Query:"+ repo.findByMessage("a"));
         // TODO kafka/rabbit.send intr-un @TransactionalEventListener(phase=AFTER_COMMIT)
         log.info("Ies din metoda");
     }
@@ -43,7 +48,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional
+    @Transactional // proxy acesta ACUM omoara TX curenta
     public void metoda() {
         repo.save(new Message("doi"));
         throw new IllegalArgumentException("VALEU!"); // vreun check, datele aduse din alta parte nu te lasa sa continui, BUG, NPE
