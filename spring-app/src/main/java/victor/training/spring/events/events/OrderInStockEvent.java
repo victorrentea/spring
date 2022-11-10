@@ -1,8 +1,17 @@
 package victor.training.spring.events.events;
 
-import lombok.Value;
+public final class OrderInStockEvent {
+    private final long orderId;
 
-@Value
-public class OrderInStockEvent {
-    long orderId;
+    public OrderInStockEvent(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public long getOrderId() {
+        return this.orderId;
+    }
+
+    public String toString() {
+        return "OrderInStockEvent(orderId=" + this.getOrderId() + ")";
+    }
 }
