@@ -16,21 +16,20 @@ public class Playground {
 
 
     private final OtherClass other;
+    // 0 p6spy✅
+    // 1 Cause a rollback by breaking NOT NULL✅
+    // spring data JPA: @Query, metode cu nume destepte, native, @Modifying
+
+    //  , throw Runtime, throw CHECKED
+    // 2 Tx propagates with your calls (in your thread😱)
+    // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
+    // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
+    // 5 Performance: connection starvation issues : debate: avoid nested transactions
 
     @Transactional
     public void transactionOne() {
-//        jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,'ALO' )"); // -> JDBC
-        repo.queryNativ();
-        repo.save(new Message("val")); // Spring Data -> JPA -> Hiberante -> JDBC
-        // 0 p6spy✅
-        // 1 Cause a rollback by breaking NOT NULL✅
-        // spring data JPA: @Query, metode cu nume destepte, native, @Modifying
-
-        //  , throw Runtime, throw CHECKED
-        // 2 Tx propagates with your calls (in your thread😱)
-        // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
-        // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
-        // 5 Performance: connection starvation issues : debate: avoid nested transactions
+        repo.save(new Message("unu"));
+        repo.save(new Message("doi"));
     }
     @Transactional
     public void transactionTwo() {
