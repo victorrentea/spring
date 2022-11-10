@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,15 +11,16 @@ import javax.persistence.EntityManager;
 @Service
 @RequiredArgsConstructor
 public class Playground {
-    private final MessageRepo repo;
-    private final EntityManager entityManager;
-    private final JdbcTemplate jdbc;
+    private final MessageRepo repo; //Data= Spring Data (interfete fara implem care extind JpaRepository)
+    private final JdbcTemplate jdbcTemplate; // SQL murdar
+
+
     private final OtherClass other;
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
+        jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,'ALO' )"); // -> JDBC
+        repo.save(new Message("val")); // Spring Data -> JPA -> Hiberante -> JDBC
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
