@@ -45,6 +45,7 @@ class OtherClass {
     private final MessageRepo repo;
     @Transactional
     public void metoda() {
-        repo.save(new Message("unu"));
+        repo.save(new Message("doi"));
+        throw new IllegalArgumentException("VALEU!"); // vreun check, datele aduse din alta parte nu te lasa sa continui, BUG, NPE
     }
 }
