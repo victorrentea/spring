@@ -1,11 +1,17 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
+
+import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
 
 @Slf4j
 @Service
@@ -36,8 +42,25 @@ public class Playground {
         }
         repo.save(new Message("trei, dupa ce Tx a explodat"));
         System.out.println("Query:" + repo.findByMessage("a"));
-        // TODO kafka/rabbit.send intr-un @TransactionalEventListener(phase=AFTER_COMMIT)
+
+        eventPublisher.publishEvent(new KafkaMessageToSend("treaba"));
+        // springul vede ca listenerul acestui mesaj este @TransactionalEventListener => adauga "callbackul" asta
+        // la o lista de 'after commit' pentru tranzactia curenta. currentTransaction.afterCommitEvents.add(eventul tau);
         log.info("Ies din metoda");
+    }
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @Value
+    private static class KafkaMessageToSend {
+       String ce;
+    }
+
+    @TransactionalEventListener(phase=AFTER_COMMIT)
+    public void afterCommit(KafkaMessageToSend event) {
+        log.info("ACUM TRIMIT PE KAFKA " + event.ce);
+         new RuntimeException("e").printStackTrace();
+        log.info("kafka.send");
     }
 
     private void neAdnotata() { // ruleaza oricum in Tx pornita la :28

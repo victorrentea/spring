@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  vault:
+    image: arm64v8/vault
+    ports:
+      - 8200:8200
