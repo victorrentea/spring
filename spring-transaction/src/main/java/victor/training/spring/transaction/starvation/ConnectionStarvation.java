@@ -1,9 +1,11 @@
-package victor.training.spring.transaction_starvation;
+package victor.training.spring.transaction.starvation;
 
-import io.micrometer.core.annotation.Timed;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.varie.ThreadUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("profile/sheep")
 @RequiredArgsConstructor
+@SpringBootApplication
 class SheepController {
+    public static void main(String[] args) {
+        SpringApplication.run(SheepController.class, args);
+    }
+
     private final SheepService service;
 
     @GetMapping("create")
@@ -66,12 +72,12 @@ class SheepService {
 @Service
 @RequiredArgsConstructor
 class ShepardService {
-    @Timed("shepard")
+    @SneakyThrows
     public String registerSheep(String name) {
 //        return new RestTemplate()
 //                .getForObject("http://localhost:9999/api/register-sheep", SheepRegistrationResponse.class)
 //                .getSn();
-        ThreadUtils.sleepq(1000); // simulate slow network call
+        Thread.sleep(1000); // simulate slow network call
         return UUID.randomUUID().toString();
     }
 }
