@@ -35,7 +35,7 @@ public class Playground {
             other.saveError(e);
         }
         repo.save(new Message("trei, dupa ce Tx a explodat"));
-        System.out.println("Query:"+ repo.findByMessage("a"));
+        System.out.println("Query:" + repo.findByMessage("a"));
         // TODO kafka/rabbit.send intr-un @TransactionalEventListener(phase=AFTER_COMMIT)
         log.info("Ies din metoda");
     }
@@ -44,16 +44,22 @@ public class Playground {
         repo.save(new Message("unu"));
     }
 
+    @Transactional
     public void transactionTwo() {
-        repo.save(new Message("un singur insert nu are nevoie de @Tr"));
+        Message message = repo.findById(1L).orElseThrow();
+        message.setMessage("Altul!");// < aceasta modificare se duce in DB automat la finalul tranzactiei
+        // orice entitate iti da JPA din repo, este monitorizata pentru modificar in cadrul unei @Transactional
+        // NU AI NEVOIE DE SAVE ca sa se persiste changeul.
+        // 'dirty check' la final de tx.
     }
 }
+
 @Service
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
 
-//    @Transactional
+    //    @Transactional
     // ! singura data cand chem metoda() este din metoda din clasa de sus, care imi porneste tranzactie
     // => oricum am deja pe thread tx curenta.
     // Ce diferenta face adnotarea @Transactional daca DEJA vii cu tranzactie oricum deschisa ?
@@ -62,7 +68,7 @@ class OtherClass {
     public void metoda() {
         repo.save(new Message("doi"));
         boolean nuPotProcesaMesaju = true;
-        if (nuPotProcesaMesaju)throw new IllegalArgumentException("VALEU!");
+        if (nuPotProcesaMesaju) throw new IllegalArgumentException("VALEU!");
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
