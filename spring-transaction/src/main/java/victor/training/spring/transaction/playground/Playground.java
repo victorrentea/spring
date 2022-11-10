@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 @Slf4j
@@ -48,9 +49,28 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional // proxy acesta ACUM omoara TX curenta
-    public void metoda() {
+//
+    @Transactional(rollbackFor = Exception.class) // proxy acesta ACUM omoara TX curenta
+    public void metoda() throws IOException {
         repo.save(new Message("doi"));
-        throw new IllegalArgumentException("VALEU!"); // vreun check, datele aduse din alta parte nu te lasa sa continui, BUG, NPE
+//        throw new IllegalArgumentException("VALEU!"); // vreun check, datele aduse din alta parte nu te lasa sa continui, BUG, NPE
+        throw new IOException("oups"); // proxy-ul considera ca o ex CHECKED nu ar trebui sa cauzeze ROLLBACK
+        // ce dobitoc a zis asta?! EJB-u'! mama lui.
+            // pe vremea aia era in voga debate-ul BusinessException(checked) vs TechnicalException
+            // de atunci lumea a realizat ca ex checked sunt o GRESEALA a lb Java! (nici un alt lb de progr din lume nu are ex checked)
+            // 1995: faceau Java. peste tot in jur auzeai doar malloc/free, char*
+            // astazi in proj noi, dau reject la PR daca vad throws ceva Checked ex prin cod de app logic
+        // momentul de istorie......
+        // Springul a venit dupa Iarna EJB2.x (<- cel mai agresiv standard de coding in BE din istorie) GUNOI de standard
+        // springu a fost facut de un grup de haiduci ce s-au opus opresiunii standardarului JavaEE
+        // "less invasive"
+        // problema: in 2004 toti developerii de backend erau pe JavaEE. -> Spring:cum ii furam?
+        // SCOP: sa le facem usoara tranzitia code-baseurilor JavaEE->Spring
+            // @Transactional a copiat behaviorul @TransactionAttribute din java EE
+
+
+        // morala:
+        // 1 niciodata nu arunca ex checked din met cu app logic
+        // 2 daca ai codebase vechi -> @Transactionl(rollbackfor=
     }
 }
