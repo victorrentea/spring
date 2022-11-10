@@ -19,8 +19,8 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,'ALO' )"); // -> JDBC
-//        repo.queryNativ();
+//        jdbcTemplate.update("insert into MESSAGE(id, message) values ( 100,'ALO' )"); // -> JDBC
+        repo.queryNativ();
         repo.save(new Message("val")); // Spring Data -> JPA -> Hiberante -> JDBC
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
