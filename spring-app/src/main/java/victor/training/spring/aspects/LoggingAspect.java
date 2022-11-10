@@ -33,6 +33,7 @@ public class LoggingAspect {
 
     @Around("@within(victor.training.spring.aspects.Facade))") // all methods of classes annotated with @Facade
 //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
+//    @Around("@annotation(....RestController))") // all methods annotated with @LoggedMethod
 //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 
     // -- DANGER ZONE --

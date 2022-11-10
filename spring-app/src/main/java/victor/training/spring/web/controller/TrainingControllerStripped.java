@@ -1,31 +1,39 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/trainings")
 public class TrainingControllerStripped {
 	@Autowired
 	private TrainingService trainingService;
 
+	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
-	public TrainingDto getTrainingById(Long id) {
+	@GetMapping("{id}")
+	public TrainingDto getTrainingById(@PathVariable Long id) {
 		return trainingService.getTrainingById(id);
 	}
 
-	// TODO @Valid
-	public void createTraining(TrainingDto dto) throws ParseException {
+	@PostMapping
+	public void createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
-	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+	// @Aspect ....
+	@PutMapping("{id}")
+	public void updateTraining(@PathVariable Long id, @RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -35,11 +43,14 @@ public class TrainingControllerStripped {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
-	public void deleteTrainingById(Long id) {
+	@DeleteMapping("{id}")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+//	@GetMapping // nu GetMapping pentru ca asta cere toti param sa vina in url ?name=asda%40sdaf&teacherId=1&
+	@PostMapping("search") // de ce nu POST? => nu creezi nimic, ci doar obtii data, nu e HTTP/REST pur
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 }
