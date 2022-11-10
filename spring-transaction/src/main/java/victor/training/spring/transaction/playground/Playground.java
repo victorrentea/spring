@@ -15,7 +15,6 @@ public class Playground {
     private final MessageRepo repo; //Data= Spring Data (interfete fara implem care extind JpaRepository)
     private final JdbcTemplate jdbcTemplate; // SQL murdar
 
-
     private final OtherClass other;
     // 0 p6spy✅
     // 1 Cause a rollback by breaking NOT NULL✅
@@ -31,6 +30,13 @@ public class Playground {
     public void transactionOne() {
         repo.save(new Message("unu"));
         other.metoda();
+
+//        repo.flush();// anti-pattern: performanta--,
+        // TODO kafka/rabbit.send intr-un @TransactionalEventListener(phase=AFTER_COMMIT)
+
+        System.out.println("toate="+ repo.findAll());
+        // SELECT in DB il obliga pe Hib sa flushuie tot ce avea de scris pentru ca rezultatele tale sa fie corecte.
+
         log.info("Ies din metoda");
         // [Write-Behind] JPA face INSERTURILE dupa ce iese din functie. cand tu faci .save() JPA doar pune in PersistenceContext
         // DRAMA: calci un UQ.cand iti sare exceptia?
