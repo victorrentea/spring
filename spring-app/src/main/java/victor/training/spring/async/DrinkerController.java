@@ -9,9 +9,6 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
@@ -21,30 +18,31 @@ import static java.lang.System.currentTimeMillis;
 public class DrinkerController {
    @Autowired
    private Barman barman;
+   @Autowired
+   private ThreadPoolTaskExecutor bar;
 
    // TODO [1] inject and submit work to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
-      log.debug("Submitting my order");
+      log.debug("Submitting my order to " + barman.getClass());
 
       long t0 = currentTimeMillis();
 
-      ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
-      threadPool.setCorePoolSize(2);
-      threadPool.initialize();
-
-      Future<Beer> futureBeer = threadPool.submit(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = threadPool.submit(() -> barman.pourVodka());
+      Future<Beer> futureBeer = bar.submit(() -> barman.pourBeer());
+      Future<Vodka> futureVodka = bar.submit(() -> barman.pourVodka());
       log.debug("Aici a plecat chelnerul cu AMBELE COMENZI odata");
 
       Beer beer = futureBeer.get(); // cat timp sta aici blocat threadul Tomcatului ? -> 1 sec
       Vodka vodka = futureVodka.get(); //cat timp sta aici blocat -> 0s: vodka deja e turnata
 
       long t1 = currentTimeMillis(); // TODO @Timed
-
       log.debug("Got my drinks in {} millis", t1-t0);
+
+      barman.injura("*R&!*(%^!&(^%*(");
+      log.debug("In patuc");
+
       return new DillyDilly(beer, vodka);
    }
 }
