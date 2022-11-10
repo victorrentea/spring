@@ -44,8 +44,8 @@ public class Playground {
         repo.save(new Message("unu"));
     }
 
-    @Transactional
     public void transactionTwo() {
+        repo.save(new Message("un singur insert nu are nevoie de @Tr"));
     }
 }
 @Service
