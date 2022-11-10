@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 
 public class TrainingDto {
 	public Long id;
+	// STUPOARE: null merge.
 	@Size(min = 3, max = 50)
 	public String name;
 	public ContractType level;

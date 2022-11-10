@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
@@ -16,11 +19,17 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class GlobalExceptionHandler {
 
 	@ResponseStatus(INTERNAL_SERVER_ERROR) // http response status
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler(Exception.class) // orice subtip de exceptii = toate.
 	public String defaultErrorHandler(Exception exception, HttpServletRequest request) throws Exception {
 		log.error(exception.getMessage(), exception);
 		// you may want to translate a message code in the request.getLocale() / OpenID user token
 		return exception.getMessage(); // Security Best Practice: hide stack traces from API responses.
+	}
+
+	@ResponseStatus(NOT_FOUND) // http response status
+	@ExceptionHandler(NoSuchElementException.class) // orice subtip de exceptii = toate.
+	public String noSucheElement() throws Exception {
+		return "nu-i";
 	}
 
 }
