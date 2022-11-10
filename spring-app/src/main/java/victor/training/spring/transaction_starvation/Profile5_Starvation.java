@@ -46,13 +46,15 @@ class SheepController {
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 class SheepService {
     private final SheepRepo repo;
     private final ShepardService shepard;
 
+//    @Transactional
     public Long create(String name) {
+        // API call REST <- avoid doing this within a @Trasactional
         String sn = shepard.registerSheep(name); // Takes 1 second (HTTP call)
+
         Sheep sheep = repo.save(new Sheep(name, sn));
         return sheep.getId();
     }
