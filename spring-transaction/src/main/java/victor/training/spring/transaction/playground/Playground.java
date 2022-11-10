@@ -44,7 +44,7 @@ public class Playground {
         repo.save(new Message("unu"));
     }
 
-//    @Transactional
+    @Transactional
     public void transactionTwo() {
         Message message = repo.findById(1L).orElseThrow();
         message.setMessage("Altul!");// < aceasta modificare se duce in DB automat la finalul tranzactiei
