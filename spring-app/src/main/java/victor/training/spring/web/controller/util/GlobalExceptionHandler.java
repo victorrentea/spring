@@ -6,8 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.web.MyException;
+import victor.training.spring.web.MyException.ErrorCode;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -32,4 +37,17 @@ public class GlobalExceptionHandler {
 		return "nu-i";
 	}
 
+
+	@ResponseStatus(INTERNAL_SERVER_ERROR) // http response status
+	@ExceptionHandler(MyException.class) // orice subtip de exceptii = toate.
+	public String myException(MyException exception, HttpServletRequest request) throws Exception {
+		String key = "error." + exception.getCode().name();
+		log.error("TROSC", exception);
+		String userMessage = messageSource.getMessage(key, exception.getParams(), request.getLocale());
+		return userMessage;
+	}
+
+
+	@Autowired
+	private MessageSource messageSource;
 }

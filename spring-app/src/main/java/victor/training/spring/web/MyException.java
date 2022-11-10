@@ -2,7 +2,7 @@ package victor.training.spring.web;
 
 public class MyException extends RuntimeException {
 
-   public enum ErrorCode {
+   public enum ErrorCode { // cauze de fail interesante pentru user. care vor avea textual representation intr-un fisier. ca UX = ❤️
       GENERAL,
       DUPLICATE_TRAINING_NAME,
       NOT_FOUND

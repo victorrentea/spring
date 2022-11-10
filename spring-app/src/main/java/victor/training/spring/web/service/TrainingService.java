@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.MyException;
+import victor.training.spring.web.MyException.ErrorCode;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -19,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static victor.training.spring.web.MyException.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -55,7 +58,8 @@ public class TrainingService {
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.existsByNameAndIdNot(dto.name, id)) {
 //        if (trainingRepo.existsByName(dto.name) != null &&  !trainingRepo.existsByName(dto.name).getId().equals(id)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+//            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(DUPLICATE_TRAINING_NAME, dto.name);
         }
         Training training = trainingRepo.findById(id).orElseThrow();
         training.setName(dto.name);
@@ -81,7 +85,8 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) throws ParseException {
         if (trainingRepo.existsByName(dto.name)) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(DUPLICATE_TRAINING_NAME, dto.name);
+//            throw new IllegalArgumentException("Another training with that name already exists");
         }
         trainingRepo.save(mapToEntity(dto));
     }
