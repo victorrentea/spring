@@ -21,6 +21,8 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
     @Query(value = "UPDATE Message m SET m.message = ?1 WHERE m.id = ?2") // ==> 1 network round trip
     void updateMessageById(String mesajNou, Long id);
 
+    int countByMessage(String message);
+
     // evitati👆: preferati sa faceti. <== pt design
     // -- dar nu e mai multa retea?
     // -- ba da, doar ca modificarile de date sunt locurile critice unde un bug doare cel mai mult

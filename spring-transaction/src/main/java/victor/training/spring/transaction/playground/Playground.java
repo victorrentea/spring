@@ -31,17 +31,8 @@ public class Playground {
         repo.save(new Message("unu"));
         other.metoda();
 
-        repo.flush();// anti-pattern: performanta--,
         // TODO kafka/rabbit.send intr-un @TransactionalEventListener(phase=AFTER_COMMIT)
-
-//        System.out.println("toate="+ repo.findAll());
-        System.out.println("toate="+ repo.findByMessage("aa"));
-        // SELECT in DB il obliga pe Hib sa flushuie tot ce avea de scris pentru ca rezultatele tale sa fie corecte.
-
         log.info("Ies din metoda");
-        // [Write-Behind] JPA face INSERTURILE dupa ce iese din functie. cand tu faci .save() JPA doar pune in PersistenceContext
-        // daca faceai 1M de repo.save() => write behind i-ar da voie lui Hib sa faca BATCHING de inserturi la final
-        // DRAMA: calci un UQ.cand iti sare exceptia?
     }
 
     @Transactional
@@ -52,7 +43,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional // asta nu creeaza tx noua ci refoloseste => nu face COMMIT dupa la finalul metodei!
+    @Transactional
     public void metoda() {
         repo.save(new Message("unu"));
     }
