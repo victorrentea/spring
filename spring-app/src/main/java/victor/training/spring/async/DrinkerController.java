@@ -40,7 +40,7 @@ public class DrinkerController {
       long t1 = currentTimeMillis(); // TODO @Timed
       log.debug("Got my drinks in {} millis", t1-t0);
 
-      barman.injura("*R&!*(%^!&(^%*(");
+      barman.injura("*R&!*(%^!&(^%*("); // cand chemi o met @Async, ea va executa pe ALT THREAD !!
       log.debug("In patuc");
 
       return new DillyDilly(beer, vodka);

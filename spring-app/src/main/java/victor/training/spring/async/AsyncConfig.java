@@ -20,20 +20,22 @@ public class AsyncConfig {
 		threadPool.setMaxPoolSize(barThreadCount);
 		threadPool.setQueueCapacity(10); //ca-i covid
 		threadPool.setThreadNamePrefix("bar-");
-		threadPool.setTaskDecorator(new TaskDecorator() {
-			@Override
-			public Runnable decorate(Runnable originalTaskSumitted) {
-				return () -> {
-					try {
-						log.info("INAINTE");
-						originalTaskSumitted.run();
-						log.info("DUPA");
-					} catch (Exception e) {
-						log.error("uite-o, ex din worked thread", e);
-					}
-				};
-			}
-		});
+
+		//  nu poti asa prinde ex din taskurile submise
+//		threadPool.setTaskDecorator(new TaskDecorator() {
+//			@Override
+//			public Runnable decorate(Runnable originalTaskSumitted) {
+//				return () -> {
+//					try {
+//						log.info("INAINTE");
+//						originalTaskSumitted.run();
+//						log.info("DUPA");
+//					} catch (Exception e) {
+//						log.error("uite-o, ex din worked thread", e);
+//					}
+//				};
+//			}
+//		});
 		threadPool.initialize();
 		return threadPool;
 	}

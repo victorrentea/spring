@@ -25,10 +25,14 @@ public class Barman {
         return new Vodka();
     }
 
+    // vrei sa startezi printr-un req http un proces ce dureaza minute.
+    // nu poti/vrei sa tii http req blocat 1 min.
+    // chemi o metoda @Async ce intoarce void din endpointul tau
+    // = "Fire-and-forget pattern"
+    // @Async + void = ❤️ Springu automat logheaza exceptii aparute in log
     @Async
-    public CompletableFuture<Void> injura(String uratura) {
+    public void injura(String uratura) {
         log.info("AICI");
         throw new IllegalArgumentException("Iti fac buzunar!");
-
     }
 }
