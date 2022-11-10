@@ -9,9 +9,11 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -30,8 +32,15 @@ public class DrinkerController {
 
       long t0 = currentTimeMillis();
 
-      Future<Beer> futureBeer = bar.submit(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = bar.submit(() -> barman.pourVodka());
+      // = proxy magic merge pe bar threadpool
+      Future<Beer> futureBeer = barman.pourBeer();
+
+      // mai evident ca Pleaca pe alt thread.
+      // ATENTIE: daca nu-i pui al doilea param (executoru),
+      //    taskul iti ruleaza in ForkJoinPool.commonPool, in care nu ai voie network!
+      // atlfel te bati cu orice alt supplyAsync de prin cod si cu toate .parallelStream() din JVM pe doar 7 threaduri.
+      Future<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), /*OBLIGATORIU*/ bar);
+
       log.debug("Aici a plecat chelnerul cu AMBELE COMENZI odata");
 
       Beer beer = futureBeer.get(); // cat timp sta aici blocat threadul Tomcatului ? -> 1 sec

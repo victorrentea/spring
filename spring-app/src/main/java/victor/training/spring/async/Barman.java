@@ -1,7 +1,6 @@
 package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.jcajce.provider.symmetric.AES.CFB;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import victor.training.spring.async.drinks.Beer;
@@ -13,10 +12,14 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service
 public class Barman {
-    public Beer pourBeer() {
+    @Async("bar")
+    public CompletableFuture<Beer> pourBeer() {
         log.debug("Pouring Beer (SOAP/WSDL -guvern -dark CALL)...");
+        if (true) {
+            throw new IllegalStateException("NU mai e bere!");
+        }
         ThreadUtils.sleepq(1000);
-        return new Beer();
+        return CompletableFuture.completedFuture(new Beer());
     }
 
     public Vodka pourVodka() {
