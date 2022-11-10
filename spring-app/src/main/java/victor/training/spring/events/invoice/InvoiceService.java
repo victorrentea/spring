@@ -4,14 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import victor.training.spring.events.events.OrderInStockEvent;
 import victor.training.spring.events.events.OrderPlacedEvent;
 
 @Slf4j
 @Service
 public class InvoiceService {
    @EventListener
-   @Order(2)
-   public void onOrderPlacedEvent(OrderPlacedEvent event) {
+//   @Order(2)
+   public void onOrderPlacedEvent(OrderInStockEvent event) {
       sendInvoice(event.getOrderId());
    }
 
