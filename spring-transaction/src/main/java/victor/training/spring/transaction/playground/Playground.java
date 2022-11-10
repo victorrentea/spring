@@ -44,13 +44,11 @@ public class Playground {
         repo.save(new Message("unu"));
     }
 
-    @Transactional
     public void transactionTwo() {
         Message message = repo.findById(1L).orElseThrow();
-        message.setMessage("Altul!");// < aceasta modificare se duce in DB automat la finalul tranzactiei
-        // orice entitate iti da JPA din repo, este monitorizata pentru modificar in cadrul unei @Transactional
-        // NU AI NEVOIE DE SAVE ca sa se persiste changeul.
-        // 'dirty check' la final de tx.
+        message.setMessage("Altul!");
+        repo.save(message); // aici .save functioneaza nu ca INSERT ci ca UPDATE
+        // programmatic update . no magic
     }
 }
 
