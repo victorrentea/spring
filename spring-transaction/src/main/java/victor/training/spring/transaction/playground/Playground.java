@@ -1,12 +1,9 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Service
 @RequiredArgsConstructor
@@ -29,15 +26,19 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.save(new Message("unu"));
-        repo.save(new Message("doi"));
+        other.metoda();
     }
+
     @Transactional
     public void transactionTwo() {
     }
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+    @Transactional
+    public void metoda() {
+        repo.save(new Message("doi"));
+    }
 }
