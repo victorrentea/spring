@@ -1,12 +1,14 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -29,6 +31,7 @@ public class Playground {
     public void transactionOne() {
         repo.save(new Message("unu"));
         other.metoda();
+        log.info("Ies din metoda");
     }
 
     @Transactional
@@ -39,7 +42,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional
+    @Transactional // asta nu creeaza tx noua ci refoloseste => nu face COMMIT dupa la finalul metodei!
     public void metoda() {
         repo.save(new Message("doi"));
     }
