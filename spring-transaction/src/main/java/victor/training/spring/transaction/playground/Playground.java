@@ -33,6 +33,7 @@ public class Playground {
         other.metoda();
         log.info("Ies din metoda");
         // [Write-Behind] JPA face INSERTURILE dupa ce iese din functie. cand tu faci .save() JPA doar pune in PersistenceContext
+        // DRAMA: calci un UQ.cand iti sare exceptia?
     }
 
     @Transactional
@@ -45,6 +46,6 @@ class OtherClass {
     private final MessageRepo repo;
     @Transactional // asta nu creeaza tx noua ci refoloseste => nu face COMMIT dupa la finalul metodei!
     public void metoda() {
-        repo.save(new Message("doi"));
+        repo.save(new Message("unu"));
     }
 }

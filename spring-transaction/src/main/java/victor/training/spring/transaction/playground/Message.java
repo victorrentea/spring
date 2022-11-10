@@ -3,7 +3,7 @@ package victor.training.spring.transaction.playground;
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE"))
+@Table(uniqueConstraints = @UniqueConstraint(name = "UK_MESSAGE", columnNames = "MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue
