@@ -3,6 +3,7 @@ package victor.training.spring.events.invoice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import victor.training.spring.events.events.OrderInStockEvent;
 import victor.training.spring.events.events.OrderPlacedEvent;
@@ -11,6 +12,8 @@ import victor.training.spring.events.events.OrderPlacedEvent;
 @Service
 public class InvoiceService {
    @EventListener
+   @Async // pleci de pe threadul publisher.=> pierzi exceptii, @Transactional, SecurityContextHolder, Logback MDC,
+   // publisherul nu te asteapta sa termini
 //   @Order(2)
    public void onOrderPlacedEvent(OrderInStockEvent event) {
       sendInvoice(event.getOrderId());
