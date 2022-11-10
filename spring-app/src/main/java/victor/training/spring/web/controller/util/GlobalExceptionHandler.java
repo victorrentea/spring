@@ -43,6 +43,11 @@ public class GlobalExceptionHandler {
 	public String myException(MyException exception, HttpServletRequest request) throws Exception {
 		String key = "error." + exception.getCode().name();
 		log.error("TROSC", exception);
+		// nu mereu conteaza limba browserului (ce vine pe req http)
+		// ci deseori limba userului este persistat intr-un USERS table sau vine pe AccesToken (OAuth)
+		// o sa scoti language useului din token!
+		// inceoe cu SecurityContextHolder.getContext().getAuthentication().getPrincipal()....
+
 		String userMessage = messageSource.getMessage(key, exception.getParams(), request.getLocale());
 		return userMessage;
 	}
