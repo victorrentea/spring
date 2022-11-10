@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -9,6 +10,7 @@ import victor.training.spring.web.service.TrainingService;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/trainings")
@@ -22,19 +24,38 @@ public class TrainingControllerStripped {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable Long id) {
-		return trainingService.getTrainingById(id);
+	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long id) {
+		try {
+			return ResponseEntity.status(200)
+					.header("Headeru-Meu", "#sieu")
+						// da de ce ? nu le pui pe TOATE endpointurile ?
+					.body(trainingService.getTrainingById(id));
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build();
+				// 404 - Cui ii pasa? CUI I PASA daca-i dai 500 sau 404 ?! Cui? FE ? NU. lor le trebuie 200 sau EROARE.
+		}
 	}
 
 	@PostMapping
 	public void createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
+		// - tre sa intoarcem 201 Created.
+		// - Da de ce?
+		// - Ca asa am citit eu!
+		// - si mai tre Location header in response header
+		// - Da de ce?
+		// - Ca asa am citit eu!
 	}
 
 	// @Aspect ....
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody @Valid TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(id, dto);
+	public ResponseEntity<Void> updateTraining(@PathVariable Long id, @RequestBody @Valid TrainingDto dto) throws ParseException {
+		try {
+			trainingService.updateTraining(id, dto);
+			return ResponseEntity.ok(null);
+		} catch (ParseException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.delete'
