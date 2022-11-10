@@ -28,15 +28,7 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.save(new Message("unu"));
-
-        new Thread(()->other.metoda()).start();
-        // cand pleci de pe un thread NU POTI lua cu tine JDBC Connection curent
-        // pt ca JDBC Conencton sta si el pe THREAD.
-        // Tranzactia de DB de fapt e pornita pe JDBC COnnection
-//        Connection connection;
-//        connection.setAutoCommit(false); // asa porneam tx 15 in urma
-//        connection.commit(); // COMMIT
-//        connection.rollback();
+        other.metoda();
     }
 
     @Transactional
@@ -48,7 +40,6 @@ public class Playground {
 class OtherClass {
     private final MessageRepo repo;
     @Transactional
-    // acum proxyul acesta a fost nevoit sa-si ia connex JDBC noua pe care sa faca start/commit TX.
     public void metoda() {
         repo.save(new Message("doi"));
     }
