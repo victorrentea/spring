@@ -2,6 +2,9 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +41,17 @@ public class TechnicalController {
         CurrentUserDto dto = new CurrentUserDto();
         // cum e posibil sa obt userul curent printr-o metoda statica !?!
         // -> e tinuta pe THREADUL CURENT
-        dto.username = CompletableFuture.supplyAsync(() -> anotherClass.cineEsti(), securityPropagatingExecutor).get();
+        String u = CompletableFuture.supplyAsync(() -> anotherClass.cineEsti(), securityPropagatingExecutor).get();
+        ;
+        //tipul depinde de cum ai autentificat request. eu aici am jucat keycloak
+        Object opaquePrincipal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal =
+                (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+        AccessToken accessToken = keycloakPrincipal.getKeycloakSecurityContext().getToken();
+        String email = accessToken.getEmail();
+//        accessToken.getOtherClaims().get("department");// eg data nasterii
+
+        dto.username = u + " ("+email+")";
 
 //         A) role-based security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
