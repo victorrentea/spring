@@ -3,8 +3,11 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,11 +72,11 @@ public class TechnicalController {
     //	}
 
 
-//    	@Bean // enable propagation of SecurityContextHolder over @Async
-//    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-//    		// https://www.baeldung.com/spring-security-async-principal-propagation
-//    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-//    	}
+    	@Bean // enable propagation of SecurityContextHolder over @Async
+    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor monitoredExecutor) {
+    		// https://www.baeldung.com/spring-security-async-principal-propagation
+    		return new DelegatingSecurityContextAsyncTaskExecutor(monitoredExecutor);
+    	}
 
     @Autowired
     private WelcomeInfo welcomeInfo;
