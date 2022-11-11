@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
@@ -15,12 +15,14 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class TechnicalController {
     private final AnotherClass anotherClass;
+    private final Executor securityPropagatingExecutor;
 
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
@@ -30,7 +32,7 @@ public class TechnicalController {
         CurrentUserDto dto = new CurrentUserDto();
         // cum e posibil sa obt userul curent printr-o metoda statica !?!
         // -> e tinuta pe THREADUL CURENT
-        dto.username = anotherClass.cineEsti().get();
+        dto.username = CompletableFuture.supplyAsync(() -> anotherClass.cineEsti(), securityPropagatingExecutor).get();
 
         // dto.username = anotherClass.asyncMethod().get();
 
@@ -72,11 +74,7 @@ public class TechnicalController {
     //	}
 
 
-    	@Bean // enable propagation of SecurityContextHolder over @Async
-    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor monitoredExecutor) {
-    		// https://www.baeldung.com/spring-security-async-principal-propagation
-    		return new DelegatingSecurityContextAsyncTaskExecutor(monitoredExecutor);
-    	}
+
 
     @Autowired
     private WelcomeInfo welcomeInfo;
@@ -94,13 +92,21 @@ public class TechnicalController {
     }
 
 }
+@Configuration
+class UnConfig {
+    @Bean // enable propagation of SecurityContextHolder over @Async
+    public Executor securityPropagatingExecutor(ThreadPoolTaskExecutor monitoredExecutor) {
+        // https://www.baeldung.com/spring-security-async-principal-propagation
+        return new DelegatingSecurityContextAsyncTaskExecutor(monitoredExecutor);
+    }
+}
 
 @Slf4j
 @Service
 class AnotherClass {
-    @Async
-    public CompletableFuture<String> cineEsti() {
-        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+//    @Async
+    public String cineEsti() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
     //    @Async
 //    public CompletableFuture<String> asyncMethod() {
