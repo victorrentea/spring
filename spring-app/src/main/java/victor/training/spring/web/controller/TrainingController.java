@@ -39,7 +39,9 @@ public class TrainingController {
 		trainingService.updateTraining(id, dto);
 	}
 
-	// TODO Allow only for role 'ADMIN'. Then also 'POWER_USER'
+	// TODO Allow only for role 'ADMIN'
+	// TODO Fix UX
+	// TODO Allow also 'POWER'; then remove it. => OWASP top 10
 	// TODO Allow for authority 'training.delete'
 	// TODO a) Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
