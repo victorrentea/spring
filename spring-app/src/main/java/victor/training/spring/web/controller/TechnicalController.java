@@ -3,13 +3,15 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +25,9 @@ public class TechnicalController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "// TODO: get username";
+        // cum e posibil sa obt userul curent printr-o metoda statica !?!
+        // -> e tinuta pe THREADUL CURENT
+        dto.username = anotherClass.cineEsti().get();
 
         // dto.username = anotherClass.asyncMethod().get();
 
@@ -91,7 +95,11 @@ public class TechnicalController {
 @Slf4j
 @Service
 class AnotherClass {
-//    @Async
+    @Async
+    public CompletableFuture<String> cineEsti() {
+        return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+    //    @Async
 //    public CompletableFuture<String> asyncMethod() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        log.info("Current authentication = {}", authentication);
