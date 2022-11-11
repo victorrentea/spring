@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -38,7 +39,8 @@ public class TrainingController implements TrainingControllerStrippedApi {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
-	@Secured("ROLE_ADMIN")
+//	@Secured("ROLE_ADMIN") // utila cand faci role-based authorizaton
+	@PreAuthorize("hasRole('ADMIN')") // more fine-grained authz
 	public void deleteTrainingById(Long id) {
 		trainingService.deleteById(id);
 	}
