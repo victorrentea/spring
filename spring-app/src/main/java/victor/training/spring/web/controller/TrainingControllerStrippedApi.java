@@ -30,7 +30,7 @@ public interface TrainingControllerStrippedApi {
     @PutMapping("{id}")
     void updateTraining(@PathVariable Long id, @RequestBody @Valid TrainingDto dto) throws ParseException;
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{id}/delete")
     void deleteTrainingById(@PathVariable Long id);
 
 
