@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -44,18 +45,28 @@ public class TeacherBioClient {
     private String teacherBioUriBase;
 
 
-    @Cacheable("bio")
-    public String retrieveBiographyForTeacher(long teacherId) {
-        log.debug("Calling external web endpoint... (takes time)");
-        ThreadUtils.sleepq(500);
-//        String result = dummy(teacherId);
-        String result = real(teacherId);
-        log.debug("Got result");
-        return result;
-    }
+    @Autowired
+    private CacheManager cacheManager;
 
     private String dummy(long teacherId) {
         return "Amazing bio for teacher " + teacherId;
+    }
+
+    @Cacheable("bio") // by default spring tine aici datele in mem intr-un map
+    // daca vrei sa :
+    // 1) limitezi cat heap ocupa cacheul, ttl, disk -> ehcache spring.cache.type=jcache +...
+    // 2) load-balanced => spring.cache.type=hazecast, redis ...
+    public String retrieveBiographyForTeacher(long teacherId) {
+
+        // daca te superi pe proxy @Cacheable, poti programatic folosi abstractia de cache a spring
+        String bio = (String) cacheManager.getCache("bio").get(teacherId).get();
+
+        log.debug("Calling external web endpoint... (takes time)");
+        ThreadUtils.sleepq(500);
+        //        String result = dummy(teacherId);
+        String result = real(teacherId);
+        log.debug("Got result");
+        return result;
     }
 
     @Autowired
