@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +34,16 @@ public class TrainingController implements TrainingControllerStrippedApi {
 	}
 
 	public void createTraining(TrainingDto dto) throws ParseException {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+
 		trainingService.createTraining(dto);
 	}
 
 	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+
 		trainingService.updateTraining(id, dto);
 	}
 	// TODO Better UX please !
