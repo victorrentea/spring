@@ -62,6 +62,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http); // critical, defer to KC a lot of work
 
+        http.addFilter(new ApiKeyFilter());
         http.csrf().disable(); // OK since I never take <form> POSTs
 
         // http.cors(); // needed only if .js files are served by a CDN (eg)
