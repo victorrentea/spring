@@ -32,7 +32,9 @@ public class TrainingController implements TrainingControllerStrippedApi {
 	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
-	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
+	// TODO Better UX please !
+	// TODO Allow only for role 'ADMIN'... or 'POWER'
+
 	// TODO Allow for authority 'training.delete'
 	// TODO The current user must manage the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
