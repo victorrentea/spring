@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.JWTUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +32,7 @@ public class TechnicalController {
 
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
-        //		JWTUtils.printTheTokens();
+        JWTUtils.printTheTokens();
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
@@ -119,3 +120,7 @@ class AnotherClass {
 //        return CompletableFuture.completedFuture(authentication.getName());
 //    }
 }
+
+
+
+

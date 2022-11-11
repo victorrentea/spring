@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-//@Profile("local")
+@Profile("local")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // iti permite sa folosesti @PreAuthorized si/sau @Secured in app
 public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
