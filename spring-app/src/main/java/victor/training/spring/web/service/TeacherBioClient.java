@@ -52,14 +52,14 @@ public class TeacherBioClient {
         return "Amazing bio for teacher " + teacherId;
     }
 
-    @Cacheable("bio") // by default spring tine aici datele in mem intr-un map
+//    @Cacheable("bio") // by default spring tine aici datele in mem intr-un map
     // daca vrei sa :
     // 1) limitezi cat heap ocupa cacheul, ttl, disk -> ehcache spring.cache.type=jcache +...
     // 2) load-balanced => spring.cache.type=hazecast, redis ...
     public String retrieveBiographyForTeacher(long teacherId) {
 
         // daca te superi pe proxy @Cacheable, poti programatic folosi abstractia de cache a spring
-        String bio = (String) cacheManager.getCache("bio").get(teacherId).get();
+//        String bio = (String) cacheManager.getCache("bio").get(teacherId).get();
 
         log.debug("Calling external web endpoint... (takes time)");
         ThreadUtils.sleepq(500);

@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class Barman {
         return CompletableFuture.completedFuture(new Beer());
     }
 
+    @Timed("vodka")
     public Vodka pourVodka() {
         log.debug("Pouring Vodka (REST CALL), export din DB SQL heavy...");
         ThreadUtils.sleepq(1000);

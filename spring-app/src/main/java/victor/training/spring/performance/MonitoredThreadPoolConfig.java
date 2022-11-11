@@ -37,6 +37,7 @@ public class MonitoredThreadPoolConfig {
 
    @Bean
    public TimedAspect timedAspect() {
+      // asta
       return new TimedAspect(meterRegistry);
    }
 }
