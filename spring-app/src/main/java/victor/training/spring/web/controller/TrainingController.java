@@ -42,7 +42,8 @@ public class TrainingController implements TrainingControllerStrippedApi {
 	// TODO PermissionEvaluator
 
 //	@Secured("ROLE_ADMIN") // utila cand faci role-based authorizaton
-	@PreAuthorize("hasAnyRole('ADMIN')") // more fine-grained authz
+//	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAuthority('training.delete')") // more fine-grained authz
 	public void deleteTrainingById(Long id) {
 		trainingService.deleteById(id);
 	}
