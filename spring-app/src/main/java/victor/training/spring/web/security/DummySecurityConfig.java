@@ -26,7 +26,7 @@ public class DummySecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors(); // needed only if .js files are served by a CDN (eg)
 
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//                .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.formLogin().defaultSuccessUrl("/", true);
