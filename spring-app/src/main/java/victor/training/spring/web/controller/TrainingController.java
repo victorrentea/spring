@@ -3,9 +3,14 @@ package victor.training.spring.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -45,8 +50,21 @@ public class TrainingController implements TrainingControllerStrippedApi {
 //	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PreAuthorize("hasAuthority('training.delete')") // more fine-grained authz
 	public void deleteTrainingById(Long id) {
+		Training training = trainingRepo.findById(id).orElseThrow();
+		User currentUser = userRepo.getForLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
+		Long teacherId = training.getTeacher().getId();
+		if (!currentUser.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("Can't touch this!");
+		}
+
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	private UserRepo userRepo;
+
+	@Autowired
+	private TrainingRepo trainingRepo;
 
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
