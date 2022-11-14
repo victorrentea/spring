@@ -39,7 +39,7 @@ public class WelcomeInfo {
     @PostConstruct
     public void printMyselfAtStartup() {
         if (!help.file.isFile()) {
-            throw new IllegalArgumentException("BUM not a file: " + help.file);
+//            throw new IllegalArgumentException("BUM not a file: " + help.file);
         }
         // TODO validate help.file exists on disk
         // TODO validate welcome message is not null and at least 10 chars
