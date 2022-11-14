@@ -52,17 +52,17 @@ public class FirstApplication implements CommandLineRunner{
 @Service // & co. -> 1 instance only / application = "singleton"
 @Slf4j
 class X {
-	private String currentUsername;
-	// shared mutable state in a multi-threaded environment (REST API backend)
-	// -> you're dead "race bug" -> impossible to reproduce
-
-	public void setUsername(String user) {
-		currentUsername = user;
-	}
-
-	public void doStuffForCurrentUser() {
-		System.out.println("currentu ser = " + currentUsername);
-	}
+//	private String currentUsername;
+//	// shared mutable state in a multi-threaded environment (REST API backend)
+//	// -> you're dead "race bug" -> impossible to reproduce
+//
+//	public void setUsername(String user) {
+//		currentUsername = user;
+//	}
+//
+//	public void doStuffForCurrentUser() {
+//		System.out.println("currentu ser = " + currentUsername);
+//	}
 
 
 	// #1 field injection by type
