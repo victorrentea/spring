@@ -15,38 +15,38 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class ProxyIntro {
-    public static void main(String[] args) {
-        // pretend to BE Spring here - doing DI
-        Maths maths = new Maths() /*{ // anonymous extends
-            @Overrid
-            public int sum(int a, int b) {
-                System.out.println("calling sum with  " + a + " and " + b);
-                return super.sum(a, b);
-            }
-        }*/;
+//    public static void main(String[] args) {
+//        // pretend to BE Spring here - doing DI
+//        Maths maths = new Maths() /*{ // anonymous extends
+//            @Overrid
+//            public int sum(int a, int b) {
+//                System.out.println("calling sum with  " + a + " and " + b);
+//                return super.sum(a, b);
+//            }
+//        }*/;
+//
+//        Callback h = new MethodInterceptor() {
+//            @Override
+//            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+//                System.out.println("Calling " + method.getName() + " with args " + Arrays.toString(args));
+//
+//               // check cache and return from cache
+//                // start tx
+//                // check roles
+//                Object result = method.invoke(maths, args);
+//                System.out.println("Returned " + result);
+//                return result;
+//            }
+//        };
+//        Maths mathsProxy = (Maths) Enhancer.create(Maths.class, h);
+//
+//        SecondGrade secondGrade = new SecondGrade(mathsProxy);
+//        // TODO because my daughter has a maniac father, the father wants to intercept all calls to
+//        // maths methods and their results, to check them
+//        new ProxyIntro().run(secondGrade);
+//    }
 
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Calling " + method.getName() + " with args " + Arrays.toString(args));
-
-               // check cache and return from cache
-                // start tx
-                // check roles
-                Object result = method.invoke(maths, args);
-                System.out.println("Returned " + result);
-                return result;
-            }
-        };
-        Maths mathsProxy = (Maths) Enhancer.create(Maths.class, h);
-
-        SecondGrade secondGrade = new SecondGrade(mathsProxy);
-        // TODO because my daughter has a maniac father, the father wants to intercept all calls to
-        // maths methods and their results, to check them
-        new ProxyIntro().run(secondGrade);
-    }
-
-//    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
+        public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 //
     @Autowired
     public void run(SecondGrade secondGrade) {
@@ -70,6 +70,7 @@ class SecondGrade {
     }
 
     public void mathClass() {
+//        Maths maths = new Maths(); // pitfall 3: obj is NOT injected => no proxies => no magic
         System.out.println("You are not injected the REAL Maths class, but a proxy");
         System.out.println("You tell it's a proxy if you see $$ Enhancer: " + maths.getClass());
         System.out.println(maths.sum(2, 4));
@@ -78,15 +79,21 @@ class SecondGrade {
     }
 }
 
-//@Facade
-@Service
-class Maths {
-    public int sum(int a, int b) {
+@Facade
+//@Service
+/*final*/ /*abstract*/  class Maths { // fail to start spring - pitfall #1 final word
+    @LoggedMethod
+    public /*final*/ int sum(int a, int b) { // final methods are just silently ignored by spring AOP
         return a + b;
     }
 
     public int product(int a, int b) {
-        return a * b;
+        int result = 0;
+        for (int i = 0; i < a; i++) {
+            result = sum(result, b); // pitfall 2: local method calls ARE NOT INTERCEPTED
+        }
+        return result;
+//        return a * b;
     }
 }
 
