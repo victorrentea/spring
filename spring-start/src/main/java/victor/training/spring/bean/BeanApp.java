@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class BeanApp {
     }
 
     @Bean
-    public Conversation conversation() {
+    public Conversation conversations() {
         return new Conversation(john(), jane());// don't consider these method calls,
         // but bean references
     }
@@ -46,11 +47,15 @@ class WelcomeToJava extends BeanApp {
 }
 @Component
 class MoreBreadownOfClasses implements CommandLineRunner{
+//    @Autowired
+//    private Conversation conversation;
     @Autowired
-    private Conversation conversation;
+    private ApplicationContext applicationContext;
 
     @Override
     public void run(String... args) throws Exception {
+        Conversation conversation = applicationContext
+                .getBean("conversation", Conversation.class); // runtime error vs a deploy-time check
         conversation.start();
     }
 }
