@@ -77,9 +77,9 @@ class X {
 
 	// #2 method (setter) injection (rarely used)
 
-//	private Z z;
+//	private Z1 z;
 //	@Autowired
-//	public void anyMethod(Z z, Y y) {
+//	public void anyMethod(Z1 z, Y y) {
 //		this.z = z;
 //		System.out.println(y);
 //	}

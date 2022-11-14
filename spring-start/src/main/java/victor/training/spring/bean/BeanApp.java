@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.time.Clock;
 
 @SpringBootApplication
 public class BeanApp {
@@ -26,8 +27,13 @@ public class BeanApp {
         return new Person("Jane");
     }
 
+//    @Bean
+//    public Clock clock() {
+//        return Clock.systemUTC();
+//    }
+
     @Bean
-    public Conversation conversations() {
+    public Conversation conversation() {
         return new Conversation(john(), jane());// don't consider these method calls,
         // but bean references
     }
@@ -38,6 +44,7 @@ public class BeanApp {
 }
 // spring does this to all @Configuration classes
 class WelcomeToJava extends BeanApp {
+
     @Override
     public Person john() {// dynamic override of all @Bean methods
 //        if (singletonCache.contains (john)) return from cache
@@ -47,15 +54,15 @@ class WelcomeToJava extends BeanApp {
 }
 @Component
 class MoreBreadownOfClasses implements CommandLineRunner{
-//    @Autowired
-//    private Conversation conversation;
     @Autowired
-    private ApplicationContext applicationContext;
+    private Conversation conversation;
+//    @Autowired
+//    private ApplicationContext applicationContext;
 
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = applicationContext
-                .getBean("conversation", Conversation.class); // runtime error vs a deploy-time check
+//        Conversation conversation = applicationContext
+//                .getBean("conversation", Conversation.class); // runtime error vs a deploy-time check
         conversation.start();
     }
 }
