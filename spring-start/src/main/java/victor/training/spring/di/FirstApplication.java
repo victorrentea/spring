@@ -49,9 +49,22 @@ public class FirstApplication implements CommandLineRunner{
 //@Facade
 
 @RequiredArgsConstructor
-@Service
+@Service // & co. -> 1 instance only / application = "singleton"
 @Slf4j
 class X {
+	private String currentUsername;
+	// shared mutable state in a multi-threaded environment (REST API backend)
+	// -> you're dead "race bug" -> impossible to reproduce
+
+	public void setUsername(String user) {
+		currentUsername = user;
+	}
+
+	public void doStuffForCurrentUser() {
+		System.out.println("currentu ser = " + currentUsername);
+	}
+
+
 	// #1 field injection by type
 	private final Y y;
 	private final Y y2;
@@ -63,15 +76,19 @@ class X {
 	private final Y y8;
 
 	// #2 method (setter) injection (rarely used)
+
 //	private Z z;
 //	@Autowired
-//	public void setZ(Z z) {
+//	public void anyMethod(Z z, Y y) {
 //		this.z = z;
+//		System.out.println(y);
 //	}
 
 	public int prod() {
 //		log.debug();
 		return 1 + y.prod();
 	}
+
+
 }
 

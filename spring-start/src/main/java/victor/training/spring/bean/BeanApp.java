@@ -13,7 +13,8 @@ public class BeanApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+        Conversation conversation = new Conversation(
+                new Person("John"), new Person("Jane"));
         // TODO convince Spring to do for you the line above
         conversation.start();
     }
