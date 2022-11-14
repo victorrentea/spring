@@ -5,7 +5,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -22,7 +29,7 @@ public class FirstApplication implements CommandLineRunner{
 		SpringApplication.run(FirstApplication.class);
 	}
 
-	@Autowired
+	@Autowired // automatically injected despite the private visibility
 	private X x;
 
 	@Override
@@ -31,9 +38,22 @@ public class FirstApplication implements CommandLineRunner{
 	}
 }
 
-@Service
+//@Bean in a @Configuration
+
+
+//@Controller // in the ages of jsp (html on server) < avoid if exposing REST endpoints
+//@RestController // REST apoi
+@Service  // = business logic
+//@Component // a kind of util/ technica infra stuff
+//@Repository // DB access
+
+//@Service
+//@Retention(RetentionPolicy.RUNTIME)
+//@interface Facade {}
+//
+//@Facade
 class X {
-	// #1 field injection
+	// #1 field injection by type
 	@Autowired
 	private Y y;
 
