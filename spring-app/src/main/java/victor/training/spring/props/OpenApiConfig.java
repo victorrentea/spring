@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
     // (A) Inject properties and manually configure an external class (OpenAPI)
-    @Value("${api.info.version}")
-    String version;
     @Value("${api.info.title}")
     String title;
+    @Value("${api.info.version}")
+    String version;
     @Value("${api.info.contact.name}")
     String contactName; // + 10 more
 
