@@ -11,19 +11,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
-public class BeanApp implements CommandLineRunner {
+public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
-    @Autowired
-    @Lazy
-    private Conversation conversation;
 
-    @Override
-    public void run(String... args) throws Exception {
-        conversation.start();
-    }
 
     @Bean
     public Person john() {
@@ -32,6 +25,16 @@ public class BeanApp implements CommandLineRunner {
     @Bean
     public Person jane() {
         return new Person("Jane");
+    }
+}
+@Component
+class MoreBreadownOfClasses implements CommandLineRunner{
+    @Autowired
+    private Conversation conversation;
+
+    @Override
+    public void run(String... args) throws Exception {
+        conversation.start();
     }
 }
 
