@@ -14,16 +14,34 @@ public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
-
-
-
-    @Bean
+    @Bean // still a singleton, even if multiple references to this
+    // @bean exist in this @Configuration class
     public Person john() {
-        return new Person("John");
+        System.out.println("John gets born!");
+        return new Person("John"); // create manually an object
     }
     @Bean
     public Person jane() {
         return new Person("Jane");
+    }
+
+    @Bean
+    public Conversation conversation() {
+        return new Conversation(john(), jane());// don't consider these method calls,
+        // but bean references
+    }
+    @Bean
+    public Conversation fight() {
+        return new Conversation(john(), jane());
+    }
+}
+// spring does this to all @Configuration classes
+class WelcomeToJava extends BeanApp {
+    @Override
+    public Person john() {// dynamic override of all @Bean methods
+//        if (singletonCache.contains (john)) return from cache
+        return super.john();
+//        put in cache
     }
 }
 @Component
@@ -38,11 +56,12 @@ class MoreBreadownOfClasses implements CommandLineRunner{
 }
 
 @Data
-@Component
 @RequiredArgsConstructor
 class Conversation {
     private final Person john;
     private final Person jane;
+
+    private String state;
 
 
     public void start() {
