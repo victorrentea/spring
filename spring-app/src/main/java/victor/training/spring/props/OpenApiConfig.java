@@ -24,12 +24,14 @@ public class OpenApiConfig {
     // Any available property starting with "api." is injected in any property(getter/setter) of the returned object
     // eg: api.info.version=1.0  -> api().setInfo(new Info().setVersion("1.0"))
     public OpenAPI api() {
-        return new OpenAPI()
-                // (B) does this automatically
-                .info(new Info()
-                    .title(title)
-                    .version(version)
-                    .contact(new Contact().name(contactName)))
-                ;
+        Info info = new Info();
+        info.setTitle(title);
+        info.setVersion(version);
+        Contact contact = new Contact();
+        contact.setName(contactName);
+        info.setContact(contact);
+        OpenAPI api = new OpenAPI();
+        api.setInfo(info);
+        return api;
     }
 }
