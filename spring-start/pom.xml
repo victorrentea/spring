@@ -20,9 +20,9 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator</artifactId>
-            <version>6.2.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.6</version>
         </dependency>
 
         <dependency>
