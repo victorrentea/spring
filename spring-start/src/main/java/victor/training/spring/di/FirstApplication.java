@@ -4,15 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import victor.training.spring.di.different.Y;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -23,6 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 // [6] inject List<BeanI>
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
+//@ComponentScan(basePackages = {"victor.training.spring.different","victor.training.spring.di"})
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner{
 	public static void main(String[] args) {
@@ -68,23 +63,4 @@ class X {
 		return 1 + y.prod();
 	}
 }
-@Service
-class Y {
-	private final Z z;
 
-	// #3 constructor injection (no @Autowired needed since Spring 4.3)
-	public Y(Z z) {
-		this.z = z;
-	}
-
-	public int prod() {
-		return 1 + z.prod();
-	}
-}
-@Service
-class Z {
-
-	public int prod() {
-		return 1;
-	}
-}
