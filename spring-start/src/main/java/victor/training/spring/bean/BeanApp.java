@@ -1,13 +1,13 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
@@ -40,14 +40,11 @@ class MoreBreadownOfClasses implements CommandLineRunner{
 
 @Data
 @Component
+@RequiredArgsConstructor
 class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(@Qualifier("john") Person one, @Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
-    }
 
     public void start() {
         System.out.println(one.sayHello());
