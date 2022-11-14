@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class WelcomeInfo {
     @NotNull
     @Size(min = 1)
-    private String welcomeMessage;
+    private String welcomeMessage = "Hi!";
     private List<URL> supportUrls;
     private Map<Locale, String> localContactPhone;
     private HelpInfo help;
@@ -37,6 +38,9 @@ public class WelcomeInfo {
 
     @PostConstruct
     public void printMyselfAtStartup() {
+        if (!help.file.isFile()) {
+            throw new IllegalArgumentException("BUM not a file: " + help.file);
+        }
         // TODO validate help.file exists on disk
         // TODO validate welcome message is not null and at least 10 chars
         // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
