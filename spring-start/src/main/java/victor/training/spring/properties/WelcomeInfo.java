@@ -2,10 +2,14 @@ package victor.training.spring.properties;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -16,7 +20,10 @@ import java.util.Map;
 @Data // getters & setters are mandatory!
 @Component
 @ConfigurationProperties("welcome")
+@Validated // tells sprign to check all private fields for javax.validation annotations
 public class WelcomeInfo {
+    @NotNull
+    @Size(min = 1)
     private String welcomeMessage;
     private List<URL> supportUrls;
     private Map<Locale, String> localContactPhone;
