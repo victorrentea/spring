@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,8 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void shouldPersistSomethingNoMatterIfTheCallerTransactionCommitedOrNot() {
         repo.save(new Message("ME! error reporting, progress of your job"));
     }
