@@ -16,8 +16,7 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.save(new Message("jpa1"));
-//        justAnotherMethod();
-        CompletableFuture.runAsync(() -> repo.save(new Message(null)));
+        justAnotherMethod();
 
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -27,6 +26,7 @@ public class Playground {
     }
 
     private void justAnotherMethod() {
+        repo.save(new Message(null));
     }
 
     @Transactional
