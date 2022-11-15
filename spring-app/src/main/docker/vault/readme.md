@@ -1,0 +1,1 @@
+vault kv put secrets/spring-app payment-gateway-api-key=VAULT_KE

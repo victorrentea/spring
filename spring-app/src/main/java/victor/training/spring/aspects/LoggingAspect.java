@@ -32,7 +32,7 @@ public class LoggingAspect {
 
         if (log.isDebugEnabled()) {
             String methodName = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
-            String currentUsername = "SecurityContextHolder.getContext().getName()"; // TODO
+            String currentUsername = "TODO";//SecurityContextHolder.getContext().getName()";
             String argListConcat = Stream.of(joinPoint.getArgs()).map(this::jsonify).collect(joining(","));
             log.debug("Invoking {}(..) (user:{}): {}", methodName, currentUsername, argListConcat);
         }
