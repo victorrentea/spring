@@ -1,11 +1,14 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -13,10 +16,16 @@ public class Playground {
     private final OtherClass otherClass;
 
     @Transactional
-    public void transactionOne() {
+    public void transactionOne(String someParam) {
         repo.save(new Message("jpa1"));
         otherClass.shouldPersistSomethingNoMatterIfTheCallerTransactionCommitedOrNot();
-        repo.save(new Message(null));
+        repo.save(new Message("valid"));
+
+
+        if (someParam.toUpperCase().equals("A")) {
+            log.info("Stuff");
+            throw new IllegalArgumentException();
+        }
 
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)        OK

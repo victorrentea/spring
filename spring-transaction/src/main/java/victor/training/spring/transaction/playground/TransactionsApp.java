@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.annotation.Transactional;
 
 @EnableAsync
 @SpringBootApplication
@@ -20,7 +19,7 @@ public class TransactionsApp implements CommandLineRunner {
    @Override
    public void run(String... args) throws Exception {
       System.out.println("============= TRANSACTION ONE ==============");
-      playground.transactionOne();
+      playground.transactionOne(null);
       System.out.println("============= TRANSACTION TWO ==============");
       playground.transactionTwo();
       System.out.println("============= END ==============");
