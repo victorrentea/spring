@@ -25,6 +25,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+<!--            # @Newman: to see /actuator/conditions you need this-->
+
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
