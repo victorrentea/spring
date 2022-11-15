@@ -44,8 +44,7 @@
         </dependency>
 
         <!--graphql-->
-        <!--
-         WARNING: interferes with CORS
+    <!--     WARNING: interferes with CORS-->
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-tools</artifactId>
@@ -56,7 +55,6 @@
             <artifactId>graphql-spring-boot-starter</artifactId>
             <version>5.0.2</version>
         </dependency>
-        -->
 
 
         <!--@Cacheable in central Redis node-->

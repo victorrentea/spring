@@ -19,6 +19,8 @@ public class Training {
 	@ManyToOne
 	private ProgrammingLanguage programmingLanguage;
 
+//	List<Tag> tags;
+
 	public Training() {
 	}
 	
