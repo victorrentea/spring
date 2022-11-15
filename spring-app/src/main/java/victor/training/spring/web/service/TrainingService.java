@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.controller.StatusException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -44,7 +45,7 @@ public class TrainingService {
     }
 // @Transactional (from the clasS)
     public TrainingDto getTrainingById(Long id) {
-        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
+        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow(/*() -> new StatusException()*/));
         try {
             // connection starvation issue waiting to happen:
             // doing HTTP requests (500millis) in a @Transactional method.
