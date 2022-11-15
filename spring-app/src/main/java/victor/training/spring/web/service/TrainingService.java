@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-@Transactional
+//@Transactional // (1) performance issue !!! + (2) risky: any @Entity changed in a method gets auto-flushed back to DB-> UPDATE
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;
@@ -32,17 +32,22 @@ public class TrainingService {
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
 
+
     public List<TrainingDto> getAllTrainings() {
+
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
+            training.setName("oups");//auto flushing dirty entities ==> UPDATE!! OMG if in a @Transactinal method
             dtos.add(mapToDto(training));
         }
         return dtos;
     }
-
+// @Transactional (from the clasS)
     public TrainingDto getTrainingById(Long id) {
         TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
         try {
+            // connection starvation issue waiting to happen:
+            // doing HTTP requests (500millis) in a @Transactional method.
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
         } catch (Exception e) {
             log.error("Error retrieving bio", e);
@@ -52,6 +57,7 @@ public class TrainingService {
     }
 
     // TODO Test this!
+    @Transactional
     public void updateTraining(Long id, TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
