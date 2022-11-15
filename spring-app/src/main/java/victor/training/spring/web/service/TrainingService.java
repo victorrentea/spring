@@ -37,7 +37,7 @@ public class TrainingService {
 
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
-            training.setName("oups");//auto flushing dirty entities ==> UPDATE!! OMG if in a @Transactinal method
+//            training.setName("oups");//auto flushing dirty entities ==> UPDATE!! OMG if in a @Transactinal method
             dtos.add(mapToDto(training));
         }
         return dtos;
