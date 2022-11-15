@@ -7,6 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,13 +20,28 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
+
+// imagine you're building gameloft-commons-1.0.jar
+//any app including your jar can enable.facade.logging=true to enable this proxy
+
+
+
+@Configuration
+@ConditionalOnProperty(name = "enable.facade.logging", havingValue = "true")
+class MyLoggingCOnfig{
+    @Bean
+    public LoggingAspect loggingAspect() {
+        return new LoggingAspect();
+    }
+}
+
+
 @Slf4j
 @Aspect
-@Component
 public class LoggingAspect {
 
-//    @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
-        @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
+    @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
+//        @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // all methods annotated with @LoggedMethod
     //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 
     // -- DANGER ZONE --
