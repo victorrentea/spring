@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.StatusException;
@@ -122,3 +123,19 @@ public class TrainingService {
     }
 }
 
+
+
+
+//@Component
+//class X {
+//
+//    @Transactional
+//    public entryPoint() {
+//        repoA.save(new A());
+//        m();
+//    }
+//    @Transactional(propagation=REQUIRES_NEW)
+//    public void m() {
+//        repoB.save(new A());
+//    }
+//}

@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ public class TeacherBioClient {
 
 
     // TODO cacheable
+    @Timed("teacherbio")
     public String retrieveBiographyForTeacher(long teacherId) {
         log.debug("Calling external web endpoint... (takes time)");
         ThreadUtils.sleepq(500);
