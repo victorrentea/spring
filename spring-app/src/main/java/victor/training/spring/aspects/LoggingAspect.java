@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
@@ -26,6 +28,7 @@ import static java.util.stream.Collectors.joining;
 
 
 
+@EnableTransactionManagement(order = 20)
 @Configuration
 @ConditionalOnProperty(name = "enable.facade.logging", havingValue = "true")
 class MyLoggingCOnfig{
@@ -38,6 +41,7 @@ class MyLoggingCOnfig{
 
 @Slf4j
 @Aspect
+@Order(10)
 public class LoggingAspect {
 
     @Around("@within(victor.training.spring.aspects.Facade))") // all methods inside classes annotated with @Facade
