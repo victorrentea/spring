@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.runtime.CFlow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +39,7 @@ public class Playground {
     }
 
     @Autowired
+    @Lazy
     private Playground playgroundWTF;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
