@@ -66,6 +66,7 @@ public class ProxyIntro {
 class SecondGrade {
     private final Maths maths;
     public void mathClass() {
+        System.out.println("Oare cu cine vorbesc?!?! "+ maths.getClass());
         System.out.println(maths.sum(2, 4));
         System.out.println(maths.sum(1, 5));
         System.out.println(maths.sum(2, 5));
