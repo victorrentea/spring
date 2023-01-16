@@ -23,7 +23,7 @@ public class PlaygroundJpa {
     System.out.println("Si acum trimit Rabbit");
   }
 
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, timeout = 5)
   public void transactionTwo() {
     Message message = repo.findById(id).orElseThrow();
     message.setMessage("Altu");
