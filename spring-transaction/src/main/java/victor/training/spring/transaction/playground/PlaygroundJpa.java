@@ -23,7 +23,7 @@ public class PlaygroundJpa {
     System.out.println("Si acum trimit Rabbit");
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public void transactionTwo() {
     Message message = repo.findById(id).orElseThrow();
     message.setMessage("Altu");
@@ -37,4 +37,12 @@ public class PlaygroundJpa {
     System.out.println("Iar: " +repo.findById(id).orElseThrow());
 
   }
+//
+//  @Transactional
+//  public void method() {
+//    var t = trainRepo.findbyid(id);
+//    t.setStatus(altu); // UPDATE
+//    auditRepo.save(new Audit(t.id, newStatus)) // INSERT
+  //  trainRepo.save(t);
+//  }
 }
