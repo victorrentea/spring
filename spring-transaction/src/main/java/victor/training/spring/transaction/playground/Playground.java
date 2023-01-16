@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,12 +22,12 @@ public class Playground {
     private final OtherClass other; // <-- Proxy spring
 
     @Transactional
-    public void transactionOne() {
+        public void transactionOne() throws IOException {
         try {
             bizLogic();
         } catch (Exception e) {
             other.altaMetoda(e);
-            throw new RuntimeException(e);
+            throw e;
         }
         System.out.println("TOTU BUN ACUM!");
         // cum e posibil?
@@ -37,10 +38,10 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-    private void bizLogic() {
+    private void bizLogic() throws IOException {
         repo.save(new Message("jpa")); // NU ramane in DB => a fost ATOMICA cu save #2;
         if (Math.random() < .5) {
-            throw new IllegalArgumentException("Crapau!");
+            throw new IOException("Crapau Checked = GRESELI IN LB JAVA");
         }
     }
 
