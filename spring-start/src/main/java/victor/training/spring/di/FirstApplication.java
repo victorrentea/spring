@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import victor.training.spring.di.sub.Noua;
 
@@ -57,10 +59,10 @@ class X {
 	private final Y y;
 
 	// #2 method (setter) injection (rarely used)
-	//	private Z z;
+	//	private Z zzz;
 	//	@Autowired
-	//	public void setZ(Z z) {
-	//		this.z = z;
+	//	public void setZ(Z zzz) {
+	//		this.zzz = zzz;
 	//	}
 
 	public int prod() {
@@ -70,31 +72,35 @@ class X {
 @Service
 @RequiredArgsConstructor
 class Y {
-	private final Z z;
 	@Value("${db.password:-1}") // cu default value
 	private int timeout;
+	private final ZInterface zzz;
 
 	@Lazy
 	private final X x;
-
-//	Y(Z z, @Lazy X x) {
-//		this.z = z;
-//		this.x = x;
-//	}
-
-	//	@Value("${welcome.welcomeMessage}")
-//	String welcomeMessage;
-//	@Value("${welcome.help.app-id}")
-//	String appId;
-
 	public int prod() {
-		return 1 + z.prod() + timeout;
+		return 1 + zzz.prod() + timeout;
 	}
 }
+interface ZInterface {
+	int prod();
+}
+// de aici in jos e variabil; deasupra nu tre sa se schimbe nimic = design bun :)
 @Service
-class Z {
-
+//@Profile("!local") // == murdaresc codu de prod pentru un hack de local = GRESIT pe PR
+class Z implements ZInterface {
+	@Override
 	public int prod() {
+		System.out.println("Calluri ca'n prod, dar nedorite pe local");
+		return 1;
+	}
+}
+@Profile("local")
+@Primary
+@Service
+class ZPeLocal implements ZInterface {
+	public int prod() {
+		System.out.println("serveste configu dintr-un fisier local");
 		return 1;
 	}
 }
