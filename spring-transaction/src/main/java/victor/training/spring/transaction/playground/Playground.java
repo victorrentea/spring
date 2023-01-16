@@ -18,14 +18,14 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class Playground {
     private final MessageRepo repo;
-    private final OtherClass other;
+    private final OtherClass other; // <-- Proxy spring
 
     @Transactional
     public void transactionOne() {
         try {
             bizLogic();
         } catch (Exception e) {
-            playgroundWTF.altaMetoda(e);
+            other.altaMetoda(e);
             throw new RuntimeException(e);
         }
         System.out.println("TOTU BUN ACUM!");
@@ -37,16 +37,6 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-
-    @Autowired
-    @Lazy
-    private Playground playgroundWTF;
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void altaMetoda(Exception e) {
-        repo.save(new Message("Valeu a crapat cu " + e));
-    }
-
     private void bizLogic() {
         repo.save(new Message("jpa")); // NU ramane in DB => a fost ATOMICA cu save #2;
         if (Math.random() < .5) {
@@ -67,4 +57,9 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void altaMetoda(Exception e) {
+        repo.save(new Message("Valeu a crapat cu " + e));
+    }
 }
