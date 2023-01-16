@@ -27,86 +27,87 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @SpringBootApplication
 class SheepController {
-    public static void main(String[] args) {
-        SpringApplication.run(SheepController.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(SheepController.class, args);
+  }
 
-    private final SheepService service;
+  private final SheepService service;
 
-    @GetMapping("create")
-    public Long createSheep(@RequestParam(required = false) String name) {
-        if (name == null) {
-            name = "Bisisica " + LocalDateTime.now();
-        }
-        log.debug("create " + name);
-        return service.create(name);
+  @GetMapping("create")
+  public Long createSheep(@RequestParam(required = false) String name) {
+    if (name == null) {
+      name = "Bisisica " + LocalDateTime.now();
     }
+    log.debug("create " + name);
+    return service.create(name);
+  }
 
-    @GetMapping("search")
-    public List<Sheep> searchSheep(@RequestParam(defaultValue = "Bisisica%") String name) {
-        log.debug("search for " + name);
-        return service.search(name);
-    }
+  @GetMapping("search")
+  public List<Sheep> searchSheep(@RequestParam(defaultValue = "Bisisica%") String name) {
+    log.debug("search for " + name);
+    return service.search(name);
+  }
 }
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 class SheepService {
-    private final SheepRepo repo;
-    private final ShepardService shepard;
+  private final SheepRepo repo;
+  private final ShepardService shepard;
 
-    public Long create(String name) {
-        String sn = shepard.registerSheep(name); // Takes 1 second (HTTP call)
-        Sheep sheep = repo.save(new Sheep(name, sn));
-        return sheep.getId();
-    }
+  @Transactional
+  public Long create(String name) {
+    String sn = shepard.registerSheep(name); // Takes 1 second (HTTP call)
+    Sheep sheep = repo.save(new Sheep(name, sn));
+    return sheep.getId();
+  }
 
-    public List<Sheep> search(String name) {
-        return repo.getByNameLike(name);
-    }
+  @Transactional
+  public List<Sheep> search(String name) {
+    return repo.getByNameLike(name);
+  }
 }
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class ShepardService {
-    @SneakyThrows
-    public String registerSheep(String name) {
-//        return new RestTemplate()
-//                .getForObject("http://localhost:9999/api/register-sheep", SheepRegistrationResponse.class)
-//                .getSn();
-        Thread.sleep(1000); // simulate slow network call
-        return UUID.randomUUID().toString();
-    }
+  @SneakyThrows
+  public String registerSheep(String name) {
+    //        return new RestTemplate()
+    //                .getForObject("http://localhost:9999/api/register-sheep", SheepRegistrationResponse.class)
+    //                .getSn();
+    Thread.sleep(1000); // simulate slow network call
+    return UUID.randomUUID().toString();
+  }
 }
 
 @Data
 class SheepRegistrationResponse {
-    private String sn;
+  private String sn;
 }
 
 interface SheepRepo extends JpaRepository<Sheep, Long> {
-    List<Sheep> getByNameLike(String name);
+  List<Sheep> getByNameLike(String name);
 }
 
 
 @Entity
 @Data
 class Sheep {
-    @GeneratedValue
-    @Id
-    private Long id;
+  @GeneratedValue
+  @Id
+  private Long id;
 
-    private String name;
-    private String sn;
+  private String name;
+  private String sn;
 
-    public Sheep() {
-    }
+  public Sheep() {
+  }
 
-    public Sheep(String name, String sn) {
-        this.name = name;
-        this.sn = sn;
-    }
+  public Sheep(String name, String sn) {
+    this.name = name;
+    this.sn = sn;
+  }
 }
