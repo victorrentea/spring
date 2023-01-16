@@ -13,13 +13,20 @@ public class TransactionsApp implements CommandLineRunner {
    }
 
    private final Playground playground;
+   private final PlaygroundJpa playgroundJpa;
 
    @Override
    public void run(String... args) throws Exception {
+//      System.out.println("============= TRANSACTION ONE ==============");
+//      playground.transactionOne();
+//      System.out.println("============= TRANSACTION TWO ==============");
+//      playground.transactionTwo();
+//      System.out.println("============= END ==============");
+
       System.out.println("============= TRANSACTION ONE ==============");
-      playground.transactionOne();
+      playgroundJpa.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
-      playground.transactionTwo();
+      playgroundJpa.transactionTwo();
       System.out.println("============= END ==============");
    }
 }
