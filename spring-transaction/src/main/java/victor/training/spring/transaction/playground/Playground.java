@@ -38,11 +38,19 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-    private void bizLogic() throws IOException {
+    private void bizLogic() {
         repo.save(new Message("jpa")); // NU ramane in DB => a fost ATOMICA cu save #2;
         if (Math.random() < .5) {
-            throw new IOException("Crapau Checked = GRESELI IN LB JAVA");
+            try {
+                util();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+    }
+
+    private static void util() throws IOException {
+        throw new IOException("Crapau Checked = GRESELI IN LB JAVA");
     }
 
     private void metoda() {
