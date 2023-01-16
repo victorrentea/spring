@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class IncoData {
 
-  private final Animal dog; // surpriza: daca exista 2+ candidati la injectie pt Animal, cel numit "dog" va castiga!
+  private final Dog dog; // surpriza: daca exista 2+ candidati la injectie pt Animal, cel numit "dog" va castiga!
 
   @PostConstruct
   public void method() {
