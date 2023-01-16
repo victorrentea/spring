@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -64,7 +66,7 @@ public class ProxyIntro {
 @RequiredArgsConstructor
 @Service
 class SecondGrade {
-    private final Maths maths;
+    private final Maths maths; // Congratulations, it's a proxy!
     public void mathClass() {
         System.out.println("Oare cu cine vorbesc?!?! "+ maths.getClass());
         System.out.println(maths.sum(2, 4));
@@ -77,6 +79,12 @@ class SecondGrade {
 @Slf4j
 @Service
 class Maths {
+//    @Transactional
+//    @Cacheable
+//    @PReAuthorized
+//    @Retyable
+//    @Timed
+//    @SEcured
     public int sum(int a, int b) {
         return a + b;
     }
