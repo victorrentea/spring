@@ -28,5 +28,13 @@ public class PlaygroundJpa {
     Message message = repo.findById(id).orElseThrow();
     message.setMessage("Altu");
 
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+    // iti serveste entitate din memorie (din 1ast leve caching)
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+    System.out.println("Iar: " +repo.findById(id).orElseThrow());
+
   }
 }
