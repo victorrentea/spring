@@ -1,11 +1,15 @@
 package victor.training.spring.transaction.starvation;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,14 @@ class SheepController {
   public static void main(String[] args) {
     SpringApplication.run(SheepController.class, args);
   }
+
+  private final MeterRegistry meterRegistry;
+
+  @Bean
+  public TimedAspect timedAspect() {
+    return new TimedAspect(meterRegistry);
+  }
+
 
   private final SheepService service;
 
@@ -76,6 +88,7 @@ class SheepService {
 @RequiredArgsConstructor
 class ShepardService {
   @SneakyThrows
+  @Timed("cioban")
   public String registerSheep(String name) {
     //        return new RestTemplate()
     //                .getForObject("http://localhost:9999/api/register-sheep", SheepRegistrationResponse.class)

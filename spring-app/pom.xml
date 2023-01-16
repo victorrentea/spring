@@ -28,12 +28,27 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+
+
+        <!--A << default faci asta -->
         <dependency>
             <!-- monitoring performance with Micrometer -->
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!--B: in caz de urgenta, si temporar TODO mon si alte minciuni pe care mi le spun singur-->
+ <!--       <dependency>
+            &lt;!&ndash; monitoring performance with Micrometer &ndash;&gt;
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>1.9.0</version>
+            <scope>runtime</scope>
+        </dependency>
+-->
+
+
 
         <dependency>
             <!-- Enables auto-completion in application.properties in IntelliJ based on @ConfigurationProperties -->
