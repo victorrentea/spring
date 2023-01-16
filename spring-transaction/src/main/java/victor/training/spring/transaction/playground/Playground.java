@@ -16,10 +16,9 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        repo.save(new Message("jpa"));
-        repo.save(new Message("null"));
-
-
+        repo.save(new Message("jpa")); // NU ramane in DB => a fost ATOMICA cu save #2;
+        // cum e posibil?
+        metoda();
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -27,6 +26,11 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+    private void metoda() {
+        repo.save(new Message(null));
+    }
+
     @Transactional
     public void transactionTwo() {
     }
