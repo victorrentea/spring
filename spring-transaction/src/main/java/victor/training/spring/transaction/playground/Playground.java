@@ -1,11 +1,14 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.runtime.CFlow;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.sql.Connection;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 
@@ -18,7 +21,7 @@ public class Playground {
     public void transactionOne() {
         repo.save(new Message("jpa")); // NU ramane in DB => a fost ATOMICA cu save #2;
         // cum e posibil?
-        metoda();
+        CompletableFuture.runAsync(() -> metoda());
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
