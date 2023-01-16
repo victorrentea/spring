@@ -56,14 +56,16 @@ class SheepService {
   private final SheepRepo repo;
   private final ShepardService shepard;
 
-  @Transactional
+//  @Transactional // acu nu mai obtine si blocheaza proxy vreo conenx, ci ea este
+    // luata doar de .save()
   public Long create(String name) {
+      // antipattern de perf sa chemi un API rest
+      // al altei echipe cu connection blocata pe tread (dintr-o metoda @Transactional)
     String sn = shepard.registerSheep(name); // Takes 1 second (HTTP call)
     Sheep sheep = repo.save(new Sheep(name, sn));
     return sheep.getId();
   }
 
-  @Transactional
   public List<Sheep> search(String name) {
     return repo.getByNameLike(name);
   }
@@ -89,9 +91,9 @@ class SheepRegistrationResponse {
 }
 
 interface SheepRepo extends JpaRepository<Sheep, Long> {
-  List<Sheep> getByNameLike(String name);
+    List<Sheep> getByNameLike(String name); // SELECT * FROM Sheep where name like ?
 }
-
+// daca vreti ceva similar si pentru HTTP calls, cauta "Feing Client baledung"
 
 @Entity
 @Data
