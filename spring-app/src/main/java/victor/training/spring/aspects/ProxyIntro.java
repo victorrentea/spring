@@ -2,13 +2,16 @@ package victor.training.spring.aspects;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +22,9 @@ import java.util.Arrays;
 public class ProxyIntro {
 
 
-    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
+        public static void main(String[] args) {
+            SpringApplication.run(ProxyIntro.class, args);
+        }
 
     @Autowired
     public void run(SecondGrade secondGrade) {
@@ -27,21 +32,21 @@ public class ProxyIntro {
         secondGrade.mathClass();
     }
 
-    public static void main(String[] args) {
-        // pretend to BE Spring here
-        Maths maths = new Maths();
-        // the real story: spring face asa :
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Cheama fiimea metoda " + method.getName() + " cu param " + Arrays.toString(args));
-                return method.invoke(maths, args);
-            }
-        };
-        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
-        SecondGrade secondGrade = new SecondGrade(proxy);
-        new ProxyIntro().run(secondGrade);
-    }
+//    public static void main(String[] args) {
+//        // pretend to BE Spring here
+//        Maths maths = new Maths();
+//        // the real story: spring face asa :
+//        Callback h = new MethodInterceptor() {
+//            @Override
+//            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+//                System.out.println("Cheama fiimea metoda " + method.getName() + " cu param " + Arrays.toString(args));
+//                return method.invoke(maths, args);
+//            }
+//        };
+//        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+//        SecondGrade secondGrade = new SecondGrade(proxy);
+//        new ProxyIntro().run(secondGrade);
+//    }
 }
 //class TataManiac extends Maths {
 //    private final Maths original;
@@ -75,9 +80,9 @@ class SecondGrade {
         System.out.println(maths.product(2, 3));
     }
 }
-//@Facade
+@Facade
 @Slf4j
-@Service
+//@Service
 class Maths {
 //    @Transactional
 //    @Cacheable
@@ -85,9 +90,11 @@ class Maths {
 //    @Retyable
 //    @Timed
 //    @SEcured
+//    @LoggedMethod
     public int sum(int a, int b) {
         return a + b;
     }
+//    @LoggedMethod
     public int product(int a, int b) {
         return a * b;
     }
