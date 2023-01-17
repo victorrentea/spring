@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,6 +47,9 @@ public class TrainingController {
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		dto.id =  id;
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+
 		trainingService.updateTraining(dto);
 	}
 

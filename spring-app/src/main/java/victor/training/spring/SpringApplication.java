@@ -1,12 +1,15 @@
 package victor.training.spring;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.event.EventListener;
@@ -52,6 +55,12 @@ public class SpringApplication {
                 environment.getProperty("local.server.port"),
                 environment.getProperty("spring.datasource.url"),
                 t1-t0);
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "api")
+    public OpenAPI method() {
+        return new OpenAPI();
     }
 
 }
