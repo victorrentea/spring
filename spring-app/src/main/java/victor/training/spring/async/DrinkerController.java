@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -21,6 +22,10 @@ public class DrinkerController {
    @Autowired
    private Barman barman;
 
+//      private static final ExecutorService threadPool = Executors.newFixedThreadPool(16);
+   @Autowired
+   private ThreadPoolTaskExecutor executor;
+
    // TODO [1] inject and submit work to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
@@ -29,9 +34,8 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      ExecutorService threadPool = Executors.newFixedThreadPool(2);
-      Future<Beer> futureBeer = threadPool.submit(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = threadPool.submit(() -> barman.pourVodka());
+      Future<Beer> futureBeer = executor.submit(() -> barman.pourBeer());
+      Future<Vodka> futureVodka = executor.submit(() -> barman.pourVodka());
 
       Beer beer = futureBeer.get(); // 1 sec
       Vodka vodka = futureVodka.get(); // 0 sec ca deja e gata vodka cat a turnat berea
