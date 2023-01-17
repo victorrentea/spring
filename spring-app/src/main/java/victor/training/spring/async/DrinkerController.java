@@ -36,10 +36,12 @@ public class DrinkerController {
 //      Future<Vodka> futureVodka = executor.submit(() -> barman.pourVodka());
 
 //      promise === CompletableFuture
-      CompletableFuture<Beer> beerPromise = CompletableFuture.supplyAsync(
-              () -> barman.pourBeer(), executor);
-      CompletableFuture<Vodka> vodkaPromise = CompletableFuture.supplyAsync(
-              () -> barman.pourVodka(), executor);
+      log.info("Oare cu ce barman vorbesc: " + barman.getClass());
+      CompletableFuture<Beer> beerPromise = barman.pourBeer();
+      // asta da omor juniorului: omu vede metoda chemata aici dar daca arunca o exceptie din pourBeer,
+      // ex aia nu o poaet pridne aici, ca metoda DE FAPT nu ruleaza cand o chemi
+      // cum e posibil?
+      CompletableFuture<Vodka> vodkaPromise =  barman.pourVodka();
 
 //      Beer beer = beerPromise.get(); // 1 sec
 //      Vodka vodka = vodkaPromise.get(); // 0 sec ca deja e gata vodka cat a turnat berea
