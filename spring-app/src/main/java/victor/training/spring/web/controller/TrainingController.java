@@ -71,6 +71,8 @@ public class TrainingController {
 	@DeleteMapping("{id}")
 //	@PreAuthorize("hasAnyRole('ADMIN','POWER')")
 	@PreAuthorize("hasAnyRole('ADMIN','POWER') && @securityService.canChangeTraining(#id)") // Spring Expression Language (SpEL)
+//	@PreAuthorize("hasPermission(#id, 'training','WRITE')") // Spring Expression Language (SpEL)
+
 	//	@Secured("ADMIN") // mai scurt dar mai putin flexibila
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
