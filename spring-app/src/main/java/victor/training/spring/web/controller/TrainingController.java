@@ -50,7 +50,7 @@ public class TrainingController {
 
 	// TODO Allow only for role 'ADMIN'
 	// TODO Fix UX
-	// TODO Allow also 'POWER'; then remove it. => OWASP top 10
+	// TODO Allow also 'POWER', si inca 3 roluri; then remove it. => OWASP top 10
 	// TODO Allow for authority 'training.delete'
 	// TODO a) Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
@@ -58,8 +58,7 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
-
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','POWER')")
 //	@Secured("ADMIN") // mai scurt dar mai putin flexibila
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);

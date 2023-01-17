@@ -2,6 +2,9 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
@@ -14,6 +17,7 @@ import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 import victor.training.spring.web.security.JWTUtils;
 
+import javax.security.auth.kerberos.KerberosPrincipal;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -31,7 +35,7 @@ public class TechnicalController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = anotherClass.metoda().get();
+        dto.username =  anotherClass.metoda().get();
         // dto.username = anotherClass.asyncMethod().get();
 
         // A) role-based security
@@ -42,7 +46,17 @@ public class TechnicalController {
         //		dto.authorities = authentication.getAuthorities().stream()
         //				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
+        
         //<editor-fold desc="KeyCloak">
+
+        Object depindeCumSAAutentificatUserul = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        KeycloakPrincipal<KeycloakSecurityContext> kcPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) depindeCumSAAutentificatUserul;
+
+        AccessToken theKing = kcPrincipal.getKeycloakSecurityContext().getToken();
+        String fullname = theKing.getName();
+        dto.username = kcPrincipal.getName() + "(" +  anotherClass.metoda().get() +")";
+
         //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //		dto.username = authentication.getName();
         //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
