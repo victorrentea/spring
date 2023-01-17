@@ -12,6 +12,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -38,7 +40,10 @@ public class SpringApplication {
     public RestTemplate rest() {
         return new RestTemplate();
     }
-
+    @Bean
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+    }
     @EventListener(ApplicationStartedEvent.class)
     @Order
     public void printAppStarted() {

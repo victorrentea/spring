@@ -3,15 +3,15 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
-import java.security.Principal;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,13 +20,12 @@ public class TechnicalController {
     private final AnotherClass anotherClass;
 
     @GetMapping("api/user/current")
-    public CurrentUserDto getCurrentUsername(Principal principal) throws Exception {
+    public CurrentUserDto getCurrentUsername() throws Exception {
         //		JWTUtils.printTheTokens();
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = principal.getName();
-anotherClass.metoda();
+        dto.username = anotherClass.metoda().get();
         // dto.username = anotherClass.asyncMethod().get();
 
         // A) role-based security
@@ -93,9 +92,12 @@ anotherClass.metoda();
 @Slf4j
 @Service
 class AnotherClass {
-    public void metoda() {
+    @Async
+    public CompletableFuture<String> metoda() {
 
-        // UPDATED_BY=
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return CompletableFuture.completedFuture(name);
     }
     //    @Async
 //    public CompletableFuture<String> asyncMethod() {
