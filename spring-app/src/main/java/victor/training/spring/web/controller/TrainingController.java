@@ -53,10 +53,22 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	// TODO GET or POST ?.. this is the question
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+
+	// TODO for searches, should we use GET or POST ?
+
+	@PostMapping("search")
+	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
-	// Hint: try direcly @GetMapping with no @RequestBody annot
+	@GetMapping("search")
+	public List<TrainingDto> searchUsingGET(
+					@RequestParam(required = false) String name,
+					@RequestParam(required = false) Long teacherId) {
+		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
+	}
+	//	@GetMapping("search") // OMG does the same as the above one
+	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
 
 }
