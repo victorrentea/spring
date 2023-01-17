@@ -52,6 +52,9 @@ public class DrinkerController {
                  return new DillyDilly(beer, vodka);
               });
 
+
+      barman.injura("^&!^&*@^$&(%^&*%");
+
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
       return dillyPromise;
