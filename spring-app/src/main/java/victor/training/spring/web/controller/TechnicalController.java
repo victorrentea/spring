@@ -46,7 +46,6 @@ public class TechnicalController {
         //		dto.authorities = authentication.getAuthorities().stream()
         //				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
-        
         //<editor-fold desc="KeyCloak">
 
         Object depindeCumSAAutentificatUserul = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
