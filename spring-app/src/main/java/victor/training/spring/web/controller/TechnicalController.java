@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.security.Principal;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -18,13 +20,13 @@ public class TechnicalController {
     private final AnotherClass anotherClass;
 
     @GetMapping("api/user/current")
-    public CurrentUserDto getCurrentUsername() throws Exception {
+    public CurrentUserDto getCurrentUsername(Principal principal) throws Exception {
         //		JWTUtils.printTheTokens();
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "// TODO: get username";
-
+        dto.username = principal.getName();
+anotherClass.metoda();
         // dto.username = anotherClass.asyncMethod().get();
 
         // A) role-based security
@@ -91,7 +93,11 @@ public class TechnicalController {
 @Slf4j
 @Service
 class AnotherClass {
-//    @Async
+    public void metoda() {
+
+        // UPDATED_BY=
+    }
+    //    @Async
 //    public CompletableFuture<String> asyncMethod() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        log.info("Current authentication = {}", authentication);
