@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -12,6 +13,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @Service
 @Transactional
+@Validated
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;
@@ -52,11 +55,11 @@ public class TrainingService {
     }
 
     // TODO Test this!
-    public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+    public void updateTraining(TrainingDto dto) throws ParseException {
+        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(dto.id)) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).orElseThrow();
+        Training training = trainingRepo.findById(dto.id).orElseThrow();
         training.setName(dto.name);
         training.setDescription(dto.description);
         // TODO implement date not in the past using i18n error message
@@ -78,7 +81,7 @@ public class TrainingService {
         trainingRepo.deleteById(id);
     }
 
-    public void createTraining(TrainingDto dto) throws ParseException {
+    public void createTraining(@Valid TrainingDto dto) throws ParseException {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }

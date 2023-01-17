@@ -25,8 +25,8 @@ public class TrainingControllerStripped {
 		trainingService.createTraining(dto);
 	}
 
-	public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(id, dto);
+	public void updateTraining(TrainingDto dto) throws ParseException {
+		trainingService.updateTraining(dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
 	// TODO Allow for authority 'training.delete'

@@ -1,14 +1,16 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -23,20 +25,25 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable /*TrainingId*/ long id) {
+		try {
+			return ResponseEntity.ok(trainingService.getTrainingById(id));
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.status(404).build();
+		}
 		//TODO if id is not found, return 404 status code
 	}
 
 	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(id, dto);
+		dto.id =  id;
+		trainingService.updateTraining(dto);
 	}
 
 	// TODO Allow only for role 'ADMIN'
