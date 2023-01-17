@@ -9,10 +9,7 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -30,18 +27,31 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception { // ii dai lui Spring inapoi promisu tau
+      // el va sti sa raspunda clientului cand e gata Dilly FARA SA BLOCHEZE NICI UN THREAD
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Future<Beer> futureBeer = executor.submit(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = executor.submit(() -> barman.pourVodka());
+//      Future<Beer> futureBeer = executor.submit(() -> barman.pourBeer());
+//      Future<Vodka> futureVodka = executor.submit(() -> barman.pourVodka());
 
-      Beer beer = futureBeer.get(); // 1 sec
-      Vodka vodka = futureVodka.get(); // 0 sec ca deja e gata vodka cat a turnat berea
+//      promise === CompletableFuture
+      CompletableFuture<Beer> beerPromise = CompletableFuture.supplyAsync(
+              () -> barman.pourBeer(), executor);
+      CompletableFuture<Vodka> vodkaPromise = CompletableFuture.supplyAsync(
+              () -> barman.pourVodka(), executor);
+
+//      Beer beer = beerPromise.get(); // 1 sec
+//      Vodka vodka = vodkaPromise.get(); // 0 sec ca deja e gata vodka cat a turnat berea
+
+      CompletableFuture<DillyDilly> dillyPromise = beerPromise
+              .thenCombine(vodkaPromise, (beer, vodka) -> {
+                 log.info("Aici ameste licorile");
+                 return new DillyDilly(beer, vodka);
+              });
 
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
-      return new DillyDilly(beer, vodka);
+      return dillyPromise;
    }
 }
