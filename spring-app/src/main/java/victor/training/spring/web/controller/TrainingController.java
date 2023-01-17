@@ -2,12 +2,16 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,12 +29,8 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		try {
-			return ResponseEntity.ok(trainingService.getTrainingById(id));
-		} catch (NoSuchElementException e) {
-			return ResponseEntity.status(404).build();
-		}
+	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+		return trainingService.getTrainingById(id);
 		//TODO if id is not found, return 404 status code
 	}
 
@@ -61,9 +61,14 @@ public class TrainingController {
 	}
 
 	// TODO GET or POST ?
+//	@GetMapping("search")// are limitari pentru ca GET n-avea body pana acum ; din 2014 se poate, dar e inca riscant
+	// pana cand GET cu body e suportat, >
+	@PostMapping("search")// hai siktir Fielding
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 	// Hint: try direcly @GetMapping with no @RequestBody annot
 
 }
+
+
