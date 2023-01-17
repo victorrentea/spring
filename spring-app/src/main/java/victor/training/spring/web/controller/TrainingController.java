@@ -53,7 +53,7 @@ public class TrainingController {
 		trainingService.deleteById(id);
 	}
 
-	// TODO GET or POST ?
+	// TODO GET or POST ?.. this is the question
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}

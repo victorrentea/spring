@@ -8,14 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-	@ResponseStatus(INTERNAL_SERVER_ERROR) // http response status
+	@ResponseStatus(INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
 	public String defaultErrorHandler(Exception exception, HttpServletRequest request) throws Exception {
 		log.error(exception.getMessage(), exception);
@@ -23,4 +26,9 @@ public class GlobalExceptionHandler {
 		return exception.getMessage(); // Security Best Practice: hide stack traces from API responses.
 	}
 
+//	@ResponseStatus(NOT_FOUND)
+//	@ExceptionHandler(NoSuchElementException.class) // attempted first <-- it's more specific
+//	public String noSuchElementException() {
+//		return "Not Found";
+//	}
 }
