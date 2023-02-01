@@ -1,31 +1,32 @@
 package victor.training.spring.props;
 
-import lombok.Data;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // getters & setters are mandatory!
-@Component
+@Value
+@ConstructorBinding
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
-    private String welcomeMessage;
-    private List<URL> supportUrls;
-    private Map<Locale, String> localContactPhone;
-    private HelpInfo help;
+    String welcomeMessage;
+    List<URL> supportUrls;
+    Map<Locale, String> localContactPhone;
+    HelpInfo help;
 
-    @Data
+    @Value
     public static class HelpInfo {
-        private Integer appId;
-        private File file;
+        Integer appId;
+        File file;
     }
 
     @PostConstruct

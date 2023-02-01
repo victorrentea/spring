@@ -1,10 +1,13 @@
 package victor.training.spring;
 
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -12,6 +15,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
+import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import static java.lang.System.currentTimeMillis;
@@ -19,6 +23,7 @@ import static java.lang.System.currentTimeMillis;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
+@ConfigurationPropertiesScan
 public class SpringApplication {
     public static final long t0 = currentTimeMillis();
 
