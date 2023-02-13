@@ -6,10 +6,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 
-//@Component
+@Component
 @Slf4j
 public class NoPrototypeInjectedIntoSingletonValidator implements BeanPostProcessor {
    private final ConfigurableListableBeanFactory beans;

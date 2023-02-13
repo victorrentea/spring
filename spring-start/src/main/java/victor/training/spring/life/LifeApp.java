@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +9,11 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -26,14 +29,14 @@ public class LifeApp implements CommandLineRunner{
 		configurer.addScope("thread", new ClearableThreadScope());
 		return configurer;
 	}
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(LifeApp.class);
 	}
-	
-	@Autowired 
+
+	@Autowired
 	private OrderExporter exporter;
-	
+
 	// TODO [1] make singleton; multi-thread + mutable state = BAD
 	// TODO [2] instantiate manually, set dependencies, pass around; no AOP
 	// TODO [3] prototype scope + ObjectFactory or @Lookup. Did you said "Factory"? ...
@@ -43,7 +46,7 @@ public class LifeApp implements CommandLineRunner{
 		//imagine 2 concurrent requests
 		new Thread(()->exporter.export(Locale.ENGLISH)).start();
 		new Thread(()->exporter.export(Locale.FRENCH)).start();
-		
+
 	}
 }
 @RequiredArgsConstructor
@@ -67,7 +70,7 @@ class OrderExporter  {
 @Slf4j
 @Service
 class InvoiceExporter {
-	// NEVER INJECT prototype scoped in a Singleton scoped.
+	// NEVER INJECT prototype scoped in a Singleton scoped. => the instance effectively becomes singleton itself.
 //	private final LabelService labelService; // is injected ONCE only,because InvoiceExporter is a singleton
 	public void exportInvoice(LabelService labelService) {
 		log.info("Invoice Country: " + labelService.getCountryName("ES"));
@@ -86,7 +89,7 @@ class LabelService {
 		log.info(this + ".load()");
 		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
-	
+
 	public String getCountryName(String iso2Code) {
 		log.info(this + ".getCountryName()");
 		return countryNames.get(iso2Code.toUpperCase());
@@ -94,4 +97,24 @@ class LabelService {
 	public String toString() {
 		return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
 	}
+}
+
+//@Component
+//class PerfectDesign {
+//	// solution1: state kept in a field of a singleton, initialzied just at startup
+//	private Map<Locale,Map<String, String>> countryNames;
+//
+//	// solution2: caching the data
+//	@Cacheable("country-name")
+//	public Map<String, String> getIsoCodeToCountryNameMap(Locale locale) {
+//
+//	}
+//}
+
+
+@RequiredArgsConstructor
+@Slf4j
+@Service
+class ShouldCrash {
+	private final LabelService labelService;
 }
