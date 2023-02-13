@@ -10,6 +10,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+// what kind of component can intercept all http request/response and do stuff on them
+@RequiredArgsConstructor
+@Component
+class MyFilter implements Filter {
+    private final RequestMetadata requestMetadata;
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest r = (HttpServletRequest) request;
+        String httpRequestLocale = r.getLocale().toString();
+        requestMetadata.setMetadata(httpRequestLocale);
+        chain.doFilter(request, response);
+    }
+}
+
 @RequiredArgsConstructor
 @RestController
 public class ScopeRequestController {
@@ -18,7 +36,7 @@ public class ScopeRequestController {
 
     @GetMapping("scope-request") //t?lang=EN
     public String requestScope(@RequestParam String lang) {
-        requestMetadata.setMetadata(lang); // usually available in all requests
+//        requestMetadata.setMetadata(lang); // usually available in all requests
         return anotherBean.method();
     }
 }
