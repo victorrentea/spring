@@ -33,6 +33,7 @@ public class BeanApp implements CommandLineRunner {
     }
 
     @Lazy // dark, avoid if you can solve the cycle by improving design
+    // or spring.main.allow-circular-references=true  (worse!)
     @Autowired
     private Conversation conversation;
 }
