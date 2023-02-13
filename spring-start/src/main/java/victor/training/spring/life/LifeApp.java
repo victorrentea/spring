@@ -1,5 +1,6 @@
 package victor.training.spring.life;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -38,55 +39,49 @@ public class LifeApp implements CommandLineRunner{
 
 	public void run(String... args) {
 		exporter.export(Locale.ENGLISH);
-		// TODO exporter.export(Locale.FRENCH);
+		exporter.export(Locale.FRENCH);
 		
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class OrderExporter  {
-	@Autowired
-	private InvoiceExporter invoiceExporter;
-	@Autowired
-	private LabelService labelService;
+	private final InvoiceExporter invoiceExporter;
+	private final LabelService labelService;
 
 	public void export(Locale locale) {
-		log.debug("Running export in " + locale);
-		log.debug("Origin Country: " + labelService.getCountryName("rO")); 
+		log.info("Running export in " + locale);
+		log.info("Origin Country: " + labelService.getCountryName("rO"));
 		invoiceExporter.exportInvoice();
 	}
 }
+@RequiredArgsConstructor
 @Slf4j
 @Service
 class InvoiceExporter {
-	@Autowired
-	private LabelService labelService;
-	
+	private final LabelService labelService;
+
 	public void exportInvoice() {
-		log.debug("Invoice Country: " + labelService.getCountryName("ES"));
+		log.info("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
 
+@RequiredArgsConstructor // only injects final fields
 @Slf4j
 @Service
 class LabelService {
 	private final CountryRepo countryRepo;
-	
-	public LabelService(CountryRepo countryRepo) {
-		log.debug(this + ".new()");
-		this.countryRepo = countryRepo;
-	}
-
 	private Map<String, String> countryNames;
 
 	@PostConstruct
 	public void load() {
-		log.debug(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.ENGLISH);
+		log.info(this + ".load()");
+		countryNames = countryRepo.loadCountryNamesAsMap(Locale.FRENCH);
 	}
 	
 	public String getCountryName(String iso2Code) {
-		log.debug(this + ".getCountryName()");
+		log.info(this + ".getCountryName()");
 		return countryNames.get(iso2Code.toUpperCase());
 	}
 	public String toString() {
