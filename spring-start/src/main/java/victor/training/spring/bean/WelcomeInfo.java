@@ -33,7 +33,7 @@ public class WelcomeInfo {
 
     @Data
     public static class HelpInfo {
-        Integer appId;
+        Integer appId = -1; // default value.
         File file;
     }
 
@@ -42,7 +42,6 @@ public class WelcomeInfo {
         if (!help.file.isFile()) {
             throw new IllegalArgumentException("NOT A FILE: " + help.file);
         }
-
         // TODO validate help.file exists on disk
         // TODO validate welcome message is not null and at least 10 chars
         // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
@@ -50,7 +49,8 @@ public class WelcomeInfo {
     }
 }
 
-
+// this below allows for IMMUTABLE objects to be injected + @EnableConfigurationProperties on @SBA +
+// lombok.anyConstructor.addConstructorProperties=true in lombok.config
 //@Slf4j
 //@Value
 //@ConstructorBinding
