@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -51,7 +52,6 @@ public class LifeApp implements CommandLineRunner{
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
 	private final LabelService labelService;
-
 	@SneakyThrows
 	public void export(Locale locale) {
 		labelService.load(locale);
@@ -65,17 +65,20 @@ class OrderExporter  {
 @Slf4j
 @Service
 class InvoiceExporter {
-	private final LabelService labelService;
-
+	private final LabelService labelService; // is injected ONCE only,because InvoiceExporter is a singleton
 	public void exportInvoice() {
 		log.info("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
-
 @RequiredArgsConstructor // only injects final fields
 @Slf4j
 @Service
+//@Scope("singleton") // 1 instance / app [default]
+@Scope("prototype") // 1 NEW instance every time Spring is asked for one/needs one
 class LabelService {
+	{
+		System.out.println("NEW");
+	}
 	private final CountryRepo countryRepo;
 	private Map<String, String> countryNames; // mutable state in a singleton can get you fired.
 
