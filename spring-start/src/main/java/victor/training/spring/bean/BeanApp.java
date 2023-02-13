@@ -1,20 +1,25 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
-public class BeanApp implements CommandLineRunner {
+public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
+//    @Autowired
+//    private Conversation conversation;
+
+    @EventListener(ApplicationStartedEvent.class)
+    public void onStart() {
         Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        // TODO convince Spring to do for you the line above
+        // TODO register the two persons and the conversation as Spring beans
         conversation.start();
     }
 }
@@ -30,8 +35,7 @@ class Conversation {
     }
 
     public void start() {
-        System.out.println(one.sayHello());
-        System.out.println(two.sayHello());
+        System.out.println(one.getName() + " talks with " + two.getName());
     }
 }
 
@@ -42,8 +46,8 @@ class Person {
     public Person(String name) {
         this.name = name;
     }
-    public String sayHello() {
-        return "Hello! Here is " + name;
+    public String getName() {
+        return name;
     }
 }
 

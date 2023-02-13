@@ -26,6 +26,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- auto-restart the app on any change in target/ (.class or property/yaml) -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -34,6 +35,10 @@
             <!-- Enables auto-completion in IntelliJ based on @ConfigurationProperties -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
     </dependencies>
 
@@ -44,7 +49,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- only needed because there are 3 main() classes candidates -->
-                    <mainClass>victor.training.spring.di.FirstApplication</mainClass>
+                    <mainClass>victor.training.spring.first.FirstApplication</mainClass>
                 </configuration>
             </plugin>
 

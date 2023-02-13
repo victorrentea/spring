@@ -16,7 +16,7 @@ import java.util.Date;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DummyDataInsertedAtStartup {
+public class InsertDummyDataAtStartup {
 	private final TrainingRepo trainingRepo;
 	private final TeacherRepo teacherRepo;
 	private final ProgrammingLanguageRepo languageRepo;
@@ -24,7 +24,7 @@ public class DummyDataInsertedAtStartup {
 
 	@PostConstruct
 	public void run() throws Exception {
-		log.info("Inserting dummy data");
+		log.info("Inserting dummy training data");
 
 		ProgrammingLanguage java = languageRepo.save(new ProgrammingLanguage("Java"));
 		ProgrammingLanguage php = languageRepo.save(new ProgrammingLanguage("PHP"));
@@ -56,7 +56,6 @@ public class DummyDataInsertedAtStartup {
 
 		userRepo.save(new User("Boss", "admin", UserRole.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
 		userRepo.save(new User("Clerk", "user", UserRole.USER, Arrays.asList(victor.getId(), ionut.getId())));
-
 	}
 
 

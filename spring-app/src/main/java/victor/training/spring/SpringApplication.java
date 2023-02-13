@@ -15,6 +15,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
+import javax.sql.DataSource;
+
+import java.sql.SQLException;
+
 import static java.lang.System.currentTimeMillis;
 
 @SpringBootApplication
@@ -34,6 +38,9 @@ public class SpringApplication {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
     public RestTemplate rest() {
         return new RestTemplate();
@@ -41,12 +48,13 @@ public class SpringApplication {
 
     @EventListener(ApplicationStartedEvent.class)
     @Order
-    public void printAppStarted() {
+    public void printAppStarted() throws SQLException {
         long t1 = currentTimeMillis();
-        log.info("🎈🎈🎈 Application started on port: {} connected to DB: {} in {} millis 🎈🎈🎈",
+        String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
+        log.info("🎈🎈🎈 Application started in {}ms on port :{} connected to DB {} 🎈🎈🎈",
+                t1-t0,
                 environment.getProperty("local.server.port"),
-                environment.getProperty("spring.datasource.url"),
-                t1-t0);
+                jdbcUrl);
     }
 
 }

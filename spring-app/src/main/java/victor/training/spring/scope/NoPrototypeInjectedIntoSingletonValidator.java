@@ -1,4 +1,4 @@
-package victor.training.spring.life;
+package victor.training.spring.scope;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;

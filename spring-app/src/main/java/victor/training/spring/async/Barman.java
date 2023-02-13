@@ -11,12 +11,12 @@ import victor.training.spring.async.drinks.Vodka;
 public class Barman {
    public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
-      ThreadUtils.sleepq(1000);
+      ThreadUtils.sleepMillis(1000);
       return new Beer();
    }
    public Vodka pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
-      ThreadUtils.sleepq(1000);
+      ThreadUtils.sleepMillis(1000);
       return new Vodka();
    }
 }

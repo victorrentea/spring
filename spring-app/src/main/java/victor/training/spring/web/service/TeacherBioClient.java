@@ -41,7 +41,7 @@ public class TeacherBioClient {
   }
 
   private String dummyCall(long teacherId) {
-    ThreadUtils.sleepq(500);
+    ThreadUtils.sleepMillis(500);
     return "Amazing bio for teacher " + teacherId;
   }
 

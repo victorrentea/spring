@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
-        // pretend to BE Spring here
+        // Play the role of Spring here ...
         Maths maths = new Maths();
         SecondGrade secondGrade = new SecondGrade(maths);
         new ProxyIntro().run(secondGrade);
@@ -16,12 +16,11 @@ public class ProxyIntro {
 
     //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 
-    @Autowired
+    //@Autowired // uncomment to run in Spring
     public void run(SecondGrade secondGrade) {
-        System.out.println("At runtime...");
+        System.out.println("Running Maths class...");
         secondGrade.mathClass();
     }
-
 }
 
 @Service

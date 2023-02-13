@@ -13,7 +13,7 @@ public class ScheduledActions {
     // TODO 4 Should run on a separate 1-thread pool
     public void lookIntoFolder() {
         log.debug("Looking into folder");
-        ThreadUtils.sleepq(7000);
+        ThreadUtils.sleepMillis(7000);
         log.debug("DONE");
     }
 
