@@ -1,6 +1,6 @@
 minOrderAmountForDiscount: 5
 welcome:
-  welcomeMessage: Welcome to This Spring Realm
+  welcomeMessage: Welcome to This Spring Realm3
   help:
     file: c:/help-file.pdf
 #    app-id: 68

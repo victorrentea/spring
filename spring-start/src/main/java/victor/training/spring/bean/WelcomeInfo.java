@@ -39,9 +39,9 @@ public class WelcomeInfo {
 
     @PostConstruct
     public void printMyselfAtStartup() {
-        if (!help.file.isFile()) {
-            throw new IllegalArgumentException("NOT A FILE: " + help.file);
-        }
+//        if (!help.file.isFile()) {
+//            throw new IllegalArgumentException("NOT A FILE: " + help.file);
+//        }
         // TODO validate help.file exists on disk
         // TODO validate welcome message is not null and at least 10 chars
         // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
