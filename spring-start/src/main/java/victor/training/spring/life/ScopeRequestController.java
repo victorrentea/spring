@@ -23,7 +23,7 @@ public class ScopeRequestController {
     }
 }
 @Component
-//@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class RequestMetadata {
     private String metadata; // mutable!!
     public String getMetadata() {
@@ -37,9 +37,10 @@ class RequestMetadata {
 @RequiredArgsConstructor
 class AnotherBean {
     private final RequestMetadata requestMetadata;
-
     @SneakyThrows
     public String method() {
+        System.out.println("Who am i talking to ?! " + requestMetadata.getClass() );
+//        if(true) throw new RuntimeException("Intetional");
         Thread.sleep(2000);
         return "I need the request metadata: USER_LANG=" + requestMetadata.getMetadata();
     }
