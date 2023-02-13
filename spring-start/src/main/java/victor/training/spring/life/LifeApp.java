@@ -8,11 +8,11 @@ import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Locale;
 import java.util.Map;
 
@@ -51,22 +51,25 @@ public class LifeApp implements CommandLineRunner{
 @Service
 class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
-	private final LabelService labelService;
+//	private final LabelService labelService;
+	private final ApplicationContext applicationContext;
 	@SneakyThrows
 	public void export(Locale locale) {
+		LabelService labelService = applicationContext.getBean(LabelService.class);
 		labelService.load(locale);
 		log.info("Running export in " + locale);
 		log.info("Origin Country: " + labelService.getCountryName("rO"));
 		Thread.sleep(100);
-		invoiceExporter.exportInvoice();
+		invoiceExporter.exportInvoice(labelService);
 	}
 }
 @RequiredArgsConstructor
 @Slf4j
 @Service
 class InvoiceExporter {
-	private final LabelService labelService; // is injected ONCE only,because InvoiceExporter is a singleton
-	public void exportInvoice() {
+	// NEVER INJECT prototype scoped in a Singleton scoped.
+//	private final LabelService labelService; // is injected ONCE only,because InvoiceExporter is a singleton
+	public void exportInvoice(LabelService labelService) {
 		log.info("Invoice Country: " + labelService.getCountryName("ES"));
 	}
 }
@@ -76,9 +79,6 @@ class InvoiceExporter {
 //@Scope("singleton") // 1 instance / app [default]
 @Scope("prototype") // 1 NEW instance every time Spring is asked for one/needs one
 class LabelService {
-	{
-		System.out.println("NEW");
-	}
 	private final CountryRepo countryRepo;
 	private Map<String, String> countryNames; // mutable state in a singleton can get you fired.
 
