@@ -1,6 +1,7 @@
 package victor.training.spring.life;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -38,8 +39,9 @@ public class LifeApp implements CommandLineRunner{
 	// TODO [4] thread/request scope. HOW it works?! Leaks: @see SimpleThreadScope javadoc
 
 	public void run(String... args) {
-		exporter.export(Locale.ENGLISH);
-		exporter.export(Locale.FRENCH);
+		//imagine 2 concurrent requests
+		new Thread(()->exporter.export(Locale.ENGLISH)).start();
+		new Thread(()->exporter.export(Locale.FRENCH)).start();
 		
 	}
 }
@@ -50,9 +52,12 @@ class OrderExporter  {
 	private final InvoiceExporter invoiceExporter;
 	private final LabelService labelService;
 
+	@SneakyThrows
 	public void export(Locale locale) {
+		labelService.load(locale);
 		log.info("Running export in " + locale);
 		log.info("Origin Country: " + labelService.getCountryName("rO"));
+		Thread.sleep(100);
 		invoiceExporter.exportInvoice();
 	}
 }
@@ -72,12 +77,11 @@ class InvoiceExporter {
 @Service
 class LabelService {
 	private final CountryRepo countryRepo;
-	private Map<String, String> countryNames;
+	private Map<String, String> countryNames; // mutable state in a singleton can get you fired.
 
-	@PostConstruct
-	public void load() {
+	public void load(Locale locale) {
 		log.info(this + ".load()");
-		countryNames = countryRepo.loadCountryNamesAsMap(Locale.FRENCH);
+		countryNames = countryRepo.loadCountryNamesAsMap(locale);
 	}
 	
 	public String getCountryName(String iso2Code) {
