@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller;
+package victor.training.spring.life;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScopeRequestController {
     private final RequestScoped requestScoped;
     private final AnotherBean anotherBean;
-    @GetMapping("api/scope-request")
+    @GetMapping("scope-request")
     public String requestScope() {
         requestScoped.setMetadata("Extracted from request"); //  ideally available in all requests
         return anotherBean.method();

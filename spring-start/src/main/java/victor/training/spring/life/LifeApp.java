@@ -116,5 +116,5 @@ class LabelService {
 @Slf4j
 @Service
 class ShouldCrash {
-	private final LabelService labelService;
+//	private final LabelService labelService;
 }
