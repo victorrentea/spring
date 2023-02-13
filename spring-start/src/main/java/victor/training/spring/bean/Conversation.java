@@ -11,7 +11,8 @@ public class Conversation {
   private final Person two;
 
   // @Qualifier at injection point
-  public Conversation(@Qualifier("john") Person one, @Qualifier("jane") Person two) {
+  public Conversation(@Qualifier("john") Person one,
+                      @Qualifier("jane") Person two) {
     this.one = one;
     this.two = two;
   }

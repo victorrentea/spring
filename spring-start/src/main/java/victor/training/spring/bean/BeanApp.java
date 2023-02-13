@@ -17,16 +17,11 @@ public class BeanApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
-
-    @Autowired
-    private Deep deep;
-
     // 2 instances of the same class differently configured
     @Override
     public void run(String... args) throws Exception {
         conversation.start();
     }
-
     // in a class annotated with @Configuration (in this case, meta-annotated, inherited via annotations)
     @Bean
     public Person john() {
@@ -37,7 +32,7 @@ public class BeanApp implements CommandLineRunner {
         return new Person("Jane");
     }
 
-    @Lazy
+    @Lazy // dark, avoid if you can solve the cycle by improving design
     @Autowired
     private Conversation conversation;
 }
