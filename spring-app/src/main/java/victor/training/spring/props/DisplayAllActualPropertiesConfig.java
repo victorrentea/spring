@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-//@Configuration
+//@Configuration // uncomment to play
 @Slf4j
 public class DisplayAllActualPropertiesConfig {
     @ConfigurationProperties

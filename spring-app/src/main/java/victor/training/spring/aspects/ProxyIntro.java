@@ -33,9 +33,9 @@ class SecondGrade {
     }
 
     public void mathClass() {
-        System.out.println(maths.sum(2, 4));
-        System.out.println(maths.sum(1, 5));
-        System.out.println(maths.product(2, 3));
+        System.out.println("2 + 4 = " + maths.sum(2, 4));
+        System.out.println("1 + 5 = " + maths.sum(1, 5));
+        System.out.println("2 x 3 = " + maths.product(2, 3));
     }
 }
 

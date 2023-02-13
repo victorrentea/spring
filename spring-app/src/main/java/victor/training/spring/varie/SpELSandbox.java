@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -37,11 +36,16 @@ public class SpELSandbox {
 }
 
 
-@Configuration
+//@Configuration
 class SpelConfiguration {
    @Value("#{T(java.lang.Math).random() lt 0.5f?'A Beautiful Day':null}")
    private String day;
 
+   @Bean
+   public UsingSpells usingSpells() {
+      return new UsingSpells();
+   }
+   
    @Bean
    public SpELSandbox sandbox() {
       SpELSandbox box = new SpELSandbox();
@@ -59,7 +63,6 @@ class SpelConfiguration {
 }
 
 
-@Component
 class UsingSpells {
    @Value("#{sandbox.intProperty + 1}")
    private String s1;

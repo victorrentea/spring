@@ -1,10 +1,13 @@
 package victor.training.spring.props;
 
-import lombok.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -13,27 +16,31 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+// For immutable version, replace below @Data and @Component with
+// @Value @ConstructorBinding
+//  and @ConfigurationPropertiesScan on a @Configuration
+// https://stackoverflow.com/questions/26137932/immutable-configurationproperties
+
 @Slf4j
-@Value
-@ConstructorBinding
+@Data @Component // (A) mutable
+// @Value @ConstructorBinding // (B) immutable
 @ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
-    String welcomeMessage;
-    List<URL> supportUrls;
+    String welcomeMessage; // TODO validate is not null and size >= 4; with javax.validation annotations?
+    List<URL> supportUrls; // TODO validate at least 1 element
     Map<Locale, String> localContactPhone;
     HelpInfo help;
 
-    @Value
+    @Data // (A) mutable
+    // @Value // (B) immutable
     public static class HelpInfo {
         Integer appId;
-        File file;
+        File file; // TODO validate exists on disk
     }
 
     @PostConstruct
-    public void printMyselfAtStartup() {
-        // TODO validate help.file exists on disk
-        // TODO validate welcome message is not null and at least 10 chars
-        // TODO use javax.validation for the previous task. Hint: annotate class with @Validated
-        log.debug("My props: " + this);
+    public void printMyselfAtStartup() throws JsonProcessingException {
+        log.info("WelcomeInfo:\n" + new ObjectMapper().writerWithDefaultPrettyPrinter()
+                .writeValueAsString(this));
     }
 }
