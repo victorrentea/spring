@@ -1,0 +1,17 @@
+minOrderAmountForDiscount: 5
+welcome:
+  welcomeMessage: Welcome to This Spring Realm
+  help:
+    file: c:/help-file.pdf
+    app-id: 68
+  support-urls:
+    - http://google.com
+    - http://stackoverflow.com
+    - http://baeldung.com
+    - http://spring.io
+  localContactPhone:
+    RO: +401312121414
+    FR: +430123414123
+logging:
+  level:
+    victor: debug
