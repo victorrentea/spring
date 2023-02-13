@@ -13,15 +13,11 @@ import victor.training.spring.supb.Deep;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"victor.training.spring.supb","victor.training.spring.bean"})
-public class BeanApp implements CommandLineRunner {
+public class BeanApp  {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
     // 2 instances of the same class differently configured
-    @Override
-    public void run(String... args) throws Exception {
-        conversation.start();
-    }
     // in a class annotated with @Configuration (in this case, meta-annotated, inherited via annotations)
     @Bean
     public Person john() {
@@ -31,11 +27,20 @@ public class BeanApp implements CommandLineRunner {
     public Person jane() {
         return new Person("Jane");
     }
-
-    @Lazy // dark, avoid if you can solve the cycle by improving design
+//    @Lazy // dark, avoid if you can solve the cycle by improving design
     // or spring.main.allow-circular-references=true  (worse!)
+
+}
+
+@Component
+class RunMe implements CommandLineRunner{
     @Autowired
     private Conversation conversation;
+    @Override
+    public void run(String... args) throws Exception {
+        conversation.start();
+    }
+
 }
 
 
