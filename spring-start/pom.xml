@@ -30,12 +30,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <dependency>
-            <!-- if I edit a .java or a .yaml file, => the app in my local automatically restarts -->
+        <!--<dependency>
+            &lt;!&ndash; if I edit a .java or a .yaml file, => the app in my local automatically restarts &ndash;&gt;
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <!-- Enables THIS! auto-completion in IntelliJ based on @ConfigurationProperties -->
             <groupId>org.springframework.boot</groupId>
