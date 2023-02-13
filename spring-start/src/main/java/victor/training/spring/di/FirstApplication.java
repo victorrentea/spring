@@ -5,7 +5,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -31,18 +39,25 @@ public class FirstApplication implements CommandLineRunner{
 	}
 }
 
-@Service
+@Component
+@Retention(RetentionPolicy.RUNTIME)
+@interface Mapper {}
+//  registers the class in the spring context (aka bucket of instances)
+	// Spring will create 1 single instance of this aka Singleton pattern
+//@Component // use for ....? idk garbage TBD  Util .. CustomerMapper
+
+//@Service // business logic
+
+//@Repository  // for DB queries, but fun fact Spring Data Repo interfaces don't need it
+
+//@Controller // no longer used if exposing REST api. (used for jsp/jsf/vaadin -> server-side rendered HTML)
+//@RestController // REST API
+// NOT @Entity <- hibernate instantiates those.
+
+@Mapper
 class X {
-	// #1 field injection
 	@Autowired
 	private Y y;
-
-// #2 method (setter) injection (rarely used)
-//	private Z z;
-//	@Autowired
-//	public void setZ(Z z) {
-//		this.z = z;
-//	}
 
 	public int prod() {
 		return 1 + y.prod();

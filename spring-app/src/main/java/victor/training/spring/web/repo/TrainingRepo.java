@@ -6,6 +6,7 @@ import victor.training.spring.web.entity.Training;
 
 import java.util.List;
 
+// @Repository  not needed here.
 public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecificationExecutor<Training> {
     Training getByName(String name);
 }
