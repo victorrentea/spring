@@ -85,7 +85,7 @@ class SecondGrade {
     public int product(int a, int b) {
 //        return a * b;
 
-        if (true) throw new RuntimeException("intentional");
+//        if (true) throw new RuntimeException("intentional");
         int product = 0;
         for (int i = 0; i < a; i++) {
             product = sum(product, b); // you call here the ORIGINAL sum() method,

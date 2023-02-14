@@ -77,7 +77,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.7</version>
+            <version>2.7</version> <!-- must have as Sp Boot does not know of this-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -125,11 +125,14 @@
             <version>0.9.1</version>
         </dependency>-->
 
+
+
         <dependency>
             <!-- For distributed tracing of requests (printed after log level) -->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
+
 
        <!-- <dependency>
             &lt;!&ndash; monitors the /target folder for any changes and issues a full restart on any file changed&ndash;&gt;

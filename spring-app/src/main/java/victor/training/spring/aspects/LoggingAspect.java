@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,13 @@ import static java.util.stream.Collectors.joining;
 @Aspect
 @Component
 @Order(5)
+// TODO#1 : enable this aspect only if there is no property logging.aspect=false
+@ConditionalOnProperty(value = "logging.aspect",havingValue = "true", matchIfMissing = true)
+// TODO#2 : enable this aspect only if there is no sleuth in the classpath
+
+
+//@ConditionalOnExpression("!${logging.aspect:true}")
+
 public class LoggingAspect {
 
     @Around("execution(* *.sum(..))")
