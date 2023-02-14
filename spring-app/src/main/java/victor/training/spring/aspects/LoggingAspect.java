@@ -8,6 +8,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -26,11 +28,14 @@ import static java.util.stream.Collectors.joining;
 @Component
 @Order(5)
 // TODO#1 : enable this aspect only if there is no property logging.aspect=false
-@ConditionalOnProperty(value = "logging.aspect",havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(value = "logging.aspect",havingValue = "true", matchIfMissing = true)
 // TODO#2 : enable this aspect only if there is no sleuth in the classpath
+//@ConditionalOnMissingClass("org.springframework.cloud.sleuth.brave.bridge.BraveHttpClientHandler")
 
+//@ConditionalOnMissingBean // eg: if the dev did not define a bean of a certain type, define one automatically
+// using this the sql.DataSource is defined by spring
 
-//@ConditionalOnExpression("!${logging.aspect:true}")
+@ConditionalOnExpression("'${logging.aspect:true}' == 'true'")
 
 public class LoggingAspect {
 
