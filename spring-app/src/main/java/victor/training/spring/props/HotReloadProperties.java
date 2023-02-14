@@ -35,8 +35,10 @@ class DynamicPropController {
   private HotReloadProperties hotReloadProperties; // here, spring injects a PROXY
   private String ican;
 
+  @PostConstruct
   public void foolMansCache() {
-    ican = hotReloadProperties.getDynamicProp(); // DONT
+//    ican = hotReloadProperties.getDynamicProp(); // DONT
+    System.out.println("I was injected the: " + hotReloadProperties.getClass());
   }
   @GetMapping("dynamic-prop")
   public String dynamicProp() {
