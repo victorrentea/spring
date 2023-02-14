@@ -38,7 +38,7 @@ public class DrinkerController {
 
       Future<Vodka> futureVodka = barPool.submit(() -> barman.pourVodka());
 
-      Beer beer = futureBeer.get();
+      Beer beer = futureBeer.get(); // thows back to you an ex in async methods
       Vodka vodka = futureVodka.get();
 
       long t1 = currentTimeMillis();
