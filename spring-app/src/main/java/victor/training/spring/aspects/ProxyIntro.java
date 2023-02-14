@@ -5,17 +5,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 //@SpringBootApplication
+@Slf4j
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
         Maths maths = new Maths();
-        Decorator decorator = new Decorator(maths);
-        SecondGrade secondGrade = new SecondGrade(decorator);
+//        Decorator decorator = new Decorator(maths);
+        Callback h = new MethodInterceptor() {
+            @Override
+            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+                Object r = method.invoke(maths, objects);
+                log.info("calling {} with {} returned {}",method.getName(), List.of(objects), r);
+                return r;
+            }
+        };
+        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+        SecondGrade secondGrade = new SecondGrade(proxy);
         new ProxyIntro().run(secondGrade);
     }
     //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
