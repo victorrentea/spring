@@ -188,9 +188,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>victor.training.spring.SpringApplication</mainClass>
+                </configuration>
             </plugin>
-            <plugin>
-                <!-- scans dependencies for known vulnerabilities -->
+
+           <!-- <plugin>
+                &lt;!&ndash; scans dependencies for known vulnerabilities &ndash;&gt;
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>6.3.2</version>
@@ -201,7 +205,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 

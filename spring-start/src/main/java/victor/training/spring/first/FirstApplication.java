@@ -38,6 +38,9 @@ class X {
   @Autowired
   private Y y; // field injection
 
+  // (rarely used) method injection
+  // public void setY(Y y) {this.y = y;}
+
   public int logic() {
     return 1 + y.logic();
   }
@@ -51,9 +54,6 @@ class Y {
   public Y(MailService mailService) {
     this.mailService = mailService;
   }
-  // (rarely used) method injection
-  //	private Z z2;
-  //	@Autowired	public void setZ(Z z) {this.z2 = z;}
 
   public int logic() {
     mailService.sendEmail("I like 4 topics");
@@ -68,7 +68,7 @@ interface MailService {
 @Service
 @RequiredArgsConstructor
 class MailServiceImpl implements MailService {
-  //  private final MailSender sender; // requires properties to be auto-defined
+  //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
@@ -82,7 +82,8 @@ class MailServiceImpl implements MailService {
 }
 
 @Slf4j
-class MailServiceLocalDummy implements MailService { // TODO
+// TODO when starting the app locally, don't send any emails, log then instead
+class MailServiceLocalDummy implements MailService {
   public void sendEmail(String subject) {
     System.out.println("DUMMY EMAIL SENDER sending an email with subject=" + subject);
   }
