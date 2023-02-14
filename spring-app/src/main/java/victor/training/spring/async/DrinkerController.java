@@ -11,9 +11,11 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -34,9 +36,9 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Future<Beer> futureBeer = barPool.submit(()->barman.pourBeer());
+      CompletableFuture<Beer> futureBeer = supplyAsync(()->barman.pourBeer(), barPool);
 
-      Future<Vodka> futureVodka = barPool.submit(() -> barman.pourVodka());
+      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
 
       Beer beer = futureBeer.get(); // thows back to you an ex in async methods
       Vodka vodka = futureVodka.get();
