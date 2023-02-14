@@ -12,8 +12,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.stream.Stream;
 
+import static java.lang.System.currentTimeMillis;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
@@ -21,13 +23,23 @@ import static java.util.stream.Collectors.joining;
 @Component
 public class LoggingAspect {
 
+    @Around("execution(* *.sum(..))")
+    public Object sum(ProceedingJoinPoint pjp) throws Throwable {
+        Object r = pjp.proceed();
+        log.info("🎉🎉🎉🎉🎉calling {} with {} returned {}",
+                pjp.getSignature().getName(), List.of(pjp.getArgs()), r);
+        return r;
+    }
 
-    @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
-    //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
+
+
+
+//    @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
+        @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
     //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 
     // -- DANGER ZONE --
-    //    @Around("execution(* victor.training.spring.web..*.*(..))") // any method of any class in a sub-package of 'web'
+    //    @Around("execution(* victor.training.spring.web..*.get*(..))") // any method of any class in a sub-package of 'web'
     //    @Around("execution(* *.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous😱
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
