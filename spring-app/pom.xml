@@ -131,11 +131,12 @@
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
 
-        <dependency>
+       <!-- <dependency>
+            &lt;!&ndash; monitors the /target folder for any changes and issues a full restart on any file changed&ndash;&gt;
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             &lt;!&ndash; @RefreshScope &ndash;&gt;
             <groupId>org.springframework.cloud</groupId>

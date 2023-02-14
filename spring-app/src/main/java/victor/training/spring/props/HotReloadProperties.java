@@ -13,10 +13,12 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @Component
-@RefreshScope
+@RefreshScope // what does this do?
 public class HotReloadProperties {
   @Value("${dynamic.prop}")
   private String dynamicProp;
+  // in spring the injection of dependencies NEVER REPEATS on the same instance
+  // there is no 're-injection' possible => the only solution is to RE-CREATE (and inject) a new instance of this class
 
   @PostConstruct
   public void onCreate() {
@@ -30,8 +32,12 @@ public class HotReloadProperties {
 @RestController
 class DynamicPropController {
   @Autowired
-  private HotReloadProperties hotReloadProperties;
+  private HotReloadProperties hotReloadProperties; // here, spring injects a PROXY
+  private String ican;
 
+  public void foolMansCache() {
+    ican = hotReloadProperties.getDynamicProp(); // DONT
+  }
   @GetMapping("dynamic-prop")
   public String dynamicProp() {
     return hotReloadProperties.getDynamicProp();
