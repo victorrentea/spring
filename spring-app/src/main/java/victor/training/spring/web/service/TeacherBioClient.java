@@ -3,7 +3,10 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +33,9 @@ public class TeacherBioClient {
   // don't do "new RestTemplate()" but take it from Spring, to allow Sleuth to propagate 'traceId'
   private final RestTemplate restTemplate;
 
-  // TODO cacheable
+//  private final CacheManager cacheManager;
+
+  @Cacheable("teacher-bio")
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);

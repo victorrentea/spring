@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+// similar to Spring data interfaces, altenative to RestTemplate
 @FeignClient(name = "teacherBioServices", url="${teacher.bio.uri.base}/api")
 interface TeacherBioFeignClient {
     @GetMapping("teachers/{teacherId}/bio")

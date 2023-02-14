@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import victor.training.spring.web.controller.dto.LanguageDto;
 import victor.training.spring.web.repo.ProgrammingLanguageRepo;
@@ -17,6 +19,7 @@ public class LanguageService {
 
     // TODO cache
     // TODO evict via dedicated endpoint (called from script)
+    @Cacheable("language-list")
     public List<LanguageDto> findAll() {
         return repo.findAll().stream().map(LanguageDto::new).collect(Collectors.toList());
     }
