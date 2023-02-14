@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
@@ -33,10 +34,14 @@ public class TeacherBioClient {
   // don't do "new RestTemplate()" but take it from Spring, to allow Sleuth to propagate 'traceId'
   private final RestTemplate restTemplate;
 
-//  private final CacheManager cacheManager;
+  private final CacheManager cacheManager;
 
   @Cacheable("teacher-bio")
   public String retrieveBiographyForTeacher(long teacherId) {
+//    ValueWrapper valueWrapper = cacheManager.getCache("teacher-bio").get(teacherId);
+//    if (valueWrapper)
+//      return valueWrapper.get(); + exceptions +store back in cache + concurrent key access
+
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
     String result = callUsingFeignClient(teacherId);
