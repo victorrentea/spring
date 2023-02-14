@@ -36,6 +36,11 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
+      // HTTP non blocking APIs with Java<21
+      // @Async
+      // fire-and-forget calls
+      // propagation of thread-local data (@Transactional, current security user, Scope(request), sleuth traceID, Logback MDC %X{) over async calls
+
       CompletableFuture<Beer> futureBeer = supplyAsync(()->barman.pourBeer(), barPool);
 
       CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
