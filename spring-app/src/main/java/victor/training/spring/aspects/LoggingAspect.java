@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.joining;
 @Slf4j
 @Aspect
 @Component
+@Order(5)
 public class LoggingAspect {
 
     @Around("execution(* *.sum(..))")
@@ -34,8 +36,8 @@ public class LoggingAspect {
 
 
 
-//    @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
-        @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
+    @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
+//        @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
     //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 
     // -- DANGER ZONE --
