@@ -11,7 +11,7 @@ import victor.training.spring.props.FeaturesActuatorEndpoint.FeatureFlag;
 import java.util.*;
 
 @Component
-@Endpoint(id = "features-flags") // https://www.baeldung.com/spring-boot-actuators
+@Endpoint(id = "feature-flags") // https://www.baeldung.com/spring-boot-actuators
 public class FeaturesActuatorEndpoint {
   public enum FeatureFlag {
     DISPLAY_POST_VIEWS,
@@ -30,17 +30,17 @@ public class FeaturesActuatorEndpoint {
     return activeFeatures;
   }
 
-  @ReadOperation // http://localhost:8080/actuator/features-flags
+  @ReadOperation // http://localhost:8080/actuator/feature-flags
   public boolean feature(@Selector FeatureFlag featureFlag) {
     return isActive(featureFlag);
   }
 
-  @WriteOperation // curl -X POST http://localhost:8080/actuator/features-flags/DISPLAY_POST_VIEWS
+  @WriteOperation // curl -X POST http://localhost:8080/actuator/feature-flags/DISPLAY_POST_VIEWS
   public void activateFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.add(featureFlag);
   }
 
-  @DeleteOperation // curl -X DELETE http://localhost:8080/actuator/features-flags/DISPLAY_POST_VIEWS
+  @DeleteOperation // curl -X DELETE http://localhost:8080/actuator/feature-flags/DISPLAY_POST_VIEWS
   public void disableFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.remove(featureFlag);
   }
