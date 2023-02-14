@@ -1,37 +1,55 @@
 package victor.training.spring.aspects;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
-@SpringBootApplication
+import java.util.List;
+
+//@SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // pretend to BE Spring here
         Maths maths = new Maths();
-        SecondGrade secondGrade = new SecondGrade(maths);
+        Decorator decorator = new Decorator(maths);
+        SecondGrade secondGrade = new SecondGrade(decorator);
         new ProxyIntro().run(secondGrade);
     }
-
     //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
-
-    @Autowired
+//    @Autowired
     public void run(SecondGrade secondGrade) {
         System.out.println("At runtime...");
         secondGrade.mathClass();
     }
+}
+
+@Slf4j
+class Decorator extends Maths {
+    private final Maths maths;
+    public Decorator(Maths maths) {
+        this.maths = maths;
+    }
+    public int sum(int a, int b) {
+        int r = maths.sum(a, b);
+        log.info("calling sum with {} returned {}", List.of(a,b), r);
+        return r;
+    }
+    public int product(int a, int b) {
+        int r = maths.product(a, b);
+        log.info("calling product with {} returned {}", List.of(a,b), r);
+        return r;
+    }
 
 }
 
-@Service
+// =========a line. you can't touch anything under this line -=-=====
+//@Service
+@RequiredArgsConstructor
 class SecondGrade {
     private final Maths maths;
-
-    SecondGrade(Maths maths) {
-        this.maths = maths;
-    }
-
     public void mathClass() {
         System.out.println(maths.sum(2, 4));
         System.out.println(maths.sum(1, 5));
@@ -39,12 +57,11 @@ class SecondGrade {
     }
 }
 
-@Facade
+//@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
     }
-
     public int product(int a, int b) {
         return a * b;
     }
