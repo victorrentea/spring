@@ -22,4 +22,10 @@ public class SampleMBean {
     public void dummy() {
         System.out.println("Called over JMX");
     }
+
+    @ManagedOperation
+    public void setProp(String key, String value) {
+        System.setProperty(key, value);
+        System.out.println("DONE");
+    }
 }

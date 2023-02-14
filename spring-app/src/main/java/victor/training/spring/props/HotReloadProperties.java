@@ -42,6 +42,10 @@ class DynamicPropController {
   public String dynamicProp() {
     return hotReloadProperties.getDynamicProp();
   }
+//  @GetMapping("system-prop")
+//  public String systemProp() {
+//    return hotReloadProperties.getDynamicProp();
+//  }
 
 }
 // Experiment:
