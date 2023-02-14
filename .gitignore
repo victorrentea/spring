@@ -29,3 +29,5 @@ classes
 **/target/
 .mvn
 /demo/HELP.md
+
+prod/
