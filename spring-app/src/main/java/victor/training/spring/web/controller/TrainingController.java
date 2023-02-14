@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -26,6 +27,13 @@ public class TrainingController {
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
 		return trainingService.getTrainingById(id);
 		//TODO if id is not found, return 404 status code
+	}
+
+	@GetMapping("teachers/kill-cache")
+//	@CacheEvict("teacher-bio") // asumes the method takes as a param the key to evict to evict from cache
+	@CacheEvict(value = "teacher-bio", allEntries = true)
+	public void empty() {
+
 	}
 
 	// TODO @Valid
