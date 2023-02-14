@@ -3,18 +3,20 @@ package victor.training.spring.props;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.endpoint.annotation.*;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.Properties;
 
 
 @Slf4j
 @Component
 @RefreshScope
-public class HotReloadProperties {
+public class RefreshProperties {
   @Value("${dynamic.prop}")
   private String dynamicProp;
 
@@ -27,16 +29,33 @@ public class HotReloadProperties {
     return dynamicProp;
   }
 }
+
 @RestController
 class DynamicPropController {
   @Autowired
-  private HotReloadProperties hotReloadProperties;
+  private RefreshProperties refreshProperties;
 
   @GetMapping("dynamic-prop")
   public String dynamicProp() {
-    return hotReloadProperties.getDynamicProp();
+    return refreshProperties.getDynamicProp();
   }
+}
 
+@Component
+@Endpoint(id="system-property")
+class SystemPropertyActuatorEndpoint {
+  @WriteOperation
+  public void setProperty(@Selector String property, String value) {
+    System.setProperty(property, value);
+  }
+  @ReadOperation
+  public String getProperty(@Selector String property) {
+    return System.getProperty(property);
+  }
+  @ReadOperation
+  public Properties getAll() {
+    return System.getProperties();
+  }
 }
 // Experiment:
 // 1) remove devtools from pom,

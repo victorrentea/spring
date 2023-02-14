@@ -7,9 +7,8 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import victor.training.spring.props.DisplayAllActualPropertiesConfig.ActualProperties;
+import victor.training.spring.props.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
 
 import javax.annotation.PostConstruct;
 import java.util.Comparator;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 //@Configuration // uncomment to play
 @Slf4j
-@Import(ActualProperties.class) // aka @Bean X  {return new X()}
+@Import(ActualPropertiesActuatorEndpoint.class) // aka @Bean X  {return new X()}
 public class DisplayAllActualPropertiesConfig {
   @ConfigurationProperties
   @Bean
@@ -31,7 +30,7 @@ public class DisplayAllActualPropertiesConfig {
   @Endpoint(id = "actual-properties") // http://localhost:8080/actuator/actual-properties
   @RefreshScope // reload at /refresh
   @RequiredArgsConstructor
-  public static class ActualProperties {
+  public static class ActualPropertiesActuatorEndpoint {
     private final Properties allProps;
 
     @PostConstruct
