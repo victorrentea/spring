@@ -10,7 +10,7 @@ import victor.training.spring.async.drinks.Vodka;
 @Service
 public class Barman {
    public Beer pourBeer() {
-      boolean drama = true;
+      boolean drama = false;
       if (drama) throw new RuntimeException("OMG no beer!");
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepq(1000);
