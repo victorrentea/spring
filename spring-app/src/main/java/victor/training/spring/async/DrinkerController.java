@@ -37,14 +37,21 @@ public class DrinkerController {
 
       // HTTP non blocking APIs with Java<21 OK
          // the problem: you are taking >1000 concurrent HTTP incoming requests at one point in time.
+
       // @Async
+
+
+
       // fire-and-forget calls
       // propagation of thread-local data (@Transactional, current security user, Scope(request), sleuth traceID, Logback MDC %X{) over async calls
 
       // "promise" === CompletableFuture => non blocking callback based async processing
-      CompletableFuture<Beer> futureBeer = supplyAsync(()->barman.pourBeer(), barPool);
+//      CompletableFuture<Beer> futureBeer = supplyAsync(()->barman.pourBeer(), barPool);
+//      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
 
-      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
+      // feels too innocent: callign a method.
+      CompletableFuture<Beer> futureBeer = barman.pourBeer();
+      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
 
 //      Beer beer = futureBeer.get(); // thows back to you an ex in async methods
 //      Vodka vodka = futureVodka.get(); // very expensive if under heavy load
