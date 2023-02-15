@@ -34,35 +34,26 @@ public class CafeFlowConfig {
             .get();
   }
 
-  @Bean
   public IntegrationFlow hotSubFlow() {
     return flow->flow
             .handle(OrderItem.class, (payload, headers) -> barista.prepareHotDrink(payload))
-//            .handle(waiterSubFlow(null))
             .channel(drinks())
             ;
   }
-  @Bean
+
   public IntegrationFlow iceSubFlow() {
     return flow->flow
             .handle(OrderItem.class, (payload, headers) -> barista.prepareColdDrink(payload))
-//            .handle(waiterSubFlow(null))
             .channel(drinks())
             ;
   }
-//  @Bean
-//  public IntegrationFlow waiterSubFlow(Waiter waiter) {
-//    return IntegrationFlows.from(drinks())
-//            .aggregate(waiter)
-//            .log("GOT")
-//            .get();
-//  }
 
   @Bean
   // exercise for the reader: can I avoid this @Bean?
   public DirectChannel drinks() {
     return new DirectChannel();
   }
+
   @Bean
   public IntegrationFlow waiterFlow(Waiter waiter) {
     return IntegrationFlows.from(drinks())
