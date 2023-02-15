@@ -14,5 +14,4 @@ public class OrderSplitter {
 		log.info("Splitting order: " + order + " -> " + order.getItems());
 		return order.getItems();
 	}
-
 }
