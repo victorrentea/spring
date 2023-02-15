@@ -1,22 +1,28 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
-	@Autowired
-	private TrainingService trainingService;
+	private final TrainingService trainingService;
 
 	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
@@ -24,25 +30,26 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+	public TrainingDto getTrainingById(@PathVariable TrainingId id) {
+		return trainingService.getTrainingById(id.id());
 		//TODO if id is not found, return 404 status code
+		// you should never be afraid of letting go a runtime exception to flow out in a REST API
 	}
+//
+//	@GetMapping("teachers/kill-cache")
+////	@CacheEvict("teacher-bio") // asumes the method takes as a param the key to evict to evict from cache
+//	@CacheEvict(value = "teacher-bio", allEntries = true)
+//	public void empty() {
+//
+//	}
 
-	@GetMapping("teachers/kill-cache")
-//	@CacheEvict("teacher-bio") // asumes the method takes as a param the key to evict to evict from cache
-	@CacheEvict(value = "teacher-bio", allEntries = true)
-	public void empty() {
-
-	}
-
-	// TODO @Valid
 	@PostMapping
-	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+	public void createTraining(@RequestBody @Validated TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
+//	public void updateTraining(@PathVariable Long id, @RequestBody UpdateTrainingRequest dto) throws ParseException {
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(id, dto);
 	}
@@ -63,20 +70,23 @@ public class TrainingController {
 
 
 	// TODO for searches, should we use GET or POST ?
+	// in theory search is a GETs data. ?p1=asdasafs&p2=afgajgajgsadjkghksjghf&
 
 	@PostMapping("search")
 	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
-	@GetMapping("search")
-	public List<TrainingDto> searchUsingGET(
-					@RequestParam(required = false) String name,
-					@RequestParam(required = false) Long teacherId) {
-		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
-	}
-	//	@GetMapping("search") // OMG does the same as the above one
+	@GetMapping("search") // OMG does the same as the above one
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+
+
+//	@GetMapping("search")
+//	public List<TrainingDto> searchUsingGET(
+//					@RequestParam(required = false) String name,
+//					@RequestParam(required = false) Long teacherId) {
+//		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
+//	}
 
 }

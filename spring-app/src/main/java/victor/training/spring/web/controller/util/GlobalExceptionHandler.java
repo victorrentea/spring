@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
@@ -27,11 +29,11 @@ public class GlobalExceptionHandler {
     return exception.getMessage(); // Security Best Practice: hide stack traces from API responses.
   }
 
-  //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first <-- it's more specific
-  //	public String noSuchElementException() {
-  //		return "Not Found";
-  //	}
+  	@ResponseStatus(NOT_FOUND)
+  	@ExceptionHandler(NoSuchElementException.class) // attempted first <-- it's more specific
+  	public String noSuchElementException() {
+  		return "Not Found";
+  	}
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MethodArgumentNotValidException.class)
