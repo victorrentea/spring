@@ -7,7 +7,7 @@ import victor.training.spring.integration.cafe.model.Order;
 @MessagingGateway
 public interface Cafe {
 
-	@Gateway(requestChannel = "orders")
+//	@Gateway(requestChannel = "orders")
 	void placeOrder(Order order);
 
 }

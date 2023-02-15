@@ -11,12 +11,12 @@ import java.util.List;
 @MessageEndpoint
 public class Waiter {
 
-	@Aggregator(inputChannel = "preparedDrinks", outputChannel = "deliveries")
+//	@Aggregator(inputChannel = "preparedDrinks", outputChannel = "deliveries")
 	public Delivery prepareDelivery(List<Drink> drinks) {
 		return new Delivery(drinks);
 	}
 
-	@CorrelationStrategy
+//	@CorrelationStrategy
 	public int correlateByOrderNumber(Drink drink) {
 		return drink.getOrderNumber();
 	}
