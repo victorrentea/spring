@@ -31,6 +31,9 @@ public class Barista {
 	public Drink prepareColdDrink(OrderItem orderItem) {
 		try {
 			log.info("Preparing cold drink...");
+//			if (Math.random() < .5) {
+//				throw new IllegalArgumentException("Out of ice !!");
+//			}
 			Thread.sleep(1000);
 			log.info("Prepared cold drink #" + coldDrinkCounter.incrementAndGet() + " for order #"
 					+ orderItem.getOrderNumber() + ": " + orderItem);
