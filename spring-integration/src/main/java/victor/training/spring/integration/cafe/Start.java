@@ -16,7 +16,7 @@ import static java.lang.System.currentTimeMillis;
 public class Start {
   @Autowired
   Cafe cafe;
-  @EventListener(ApplicationStartedEvent.class)
+//  @EventListener(ApplicationStartedEvent.class)
   public void start() throws InterruptedException {
     log.info("Start!");
     for (int i = 1; i <= 20; i++) {
