@@ -59,7 +59,7 @@ public class Drink implements Serializable{
 
 	@Override
 	public String toString() {
-		return (iced?"Iced":"Hot")  + " " + drinkType.toString() + ", " + shots + " shots.";
+		return "DRINK: " + (iced?"Iced":"Hot")  + " " + drinkType.toString() + ", " + shots + " shots.";
 	}
 
 }
