@@ -2,14 +2,17 @@ package victor.training.spring.web.controller.util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import victor.training.spring.web.MyException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -18,25 +21,38 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+  private final MessageSource messageSource;
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
-  public String defaultErrorHandler(Exception exception, HttpServletRequest request) throws Exception {
+  public String onException(Exception exception, HttpServletRequest request) throws Exception {
     log.error(exception.getMessage(), exception);
-    // you may want to translate a message code in the request.getLocale() / OpenID user token
-    return exception.getMessage(); // Security Best Practice: hide stack traces from API responses.
+    return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
 
   //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first <-- it's more specific
+  //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
   //	public String noSuchElementException() {
   //		return "Not Found";
   //	}
 
+  // you may want to translate a message code in the request.getLocale() / OpenID user token
+
+  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(MyException.class)
+  public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
+    String errorMessageKey = "error." + exception.getCode().name();
+    Locale clientLocale = request.getLocale(); // or from a JWT token
+    String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
+    log.error(exception.getMessage() + " : " + responseBody, exception);
+    return responseBody;
+  }
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public List<String> onJavaxValidationException(MethodArgumentNotValidException e) {
-    List<String> response = e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+  public String onJavaxValidationException(MethodArgumentNotValidException e) {
+    String response = e.getAllErrors().stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.joining(",\n"));
     log.error("Validation failed. Returning: " + response, e);
     return response;
   }
