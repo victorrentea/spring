@@ -1,0 +1,1 @@
+logging.pattern.console: "%d{HH:mm:ss.SSS} %20.20logger{0} [%-12.12thread] %message%n"
