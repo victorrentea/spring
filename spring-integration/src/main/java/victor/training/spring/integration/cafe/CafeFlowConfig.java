@@ -25,7 +25,8 @@ public class CafeFlowConfig {
   public IntegrationFlow cafeFlow(OrderSplitter orderSplitter) {
 //    IntegrationFlows.from("orders")
     return IntegrationFlows.from(orders())
-            .split(orderSplitter)
+//            .split(orderSplitter) // or
+            .split("payload.getItems()")
             .routeToRecipients(route -> route
                     .recipientFlow("payload.isIced()", iceSubFlow())
                     .recipientFlow("! payload.isIced()", hotSubFlow())
@@ -37,19 +38,16 @@ public class CafeFlowConfig {
   public IntegrationFlow hotSubFlow() {
     return flow->flow
             .handle(OrderItem.class, (payload, headers) -> barista.prepareHotDrink(payload))
-            .channel(drinks())
-            ;
+            .channel(drinks());
   }
 
   public IntegrationFlow iceSubFlow() {
     return flow->flow
             .handle(OrderItem.class, (payload, headers) -> barista.prepareColdDrink(payload))
-            .channel(drinks())
-            ;
+            .channel(drinks());
   }
 
-  @Bean
-  // exercise for the reader: can I avoid this @Bean?
+  @Bean // exercise for the reader: can I avoid this @Bean?
   public DirectChannel drinks() {
     return new DirectChannel();
   }
@@ -61,7 +59,4 @@ public class CafeFlowConfig {
             .log("GOT")
             .get();
   }
-
-
-
 }
