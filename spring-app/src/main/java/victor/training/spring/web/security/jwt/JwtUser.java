@@ -9,7 +9,8 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 
 @Data
-public class JwtUser implements UserDetails {
+public class JwtUser implements UserDetails { // this object will later be available to any code needing it from the
+    // SecurityContextHolder
     private final String username;
     private final String role;
     private String country; // dynamic, based on login request

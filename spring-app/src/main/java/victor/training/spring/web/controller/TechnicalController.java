@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.jwt.JwtUser;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,12 +27,25 @@ import java.util.concurrent.CompletableFuture;
 public class TechnicalController {
     private final AnotherClass anotherClass;
 
+//    @Secured("ADMIN")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('drop.all')")
+
+    @PostMapping("drop")
+    public String dropDB() {
+        return "RIP";
+    }
+
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
+
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
         dto.username = other.howTheHack().get();
-//        dto.phone = ??
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JwtUser jwtUser = (JwtUser) principal;
+        dto.role = jwtUser.getRole();
+        //        dto.phone = ??
 
         // dto.username = anotherClass.asyncMethod().get();
 

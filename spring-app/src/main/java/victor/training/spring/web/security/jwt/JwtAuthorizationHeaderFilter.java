@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 
+
+// this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
     @Value("${jwt.signature.shared.secret.base64}")
@@ -39,9 +41,10 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
 
             // extra claim
             String country = (String) claims.get("phone");
+            String role = (String) claims.get("role");
 
             log.info("Attempting login with user={} and country={}", claims.getSubject(), country);
-            return new JwtPreauthPrincipal(claims.getSubject(), country);
+            return new JwtPreauthPrincipal(claims.getSubject(), country, role); // will be later picked by UserDetailsService
         } catch (UnsupportedJwtException jwtException) {
             throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
         }

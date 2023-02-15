@@ -27,7 +27,7 @@ public class JwtUserDetailsService implements AuthenticationUserDetailsService<P
 //			throw new UsernameNotFoundException("UserVO " + username + " not in database");
 //		}
 
-		JwtUser jwtUser = new JwtUser(principal.getUsername(), "USER");
+		JwtUser jwtUser = new JwtUser(principal.getUsername(), "ROLE_" + principal.getRole());
 		jwtUser.setCountry(principal.getCountry());
 		log.debug("Login successful");
 		return jwtUser;
