@@ -20,7 +20,7 @@ public class HotReloadProperties {
   @Value("${dynamic.prop}")
   // what can go wrong? > lombok will not add this ann on the param of ctor unless i do
   // lombok.copyableAnnotations+=org.springframework.beans.factory.annotation.Value
-  // in lombok.config
+  // in lombok.config: it tells Lombok to copy the @spring.Value to the generated invisible constructor param
   private final String dynamicProp;
 
 
