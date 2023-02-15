@@ -71,7 +71,7 @@ public class TeacherBioClient {
     //                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     //            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
-    // Auth#3 - manually creating a JWT token
+    // Auth#3 - manually creating a JWT token < this might come handy
     //          String bearerToken = Jwts.builder()
     //                .setSubject(SecurityContextHolder.getContext().getAuthentication().getName())
     //                .claim("country", "Country")

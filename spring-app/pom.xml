@@ -97,7 +97,7 @@
 
 
         <!-- Spring Security -->
-          <!--<dependency>
+          <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -105,7 +105,7 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
        <!-- <dependency>
             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
@@ -118,12 +118,12 @@
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>-->
 
-        <!--<dependency>
-            &lt;!&ndash; Experiment: create and send JWT token to called APIs to carry user info &ndash;&gt;
+        <dependency>
+            <!-- Experiment: create and send JWT token to called APIs to carry user info -->
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
-        </dependency>-->
+        </dependency>
 
 
 

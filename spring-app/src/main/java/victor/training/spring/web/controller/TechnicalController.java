@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +21,10 @@ public class TechnicalController {
 
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
-        //		JWTUtils.printTheTokens();
-
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "// TODO: get username";
+        dto.username = howTheHack();
+//        dto.phone = ??
 
         // dto.username = anotherClass.asyncMethod().get();
 
@@ -45,6 +46,12 @@ public class TechnicalController {
         //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
         //</editor-fold>
         return dto;
+    }
+
+    @Async // called locally is NOT doing any async
+    public String howTheHack() {
+        log.info("WHere am i");
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     //	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
