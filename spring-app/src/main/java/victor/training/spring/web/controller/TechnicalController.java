@@ -7,11 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +27,7 @@ public class TechnicalController {
     public CurrentUserDto getCurrentUsername() throws Exception {
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = howTheHack();
+        dto.username = other.howTheHack().get();
 //        dto.phone = ??
 
         // dto.username = anotherClass.asyncMethod().get();
@@ -48,10 +52,17 @@ public class TechnicalController {
         return dto;
     }
 
-    @Async // called locally is NOT doing any async
-    public String howTheHack() {
-        log.info("WHere am i");
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    @Autowired
+    private Other other;
+
+    @Component
+    static class Other {
+        @Async("taskExecutor") // called locally is NOT doing any async
+        public CompletableFuture<String> howTheHack() {
+            log.info("WHere am i");
+            String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+            return CompletableFuture.completedFuture(uname);
+        }
     }
 
     //	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
@@ -72,11 +83,11 @@ public class TechnicalController {
     //	}
 
 
-//    	@Bean // enable propagation of SecurityContextHolder over @Async
-//    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-//    		// https://www.baeldung.com/spring-security-async-principal-propagation
-//    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-//    	}
+    	@Bean // enable propagation of SecurityContextHolder over @Async
+    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor barPool) {
+    		// https://www.baeldung.com/spring-security-async-principal-propagation
+    		return new DelegatingSecurityContextAsyncTaskExecutor(barPool);
+    	}
 
     @Autowired
     private WelcomeInfo welcomeInfo;
