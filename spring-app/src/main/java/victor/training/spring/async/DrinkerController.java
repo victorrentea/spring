@@ -29,6 +29,14 @@ public class DrinkerController {
    @Autowired
    private ThreadPoolTaskExecutor barPool;
 
+   @GetMapping("start-task")
+   public void getStartTask() {
+//      barman.washGlasses(); // fire and forget
+//      CompletableFuture.runAsync(() -> barman.washGlasses()); // starve the commonPool
+//      CompletableFuture.runAsync(() -> barman.washGlasses(),barPool); // does not log exc by defauly
+      barman.washGlasses();
+   }
+
    @GetMapping("api/drink")
    @Timed
    public CompletableFuture<DillyDilly> drink() throws Exception {
@@ -50,6 +58,8 @@ public class DrinkerController {
 //      CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka(), barPool);
 
       // feels too innocent: callign a method.
+
+      ThreadLocalStuff.THREAD_LOCAL_DATA.set("jdoe");
       CompletableFuture<Beer> futureBeer = barman.pourBeer();
       CompletableFuture<Vodka> futureVodka = barman.pourVodka();
 

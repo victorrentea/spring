@@ -1,5 +1,6 @@
 package victor.training.spring.props;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,16 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 @RefreshScope // what does this do?
 public class HotReloadProperties {
   @Value("${dynamic.prop}")
-  private String dynamicProp;
+  // what can go wrong? > lombok will not add this ann on the param of ctor unless i do
+  // lombok.copyableAnnotations+=org.springframework.beans.factory.annotation.Value
+  // in lombok.config
+  private final String dynamicProp;
+
+
   // in spring the injection of dependencies NEVER REPEATS on the same instance
   // there is no 're-injection' possible => the only solution is to RE-CREATE (and inject) a new instance of this class
 
@@ -29,10 +36,10 @@ public class HotReloadProperties {
     return dynamicProp;
   }
 }
+@RequiredArgsConstructor
 @RestController
 class DynamicPropController {
-  @Autowired
-  private HotReloadProperties hotReloadProperties; // here, spring injects a PROXY
+  private final HotReloadProperties hotReloadProperties; // here, spring injects a PROXY
   private String ican;
 
   @PostConstruct
