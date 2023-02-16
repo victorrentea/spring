@@ -12,6 +12,7 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.sql.DataSource;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
@@ -76,6 +77,10 @@ public class TrainingController {
 	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+
+//	@Autowired
+//	private DataSource dataSource;
+
 	@GetMapping("search") // OMG does the same as the above one
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);

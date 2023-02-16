@@ -97,7 +97,7 @@
 
 
         <!-- Spring Security -->
-          <dependency>
+      <!--    <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -106,7 +106,7 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+-->
        <!-- <dependency>
             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
             <groupId>org.keycloak</groupId>
