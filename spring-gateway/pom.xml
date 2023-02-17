@@ -19,11 +19,11 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-           <!-- Experiment: create and send JWT token to called APIs to carry user info -->
-           <groupId>io.jsonwebtoken</groupId>
-           <artifactId>jjwt</artifactId>
-           <version>0.9.1</version>
-       </dependency>
+            <!-- manually parse/build JWT tokens -->
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.3.0</version>
+        </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <!-- only for Mac M1 chips -->

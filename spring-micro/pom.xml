@@ -54,16 +54,12 @@
         </dependency>-->
 
 
+
         <dependency>
-            <!-- 2) Play: manual validation of JWT token preauthentication -->
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
-        <dependency>
-            <!-- for JWTS -->
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
+            <!-- manually parse/build JWT tokens -->
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.3.0</version>
         </dependency>
     </dependencies>
 
