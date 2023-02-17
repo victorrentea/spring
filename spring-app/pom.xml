@@ -108,16 +108,16 @@
         </dependency>
 
 
-       <!-- <dependency>
-            &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
+        <dependency>
+            <!-- OAuth2 with KeyCloak AuthServer -->
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow &ndash;&gt;
+            <!-- OAuth2RestTemplate for Client Credentials flow -->
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <!-- manually parse/build JWT tokens -->

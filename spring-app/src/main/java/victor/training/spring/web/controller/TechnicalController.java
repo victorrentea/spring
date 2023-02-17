@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
-import victor.training.spring.web.security.preauth_jwt.JwtPrincipal;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -41,9 +40,7 @@ public class TechnicalController {
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
         dto.username = other.howTheHack().get();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        JwtPrincipal jwtUser = (JwtPrincipal) principal;
-        dto.role = jwtUser.getRole().name();
+        dto.role = null;
         //        dto.phone = ??
 
         // dto.username = anotherClass.asyncMethod().get();

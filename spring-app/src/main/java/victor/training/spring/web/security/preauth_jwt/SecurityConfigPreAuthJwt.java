@@ -43,8 +43,8 @@ public class SecurityConfigPreAuthJwt extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthorizationHeaderFilter jwtFilter() throws Exception {
-        return new JwtAuthorizationHeaderFilter(authenticationManagerBean());
+    public JwtAuthorizationFilter jwtFilter() throws Exception {
+        return new JwtAuthorizationFilter(authenticationManagerBean());
     }
 
 

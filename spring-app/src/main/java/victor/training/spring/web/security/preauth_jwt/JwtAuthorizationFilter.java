@@ -17,11 +17,11 @@ import java.util.Base64;
 
 // this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
 @Slf4j
-public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
+public class JwtAuthorizationFilter extends AbstractPreAuthenticatedProcessingFilter {
   @Value("${jwt.signature.shared.secret.base64}")
   private String jwtSecret;
 
-  public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
+  public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
     setAuthenticationManager(authenticationManager);
   }
 
