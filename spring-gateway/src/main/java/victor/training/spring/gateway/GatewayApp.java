@@ -34,10 +34,10 @@ public class GatewayApp {
 
 
   @Bean
-  public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+  public RouteLocator customRouteLocator(RouteLocatorBuilder builder, LoginViaQueryParamFilter filter) {
     return builder.routes()
             .route("path_route", r -> r.path("/**")
-                    .filters(f -> f.filters(new LoginViaQueryParamFilter()))
+                    .filters(f -> f.filters(filter))
                     .uri("http://localhost:8080"))
             .build();
   }
