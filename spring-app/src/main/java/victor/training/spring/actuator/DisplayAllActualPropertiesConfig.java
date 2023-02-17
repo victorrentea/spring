@@ -1,4 +1,4 @@
-package victor.training.spring.props;
+package victor.training.spring.actuator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import victor.training.spring.props.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
+import victor.training.spring.actuator.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
 
 import javax.annotation.PostConstruct;
 import java.util.Comparator;

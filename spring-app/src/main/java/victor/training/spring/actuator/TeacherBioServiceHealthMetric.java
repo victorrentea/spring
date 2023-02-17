@@ -1,4 +1,4 @@
-package victor.training.spring.varie;
+package victor.training.spring.actuator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

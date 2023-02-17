@@ -16,6 +16,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <!-- @NotNull, @Validated -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
@@ -66,7 +67,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.212</version> <!-- supports -ifNotExists -->
         </dependency>
         <dependency>
             <groupId>p6spy</groupId>
@@ -117,7 +117,6 @@
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>
-
         <dependency>
             <!-- manually parse/build JWT tokens -->
             <groupId>com.auth0</groupId>
@@ -132,6 +131,7 @@
         </dependency>
 
         <dependency>
+            <!-- auto-restart on class/property changes on local -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
@@ -141,6 +141,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>-->
+
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-spring-boot2</artifactId>
+        </dependency>
 
 
         <!-- messages -->

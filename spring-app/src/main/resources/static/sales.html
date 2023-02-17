@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <link href="toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="toastr.min.js"></script>
+</head>
+
+<body>
+<h2>Sales for <span id="myshopname"></span></h2>
+<div id="sales"></div>
+
+<h2>Check out our Clients</h2>
+<span id="clients"></span>
+
+<script type="text/javascript">
+    function serverRoot() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+    }
+
+    fetch(serverRoot() + '/api/shops/my')
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById('myshopname').innerText=data.name;
+            return fetch(serverRoot() + '/api/shops/' + data.id + '/revenue-data.json');
+        })
+        .then((response) => response.json())
+        .then((myRevenue) => {
+            for (const [key, value] of Object.entries(myRevenue)) {
+                document.getElementById('sales').innerHTML += `<p>${key}: ${value}</p>`
+            }
+        })
+    ;
+    fetch(serverRoot() + '/api/shops')
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById('clients').innerHTML = data.map(e=>e.name).join(", ").substring(1,100) + "...";
+        })
+
+</script>
+
+</body>
+</html>

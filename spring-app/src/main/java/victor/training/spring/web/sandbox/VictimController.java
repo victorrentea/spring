@@ -1,4 +1,4 @@
-package victor.training.spring.web.controller;
+package victor.training.spring.web.sandbox;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

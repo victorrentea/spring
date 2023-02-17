@@ -1,4 +1,4 @@
-package victor.training.spring.props;
+package victor.training.spring.actuator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,7 +6,7 @@ import org.springframework.boot.actuate.endpoint.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.FeaturesActuatorEndpoint.FeatureFlag;
+import victor.training.spring.actuator.FeaturesActuatorEndpoint.FeatureFlag;
 
 import java.util.*;
 
