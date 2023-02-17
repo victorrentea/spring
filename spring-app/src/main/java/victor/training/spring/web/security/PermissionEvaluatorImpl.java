@@ -1,4 +1,4 @@
-package victor.training.spring.web.security.keycloak;
+package victor.training.spring.web.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

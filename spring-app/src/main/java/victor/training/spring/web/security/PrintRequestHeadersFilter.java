@@ -14,9 +14,9 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
-@Component
+//@Component
 @Order(1)
-public class HttpRequestFilterPrintingHeaders implements Filter {
+public class PrintRequestHeadersFilter implements Filter {
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
       HttpServletRequest httpRequest = (HttpServletRequest) request;

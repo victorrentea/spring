@@ -11,7 +11,7 @@ import victor.training.spring.props.FeaturesActuatorEndpoint.FeatureFlag;
 import java.util.*;
 
 @Component
-@Endpoint(id = "feature-flags") // https://www.baeldung.com/spring-boot-actuators
+@Endpoint(id = "featureflags") // https://www.baeldung.com/spring-boot-actuators
 public class FeaturesActuatorEndpoint {
   public enum FeatureFlag {
     DISPLAY_POST_VIEWS,
