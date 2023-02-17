@@ -1,4 +1,4 @@
-package victor.training.spring.web.security.jwt;
+package victor.training.spring.web.security.preauth_jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,16 +11,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class JwtServerConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfigPreAuthJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated();
         http.csrf().disable();
-
         http.authenticationProvider(preAuthenticatedProvider())
             .addFilter(jwtFilter())
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -35,7 +33,7 @@ public class JwtServerConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     protected AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> preauthUserDetailsService() {
-        return token -> new JwtUserDetails((JwtToken) token.getPrincipal());
+        return token -> (JwtPrincipal) token.getPrincipal();
     }
 
     @Bean

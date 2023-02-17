@@ -1,4 +1,4 @@
-package victor.training.spring.web.security.jwt;
+package victor.training.spring.web.security.preauth_jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -45,9 +45,9 @@ public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProces
     UserRole role = UserRole.valueOf(decodedJwt.getClaim("role").asString());
     String country = decodedJwt.getClaim("country").asString();
     String username = decodedJwt.getSubject();
-    JwtToken jwtToken = new JwtToken(username, country, role);
-    log.info("Login successful for " + jwtToken);
-    return jwtToken; // later received by UserDetailsService
+    JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role);
+    log.info("Login successful for " + jwtPrincipal);
+    return jwtPrincipal; // later received by UserDetailsService
   }
 
   @Override

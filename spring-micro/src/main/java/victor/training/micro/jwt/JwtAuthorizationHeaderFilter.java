@@ -1,8 +1,9 @@
 package victor.training.micro.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.UnsupportedJwtException;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,43 +13,44 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 
+
+// this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
-    @Value("${jwt.signature.shared.secret.base64}")
-    private String jwtSecret;
+  @Value("${jwt.signature.shared.secret.base64}")
+  private String jwtSecret;
 
-    public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
-        setAuthenticationManager(authenticationManager);
+  public JwtAuthorizationHeaderFilter(AuthenticationManager authenticationManager) {
+    setAuthenticationManager(authenticationManager);
+  }
+
+  @Override
+  protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+    String headerValue = request.getHeader("Authorization");
+    if (headerValue == null || !headerValue.startsWith("Bearer ")) {
+      //            log.warn("FAIL: No authorization bearer header: " + headerValue);
+      throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
     }
+    String jwtTokenString = headerValue.substring("Bearer ".length());
+    log.debug("Received JWT token string: " + jwtTokenString);
 
-    @Override
-    protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String headerValue = request.getHeader("Authorization");
-        if (headerValue == null || !headerValue.startsWith("Bearer ")) {
-//            log.warn("No authorization bearer header: " + headerValue);
-            throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
-        }
-        String jwtTokenString = headerValue.substring("Bearer ".length());
-        log.debug("Received JWT token string (decodable on http://jwt.io/): " + jwtTokenString);
 
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(Base64.getDecoder().decode(jwtSecret))
-                    .parseClaimsJws(jwtTokenString)
-                    .getBody();
+    Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
 
-            // extra claim
-            String country = (String) claims.get("country");
+    JWTVerifier verifier = JWT.require(algorithm).withIssuer("Victor").build();
 
-            log.info("Attempting login with user={} and country={}", claims.getSubject(), country);
-            return new JwtPreauthPrincipal(claims.getSubject(), country);
-        } catch (UnsupportedJwtException jwtException) {
-            throw new PreAuthenticatedCredentialsNotFoundException("Invalid JWT Token", jwtException);
-        }
-    }
+    DecodedJWT decodedJwt = verifier.verify(jwtTokenString);
 
-    @Override
-    protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
-        return "N/A";
-    }
+    String role = decodedJwt.getClaim("role").asString();
+    String country = decodedJwt.getClaim("country").asString();
+    String username = decodedJwt.getSubject();
+    JwtToken jwtToken = new JwtToken(username, country, role);
+    log.info("Login successful for " + jwtToken);
+    return jwtToken; // later received by UserDetailsService
+  }
+
+  @Override
+  protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
+    return "N/A";
+  }
 }

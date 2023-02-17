@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
-import victor.training.spring.web.security.jwt.JwtUserDetails;
+import victor.training.spring.web.security.preauth_jwt.JwtPrincipal;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -43,7 +42,7 @@ public class TechnicalController {
         CurrentUserDto dto = new CurrentUserDto();
         dto.username = other.howTheHack().get();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        JwtUserDetails jwtUser = (JwtUserDetails) principal;
+        JwtPrincipal jwtUser = (JwtPrincipal) principal;
         dto.role = jwtUser.getRole().name();
         //        dto.phone = ??
 

@@ -1,9 +1,8 @@
-package victor.training.spring.web.security.jwt;
+package victor.training.micro.jwt;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import victor.training.spring.web.entity.UserRole;
 
 import java.util.Collection;
 
@@ -14,7 +13,7 @@ import static java.util.Arrays.asList;
 public class JwtUserDetails implements UserDetails {
     private final JwtToken jwtToken;
 
-    public UserRole getRole() {
+    public String getRole() {
         return jwtToken.getRole();
     }
 
@@ -25,7 +24,7 @@ public class JwtUserDetails implements UserDetails {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return asList(() -> jwtToken.getRole().name());
+        return asList(() -> jwtToken.getRole());
     }
 
     @Override

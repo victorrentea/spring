@@ -1,24 +1,26 @@
 package victor.training.micro.jwt;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-//@EnableWebSecurity
-public class JwtServerConfig extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class SecurityConfigPreAuthJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests().anyRequest().authenticated().and()
-            .authenticationProvider(preAuthenticatedProvider())
-            .addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class)
+        http.authorizeRequests().anyRequest().authenticated();
+        http.csrf().disable();
+        http.authenticationProvider(preAuthenticatedProvider())
+            .addFilter(jwtFilter())
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
     }
@@ -30,8 +32,8 @@ public class JwtServerConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
     @Bean
-    protected JwtUserDetailsService preauthUserDetailsService() {
-        return new JwtUserDetailsService();
+    protected AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> preauthUserDetailsService() {
+        return token -> new JwtUserDetails((JwtToken) token.getPrincipal());
     }
 
     @Bean

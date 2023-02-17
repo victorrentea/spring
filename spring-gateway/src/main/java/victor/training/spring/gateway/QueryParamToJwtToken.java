@@ -21,28 +21,26 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Slf4j
 @Component
-public class LoginViaQueryParamFilter implements GatewayFilter {
+public class QueryParamToJwtToken implements GatewayFilter {
   @Value("${jwt.signature.shared.secret.base64}")
   String jwtSecret;
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    MultiValueMap<String, String> params = exchange.getRequest().getQueryParams();
-
-    log.info("PARAMS: " + params);
-
     String userOnUrl = extractUserFromUrl(exchange.getRequest().getQueryParams());
 
     if (userOnUrl!=null) {
-      String jwtToken = generateJwtToken(userOnUrl, exchange.getRequest().getQueryParams());
-      log.info("Using Bearer from QUERY PARAMS (+SetCookie) to {}: {}", exchange.getRequest().getPath(), jwtToken);
+      String jwtToken = generateJwtToken(userOnUrl, exchange.getRequest().getQueryParams().toSingleValueMap());
+      log.info("Using Bearer from QUERY PARAMS (+SetCookie) to {}: payload={}, raw={}",
+              exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
       ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
       exchange.getResponse().getCookies().put("Bearer", List.of(ResponseCookie.from("Bearer", jwtToken).build()));
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
     if (exchange.getRequest().getCookies().containsKey("Bearer")) {
       String jwtToken = exchange.getRequest().getCookies().get("Bearer").get(0).getValue();
-      log.info("Using Bearer from COOKIE to {}: {}", exchange.getRequest().getPath(), jwtToken);
+      log.info("Using Bearer from COOKIE to {}: payload={}, raw={}",
+              exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
       ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
@@ -50,7 +48,11 @@ public class LoginViaQueryParamFilter implements GatewayFilter {
     return chain.filter(exchange);
   }
 
-  private String generateJwtToken(String userOnUrl, MultiValueMap<String, String> queryParams) {
+  private String extractPayload(String jwtToken) {
+    return new String(Base64.getDecoder().decode(jwtToken.split("\\.")[1]));
+  }
+
+  private String generateJwtToken(String userOnUrl, Map<String, String> extraClaims) {
     Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
     Builder jwtBuilder = JWT.create()
             .withIssuer("Victor")
@@ -58,18 +60,18 @@ public class LoginViaQueryParamFilter implements GatewayFilter {
             .withIssuedAt(Instant.now())
             .withExpiresAt(Instant.now().plus(5, MINUTES))
             .withJWTId(UUID.randomUUID().toString());
-    addExtraClaimsFromQueryParams(jwtBuilder, queryParams);
+    addExtraClaimsFromQueryParams(jwtBuilder, extraClaims);
     return jwtBuilder
             .withClaim("role", userOnUrl.toUpperCase())
             .withClaim("country", "RO")
             .sign(algorithm);
   }
 
-  private static void addExtraClaimsFromQueryParams(Builder jwtBuilder, MultiValueMap<String, String> queryParams) {
-    Map<String, String> extraClaims = new HashMap<>(queryParams.toSingleValueMap());
-    extraClaims.remove("u");
-    extraClaims.remove("user");
-    extraClaims.forEach(jwtBuilder::withClaim);
+  private static void addExtraClaimsFromQueryParams(Builder jwtBuilder, Map<String, String> extraClaims) {
+    Map<String, String> map = new HashMap<>(extraClaims);
+    map.remove("u");
+    map.remove("user");
+    map.forEach(jwtBuilder::withClaim);
   }
 
   private String extractUserFromUrl(MultiValueMap<String, String> queryParams) {
