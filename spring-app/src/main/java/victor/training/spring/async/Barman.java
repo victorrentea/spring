@@ -39,6 +39,8 @@ public class Barman {
       ThreadUtils.sleepq(5000);
       if(true) throw new RuntimeException("OMG!");
       log.info("End");
+
+      // Testing this method requires waiting (Awaitility) => flaky test OR loose time
    }
 }
 

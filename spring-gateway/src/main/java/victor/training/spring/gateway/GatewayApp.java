@@ -32,47 +32,12 @@ public class GatewayApp {
     SpringApplication.run(GatewayApp.class, args);
   }
 
-  @Value("${jwt.signature.shared.secret.base64}")
-  String jwtSecret;
 
   @Bean
   public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
     return builder.routes()
             .route("path_route", r -> r.path("/**")
-                    .filters(f -> f.filters(new GatewayFilter() {
-                      @Override
-                      public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-                        MultiValueMap<String, String> params = exchange.getRequest().getQueryParams();
-                        if (!params.containsKey("user")) {
-                          if (exchange.getRequest().getCookies().containsKey("Bearer")) {
-                            String jwtToken = exchange.getRequest().getCookies().get("Bearer").get(0).getValue();
-                            ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
-                            log.info("Added authorization to request headers from COOKIE: " + mutatedRequest.getHeaders());
-                            return chain.filter(exchange.mutate().request(mutatedRequest).build());
-                          }
-
-                          return chain.filter(exchange);
-                        }
-                        String username = params.getFirst("user");
-
-                        Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
-
-                        String jwtToken = JWT.create()
-                                .withIssuer("Victor")
-                                .withSubject(username)
-                                .withClaim("country", "RO")
-                                .withIssuedAt(Instant.now())
-                                .withExpiresAt(Instant.now().plus(5, MINUTES))
-                                .withJWTId(UUID.randomUUID().toString())
-                                .sign(algorithm);
-
-                        ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
-                        exchange.getResponse().getCookies().put("Bearer", List.of(ResponseCookie.from("Bearer", jwtToken).build()));
-                        log.info("Added authorization to request headers: " + mutatedRequest.getHeaders());
-
-                        return chain.filter(exchange.mutate().request(mutatedRequest).build());
-                      }
-                    }))
+                    .filters(f -> f.filters(new LoginViaQueryParamFilter()))
                     .uri("http://localhost:8080"))
             .build();
   }
