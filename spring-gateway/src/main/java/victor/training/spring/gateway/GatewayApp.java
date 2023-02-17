@@ -16,10 +16,12 @@ public class GatewayApp {
 
 
   @Bean
-  public RouteLocator customRouteLocator(RouteLocatorBuilder builder, QueryParamToJwtToken filter) {
+  public RouteLocator customRouteLocator(RouteLocatorBuilder builder,
+                                         QueryParamToJwtToken queryParamFilter,
+                                         QueryParamPreAuthHeaders preAuthHeadersFilter) {
     return builder.routes()
             .route("path_route", r -> r.path("/**")
-                    .filters(f -> f.filters(filter))
+                    .filters(f -> f.filters(queryParamFilter, preAuthHeadersFilter))
                     .uri("http://localhost:8080"))
             .build();
   }

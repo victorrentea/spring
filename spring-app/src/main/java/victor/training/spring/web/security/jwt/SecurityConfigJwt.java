@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @Profile("jwt")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfigPreAuthJwt extends WebSecurityConfigurerAdapter {
+public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated();
@@ -45,8 +45,8 @@ public class SecurityConfigPreAuthJwt extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthorizationFilter jwtFilter() throws Exception {
-        return new JwtAuthorizationFilter(authenticationManagerBean());
+    public JwtFilter jwtFilter() throws Exception {
+        return new JwtFilter(authenticationManagerBean());
     }
 
 

@@ -21,7 +21,7 @@ public class TechnicalController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "// TODO: get username";
+        dto.username = "<username>";
 
         // dto.username = anotherClass.asyncMethod().get();
 

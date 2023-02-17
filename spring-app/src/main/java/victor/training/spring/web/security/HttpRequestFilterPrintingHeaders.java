@@ -1,6 +1,8 @@
-package victor.training.spring.web.controller.util;
+package victor.training.spring.web.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,8 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
+@Component
+@Order(1)
 public class HttpRequestFilterPrintingHeaders implements Filter {
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -21,7 +25,7 @@ public class HttpRequestFilterPrintingHeaders implements Filter {
          String headerName = e.nextElement();
          headerList.add("\t " + headerName + ": " + httpRequest.getHeader(headerName));
       }
-      log.debug("Request Headers:\n" + String.join("\n", headerList));
+      log.info("Request Headers:\n" + String.join("\n", headerList));
       chain.doFilter(request, response);
    }
 }

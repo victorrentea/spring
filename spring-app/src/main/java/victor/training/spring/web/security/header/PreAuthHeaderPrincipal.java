@@ -9,20 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class PreAuthHeaderPrincipal implements UserDetails {
     private final String username;
     private final List<String> roles;
-    private final Map<String, String> userAttributes;
 
-    public PreAuthHeaderPrincipal(String username, List<String> roles, Map<String, String> userAttributes) {
+    public PreAuthHeaderPrincipal(String username, List<String> roles) {
         this.username = username;
         this.roles = roles;
-        this.userAttributes = userAttributes;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> "ROLE_" +r).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return roles.stream().map(r -> "ROLE_" +r)
+                .map(SimpleGrantedAuthority::new)
+                .collect(toList());
     }
 
     @Override

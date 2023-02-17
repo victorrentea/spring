@@ -10,7 +10,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -27,25 +26,29 @@ public class QueryParamToJwtToken implements GatewayFilter {
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    String userOnUrl = extractUserFromUrl(exchange.getRequest().getQueryParams());
+    String userOnUrl = Utils.extractUserFromUrl(exchange.getRequest().getQueryParams());
 
     if (userOnUrl!=null) {
       String jwtToken = generateJwtToken(userOnUrl, exchange.getRequest().getQueryParams().toSingleValueMap());
       log.info("Using Bearer from QUERY PARAMS (+SetCookie) to {}: payload={}, raw={}",
               exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
-      ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
       exchange.getResponse().getCookies().put("Bearer", List.of(ResponseCookie.from("Bearer", jwtToken).build()));
+      ServerHttpRequest mutatedRequest = addBearerToRequest(exchange.getRequest(), jwtToken);
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
     if (exchange.getRequest().getCookies().containsKey("Bearer")) {
       String jwtToken = exchange.getRequest().getCookies().get("Bearer").get(0).getValue();
       log.info("Using Bearer from COOKIE to {}: payload={}, raw={}",
               exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
-      ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("Authorization", "Bearer " + jwtToken).build();
+      ServerHttpRequest mutatedRequest = addBearerToRequest(exchange.getRequest(), jwtToken);
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
 
     return chain.filter(exchange);
+  }
+
+  private static ServerHttpRequest addBearerToRequest(ServerHttpRequest request, String jwtToken) {
+    return request.mutate().header("Authorization", "Bearer " + jwtToken).build();
   }
 
   private String extractPayload(String jwtToken) {
@@ -74,18 +77,4 @@ public class QueryParamToJwtToken implements GatewayFilter {
     map.forEach(jwtBuilder::withClaim);
   }
 
-  private String extractUserFromUrl(MultiValueMap<String, String> queryParams) {
-
-    if (queryParams.size()== 1 && queryParams.entrySet().iterator().next().getValue().get(0) == null)
-
-      return queryParams.entrySet().iterator().next().getKey(); // ?admin
-
-    if (queryParams.containsKey("user")) { // ?user=admin
-      return queryParams.get("user").get(0);
-    }
-    if (queryParams.containsKey("u")) { // ?u=admin
-      return queryParams.get("u").get(0);
-    }
-    return null;
-  }
 }
