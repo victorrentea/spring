@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <link href="toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="toastr.min.js"></script>
+</head>
+
+<body>
+<h2>Your Profile Details</h2>
+Username: <input id="username" type="text" disabled> <br>
+Name: <input id="fullName" type="text"><br>
+Country:
+<select id="country" type="text">
+    <option value="RO">Romania</option>
+    <option value="BE">Belgium</option>
+    <option value="NL">Netherlands</option>
+    <option value="XX">Other</option>
+</select> <br>
+Cash: <input id="cash" type="text" disabled> <br>
+<br>
+<button onclick="update()">Update</button>
+
+
+<script type="text/javascript">
+    function serverRoot() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+    }
+
+    var userId = -1;
+    fetch(serverRoot() + '/player/details')
+        .then((response) => response.json())
+        .then((data) => {
+            userId = data.id;
+            document.getElementById('username').value = data.username;
+            document.getElementById('fullName').value = data.fullName;
+            document.getElementById('country').value = data.country;
+            document.getElementById('cash').value = data.cash;
+        });
+
+    function update() {
+        fetch(serverRoot() + '/player/details', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({
+                fullName: document.getElementById("fullName").value,
+                country: document.getElementById("country").value
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                toastr.success("Profile updated")
+            })
+    }
+</script>
+
+</body>
+</html>

