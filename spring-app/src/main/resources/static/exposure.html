@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <link href="toastr.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="toastr.min.js"></script>
+</head>
+
+<body>
+<h2>Articles</h2>
+<div id="articles"></div>
+<hr>
+<h4 id="title"></h4>
+<div id="text"></div>
+<div>at <span id="date"></span></div>
+<h3>Comments</h3>
+<div id="comments"></div>
+
+<script type="text/javascript">
+    function serverRoot() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+    }
+
+    fetch(serverRoot() + '/api/articles')
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById('articles').innerHTML=data.map(r=>`<div><b><a href="javascript:show(${r.id})">${r.title}</a></b></div>`).join("");
+        })
+    ;
+    function show(id) {
+        fetch(serverRoot() + '/api/articles/'+id)
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById('title').innerText=data.title;
+                document.getElementById('text').innerText=data.text;
+                document.getElementById('date').innerText=data.date;
+                document.getElementById('comments').innerHTML=data.comments.map(c=>
+                    `<div><b>${c.author.name}</b> said <i>${c.text}</i></div>`
+                        ).join("");
+            })
+        ;
+    }
+</script>
+
+</body>
+</html>

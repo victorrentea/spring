@@ -64,7 +64,7 @@ class PlayerDto {
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = IGNORE)
 interface PlayerMapper {
-  void update(@MappingTarget Player entity, PlayerDto dto);
+  void update(@MappingTarget Player entity, PlayerDto dto); // FIXME don't copy all fields
   PlayerDto toDto(Player entity);
 }
 
