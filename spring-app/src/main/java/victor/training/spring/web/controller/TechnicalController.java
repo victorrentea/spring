@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,10 +24,9 @@ public class TechnicalController {
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
         //		JWTUtils.printTheTokens();
-
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "<username>";
+        dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // dto.username = anotherClass.asyncMethod().get();
 

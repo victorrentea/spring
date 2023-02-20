@@ -16,7 +16,7 @@ public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 if (authentication.getPrincipal() instanceof String) {
                     String apiKeyDePeHeader = (String) authentication.getPrincipal();
-                    if ("secretKey".equals(apiKeyDePeHeader)) {
+                    if ("secret".equals(apiKeyDePeHeader)) {
                         authentication.setAuthenticated(true);
                         return authentication;
                     }
@@ -28,7 +28,7 @@ public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        return request.getHeader("ApiKey");
+        return request.getHeader("X-Api-Key");
     }
 
     @Override
