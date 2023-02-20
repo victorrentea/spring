@@ -162,7 +162,7 @@
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20200713.1</version>
+            <version>20211018.1</version>
         </dependency>
 
 
@@ -216,11 +216,14 @@
                 </configuration>
             </plugin>
 
-           <!-- <plugin>
-                &lt;!&ndash; scans dependencies for known vulnerabilities &ndash;&gt;
+            <plugin>
+                <!-- scans dependencies for known vulnerabilities -->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>6.3.2</version>
+                <configuration>
+                    <suppressionFile>spring-app/suppress-vulnerabilities.xml</suppressionFile>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -228,7 +231,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 
