@@ -9,7 +9,6 @@ import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecu
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 @Slf4j
@@ -72,13 +71,11 @@ public class TechnicalController {
 //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
 //    	}
 
-    @Autowired
-    private WelcomeInfo welcomeInfo;
 
     // TODO [SEC] allow unsecured access
     @GetMapping("unsecured/welcome")
-    public WelcomeInfo showWelcomeInfo() {
-        return welcomeInfo;
+    public String showWelcomeInfo() {
+        return "welcomeInfo";
     }
 
     // TODO [SEC] URL-pattern restriction: admin/**

@@ -20,10 +20,7 @@
     <packaging>pom</packaging>
    
     <modules>
-        <module>spring-start</module>
-        <module>spring-integration</module>
         <module>spring-gateway</module>
-        <module>spring-transaction</module>
         <module>spring-app</module>
         <module>spring-app-cdn</module>
 		<module>spring-app-attacker</module>
