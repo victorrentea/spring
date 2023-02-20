@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
     function transferAmount() {
-        $.ajax({
+        $.ajax({ // aka fetch
             url:"http://localhost:8080/api/victim/transfer-rest",
             method: "POST",
             xhrFields: { withCredentials: true }, // CORS sending credentials
@@ -55,7 +55,7 @@
         });
     }
 
-    $.ajax("http://localhost:8080/rest/user/current", {
+    $.ajax("http://localhost:8080/api/user/current", {
         method: "GET",
         success: function(trainings) {
             toastr.success("data:  " + trainings)

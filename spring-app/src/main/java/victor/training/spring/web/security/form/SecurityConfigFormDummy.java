@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Profile("form")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
@@ -18,7 +19,11 @@ public class SecurityConfigFormDummy extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable(); // OK since I never take <form> POSTs
+//        http.csrf().disable(); // OK since I never take <form> POSTs
+
+//      CookieCsrfTokenRepository csrfRepo = new CookieCsrfTokenRepository();
+//      csrfRepo.setCookieHttpOnly(false);
+//      http.csrf().csrfTokenRepository(csrfRepo);
 
         http.cors(); // needed only if .js files are served by a CDN (eg)
 
