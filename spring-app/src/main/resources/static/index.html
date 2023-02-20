@@ -29,9 +29,12 @@ html {
 			<label for="searchTeacher">Teacher: </label><select id="searchTeacher" ></select> <br />
 			<input type="button" onclick="search()" value="Search" />
 		</div>
-		<table id="trainingTable" border="1">
-			<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
-		</table>
+		<div id="trainingTable">
+
+			<table  border="1">
+				<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
+			</table>
+		</div>
 		<div id="showRichDescription"><i>Click on a name to see its description here</i></div>
 		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
 		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
@@ -108,31 +111,54 @@ function getContextPath() {
 // var restEndpoint = getContextPath() + "/api";
 var restEndpoint = "http://api:8080/api"; // to test CORS using a local NodeJS instance/"cdn" app
 
+	var trainings2=[];
 function fillTable(trainings) {
-	$("#trainingTable tr").each(function (i, r) {
-		if (i > 0) r.remove();
-	});
+	// $("#trainingTable tr").each(function (i, r) {
+	// 	if (i > 0) r.remove();
+	// });
+	var s ="<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>";
+	trainings2 = trainings;
 	for (var i = 0; i < trainings.length; i++) {
 		var c = trainings[i];
 		var row = '<tr id="' + c.id + '">';
-		row += '<td style="cursor:pointer;" onclick="showDescription(\''+c.description+'\');">' + c.name + '</td>';
+		console.log("descr +  " + c.description)
+		row += '<td style="cursor:pointer;" onclick="showDescription(\''+htmlEncode(c.description)+'\');"> ' +
+				'' + c.name + '</td>';
 		row += '<td>' + c.startDate + '</td>';
 		row += '<td>' + c.teacherName + '</td>';
 		row += '<td>';
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 
+		"rpad(' ', x)"
 		//if (currentUser.role === 'ADMIN')
 		//if (currentUser.authorities.includes('training.delete'))
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 
 		row += '</td>';
 		row += '</tr>';
-		$('#trainingTable tr:last').after(row);
+
+		console.log("row", row)
+
+		s+= row;
 	}
+	console.log("table html = " + s )
+	document.getElementById("trainingTable").innerHTML = "<table>" + s + "</table>";
+
+
+
+	// $('#trainingTable tr:last').after(row);
 }
-function showDescription(richTextHtmlUnescaped) {
+
+	function htmlEncode(value){
+		//create a in-memory div, set it's inner text(which jQuery automatically encodes)
+		//then grab the encoded contents back out.  The div never exists on the page.
+		return $('<div/>').text(value).html();
+	}
+function showDescription(description) {
+	// let tt = trainings2.find(t => t.id === id);
 	// TODO sanitize richText
-	$("#showRichDescription").html(richTextHtmlUnescaped);
+	// $("#showRichDescription").html(richTextHtmlUnescaped); // am fost
+	document.getElementById("showRichDescription").innerHTML = description;
 }
 
 function refreshTrainingsTable() {
