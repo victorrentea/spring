@@ -7,9 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+
+import javax.annotation.security.PermitAll;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -82,6 +85,15 @@ public class TechnicalController {
     @GetMapping("admin/launch")
     public String restart() {
         return "What does this red button do?     ... [Missile Launched]";
+    }
+
+
+
+    @GetMapping("kill-cache")
+    @PermitAll
+    @CrossOrigin(originPatterns = "*") // doar pentru brow: de eg sa poti pune un buton intr-un UI care sa trmita aici request
+    public void notifySourceDataChanged() {
+        System.out.println("Omor cashu");
     }
 
 }
