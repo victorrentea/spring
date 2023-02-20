@@ -17,8 +17,8 @@ public class CorsGlobalConfig {
                 registry.addMapping("/api/**")
                         .allowedMethods("*")
                         .allowCredentials(true) // allows receiving session cookie (if using cookies)
-//                        .allowedOriginPatterns("http://cdn") // eg NodeJS
-					 .allowedOriginPatterns("https://*") // Too broad
+                        .allowedOriginPatterns("http://cdn") // eg NodeJS
+//					 .allowedOriginPatterns("http://*") // Too broad
                 ;
                 // also don't forget to add .cors() to spring security
             }
