@@ -1,5 +1,7 @@
 package victor.training.spring.web.controller;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -24,18 +26,25 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+		TrainingDto dto = trainingService.getTrainingById(id);
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+		return dto;
 		//TODO if id is not found, return 404 status code
 	}
 
 	// TODO @Valid
 	@PostMapping
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.updateTraining(id, dto);
 	}
 

@@ -158,6 +158,14 @@
             <version>1.5.1.Final</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20200713.1</version>
+        </dependency>
+
+
         <!-- messages -->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
