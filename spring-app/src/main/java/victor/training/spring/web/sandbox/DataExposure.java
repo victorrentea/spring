@@ -53,7 +53,7 @@ public class DataExposure {
               .setText("Checkout the JSON response you got to this page"+i)
               .setDate(LocalDate.now().minusDays(2))
               .setComments(List.of(
-                      new BlogArticleComment("Sucks",new BlogUser("King Julian", "kj@madagascar.com")),
+                      new BlogArticleComment("Lame!",new BlogUser("King Julian", "kj@madagascar.com")),
                       new BlogArticleComment("Wow",new BlogUser("Julie", "julie.private@gmail.com"))
               ))
       );

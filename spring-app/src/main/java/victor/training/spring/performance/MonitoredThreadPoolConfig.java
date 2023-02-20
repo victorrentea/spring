@@ -3,6 +3,7 @@ package victor.training.spring.performance;
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -21,6 +23,9 @@ public class MonitoredThreadPoolConfig {
    @Bean(initMethod = "initialize")
    @ConfigurationProperties(prefix = "custom-executor")
    public ThreadPoolTaskExecutor monitoredExecutor() {
+      // TODO experiment
+      // ExecutorServiceMetrics.monitor(registry, ForkJoinPool.commonPool(), "commonPool");
+
       Timer timer = meterRegistry.timer("custom-executor-queue-wait");
       // configured via custom-executor.* in application.properties
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

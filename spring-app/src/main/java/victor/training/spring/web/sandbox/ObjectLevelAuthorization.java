@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
 @RestController
-public class BrokenObjectLevelAuthorization {
+public class ObjectLevelAuthorization {
   @GetMapping("api/shops/{shopId}/revenue-data.json")
   public Map<String, Double> getRevenueData(@PathVariable int shopId) {
     Random r = new Random(shopId);
