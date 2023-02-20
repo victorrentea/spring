@@ -34,7 +34,7 @@ public class SimpleSigningDemo {
 
 
         //verification on the other end
-        String receivedData = "ITKonekt is the worst!!!";
+        String receivedData = "ITKonekt is the best!!!";
 
         Signature verificationAlgorithm = Signature.getInstance("SHA256WithRSA");
         verificationAlgorithm.initVerify(keyPair.getPublic());
