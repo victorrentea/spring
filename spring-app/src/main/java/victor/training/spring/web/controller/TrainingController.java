@@ -1,21 +1,13 @@
 package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.Training;
-import victor.training.spring.web.entity.User;
-import victor.training.spring.web.repo.TrainingRepo;
-import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -55,7 +47,7 @@ public class TrainingController {
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-		securityService.canEditTraining(id);
+		securityService.checkCanEditTraining(id);
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.updateTraining(id, dto);
@@ -72,10 +64,10 @@ public class TrainingController {
 
 //	@Secured({"ROLE_ADMIN","ROLE_POWER"})
 //	@PreAuthorize("hasAnyRole('ADMIN','POWER')") // oups am uitat
-//	@PreAuthorize("hasAuthority('training.delete')")
+	@PreAuthorize("hasAuthority('training.delete')")
 	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
-		securityService.canEditTraining(id);
+		securityService.checkCanEditTraining(id);
 		// ai voie sa editezi trainingul doar doar daca userul curent manageuie
 		// teacherul trainingului resp
 

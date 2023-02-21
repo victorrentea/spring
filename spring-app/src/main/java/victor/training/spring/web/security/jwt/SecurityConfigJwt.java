@@ -22,7 +22,7 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // antipattern: pt ca daca modifici in @XyzMapping urlul vei uita sa modifici si aici.
-                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
+//                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.authenticationProvider(preAuthenticatedProvider())

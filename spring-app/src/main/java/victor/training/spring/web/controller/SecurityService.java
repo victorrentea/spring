@@ -16,7 +16,7 @@ public class SecurityService {
   private final UserRepo userRepo;
   private final TrainingRepo trainingRepo;
 
-  public void canEditTraining(Long id) {
+  public void checkCanEditTraining(Long id) {
     Training training = trainingRepo.findById(id).orElseThrow();
     Long teacherId = training.getTeacher().getId();
 
