@@ -72,8 +72,8 @@ public class TrainingController {
 
 //	@Secured({"ROLE_ADMIN","ROLE_POWER"})
 //	@PreAuthorize("hasAnyRole('ADMIN','POWER')") // oups am uitat
-	@PreAuthorize("hasAuthority('training.delete')")
-	@DeleteMapping("{id}")
+//	@PreAuthorize("hasAuthority('training.delete')")
+	@DeleteMapping("{id}/delete")
 	public void deleteTrainingById(@PathVariable Long id) {
 		securityService.canEditTraining(id);
 		// ai voie sa editezi trainingul doar doar daca userul curent manageuie

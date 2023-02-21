@@ -2,6 +2,7 @@ package victor.training.spring.web.security.jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,7 +20,10 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                // antipattern: pt ca daca modifici in @XyzMapping urlul vei uita sa modifici si aici.
+                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
+                .anyRequest().authenticated();
         http.csrf().disable();
         http.authenticationProvider(preAuthenticatedProvider())
             .addFilter(jwtFilter())
