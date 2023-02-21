@@ -2,6 +2,8 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+import victor.training.spring.web.security.keycloak.KeyCloakUtils;
 
 import javax.annotation.security.PermitAll;
 import java.util.Collection;
@@ -28,12 +31,20 @@ public class TechnicalController {
 
     @GetMapping("api/user/current")
     public CurrentUserDto getCurrentUsername() throws Exception {
-        //		JWTUtils.printTheTokens();
+          KeyCloakUtils.printTheTokens();
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
+
+
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        dto.username = authentication.getName();
-        dto.role = extractOneRole(authentication.getAuthorities());
+      Object opaquePrincipal = authentication.getPrincipal(); // depinde de ce filtre de sec ai trecut ca sa ajungi aici
+      // daca ai venit cu cookie produs prin logic cu OAuth, vei gasi aici Principalul creat si logat la
+      // primul contact (cand a venit AT prin back channel)
+      KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
+      String email = keycloakPrincipal.getKeycloakSecurityContext().getToken().getEmail();
+      dto.username = authentication.getName() + " ("+email+")";
+        dto.role = extractOneRole(authentication.getAuthorities()); // ROLE_USER sau training.delete
         dto.authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 

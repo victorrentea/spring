@@ -3,10 +3,13 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -34,8 +37,8 @@ public class TeacherBioClient {
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
-    String result = callUsingFeignClient(teacherId);
-//    String result = callUsingRestTemplate(teacherId);
+//    String result = callUsingFeignClient(teacherId);
+    String result = callUsingRestTemplate(teacherId);
     log.debug("Got result");
     return result;
   }
@@ -54,12 +57,12 @@ public class TeacherBioClient {
   public String callUsingRestTemplate(long teacherId) {
 
     // Auth#1 :) - no bearer
-    String bearerToken = "joke";
+//    String bearerToken = "joke";
 
     // Auth#2 - propagating MY clients' AccessToken
-    //            KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
-    //                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    //            String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+                KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
 
     // Auth#3 - manually creating a JWT token
     //          String bearerToken = Jwts.builder()
