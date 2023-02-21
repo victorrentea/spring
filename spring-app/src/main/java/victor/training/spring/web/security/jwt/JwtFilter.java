@@ -13,6 +13,7 @@ import victor.training.spring.web.entity.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
+import java.util.List;
 
 
 // this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
@@ -43,8 +44,9 @@ public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     UserRole role = UserRole.valueOf(decodedJwt.getClaim("role").asString());
     String country = decodedJwt.getClaim("country").asString();
+    String[] authorities = decodedJwt.getClaim("authorities").asArray(String.class);
     String username = decodedJwt.getSubject();
-    JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role);
+    JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role, List.of(authorities));
     log.info("Login successful for " + jwtPrincipal);
     return jwtPrincipal; // later received by UserDetailsService
   }

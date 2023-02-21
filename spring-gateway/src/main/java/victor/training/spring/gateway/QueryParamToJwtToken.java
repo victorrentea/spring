@@ -66,6 +66,7 @@ public class QueryParamToJwtToken implements GatewayFilter {
             .withJWTId(UUID.randomUUID().toString());
     addExtraClaimsFromQueryParams(jwtBuilder, extraClaims);
     return jwtBuilder
+            .withClaim("authorities", userOnUrl.toUpperCase().equals("ADMIN")?List.of("training.delete"):List.of())
             .withClaim("role", userOnUrl.toUpperCase())
             .withClaim("country", "RO")
             .sign(algorithm);
