@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +65,13 @@ public class TrainingController {
 	// TODO Fix UX
 	// TODO Allow also 'POWER'; then remove it. => OWASP top 10
 	// TODO Allow for authority 'training.delete'
-	// TODO a) Allow only if the current user manages the the teacher of that training
+	// OK Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
+
+	@Secured("ROLE_ADMIN")
+//	@PreAuthorize()
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		securityService.canEditTraining(id);
