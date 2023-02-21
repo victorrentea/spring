@@ -3,13 +3,10 @@ package victor.training.micro;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.function.Consumer;
 
 @Slf4j
 @RestController
@@ -21,7 +18,7 @@ public class MicroApp {
 
    @GetMapping
    public String get() {
-      return "Micro received " + SecurityContextHolder.getContext().getAuthentication().getName();
+      return "Micro received username= '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
    }
 
    @GetMapping("/api/teachers/{teacherId}/bio")

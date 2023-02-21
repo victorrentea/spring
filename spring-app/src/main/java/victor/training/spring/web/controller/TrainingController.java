@@ -41,11 +41,9 @@ public class TrainingController {
 
 	// TODO Allow only for role 'ADMIN'
 	// TODO Fix UX
-	// TODO Allow also 'POWER'; then remove it. => OWASP top 10
+	// TODO Allow also for 'POWER' role; then remove it. => update UI but forget the BE
 	// TODO Allow for authority 'training.delete'
-	// TODO a) Allow only if the current user manages the the teacher of that training
-	//  	User.getManagedTeacherIds.contains(training.teacher.id)
-	//   OR b) Allow only if the current user manages the language of that training
+	// TODO Allow only if the current user manages the programming language of the training
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
@@ -55,18 +53,17 @@ public class TrainingController {
 
 
 	// TODO for searches, should we use GET or POST ?
-
-	@PostMapping("search")
-	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
-		return trainingService.search(criteria);
-	}
-	@GetMapping("search")
+	@GetMapping("search") // pure REST
 	public List<TrainingDto> searchUsingGET(
 					@RequestParam(required = false) String name,
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
-	//	@GetMapping("search") // OMG does the same as the above one
+	@PostMapping("search") // pragmatic HTTP endpoints
+	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
+	//	@GetMapping("search") // OMG does the same as the @GetMapping
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}

@@ -15,6 +15,7 @@ public class User {
     private String name;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private ProgrammingLanguage programmingLanguage;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {

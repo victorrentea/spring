@@ -213,6 +213,9 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>6.3.2</version>
+                <configuration>
+                    <suppressionFile>spring-app/suppress-vulnerabilities.xml</suppressionFile>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

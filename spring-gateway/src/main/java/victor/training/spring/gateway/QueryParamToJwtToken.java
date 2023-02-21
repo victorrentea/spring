@@ -21,6 +21,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 @Slf4j
 @Component
 public class QueryParamToJwtToken implements GatewayFilter {
+  public static final String COOKIE_NAME = "Bearer";
   @Value("${jwt.signature.shared.secret.base64}")
   String jwtSecret;
 
@@ -32,12 +33,12 @@ public class QueryParamToJwtToken implements GatewayFilter {
       String jwtToken = generateJwtToken(userOnUrl, exchange.getRequest().getQueryParams().toSingleValueMap());
       log.info("Using Bearer from QUERY PARAMS (+SetCookie) to {}: payload={}, raw={}",
               exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
-      exchange.getResponse().getCookies().put("Bearer", List.of(ResponseCookie.from("Bearer", jwtToken).build()));
+      exchange.getResponse().getCookies().put(COOKIE_NAME, List.of(ResponseCookie.from(COOKIE_NAME, jwtToken).build()));
       ServerHttpRequest mutatedRequest = addBearerToRequest(exchange.getRequest(), jwtToken);
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
-    if (exchange.getRequest().getCookies().containsKey("Bearer")) {
-      String jwtToken = exchange.getRequest().getCookies().get("Bearer").get(0).getValue();
+    if (exchange.getRequest().getCookies().containsKey(COOKIE_NAME)) {
+      String jwtToken = exchange.getRequest().getCookies().get(COOKIE_NAME).get(0).getValue();
       log.info("Using Bearer from COOKIE to {}: payload={}, raw={}",
               exchange.getRequest().getPath(), extractPayload(jwtToken), jwtToken);
       ServerHttpRequest mutatedRequest = addBearerToRequest(exchange.getRequest(), jwtToken);
@@ -65,6 +66,7 @@ public class QueryParamToJwtToken implements GatewayFilter {
             .withJWTId(UUID.randomUUID().toString());
     addExtraClaimsFromQueryParams(jwtBuilder, extraClaims);
     return jwtBuilder
+            .withClaim("authorities", userOnUrl.toUpperCase().equals("ADMIN")?List.of("training.delete"):List.of())
             .withClaim("role", userOnUrl.toUpperCase())
             .withClaim("country", "RO")
             .sign(algorithm);
