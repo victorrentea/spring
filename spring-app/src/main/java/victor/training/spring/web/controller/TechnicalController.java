@@ -47,7 +47,7 @@ public class TechnicalController {
         dto.role = extractOneRole(authentication.getAuthorities()); // ROLE_USER sau training.delete
         dto.authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
+//keycloakPrincipal.getKeycloakSecurityContext().getToken().ref
         // spring despre userul curent are o lista de stringuri (authorities)
 
 
