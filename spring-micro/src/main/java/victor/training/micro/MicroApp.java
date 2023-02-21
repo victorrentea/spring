@@ -21,7 +21,7 @@ public class MicroApp {
 
    @GetMapping
    public String get() {
-      return "Micro received " + SecurityContextHolder.getContext().getAuthentication().getName();
+      return "Micro received username= '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
    }
 
    @GetMapping("/api/teachers/{teacherId}/bio")

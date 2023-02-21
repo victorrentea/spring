@@ -31,7 +31,7 @@ public class TeacherBioClient {
   private final TeacherBioFeignClient feignClient;
 
   // don't do "new RestTemplate()" but take it from Spring, to allow Sleuth to propagate 'traceId'
-  private final RestTemplate restTemplate;
+  private final RestTemplate rest;
 
   // TODO cacheable
   public String retrieveBiographyForTeacher(long teacherId) {
@@ -74,7 +74,7 @@ public class TeacherBioClient {
 
     log.info("Sending bearer: {}", bearerToken);
     Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
-    ResponseEntity<String> response = restTemplate.exchange(new RequestEntity<>(
+    ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
             CollectionUtils.toMultiValueMap(header),
             HttpMethod.GET,
             new URI(teacherBioUriBase + "/api/teachers/" + teacherId + "/bio")), String.class);

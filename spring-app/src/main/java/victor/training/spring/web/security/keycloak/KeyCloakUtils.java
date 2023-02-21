@@ -7,7 +7,12 @@ import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.TimeZone;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 
 @Slf4j
 public class KeyCloakUtils {
@@ -19,7 +24,8 @@ public class KeyCloakUtils {
         log.info("\n-- OpenID Connect Token 👑: {}\n{}",
                 keycloakSecurityContext.getIdTokenString(),
                 prettyFormatJWT(keycloakSecurityContext.getIdTokenString()));
-        log.info("\n-- Access Token 👑: {}\n{}",
+        log.info("\n-- Access Token 👑 (exp={}): {}\n{}",
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(keycloakSecurityContext.getToken().getExp()), TimeZone.getDefault().toZoneId()).format(ISO_LOCAL_TIME),
                 keycloakSecurityContext.getTokenString(),
                 prettyFormatJWT(keycloakSecurityContext.getTokenString()));
     }
