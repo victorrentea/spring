@@ -71,7 +71,7 @@ public class TrainingController {
 	// TODO see PermissionEvaluator [GEEK]
 
 //	@Secured({"ROLE_ADMIN","ROLE_POWER"})
-	@PreAuthorize("hasAnyRole('ADMIN','POWER')")// Spring Expression Language (SPeL)
+	@PreAuthorize("hasAnyRole('ADMIN','POWER')") // oups am uitat
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
 		securityService.canEditTraining(id);
