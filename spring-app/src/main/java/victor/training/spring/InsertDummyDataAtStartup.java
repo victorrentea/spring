@@ -54,6 +54,7 @@ public class InsertDummyDataAtStartup {
 		trainingRepo.save(javaBasic);
 		trainingRepo.save(patterns);
 
+		userRepo.save(new User("I've got the power", "power", UserRole.POWER, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
 		userRepo.save(new User("Boss", "admin", UserRole.ADMIN, Arrays.asList(victor.getId()))); // only manages Victor, not Ionut
 		userRepo.save(new User("Clerk", "user", UserRole.USER, Arrays.asList(victor.getId(), ionut.getId())));
 	}
