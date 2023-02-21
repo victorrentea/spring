@@ -131,7 +131,7 @@ function fillTable(trainings) {
 
 		"rpad(' ', x)"
 		//if (currentUser.authorities.includes('training.delete'))
-		if (['ADMIN','POWER'].includes(currentUser.role))
+		if (['ADMIN'].includes(currentUser.role))
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 
 		row += '</td>';
