@@ -66,6 +66,7 @@ public class BruteForce {
   static class PasswordResetAttempt {
     Integer smsCode;
     LocalDateTime attemptDeadline;
+//    int attemptsLeft;
   }
 
   public static void main(String[] args) {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -15,8 +16,10 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 public class ObjectLevelAuthorization {
+//  @PermitAll
   @GetMapping("api/shops/{shopId}/revenue-data.json")
   public Map<String, Double> getRevenueData(@PathVariable int shopId) {
+    //if ()// este shopul meu id = shopId
     Random r = new Random(shopId);
     Map<String, Double> results = new LinkedHashMap<>();
     for (int i = 1; i <= 12; i++) {

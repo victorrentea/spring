@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.controller.SecurityService;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
@@ -31,13 +32,13 @@ public class TrainingService {
     private final TeacherRepo teacherRepo;
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
+    private final SecurityService securityService;
 
     public List<TrainingDto> getAllTrainings() {
-        List<TrainingDto> dtos = new ArrayList<>();
-        for (Training training : trainingRepo.findAll()) {
-            dtos.add(mapToDto(training));
-        }
-        return dtos;
+        return trainingRepo.findAll().stream()
+                .filter(t->securityService.managesTeacher(t.getTeacher().getId()))
+                .map(this::mapToDto)
+                .collect(toList());
     }
 
     public TrainingDto getTrainingById(Long id) {

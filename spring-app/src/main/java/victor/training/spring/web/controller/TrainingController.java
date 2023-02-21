@@ -1,18 +1,26 @@
 package victor.training.spring.web.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
 
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
@@ -27,6 +35,7 @@ public class TrainingController {
 	@GetMapping("{id}")
 	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
 		TrainingDto dto = trainingService.getTrainingById(id);
+		securityService.checkManagesTeacher(dto.teacherId);
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
 		return dto;
@@ -38,11 +47,13 @@ public class TrainingController {
 	public void createTraining(@RequestBody TrainingDto dto) throws ParseException {
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
+		securityService.checkManagesTeacher(dto.teacherId);
 		trainingService.createTraining(dto);
 	}
 
 	@PutMapping("{id}")
 	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
+		securityService.canEditTraining(id);
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
 		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.updateTraining(id, dto);
@@ -54,13 +65,17 @@ public class TrainingController {
 	// TODO Allow for authority 'training.delete'
 	// TODO a) Allow only if the current user manages the the teacher of that training
 	//  	User.getManagedTeacherIds.contains(training.teacher.id)
-	//   OR b) Allow only if the current user manages the language of that training
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 	public void deleteTrainingById(@PathVariable Long id) {
+		securityService.canEditTraining(id);
+		// ai voie sa editezi trainingul doar doar daca userul curent manageuie
+		// teacherul trainingului resp
+
 		trainingService.deleteById(id);
 	}
+	private final SecurityService securityService;
 
 
 	// TODO for searches, should we use GET or POST ?
