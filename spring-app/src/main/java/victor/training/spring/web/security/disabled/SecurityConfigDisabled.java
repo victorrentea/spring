@@ -1,4 +1,4 @@
-package victor.training.spring.web.security;
+package victor.training.spring.web.security.disabled;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

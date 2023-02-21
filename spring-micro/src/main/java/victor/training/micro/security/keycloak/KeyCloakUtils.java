@@ -1,4 +1,4 @@
-package victor.training.micro;
+package victor.training.micro.security.keycloak;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

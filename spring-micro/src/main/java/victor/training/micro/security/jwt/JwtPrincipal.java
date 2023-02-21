@@ -1,4 +1,4 @@
-package victor.training.micro.jwt;
+package victor.training.micro.security.jwt;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

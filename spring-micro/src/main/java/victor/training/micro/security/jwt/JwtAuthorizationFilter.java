@@ -1,4 +1,4 @@
-package victor.training.micro.jwt;
+package victor.training.micro.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -1,4 +1,4 @@
-package victor.training.micro;
+package victor.training.micro.security.keycloak;
 
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.adapters.springsecurity.account.KeycloakRole;
@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class KeycloakResourceAuthenticationProvider implements AuthenticationProvider {
@@ -29,21 +30,14 @@ public class KeycloakResourceAuthenticationProvider implements AuthenticationPro
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) authentication;
-        log.info("Am ajuns aici: " + clientName);
-
         AccessToken accessToken = token.getAccount().getKeycloakSecurityContext().getToken();
         AccessToken.Access resourceAccess = accessToken.getResourceAccess(clientName);
         if (resourceAccess == null || resourceAccess.getRoles().isEmpty()) {
-//            KeyCloakUtils.printTheTokens();
-            log.error("No resource_access roles found in ID token for client application: " + clientName);
+            log.error("No resource_access roles found in ID token for client: " + clientName);
             throw new InsufficientAuthenticationException("No resource_access roles found for client application: " + clientName);
         }
-
         Set<String> rolesForClient = resourceAccess.getRoles();
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (String role : rolesForClient) {
-            grantedAuthorities.add(new KeycloakRole(role));
-        }
+        List<GrantedAuthority> grantedAuthorities = rolesForClient.stream().map(KeycloakRole::new).collect(Collectors.toList());
         return new KeycloakAuthenticationToken(token.getAccount(), token.isInteractive(), mapAuthorities(grantedAuthorities));
     }
 

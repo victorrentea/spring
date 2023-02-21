@@ -28,21 +28,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
-        var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-        // C+B1) Client-specific roles
+        // extract roles from realm_access
+         var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        // extract roles from resource_access for the current client
 //        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
-        // A) Role-based security : prefix every role in the token with "ROLE_"
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
-        // B) Authority-based security
-        // B1) Extracting fine-grained authorities from Access Token (relies on KeyCloak composite Roles)
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
+        // # Add "ROLE_" before every role in the token
+        // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
-        // B2) converting ROLE from token into local authorities (eg via a local enum)
-//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+        // # Use roles as they are (no prefix)
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
+
+        // # Convert ROLE from token into local authorities via a local enum
+        // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }

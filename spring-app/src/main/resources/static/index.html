@@ -1,313 +1,337 @@
 <html lang="en">
 <head>
-<link href="toastr.min.css" rel="stylesheet"/>
-<script type="text/javascript" src="jquery-1.12.2.min.js"></script>
-<script type="text/javascript" src="toastr.min.js"></script>
-<style>
-html { 
-  background: url(luxury-spa.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-</style>
-	<title>SPA (8080)</title>
+    <link href="toastr.min.css" rel="stylesheet"/>
+    <link href="quill.snow.css" rel="stylesheet"/>
+    <script type="text/javascript" src="quill.js"></script>
+    <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="toastr.min.js"></script>
+    <style>
+        html {
+            background: url(luxury-spa.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .ql-container, .ql-toolbar {
+            background-color: white;
+        }
+        .training_name:hover {
+            color: yellow;
+            cursor:pointer;
+        }
+    </style>
+    <title>SPA (8080)</title>
 </head>
-<body >
-	<h2>Welcome to SPA (Single Page Application)</h2>
+<body>
+<h2>Welcome to the SPA (Single Page Application)</h2>
 
-	<h3>Hello,
-		<span id="username"></span>
-		<input type="button" value="logout" onclick="window.location='logout'"/>
-	</h3>
-
-	
-	<div id="trainingMain" style="border:2px solid red">
-		<div id="searchDiv" style="border: 7px solid pink">
-			<label for="searchName">Name: </label><input id="searchName" type="text" size="10"/> <br />
-			<label for="searchTeacher">Teacher: </label><select id="searchTeacher" ></select> <br />
-			<input type="button" onclick="search()" value="Search" />
-		</div>
-		<div id="trainingTable">
-
-			<table  border="1">
-				<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>
-			</table>
-		</div>
-		<div id="showRichDescription"><i>Click on a name to see its description here</i></div>
-		<input type="button" value="Reload" onclick="refreshTrainingsTable()">
-		<input type="button" value="Create New Training..." onclick="openCreateTraining()">
-	</div>
-
-	<div id="trainingNewDiv" style="display:none;border:2px solid green">
-		<h4>Create a New Training</h4>
-		Name:<input type="text" id="newName" /> <br />
-		Language:<select id="newLanguage"></select> <br />
-		Description:<textarea id="newDescription" cols="40" rows="3"></textarea> <br />
-		Start Date (dd-mm-yyyy):<input type="text" id="newStartDate" /> <br />
-		Teacher: <select id="newTeacher"></select> <br />
-		<input type="button" value="Create" onclick="createTraining()">
-		<input type="button" value="Cancel" onclick="$('#trainingNewDiv').hide();$('#trainingMain').show();">
-	</div>
-
-	<div id="trainingEditDiv" style="display:none; border:2px solid blue">
-		<h4>Edit a Training</h4>
-		<input type="hidden" id="editTrainingId" />
-		Name:<input type="text" id="editName" /> <br />
-		Language:<select id="editLanguage"></select> <br />
-		Description:<textarea id="editDescription" cols="40" rows="3"></textarea> <br />
-		<div style="font-size: smaller" title="for XSS attacks">&lt;script>fetch(\'api/salary/raise?who=vrentea&amount=MAX\').then(function(x) {alert(x)});&lt;/script></div>
-		Start Date (dd-mm-yyyy):<input type="text" id="editStartDate" /> <br />
-		Teacher: <select id="editTeacher"></select><br />
-		<b>Teacher Bio:</b> <br />
-		<div id="teacherBio"></div>
-		<input type="button" value="Save" onclick="updateTraining()">
-		<input type="button" value="Cancel" onclick="$('#trainingEditDiv').hide();$('#trainingMain').show();">
-	</div>
-
-	<div style="text-align: center; background: white">
-		<a href="api/send-message">Send a message on a Queue</a> |
-		<a href="api/drink">Async Barman Flow</a> |
-		<a href="/v3/api-docs" target="_blank">See my OpenAPI 3.0</a> <br/>
-		<a href="victim.html">Web Attacks</a> |
-		<a href="keycloak.html" target="_blank">Implicit Flow (Keycloak), when on CDN</a> |
-		<a href="/api/client-credentials" target="_blank">Client Credentials</a> <br />
-		<span id="currentUserJson" style="font-size: small; color: gray"></span>
-	</div>
+<h3>Hello,
+    <span id="username"></span>
+    <input type="button" value="logout" onclick="window.location='logout'"/>
+</h3>
 
 
-	<script type="text/javascript">
+<div id="trainingMain" style="border:2px solid red">
+    <div id="searchDiv" style="border: 7px solid pink">
+        <label for="searchName">Name: </label><input id="searchName" type="text" size="10"/> <br/>
+        <label for="searchTeacher">Teacher: </label><select id="searchTeacher"></select> <br/>
+        <input type="button" onclick="search()" value="Search"/>
+    </div>
+    <div id="trainingTable">
 
-	// Angular adds it automatically
-function getCookie(name) {
-	const value = `; ${document.cookie}`;
-	const parts = value.split(`; ${name}=`);
-	if (parts.length === 2) return parts.pop().split(';').shift();
-}
+        <table border="1">
+            <tr>
+                <th>Training Name</th>
+                <th>Start Date</th>
+                <th>Teacher</th>
+                <th>Ops</th>
+            </tr>
+        </table>
+    </div>
+    <div id="showRichDescription"><i>Click on a name to see its description here</i></div>
+    <input type="button" value="Reload" onclick="refreshTrainingsTable()">
+    <input type="button" value="Create New Training..." onclick="openCreateTraining()">
+</div>
 
-let xsrfToken = getCookie("XSRF-TOKEN");
+<div id="trainingNewDiv" style="display:none;border:2px solid green">
+    <h4>Create a New Training</h4>
+    Name:<input type="text" id="newName"/> <br/>
+    Language:<select id="newLanguage"></select> <br/>
+    Description:<!--<textarea id="newDescription" cols="40" rows="3"></textarea> <br/>-->
+    <div id="newDescriptionQ" style="height: 100px"></div>
+    Start Date (dd-mm-yyyy):<input type="text" id="newStartDate"/> <br/>
+    Teacher: <select id="newTeacher"></select> <br/>
+    <input type="button" value="Create" onclick="createTraining()">
+    <input type="button" value="Cancel" onclick="$('#trainingNewDiv').hide();$('#trainingMain').show();">
+</div>
 
-$.ajaxSetup({
-	beforeSend: function (request) { // Pass through CSRF protection
-		// request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
-	},
-	xhrFields: { withCredentials: true }, // CORS to add BE cookies to all requests
-});
+<div id="trainingEditDiv" style="display:none; border:2px solid blue">
+    <h4>Edit a Training</h4>
+    <input type="hidden" id="editTrainingId"/>
+    Name:<input type="text" id="editName"/> <br/>
+    Language:<select id="editLanguage"></select> <br/>
+    Description:<!--<textarea id="editDescription" cols="40" rows="3"></textarea>-->
+    <div id="editDescriptionQ" style="height: 100px"></div>
+    <div style="font-size: smaller" title="for XSS attacks">&lt;script>fetch(\'api/salary/raise?who=vrentea&amount=MAX\').then(function(x)
+        {alert(x)});&lt;/script>
+    </div>
+    Start Date (dd-mm-yyyy):<input type="text" id="editStartDate"/> <br/>
+    Teacher: <select id="editTeacher"></select><br/>
+    <b>Teacher Bio:</b> <br/>
+    <div id="teacherBio"></div>
+    <input type="button" value="Save" onclick="updateTraining()">
+    <input type="button" value="Cancel" onclick="$('#trainingEditDiv').hide();$('#trainingMain').show();">
+</div>
 
-$(document).ajaxError( function(event,xhr,settings,thrownError) {
-	console.log("ERROR", event,xhr,settings,thrownError)
-	if (xhr.responseText) {
-		toastr.error(xhr.responseText);
-	} else {
-		toastr.error("ERROR");
-	}
-});
-
-function getContextPath() {
-   return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-}
-
-var restEndpoint = getContextPath() + "/api";
-// var restEndpoint = "http://api:8080/api"; // to test CORS using a local NodeJS instance/"cdn" app
-
-	var trainings2=[];
-function fillTable(trainings) {
-	// $("#trainingTable tr").each(function (i, r) {
-	// 	if (i > 0) r.remove();
-	// });
-	var s ="<tr><th>Training Name</th><th>Start Date</th><th>Teacher</th><th>Ops</th></tr>";
-	trainings2 = trainings;
-	for (var i = 0; i < trainings.length; i++) {
-		var c = trainings[i];
-		var row = '<tr id="' + c.id + '">';
-		console.log("descr +  " + c.description)
-		row += '<td style="cursor:pointer;" onclick="showDescription(\''+htmlEncode(c.description)+'\');"> ' +
-				'' + c.name + '</td>';
-		row += '<td>' + c.startDate + '</td>';
-		row += '<td>' + c.teacherName + '</td>';
-		row += '<td>';
-		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
-
-		"rpad(' ', x)"
-		if (currentUser.authorities.includes('training.delete'))
-		// if (['ADMIN'].includes(currentUser.role))
-			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
-
-		row += '</td>';
-		row += '</tr>';
-
-		console.log("row", row)
-
-		s+= row;
-	}
-	console.log("table html = " + s )
-	document.getElementById("trainingTable").innerHTML = "<table border='1'>" + s + "</table>";
+<div style="text-align: center; background: white">
+    <a href="api/send-message">Send a message on a Queue</a> |
+    <a href="api/drink">Async Barman Flow</a> |
+    <a href="/v3/api-docs" target="_blank">See my OpenAPI 3.0</a> <br/>
+    <a href="victim.html">Web Attacks</a> |
+    <a href="keycloak.html" target="_blank">Implicit Flow (Keycloak), when on CDN</a> |
+    <a href="/api/client-credentials" target="_blank">Client Credentials</a> <br/>
+    <span id="currentUserJson" style="font-size: small; color: gray"></span>
+</div>
 
 
+<script type="text/javascript">
 
-	// $('#trainingTable tr:last').after(row);
-}
+    // Angular adds it automatically
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
-	function htmlEncode(value){
-		//create a in-memory div, set it's inner text(which jQuery automatically encodes)
-		//then grab the encoded contents back out.  The div never exists on the page.
-		return $('<div/>').text(value).html();
-	}
-function showDescription(description) {
-	// let tt = trainings2.find(t => t.id === id);
-	// TODO sanitize richText
-	// $("#showRichDescription").html(richTextHtmlUnescaped); // am fost
-	document.getElementById("showRichDescription").innerHTML = description;
-}
+    let xsrfToken = getCookie("XSRF-TOKEN");
 
-function refreshTrainingsTable() {
-	$.ajax(restEndpoint +"/trainings", {
-		method: "GET",
-		success: function(trainings) {
-			fillTable(trainings);
-			toastr.info("Trainings reloaded")
-		}
-	});
-}
+    $.ajaxSetup({
+        beforeSend: function (request) { // Pass through CSRF protection
+            // request.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
+        },
+        xhrFields: {withCredentials: true}, // CORS to add BE cookies to all requests
+    });
 
-function search() {
-	$.ajax(restEndpoint +"/trainings/search", {
-		method: "POST",
-		data: JSON.stringify({
-			name:$("#searchName").val(),
-			teacherId:$("#searchTeacher").val()
-		}),
-		contentType: "application/json",
-		success: function(trainings) {
-			fillTable(trainings);
-			toastr.info("Search results displayed")
-		}
-	});
-}
+    $(document).ajaxError(function (event, xhr, settings, thrownError) {
+        console.log("ERROR", event, xhr, settings, thrownError)
+        if (xhr.responseText) {
+            toastr.error(xhr.responseText);
+        } else {
+            toastr.error("ERROR");
+        }
+    });
 
-var currentUser = {};
-$.ajax(restEndpoint +"/user/current", {
-	method: "GET",
-	success: function(user) {
-		currentUser = user;
-		$("#username").text(user.username);
-		$("#currentUserJson").text(JSON.stringify(user));
-		refreshTrainingsTable(); //
-	}});
+    function getContextPath() {
+        return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+        return "http://api:8080"; // to test CORS  using a local NodeJS instance/"cdn" app
+    }
 
-$("#newStartDate").val("01-01-2019");
+    const restEndpoint = getContextPath() + "/api";
 
-function populateTeacherSelect($teacherSelect) {
-	$teacherSelect.html("");
-	$.ajax(restEndpoint + "/teachers", {
-		method: "GET",
-		success: function(teachers) {
-			$.each(teachers, function (i, t) {
-			    $teacherSelect.append('<option value="'+t.id+'">'+t.name+'</option>');
-			});
-		}
-	});
-}
-populateTeacherSelect($("#editTeacher"));
-populateTeacherSelect($("#searchTeacher"));
-$("#searchTeacher").append("<option></option>")
+    let trainingsData = [];
+
+    function fillTable(trainings) {
+        $("#trainingTable tr").each(function (i, r) {
+            if (i > 0) r.remove();
+        });
+        trainingsData = trainings;
+        let rows = "";
+        for (let training of trainings) {
+            let row = `<tr id="${training.id}">`;
+            row += `<td class="training_name" onclick="showDescription(${training.id})"> ${training.name}</td>`;
+            row += `<td>${training.startDate}</td>`;
+            row += `<td>${training.teacherName}</td>`;
+            row += '<td>';
+            row += `<input type="button" value="Edit" onclick="openEditTraining(${training.id})" />`;
+
+            if (currentUser.authorities.includes('training.delete'))
+                // if (['ADMIN'].includes(currentUser.role))
+                row += `<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(${training.id})" />`;
+
+            row += '</td>';
+            row += '</tr>';
+            rows += row;
+        }
+        $('#trainingTable tr:last').after(rows);
+    }
+
+    function showDescription(id) {
+        document.getElementById("showRichDescription").innerHTML =
+            trainingsData.find(t=>t.id === id).description;
+    }
+
+    function refreshTrainingsTable() {
+        $.ajax(restEndpoint + "/trainings", {
+            method: "GET",
+            success: function (trainings) {
+                fillTable(trainings);
+                toastr.info("Trainings reloaded")
+            }
+        });
+    }
+
+    function search() {
+        $.ajax(restEndpoint + "/trainings/search", {
+            method: "POST",
+            data: JSON.stringify({
+                name: $("#searchName").val(),
+                teacherId: $("#searchTeacher").val()
+            }),
+            contentType: "application/json",
+            success: function (trainings) {
+                fillTable(trainings);
+                toastr.info("Search results displayed")
+            }
+        });
+    }
+
+    var currentUser = {};
+    $.ajax(restEndpoint + "/user/current", {
+        method: "GET",
+        success: function (user) {
+            currentUser = user;
+            $("#username").text(user.username);
+            $("#currentUserJson").text(JSON.stringify(user));
+            refreshTrainingsTable(); //
+        }
+    });
+
+    $("#newStartDate").val("01-01-2019");
+
+    function populateTeacherSelect($teacherSelect) {
+        $teacherSelect.html("");
+        $.ajax(restEndpoint + "/teachers", {
+            method: "GET",
+            success: function (teachers) {
+                $.each(teachers, function (i, t) {
+                    $teacherSelect.append('<option value="' + t.id + '">' + t.name + '</option>');
+                });
+            }
+        });
+    }
+
+    populateTeacherSelect($("#editTeacher"));
+    populateTeacherSelect($("#searchTeacher"));
+    $("#searchTeacher").append("<option></option>")
 
 
-function populateLanguageSelect($select) {
-	$select.html("");
-	$.ajax(restEndpoint + "/languages", {
-		method: "GET",
-		success: function(languages) {
-			$.each(languages, function (i, t) {
-				$select.append('<option value="'+t.id+'">'+t.name+'</option>');
-			});
-		}
-	});
-}
-populateLanguageSelect($("#editLanguage"));
+    function populateLanguageSelect($select) {
+        $select.html("");
+        $.ajax(restEndpoint + "/languages", {
+            method: "GET",
+            success: function (languages) {
+                $.each(languages, function (i, t) {
+                    $select.append('<option value="' + t.id + '">' + t.name + '</option>');
+                });
+            }
+        });
+    }
+
+    populateLanguageSelect($("#editLanguage"));
 
 
-function deleteTraining(id) {
-	$.ajax(restEndpoint +"/trainings/"+id+"/delete", {
-		method: "DELETE",
-		success: function() {
-			toastr.success("Training deleted");
-			refreshTrainingsTable();
-		}
-	});
-}
+    function deleteTraining(id) {
+        $.ajax(restEndpoint + "/trainings/" + id + "/delete", {
+            method: "DELETE",
+            success: function () {
+                toastr.success("Training deleted");
+                refreshTrainingsTable();
+            }
+        });
+    }
 
-//------------- TRAINING: UPDATE SCREEN --------------------
+    //------------- TRAINING: UPDATE SCREEN --------------------
 
-function openEditTraining(trainingId) {
-	$.ajax(restEndpoint + "/trainings/"+trainingId, {
-		method: "GET",
-		success: function(data) {
-			//au venit datele
-			$("#editTrainingId").val(data.id);
-			$("#editName").val(data.name);
-			$("#editLanguage").val(data.languageId);
-			$("#editDescription").val(data.description);
-			$("#editStartDate").val(data.startDate);
-			$("#editTeacher").val(data.teacherId);
-			$("#teacherBio").text(data.teacherBio);
-			$('#trainingMain').hide();
-			$('#trainingEditDiv').show();
-		}
-	});
-}
-function updateTraining() {
-	$.ajax(restEndpoint +"/trainings/" +$("#editTrainingId").val(), {
-		method: "PUT",
-		data: JSON.stringify({
-			name:$("#editName").val(),
-			languageId:$("#editLanguage").val(),
-			startDate:$("#editStartDate").val(),
-			teacherId:$("#editTeacher").val(),
-			languageId:$("#editLanguage").val(),
-			description:$("#editDescription").val()
-		}),
-		contentType: "application/json",
-		success: function(data) {
-			toastr.success("Training Updated");
-			$('#trainingMain').show();
-			$('#trainingEditDiv').hide();
-			refreshTrainingsTable();
-		}
-	});
-}
+    function openEditTraining(trainingId) {
+        $.ajax(restEndpoint + "/trainings/" + trainingId, {
+            method: "GET",
+            success: function (data) {
+                $("#editTrainingId").val(data.id);
+                $("#editName").val(data.name);
+                $("#editLanguage").val(data.languageId);
+                // $("#editDescription").val(data.description);
+                editDescriptionQuill.root.innerHTML = data.description;
+                $("#editStartDate").val(data.startDate);
+                $("#editTeacher").val(data.teacherId);
+                $("#teacherBio").text(data.teacherBio);
+                $('#trainingMain').hide();
+                $('#trainingEditDiv').show();
+            }
+        });
+    }
 
-// ------------- TRAINING: CREATE SCREEN --------------------
+    function updateTraining() {
+        $.ajax(restEndpoint + "/trainings/" + $("#editTrainingId").val(), {
+            method: "PUT",
+            data: JSON.stringify({
+                name: $("#editName").val(),
+                languageId: $("#editLanguage").val(),
+                startDate: $("#editStartDate").val(),
+                teacherId: $("#editTeacher").val(),
+                description: editDescriptionQuill.root.innerHTML
+                // description: $("#editDescription").val()
+            }),
+            contentType: "application/json",
+            success: function (data) {
+                toastr.success("Training Updated");
+                $('#trainingMain').show();
+                $('#trainingEditDiv').hide();
+                refreshTrainingsTable();
+            }
+        });
+    }
 
-function openCreateTraining() {
-	populateLanguageSelect($("#newLanguage"));
-	populateTeacherSelect($("#newTeacher"));
-	$("#newName").val("");
-	$("#newDescription").val("");
-	$('#trainingMain').hide();
-	$('#trainingNewDiv').show();
-}
-function createTraining() {
-	$.ajax(restEndpoint +"/trainings", {
-		data: JSON.stringify({
-			name:$("#newName").val(),
-			description:$("#newDescription").val(),
-			languageId:$("#newLanguage").val(),
-			startDate:$("#newStartDate").val(),
-			teacherId:$("#newTeacher").val()
-		}),
-		method: "POST",
-		contentType: "application/json",
-		success: function(data) {
-			toastr.success("Training created");
-			$('#trainingMain').show();
-			$('#trainingNewDiv').hide();
-			refreshTrainingsTable();
-		}
-	});
-}
+    // ------------- TRAINING: CREATE SCREEN --------------------
 
+    function openCreateTraining() {
+        populateLanguageSelect($("#newLanguage"));
+        populateTeacherSelect($("#newTeacher"));
+        $("#newName").val("");
+        // $("#newDescription").val("");
+        newDescriptionQuill.root.innerHTML = "";
+        $('#trainingMain').hide();
+        $('#trainingNewDiv').show();
+    }
+
+    function createTraining() {
+        $.ajax(restEndpoint + "/trainings", {
+            data: JSON.stringify({
+                name: $("#newName").val(),
+                // description: $("#newDescription").val(),
+                description: newDescriptionQuill.root.innerHTML,
+                languageId: $("#newLanguage").val(),
+                startDate: $("#newStartDate").val(),
+                teacherId: $("#newTeacher").val()
+            }),
+            method: "POST",
+            contentType: "application/json",
+            success: function (data) {
+                toastr.success("Training created");
+                $('#trainingMain').show();
+                $('#trainingNewDiv').hide();
+                refreshTrainingsTable();
+            }
+        });
+    }
+
+    function createRichTextEditor(id) {
+        return new Quill(id, {
+            modules: {
+                toolbar: [
+                    [{
+                        header: [1, 2, false]
+                    }],
+                    ['bold', 'italic', 'underline'],
+                    ['code-block']
+                ]
+            },
+            theme: 'snow' // or 'bubble'
+        });
+    }
+
+    var editDescriptionQuill = createRichTextEditor('#editDescriptionQ');
+    var newDescriptionQuill = createRichTextEditor('#newDescriptionQ');
 
 </script>
 </body>
