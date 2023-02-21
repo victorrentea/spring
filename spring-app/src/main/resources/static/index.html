@@ -130,8 +130,8 @@ function fillTable(trainings) {
 		row += '<input type="button" value="Edit" onclick="openEditTraining(' + c.id + ')" />';
 
 		"rpad(' ', x)"
-		//if (currentUser.authorities.includes('training.delete'))
-		if (['ADMIN'].includes(currentUser.role))
+		if (currentUser.authorities.includes('training.delete'))
+		// if (['ADMIN'].includes(currentUser.role))
 			row += '<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(' + c.id + ')" />';
 
 		row += '</td>';

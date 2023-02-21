@@ -3,7 +3,9 @@ package victor.training.spring.web.security.header;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import victor.training.spring.web.entity.UserRole;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +15,18 @@ import static java.util.stream.Collectors.toList;
 
 public class PreAuthHeaderPrincipal implements UserDetails {
     private final String username;
-    private final List<String> roles;
+    private final List<String> authorities = new ArrayList<>();
 
     public PreAuthHeaderPrincipal(String username, List<String> roles) {
         this.username = username;
-        this.roles = roles;
+        for (String role : roles) {
+            authorities.addAll(UserRole.valueOf(role).getAuthorities());
+        }
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> "ROLE_" +r)
+        return authorities.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(toList());
     }

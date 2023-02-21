@@ -34,6 +34,8 @@ public class TechnicalController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         dto.username = authentication.getName();
         dto.role = extractOneRole(authentication.getAuthorities());
+        dto.authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         // spring despre userul curent are o lista de stringuri (authorities)
 
@@ -44,8 +46,6 @@ public class TechnicalController {
         //		dto.role = extractOneRole(authentication.getAuthorities());
 
         // B) authority-based security
-        //		dto.authorities = authentication.getAuthorities().stream()
-        //				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         //<editor-fold desc="KeyCloak">
         //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
