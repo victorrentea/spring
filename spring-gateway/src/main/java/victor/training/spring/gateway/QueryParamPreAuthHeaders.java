@@ -42,7 +42,7 @@ public class QueryParamPreAuthHeaders implements GatewayFilter {
   private static ServerHttpRequest addRequestHeaders(ServerWebExchange exchange, String username) {
     return exchange.getRequest().mutate()
             .header("x-user", username.toLowerCase())
-            .header("x-user-roles", username.toUpperCase())
+            .header("x-user-role", username.toUpperCase())
             .build();
   }
 }
