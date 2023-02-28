@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
@@ -81,29 +84,22 @@ public class FirstApplication implements CommandLineRunner {
 @Service
 class Y {
   private final MailService mailService; // polymorphic injection
-
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
     this.mailService = mailService;
   }
-
   public int logic() {
     mailService.sendEmail("I like 4 topics");
     return 1;
   }
 }
-
 interface MailService {
   void sendEmail(String subject);
 }
-// interface in domain
-/// the infra boundary -------
-// implem in infra
 @Service
 @RequiredArgsConstructor
-class MailServiceImpl implements MailService {
+class MailServiceImpl implements MailService { // prod implem
   private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
-
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom("noreply@victorrentea.ro");
@@ -111,12 +107,14 @@ class MailServiceImpl implements MailService {
     message.setSubject("Training Offer");
     message.setText(body);
     System.out.println("REAL EMAIL SENDER sending email: " + message);
-//    sender.send(message);
+    sender.send(message);
   }
 }
 
 @Slf4j
-        // TODO when starting the app locally, don't send any emails, log then instead
+@Service
+@Primary
+@ConditionalOnProperty(name = "mail.sender",havingValue = "dummy")
 class MailServiceLocalDummy implements MailService {
   public void sendEmail(String subject) {
     System.out.println("DUMMY EMAIL SENDER sending an email with subject=" + subject);
