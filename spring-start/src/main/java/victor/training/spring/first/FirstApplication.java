@@ -6,16 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import victor.training.spring.different.Other;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -27,7 +26,8 @@ import java.lang.annotation.*;
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-@interface Mapper {}
+@interface Mapper {
+}
 
 @Import({
         X.class,
@@ -38,20 +38,20 @@ class XYConfig {
 }
 
 @SpringBootApplication
-@ComponentScan(basePackages = "none")
-@Import({
-//        X.class,
-//        Y.class,
-        XYConfig.class,
-        A.class,
-        B.class,
-
-        Other.class,
-        MailServiceImpl.class
-        // bad because any new class you create you need to add it to this list
-        // good because it's more intentional.
-        //   safe against accident like a rogue class that you hate present in a subpackage
-})
+//@ComponentScan(basePackages = "none")
+//@Import({
+//        //        X.class,
+//        //        Y.class,
+//        XYConfig.class,
+//        A.class,
+//        B.class,
+//
+//        Other.class,
+//        MailServiceImpl.class
+//        // bad because any new class you create you need to add it to this list
+//        // good because it's more intentional.
+//        //   safe against accident like a rogue class that you hate present in a subpackage
+//})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
@@ -71,7 +71,6 @@ public class FirstApplication implements CommandLineRunner {
     System.out.println(x.logic());
   }
 }
-
 
 
 //These annotations tell spring to define a bean with this clas
@@ -101,7 +100,7 @@ interface MailService {
 @Service
 @RequiredArgsConstructor
 class MailServiceImpl implements MailService {
-  //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
+  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
@@ -110,12 +109,12 @@ class MailServiceImpl implements MailService {
     message.setSubject("Training Offer");
     message.setText(body);
     System.out.println("REAL EMAIL SENDER sending email: " + message);
-    //    sender.send(message);
+    sender.send(message);
   }
 }
 
 @Slf4j
-// TODO when starting the app locally, don't send any emails, log then instead
+        // TODO when starting the app locally, don't send any emails, log then instead
 class MailServiceLocalDummy implements MailService {
   public void sendEmail(String subject) {
     System.out.println("DUMMY EMAIL SENDER sending an email with subject=" + subject);

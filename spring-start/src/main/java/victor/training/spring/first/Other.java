@@ -1,4 +1,4 @@
-package victor.training.spring.different;
+package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
