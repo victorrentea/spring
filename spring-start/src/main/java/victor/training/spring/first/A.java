@@ -13,9 +13,9 @@ public class A {
 
 @Component
 class B {
-  private final A a;
-
-  B(A a) {
-    this.a = a;
-  }
+//  private final A a;
+//
+//  B(A a) {
+//    this.a = a;
+//  }
 }
