@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
@@ -27,14 +28,26 @@ import java.lang.annotation.*;
 @Component
 @interface Mapper {}
 
+@Import({
+        X.class,
+        Y.class
+})
+@Configuration
+class XYConfig {
+}
 
 @SpringBootApplication
 @ComponentScan(basePackages = "none")
 @Import({
-        X.class,
+//        X.class,
+//        Y.class,
+        XYConfig.class,
+
         Other.class,
-        Y.class,
         MailServiceImpl.class
+        // bad because any new class you create you need to add it to this list
+        // good because it's more intentional.
+        //   safe against accident like a rogue class that you hate present in a subpackage
 })
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
