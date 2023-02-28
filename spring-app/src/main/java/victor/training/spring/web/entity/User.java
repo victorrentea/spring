@@ -15,7 +15,6 @@ public class User {
     private String name;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-//    private ProgrammingLanguage programmingLanguage;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
@@ -57,11 +56,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-               "id=" + id +
-               ", username='" + username + '\'' +
-               ", role=" + role +
-               ", managedTeacherIds=" + managedTeacherIds +
-               '}';
+        return String.format("User{id=%d, username='%s', role=%s, managedTeacherIds=%s}", id, username, role, managedTeacherIds);
     }
 }

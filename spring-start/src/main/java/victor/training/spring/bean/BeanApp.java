@@ -1,12 +1,11 @@
 package victor.training.spring.bean;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class BeanApp {
@@ -14,57 +13,18 @@ public class BeanApp {
         SpringApplication.run(BeanApp.class);
     }
 
-    @Bean
-    public Conversation conversation() {
-        System.out.println("Once");
-        return new Conversation(john(), jane()); // so this call to john should be read "a reference to bean"
-    }
-    @Bean
-    public Conversation fight() {
-        System.out.println("Twice");
-        return new Conversation(john(), jane());
-    }
-
-    @Bean
-    public Person john() {
-        System.out.println("John gets born");
-        return new Person("John");
-    }
-    @Bean
-    public Person jane() {
-        return new Person("Jane");
-    }
-}
-// the only place in Java where local method calls get stolen. between @Bean methods in @Configuration.
-//class SpringAtRuntimeHacksAllConfigurationClassesOverridingAllBeanMethods extends BeanApp {
-//    @Override
-//    public Person john() {
-//        // if i have in singleton cache return from there.
-//        return super.john();
-//    }
-//}
-
-@Component
-class ConversationUsers {
-    private final Conversation conversation;
-    private final Person person;
-
-    //     ConversationUsers(Conversation conversation, @Qualifier("john") Person person) {
-    ConversationUsers(Conversation conversation, Person john) {
-        this.conversation = conversation;
-        this.person = john;
-    }
+//    @Autowired
+//    private Conversation conversation;
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
-        System.out.println("This should be john: "  + person);
+        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+        // TODO register the two persons and the conversation as Spring beans
         conversation.start();
     }
 }
 
-// you can't touch whatever is under this line ----------------------
-//// it's some library code
-
+@Data
 class Conversation {
     private final Person one;
     private final Person two;
@@ -77,14 +37,6 @@ class Conversation {
     public void start() {
         System.out.println(one.getName() + " talks with " + two.getName());
     }
-
-    @Override
-    public String toString() {
-        return "Conversation{" +
-               "one=" + one +
-               ", two=" + two +
-               '}';
-    }
 }
 
 
@@ -96,13 +48,6 @@ class Person {
     }
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-               "name='" + name + '\'' +
-               '}';
     }
 }
 

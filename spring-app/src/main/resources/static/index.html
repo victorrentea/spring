@@ -17,7 +17,7 @@
             background-color: white;
         }
         .training_name:hover {
-            color: yellow;
+            color: red;
             cursor:pointer;
         }
     </style>
@@ -40,10 +40,11 @@
     </div>
     <div id="trainingTable">
 
-        <table border="1">
+        <table border="1" style="background: rgba(255,255,255,0.5)">
             <tr>
                 <th>Training Name</th>
                 <th>Start Date</th>
+                <th>Language</th>
                 <th>Teacher</th>
                 <th>Ops</th>
             </tr>
@@ -58,8 +59,11 @@
     <h4>Create a New Training</h4>
     Name:<input type="text" id="newName"/> <br/>
     Language:<select id="newLanguage"></select> <br/>
-    Description:<!--<textarea id="newDescription" cols="40" rows="3"></textarea> <br/>-->
-    <div id="newDescriptionQ" style="height: 100px"></div>
+    Description:
+    <!--<textarea id="newDescription" cols="40" rows="3"></textarea> <br/>-->
+    <div style="width: 600px">
+        <div id="newDescriptionQ" style="height: 100px"></div>
+    </div>
     Start Date (dd-mm-yyyy):<input type="text" id="newStartDate"/> <br/>
     Teacher: <select id="newTeacher"></select> <br/>
     <input type="button" value="Create" onclick="createTraining()">
@@ -71,8 +75,11 @@
     <input type="hidden" id="editTrainingId"/>
     Name:<input type="text" id="editName"/> <br/>
     Language:<select id="editLanguage"></select> <br/>
-    Description:<!--<textarea id="editDescription" cols="40" rows="3"></textarea>-->
-    <div id="editDescriptionQ" style="height: 100px"></div>
+    Description:
+    <!--<textarea id="editDescription" cols="40" rows="3"></textarea>-->
+    <div style="width: 600px">
+        <div id="editDescriptionQ" style="height: 100px"></div>
+    </div>
     <div style="font-size: smaller" title="for XSS attacks">&lt;script>fetch(\'api/salary/raise?who=vrentea&amount=MAX\').then(function(x)
         {alert(x)});&lt;/script>
     </div>
@@ -141,6 +148,7 @@
             let row = `<tr id="${training.id}">`;
             row += `<td class="training_name" onclick="showDescription(${training.id})"> ${training.name}</td>`;
             row += `<td>${training.startDate}</td>`;
+            row += `<td>${training.language}</td>`;
             row += `<td>${training.teacherName}</td>`;
             row += '<td>';
             row += `<input type="button" value="Edit" onclick="openEditTraining(${training.id})" />`;
@@ -222,7 +230,7 @@
             method: "GET",
             success: function (languages) {
                 $.each(languages, function (i, t) {
-                    $select.append('<option value="' + t.id + '">' + t.name + '</option>');
+                    $select.append('<option value="' + t + '">' + t + '</option>');
                 });
             }
         });
@@ -249,7 +257,7 @@
             success: function (data) {
                 $("#editTrainingId").val(data.id);
                 $("#editName").val(data.name);
-                $("#editLanguage").val(data.languageId);
+                $("#editLanguage").val(data.language);
                 // $("#editDescription").val(data.description);
                 editDescriptionQuill.root.innerHTML = data.description;
                 $("#editStartDate").val(data.startDate);
@@ -266,7 +274,7 @@
             method: "PUT",
             data: JSON.stringify({
                 name: $("#editName").val(),
-                languageId: $("#editLanguage").val(),
+                language: $("#editLanguage").val(),
                 startDate: $("#editStartDate").val(),
                 teacherId: $("#editTeacher").val(),
                 description: editDescriptionQuill.root.innerHTML
@@ -300,7 +308,7 @@
                 name: $("#newName").val(),
                 // description: $("#newDescription").val(),
                 description: newDescriptionQuill.root.innerHTML,
-                languageId: $("#newLanguage").val(),
+                language: $("#newLanguage").val(),
                 startDate: $("#newStartDate").val(),
                 teacherId: $("#newTeacher").val()
             }),

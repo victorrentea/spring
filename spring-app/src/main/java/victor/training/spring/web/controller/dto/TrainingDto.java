@@ -2,6 +2,7 @@ package victor.training.spring.web.controller.dto;
 
 
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.ProgrammingLanguage;
 
 import javax.validation.constraints.Size;
 
@@ -12,7 +13,7 @@ public class TrainingDto {
 	public ContractType level;
 	public Long teacherId;
 	public String teacherBio;
-	public Long languageId;
+	public ProgrammingLanguage language;
 	public String teacherName;
 	public String startDate;
 	public String description;

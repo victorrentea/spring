@@ -16,7 +16,7 @@ public class Training {
 	private Date startDate;
 	@ManyToOne
 	private Teacher teacher;
-	@ManyToOne
+	@Enumerated(EnumType.STRING)
 	private ProgrammingLanguage programmingLanguage;
 
 	public Training() {
