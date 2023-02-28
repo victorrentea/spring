@@ -1,5 +1,6 @@
 package victor.training.spring.bean;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -46,14 +47,16 @@ class SpringAtRuntimeHacksAllConfigurationClassesOverridingAllBeanMethods extend
 @Component
 class ConversationUsers {
     private final Conversation conversation;
-//    private final Person myJohn;
+    private final Person person;
 
-    ConversationUsers(Conversation conversation) {
+    ConversationUsers(Conversation conversation, @Qualifier("john") Person person) {
         this.conversation = conversation;
+        this.person = person;
     }
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
+        System.out.println("This should be john: "  + person);
         conversation.start();
     }
 }
@@ -92,6 +95,13 @@ class Person {
     }
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+               "name='" + name + '\'' +
+               '}';
     }
 }
 
