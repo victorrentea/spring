@@ -5,44 +5,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-
-@Component
-class InspectEveryBeanAtStartupTime implements BeanPostProcessor {
-  @Override
-  public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-    System.out.println("Seen bean: " + beanName);
-    for (Field field : bean.getClass().getDeclaredFields()) {
-      System.out.println("Field : " + field.getName());
-      try {
-        field.setAccessible(true); // screw ?private"
-        boolean hasJavaxValidations = Arrays.stream(field.getAnnotations()).anyMatch(ann -> ann.getClass().getPackageName().startsWith("javax.validation"));
-// validator.validate(bean)
-        if (hasJavaxValidations) {
-          System.out.println("Found ya! :  " + beanName);
-        }
-      } catch (Exception e) {
-        // swallow ex
-      }
-    }
-    return bean;
-  }
-}
+import java.util.*;
 
 
 // For immutable version, replace below @Data and @Component with
@@ -66,10 +43,11 @@ public class WelcomeInfo {
 
   @PostConstruct
   public void fileExisst() {
+    System.out.println("Now");
     // more advanced validation of config
-//    if (!help.file.isFile()) {
-//      throw new IllegalArgumentException("Not a file: " + help.file.getAbsolutePath());
-//    }
+    //    if (!help.file.isFile()) {
+    //      throw new IllegalArgumentException("Not a file: " + help.file.getAbsolutePath());
+    //    }
   }
 
   public static class HelpInfo {
