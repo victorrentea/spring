@@ -105,6 +105,9 @@ interface MailService {
 }
 @Service
 @RequiredArgsConstructor
+//@Profile("prod") // this class only plays in production  <- TERRIBLE ANTIPATTERN
+  // I never test my code, but when I do, I do it in production
+  @Profile("!local")
 class MailServiceImpl implements MailService { // prod implem
   private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
   public void sendEmail(String body) {
@@ -120,7 +123,7 @@ class MailServiceImpl implements MailService { // prod implem
 
 @Slf4j
 @Service
-@Primary // only used when it's supposed to REPLACE a prod bean conditionally
+//@Primary // only used when it's supposed to REPLACE a prod bean conditionally
 
 //@ConditionalOnProperty(name = "mail.sender",havingValue = "dummy")
 
