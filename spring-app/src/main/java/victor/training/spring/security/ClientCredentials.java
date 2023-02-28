@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class ClientCredentials { // CLient=Applicatie
@@ -30,7 +30,7 @@ public class ClientCredentials { // CLient=Applicatie
   }
 
 
-  @Configuration
+//  @Configuration
   public static class ConfigureOAuth2RestTemplate {
     @Bean
     public OAuth2RestTemplate restWithClientCredentials(OAuth2ProtectedResourceDetails details) {
