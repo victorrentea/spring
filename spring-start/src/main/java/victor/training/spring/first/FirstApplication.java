@@ -111,7 +111,7 @@ class MailServiceImpl implements MailService {
     message.setSubject("Training Offer");
     message.setText(body);
     System.out.println("REAL EMAIL SENDER sending email: " + message);
-    sender.send(message);
+//    sender.send(message);
   }
 }
 
