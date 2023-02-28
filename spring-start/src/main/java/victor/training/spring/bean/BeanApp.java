@@ -15,7 +15,31 @@ public class BeanApp {
 
     @Bean
     public Conversation conversation() {
-        return new Conversation(new Person("John"), new Person("Jane"));
+        System.out.println("Once");
+        return new Conversation(john(), jane()); // so this call to john should be read "a reference to bean"
+    }
+    @Bean
+    public Conversation fight() {
+        System.out.println("Twice");
+        return new Conversation(john(), jane());
+    }
+
+    @Bean
+    public Person john() {
+        System.out.println("John gets born");
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
+    }
+}
+// the only place in Java where local method calls get stolen. between @Bean methods in @Configuration.
+class SpringAtRuntimeHacksAllConfigurationClassesOverridingAllBeanMethods extends BeanApp {
+    @Override
+    public Person john() {
+        // if i have in singleton cache return from there.
+        return super.john();
     }
 }
 
