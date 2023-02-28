@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import victor.training.spring.Other;
+import victor.training.spring.different.Other;
 
 import java.lang.annotation.*;
 
@@ -27,6 +29,13 @@ import java.lang.annotation.*;
 
 
 @SpringBootApplication
+@ComponentScan(basePackages = "none")
+@Import({
+        X.class,
+        Other.class,
+        Y.class,
+        MailServiceImpl.class
+})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
