@@ -96,7 +96,9 @@ class Y {
 interface MailService {
   void sendEmail(String subject);
 }
-
+// interface in domain
+/// the infra boundary -------
+// implem in infra
 @Service
 @RequiredArgsConstructor
 class MailServiceImpl implements MailService {
