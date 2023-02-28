@@ -3,19 +3,18 @@ package victor.training.spring.first;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -58,6 +57,14 @@ class XYConfig {
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
+  }
+
+  @Value("${db.password}")
+  String prop;
+
+  @PostConstruct
+  public void printProp() {
+    System.out.println("😎😎😎😎 " + prop);
   }
 
   @Autowired
@@ -113,8 +120,13 @@ class MailServiceImpl implements MailService { // prod implem
 
 @Slf4j
 @Service
-@Primary
-@ConditionalOnProperty(name = "mail.sender",havingValue = "dummy")
+@Primary // only used when it's supposed to REPLACE a prod bean conditionally
+
+//@ConditionalOnProperty(name = "mail.sender",havingValue = "dummy")
+
+@Profile("local")
+// the point of profiles is to represent environments in whivch you start the app
+  //when you fire it up java -jar ... -D
 class MailServiceLocalDummy implements MailService {
   public void sendEmail(String subject) {
     System.out.println("DUMMY EMAIL SENDER sending an email with subject=" + subject);
