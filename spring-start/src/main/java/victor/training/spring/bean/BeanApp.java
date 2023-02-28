@@ -36,22 +36,23 @@ public class BeanApp {
     }
 }
 // the only place in Java where local method calls get stolen. between @Bean methods in @Configuration.
-class SpringAtRuntimeHacksAllConfigurationClassesOverridingAllBeanMethods extends BeanApp {
-    @Override
-    public Person john() {
-        // if i have in singleton cache return from there.
-        return super.john();
-    }
-}
+//class SpringAtRuntimeHacksAllConfigurationClassesOverridingAllBeanMethods extends BeanApp {
+//    @Override
+//    public Person john() {
+//        // if i have in singleton cache return from there.
+//        return super.john();
+//    }
+//}
 
 @Component
 class ConversationUsers {
     private final Conversation conversation;
     private final Person person;
 
-    ConversationUsers(Conversation conversation, @Qualifier("john") Person person) {
+    //     ConversationUsers(Conversation conversation, @Qualifier("john") Person person) {
+    ConversationUsers(Conversation conversation, Person john) {
         this.conversation = conversation;
-        this.person = person;
+        this.person = john;
     }
 
     @EventListener(ApplicationStartedEvent.class)
