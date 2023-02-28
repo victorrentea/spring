@@ -1,4 +1,4 @@
-package victor.training.spring;
+package victor.training.spring.different;
 
 import org.springframework.stereotype.Component;
 
