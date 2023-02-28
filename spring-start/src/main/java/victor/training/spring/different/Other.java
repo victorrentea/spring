@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 @Component
 public class Other implements CommandLineRunner {
-  @Value("${prop}")
-  private String p;
+//  @Value("${prop}")
+//  private String p;
 
   @PostConstruct // run this method after you injected all dependencies
 //  @Transactional the annotation DOES NOT WORK vecause the proxy is not yet setup.

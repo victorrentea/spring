@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -42,6 +43,8 @@ class XYConfig {
 //        X.class,
 //        Y.class,
         XYConfig.class,
+        A.class,
+        B.class,
 
         Other.class,
         MailServiceImpl.class
@@ -56,6 +59,9 @@ public class FirstApplication implements CommandLineRunner {
 
   @Autowired
   private Other other;
+
+  @Autowired
+  private A a;
 
   @Autowired
   private X x; // breaking news: no framework in Java cares about private.
