@@ -7,7 +7,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import victor.training.spring.Other;
+
+import java.lang.annotation.*;
 
 // [1] Injection: field, constructor, method; debate; mockito
 // [1] PostConstruct
@@ -17,6 +21,10 @@ import org.springframework.stereotype.Service;
 // [5] getBean
 // [6] inject List<BeanI>
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
+@Retention(RetentionPolicy.RUNTIME)
+@Component
+@interface Mapper {}
+
 
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner {
@@ -25,7 +33,10 @@ public class FirstApplication implements CommandLineRunner {
   }
 
   @Autowired
-  private X x;
+  private Other other;
+
+  @Autowired
+  private X x; // breaking news: no framework in Java cares about private.
 
   @Override
   public void run(String... args) throws Exception {
@@ -33,18 +44,12 @@ public class FirstApplication implements CommandLineRunner {
   }
 }
 
-@Service
-class X {
-  @Autowired
-  private Y y; // field injection
 
-  // (rarely used) method injection
-  // public void setY(Y y) {this.y = y;}
 
-  public int logic() {
-    return 1 + y.logic();
-  }
-}
+//These annotations tell spring to define a bean with this clas
+// A bean is a Spring-managed instance of one of the classes. It also has a name.
+// By default of a certain class there will ve a single bean = Singleton Design pattern
+////@Controller // jsp is dead, long live mobile apps or angular/react
 
 @Service
 class Y {
