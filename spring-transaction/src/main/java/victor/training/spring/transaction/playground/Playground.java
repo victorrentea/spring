@@ -48,7 +48,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final JdbcTemplate jdbc;
-    @Transactional // this proxy allows the existing tx on the current thread to enter the method
+    @Transactional(rollbackFor = Exception.class) // this proxy allows the existing tx on the current thread to enter the method
     public void bizLogicTransacted() throws IOException {
         // lesson: NEVER EVER EVER throw checked exceptions : they are a mistake in Java languge; instead throw new RuntimeException(e);
         // unchecked === runtime;
