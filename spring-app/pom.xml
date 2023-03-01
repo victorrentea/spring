@@ -136,7 +136,8 @@
         </dependency>
 
         <dependency>
-            <!-- auto-restart on class/property changes on local -->
+            <!-- auto-restart on class/property changes on local
+             Restarting due to 1 class path change  -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
