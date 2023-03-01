@@ -28,6 +28,7 @@ public class Playground {
         } catch (Exception e) {
             otherClass.saveError();
             //shawarma swallowed the ex
+
         }
         jdbc.update("insert into MESSAGE(id, message) values ( 1055,'insert done in a zombie tx' )");
         // requirement: all the errors processing this request should be INSERTED in the DB
@@ -49,6 +50,9 @@ class OtherClass {
     private final JdbcTemplate jdbc;
     @Transactional // this proxy allows the existing tx on the current thread to enter the method
     public void bizLogicTransacted() throws IOException {
+        // lesson: NEVER EVER EVER throw checked exceptions : they are a mistake in Java languge; instead throw new RuntimeException(e);
+        // unchecked === runtime;
+
         jdbc.update("insert into MESSAGE(id, message) values ( 101,'ALO' )");
         jdbc.update("insert into MESSAGE(id, message) values ( 102,'ALO' )");
         if (true) throw new IOException("Biz validation failed bla bla bla tomatoes bla");
