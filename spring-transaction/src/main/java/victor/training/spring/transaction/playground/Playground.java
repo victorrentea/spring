@@ -25,11 +25,12 @@ public class Playground {
             otherClass.bizLogicTransacted();
         } catch (Exception e) {
             otherClass.saveError();
-            throw new RuntimeException(e);
+            //shawarma swallowed the ex
         }
+        jdbc.update("insert into MESSAGE(id, message) values ( 1055,'insert done in a zombie tx' )");
+
         // requirement: all the errors processing this request should be INSERTED in the DB
     }
-
     // here, after the method, the PROXY sends the COMMIT to DB
     // 0 p6spy
     // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
