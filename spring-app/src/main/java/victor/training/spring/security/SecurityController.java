@@ -2,15 +2,11 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
-import victor.training.spring.web.controller.dto.CurrentUserDto;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
-
-import java.util.stream.Collectors;
+import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 @Slf4j
 @RequiredArgsConstructor
