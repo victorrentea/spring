@@ -80,8 +80,9 @@
     <div style="width: 600px">
         <div id="editDescriptionQ" style="height: 100px"></div>
     </div>
-    <div style="font-size: smaller" title="for XSS attacks">&lt;script>fetch(\'api/salary/raise?who=vrentea&amount=MAX\').then(function(x)
-        {alert(x)});&lt;/script>
+    <div style="font-size: smaller" title="XSS warmup">&lt;img src='x' onerror='alert(2)'&gt;</div>
+    <div style="font-size: smaller" title="for XSS attacks">
+        &lt;img src='x' onerror='fetch(`api/salary/raise?who=vrentea&amount=MAX`).then(function (x) {alert(-1)});>
     </div>
     Start Date (dd-mm-yyyy):<input type="text" id="editStartDate"/> <br/>
     Teacher: <select id="editTeacher"></select><br/>
@@ -165,9 +166,10 @@
     }
 
     function showDescription(id) {
-        document.getElementById("showRichDescription").innerHTML =
-            trainingsData.find(t=>t.id === id).description;
+        const descriptionHtml = trainingsData.find(t=>t.id === id).description;
+        document.getElementById("showRichDescription").innerHTML = descriptionHtml;
     }
+
 
     function refreshTrainingsTable() {
         $.ajax(restEndpoint + "/trainings", {
