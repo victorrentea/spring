@@ -3,6 +3,7 @@ package victor.training.spring.security.apisec;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.JpaRepository;

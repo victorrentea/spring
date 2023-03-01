@@ -1,11 +1,13 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.User;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -48,6 +50,7 @@ public class TrainingController {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO see PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+//	@Secured("ROLE_ADMIN")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

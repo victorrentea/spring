@@ -16,8 +16,11 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class ObjectLevelAuthorization {
 //  @PermitAll
+//  @GetMapping("api/shops/{shopId}/revenue-data.json")
   @GetMapping("api/shops/{shopId}/revenue-data.json")
   public Map<String, Double> getRevenueData(@PathVariable int shopId) {
+    if (getMyShopId() != shopId) throw new IllegalArgumentException("n-ai voie!");
+
     Random r = new Random(shopId);
     Map<String, Double> results = new LinkedHashMap<>();
     for (int i = 1; i <= 12; i++) {

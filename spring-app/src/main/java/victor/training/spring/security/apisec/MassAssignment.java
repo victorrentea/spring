@@ -30,16 +30,9 @@ public class MassAssignment {
     Player entity = playerRepo.findById(getCurrentPlayerId()).orElseThrow();
     return mapper.toDto(entity);
   }
-
-
-//  @Data
-//  public static class UpdatePlayerDetailsCommand {
-//    private String fullName;
-//    private String country;
-//  }
   @PutMapping("player/details")
   @Transactional
-  public void updatePlayerDetails(@RequestBody Player dto) {
+  public void updatePlayerDetails(@RequestBody PlayerDto dto) {
     Player entity = playerRepo.findById(getCurrentPlayerId()).orElseThrow();
     mapper.update(entity, dto);
   }
@@ -67,7 +60,7 @@ class PlayerDto {
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = IGNORE)
 interface PlayerMapper {
-  void update(@MappingTarget Player entity, Player dto); // FIXME don't copy all fields
+  void update(@MappingTarget Player entity, PlayerDto dto); // FIXME don't copy all fields
   PlayerDto toDto(Player entity);
 }
 
