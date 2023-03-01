@@ -5,6 +5,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -72,18 +73,28 @@ class SecondGrade {
 
     public void mathClass() {
         System.out.println("2 + 4 = " + maths.sum(2, 4));
-        System.out.println("1 + 5 = " + maths.sum(1, 5));
+        System.out.println("1 + 5 = " + maths.sum(-1, 5));
         System.out.println("2 x 3 = " + maths.product(2, 3));
     }
 }
 
+/*final crash*/
 class Maths {
-    public int sum(int a, int b) {
+    @Transactional // the proxy that this annotation summons never plays if the method is called locally
+    // (ie in the same class)
+    public /*static ignored cannot be @Override*/ int sum(int a, int b) {
         return a + b;
     }
 
-    public int product(int a, int b) {
-        return a * b;
+    public /*final ignored*/ int product(int a, int b) {
+//        return a * b;
+
+        int result = 0;
+        for (int i = 0; i < a; i++) {
+            result = sum(result, b); // THE MOST common pitfall of proxies:
+            // they don't play if you call that method in the same class
+        }
+        return result;
     }
 }
 
