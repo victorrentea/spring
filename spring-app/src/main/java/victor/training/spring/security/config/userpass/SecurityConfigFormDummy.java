@@ -1,4 +1,4 @@
-package victor.training.spring.security.config.form;
+package victor.training.spring.security.config.userpass;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-@Profile("form")
+@Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfigFormDummy extends WebSecurityConfigurerAdapter {
