@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -28,7 +30,6 @@ public class Playground {
             //shawarma swallowed the ex
         }
         jdbc.update("insert into MESSAGE(id, message) values ( 1055,'insert done in a zombie tx' )");
-
         // requirement: all the errors processing this request should be INSERTED in the DB
     }
     // here, after the method, the PROXY sends the COMMIT to DB
@@ -46,11 +47,12 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final JdbcTemplate jdbc;
-//    @Transactional // this proxy allows the existing tx on the current thread to enter the method
-    public void bizLogicTransacted() {
+    @Transactional // this proxy allows the existing tx on the current thread to enter the method
+    public void bizLogicTransacted() throws IOException {
         jdbc.update("insert into MESSAGE(id, message) values ( 101,'ALO' )");
         jdbc.update("insert into MESSAGE(id, message) values ( 102,'ALO' )");
-        if (true) throw new RuntimeException("Biz validation failed bla bla bla tomatoes bla");
+        if (true) throw new IOException("Biz validation failed bla bla bla tomatoes bla");
+        // CHECKED EXCEPTIONS ALLOW THE TX COMMIT -> WHY!?!?!!?!?!?!?
     }
 
 //    @Async
