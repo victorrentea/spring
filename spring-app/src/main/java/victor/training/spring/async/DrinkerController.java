@@ -27,6 +27,13 @@ public class DrinkerController {
       Beer beer = barman.pourBeer();
       Vodka vodka = barman.pourVodka();
 
+      try {
+         barman.exportBigFile("^$!&*%^(*!%&!*)#&^*)"); // in a motobiker bar
+      } catch (IllegalArgumentException e) {
+         // panic in the jr that sees an ex thrown in exportBigFile but cannot catch it here
+         throw new RuntimeException(e);
+      }
+
       long t1 = currentTimeMillis();
       log.debug("Got my drinks in {} millis", t1-t0);
       return new DillyDilly(beer, vodka);
