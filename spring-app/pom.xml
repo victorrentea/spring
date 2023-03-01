@@ -28,7 +28,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
         <dependency>
             <!-- monitoring performance with Micrometer -->
             <groupId>io.micrometer</groupId>
@@ -67,6 +66,12 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <!--Option 1: Manually upgrade/downgrade just this version: risk to break h2 only -->
+            <!--<version>2.1.214</version>-->
+            <!--Option 2: Upgrade the whole SPring Boot parent umbrella: risk anything can break -->
+            <!--Option 3: exclude the vulnerable transitive dep that you don;t use: risk: lib will break-->
+<!--            <exclusions></exclusions>-->
+            <!--Option 4: manually include a more recent (non vulnerable version of the transitive dep) -->
         </dependency>
         <dependency>
             <groupId>p6spy</groupId>

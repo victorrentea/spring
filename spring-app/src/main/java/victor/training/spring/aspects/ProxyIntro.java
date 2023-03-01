@@ -1,21 +1,18 @@
 package victor.training.spring.aspects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // Play the role of Spring here ...
+
         Maths maths = new Maths();
-        SecondGrade secondGrade = new SecondGrade(maths);
+        Maths proxy = new MathsProxy(maths);
+        SecondGrade secondGrade = new SecondGrade(proxy);
         new ProxyIntro().run(secondGrade);
     }
-
     //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
-
     //@Autowired // uncomment to run in Spring
     public void run(SecondGrade secondGrade) {
         System.out.println("Running Maths class...");
@@ -23,7 +20,31 @@ public class ProxyIntro {
     }
 }
 
-@Service
+// my daughter has maniac father that wants to check all the math operations performed during the day
+// without her knowing: print out param and return val of every method in Maths called by second grade.
+class MathsProxy extends Maths {
+    private final Maths delegate;
+
+    MathsProxy(Maths delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public int sum(int a, int b) {
+        System.out.println("Calling sum " + a + ", " + b);
+        return delegate.sum(a, b);
+    }
+    @Override
+    public int product(int a, int b) {
+        System.out.println("Calling product " + a + ", " + b);
+        return delegate.product(a, b);
+    }
+}
+// (framework)
+// -------------------------------------------
+// (application code)
+// don;t change any code below the line
+
 class SecondGrade {
     private final Maths maths;
 
@@ -38,7 +59,6 @@ class SecondGrade {
     }
 }
 
-@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
