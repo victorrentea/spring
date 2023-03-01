@@ -17,12 +17,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <!-- For distributed tracing of requests and logging sql statement (printed after log level) -->
+       <!-- <dependency>
+            &lt;!&ndash; For distributed tracing of requests and logging sql statement (printed after log level) &ndash;&gt;
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
-            <!-- the version is resolved by the <dependencyManagenent> clause of my parent pom -->
-        </dependency>
+            &lt;!&ndash; the version is resolved by the <dependencyManagenent> clause of my parent pom &ndash;&gt;
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -33,7 +33,7 @@
             <version>2.1.212</version>
         </dependency>
         <dependency>
-            <!-- JDBC Driver proxy intercepting all DB interactions -->
+            <!-- add this, JDBC Driver proxy intercepting all DB interactions -->
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
