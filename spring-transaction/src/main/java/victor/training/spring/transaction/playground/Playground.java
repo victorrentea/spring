@@ -18,6 +18,7 @@ public class Playground {
         // any jooq insert/update you send to db in a @Transactional flow, you will see the INSERT going do DB,
         // but the DB will hold it just in your transaction until later, the app send a COMMIT
         // on that same JDBC connection
+        if (true) throw new RuntimeException("On purpose");
         System.out.println("Count = " + jdbc.queryForObject("select count(*) from message", Long.class));
         jdbc.update("insert into MESSAGE(id, message) values ( 101,'ALO' )");
 
