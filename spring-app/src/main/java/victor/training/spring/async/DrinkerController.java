@@ -21,7 +21,7 @@ public class DrinkerController {
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
-      log.debug("Submitting my order");
+      log.debug("Submitting my order to " + barman.getClass());
       long t0 = currentTimeMillis();
 
       Beer beer = barman.pourBeer();
@@ -29,7 +29,7 @@ public class DrinkerController {
 
       try {
          barman.exportBigFile("^$!&*%^(*!%&!*)#&^*)"); // in a motobiker bar
-      } catch (IllegalArgumentException e) {
+      } catch (IllegalArgumentException e) { // will never catch the exception
          // panic in the jr that sees an ex thrown in exportBigFile but cannot catch it here
          throw new RuntimeException(e);
       }
