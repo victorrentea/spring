@@ -46,7 +46,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final JdbcTemplate jdbc;
-    @Transactional // this proxy allows the existing tx on the current thread to enter the method
+//    @Transactional // this proxy allows the existing tx on the current thread to enter the method
     public void bizLogicTransacted() {
         jdbc.update("insert into MESSAGE(id, message) values ( 101,'ALO' )");
         jdbc.update("insert into MESSAGE(id, message) values ( 102,'ALO' )");
