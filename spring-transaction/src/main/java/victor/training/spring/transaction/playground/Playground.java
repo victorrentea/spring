@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -51,7 +52,8 @@ class OtherClass {
         if (true) throw new RuntimeException("Biz validation failed bla bla bla tomatoes bla");
     }
 
-    @Async
+//    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void saveError() {
         jdbc.update("insert into MESSAGE(id, message) values ( 109,'ERROR: ')");
     }
