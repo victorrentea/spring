@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 public class Playground {
     private final JdbcTemplate jdbc;
 
-    @Transactional // THE PROXY: one connection is acquired from the CONNECTION POOL (Hikari 20 max by default)
+//    @Transactional // THE PROXY: one connection is acquired from the CONNECTION POOL (Hikari 20 max by default)
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         // any jooq insert/update you send to db in a @Transactional flow, you will see the INSERT going do DB,
