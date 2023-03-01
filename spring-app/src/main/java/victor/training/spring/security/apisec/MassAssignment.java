@@ -31,15 +31,17 @@ public class MassAssignment {
     return mapper.toDto(entity);
   }
 
-
-//  @Data
+  //<editor-fold desc="SOLUTION">
+  //  @Data
 //  public static class UpdatePlayerDetailsCommand {
 //    private String fullName;
 //    private String country;
 //  }
+  //</editor-fold>
+
   @PutMapping("player/details")
   @Transactional
-  public void updatePlayerDetails(@RequestBody Player dto) {
+  public void updatePlayerDetails(@RequestBody PlayerDto dto) {
     Player entity = playerRepo.findById(getCurrentPlayerId()).orElseThrow();
     mapper.update(entity, dto);
   }
@@ -48,12 +50,14 @@ public class MassAssignment {
             1L : 3L;
   }
 
+  //<editor-fold desc="initial data">
   @EventListener(ApplicationStartedEvent.class)
   public void insertInitialPlayers() {
     playerRepo.save(new Player().setId(1L).setCountry("RO").setUsername("ipopescu").setCash(100).setFullName("Ion Popescu"));
     playerRepo.save(new Player().setId(2L).setCountry("NL").setUsername("snoah").setCash(250).setFullName("Saar Noah"));
     playerRepo.save(new Player().setId(3L).setCountry("BE").setUsername("jdoe").setCash(150).setFullName("John Doe"));
   }
+  //</editor-fold>
 }
 @Data
 class PlayerDto {
@@ -67,7 +71,7 @@ class PlayerDto {
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = IGNORE)
 interface PlayerMapper {
-  void update(@MappingTarget Player entity, Player dto); // FIXME don't copy all fields
+  void update(@MappingTarget Player entity, PlayerDto dto); // FIXME don't copy all fields
   PlayerDto toDto(Player entity);
 }
 
