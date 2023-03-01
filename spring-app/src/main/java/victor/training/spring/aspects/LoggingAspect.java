@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,18 +18,17 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 
-@Slf4j
 @Aspect
 @Component
 public class LoggingAspect {
-
+    private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
     //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
     //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 
     // -- DANGER ZONE --
-    //    @Around("execution(* victor.training.spring.web..*.*(..))") // any method of any class in a sub-package of 'web'
+//        @Around("execution(* victor.training.spring.web..*.*(..))") // any method of any class in a sub-package of 'web'
     //    @Around("execution(* *.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous😱
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 

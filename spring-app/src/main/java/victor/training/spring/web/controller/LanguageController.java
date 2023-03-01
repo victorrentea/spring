@@ -19,7 +19,10 @@ public class LanguageController {
     private final LanguageService languageService;
 
     @GetMapping
+
+    @Cacheable("arbitrarynameof-a-cache")
     public List<LanguageDto> findAll() {
         return languageService.findAll();
     }
+
 }

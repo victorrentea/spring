@@ -1,10 +1,13 @@
 package victor.training.spring.aspects;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
@@ -12,26 +15,28 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class ProxyIntro {
-    public static void main(String[] args) {
-        // Play the role of Spring here ...
-
-        Maths maths = new Maths();
-
-//        Maths proxy = new MathsProxy(maths);
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Calling method " + method.getName() + " with args " + Arrays.toString(objects));
-                return method.invoke(maths, objects);
-            }
-        };
-        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
-
-        SecondGrade secondGrade = new SecondGrade(proxy);
-        new ProxyIntro().run(secondGrade);
-    }
-    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
-    //@Autowired // uncomment to run in Spring
+//    public static void main(String[] args) {
+//        // Play the role of Spring here ...
+//
+//        Maths maths = new Maths();
+//
+////        Maths proxy = new MathsProxy(maths);
+//        Callback h = new MethodInterceptor() {
+//            @Override
+//            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+//                System.out.println("Calling method " + method.getName() + " with args " + Arrays.toString(objects));
+//                return method.invoke(maths, objects);
+//            }
+//        };
+//        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+//
+//        SecondGrade secondGrade = new SecondGrade(proxy);
+//        new ProxyIntro().run(secondGrade);
+//    }
+        public static void main(String[] args) {
+            SpringApplication.run(ProxyIntro.class, args);
+        }
+    @Autowired // uncomment to run in Spring
     public void run(SecondGrade secondGrade) {
         System.out.println("Running Maths class...");
         secondGrade.mathClass();
@@ -64,6 +69,7 @@ public class ProxyIntro {
 // (application code)
 // don;t change any code below the line
 
+@Service
 class SecondGrade {
     private final Maths maths;
 
@@ -78,7 +84,8 @@ class SecondGrade {
     }
 }
 
-/*final crash*/
+@Facade
+    /*final crash*/
 class Maths {
     @Transactional // the proxy that this annotation summons never plays if the method is called locally
     // (ie in the same class)
@@ -88,6 +95,8 @@ class Maths {
 
     public /*final ignored*/ int product(int a, int b) {
 //        return a * b;
+
+        new RuntimeException("Just for the trace").printStackTrace();
 
         int result = 0;
         for (int i = 0; i < a; i++) {
