@@ -2,6 +2,8 @@ package victor.training.spring.scope;
 
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +15,16 @@ import java.util.List;
 
 @RestController
 public class ScopePrototype {
+  //  @Autowired
+  //  private DataValidator dataValidator; // risk!
   @Autowired
-  private DataValidator dataValidator;
+  private ApplicationContext applicationContext;
 
   @GetMapping("api/scope/prototype")
   public List<ValidationMessage> requestScope() {
     String foo = "some text to validate";
     String bar = "a pub";
+    DataValidator dataValidator = applicationContext.getBean(DataValidator.class);
     dataValidator.getValidationMessages().clear();
     ThreadUtils.sleepMillis(3000); // allow the race
     dataValidator.validateFoo(foo);
@@ -27,6 +32,7 @@ public class ScopePrototype {
     return dataValidator.getValidationMessages();
   }
 }
+@Scope("prototype")
 @Component
 class DataValidator {
   private final List<ValidationMessage> validationMessages = new ArrayList<>();
