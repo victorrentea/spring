@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +37,8 @@ public class SecurityController {
         dto.username = anotherClass.somewhereElse().get();
 
         // A) role-based security
-        //		dto.role = extractOneRole(authentication.getAuthorities());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        dto.role = extractOneRole(authentication.getAuthorities());
 
         // B) authority-based security
 //        		dto.authorities = authentication.getAuthorities().stream()
@@ -51,22 +57,22 @@ public class SecurityController {
         return dto;
     }
 
-    //	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-    //		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-    //		List<String> roles = authorities.stream()
-    //				.map(GrantedAuthority::getAuthority)
-    //				.filter(authority -> authority.startsWith("ROLE_"))
-    //				.map(authority -> authority.substring("ROLE_".length()))
-    //				.collect(Collectors.toList());
-    //		if (roles.size() == 2) {
-    //			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
-    //			return "N/A";
-    //		}
-    //		if (roles.size() == 0) {
-    //			return null;
-    //		}
-    //		return roles.get(0);
-    //	}
+    	public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+    		// For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+    		List<String> roles = authorities.stream()
+    				.map(GrantedAuthority::getAuthority)
+    				.filter(authority -> authority.startsWith("ROLE_"))
+    				.map(authority -> authority.substring("ROLE_".length()))
+    				.collect(Collectors.toList());
+    		if (roles.size() == 2) {
+    			log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
+    			return "N/A";
+    		}
+    		if (roles.size() == 0) {
+    			return null;
+    		}
+    		return roles.get(0);
+    	}
 
 
     	@Bean // enable propagation of SecurityContextHolder over @Async

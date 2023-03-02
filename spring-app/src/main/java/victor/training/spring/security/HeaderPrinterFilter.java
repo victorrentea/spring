@@ -19,7 +19,7 @@ import static java.util.Collections.list;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
-@Component
+//@Component
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER - 1000) // run in before Spring's Security Filter Chain
 public class HeaderPrinterFilter extends HttpFilter {
    // DO NOT DO THIS IN PRODUCTION: security breach (print the Bearer token can get you fired)
