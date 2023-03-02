@@ -1,22 +1,28 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
-	@Autowired
-	private TrainingService trainingService;
+	private final TrainingService trainingService;
+
+	public TrainingController(TrainingService trainingService) {
+		this.trainingService = trainingService;
+	}
 
 	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
@@ -24,8 +30,13 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable TrainingId id) {
+		try {
+			// ResponseEntity to : set status or add a header.
+			return ResponseEntity.ok(trainingService.getTrainingById(id));
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build();
+		}
 		//TODO if id is not found, return 404 status code
 	}
 

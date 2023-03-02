@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.repo.ProgrammingLanguageRepo;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -40,8 +41,8 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
+    public TrainingDto getTrainingById(TrainingId id) {
+        TrainingDto dto = mapToDto(trainingRepo.findById(id.id()).orElseThrow());
         try {
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
         } catch (Exception e) {
