@@ -166,6 +166,11 @@
             <version>1.5.1.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
+
         <!-- messages -->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
