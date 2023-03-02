@@ -13,14 +13,14 @@ import static java.util.stream.Collectors.toList;
 
 public class PreAuthHeaderPrincipal implements UserDetails {
     private final String username;
-    private final List<String> authorities;
+    private final List<String> authorities = new ArrayList<>();
 
     public PreAuthHeaderPrincipal(String username, List<String> roles) {
         this.username = username;
-//        for (String role : roles) {
-//            authorities.addAll(UserRole.valueOf(role).getAuthorities());
-//        }
-        authorities = roles.stream().map(s -> "ROLE_" +s).collect(toList());
+        for (String role : roles) {
+            authorities.addAll(UserRole.valueOf(role).getAuthorities());
+        }
+//        authorities = roles.stream().map(s -> "ROLE_" +s).collect(toList());
     }
 
     @Override
