@@ -5,6 +5,18 @@ jwt.signature.shared.secret.base64: c2VjcmV0TWFyZQ==
 
 
 
+acme-parent: &acme-parent
+  owner: "ACME"
+  hours:
+    start: "8:00"
+    end: "21:00"
+
+silicon-parent: &silicon-parent
+  owner: "SILICON"
+  hours:
+    start: "8:00"
+    end: "21:00"
+
 show:
   timetable:
     MONDAY: &workDay
@@ -20,15 +32,19 @@ show:
       - start: "9:00"
         end: "15:00"
     SUNDAY: *weekendDay
-  warehouse:
-    w1: &default
-      gps: "gps1"
-      owner: "ACME"
-      hours:
-        start: "8:00"
-        end: "21:00"
-    w2:
-      << : *default
-      gps: "gps2"
-      hours.end: "24:00"
+#  warehouse:
+#    acme1:
+#      << : *acme-parent
+#      gps: "gps1"
+#      hours.end: "24:00"
+#    acme2:
+#      << : *acme-parent
+#      gps: "gps2"
+#      hours.end: "24:00"
+#    acme3:
+#      << : *acme-parent
+#      gps: "gps3"
+#    silicon1:
+#      << : *silicon-parent
+#      gps: "gps11"
 

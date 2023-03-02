@@ -1,0 +1,8 @@
+#
+#show:
+#  warehouse:
+#    acme1:
+#      << : *acme-parent
+#      gps: "gps1"
+#      hours.end: "24:00"
+#
