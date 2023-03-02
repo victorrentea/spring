@@ -9,7 +9,9 @@ import javax.validation.constraints.Size;
 
 public class TrainingDto {
 	public Long id;
-	@Size(min = 3, max = 50, message = "{customer.name.length}")
+	@Size(min = 3, max = 50
+		/*, message = "{customer.name.length}"*/)
+	@NotNull
 	public String name;
 	public ContractType level;
 	public Long teacherId;
