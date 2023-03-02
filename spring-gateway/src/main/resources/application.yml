@@ -2,3 +2,33 @@ spring.application.name: gateway-service
 
 server.port: 80
 jwt.signature.shared.secret.base64: c2VjcmV0TWFyZQ==
+
+
+
+show:
+  timetable:
+    MONDAY: &workDay
+      - start: "08:00"
+        end: "13:00"
+      - start: "14:00"
+        end: "19:00"
+    TUESDAY: *workDay
+    WEDNESDAY: *workDay
+    THURSDAY: *workDay
+    FRIDAY: *workDay
+    SATURDAY: &weekendDay
+      - start: "9:00"
+        end: "15:00"
+    SUNDAY: *weekendDay
+  warehouse:
+    w1: &default
+      gps: "gps1"
+      owner: "ACME"
+      hours:
+        start: "8:00"
+        end: "21:00"
+    w2:
+      << : *default
+      gps: "gps2"
+      hours.end: "24:00"
+
