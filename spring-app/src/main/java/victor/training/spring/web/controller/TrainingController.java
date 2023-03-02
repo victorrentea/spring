@@ -1,43 +1,55 @@
 package victor.training.spring.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
-import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+import static org.springframework.http.MediaType.IMAGE_JPEG;
 
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
 public class TrainingController {
-	@Autowired
-	private TrainingService trainingService;
+	private final TrainingService trainingService;
 
 	@GetMapping
-	public List<TrainingDto> getAllTrainings() {
+	public List<TrainingDto> getAll() {
 		return trainingService.getAllTrainings();
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto getTrainingById(@PathVariable /*TrainingId*/ long id) {
+	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
 		return trainingService.getTrainingById(id);
-		//TODO if id is not found, return 404 status code
+		//TODO return 404 if not found
 	}
 
-	// TODO @Valid
+	// TODO @Validated / @Valid
+	@Operation(description = "Create a training")
 	@PostMapping
-	public void createTraining(@RequestBody @Validated TrainingDto dto) throws ParseException {
+	public void create(@RequestBody TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
-	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(id, dto);
+	@Operation(description = "Create a training")
+	@PutMapping("{trainingId}")
+	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) throws ParseException {
+		trainingService.updateTraining(trainingId, dto);
 	}
 
 	// TODO Allow only for role 'ADMIN'
@@ -45,28 +57,46 @@ public class TrainingController {
 	// TODO Allow also for 'POWER' role; then remove it. => update UI but forget the BE
 	// TODO Allow for authority 'training.delete'
 	// TODO Allow only if the current user manages the programming language of the training
-	// TODO @accessController.canDeleteTraining(#id)
-	// TODO see PermissionEvaluator [GEEK]
-	@DeleteMapping("{id}")
-	public void deleteTrainingById(@PathVariable Long id) {
-		trainingService.deleteById(id);
+	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
+	//  -> use SpEL: @accessController.canDeleteTraining(#id)
+	//  -> hasPermission + PermissionEvaluator [GEEK]
+	@DeleteMapping("{trainingId}")
+	public void delete(@PathVariable Long trainingId) {
+		trainingService.deleteById(trainingId);
+	}
+	private final TrainingRepo trainingRepo;
+
+
+	// TODO a 'search' request should use GET or POST ?
+	// GET:
+	// POST:
+
+
+	@PostMapping("search") // pragmatic HTTP endpoints
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
 	}
 
-
-	// TODO for searches, should we use GET or POST ?
-	@GetMapping("search") // pure REST
+	@GetMapping("search") // by-the-book REST
 	public List<TrainingDto> searchUsingGET(
 					@RequestParam(required = false) String name,
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
-	@PostMapping("search") // pragmatic HTTP endpoints
-	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
-		return trainingService.search(criteria);
-	}
-	//	@GetMapping("search") // OMG does the same as the @GetMapping
+	//	@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
+	}
+
+	@Value("classpath:/static/spa.jpg")
+	private Resource picture;
+	@GetMapping("download")
+	public ResponseEntity<Resource> downloadFile() throws IOException {
+		return ResponseEntity.ok()
+						.contentType(IMAGE_JPEG)
+						.contentLength(picture.contentLength())
+//						.header("Content-Disposition", "attachment; filename=\"spa.jpg\"") // tell browser to download as file
+						.body(picture);
 	}
 
 }

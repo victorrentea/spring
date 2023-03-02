@@ -7,7 +7,7 @@
     <script type="text/javascript" src="toastr.min.js"></script>
     <style>
         html {
-            background: url(luxury-spa.jpg) no-repeat center center fixed;
+            background: url(spa.jpg) no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -242,7 +242,7 @@
 
 
     function deleteTraining(id) {
-        $.ajax(restEndpoint + "/trainings/" + id + "/delete", {
+        $.ajax(restEndpoint + "/trainings/" + id, {
             method: "DELETE",
             success: function () {
                 toastr.success("Training deleted");

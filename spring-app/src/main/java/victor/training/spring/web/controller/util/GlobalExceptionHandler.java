@@ -36,13 +36,15 @@ public class GlobalExceptionHandler {
   //		return "Not Found";
   //	}
 
-  // you may want to translate a message code in the request.getLocale() / OpenID user token
+  // Return internationalized error messages in the user language from:
+  // - the 'Accept-Language' request header via request.getLocale())
+  // - the language in the Access Token via SecurityContextHolder
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
   public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
-    Locale clientLocale = request.getLocale(); // or from a JWT token
+    Locale clientLocale = request.getLocale(); // or from the Access Token
     String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;

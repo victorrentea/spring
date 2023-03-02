@@ -52,9 +52,9 @@ public class InitialData {
 		trainingRepo.save(javaBasic);
 		trainingRepo.save(patterns);
 
-		userRepo.save(new User("PowerHorse", "power", UserRole.POWER, List.of(victor.getId()))); // only manages Victor, not Ionut
-		userRepo.save(new User("Za Boss", "admin", UserRole.ADMIN, List.of(victor.getId()))); // only manages Victor, not Ionut
-		userRepo.save(new User("Clerk", "user", UserRole.USER, List.of(victor.getId(), ionut.getId())));
+		userRepo.save(new User("PowerHorse", "power", UserRole.POWER, List.of(victor.getId()), PHP)); // only manages Victor, not Ionut
+		userRepo.save(new User("Za Boss", "admin", UserRole.ADMIN, List.of(victor.getId()), JAVA)); // only manages Victor, not Ionut
+		userRepo.save(new User("Clerk", "user", UserRole.USER, List.of(victor.getId(), ionut.getId()), null));
 	}
 
 

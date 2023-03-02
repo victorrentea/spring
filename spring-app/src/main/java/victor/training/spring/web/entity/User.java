@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 import static java.util.Collections.*;
+import static victor.training.spring.web.entity.ProgrammingLanguage.JAVA;
 
 @Entity
 @Table(name = "USERS")
@@ -15,18 +16,18 @@ public class User {
     private String name;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private ProgrammingLanguage adminForLanguage;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
     public User() {
     }
-    public User(String username) {
-        this(username, username, UserRole.USER, emptyList());
-    }
-    public User(String fullName, String username, UserRole role, List<Long> managedTeacherIds) {
+    public User(String fullName, String username, UserRole role, List<Long> managedTeacherIds, ProgrammingLanguage adminForLanguage) {
         this.username = username;
         this.name=fullName;
         this.role = role;
         this.managedTeacherIds = new HashSet<>(managedTeacherIds);
+        this.adminForLanguage = adminForLanguage;
     }
 
     public String getName() {
