@@ -2,16 +2,20 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.props.WelcomeInfo;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,8 +29,7 @@ public class SecurityController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // dto.username = anotherClass.asyncMethod().get();
+        dto.username = anotherClass.somewhereElse().get();
 
         // A) role-based security
         //		dto.role = extractOneRole(authentication.getAuthorities());
@@ -66,21 +69,25 @@ public class SecurityController {
     //	}
 
 
-//    	@Bean // enable propagation of SecurityContextHolder over @Async
-//    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-//    		// https://www.baeldung.com/spring-security-async-principal-propagation
-//    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-//    	}
+    	@Bean // enable propagation of SecurityContextHolder over @Async
+    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(
+                @Qualifier("barPool") ThreadPoolTaskExecutor executor) {
+    		// https://www.baeldung.com/spring-security-async-principal-propagation
+    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+    	}
 
+//            SecurityContextHolder.setContext(..);// done by spring inside its Security Filter Chain
     @Slf4j
     @Service
     public static class AnotherClass {
-    //    @Async
-    //    public CompletableFuture<String> asyncMethod() {
-    //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //        log.info("Current authentication = {}", authentication);
-    //        return CompletableFuture.completedFuture(authentication.getName());
-    //    }
+        @Async
+        public CompletableFuture<String> somewhereElse() {
+            // HOW the hack is a static method able to give me the current user?
+            // using a ThreadLocal variable (spring MVC) or Reactor Context (WebFlux)
+            SecurityContext user = SecurityContextHolder.getContext();
+            return CompletableFuture.completedFuture(user.getAuthentication().getName());
+        }
+
     }
 
 }

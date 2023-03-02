@@ -10,6 +10,7 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
@@ -95,7 +96,8 @@ public class TrainingController {
 	}
 
 	@GetMapping(value = "search-export-pdf",produces = "application/pdf") // OMG does the same as the @GetMapping
-	public void searchUsingGETPdf(TrainingSearchCriteria criteria, HttpServletResponse response) {
+	public void searchUsingGETPdf(TrainingSearchCriteria criteria, HttpServletResponse response, HttpServletRequest request) {
+//		request.getHeader()
 //		response.heade // "Content-Disposition" header
 //		response.getOutputStream() // pour generated PDF bytes here
 	}
