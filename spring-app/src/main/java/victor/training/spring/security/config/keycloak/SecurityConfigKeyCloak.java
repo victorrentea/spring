@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,8 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static org.springframework.http.HttpMethod.DELETE;
 
 @Profile("keycloak")
 @EnableWebSecurity  // (debug = true) // see the filter chain in use
@@ -67,9 +70,10 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         // http.cors(); // needed only if .js files are served by a CDN (eg)
 
         http.authorizeRequests()
-                    .mvcMatchers("/spa/**", "/api/**").authenticated()
-                    .mvcMatchers("/sso/**").permitAll()
-                    .anyRequest().permitAll();
+//                .mvcMatchers(DELETE, "api/trainings/*").hasAuthority("training.delete")
+                .mvcMatchers("/spa/**", "/api/**").authenticated()
+                .mvcMatchers("/sso/**").permitAll()
+                .anyRequest().permitAll();
     }
 
     // needed to secure /spa/** but to leave /sso/** unsecured.
