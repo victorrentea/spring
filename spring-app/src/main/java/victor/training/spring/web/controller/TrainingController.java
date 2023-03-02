@@ -4,12 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.entity.Training;
 import victor.training.spring.web.entity.TrainingId;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import javax.annotation.security.RunAs;
@@ -84,9 +89,24 @@ public class TrainingController {
 	@PreAuthorize("hasAuthority('training.delete')")
 //	@Secured("ROLE_training.delete") //
 	public void deleteTrainingById(@PathVariable Long id) {
+
+		Training training = trainingRepo.findById(id).orElseThrow();
+		Long teacherId = training.getTeacher().getId();
+
+		User currentUser = userRepo.findByUsernameForLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow();
+
+		if (!currentUser.getManagedTeacherIds().contains(teacherId)) {
+			throw new IllegalArgumentException("Not allowed");
+		}
+
 		trainingService.deleteById(id);
 	}
 
+	@Autowired
+	private TrainingRepo trainingRepo;
+
+	@Autowired
+	private UserRepo userRepo;
 
 
 	// oh yes. the search.
