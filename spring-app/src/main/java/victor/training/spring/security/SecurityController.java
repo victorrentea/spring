@@ -3,6 +3,7 @@ package victor.training.spring.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class SecurityController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "<username>"; // TODO
+        dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
         // dto.username = anotherClass.asyncMethod().get();
 
         // A) role-based security
