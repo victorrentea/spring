@@ -10,6 +10,7 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.util.List;
@@ -88,9 +89,15 @@ public class TrainingController {
 	public List<TrainingDto> searchUsingPOST(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
-	@GetMapping("search") // OMG does the same as the @GetMapping
+	@GetMapping(value = "search",produces = "application/json") // OMG does the same as the @GetMapping
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
+	}
+
+	@GetMapping(value = "search-export-pdf",produces = "application/pdf") // OMG does the same as the @GetMapping
+	public void searchUsingGETPdf(TrainingSearchCriteria criteria, HttpServletResponse response) {
+//		response.heade // "Content-Disposition" header
+//		response.getOutputStream() // pour generated PDF bytes here
 	}
 
 	// TODO for searches, should we use GET or POST ?
