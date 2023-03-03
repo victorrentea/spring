@@ -7,16 +7,12 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import victor.training.spring.jooq.table.tables.Book;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Random;
 
@@ -110,22 +106,32 @@ public class JooqApplication {
 
   @GetMapping("authors")
   public Flux<AuthorDto> authors() {
+    //BAD
+//    for(id : listId) {
+//      bio = network.fetchBio(id)
+//    }
+    GOOD:
+//    List<bio> = network.bulkFetchBio(listId)
+
     return Flux.from(dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
-            .from(AUTHOR)
-            )
-            .map(r -> new AuthorDto(r.value1(), r.value2(), r.value3(),
-                    fetchBio(r.value1())));
+            .from(AUTHOR))
+            .flatMap(r -> fetchBio(r.value1())
+                    .onErrorReturn("N/A")
+                    .map(bio-> new AuthorDto(r.value1(), r.value2(), r.value3(),bio)));
   }
 
 
 
 
   @SneakyThrows
-  private String fetchBio(Integer authorId) {
-    ResponseEntity<String> response = new RestTemplate().exchange(new RequestEntity<>(
-            HttpMethod.GET,
-            new URI("http://localhost:8082/api/teachers/" + authorId + "/bio")), String.class);
-    return response.getBody();
+  private Mono<String> fetchBio(Integer authorId) {
+//    ResponseEntity<String> response = new RestTemplate().exchange(new RequestEntity<>(
+//            HttpMethod.GET,
+//            new URI("http://localhost:8082/api/teachers/" + authorId + "/bio")), String.class);
+//    return response.getBody();
+    return WebClient.create().get().uri("http://localhost:8082/api/teachers/" + authorId + "/bio")
+            .retrieve()
+            .bodyToMono(String.class);
   }
 
   @GetMapping("reader/{id}/check")
