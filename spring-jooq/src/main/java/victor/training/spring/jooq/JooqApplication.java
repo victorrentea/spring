@@ -75,14 +75,17 @@ public class JooqApplication {
 //      insertAuthorMono.subscribe();
 //    }
 
+    // untold rule: DO NOT DEFINE VARIABLES in reactive chain method
     return insertBook(dto, bookId)
             .thenMany(Flux.fromIterable(dto.authorIds))
             .flatMap(authorId -> insertBookAuthor(bookId, authorId))
+            .then(reactiveDependencies.wsdlCall("Book created: " + bookId))
+            .then()
             .then(reactiveDependencies.rabbitSend("Book created: " + bookId));
 
   }
 
-  private Mono<Integer> insertBookAuthor(Integer bookId, Integer authorId) {
+    private Mono<Integer> insertBookAuthor(Integer bookId, Integer authorId) {
     Mono<Integer> insertAuthorMono = Mono.from(dsl.insertInto(AUTHOR_BOOK)
             .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
             .set(AUTHOR_BOOK.BOOK_ID, bookId));
@@ -110,7 +113,7 @@ public class JooqApplication {
 //    for(id : listId) {
 //      bio = network.fetchBio(id)
 //    }
-    GOOD:
+//    GOOD:
 //    List<bio> = network.bulkFetchBio(listId)
 
     return Flux.from(dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
@@ -119,6 +122,8 @@ public class JooqApplication {
                     .onErrorReturn("N/A")
                     .map(bio-> new AuthorDto(r.value1(), r.value2(), r.value3(),bio))
                     , 5);
+      // > step1; parameterize the 5 w/ @Value
+      // > Step2: use a [distributed] rate limiter/bulkhead to limit the load on them GLOBALLY
   }
 
 
