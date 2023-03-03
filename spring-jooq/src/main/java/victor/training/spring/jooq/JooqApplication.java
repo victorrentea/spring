@@ -76,13 +76,13 @@ public class JooqApplication {
             .set(Book.BOOK.TITLE, dto.title))
             ;
 
-//    insertBookMono.subscribe();
+    insertBookMono.subscribe();
 
     for (Integer authorId : dto.authorIds) {
       Mono<Integer> insertAuthorMono = Mono.from(dsl.insertInto(AUTHOR_BOOK)
               .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
               .set(AUTHOR_BOOK.BOOK_ID, bookId));
-//      insertAuthorMono.subscribe();
+      insertAuthorMono.subscribe();
     }
     classicDependencies.rabbitSend("Book created: " + bookId);
   }
