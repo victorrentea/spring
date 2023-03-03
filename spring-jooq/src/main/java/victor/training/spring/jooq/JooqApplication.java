@@ -9,11 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import victor.training.spring.jooq.table.tables.Book;
 
 import java.net.URI;
@@ -35,8 +34,8 @@ public class JooqApplication {
   @Autowired
   private DSLContext dsl;
 
-//  @Autowired
-//  private ReactiveDependencies reactiveDependencies;
+  @Autowired
+  private ReactiveDependencies reactiveDependencies;
   @Autowired
   private ClassicDependencies classicDependencies;
 
@@ -47,11 +46,19 @@ public class JooqApplication {
   }
 
   @GetMapping("books")
-  public List<BookDto> books() {
-    return dsl.select(BOOK.ID, BOOK.TITLE)
-            .from(BOOK)
-            .fetch()
+  public Flux<BookDto> books() {
+    System.out.println("Hey!");
+    return Flux.from(dsl.select(BOOK.ID, BOOK.TITLE)
+            .from(BOOK))
             .map(r -> new BookDto(r.value1(), r.value2()));
+  }
+  @GetMapping("books/{id}")
+  public Mono<BookDto> booksId(@PathVariable Integer id) {
+    return Flux.from(dsl.select(BOOK.ID, BOOK.TITLE)
+            .from(BOOK)
+            .where(BOOK.ID.eq(id)))
+            .map(r -> new BookDto(r.value1(), r.value2()))
+            .elementAt(0);
   }
 
   @Value
@@ -62,15 +69,20 @@ public class JooqApplication {
   @PostMapping("books")
   public void createBook(@RequestBody CreateBookRequest dto) {
     Integer bookId = new Random().nextInt(100000); // dirty hack :)
-    dsl.insertInto(Book.BOOK)
-            .set(Book.BOOK.ID,bookId )
-            .set(Book.BOOK.TITLE, dto.title)
-            .execute();
+
+//    Mono<Integer>
+    Mono<Integer> insertBookMono = Mono.from(dsl.insertInto(Book.BOOK)
+            .set(Book.BOOK.ID, bookId)
+            .set(Book.BOOK.TITLE, dto.title))
+            ;
+
+//    insertBookMono.subscribe();
+
     for (Integer authorId : dto.authorIds) {
-      dsl.insertInto(AUTHOR_BOOK)
+      Mono<Integer> insertAuthorMono = Mono.from(dsl.insertInto(AUTHOR_BOOK)
               .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
-              .set(AUTHOR_BOOK.BOOK_ID, bookId)
-              .execute();
+              .set(AUTHOR_BOOK.BOOK_ID, bookId));
+//      insertAuthorMono.subscribe();
     }
     classicDependencies.rabbitSend("Book created: " + bookId);
   }
