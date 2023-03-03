@@ -85,7 +85,7 @@ public class JooqApplication {
             .then()
             .doOnTerminate(() -> {
               System.out.println("Sending rabbit message <- this log is a lie!!");
-              reactiveDependencies.rabbitSend("Book created: " + bookId);
+              reactiveDependencies.rabbitSend("Book created: " + bookId).subscribe();
             });
 
   }
