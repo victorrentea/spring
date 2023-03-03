@@ -117,7 +117,8 @@ public class JooqApplication {
             .from(AUTHOR))
             .flatMap(r -> fetchBio(r.value1())
                     .onErrorReturn("N/A")
-                    .map(bio-> new AuthorDto(r.value1(), r.value2(), r.value3(),bio)));
+                    .map(bio-> new AuthorDto(r.value1(), r.value2(), r.value3(),bio))
+                    , 5);
   }
 
 
