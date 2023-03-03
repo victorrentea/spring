@@ -2,6 +2,7 @@ package victor.training.spring.jooq;
 
 import lombok.SneakyThrows;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,7 @@ import static victor.training.spring.jooq.table.Tables.AUTHOR;
 import static victor.training.spring.jooq.table.Tables.BOOK;
 import static victor.training.spring.jooq.table.tables.AuthorBook.AUTHOR_BOOK;
 
+@Slf4j
 @SuppressWarnings("ALL")
 @SpringBootApplication
 @RestController
@@ -67,24 +69,38 @@ public class JooqApplication {
     List<Integer> authorIds;
   }
   @PostMapping("books")
-  public void createBook(@RequestBody CreateBookRequest dto) {
+  public Mono<Void> createBook(@RequestBody CreateBookRequest dto) {
     Integer bookId = new Random().nextInt(100000); // dirty hack :)
 
-//    Mono<Integer>
-    Mono<Integer> insertBookMono = Mono.from(dsl.insertInto(Book.BOOK)
+//    Mono<Integer> insertBookMono = insertBook(dto, bookId);
+//    insertBookMono.subscribe();
+//    for (Integer authorId : dto.authorIds) {
+//      Mono<Integer> insertAuthorMono = insertBookAuthor(bookId, authorId);
+//      insertAuthorMono.subscribe();
+//    }
+
+    return insertBook(dto, bookId)
+            .thenMany(Flux.fromIterable(dto.authorIds))
+            .flatMap(authorId -> insertBookAuthor(bookId, authorId))
+            .then()
+            .doOnNext(v -> {
+              System.out.println("Sending rabbit message <- this log is a lie!!");
+              reactiveDependencies.rabbitSend("Book created: " + bookId);
+            });
+
+  }
+
+  private Mono<Integer> insertBookAuthor(Integer bookId, Integer authorId) {
+    Mono<Integer> insertAuthorMono = Mono.from(dsl.insertInto(AUTHOR_BOOK)
+            .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
+            .set(AUTHOR_BOOK.BOOK_ID, bookId));
+    return insertAuthorMono;
+  }
+
+  private Mono<Integer> insertBook(CreateBookRequest dto, Integer bookId) {
+    return Mono.from(dsl.insertInto(Book.BOOK)
             .set(Book.BOOK.ID, bookId)
-            .set(Book.BOOK.TITLE, dto.title))
-            ;
-
-    insertBookMono.subscribe();
-
-    for (Integer authorId : dto.authorIds) {
-      Mono<Integer> insertAuthorMono = Mono.from(dsl.insertInto(AUTHOR_BOOK)
-              .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
-              .set(AUTHOR_BOOK.BOOK_ID, bookId));
-      insertAuthorMono.subscribe();
-    }
-    classicDependencies.rabbitSend("Book created: " + bookId);
+            .set(Book.BOOK.TITLE, dto.title));
   }
 
   @Value
