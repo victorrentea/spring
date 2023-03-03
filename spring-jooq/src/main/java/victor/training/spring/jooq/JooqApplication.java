@@ -35,8 +35,8 @@ public class JooqApplication {
   @Autowired
   private DSLContext dsl;
 
-  @Autowired
-  private ReactiveDependencies reactiveDependencies;
+//  @Autowired
+//  private ReactiveDependencies reactiveDependencies;
   @Autowired
   private ClassicDependencies classicDependencies;
 
@@ -72,7 +72,7 @@ public class JooqApplication {
               .set(AUTHOR_BOOK.BOOK_ID, bookId)
               .execute();
     }
-    reactiveDependencies.rabbitSend("Book created: " + bookId);
+    classicDependencies.rabbitSend("Book created: " + bookId);
   }
 
   @Value
