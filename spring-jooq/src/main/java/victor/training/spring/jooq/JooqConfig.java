@@ -22,7 +22,17 @@ public class JooqConfig {
   //    jooqConfiguration.set(new DefaultExecuteListenerProvider(exceptionTranslator()));
   //    return jooqConfiguration;
   //  }
-  //
+  // public static class ExceptionTranslator extends DefaultExecuteListener {
+  //    public void exception(ExecuteContext context) {
+  //        SQLDialect dialect = context.configuration().dialect();
+  //        SQLExceptionTranslator translator
+  //          = new SQLErrorCodeSQLExceptionTranslator(dialect.name());
+  //        context.exception(translator
+  //          .translate("Access database using Jooq", context.sql(), context.sqlException()));
+  //    }
+  //}
+
+
   //  @Bean
   //  public ExceptionTranslator exceptionTranslator() {
   //    return new ExceptionTranslator();

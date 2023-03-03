@@ -3,7 +3,6 @@ package victor.training.spring.jooq;
 import lombok.SneakyThrows;
 import lombok.Value;
 import org.jooq.DSLContext;
-import org.jooq.Records;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import victor.training.spring.jooq.table.tables.Author;
 import victor.training.spring.jooq.table.tables.Book;
 
 import java.net.URI;
@@ -37,6 +35,10 @@ public class JooqApplication {
   @Autowired
   private DSLContext dsl;
 
+  @Autowired
+  private ReactiveDependencies reactiveDependencies;
+  @Autowired
+  private ClassicDependencies classicDependencies;
 
   @Value
   public static class BookDto {
@@ -59,17 +61,18 @@ public class JooqApplication {
   }
   @PostMapping("books")
   public void createBook(@RequestBody CreateBookRequest dto) {
-    Integer id = new Random().nextInt(100000); // dirty hack :)
+    Integer bookId = new Random().nextInt(100000); // dirty hack :)
     dsl.insertInto(Book.BOOK)
-            .set(Book.BOOK.ID,id )
+            .set(Book.BOOK.ID,bookId )
             .set(Book.BOOK.TITLE, dto.title)
             .execute();
     for (Integer authorId : dto.authorIds) {
       dsl.insertInto(AUTHOR_BOOK)
               .set(AUTHOR_BOOK.AUTHOR_ID, authorId)
-              .set(AUTHOR_BOOK.BOOK_ID, id)
+              .set(AUTHOR_BOOK.BOOK_ID, bookId)
               .execute();
     }
+    reactiveDependencies.rabbitSend("Book created: " + bookId);
   }
 
   @Value
@@ -95,6 +98,12 @@ public class JooqApplication {
     return response.getBody();
   }
 
-
+  @GetMapping("reader/{id}/check")
+  public boolean checkProfile(Long readerId) {
+    ReaderProfile profile = classicDependencies.fetchUserProfile(readerId);
+    boolean addressOk = classicDependencies.checkAddress(profile);
+    boolean phoneOk = classicDependencies.checkPhone(profile);
+    return addressOk && phoneOk;
+  }
 
 }
