@@ -140,12 +140,18 @@ public class JooqApplication {
             .bodyToMono(String.class);
   }
 
-  @GetMapping("reader/{id}/check")
-  public boolean checkProfile(Long readerId) {
-    ReaderProfile profile = classicDependencies.fetchUserProfile(readerId);
-    boolean addressOk = classicDependencies.checkAddress(profile);
-    boolean phoneOk = classicDependencies.checkPhone(profile);
-    return addressOk && phoneOk;
+  @GetMapping("reader/{readerId}/check")
+  public Mono<Boolean> checkProfile(@PathVariable Long readerId) {
+//    ReaderProfile profile = classicDependencies.fetchUserProfile(readerId);
+//    boolean addressOk = classicDependencies.checkAddress(profile);
+//    boolean phoneOk = classicDependencies.checkPhone(profile);
+//    return addressOk && phoneOk;
+
+    Mono<ReaderProfile> profileMono = reactiveDependencies.fetchUserProfile(readerId);
+    Mono<Boolean> addressMono = profileMono.flatMap(profile -> reactiveDependencies.checkAddress(profile));
+    Mono<Boolean> phoneMono = profileMono.flatMap(profile -> reactiveDependencies.checkPhone(profile));
+
+    return addressMono.zipWith(phoneMono, (a, p) -> a && p);
   }
 
 }

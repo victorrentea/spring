@@ -17,7 +17,7 @@ public class ReactiveDependencies {
     return Mono.fromRunnable(() -> log.info("🐇 send message: {}", message));
   }
 
-  public Mono<ReaderProfile> fetchUserProfile(String readerId) {
+  public Mono<ReaderProfile> fetchUserProfile(Long readerId) {
     return Mono.fromRunnable(() -> log.info("Rest call PROFILE: {}", readerId))
             .thenReturn(new ReaderProfile());
   }
