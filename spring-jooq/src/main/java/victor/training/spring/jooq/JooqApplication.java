@@ -147,11 +147,17 @@ public class JooqApplication {
 //    boolean phoneOk = classicDependencies.checkPhone(profile);
 //    return addressOk && phoneOk;
 
-    Mono<ReaderProfile> profileMono = reactiveDependencies.fetchUserProfile(readerId);
-    Mono<Boolean> addressMono = profileMono.flatMap(profile -> reactiveDependencies.checkAddress(profile));
-    Mono<Boolean> phoneMono = profileMono.flatMap(profile -> reactiveDependencies.checkPhone(profile));
+    //    Mono<Boolean> addressMono = profileMono.flatMap(profile -> reactiveDependencies.checkAddress(profile));
+//    Mono<Boolean> phoneMono = profileMono.flatMap(profile -> reactiveDependencies.checkPhone(profile));
+//
+//    return addressMono.zipWith(phoneMono, (a, p) -> a && p);
 
-    return addressMono.zipWith(phoneMono, (a, p) -> a && p);
+
+    return reactiveDependencies.fetchUserProfile(readerId)
+            .flatMap(profile -> Mono.zip(
+                  reactiveDependencies.checkAddress(profile),
+                  reactiveDependencies.checkPhone(profile),
+                  (a, p) -> a && p));
   }
 
 }
