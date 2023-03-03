@@ -9,10 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.TimeZone;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Slf4j
 public class KeyCloakUtils {
@@ -22,15 +26,17 @@ public class KeyCloakUtils {
             return;
         }
         KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) opaquePrincipal;
-        KeycloakSecurityContext keycloakSecurityContext = principal.getKeycloakSecurityContext();
+        KeycloakSecurityContext context = principal.getKeycloakSecurityContext();
 
-        log.info("\n-- OpenID Connect Token 👑: {}\n{}",
-                keycloakSecurityContext.getIdTokenString(),
-                prettyFormatJWT(keycloakSecurityContext.getIdTokenString()));
-        log.info("\n-- Access Token 👑 (exp={}): {}\n{}",
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(keycloakSecurityContext.getToken().getExp()), TimeZone.getDefault().toZoneId()).format(ISO_LOCAL_TIME),
-                keycloakSecurityContext.getTokenString(),
-                prettyFormatJWT(keycloakSecurityContext.getTokenString()));
+        log.info("\n-- OpenID Connect Token 👑: {} " , context.getIdTokenString());
+        LocalDateTime expirationTime = Instant.ofEpochMilli(context.getToken().getExp() * 1000L)
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String deltaLeft  = LocalTime.MIN.plusSeconds(LocalDateTime.now().until(expirationTime, ChronoUnit.SECONDS)).toString();
+        log.info("\n-- Access Token 👑 (expires in {} at {}): {}\n{}",
+                deltaLeft,
+                expirationTime,
+                context.getTokenString(),
+                prettyFormatJWT(context.getTokenString()));
     }
 
     private static String prettyFormatJWT(String jwtString) {
