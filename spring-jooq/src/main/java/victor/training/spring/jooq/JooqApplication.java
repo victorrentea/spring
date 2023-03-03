@@ -82,11 +82,6 @@ public class JooqApplication {
     return insertBook(dto, bookId)
             .thenMany(Flux.fromIterable(dto.authorIds))
             .flatMap(authorId -> insertBookAuthor(bookId, authorId))
-            .then()
-//            .doOnTerminate(() -> {
-//              System.out.println("Sending rabbit message <- this log is a lie!!");
-//              reactiveDependencies.rabbitSend("Book created: " + bookId).subscribe();
-//            });
             .then(reactiveDependencies.rabbitSend("Book created: " + bookId));
 
   }
