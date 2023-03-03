@@ -106,13 +106,19 @@ public class JooqApplication {
     String lastName;
     String bio;
   }
+
+
   @GetMapping("authors")
-  public List<AuthorDto> authors() {
-    return dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
+  public Flux<AuthorDto> authors() {
+    return Flux.from(dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME)
             .from(AUTHOR)
-            .fetch()
-            .map(r -> new AuthorDto(r.value1(), r.value2(), r.value3(), fetchBio(r.value1())));
+            )
+            .map(r -> new AuthorDto(r.value1(), r.value2(), r.value3(),
+                    fetchBio(r.value1())));
   }
+
+
+
 
   @SneakyThrows
   private String fetchBio(Integer authorId) {
