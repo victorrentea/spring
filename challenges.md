@@ -17,7 +17,7 @@
 - Define as beans two classes X1 and X2 implementing the same interface X 
   - Inject in a field an object of type X (interface) > Enjoy the error, then fix it as follows:
   - If the profile 'local' is active X2 should be injected; otherwise X1. Test.
-  - Inject in a field a List<X>: what happens?
+  - Inject in a field an @Autowired List<X>: what happens?
 - Define two beans of the same type Y but with different name
   - Inject an Y somewhere. Did it crash?
   - Decide which of the two beans to inject using @Qualifier, and then using Injection Point Name 
@@ -70,7 +70,6 @@
 ### Transactions
 - Workout victor.training.spring.transaction.exercises.propagation.PropagationExercises
 - Workout victor.training.spring.transaction.exercises.exceptions.ExceptionsExercises
-
 
 ### Async
 - Start a long-running task from a REST API (the api call should not wait for it to complete)
