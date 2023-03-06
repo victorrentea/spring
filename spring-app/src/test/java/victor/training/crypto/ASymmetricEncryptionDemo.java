@@ -1,4 +1,4 @@
-package crypto;
+package victor.training.crypto;
 
 import org.junit.jupiter.api.Test;
 
@@ -7,8 +7,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.*;
 
 public class ASymmetricEncryptionDemo {

@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
 
-    public ApiKeyFilter() {
+    public ApiKeyFilter(String expectedApiKey) {
         setAuthenticationManager(new AuthenticationManager() {
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 if (authentication.getPrincipal() instanceof String) {
                     String apiKeyFromHeader = (String) authentication.getPrincipal();
-                    if ("secret".equals(apiKeyFromHeader)) {
+                    if (expectedApiKey.equals(apiKeyFromHeader)) {
                         authentication.setAuthenticated(true);
                         return authentication;
                     }
@@ -28,7 +28,7 @@ public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        return request.getHeader("X-Api-Key");
+        return request.getHeader("x-api-key");
     }
 
     @Override

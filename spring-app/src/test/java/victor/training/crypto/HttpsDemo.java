@@ -1,4 +1,4 @@
-package crypto;
+package victor.training.crypto;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;

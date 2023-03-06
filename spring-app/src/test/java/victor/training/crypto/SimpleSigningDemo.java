@@ -1,4 +1,4 @@
-package crypto;
+package victor.training.crypto;
 
 import org.apache.commons.codec.DecoderException;
 import org.junit.jupiter.api.Test;

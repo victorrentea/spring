@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import javax.annotation.PostConstruct;
 
 @Slf4j
-@Profile("!form & !jwt & !keycloak & !apikey & !header")
+@Profile("!userpass & !jwt & !keycloak & !apikey & !header")
 @EnableWebSecurity
 public class SecurityConfigDisabled extends WebSecurityConfigurerAdapter {
 

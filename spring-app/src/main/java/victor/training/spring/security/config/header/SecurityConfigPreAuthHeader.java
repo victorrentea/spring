@@ -19,12 +19,14 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable() // as I don't ever take <form> POSTs
-            .authorizeRequests().anyRequest().authenticated().and()
-            .addFilter(preAuthHeaderFilter())
-            .authenticationProvider(preAuthenticatedProvider())
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-    ;
+    http.csrf().disable(); // as I don't ever take <form> POSTs
+
+    http.authorizeRequests().anyRequest().authenticated();
+
+    http.addFilter(preAuthHeaderFilter())
+            .authenticationProvider(preAuthenticatedProvider());
+
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
   @Bean

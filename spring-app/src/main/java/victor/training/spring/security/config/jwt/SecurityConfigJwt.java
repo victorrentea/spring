@@ -26,9 +26,9 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         http.csrf().disable();
         http.authenticationProvider(preAuthenticatedProvider())
-            .addFilter(jwtFilter())
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        ;
+            .addFilter(jwtFilter());
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean

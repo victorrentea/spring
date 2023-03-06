@@ -1,4 +1,4 @@
-package crypto;
+package victor.training.crypto;
 
 import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
