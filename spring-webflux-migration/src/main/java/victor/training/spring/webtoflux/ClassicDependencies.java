@@ -1,14 +1,8 @@
-package victor.training.spring.jooq;
+package victor.training.spring.webtoflux;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
 
 @Slf4j
 @Component
@@ -21,7 +15,9 @@ public class ClassicDependencies {
   }
 
   public void rabbitSend(String message) {
-    log.info("🐇 send message: {}", message);
+//    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    String currentUsername = "jdoe"; // from current thread
+    log.info("🐇 send message: {} by {}", message, currentUsername);
   }
 
   public ReaderProfile fetchUserProfile(Long readerId) {
