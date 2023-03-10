@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
     return responseBody;
   }
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  @ResponseStatus(BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public String onJavaxValidationException(MethodArgumentNotValidException e) {
     String response = e.getAllErrors().stream()
