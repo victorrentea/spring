@@ -46,7 +46,9 @@ public class TrainingController {
 		trainingService.createTraining(dto);
 	}
 
-	public void update(Long trainingId, TrainingDto dto) throws ParseException {
+	@Operation(description = "Create a training")
+	@PutMapping("{trainingId}")
+	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) throws ParseException {
 		trainingService.updateTraining(trainingId, dto);
 	}
 
