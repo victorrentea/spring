@@ -43,7 +43,7 @@ public class TrainingService {
         TrainingDto dto = new TrainingDto(training);
         dto.teacherBio = retrieveTeacherBio(dto.teacherId);
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        training.startEdit(currentUser); // PESSIMISTIC LOCKING
+//        training.startEdit(currentUser); // PESSIMISTIC LOCKING
         return dto;
     }
 
@@ -91,7 +91,7 @@ public class TrainingService {
             // Alternative: Hibernate would throw this automatically when repo.save(new Entity from Dto) => EntityManager.merge operator
         }
         // PESSIMISTIC LOCKING
-        training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
+        //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     public void deleteById(Long id) {

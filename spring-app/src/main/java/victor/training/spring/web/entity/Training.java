@@ -41,7 +41,7 @@ public class Training {
 	@Version
 	private Long version;
 
-	// pessimistic locking (block two attempts to edit at the same time)
+	// pessimistic locking (prevent opening the edit screen for the same record at the same time)
 	@Setter(AccessLevel.NONE)
 	private String inEditByUser;
 	@Setter(AccessLevel.NONE)
