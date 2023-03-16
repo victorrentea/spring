@@ -61,7 +61,6 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
-
     // TODO update the training from the DTO
     // TODO report duplicated training name as an exception to the user
     // TODO implement optimistic locking (block 2 concurrent users to edit the same entity)
