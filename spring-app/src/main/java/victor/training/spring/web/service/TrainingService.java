@@ -11,6 +11,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
+import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,10 @@ public class TrainingService {
                 .setDescription(dto.description)
                 .setProgrammingLanguage(dto.language)
                 .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
+
+        if (!dto.version.equals(training.getVersion())) {
+            throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");
+        }
 
         if (!dto.startDate.equals(training.getStartDate())) {
             // TODO check date not in the past

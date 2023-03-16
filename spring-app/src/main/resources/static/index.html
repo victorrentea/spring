@@ -166,8 +166,8 @@
     }
 
     function showDescription(id) {
-        const descriptionHtml = trainingsData.find(t=>t.id === id).description;
-        document.getElementById("showRichDescription").innerHTML = descriptionHtml;
+        document.getElementById("showRichDescription").innerHTML =
+            trainingsData.find(t => t.id === id).description;
     }
 
 
@@ -196,7 +196,7 @@
         });
     }
 
-    var currentUser = {};
+    let currentUser = {};
     $.ajax(restEndpoint + "/user/current", {
         method: "GET",
         success: function (user) {
@@ -206,8 +206,6 @@
             refreshTrainingsTable(); //
         }
     });
-
-    $("#newStartDate").val("01-01-2019");
 
     function populateTeacherSelect($teacherSelect) {
         $teacherSelect.html("");
@@ -252,7 +250,7 @@
     }
 
     //------------- TRAINING: UPDATE SCREEN --------------------
-
+    let versionUnderEdit;
     function openEditTraining(trainingId) {
         $.ajax(restEndpoint + "/trainings/" + trainingId, {
             method: "GET",
@@ -265,6 +263,7 @@
                 $("#editStartDate").val(data.startDate);
                 $("#editTeacher").val(data.teacherId);
                 $("#teacherBio").text(data.teacherBio);
+                versionUnderEdit = data.version;
                 $('#trainingMain').hide();
                 $('#trainingEditDiv').show();
             }
@@ -279,6 +278,7 @@
                 language: $("#editLanguage").val(),
                 startDate: $("#editStartDate").val(),
                 teacherId: $("#editTeacher").val(),
+                version: versionUnderEdit,
                 description: editDescriptionQuill.root.innerHTML
                 // description: $("#editDescription").val()
             }),

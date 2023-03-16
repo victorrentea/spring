@@ -21,8 +21,10 @@ public class TrainingDto {
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	public LocalDate startDate;
 	public String description;
+	public Long version;
 
 	public TrainingDto() {}
+
 	public TrainingDto(Training training) {
 		id = training.getId();
 		name = training.getName();
@@ -31,5 +33,6 @@ public class TrainingDto {
 		teacherId = training.getTeacher().getId();
 		language = training.getProgrammingLanguage();
 		teacherName = training.getTeacher().getName();
+		version = training.getVersion();
 	}
 }

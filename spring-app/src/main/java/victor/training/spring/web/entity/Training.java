@@ -20,6 +20,8 @@ public class Training {
 	private Teacher teacher;
 	@Enumerated(EnumType.STRING)
 	private ProgrammingLanguage programmingLanguage;
+	@Version
+	private Long version;
 
 	public Training() {
 	}
