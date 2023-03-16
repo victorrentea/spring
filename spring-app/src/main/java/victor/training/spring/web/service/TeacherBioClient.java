@@ -30,6 +30,8 @@ public class TeacherBioClient {
   // don't do "new RestTemplate()" but take it from Spring, to allow Sleuth to propagate 'traceId'
   private final RestTemplate rest;
 
+
+
   // TODO cacheable
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");

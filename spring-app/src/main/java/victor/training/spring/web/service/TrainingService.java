@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -38,14 +39,21 @@ public class TrainingService {
     }
 
     public TrainingDto getTrainingById(Long id) {
-        TrainingDto dto = new TrainingDto(trainingRepo.findById(id).orElseThrow());
+        Training training = trainingRepo.findById(id).orElseThrow();
+        TrainingDto dto = new TrainingDto(training);
+        dto.teacherBio = retrieveTeacherBio(dto.teacherId);
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        training.startEdit(currentUser); // PESSIMISTIC LOCKING
+        return dto;
+    }
+
+    private String retrieveTeacherBio(Long teacherId) {
         try {
-            dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
+            return teacherBioClient.retrieveBiographyForTeacher(teacherId);
         } catch (RuntimeException e) {
             log.error("Error retrieving bio", e);
-            dto.teacherBio = "<ERROR RETRIEVING TEACHER BIO (see logs)>";
+            return "<ERROR RETRIEVING TEACHER BIO (see logs)>";
         }
-        return dto;
     }
 
     public void createTraining(TrainingDto dto) {
@@ -71,15 +79,19 @@ public class TrainingService {
                 .setProgrammingLanguage(dto.language)
                 .setTeacher(new Teacher(dto.teacherId));
 
-        if (!dto.version.equals(training.getVersion())) {
-            throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");
-        }
-
         if (!dto.startDate.equals(training.getStartDate())) {
             // TODO check date not in the past
             emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), dto.startDate);
             training.setStartDate(dto.startDate);
         }
+
+        // OPTIMISTIC LOCKING
+        if (!dto.version.equals(training.getVersion())) {
+//            throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");
+            // Alternative: Hibernate would throw this automatically when repo.save(new Entity from Dto) => EntityManager.merge operator
+        }
+        // PESSIMISTIC LOCKING
+        training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     public void deleteById(Long id) {
