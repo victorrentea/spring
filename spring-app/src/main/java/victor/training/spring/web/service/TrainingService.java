@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.Teacher;
 import victor.training.spring.web.entity.Training;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -15,7 +16,6 @@ import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
@@ -61,15 +61,15 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
-    public void updateTraining(Long id, TrainingDto dto) {
-        if (trainingRepo.getByNameAndIdNot(dto.name, id) != null) {
+    public void updateTraining(TrainingDto dto) {
+        if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).orElseThrow()
+        Training training = trainingRepo.findById(dto.id).orElseThrow()
                 .setName(dto.name)
                 .setDescription(dto.description)
                 .setProgrammingLanguage(dto.language)
-                .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
+                .setTeacher(new Teacher(dto.teacherId));
 
         if (!dto.version.equals(training.getVersion())) {
             throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");

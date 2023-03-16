@@ -2,10 +2,8 @@ package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -13,14 +11,10 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
-
 
 @RequiredArgsConstructor
 @RestController
@@ -42,14 +36,15 @@ public class TrainingController {
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
-	public void create(@RequestBody TrainingDto dto) throws ParseException {
+	public void create(@RequestBody TrainingDto dto) {
 		trainingService.createTraining(dto);
 	}
 
 	@Operation(description = "Create a training")
 	@PutMapping("{trainingId}")
-	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) throws ParseException {
-		trainingService.updateTraining(trainingId, dto);
+	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
+		dto.id = trainingId;
+		trainingService.updateTraining(dto);
 	}
 
 	// TODO Allow only for role 'ADMIN'
@@ -64,13 +59,14 @@ public class TrainingController {
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
+
 	private final TrainingRepo trainingRepo;
 
 
-	// TODO a 'search' request should use GET or POST ?
+	// --------------------------------------------------
+	// TODO 'search' should use GET or POST ?
 	// GET:
 	// POST:
-
 
 	@PostMapping("search") // pragmatic HTTP endpoints
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
@@ -95,7 +91,7 @@ public class TrainingController {
 		return ResponseEntity.ok()
 						.contentType(IMAGE_JPEG)
 						.contentLength(picture.contentLength())
-//						.header("Content-Disposition", "attachment; filename=\"spa.jpg\"") // tell browser to download as file
+//						.header("Content-Disposition", "attachment; filename=\"spa.jpg\"") // tells browser to download as file
 						.body(picture);
 	}
 

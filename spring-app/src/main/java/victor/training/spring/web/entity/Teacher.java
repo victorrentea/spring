@@ -23,7 +23,10 @@ public class Teacher {
 	private List<Training> trainings = new ArrayList<>();
 
 	protected Teacher() {}
-	
+	public Teacher(Long id) {
+		this.id = id;
+	}
+
 	public Teacher(String name) {
 		this.name = name;
 	}

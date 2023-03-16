@@ -69,13 +69,13 @@ public class Utils {
 
     public static void printText(String name, byte[] bytes) {
         System.out.println(name + ": "+ new String(bytes));
-        System.out.println(name + "length: " + bytes.length + " bytes, " + bytes.length * 8 + " bits.");
+        System.out.println(name + "length: " + bytes.length + " bytes = " + bytes.length * 8 + " bits.");
         System.out.println("\r\n");
     }
 
     public static void printByteArray(String name, byte[] bytes) {
         System.out.println(name + ": "+ Hex.encodeHexString(bytes));
-        System.out.println(name + " length: " + bytes.length + " bytes, " + bytes.length * 8 + " bits.");
+        System.out.println(name + " length: " + bytes.length + " bytes = " + bytes.length * 8 + " bits.");
         System.out.println("\r\n");
     }
 
