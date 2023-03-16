@@ -61,25 +61,13 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
+
+    // TODO update the training from the DTO
+    // TODO report duplicated training name as an exception to the user
+    // TODO implement optimistic locking (block 2 concurrent users to edit the same entity)
+    // TODO emailSender.sendScheduleChangedEmail if the training changed the start date
     public void updateTraining(Long id, TrainingDto dto) {
-        if (trainingRepo.getByNameAndIdNot(dto.name, id) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
-        }
-        Training training = trainingRepo.findById(id).orElseThrow()
-                .setName(dto.name)
-                .setDescription(dto.description)
-                .setProgrammingLanguage(dto.language)
-                .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
 
-        if (!dto.version.equals(training.getVersion())) {
-            throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");
-        }
-
-        if (!dto.startDate.equals(training.getStartDate())) {
-            // TODO check date not in the past
-            emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), dto.startDate);
-            training.setStartDate(dto.startDate);
-        }
     }
 
     public void deleteById(Long id) {
