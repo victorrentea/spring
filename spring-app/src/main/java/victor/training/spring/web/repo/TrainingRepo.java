@@ -13,4 +13,5 @@ public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecific
     Optional<Training> findById(Long aLong);
 
     Training getByName(String name);
+    Training getByNameAndIdNot(String name, Long currentId);
 }
