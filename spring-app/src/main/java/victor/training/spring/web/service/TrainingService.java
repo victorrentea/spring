@@ -66,11 +66,6 @@ public class TrainingService {
     // TODO implement optimistic locking (block 2 concurrent users to edit the same entity)
     // TODO emailSender.sendScheduleChangedEmail if the training changed the start date
     public void updateTraining(Long id, TrainingDto dto) {
-        Training training= trainingRepo.findById(id).orElseThrow();
-        training.setName(dto.name);
-        training.setDescription(dto.description);
-        training.setTeacher(teacherRepo.findById(dto.teacherId).orElseThrow());
-
 
     }
 
