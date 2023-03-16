@@ -9,6 +9,7 @@ import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.UserRepo;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -30,19 +31,19 @@ public class InitialData {
 		Teacher victor = teacherRepo.save(new Teacher("Victor").setContractType(ContractType.INDEPENDENT));
 		Teacher ionut = teacherRepo.save(new Teacher("Ionut").setContractType(ContractType.PART));
 
-		Training spring = new Training("Spring Framework", new Date(System.currentTimeMillis()+10*24*60*60*1000L))
+		Training spring = new Training("Spring Framework", LocalDate.now().plusDays(10))
 				.setDescription("<p>All about <b>Spring</b></p>")
 				.setProgrammingLanguage(JAVA)
 				.setTeacher(victor);
-		Training jpa = new Training("JPA", new Date(System.currentTimeMillis()+2*24*60*60*1000L))
+		Training jpa = new Training("JPA", LocalDate.now().plusDays(2))
 				.setDescription("<p>The coolest standard in Java EE</p>")
 				.setProgrammingLanguage(JAVA)
 				.setTeacher(victor);
-		Training javaBasic = new Training("Java Basic", new Date(System.currentTimeMillis()+20*24*60*60*1000L))
+		Training javaBasic = new Training("Java Basic", LocalDate.now().plusDays(20))
 				.setDescription("<p>The new way of doing Single Page Applications</p>")
 				.setProgrammingLanguage(JAVA)
 				.setTeacher(ionut);
-		Training patterns = new Training("Design Patterns", new Date(System.currentTimeMillis()+2*24*60*60*1000L))
+		Training patterns = new Training("Design Patterns", LocalDate.now().plusDays(5))
 				.setDescription("<p>Design Thinking</p>")
 				.setProgrammingLanguage(PHP)
 				.setTeacher(victor);

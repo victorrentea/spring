@@ -11,12 +11,10 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
@@ -33,82 +31,59 @@ public class TrainingService {
     public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
-            dtos.add(mapToDto(training));
+            dtos.add(new TrainingDto(training));
         }
         return dtos;
     }
 
     public TrainingDto getTrainingById(Long id) {
-        TrainingDto dto = mapToDto(trainingRepo.findById(id).orElseThrow());
+        TrainingDto dto = new TrainingDto(trainingRepo.findById(id).orElseThrow());
         try {
             dto.teacherBio = teacherBioClient.retrieveBiographyForTeacher(dto.teacherId);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("Error retrieving bio", e);
             dto.teacherBio = "<ERROR RETRIEVING TEACHER BIO (see logs)>";
         }
         return dto;
     }
 
-    // TODO Test this!
-    public void updateTraining(Long id, TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null &&  !trainingRepo.getByName(dto.name).getId().equals(id)) {
+    public void createTraining(TrainingDto dto) {
+        if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
-        Training training = trainingRepo.findById(id).orElseThrow();
-        training.setName(dto.name);
-        training.setDescription(dto.description);
-        // TODO implement date not in the past using i18n error message
-        Date newDate = parseStartDate(dto);
-        if (!newDate.equals(training.getStartDate())) {
-            emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), newDate);
-        }
-        training.setStartDate(newDate);
-        training.setProgrammingLanguage(dto.language);
-        training.setTeacher(teacherRepo.getById(dto.teacherId));
+        Training newEntity = new Training()
+                .setName(dto.name)
+                .setDescription(dto.description)
+                .setProgrammingLanguage(dto.language)
+                .setStartDate(dto.startDate)
+                .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
+        trainingRepo.save(newEntity);
     }
 
-    private Date parseStartDate(TrainingDto dto) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        return format.parse(dto.startDate);
+    public void updateTraining(Long id, TrainingDto dto) {
+        if (trainingRepo.getByNameAndIdNot(dto.name, id) != null) {
+            throw new IllegalArgumentException("Another training with that name already exists");
+        }
+        Training training = trainingRepo.findById(id).orElseThrow()
+                .setName(dto.name)
+                .setDescription(dto.description)
+                .setProgrammingLanguage(dto.language)
+                .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
+
+        if (!dto.startDate.equals(training.getStartDate())) {
+            // TODO check date not in the past
+            emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), dto.startDate);
+            training.setStartDate(dto.startDate);
+        }
     }
 
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
 
-    public void createTraining(TrainingDto dto) throws ParseException {
-        if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
-        }
-        trainingRepo.save(mapToEntity(dto));
-    }
-
-    private TrainingDto mapToDto(Training training) {
-        TrainingDto dto = new TrainingDto();
-        dto.id = training.getId();
-        dto.name = training.getName();
-        dto.description = training.getDescription();
-        dto.startDate = new SimpleDateFormat("dd-MM-yyyy").format(training.getStartDate());
-        dto.teacherId = training.getTeacher().getId();
-        dto.language = training.getProgrammingLanguage();
-        dto.teacherName = training.getTeacher().getName();
-        return dto ;
-    }
-
-    private Training mapToEntity(TrainingDto dto) throws ParseException {
-        Training newEntity = new Training();
-        newEntity.setName(dto.name);
-        newEntity.setDescription(dto.description);
-        newEntity.setProgrammingLanguage(dto.language);
-        newEntity.setStartDate(parseStartDate(dto));
-        newEntity.setTeacher(teacherRepo.getById(dto.teacherId));
-        return newEntity;
-    }
-
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
-        log.debug("Search by " + criteria);
         return trainingSearchRepo.search(criteria).stream()
-            .map(this::mapToDto)
+            .map(TrainingDto::new)
             .collect(toList());
     }
 }

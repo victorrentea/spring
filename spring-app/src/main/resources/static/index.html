@@ -298,6 +298,7 @@
         populateLanguageSelect($("#newLanguage"));
         populateTeacherSelect($("#newTeacher"));
         $("#newName").val("");
+        $("#newStartDate").val("01-01-"+(1+new Date().getFullYear()));
         // $("#newDescription").val("");
         newDescriptionQuill.root.innerHTML = "";
         $('#trainingMain').hide();

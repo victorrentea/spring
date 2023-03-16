@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecificationExecutor<Training> {
     Training getByName(String name);
+    Training getByNameAndIdNot(String name, Long currentId);
 }
