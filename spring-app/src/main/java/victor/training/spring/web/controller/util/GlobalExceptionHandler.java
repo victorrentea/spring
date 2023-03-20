@@ -31,6 +31,8 @@ public class GlobalExceptionHandler {
     if (exception instanceof AccessDeniedException) {
       throw exception; // allow 403 to go out
     }
+// blocks all excveptions and replies in http only with the ex message
+
     log.error(exception.getMessage(), exception);
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
