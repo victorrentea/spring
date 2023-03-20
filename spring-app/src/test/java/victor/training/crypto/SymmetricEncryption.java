@@ -16,7 +16,9 @@ public class SymmetricEncryption {
     public void testSymmetricEncryption() throws GeneralSecurityException {
         // generate a symmetric encryption key
         // TODO KeyGenerator AES, init 192 bits
-        Key key = null;
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(192);
+        Key key = keyGenerator.generateKey();
         Utils.printByteArray("key", key.getEncoded());
 
         // get a random Initialization Vector (IV) for the block symmetric encryption
@@ -29,14 +31,18 @@ public class SymmetricEncryption {
 
         // encryption
         Cipher encrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        // TODO init(ENCRYPT,key,iv), .doFinal
-
-        byte[] encryptedOutput = null;
+        encrypt.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+        byte[] encryptedOutput = encrypt.doFinal(input);
         Utils.printByteArray("encrypted output", encryptedOutput);
 
+
+        // ---------
         // decryption
         // TODO idem as above, with DECRYPT
-        byte[] decryptedOutput = null;
+
+        Cipher dencrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        dencrypt.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+        byte[] decryptedOutput = dencrypt.doFinal(encryptedOutput);
         Utils.printText("decrypted input", decryptedOutput);
     }
 
