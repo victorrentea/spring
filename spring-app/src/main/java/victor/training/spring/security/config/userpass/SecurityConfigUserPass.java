@@ -19,11 +19,11 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-//    http.csrf().disable(); // OK since I never take <form> POSTs
+    http.csrf().disable(); // OK since I never take <form> POSTs
 
-    CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
-    csrfTokenRepository.setCookieHttpOnly(false);
-    http.csrf().csrfTokenRepository(csrfTokenRepository);
+//    CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+//    csrfTokenRepository.setCookieHttpOnly(false);
+//    http.csrf().csrfTokenRepository(csrfTokenRepository);
     // http.cors(); // needed only if .js files are served by a CDN (eg)
 
     http.authorizeRequests().anyRequest().authenticated();
