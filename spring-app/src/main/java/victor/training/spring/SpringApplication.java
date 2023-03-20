@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import javax.sql.DataSource;
-
 import java.sql.SQLException;
 
 import static java.lang.System.currentTimeMillis;

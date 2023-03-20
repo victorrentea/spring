@@ -41,7 +41,7 @@ public class DigitalSignatureJKS {
     }
 
     private static PrivateKey getSenderPrivateKeyFromSenderJKS() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
-        InputStream keystoreInputStream = DigitalSignatureJKS.class.getResourceAsStream("/a.jks");
+        InputStream keystoreInputStream = DigitalSignatureJKS.class.getResourceAsStream("/security/a.jks");
         // TODO .load .getKey(a, storepass) as (PrivateKey)
         PrivateKey privateKey = null;
 
@@ -50,7 +50,7 @@ public class DigitalSignatureJKS {
     }
 
     private static PublicKey getSenderCertificateFromRecipientJKS() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
-        InputStream keystoreInputStream = DigitalSignatureJKS.class.getResourceAsStream("/b.jks");
+        InputStream keystoreInputStream = DigitalSignatureJKS.class.getResourceAsStream("/security/b.jks");
         // TODO KeyStore.getinstance(JKS), load using 'storepass' as password
 
         // TODO getCertificate(a).getPublicKey()
