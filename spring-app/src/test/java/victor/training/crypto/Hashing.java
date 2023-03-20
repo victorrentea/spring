@@ -36,8 +36,7 @@ public class Hashing {
     System.out.println("Input: " + data);
 
     // TODO MessageDigest.getInstance SHA-256
-    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-    byte[] digest = messageDigest.digest(data.getBytes());
+    byte[] digest = null;
 
     Utils.printByteArray("Digest", digest);
     return new String(Base64.getEncoder().encode(digest));
@@ -54,7 +53,7 @@ public class Hashing {
     try (InputStream inputStream = Hashing.class.getResourceAsStream(fileName)) {
       byte[] contentBytes = IOUtils.toByteArray(inputStream);
 
-      byte[] hashBytes = MessageDigest.getInstance("SHA-256").digest(contentBytes); // TODO
+      byte[] hashBytes = null; // TODO
       String hashHex = Hex.encodeHexString(hashBytes);
       System.out.println("hash(" + fileName + ") = " + hashHex);
       return hashHex;

@@ -21,9 +21,7 @@ public class DigitalSignature {
 
         Signature signatureAlgorithm = Signature.getInstance("SHA256WithRSA");
         // TODO initSign(privateK), update, sign
-        signatureAlgorithm.initSign(keyPair.getPrivate());
-        signatureAlgorithm.update(data.getBytes());
-        byte[] signature = signatureAlgorithm.sign();
+        byte[] signature = null;
 
         Utils.printByteArray("signature", signature);
 
@@ -34,10 +32,8 @@ public class DigitalSignature {
 
         Signature verificationAlgorithm = Signature.getInstance("SHA256WithRSA");
         // TODO initVerify(publicK), update, verify
-        verificationAlgorithm.initVerify(keyPair.getPublic());
-        verificationAlgorithm.update(receivedData.getBytes());
 
-        boolean matches = verificationAlgorithm.verify(signature);
+        boolean matches = false;
 
         assertThat(matches).as("Signature Matches").isTrue();
     }

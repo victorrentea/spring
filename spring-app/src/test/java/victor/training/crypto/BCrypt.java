@@ -12,13 +12,13 @@ public class BCrypt {
   void explore() {
     int strength = 10; // bcrypt work factor - increase when CPU of machines improve
     BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(strength, new SecureRandom());
-    String hashedPassword = bcrypt.encode("actuator");
+    String hashedPassword = "TODO";
 
     System.out.println("{bcrypt}" + hashedPassword);
 
     // TODO assert that bcrypt#matches is true
-    assertThat(bcrypt.matches("actuator", hashedPassword)).isTrue();
+
     // TODO assert that bcrypt#matches is false
-    assertThat(bcrypt.matches("different", hashedPassword)).isFalse();
+
   }
 }

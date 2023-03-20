@@ -27,16 +27,14 @@ public class ASymmetricEncryption {
         //encrypt
         Cipher cipher = Cipher.getInstance("RSA");
         // TODO .init(encrypt,private), .doFinal(
-        cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPrivate());
-        byte[] encryptedText = cipher.doFinal(text);
+        byte[] encryptedText = null;
 
         Utils.printByteArray("ciphertext", encryptedText);
 
 
         //decrypt
         // TODO .init(dencrypt,public), .doFinal(
-        cipher.init(Cipher.DECRYPT_MODE, keyPair.getPublic());
-        byte[] plainText = cipher.doFinal(encryptedText);
+        byte[] plainText = null;
 
         Utils.printText("decoded text", plainText);
     }
