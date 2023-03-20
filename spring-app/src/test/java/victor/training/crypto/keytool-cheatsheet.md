@@ -7,7 +7,7 @@ keytool -list -keystore a.jks -storepass storepass
 # Export the public key from a KeyPair as a certificate file (.cer)
 keytool -exportcert -keystore a.jks -storepass storepass -alias a -file a.cer -rfc
  
-# Import a certificate (.cer) in the truststore of a JKS
+# Import a certificate (.cer) in the truststore of a JKS: from now on. if a java program uses b.jks
 keytool -import -alias a -file a.cer -keystore b.jks -storepass storepass
  
 

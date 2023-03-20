@@ -24,7 +24,7 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
 //                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
                 .mvcMatchers("/unsecured/**").permitAll()
                 .anyRequest().authenticated();
-        http.csrf().disable();
+        http.csrf().disable(); // SAFE for REST API
         http.authenticationProvider(preAuthenticatedProvider())
             .addFilter(jwtFilter());
 
