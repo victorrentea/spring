@@ -17,7 +17,7 @@ public class Hashing {
   @Test
   public void hashingDemo() throws NoSuchAlgorithmException {
     System.out.println("one way only: cannot infer the original message from the hash");
-    hashText("The quick brown fox jumped over the lazy dog.");
+    hashText("parola");
 
     System.out.println("deterministic: same input => same hash");
     // TODO hash the same input and see the same output
@@ -36,11 +36,18 @@ public class Hashing {
     System.out.println("Input: " + data);
 
     // TODO MessageDigest.getInstance SHA-256
-    byte[] digest = null;
+    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+    messageDigest.update(data.getBytes());
+    byte[] digest = messageDigest.digest();
 
     Utils.printByteArray("Digest", digest);
     return new String(Base64.getEncoder().encode(digest));
   }
+
+
+
+
+
 
   @Test
   void checkFilesAreDifferentTestingTheirHash() throws IOException, NoSuchAlgorithmException {
@@ -52,8 +59,9 @@ public class Hashing {
   private static String hashFile(String fileName) throws IOException, NoSuchAlgorithmException {
     try (InputStream inputStream = Hashing.class.getResourceAsStream(fileName)) {
       byte[] contentBytes = IOUtils.toByteArray(inputStream);
+      // you can instead streamline the file reading eg 10 MB at once
 
-      byte[] hashBytes = null; // TODO
+      byte[] hashBytes = MessageDigest.getInstance("SHA-256").digest(contentBytes); // TODO
       String hashHex = Hex.encodeHexString(hashBytes);
       System.out.println("hash(" + fileName + ") = " + hashHex);
       return hashHex;
