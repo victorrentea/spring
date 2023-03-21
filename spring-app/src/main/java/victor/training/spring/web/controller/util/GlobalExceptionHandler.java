@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -65,5 +64,12 @@ public class GlobalExceptionHandler {
             .collect(Collectors.joining(", \n"));
     log.error("Validation failed. Returning: " + response, e);
     return response;
+  }
+
+
+  @ExceptionHandler(AccessDeniedException.class)
+  @ResponseStatus(FORBIDDEN)
+  public String notALlowed() {
+    return "Hands off!";
   }
 }
