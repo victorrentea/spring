@@ -27,7 +27,9 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 //    http.csrf().csrfTokenRepository(csrfTokenRepository);
     // http.cors(); // needed only if .js files are served by a CDN (eg)
 
-    http.authorizeRequests().anyRequest().authenticated();
+    http.authorizeRequests()
+            .mvcMatchers("...").permitAll()
+            .anyRequest().authenticated();
 
     http.formLogin().defaultSuccessUrl("/", true);
 
