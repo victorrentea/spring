@@ -7,10 +7,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.service.AuthorizationManager;
 import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
@@ -58,15 +60,17 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
-//	@PreAuthorize("hasRole('ADMIN')")
-	@Secured("ROLE_ADMIN")
+//	@Secured("ROLE_ADMIN")
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public void delete(@PathVariable Long trainingId) {
+//		authorizationManager.checkUserCanDeleteTraining();
+
 		trainingService.deleteById(trainingId);
 	}
 
 	private final TrainingRepo trainingRepo;
-
+	private final AuthorizationManager authorizationManager;
 
 	// --------------------------------------------------
 	// TODO 'search' should use GET or POST ?

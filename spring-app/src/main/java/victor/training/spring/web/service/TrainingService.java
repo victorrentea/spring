@@ -2,8 +2,11 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -98,6 +101,9 @@ public class TrainingService {
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
+
+    @Autowired
+    private AuthorizationManager authorizationManager;
 
     public List<TrainingDto> search(TrainingSearchCriteria criteria) {
         return trainingSearchRepo.search(criteria).stream()
