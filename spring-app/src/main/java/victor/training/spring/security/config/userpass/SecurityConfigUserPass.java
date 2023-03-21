@@ -20,7 +20,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable(); // OK since I never take <form> POSTs
 
-    // http.cors(); // needed only if .js files are served by a CDN (eg)
+    // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests().anyRequest().authenticated();
 
@@ -33,11 +33,18 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
   // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails userDetails = User.withDefaultPasswordEncoder()
-            .username("user").password("user").roles("USER").authorities("training.delete").build();
-    UserDetails adminDetails = User.withDefaultPasswordEncoder()
+    UserDetails user =
+//            User.builder().password("{bcrypt}$2a$10$9kaJk.kQ0GDLTZp0ihVgj.x7TfjuUKJ3uVGklE2mt.Fd9P5SlRoOm") // bcrypt(user)
+            User.withDefaultPasswordEncoder().password("user")
+            .username("user")
+            .roles("USER")
+//            .authorities("training.delete")
+            .build();
+    UserDetails admin = User.withDefaultPasswordEncoder()
             .username("admin").password("admin").roles("ADMIN").build();
-    return new InMemoryUserDetailsManager(userDetails, adminDetails);
+    UserDetails power = User.withDefaultPasswordEncoder()
+            .username("power").password("power").roles("POWER").build();
+    return new InMemoryUserDetailsManager(user, admin);
   }
 
 }
