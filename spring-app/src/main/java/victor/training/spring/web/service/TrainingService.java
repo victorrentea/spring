@@ -95,7 +95,6 @@ public class TrainingService {
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
-    @Secured("ROLE_ADMIN")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
