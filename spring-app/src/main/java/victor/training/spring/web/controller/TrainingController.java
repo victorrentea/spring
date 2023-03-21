@@ -2,6 +2,8 @@ package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,8 @@ public class TrainingController {
 	@Operation(description = "Create a training")
 	@PostMapping
 	public void create(@RequestBody TrainingDto dto) {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.createTraining(dto);
 	}
 
@@ -48,6 +52,12 @@ public class TrainingController {
 	@PutMapping("{trainingId}")
 	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
 		dto.id = trainingId;
+
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		// whitelist = only allow SAFE tags << BETTER!! <li> <p> <b>
+		// blacklist = FORBID <script> ... 10 years later <img onerror="   ... 10 years <canvas
+		dto.description = sanitizer.sanitize(dto.description);
+
 		trainingService.updateTraining(dto);
 	}
 

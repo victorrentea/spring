@@ -169,7 +169,9 @@
 
     function showDescription(id) {
         document.getElementById("showRichDescription").innerHTML =
-            trainingsData.find(t => t.id === id).description;
+            trainingsData.find(t => t.id === id).description;//
+        // the .description contains <img onerror=
+        // (unsanitized user input)
     }
 
 
