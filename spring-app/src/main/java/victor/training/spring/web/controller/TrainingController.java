@@ -59,11 +59,11 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
-	@DeleteMapping("{trainingId}")
+	@DeleteMapping("{trainingId}/delete")
 //	@Secured("ROLE_ADMIN")
 
 //	@PreAuthorize("hasAnyRole('ADMIN', 'POWER')")
-	@PreAuthorize("hasAuthority('training.delete')")
+//	@PreAuthorize("hasAuthority('training.delete')")
 	public void delete(@PathVariable Long trainingId) {
 //		authorizationManager.checkUserCanDeleteTraining();
 

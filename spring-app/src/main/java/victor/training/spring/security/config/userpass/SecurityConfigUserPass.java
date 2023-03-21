@@ -2,6 +2,7 @@ package victor.training.spring.security.config.userpass;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +29,10 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     // http.cors(); // needed only if .js files are served by a CDN (eg)
 
     http.authorizeRequests()
-            .mvcMatchers("...").permitAll()
+
+            // alternative to anotation -based authorization: url patterns
+            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAuthority("training.delete")
+
             .anyRequest().authenticated();
 
     http.formLogin().defaultSuccessUrl("/", true);

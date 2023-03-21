@@ -157,7 +157,7 @@
             // if (currentUser.role === "ADMIN" ||currentUser.role === "POWER")
             // if (["ADMIN"].includes(currentUser.role))
 
-            if (currentUser.authorities.includes('training.delete'))
+            // if (currentUser.authorities.includes('training.delete'))
                 row += `<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(${training.id})" />`;
 
             row += '</td>';
@@ -242,7 +242,7 @@
 
 
     function deleteTraining(id) {
-        $.ajax(restEndpoint + "/trainings/" + id, {
+        $.ajax(restEndpoint + "/trainings/" + id +"/delete", {
             method: "DELETE",
             success: function () {
                 toastr.success("Training deleted");
