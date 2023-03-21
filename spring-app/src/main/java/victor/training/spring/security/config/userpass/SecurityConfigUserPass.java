@@ -29,7 +29,8 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     // http.cors(); // needed only if .js files are served by a CDN (eg)
 
     http.authorizeRequests()
-
+            .mvcMatchers("/unsecured/**").permitAll() // allows non-authenticated requests
+//            .mvcMatchers("/admin/**").hasRole("ADMIN") // allows non-authenticated requests
             // alternative to anotation -based authorization: url patterns
 //            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAuthority("training.delete")
 
