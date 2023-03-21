@@ -31,7 +31,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
 
             // alternative to anotation -based authorization: url patterns
-            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAuthority("training.delete")
+//            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasAuthority("training.delete")
 
             .anyRequest().authenticated();
 
