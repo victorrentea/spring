@@ -213,8 +213,8 @@
                 </configuration>
             </plugin>
 
-           <!-- <plugin>
-                &lt;!&ndash; scans dependencies for known vulnerabilities &ndash;&gt;
+            <plugin>
+                <!-- scans dependencies for known vulnerabilities -->
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>6.3.2</version>
@@ -228,7 +228,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 
