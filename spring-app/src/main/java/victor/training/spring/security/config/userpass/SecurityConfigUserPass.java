@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import victor.training.spring.web.entity.UserRole;
 
 @Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
@@ -38,11 +39,17 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails userDetails = User.withDefaultPasswordEncoder()
-            .username("user").password("user").roles("USER").build();
+            .username("user").password("user").roles("USER")
+            .authorities(UserRole.USER.getAuthorities().toArray(new String[0]))
+            .build();
     UserDetails adminDetails = User.withDefaultPasswordEncoder()
-            .username("admin").password("admin").roles("ADMIN").build();
+            .username("admin").password("admin").roles("ADMIN")
+            .authorities(UserRole.ADMIN.getAuthorities().toArray(new String[0]))
+            .build();
     UserDetails power = User.withDefaultPasswordEncoder()
-            .username("power").password("power").roles("POWER").build();
+            .username("power").password("power").roles("POWER")
+            .authorities(UserRole.POWER.getAuthorities().toArray(new String[0]))
+            .build();
     return new InMemoryUserDetailsManager(userDetails, adminDetails, power);
   }
 

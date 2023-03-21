@@ -62,7 +62,8 @@ public class TrainingController {
 	@DeleteMapping("{trainingId}")
 //	@Secured("ROLE_ADMIN")
 
-	@PreAuthorize("hasAnyRole('ADMIN', 'POWER')")
+//	@PreAuthorize("hasAnyRole('ADMIN', 'POWER')")
+	@PreAuthorize("hasAuthority('training.delete')")
 	public void delete(@PathVariable Long trainingId) {
 //		authorizationManager.checkUserCanDeleteTraining();
 
