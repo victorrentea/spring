@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 // this will allow going in just using headers, eg:
 // curl http://localhost:8080/api/trainings -H 'X-User: user' -H 'X-User-Roles: USER'
 @Profile("header")
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
   @Override
@@ -27,6 +27,8 @@ public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
             .authenticationProvider(preAuthenticatedProvider());
 
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    // because there is no browser in front of me that would keep track of my cookies
+    // a server is calling me
   }
 
   @Bean
