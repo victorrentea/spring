@@ -38,8 +38,16 @@ public class ReactiveDependencies {
   }
 
   public Mono<String> wsdlCall(String data) {
+    // legacy library that DOES BLOCK inside it, that I can't change
+
+    // whenever you see a method returning Mono/Flux, that method is NOT ALLOWED TO :
+    // - block
+    // - throw exception!
+//    return Mono.error(new IllegalArgumentException());
+
+//    return Mono.just(  Lib.blockingCall(data)   ); // BAD because blockingCall might block thread or throw exceptions
     return Mono.fromCallable(() -> Lib.blockingCall(data))
-            .subscribeOn(Schedulers.boundedElastic()); // in that scheduler (~= thread pool) you have enough space to block eg 120 thread
+            .subscribeOn(Schedulers.boundedElastic()); // the only place you are allowed to block threads in reactor
   }
 
 }
