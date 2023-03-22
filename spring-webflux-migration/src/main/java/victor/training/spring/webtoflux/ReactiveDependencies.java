@@ -47,7 +47,9 @@ public class ReactiveDependencies {
 
 //    return Mono.just(  Lib.blockingCall(data)   ); // BAD because blockingCall might block thread or throw exceptions
     return Mono.fromCallable(() -> Lib.blockingCall(data))
-            .subscribeOn(Schedulers.boundedElastic()); // the only place you are allowed to block threads in reactor
+            .subscribeOn(Schedulers.boundedElastic()) // the subscribe signal goes up on a thread from boundedElastifc
+//            .publishOn(Schedulers.parallel()) // rarely
+            ; // the only place you are allowed to block threads in reactor
   }
 
 }

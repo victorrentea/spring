@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import victor.training.spring.webtoflux.table.tables.Book;
@@ -122,7 +122,7 @@ public class WebFluxMigrationApplication {
             jooq.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME).from(AUTHOR).fetch();
     for (Record3<Integer, String, String> r : records) {
       Integer authorId = r.value1();
-      String bio = fetchBio(authorId);
+      String bio = fetchBio(authorId).block();
       results.add(new AuthorDto(r.value1(), r.value2(), r.value3(), bio));
     }
     return results;
@@ -130,15 +130,24 @@ public class WebFluxMigrationApplication {
 
 
   @SneakyThrows
-  private String fetchBio(Integer authorId) {
-    return new RestTemplate().getForObject("http://localhost:8082/api/teachers/" + authorId + "/bio", String.class);
+  private Mono<String> fetchBio(Integer authorId) {
+    return WebClient.create().get()
+            .uri("http://localhost:8082/api/teachers/" + authorId + "/bio")
+            .retrieve()
+            .bodyToMono(String.class);
   }
 
   @GetMapping("reader/{readerId}/check")
-  public boolean checkProfile(@PathVariable Long readerId) {
-    ReaderProfile profile = classicDependencies.fetchUserProfile(readerId);
-    boolean addressOk = classicDependencies.checkAddress(profile);
-    boolean phoneOk = classicDependencies.checkPhone(profile);
-    return addressOk && phoneOk;
+  public Mono<Boolean> checkProfile(@PathVariable Long readerId) {
+    return reactiveDependencies.fetchUserProfile(readerId)
+            .flatMap(profile -> Mono.zip(
+                    reactiveDependencies.checkAddress(profile),
+                    reactiveDependencies.checkPhone(profile),
+                    (a, b) -> a && b)
+            )
+            .onErrorReturn(false);
+    //    Mono<Boolean> addressOkMono = profileMono.flatMap(profile -> reactiveDependencies.checkAddress(profile));
+    //    Mono<Boolean> phoneOkMono = profileMono.flatMap(profile -> reactiveDependencies.checkPhone(profile));
+    //    return addressOkMono.zipWith(phoneOkMono, (a, b) -> a && b);
   }
 }
