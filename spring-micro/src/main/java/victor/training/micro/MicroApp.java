@@ -26,7 +26,7 @@ public class MicroApp {
       Thread.sleep(300);
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       log.info("Serving user {}", username);
-      return "Amazing bio for teacher " + teacherId + " retrieved from remote service for user " + username;
+      return "Amazing bio for teacher id=" + teacherId + " retrieved from remote API as username=" + username;
    }
 
 }

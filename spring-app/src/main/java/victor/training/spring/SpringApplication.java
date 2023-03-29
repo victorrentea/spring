@@ -24,7 +24,6 @@ import static java.lang.System.currentTimeMillis;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
-@EnableFeignClients
 @ConfigurationPropertiesScan
 public class SpringApplication {
     public static final long t0 = currentTimeMillis();

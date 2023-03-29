@@ -39,8 +39,8 @@ public class TeacherBioClient {
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
-//    String result = callUsingFeignClient(teacherId);
-    String result = callUsingRestTemplate(teacherId);
+    String result = callUsingFeignClient(teacherId);
+//    String result = callUsingRestTemplate(teacherId);
     log.debug("Got result");
     return result;
   }
@@ -62,9 +62,10 @@ public class TeacherBioClient {
 //    String bearerToken = "joke";
 
     // Auth#2 - propagating MY clients' AccessToken
-    KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>)
+    KeycloakPrincipal<KeycloakSecurityContext> principal =
+            (KeycloakPrincipal<KeycloakSecurityContext>)
             SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String bearerToken = principal.getKeycloakSecurityContext().getTokenString();
+    String accessToken = principal.getKeycloakSecurityContext().getTokenString();
 
     // Auth#3 - manually creating a JWT token
     //          String bearerToken = Jwts.builder()
@@ -74,8 +75,8 @@ public class TeacherBioClient {
     //                .compact();
 
 
-    log.info("Sending bearer: {}", bearerToken);
-    Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + bearerToken));
+    log.info("Sending bearer: {}", accessToken);
+    Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + accessToken));
     ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
             CollectionUtils.toMultiValueMap(header),
             HttpMethod.GET,
