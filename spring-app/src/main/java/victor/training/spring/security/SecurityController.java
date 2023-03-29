@@ -3,6 +3,8 @@ package victor.training.spring.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ public class SecurityController {
 
         log.info("Return current user");
         CurrentUserDto dto = new CurrentUserDto();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        dto.username = authentication.getName(); // TODO delete
         dto.username = "<username>"; // TODO
         // dto.username = anotherClass.asyncMethod().get();
 
@@ -32,8 +36,9 @@ public class SecurityController {
         //		dto.role = extractOneRole(authentication.getAuthorities());
 
         // B) authority-based security
-//        		dto.authorities = authentication.getAuthorities().stream()
-//        				.map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        		dto.authorities = authentication.getAuthorities().stream()
+        				.map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList());
 
         //<editor-fold desc="KeyCloak">
         //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -2,6 +2,7 @@ package victor.training.spring.security.config.keycloak;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter;
 import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter;
@@ -34,7 +35,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.servlet.http.HttpServletRequest;
 
 @Profile("keycloak")
-@EnableWebSecurity (debug = true) // see the filter chain in use
+@EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
@@ -42,9 +43,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
-        // extract roles from realm_access
-         var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-        // extract roles from resource_access for the current client
+        // extract REALM GLOBAL roles from realm_access
+         var keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
+        // extract APPLICATION-SCOPED roles from resource_access for the current client(=app)
 //        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
 
@@ -111,5 +112,6 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/spa"); // entering :8080 in bro-> redirect to :8080/spa -> login->Oauth
         registry.addViewController("/spa").setViewName("forward:/index.html"); // :8080/spa serves served index.html
+        registry.addViewController("/logout").setViewName("redirect:/sso/logout");
     }
 }

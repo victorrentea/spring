@@ -203,7 +203,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>victor.training.spring.SpringApplication</mainClass>
+                    <mainClass>victor.training.spring.security.SSOApplication</mainClass>
                 </configuration>
             </plugin>
 
