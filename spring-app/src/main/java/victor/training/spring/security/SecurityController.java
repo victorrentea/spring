@@ -27,18 +27,16 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    dto.username = authentication.getName(); // TODO delete
-    //        dto.username = "<username>"; // TODO
+            dto.username = "<username>"; // TODO
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
-    dto.role = extractOneRole(authentication.getAuthorities());
+//    dto.role = extractOneRole(authentication.getAuthorities());
 
     // B) authority-based security
-    dto.authorities = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
+//    dto.authorities = authentication.getAuthorities().stream()
+//            .map(GrantedAuthority::getAuthority)
+//            .collect(Collectors.toList());
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
