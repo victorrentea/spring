@@ -28,7 +28,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
         // extract roles from realm_access
-        // var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+//         var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         // extract roles from resource_access for the current client
         var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
@@ -56,12 +56,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
-            .csrf().disable()
-            .authorizeRequests().anyRequest().hasRole("MICRO_ADMIN").and()
-
-        ;
         super.configure(http);
+        http.csrf().disable()
+                .authorizeRequests().anyRequest().hasRole("MICRO_ADMIN");
     }
 
 }
