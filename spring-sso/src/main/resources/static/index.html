@@ -1,0 +1,14 @@
+<html lang="en">
+<head>
+  <title>Application 2</title>
+</head>
+<body>
+<h2>Secure page of app 2</h2>
+Logged in as <span id="username" style="font-weight: bold"></span>
+<script>
+  fetch('/api/user/current')
+    .then(response => response.text())
+    .then(data => document.getElementById('username').innerText = data);
+</script>
+</body>
+</html>
