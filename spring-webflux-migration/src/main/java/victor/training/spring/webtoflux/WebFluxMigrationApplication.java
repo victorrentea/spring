@@ -131,4 +131,9 @@ public class WebFluxMigrationApplication {
     boolean phoneOk = classicDependencies.checkPhone(profile);
     return addressOk && phoneOk;
   }
+
+  // TODO propagate Reactive Security Context
+  // TODO reactive kafka receiver / sender
+  // TODO reactive mongo
+
 }
