@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 //@Profile("prod") // << bad practice;
 // I don't always test my code, but when I do, I do it in prod
-@Profile("!local")
+//@Profile("!local")
 
 @Service
 @RequiredArgsConstructor
