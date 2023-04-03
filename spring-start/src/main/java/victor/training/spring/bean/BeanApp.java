@@ -1,8 +1,8 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -41,20 +41,21 @@ class MyConfig {
 }
 @Component
 @Data
+@RequiredArgsConstructor
 class Conversation {
-    private final Person one;
-    private final Person two;
+    private final Person john;
+    private final Person jane;
 
-    public Conversation(Person jane,
-// if the NAME of the param matches the bean name you want,
-            // the injection is not ambiguous anymore
-                        Person john) {
-        this.one = jane;
-        this.two = john;
-    }
+//    public Conversation(Person jane,
+//// if the NAME of the param matches the bean name you want,
+//            // the injection is not ambiguous anymore
+//                        Person john) {
+//        this.one = jane;
+//        this.two = john;
+//    }
 
     public void start() {
-        System.out.println(one.getName() + " talks with " + two.getName());
+        System.out.println(john.getName() + " talks with " + jane.getName());
     }
 }
 
