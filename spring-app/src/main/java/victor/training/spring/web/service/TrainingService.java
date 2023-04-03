@@ -9,11 +9,11 @@ import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
 import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
-import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +38,8 @@ public class TrainingService {
         return dtos;
     }
 
-    public TrainingDto getTrainingById(Long id) {
-        Training training = trainingRepo.findById(id).orElseThrow();
+    public TrainingDto getTrainingById(TrainingId id) {
+        Training training = trainingRepo.findById(id.id()).orElseThrow();
         TrainingDto dto = new TrainingDto(training);
         dto.teacherBio = retrieveTeacherBio(dto.teacherId);
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();

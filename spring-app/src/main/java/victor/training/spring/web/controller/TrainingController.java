@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -28,15 +31,20 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+	// primitive obsession code smell ?
+	public ResponseEntity<TrainingDto> get(@PathVariable TrainingId id) {
+		try {
+			return ResponseEntity.ok(trainingService.getTrainingById(id));
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build();
+		}
 		//TODO return 404 if not found
 	}
 
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
-	public void create(@RequestBody TrainingDto dto) {
+	public void create(@RequestBody @Valid TrainingDto dto) {
 		trainingService.createTraining(dto);
 	}
 
@@ -79,6 +87,7 @@ public class TrainingController {
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
+
 	//	@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
@@ -86,6 +95,7 @@ public class TrainingController {
 
 	@Value("classpath:/static/spa.jpg")
 	private Resource picture;
+
 	@GetMapping("download")
 	public ResponseEntity<Resource> downloadFile() throws IOException {
 		return ResponseEntity.ok()
