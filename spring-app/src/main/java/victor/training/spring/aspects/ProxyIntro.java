@@ -78,12 +78,12 @@ class SecondGrade {
     }
 }
 
+@LoggedMethod
 @Component
 /*final ⚠️ */ class Maths {
     public /*final ⚠️ */  /*static  ⚠️ */int sum(int a, int b) {
         return a + b;
     }
-
     public int product(int a, int b) {
         int result = 0;
         for (int i = 0; i <a; i++) {
