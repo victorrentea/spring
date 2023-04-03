@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 // I don't always test my code, but when I do, I do it in prod
 //@Profile("!local")
 
+
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {

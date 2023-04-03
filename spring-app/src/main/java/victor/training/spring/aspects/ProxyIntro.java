@@ -5,11 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // Play the role of Spring here ...
-        Maths maths = new Maths();
+        Maths maths = new MathProxy();
         SecondGrade secondGrade = new SecondGrade(maths);
         new ProxyIntro().run(secondGrade);
     }
@@ -22,8 +22,23 @@ public class ProxyIntro {
         secondGrade.mathClass();
     }
 }
+class MathProxy extends Maths {
+    @Override
+    public int sum(int a, int b) {
+        int r = super.sum(a, b);
+        System.out.println(" sum(" + a + ", " + b + ") = " + r);
+        return r;
+    }
 
-@Service
+    @Override
+    public int product(int a, int b) {
+        return super.product(a, b);
+    }
+}
+
+// -- a line --------------------------------------------
+// you are not allowed to touch any code bellow this line
+//@Service
 class SecondGrade {
     private final Maths maths;
 
@@ -38,7 +53,7 @@ class SecondGrade {
     }
 }
 
-@Facade
+//@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
