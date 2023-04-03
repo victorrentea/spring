@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 
 @RequiredArgsConstructor
 public class Cris implements CommandLineRunner {
-  private final X x;
   @Value("${mail.sender}")
   private final String prop;
 

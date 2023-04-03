@@ -1,3 +1,4 @@
+john.name: John
 db:
     password: big secret
 mail:

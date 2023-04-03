@@ -3,6 +3,7 @@ package victor.training.spring.bean;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -25,11 +26,12 @@ public class BeanApp {
     }
 
 }
-@Configuration
+@Configuration// (proxyBeanMethods = false)
 class MyConfig {
     @Bean
-    public Person john() { // Beans have names! here the name is "john"
-        return new Person("John");
+    public Person john(@Value("${john.name}") String johnName) { // Beans have names! here the name is "john"
+        System.out.println("THIS RUNS");
+        return new Person(johnName);
     }
     @Bean
     public Person jane() {
@@ -37,14 +39,27 @@ class MyConfig {
     }
     @Bean
     public Conversation breakup() {
+        System.out.println("BREAKUP");
         // calling other local @Bean methods inside the same @Configuration
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane());
     }
     @Bean
     public Conversation makeup() {
-        return new Conversation(john(), jane());
+        System.out.println("MAKEUP");
+        return new Conversation(john(null), jane());
     }
 }
+//class HackAtRuntime extends MyConfig {
+//    @Bean
+//    public Person john() {
+//        // spring intercepts the call to john() and
+//        // looks up the john instance in the singletonMap
+// in case is not in the map calls super.john()
+//    }
+//}
+// for @Configuration classes only, Spring creates a proxy
+// to your class in order to intercept the @Bean methods calls
+// and cache the results and enforce the lifecycle of the beans
 
 // in a jar you cannot change-------
 @Data

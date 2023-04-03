@@ -1,8 +1,13 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+
+//@Profile("prod") // << bad practice;
+// I don't always test my code, but when I do, I do it in prod
+@Profile("!local")
 
 @Service
 @RequiredArgsConstructor
