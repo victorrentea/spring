@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,11 @@ public class TeacherBioClient {
 
   // TODO cacheable
   @Timed("teacherbio")
-  public String retrieveBiographyForTeacher(long teacherId) {
-    log.debug("Calling external web endpoint... (takes time)");
+  @Cacheable("teacherbioX")
+  public String retrieveBiographyForTeacher(
+          long teacherId) {
+    // Map<Long, String>
+    log.debug("Calling external web endpoint... (takes time) : " + teacherId);
 //    String result = dummyCall(teacherId);
     String result = callUsingFeignClient(teacherId);
 //    String result = callUsingRestTemplate(teacherId);

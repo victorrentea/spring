@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +36,19 @@ public class TrainingController {
 		return trainingService.getTrainingById(id);
 	}
 
+
+	//	@KafkaListener
+	@GetMapping("teacher-updated")
+	@CacheEvict("teacherbioX")
+	public void killCache(@RequestParam long teacherId) {
+		
+	}
+
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
 	public void create(@RequestBody @Valid TrainingDto dto) {
+
 		trainingService.createTraining(dto);
 	}
 
@@ -68,13 +78,13 @@ public class TrainingController {
 	// --------------------------------------------------
 	// TODO 'search' should use GET or POST ?
 	// GET: ?name=a&teacherId=1&phoneNumber=<userphone>
-		// traditionally doesnt have a body
-		// PRO: copy-pastable URL to friends
-		// CON: URL length limit of 2048 chars
-		// CON: logged by proxies
+	// traditionally doesnt have a body
+	// PRO: copy-pastable URL to friends
+	// CON: URL length limit of 2048 chars
+	// CON: logged by proxies
 	// POST: {name: 'a', teacherId: 1, sub: {...}}
-		// PRO: can send a body
-		// PRO: easier to send complex objects
+	// PRO: can send a body
+	// PRO: easier to send complex objects
 
 	@PostMapping("search") // pragmatic HTTP endpoints
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
