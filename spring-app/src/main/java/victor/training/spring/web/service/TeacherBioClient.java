@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.ThreadUtils;
+import victor.training.spring.web.controller.dto.TrainingDto;
 
 import java.net.URI;
 import java.util.List;
@@ -39,13 +40,13 @@ public class TeacherBioClient {
 
   // TODO cacheable
   @Timed("teacherbio")
-  @Cacheable("teacherbioX")
+  @Cacheable(value="teacherbioX", key = "#teacherId.teacherId")
   public String retrieveBiographyForTeacher(
-          long teacherId) {
+          TrainingDto teacherId) {
     // Map<Long, String>
     log.debug("Calling external web endpoint... (takes time) : " + teacherId);
 //    String result = dummyCall(teacherId);
-    String result = callUsingFeignClient(teacherId);
+    String result = callUsingFeignClient(teacherId.teacherId);
 //    String result = callUsingRestTemplate(teacherId);
     log.debug("Got result");
     return result;
