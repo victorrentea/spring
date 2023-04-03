@@ -9,7 +9,6 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class BeanApp {
@@ -18,13 +17,11 @@ public class BeanApp {
     }
 
     @Autowired
-    private Conversation conversation;
+    private Conversation makeup;
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
-
-        // TODO register the two persons and the conversation as Spring beans
-        conversation.start();
+        makeup.start();
     }
 
 }
@@ -38,8 +35,18 @@ class MyConfig {
     public Person jane() {
         return new Person("Jane");
     }
+    @Bean
+    public Conversation breakup() {
+        // calling other local @Bean methods inside the same @Configuration
+        return new Conversation(john(), jane());
+    }
+    @Bean
+    public Conversation makeup() {
+        return new Conversation(john(), jane());
+    }
 }
-@Component
+
+// in a jar you cannot change-------
 @Data
 @RequiredArgsConstructor
 class Conversation {
