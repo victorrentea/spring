@@ -15,7 +15,6 @@ import victor.training.spring.web.service.TrainingService;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -32,13 +31,8 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	// primitive obsession code smell ?
-	public ResponseEntity<TrainingDto> get(@PathVariable TrainingId id) {
-		try {
-			return ResponseEntity.ok(trainingService.getTrainingById(id));
-		} catch (NoSuchElementException e) {
-			return ResponseEntity.notFound().build();
-		}
-		//TODO return 404 if not found
+	public TrainingDto get(@PathVariable TrainingId id) {
+		return trainingService.getTrainingById(id);
 	}
 
 	// TODO @Validated / @Valid
@@ -73,8 +67,14 @@ public class TrainingController {
 
 	// --------------------------------------------------
 	// TODO 'search' should use GET or POST ?
-	// GET:
-	// POST:
+	// GET: ?name=a&teacherId=1&phoneNumber=<userphone>
+		// traditionally doesnt have a body
+		// PRO: copy-pastable URL to friends
+		// CON: URL length limit of 2048 chars
+		// CON: logged by proxies
+	// POST: {name: 'a', teacherId: 1, sub: {...}}
+		// PRO: can send a body
+		// PRO: easier to send complex objects
 
 	@PostMapping("search") // pragmatic HTTP endpoints
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
