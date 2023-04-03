@@ -45,10 +45,12 @@ class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(@Qualifier("john") Person one,
-                        @Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
+    public Conversation(Person jane,
+// if the NAME of the param matches the bean name you want,
+            // the injection is not ambiguous anymore
+                        Person john) {
+        this.one = jane;
+        this.two = john;
     }
 
     public void start() {
