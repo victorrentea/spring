@@ -3,12 +3,16 @@ package victor.training.spring.aspects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -74,13 +78,22 @@ class SecondGrade {
 }
 
 //@Facade
-class Maths {
-    public int sum(int a, int b) {
+/*final ⚠️ */ class Maths {
+    public /*final ⚠️ */  /*static  ⚠️ */int sum(int a, int b) {
         return a + b;
     }
 
     public int product(int a, int b) {
-        return a * b;
+        int result = 0;
+        for (int i = 0; i <a; i++) {
+            result = sum(result, b);
+            // ⚠️ if you call a local method inside the same class,
+            // Spring CANNOT intercept that call and do its magic
+            // that you asked for with your annotaitons.
+        }
+
+        return result;
+//        return a * b;
     }
 }
 
