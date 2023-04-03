@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
 @SpringBootApplication
+@ComponentScan(basePackages = {
+        "victor.training.spring.first",
+        "victor.training.spring.another"} )
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
