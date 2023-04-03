@@ -13,7 +13,7 @@ import victor.training.spring.another.Y;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Import(X.class)
+@Import({X.class, Cris.class})
 @Configuration
 class MyConfig {
 //  @Bean
@@ -21,10 +21,10 @@ class MyConfig {
 //    return new X(y);
 //  }
 
-    @Bean
-    public Cris cris(X x, @Value("${mail.sender}") String prop) { // manual bean definition
-      return new Cris(x, prop);
-    }
+//    @Bean
+//    public Cris cris(X x, @Value("${mail.sender}") String prop) { // manual bean definition
+//      return new Cris(x, prop);
+//    }
 }
 
 @Component
