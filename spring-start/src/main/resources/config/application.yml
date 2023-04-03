@@ -1,8 +1,7 @@
 john.name: John
-db:
-    password: big secret
-mail:
-    sender: dummy
+db.password: big secret
+mail.sender: dummy
+#asdasd
 spring:
     mail:
         host: smtp.gmail.com
