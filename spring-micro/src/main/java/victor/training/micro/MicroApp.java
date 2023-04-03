@@ -23,7 +23,7 @@ public class MicroApp {
 
    @GetMapping("/api/teachers/{teacherId}/bio")
    public String getTeacherBio(@PathVariable Long teacherId) throws InterruptedException {
-      Thread.sleep(300);
+      Thread.sleep(3000);
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       log.info("Serving user {}", username);
       return "Amazing bio for teacher id=" + teacherId + " retrieved from remote API as username=" + username;
