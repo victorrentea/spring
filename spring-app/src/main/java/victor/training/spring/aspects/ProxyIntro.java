@@ -9,6 +9,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,29 +17,29 @@ import java.beans.Transient;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-//@SpringBootApplication
+@SpringBootApplication
 public class ProxyIntro {
-    public static void main(String[] args) {
-        // Play the role of Spring here ...
-        Maths realImpl = new Maths();
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] arguments, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Intercepting " + method.getName() + " with params " + Arrays.toString(arguments));
-                Object r = method.invoke(realImpl, arguments);
-                System.out.println("Result: " + r);
-                return r;
-            }
-        };
-        Maths classProxy = (Maths) Enhancer.create(Maths.class, h);
+//    public static void main(String[] args) {
+//        // Play the role of Spring here ...
+//        Maths realImpl = new Maths();
+//        Callback h = new MethodInterceptor() {
+//            @Override
+//            public Object intercept(Object o, Method method, Object[] arguments, MethodProxy methodProxy) throws Throwable {
+//                System.out.println("Intercepting " + method.getName() + " with params " + Arrays.toString(arguments));
+//                Object r = method.invoke(realImpl, arguments);
+//                System.out.println("Result: " + r);
+//                return r;
+//            }
+//        };
+//        Maths classProxy = (Maths) Enhancer.create(Maths.class, h);
+//
+//        SecondGrade secondGrade = new SecondGrade(classProxy);
+//        new ProxyIntro().run(secondGrade);
+//    }
 
-        SecondGrade secondGrade = new SecondGrade(classProxy);
-        new ProxyIntro().run(secondGrade);
-    }
+    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 
-    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
-
-    //@Autowired // uncomment to run in Spring
+    @Autowired // uncomment to run in Spring
     public void run(SecondGrade secondGrade) {
         System.out.println("Running Maths class...");
         secondGrade.mathClass();
@@ -60,7 +61,7 @@ public class ProxyIntro {
 
 // -- a line --------------------------------------------
 // you are not allowed to touch any code bellow this line
-//@Service
+@Service
 class SecondGrade {
     private final Maths maths;
 
@@ -77,7 +78,7 @@ class SecondGrade {
     }
 }
 
-//@Facade
+@Component
 /*final ⚠️ */ class Maths {
     public /*final ⚠️ */  /*static  ⚠️ */int sum(int a, int b) {
         return a + b;
