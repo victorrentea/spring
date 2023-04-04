@@ -25,10 +25,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+//@Component
+//@org.springframework.context.annotation.Scope("request")
+//class State {
+//	int date;
+//
+//	public int getDate() {
+//		return date;
+//	}
+//
+//	public State setDate(int date) {
+//		this.date = date;
+//		return this;
+//	}
+//}
 
 @Configuration
 public class ScopeThreadConfig {
