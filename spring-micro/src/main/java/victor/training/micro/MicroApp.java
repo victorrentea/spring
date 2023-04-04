@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -44,14 +45,37 @@ public class MicroApp {
    @Lazy
    private MicroApp microApp;
 
-   @Async// ("executor") // tells spring to start this method on a thread pool named bean "executor"
+   @Autowired
+   ThreadPoolTaskExecutor executor;
+
+//   @Async// ("executor") // tells spring to start this method on a thread pool named bean "executor"
    public void someOther() throws InterruptedException {
-      String user = threadLocal.get();
-      Thread.sleep(2000);
-      log.info("Again user " + user); // the log line has at its start the traceId of the original request
-      // proving that the Sleuth request metadata was magically propagated over an @Async call
+//      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//      executor.setCorePoolSize(7);
+//      executor.setMaxPoolSize(7);
+//      executor.setThreadNamePrefix("ex-");
+//      executor.setQueueCapacity(200);
+//      executor.initialize();
+
+      executor.submit(() ->
+      {
+
+         String user = threadLocal.get();
+         try {
+            Thread.sleep(2000);
+         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+         }
+         log.info("Again user " + user); // the log line has at its start the traceId of the original request
+         // proving that the Sleuth request metadata was magically propagated over an @Async call
+
+      });
    }
-   private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+   public static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+}
+@Configuration
+class MyConfig {
+
 
    @Bean
    public ThreadPoolTaskExecutor executor() {
