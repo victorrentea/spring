@@ -1,6 +1,7 @@
 package victor.training.micro;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,6 +39,7 @@ public class MicroApp {
       Thread.sleep(3000);
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       log.info("Serving user {}", username);
+      MDC.put("key2", "valueKK");
       threadLocal.set(username);
       try {
          microApp.someOther();
@@ -58,6 +61,11 @@ public class MicroApp {
       // proving that the Sleuth request metadata was magically propagated over an @Async call
    }
    public static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+   // Thread local carries:
+   // 1) TraceID (Sleuth)
+   // 2) SecurityContext
+   // 3) @Transactional
+   // 4) Logback MDC context
 }
 @Configuration
 class MyConfig {
