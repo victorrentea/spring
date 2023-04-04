@@ -26,7 +26,16 @@ public class MicroApp {
       Thread.sleep(3000);
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       log.info("Serving user {}", username);
+      threadLocal.set(username);
+      someOther();
       return "Amazing bio for teacher id=" + teacherId + " retrieved from remote API as username=" + username;
    }
 
+   public void someOther() {
+      String user = threadLocal.get();
+      log.info("Again user " + user);
+   }
+
+   private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
+//   private static String currentSessionId;
 }

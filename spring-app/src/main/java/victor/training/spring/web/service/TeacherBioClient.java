@@ -47,7 +47,7 @@ public class TeacherBioClient {
 //  @Bulkhead(name = "teacherBio")
 
   @Timed("teacherbio")
-  @Cacheable(value="teacherbioX", key = "#teacherId.teacherId")
+//  @Cacheable(value="teacherbioX", key = "#teacherId.teacherId")
   public String retrieveBiographyForTeacher(
           TrainingDto teacherId) {
 

@@ -3,6 +3,7 @@ package victor.training.micro;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import static java.util.Collections.list;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
-//@Component
+@Component
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER - 1000) // run in before Spring's Security Filter Chain
 public class HeaderPrinterFilter extends HttpFilter {
    @Override
