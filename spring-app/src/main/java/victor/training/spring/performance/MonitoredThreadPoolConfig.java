@@ -21,13 +21,13 @@ public class MonitoredThreadPoolConfig {
    private final MeterRegistry meterRegistry;
 
    @Bean(initMethod = "initialize")
-   @ConfigurationProperties(prefix = "custom-executor")
+   @ConfigurationProperties(prefix = "custom-executor") // inject custom-executor.* properties
    public ThreadPoolTaskExecutor monitoredExecutor() {
       // TODO experiment
       // ExecutorServiceMetrics.monitor(registry, ForkJoinPool.commonPool(), "commonPool");
 
-      Timer timer = meterRegistry.timer("custom-executor-queue-wait");
-      // configured via custom-executor.* in application.properties
+      Timer timer = meterRegistry.timer("custom.executor.queue.wait");
+
       ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
       executor.setTaskDecorator(runnable -> {
          long t0 = System.currentTimeMillis(); // runs at submit() time

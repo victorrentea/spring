@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -42,17 +43,17 @@ public class TeacherBioClient {
   @Autowired
   private CacheManager cacheManager;
 
-  // TODO cacheable
+
+//  @Bulkhead(name = "teacherBio")
+
   @Timed("teacherbio")
   @Cacheable(value="teacherbioX", key = "#teacherId.teacherId")
   public String retrieveBiographyForTeacher(
           TrainingDto teacherId) {
 
     // programmatic alternative to @Cacheable (but not as nice)
-    Object value = cacheManager.getCache("teacherbioX").get(teacherId.teacherId).get();
+//    Object value = cacheManager.getCache("teacherbioX").get(teacherId.teacherId).get();
 
-
-    // Map<Long, String>
     log.debug("Calling external web endpoint... (takes time) : " + teacherId);
 //    String result = dummyCall(teacherId);
     String result = callUsingFeignClient(teacherId.teacherId);

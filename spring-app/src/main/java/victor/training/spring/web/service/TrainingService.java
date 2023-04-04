@@ -55,7 +55,7 @@ public class TrainingService {
             return teacherBioClient.retrieveBiographyForTeacher(teacherId);
         } catch (RuntimeException e) {
             log.error("Error retrieving bio", e);
-            return "<ERROR RETRIEVING TEACHER BIO (see logs)>";
+            return "<ERROR RETRIEVING TEACHER BIO: "+e+">";
         }
     }
 
