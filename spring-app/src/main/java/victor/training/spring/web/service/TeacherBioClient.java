@@ -6,7 +6,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -37,12 +39,19 @@ public class TeacherBioClient {
   private final RestTemplate rest;
 
 
+  @Autowired
+  private CacheManager cacheManager;
 
   // TODO cacheable
   @Timed("teacherbio")
   @Cacheable(value="teacherbioX", key = "#teacherId.teacherId")
   public String retrieveBiographyForTeacher(
           TrainingDto teacherId) {
+
+    // programmatic alternative to @Cacheable (but not as nice)
+    Object value = cacheManager.getCache("teacherbioX").get(teacherId.teacherId).get();
+
+
     // Map<Long, String>
     log.debug("Calling external web endpoint... (takes time) : " + teacherId);
 //    String result = dummyCall(teacherId);
