@@ -20,7 +20,8 @@ public class TeacherBioServiceHealthMetric implements HealthIndicator {
     public Health health() {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            Map<String, Object> responseMap = restTemplate.getForObject(teacherBioUriBase + "/actuator/health", Map.class);
+            Map<String, Object> responseMap = restTemplate.getForObject(
+                    teacherBioUriBase + "/actuator/health", Map.class);
             /// rest templte call localhost:8082/actuator/health
             // parse the JSON response as a Map
             // check that map.get("status").equlals"UP"
