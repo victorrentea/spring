@@ -112,6 +112,7 @@
             <!-- OAuth2 with KeyCloak AuthServer -->
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
+           <!-- <version>11.0.2</version> --><!-- A upgrade that lib individually-->
         </dependency>
         <dependency>
             <!-- OAuth2RestTemplate for Client Credentials flow -->
@@ -180,12 +181,12 @@
         </dependency>
 
         <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
-        <!-- <dependency>
+         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>2.15.0</version>
             <type>pom</type>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
