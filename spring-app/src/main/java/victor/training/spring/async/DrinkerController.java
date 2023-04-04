@@ -23,19 +23,23 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Build a non-blocking web endpoint
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
       CompletableFuture<Beer> futureBeer = supplyAsync(() -> barman.pourBeer());
       CompletableFuture<Vodka> futureVodka = supplyAsync(() -> barman.pourVodka());
 
-      Beer beer = futureBeer.get(); // the Tomcat threads have to wait 1 second here
-      Vodka vodka = futureVodka.get(); // no wait, the vodka was already poured
+//      Beer beer = futureBeer.get(); // the Tomcat threads have to wait 1 second here
+//      Vodka vodka = futureVodka.get(); // no wait, the vodka was already poured
       // if 200 parallel requests hit this endpoint, Tomcat will be left out of threads for 1 sec.
 
+      CompletableFuture<DillyDilly> f = futureBeer.thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
       long t1 = currentTimeMillis();
-      log.debug("Got my drinks in {} millis", t1-t0);
-      return new DillyDilly(beer, vodka);
+      log.debug("Method returns in  {} millis", t1-t0);
+      return f;
+//            .thenAccept(dillyDilly -> log.debug("Got my drinks in {} millis", currentTimeMillis()-t0));
+
+//      return new DillyDilly(beer, vodka);
    }
 }
