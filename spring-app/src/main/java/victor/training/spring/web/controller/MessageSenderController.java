@@ -4,8 +4,12 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,4 +31,12 @@ public class MessageSenderController {
         int amount;
         String reason;
     }
+
+    @Bean
+    public Consumer<Message<String>> paymentReplyConsumer() {
+        return message -> {
+            System.out.println("Received reply: " + message.getPayload());
+        };
+    }
 }
+
