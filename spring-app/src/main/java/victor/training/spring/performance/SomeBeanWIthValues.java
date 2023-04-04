@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @RefreshScope
 @Component
 public class SomeBeanWIthValues {
-  @Value("${prop.from.config.server}")
-  String prop;
+//  @Value("${prop.from.config.server}")
+//  String prop;
 
   public void method() {
 
