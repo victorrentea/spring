@@ -133,7 +133,7 @@
         </dependency>
 
         <dependency>
-            <!-- auto-restart on class/property changes on local -->
+            <!-- auto-restarts the app on class/property changes on local: it monitors /target folder -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>

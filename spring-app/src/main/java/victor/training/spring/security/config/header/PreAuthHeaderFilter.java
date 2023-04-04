@@ -15,14 +15,13 @@ public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilte
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String username = request.getHeader("x-user");
-        String rolesStr = request.getHeader("x-user-role");
-        if (username == null || rolesStr == null || username.isBlank() || rolesStr.isBlank()) {
-            log.error("'x-user' and 'x-user-roles' NOT found in request headers");
+        String username = request.getHeader("x-username");
+        String sessionId = request.getHeader("x-session-id");
+        if (username == null || sessionId == null || username.isBlank() || sessionId.isBlank()) {
+            log.error("'x-username' and 'x-session-id' NOT found in request headers");
             return null;
         }
-        List<String> roles = List.of(rolesStr.split(","));
-        return new PreAuthHeaderPrincipal(username, roles);
+        return new PreAuthHeaderPrincipal(username, sessionId, List.of());
     }
 
     @Override
