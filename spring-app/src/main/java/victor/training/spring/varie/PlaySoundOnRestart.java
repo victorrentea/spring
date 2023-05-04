@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
 @Component
 public class PlaySoundOnRestart {
-  private static final String SOUND_FILE = "/start-low.wav";
+  private static final String SOUND_FILE = "/sfx/vrum-low.wav";
+//  private static final String SOUND_FILE = "/sfx/tana-low.wav";
 //  private static final String SOUND_FILE = "/start.wav";
   @EventListener(ContextRefreshedEvent.class)
   public void playSound() {
@@ -24,9 +24,9 @@ public class PlaySoundOnRestart {
       AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
       clip.open(audioStream);
       clip.start();
-      System.out.println("DONE");
+      log.info("🔉 Playing at startup: " + SOUND_FILE);
     } catch (Exception e) {
-      System.err.println("Cannot play" + e.getMessage());
+      log.warn("Cannot play: " + e.getMessage());
     }
     log.info("Done!");
   }

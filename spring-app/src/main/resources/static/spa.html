@@ -10,18 +10,21 @@
 
 <body>
 
-<h2>Implicit Flow with KeyCloak</h2>
-<div id="oauthstatus">Loading...</div>
+<h2>Browser-only Login</h2>
+<div id="oauthstatus">click login</div>
+<button onclick="login()">Login from SPA</button>
 
 <script type="text/javascript" src="http://localhost:8180/auth/js/keycloak.js"></script>
 <script>
-    var keycloak;
-    function initKeycloak() {
+    let keycloak = null;
+
+    function login() {
         keycloak = new Keycloak();
+        oauthstatus.innerText = "Loading...";
         keycloak.init({
             onLoad: "login-required",
             // Client > advanced settings > Proof Key for Code Exchange Code Challenge Method > S256
-            // pkceMethod: 'S256'
+            pkceMethod: 'S256'
         }).then(function(authenticated) {
 
             if (authenticated) {
@@ -36,7 +39,6 @@
             console.log(e);
         });
     }
-    initKeycloak();
 
     function transferAmount() {
 
@@ -54,6 +56,10 @@
             },
             success: function (trainings) {
                 toastr.success("Money Transferred")
+            },
+            error: function (e) {
+                toastr.error("Error: " + e)
+                console.log(e);
             }
         });
     }
