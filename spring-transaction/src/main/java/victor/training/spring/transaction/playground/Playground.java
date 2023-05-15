@@ -30,7 +30,7 @@ public class Playground {
     }
 
     private void altaMetoda() {
-        repo.save(new Message(null));
+        repo.save(new Message("A"));
     }
 
     @Transactional
