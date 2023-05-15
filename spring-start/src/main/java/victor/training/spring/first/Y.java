@@ -1,19 +1,25 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @Service
 public class Y {
-  private final MailService mailService; // polymorphic injection
+//  @Qualifier("mailServiceImpl")
+//  private final MailService mailService; // polymorphic injection
 
+//  private final MailServiceImpl mailService;
 
-  public Y(@Qualifier("mailServiceImpl") MailService mailService) {
-    this.mailService = mailService;
-  }
+  private final MailService mailServiceLocalDummy;
+
+  private final List<MailService> mailServiceToate;
 
   public int logic() {
-    mailService.sendEmail("I like 4 topics");
+    System.out.println("TOate de acel tip: " + mailServiceToate);
+    mailServiceLocalDummy.sendEmail("I like 4 topics");
     return 1;
   }
 }
