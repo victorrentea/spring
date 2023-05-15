@@ -24,7 +24,7 @@ public class PlaySoundOnRestart {
       AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
       clip.open(audioStream);
       clip.start();
-      log.info("🔉 Playing at startup: " + SOUND_FILE);
+      log.info("Playing startup sound 🔉 " + SOUND_FILE);
     } catch (Exception e) {
       log.warn("Cannot play: " + e.getMessage());
     }
