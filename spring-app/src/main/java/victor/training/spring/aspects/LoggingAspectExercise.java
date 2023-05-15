@@ -1,32 +1,32 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-/**
- * Methods in a class annotated with @Facade
- *
- * @Around("@within(victor.training.spring.aspects.Facade))") <p>
- * Methods annotated with @LoggedMethod:
- * @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") <p>
- * Methods of all subtypes of JpaRepository (ie all your Spring Data JPA Repos
- * @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))")
- * <p>
- * Methods of any class in a sub-package of 'web'
- * @Around("execution(* victor.training.spring.web..*.*(..))")
- * <p>
- * Methods starting with "get" in any class = too much? 😱
- * @Around("execution(* *.get*(..))")
- */
 @Slf4j
 @Aspect
 @Component
 public class LoggingAspectExercise {
-    // TODO 1 log a message for any call to some methods, using any of the techniques above
-    // TODO 2 print the method name, arguments and return value to the console
-//  @Around(...)
-    public void intercept() { // TODO
-        // TODO
+//    @Around("@within(victor.training.spring.aspects.Facade)") // all methods of a CLASS annotated with @Facade
+//    @Around("@annotation(victor.training.spring.aspects.LoggedMethod)") // @LoggedMethod on the METHOD
+//    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepo
+        // danger zone --
+//    @Around("execution(* victor.training.spring..*.*(..))") // all methods in a package
+//    @Around("execution(* *.get*(..))") // all methods named get* -> too much?
+//    @Around("execution(* victor.training.spring.aspects.Maths.sum(..))") // 100% specific -> overengineering?
+
+    // Run ProxyIntroApp.main() to test it.
+    // TODO 1 print 'INTERCEPTED' before every call to any method inside Maths
+    //  Hint: use any @Around above
+    //  Hint: the function should take a ProceedingJoinPoint parameter
+    //  Hint: call joinPoint#proceed and return its result out
+    // TODO 2 add to the print: the method name, arguments and return value
+    //  Hint: extract them from the ProceedingJoinPoint parameter
+    // TODO 3 print the returned value
+    //  Hint: call the ProceedingJoinPoint#proceed() to get it
+    public void intercept() {
+        log.info("INTERCEPTED");
     }
 }

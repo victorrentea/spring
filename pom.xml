@@ -22,9 +22,9 @@
    
     <modules>
         <module>spring-start</module>
-        <module>spring-integration</module>
         <module>spring-gateway</module>
-        <module>spring-webflux-migration</module>
+        <!--<module>spring-integration</module>-->
+        <!--<module>spring-webflux-migration</module>-->
         <module>spring-transaction</module>
         <module>spring-app</module>
         <module>spring-sso</module>

@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.joining;
 public class LoggingAspect {
 
 
-    @Around("@within(victor.training.spring.aspects.Facade))") // method of @Facade classes
+    @Around("@within(Facade))") // method of @Facade classes
     //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
     //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 

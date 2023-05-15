@@ -1,7 +1,5 @@
 package victor.training.spring.aspects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +12,7 @@ public class ProxyIntro {
         secondGrade.mathClass();
     }
 }
+
 // ------------------------
 @Service
 class SecondGrade {
@@ -24,9 +23,9 @@ class SecondGrade {
     }
 
     public void mathClass() {
-        System.out.println("2 + 4 = " + maths.sum(2, 4));
-        System.out.println("1 + 5 = " + maths.sum(1, 5));
-        System.out.println("2 x 3 = " + maths.product(2, 3));
+        System.out.println("8 + 4 = " + maths.sum(8, 4));
+        System.out.println("6 + 6 = " + maths.sum(6, 6));
+        System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
 
