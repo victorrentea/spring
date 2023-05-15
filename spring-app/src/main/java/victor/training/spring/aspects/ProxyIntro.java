@@ -6,72 +6,32 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cglib.proxy.Callback;
-import org.springframework.cglib.proxy.Enhancer;
-import org.springframework.cglib.proxy.MethodInterceptor;
-import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
-//@SpringBootApplication
+@SpringBootApplication //1 uncomment
 public class ProxyIntro {
-    private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
-    public static void main(String[] args) {
-        // Play the role of Spring here ...
-        Maths realInstance = new Maths();
+    // 4 comment:
+//    public static void main(String[] args) {
+//        // Play the role of Spring here ...
+//        Maths maths = new Maths();
+//        SecondGrade secondGrade = new SecondGrade(new Wrapper(maths));
+//        new ProxyIntro().run(secondGrade);
+//    }
 
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
-                log.info("Apelez "+ method.getName() +" cu param " + Arrays.toString(params));
-                return method.invoke(realInstance, params);
-            }
-        };
-        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
-        SecondGrade secondGrade = new SecondGrade(proxy);
-        new ProxyIntro().run(secondGrade);
-    }
+    // #2 uncomment:
+    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
 
-    //    public static void main(String[] args) {SpringApplication.run(ProxyIntro.class, args);}
-
-    //@Autowired // uncomment to run in Spring
+    @Autowired // uncomment to run in Spring #3
     public void run(SecondGrade secondGrade) {
         System.out.println("Running Maths class...");
         secondGrade.mathClass();
     }
 }
-//class Wrapper extends  Maths {
-//    private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
-//    private final Maths maths;
-//
-//    public Wrapper(Maths maths) {
-//        this.maths = maths;
-//    }
-//
-//    @Override
-//    public int sum(int a, int b) {
-//        log.info("{}+{}",a,b);
-//        return maths.sum(a, b);
-//    }
-//
-//    @Override
-//    public int product(int a, int b) {
-//        log.info("{}+{}",a,b);
-//        return maths.product(a, b);
-//    }
-//}
-// codu din framework
-// --------------
-// codu app mele
-// -------------------------------------
 @Service
 class SecondGrade {
     private final Maths maths;
-    SecondGrade(Maths maths) { // spring nu va injecta clasa REALA Maths ci un wrapper peste.o clasa care extinde pe-a mea!!
-//        this.maths = new Maths(); // tzapa #1 : new
-        this.maths =maths;
+    SecondGrade(Maths maths) { // spring nu va injecta clasa REALA Maths ci un wrapper peste. o clasa care extinde pe-a mea!!
+        this.maths = maths;
     }
     public void mathClass() {
         System.out.println("2 + 4 = " + maths.sum(2, 4));
@@ -80,21 +40,15 @@ class SecondGrade {
     }
 }
 
-@Slf4j
 @Facade
-//final // #2 crash at runtime
+@Slf4j
 class Maths {
-    public  /*final*/ int sum(int a, int b) { // #3 skips the method
+    public int sum(int a, int b) {
         return a + b;
     }
 
     public int product(int a, int b) {
-        int produs = 0;
-        for (int i = 0; i < a; i++) {
-            produs = sum(produs, b); // #4 cea mai cea tzapa: apelurile locale nu sunt proxiate!!!!!!!!!!!!!!!!!!
-        }
-        return produs;
-//        return a * b;
+        return a * b;
     }
 }
 
