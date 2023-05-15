@@ -65,10 +65,13 @@ public class ProxyIntro {
 // codu din framework
 // --------------
 // codu app mele
+// -------------------------------------
+@Service
 class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) { // spring nu va injecta clasa REALA Maths ci un wrapper peste.o clasa care extinde pe-a mea!!
-        this.maths = maths;
+//        this.maths = new Maths(); // tzapa #1 : new
+        this.maths =maths;
     }
     public void mathClass() {
         System.out.println("2 + 4 = " + maths.sum(2, 4));
@@ -78,13 +81,20 @@ class SecondGrade {
 }
 
 @Slf4j
+@Facade
+//final // #2 crash at runtime
 class Maths {
-    public int sum(int a, int b) {
+    public  /*final*/ int sum(int a, int b) { // #3 skips the method
         return a + b;
     }
 
     public int product(int a, int b) {
-        return a * b;
+        int produs = 0;
+        for (int i = 0; i < a; i++) {
+            produs = sum(produs, b); // #4 cea mai cea tzapa: apelurile locale nu sunt proxiate!!!!!!!!!!!!!!!!!!
+        }
+        return produs;
+//        return a * b;
     }
 }
 
