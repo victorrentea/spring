@@ -1,6 +1,7 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -41,25 +42,20 @@ class ProjectConfiguration {
         return new Person("Jane");
     }
 }
+@RequiredArgsConstructor
 @Data
 @Component
 class Conversation {
-    private final Person one;
-    private final Person two;
-    public Conversation(Person john,Person jane) {
-        this.one = john;
-        this.two = jane;
-    }
-
+    private final Person john;
+    private final Person jane;
     public void start() {
-        System.out.println(one.getName() + " talks with " + two.getName());
+        System.out.println(john.getName() + " talks with " + jane.getName());
     }
 }
 
 
 class Person {
     private final String name;
-
     public Person(String name) {
         this.name = name;
     }
