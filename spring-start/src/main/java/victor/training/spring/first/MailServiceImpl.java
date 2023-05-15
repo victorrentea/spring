@@ -1,9 +1,11 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+//@Primary // default
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
