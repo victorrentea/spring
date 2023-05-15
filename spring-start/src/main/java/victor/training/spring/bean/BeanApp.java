@@ -32,22 +32,34 @@ public class BeanApp {
 }
 @Configuration
 class ProjectConfiguration {
-
     @Bean
     public Person john() {
+        System.out.println("Jr: de cate ori se cheama fct asta");
         return new Person("John");
     }
     @Bean
     public Person jane() { // instante configurate de mana (sa fac eu NEW), ev mai de mai multe ori
         return new Person("Jane");
     }
-
-    // instante din librarii pe care nu pot sa le adnotez
     @Bean
-    public Conversation conversation(Person john, Person jane) {
-        return new Conversation(john, jane);
+    public Conversation conversation() { // instante din librarii pe care nu pot sa le adnotez
+        System.out.println("Conversation1");
+        return new Conversation(john(), jane());
+    }
+    @Bean
+    public Conversation impacarea() {
+        System.out.println("Conversation2");
+        return new Conversation(john(), jane());
     }
 }
+//class SPringLaRuntimeIS_BATE_JOC_si_subclassToateConfiguration extends ProjectConfiguration {
+//    @Override
+//    public Person john() {
+//        // if (am deja in heap in singletonCache -> return)
+//        else
+//        return super.john();
+//    }
+//}
 // ------
 // librarie jar pe care nu poti sa-l modifici
 @RequiredArgsConstructor
