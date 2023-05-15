@@ -13,13 +13,13 @@ public class Y {
 
 //  private final MailServiceImpl mailService;
 
-  private final MailService mailServiceLocalDummy;
+  private final MailService mailService;
 
   private final List<MailService> mailServiceToate;
 
   public int logic() {
     System.out.println("TOate de acel tip: " + mailServiceToate);
-    mailServiceLocalDummy.sendEmail("I like 4 topics");
+    mailService.sendEmail("I like 4 topics");
     return 1;
   }
 }
