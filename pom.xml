@@ -24,6 +24,7 @@
         <module>spring-start</module>
         <module>spring-integration</module>
         <module>spring-gateway</module>
+        <module>spring-batch</module>
 <!--
         <module>spring-webflux-migration</module>
 -->
