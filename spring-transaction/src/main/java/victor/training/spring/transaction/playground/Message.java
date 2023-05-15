@@ -10,7 +10,7 @@ public class Message {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false) // NOT NULL in db
     private String message;
 
     private Message() { // for hibernate only

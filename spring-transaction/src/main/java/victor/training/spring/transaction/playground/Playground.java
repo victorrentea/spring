@@ -12,10 +12,15 @@ import javax.persistence.EntityManager;
 public class Playground {
     private final MessageRepo repo;
 
+    // REGULA: pui adnotarea doar
+    // daca in fluxul tau faci 2+ interactiuni de modificare cu vreun repo
+    // in orice metoda de sub tine.
+    // MAGIE: tranzactia pornita aici se va "PROPAGA" in jos pe orice chemi
     @Transactional
+    // proxy creaza tranzactie si o PUNE PE THREAD (ThreadLocal)
     public void transactionOne() {
         repo.nativeQueryInSpringDataJPA("ALO");
-        repo.save(new Message("jpa"));
+        altaMetoda();
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -23,6 +28,11 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+    private void altaMetoda() {
+        repo.save(new Message(null));
+    }
+
     @Transactional
     public void transactionTwo() {
     }
