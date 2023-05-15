@@ -38,13 +38,21 @@ class ProjectConfiguration {
         return new Person("John");
     }
     @Bean
-    public Person jane() {
+    public Person jane() { // instante configurate de mana (sa fac eu NEW), ev mai de mai multe ori
         return new Person("Jane");
     }
+
+    // instante din librarii pe care nu pot sa le adnotez
+    @Bean
+    public Conversation conversation(Person john, Person jane) {
+        return new Conversation(john, jane);
+    }
 }
+// ------
+// librarie jar pe care nu poti sa-l modifici
 @RequiredArgsConstructor
 @Data
-@Component
+//@Component
 class Conversation {
     private final Person john;
     private final Person jane;
