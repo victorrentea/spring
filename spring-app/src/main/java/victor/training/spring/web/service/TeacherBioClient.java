@@ -1,5 +1,8 @@
 package victor.training.spring.web.service;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +39,9 @@ public class TeacherBioClient {
 
 
   // TODO cacheable
+//  @Retry("nume")
+//  @Bulkhead()
+//  @RateLimiter()
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);

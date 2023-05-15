@@ -16,6 +16,7 @@ public class TransactionsApp implements CommandLineRunner {
 
    @Override
    public void run(String... args) throws Exception {
+      System.out.println("Oare cu ce obiect vorbesc aici ? " + playground.getClass());
       System.out.println("============= TRANSACTION ONE ==============");
       playground.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
