@@ -6,14 +6,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 //@SpringBootApplication
 public class ProxyIntro {
+    private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
     public static void main(String[] args) {
         // Play the role of Spring here ...
-        Maths maths = new Maths();
-        SecondGrade secondGrade = new SecondGrade(new Wrapper(maths));
+        Maths realInstance = new Maths();
+
+        Callback h = new MethodInterceptor() {
+            @Override
+            public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
+                log.info("Apelez "+ method.getName() +" cu param " + Arrays.toString(params));
+                return method.invoke(realInstance, params);
+            }
+        };
+        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+        SecondGrade secondGrade = new SecondGrade(proxy);
         new ProxyIntro().run(secondGrade);
     }
 
@@ -25,32 +42,32 @@ public class ProxyIntro {
         secondGrade.mathClass();
     }
 }
-class Wrapper extends  Maths {
-    private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
-    private final Maths maths;
-
-    public Wrapper(Maths maths) {
-        this.maths = maths;
-    }
-
-    @Override
-    public int sum(int a, int b) {
-        log.info("{}+{}",a,b);
-        return maths.sum(a, b);
-    }
-
-    @Override
-    public int product(int a, int b) {
-        log.info("{}+{}",a,b);
-        return maths.product(a, b);
-    }
-}
+//class Wrapper extends  Maths {
+//    private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
+//    private final Maths maths;
+//
+//    public Wrapper(Maths maths) {
+//        this.maths = maths;
+//    }
+//
+//    @Override
+//    public int sum(int a, int b) {
+//        log.info("{}+{}",a,b);
+//        return maths.sum(a, b);
+//    }
+//
+//    @Override
+//    public int product(int a, int b) {
+//        log.info("{}+{}",a,b);
+//        return maths.product(a, b);
+//    }
+//}
 // codu din framework
 // --------------
 // codu app mele
 class SecondGrade {
     private final Maths maths;
-    SecondGrade(Maths maths) { // spring nu va injecta clasa REALA Maths ci un wrapper peste. o clasa care extinde pe-a mea!!
+    SecondGrade(Maths maths) { // spring nu va injecta clasa REALA Maths ci un wrapper peste.o clasa care extinde pe-a mea!!
         this.maths = maths;
     }
     public void mathClass() {
