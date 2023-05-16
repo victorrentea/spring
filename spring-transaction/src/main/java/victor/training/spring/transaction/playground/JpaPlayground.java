@@ -26,7 +26,7 @@ public class JpaPlayground {
 //        connection.commit();
 //        connection.rollback();
         messageId = repo.save(new Message("unu")).getId();
-        repo.save(new Message("doi"));
+        repo.save(new Message("unu"));
         System.out.println(repo.count());  // orice SQL faci in DB, JPA face auto-flush
         log.info("Ies din metoda- apare in log INAINTE DE INSERTURI aka Write Behind (JPA)");
         // JPA AMANA inserturile pana inainte de commit cu speranta sa faca = FLUSH
