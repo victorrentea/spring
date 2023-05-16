@@ -25,6 +25,7 @@ import java.util.Map;
 // @Value @ConstructorBinding // (B) immutable
 @ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
+  int gate;
   String welcomeMessage; // TODO validate is not null and size >= 4; with javax.validation annotations?
   List<URL> supportUrls; // TODO validate at least 1 element
   Map<Locale, String> localContactPhone;
