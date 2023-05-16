@@ -32,7 +32,7 @@ public class JpaPlayground {
         // JPA AMANA inserturile pana inainte de commit cu speranta sa faca = FLUSH
         // 1) ca nu mai sunt necesare (pesimist) ROLLBACK
         // 2) batchuiasca impreuna inserturile, daca ii dai voie
-        throw new RuntimeException("Valeu");
+//        throw new RuntimeException("Valeu");
     }
 
     @Transactional
@@ -42,5 +42,14 @@ public class JpaPlayground {
         message.setMessage("Altu'");
 //        repo.save(message); // nu e necesar daca esti intr-o @Transactional
         // proxy la final face auto-flush de dirty changes
+        Message message2 = repo.findById(messageId).orElseThrow();
+        System.out.println("aceeasi instanta: " + (message2==message));
+    }
+    public void metoda3() {
+        Message message = repo.findById(messageId).orElseThrow();
+        log.trace("pot si eu sa fiu prost: " + message);
+        // toStringul generat de lombok pune si colectiile in string =>
+        // lazy load
+        // crapa in orice-flux non-web daca nu ai @Transactional pe metoda
     }
 }

@@ -23,6 +23,7 @@ public class TransactionsApp implements CommandLineRunner {
       playground.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
       playground.transactionTwo();
+      playground.metoda3();
       System.out.println("============= END ==============");
    }
 }
