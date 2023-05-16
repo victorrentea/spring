@@ -8,7 +8,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +49,8 @@ public class TeacherBioClient {
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
-    String result = callUsingFeignClient(teacherId);
-//    String result = callUsingRestTemplate(teacherId);
+//    String result = callUsingFeignClient(teacherId);
+    String result = myselfProxied.callUsingRestTemplate(teacherId);
     log.debug("Got result");
     return result;
   }
@@ -56,14 +60,30 @@ public class TeacherBioClient {
     return "Amazing bio for teacher " + teacherId;
   }
 
+  @Autowired
+  private TeacherBioClient myselfProxied;
+
+//@KafkaListener
+//@CacheEvict("teacher-bio")
+//  public void onTeacherUpdatedEvent(long teacherId) {
+//
+//  }
+
   @SneakyThrows
   public String callUsingFeignClient(long teacherId) {
     return feignClient.registerSheep(teacherId);
   }
 
+  @Autowired
+  CacheManager cacheManager;
   @SneakyThrows
+//  @Cacheable("teacher-bio")
   public String callUsingRestTemplate(long teacherId) {
-
+//    String fromCache = cacheManager.getCache("teacher-bio").get(teacherId).get();
+//    if (fromCache == null) {
+//      ...
+//      cacheManager.getCache("teacher-bio").put
+//    }
     // Auth#1 :) - no bearer
 //    String bearerToken = "joke";
 
