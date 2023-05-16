@@ -45,10 +45,10 @@ public class PersonProcessor implements ItemProcessor<PersonXml, Person> {
         entity.setCity(city);
 
         // elimina duplicatele
-        if (distinctNames.contains(entity.getName())) {
-            return null;
-        }
-        distinctNames.add(entity.getName());
+//        if (distinctNames.contains(entity.getName())) {
+//            return null;
+//        }
+//        distinctNames.add(entity.getName());
         return entity;
     }
 

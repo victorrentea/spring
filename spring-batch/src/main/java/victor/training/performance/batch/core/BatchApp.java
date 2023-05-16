@@ -11,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.support.SynchronizedItemStreamReader;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -62,7 +63,7 @@ public class BatchApp {
             .reader(xmlReader(null))
             .processor(personProcessor())
             .writer(jpaWriter())
-            // .taskExecutor(batchExecutor()) // process each chunk in a separate thread
+             .taskExecutor(batchExecutor()) // process each chunk in a separate thread
             .listener(new LogListener())
             .listener(progressTrackingChunkListener())
             .listener(countTotalFromFile())
@@ -109,12 +110,12 @@ public class BatchApp {
     Jaxb2Marshaller unmarshaller = new Jaxb2Marshaller();
     unmarshaller.setClassesToBeBound(PersonXml.class);
     reader.setUnmarshaller(unmarshaller);
-    return reader;
+//    return reader;
 
      // parallelization of a chunk insert step requires synchronizing the reader
-//    SynchronizedItemStreamReader<PersonXml> syncReader = new SynchronizedItemStreamReader<>();
-//    syncReader.setDelegate(reader);
-//    return syncReader;
+    SynchronizedItemStreamReader<PersonXml> syncReader = new SynchronizedItemStreamReader<>();
+    syncReader.setDelegate(reader);
+    return syncReader;
   }
 
    @Bean
