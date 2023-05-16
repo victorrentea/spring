@@ -1,32 +1,50 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+@RestController
+@RequestMapping("api/trainings")
 public class TrainingControllerStripped {
 	@Autowired
 	private TrainingService trainingService;
 
+	@GetMapping
 	public List<TrainingDto> getAllTrainings() {
 		return trainingService.getAllTrainings();
 	}
 
-	public TrainingDto getTrainingById(Long id) {
+	@GetMapping("{id}")
+	public TrainingDto getTrainingById(@PathVariable Long id) {
 		return trainingService.getTrainingById(id);
 	}
 
-	// TODO @Valid
-	public void createTraining(TrainingDto dto) throws ParseException {
+//	@GetMapping("{id}")
+//	public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long id) {
+//		try {
+//			return ResponseEntity.ok(trainingService.getTrainingById(id));
+//		} catch (NoSuchElementException e) { // niciodata
+//			return ResponseEntity.status(404).build();
+//		}
+//	}
+
+	@PostMapping
+	public void createTraining(@RequestBody @Validated TrainingDto dto) throws ParseException {
 		trainingService.createTraining(dto);
 	}
 
-	public void updateTraining(Long trainingId, TrainingDto dto) throws ParseException {
-		dto.id = trainingId;
+	@PutMapping("{id}")
+	public void updateTraining(@PathVariable Long id, @RequestBody @Validated TrainingDto dto) throws ParseException {
+		dto.id = id;
 		trainingService.updateTraining(dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -36,11 +54,19 @@ public class TrainingControllerStripped {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
-	public void deleteTrainingById(Long id) {
+	@DeleteMapping("{id}")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+//	@PostMapping("send-mail")
+//	public void method() {
+//
+//	}
+
+//	@GetMapping("search") // search?name=82782787&trainigId=18&..... -limita lungime -securitate
+	@PostMapping("search") // nu e foarte REST. asa si ?,...
+	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 }
