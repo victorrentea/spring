@@ -7,11 +7,10 @@ import victor.training.performance.batch.core.domain.City;
 import victor.training.performance.batch.core.domain.CityRepo;
 import victor.training.performance.batch.core.domain.Person;
 
-import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class PersonProcessor implements ItemProcessor<PersonXml, Person> {
@@ -19,14 +18,20 @@ public class PersonProcessor implements ItemProcessor<PersonXml, Person> {
     private CityRepo cityRepo;
 
     Set<String> distinctNames = new HashSet<>();
+    Map<String, Long> cityNameToId = new HashMap<>();
     
     @Override
     public Person process(PersonXml xml) {
         Person entity = new Person();
         entity.setName(xml.getName());
-        City city = cityRepo.findByName(xml.getCity())
-            .orElseGet(() -> cityRepo.save(new City(xml.getCity())));
-
+        City city;
+        if (cityNameToId.containsKey(xml.getCity())) {
+            Long existingCityId = cityNameToId.get(xml.getCity());
+            city = new City().setId(existingCityId);
+        } else {
+            city = cityRepo.save(new City(xml.getCity()));
+            cityNameToId.put(xml.getCity(), city.getId());
+        }
         entity.setCity(city);
 
         // elimina duplicatele

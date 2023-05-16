@@ -18,4 +18,7 @@ My Measurements:
 
 Your measurements:
 0: 59/s
-cu increment by: 79
+cu increment by: 79/s
+cu batch mode jdbc: 108/s
+cu chunkuri de 100, nu 5: 200/s
+fara selecturi inutile dupa city = 1333/s
