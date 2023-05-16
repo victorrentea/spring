@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class JpaPlayground {
     private final MessageRepo repo;
+    private Long messageId;
 
     @Transactional
     public void transactionOne() {
-        repo.save(new Message("unu"));
-        repo.save(new Message("unu"));
+        messageId = repo.save(new Message("unu")).getId();
+        repo.save(new Message("doi"));
         log.info("Ies din metoda- apare in log INAINTE DE INSERTURI aka Write Behind (JPA)");
         // JPA AMANA inserturile pana inainte de commit cu speranta sa faca 
         // 1) ca nu mai sunt necesare (pesimist) ROLLBACK
@@ -25,5 +26,10 @@ public class JpaPlayground {
 
     @Transactional
     public void transactionTwo() {
+        // change the message field of the Message @Entity with id = messageId field
+        Message message = repo.findById(messageId).orElseThrow();
+        message.setMessage("Altu'");
+//        repo.save(message); // nu e necesar daca esti intr-o @Transactional
+        // proxy la final face auto-flush de dirty changes
     }
 }

@@ -16,7 +16,11 @@ public class Message {
   private Message() { // for hibernate only
   }
 
-  public Message(String message) {
+    public Long getId() {
+        return id;
+    }
+
+    public Message(String message) {
     this.message = message;
   }
 
