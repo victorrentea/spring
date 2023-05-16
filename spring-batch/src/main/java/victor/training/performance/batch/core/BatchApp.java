@@ -11,15 +11,12 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.batch.item.support.SynchronizedItemStreamReader;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import victor.training.performance.batch.core.domain.City;
@@ -46,7 +43,16 @@ public class BatchApp {
     System.out.println("Batch took " + dt + " ms");
   }
 
-
+  @Bean
+  public Job basicJob() {
+    return jobBuilder.get("basicJob")
+        .incrementer(new RunIdIncrementer())
+        .start(importPersonsInChunks())
+        // TODO insert in 2 passes: 1) cities, 2) people
+        // .start(importCitiesFirstPass()).next(importPersonsInChunks())
+        .listener(new StartListener())
+        .build();
+  }
 
 
   @Bean
@@ -59,7 +65,7 @@ public class BatchApp {
             // .taskExecutor(batchExecutor()) // process each chunk in a separate thread
             .listener(new LogListener())
             .listener(progressTrackingChunkListener())
-            .listener(stepListener())
+            .listener(countTotalFromFile())
             .build();
   }
 
@@ -71,7 +77,7 @@ public class BatchApp {
 
   @Bean
   @StepScope
-  public CountingTotalItemsStepListener stepListener() {
+  public CountingTotalItemsStepListener countTotalFromFile() {
     return new CountingTotalItemsStepListener();
   }
 
@@ -92,6 +98,7 @@ public class BatchApp {
   @StepScope
   public ItemStreamReader<PersonXml> xmlReader(
           @Value("#{jobParameters['FILE_PATH']}") File inputFile
+          // cand @Value are #{ => Spring Expression Language
   ) {
     log.info("Reading data from file: {}", inputFile);
     if (!inputFile.exists()) throw new IllegalArgumentException("Not Found: " + inputFile);
@@ -131,17 +138,7 @@ public class BatchApp {
       return executor;
    }
 
-  @Bean
-  public Job basicJob() {
-    return jobBuilder.get("basicJob")
-            .incrementer(new RunIdIncrementer())
-            .start(importPersonsInChunks())
 
-            // TODO insert in 2 passes: 1) cities, 2) people
-            // .start(importCitiesFirstPass()).next(importPersonsInChunks())
-            .listener(new StartListener())
-            .build();
-  }
 
   @Bean
   public CityMerger cityMerger() {

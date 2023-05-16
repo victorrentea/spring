@@ -6,10 +6,11 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@SequenceGenerator(name = "myseq", allocationSize = 100)
 public class Person {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(generator = "myseq")
+    private Long id; // ELEGANT: UUID
     private String name;
     @ManyToOne
     private City city;

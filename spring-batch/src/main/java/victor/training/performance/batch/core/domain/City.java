@@ -1,6 +1,7 @@
 package victor.training.performance.batch.core.domain;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 
