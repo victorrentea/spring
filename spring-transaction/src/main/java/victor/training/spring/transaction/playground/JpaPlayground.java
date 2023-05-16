@@ -18,8 +18,11 @@ public class JpaPlayground {
     public void transactionOne() {
         messageId = repo.save(new Message("unu")).getId();
         repo.save(new Message("doi"));
+
+        System.out.println(repo.count());  // orice SQL faci in DB, JPA face auto-flush
+
         log.info("Ies din metoda- apare in log INAINTE DE INSERTURI aka Write Behind (JPA)");
-        // JPA AMANA inserturile pana inainte de commit cu speranta sa faca 
+        // JPA AMANA inserturile pana inainte de commit cu speranta sa faca = FLUSH
         // 1) ca nu mai sunt necesare (pesimist) ROLLBACK
         // 2) batchuiasca impreuna inserturile, daca ii dai voie
     }
