@@ -14,11 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-// For immutable version, replace below @Data and @Component with
-// @Value @ConstructorBinding
-//  and @ConfigurationPropertiesScan on a @Configuration
-// https://stackoverflow.com/questions/26137932/immutable-configurationproperties
-
 @Slf4j
 @Data // generates getters + setters
 @Component
@@ -41,6 +36,8 @@ public class WelcomeInfo {
     log.info("WelcomeInfo:\n" + jsonToString);
   }
 }
+// to test the points below, watch the log for 'WelcomeInfo:' output
+//   or create a new component in which to inject WelcomeInfo and use a property
 // TODO 1 inject welcome.welcomeMessage property in 'welcomeMessage' field
 //   Hint: @Value("${
 //   Question: what happens if the property is NOT defined
