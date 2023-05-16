@@ -2,6 +2,8 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,14 +41,14 @@ public class SecurityController {
 //            .collect(Collectors.toList());
 
     //<editor-fold desc="KeyCloak">
-    //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     //		dto.username = authentication.getName();
     //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
     //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
     //    // Optional:
-    //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-    //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-    //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+    		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+    		log.info("Other details about user from ID Token: " +
+                 keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims().get("email"));
     //</editor-fold>
     return dto;
   }

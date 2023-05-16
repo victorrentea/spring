@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,10 +74,13 @@ public class TrainingService {
         if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
+//        String user = SecurityContextHolder.getContext().getAuthentication().getName(); // useru curent  !
+
         Training training = trainingRepo.findById(dto.id).orElseThrow()
                 .setName(dto.name)
                 .setDescription(dto.description)
                 .setProgrammingLanguage(dto.language)
+//            .lastModifiedBy(user)
                 .setTeacher(new Teacher(dto.teacherId));
 
         if (!dto.startDate.equals(training.getStartDate())) {

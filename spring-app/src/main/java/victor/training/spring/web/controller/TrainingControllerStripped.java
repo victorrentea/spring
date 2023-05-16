@@ -2,12 +2,16 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -43,8 +47,9 @@ public class TrainingControllerStripped {
 	}
 
 	@PutMapping("{id}")
-	public void updateTraining(@PathVariable Long id, @RequestBody @Validated TrainingDto dto) throws ParseException {
+	public void updateTraining(Principal principal, @PathVariable Long id, @RequestBody @Validated TrainingDto dto) throws ParseException {
 		dto.id = id;
+
 		trainingService.updateTraining(dto);
 	}
 	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -55,6 +60,8 @@ public class TrainingControllerStripped {
 	// TODO PermissionEvaluator
 
 	@DeleteMapping("{id}")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Secured("ADMIN")
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
