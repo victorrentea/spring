@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 // - Dependency Injection: field, constructor, method
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 // - @Value(${}) + @ConfigurationProperties
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"victor.training.spring.first", "victor.training.spring.sub"})
 @RequiredArgsConstructor // Lombok e un virus de Javac care adauga cod pe care tu nu-l scrii
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
