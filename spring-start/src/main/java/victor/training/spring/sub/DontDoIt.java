@@ -10,12 +10,13 @@ import victor.training.spring.first.X;
 @RequiredArgsConstructor
 @RestController
 public class DontDoIt {
-//  private final ApplicationContext applicationContext;
+  private final ApplicationContext applicationContext;
   private final Nui x; // fails at startup
 
   @GetMapping("candva")
   public void method() {
 //    Nui x = applicationContext.getBean(Nui.class); // periculos ca-ti crapa la runtime, nu la startup
+//    Nui x = applicationContext.getBean("nui",Nui.class); // !!! 💀
     x.logic();
   }
 }

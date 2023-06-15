@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
 // - @Autowired List<BeanInterface>
 // - Profile (bean & props)
 // - ApplicationContext#getBean
-// - @Scope
 // - @Configuration @Bean proxyMethods
+// - @Scope
 
 // - @Value(${}) + @ConfigurationProperties
 
