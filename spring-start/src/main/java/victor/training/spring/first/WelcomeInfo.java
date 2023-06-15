@@ -3,7 +3,9 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 @Slf4j
 @Data // generates getters + setters
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
   int gate;
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
@@ -55,3 +58,16 @@ public class WelcomeInfo {
 //   Trick: provide a default to a property by assigning the field = "defaultvalue"
 // TODO 5[PRO] make this class immutable: lombok.@Value + @ConstructorBinding + @ConfigurationPropertiesScan on a @Configuration
 //  Hint: https://stackoverflow.com/questions/26137932/immutable-configurationproperties
+
+
+@Component
+@RequiredArgsConstructor
+class CodClient {
+  private final WelcomeInfo welcomeInfo;
+
+
+  @PostConstruct
+  public void method() {
+    System.out.println("Urluri: " + welcomeInfo.getSupportUrls());
+  }
+}
