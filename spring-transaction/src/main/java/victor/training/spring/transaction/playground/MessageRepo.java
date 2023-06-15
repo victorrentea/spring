@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
   @Modifying
-  @Transactional
+  @Transactional // aici proxy preia tx existenta
   @Query(value = "insert into MESSAGE(id, message) values ( 100, ?1)" ,nativeQuery = true)
   void suchili(String name);
 

@@ -17,6 +17,7 @@ public class Playground {
     private final MessageRepo repo;
     private final EntityManager jpaCurat;
 
+    @Transactional // aici proxy deschide tx noua
     public void transactionOne() {
         repo.suchili("SQL NATIV");
         alta();
