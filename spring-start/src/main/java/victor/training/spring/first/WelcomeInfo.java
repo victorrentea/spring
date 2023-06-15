@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotEmpty;
 import java.io.File;
 import java.net.URL;
@@ -22,6 +23,9 @@ import java.util.Objects;
 
 // A .properties
 // B .yaml
+
+
+// TODO poti sa-l faci imutabil: // https://stackoverflow.com/questions/26137932/immutable-configurationproperties
 
 @Slf4j
 @Data // generates getters + setters
@@ -47,8 +51,24 @@ public class WelcomeInfo {
   @Data
   public static class HelpInfo {
     Integer appId;
+//    @FileExists
     File file; // TODO 4c validate exists on disk
   }
+
+  // TODO vrentea exercitiu pt cititor nu cu adnotare custom, ceva local aici.
+  @AssertTrue
+  public boolean fileExistsOnDisk() {
+    return help.file.isFile();
+  }
+
+
+  @PostConstruct
+  public void validateFileExists() {
+    if (!help.file.isFile()) {
+      throw new IllegalArgumentException("Valeu not found: " + help.file);
+    }
+  }
+
 
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
@@ -82,6 +102,7 @@ class CodClient {
 
   @PostConstruct
   public void method() {
+//    welcomeInfo.setWelcomeMessage("Tzeapa!");
     System.out.println("Urluri: " + welcomeInfo.getSupportUrls());
   }
 }
