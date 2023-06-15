@@ -3,6 +3,8 @@ package victor.training.spring.aspects;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Cache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
@@ -111,6 +113,7 @@ class SecondGrade {
 //    @Cacheable("copiutza")
 //    @Timed("produs")
     public int product(int a, int b) {
+//            return int cacheManager.getCache("copiutza").get(1,2).get()
         int rezultat= 0;
         for (int i = 0; i < a; i++) {
             rezultat = sum(rezultat, b);
@@ -118,6 +121,9 @@ class SecondGrade {
         return rezultat;
 //        return a * b;
     }
+
+//    @Autowired
+//    private CacheManager cacheManager;
 }
 
 
