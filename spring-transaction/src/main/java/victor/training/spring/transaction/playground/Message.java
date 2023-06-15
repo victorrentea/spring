@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @ToString
 @Entity
@@ -11,7 +12,8 @@ public class Message {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false) // NOT NULL pe coloana
+    @NotEmpty
     private String message;
 
     private Message() { // for hibernate only
