@@ -1,6 +1,8 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
@@ -88,13 +90,17 @@ class SecondGrade {
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
-@Service
+@Facade
 class Maths {
     public Integer sum(int a, int b) {
         System.out.println("executa?");
         return a + b;
     }
+    @LoggedMethod
+    @Cacheable("copiutza")
+    @Timed("produs")
     public int product(int a, int b) {
+        new RuntimeException().printStackTrace();
         return a * b;
     }
 }
