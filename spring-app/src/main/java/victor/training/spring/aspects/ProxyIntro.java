@@ -2,6 +2,7 @@ package victor.training.spring.aspects;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
@@ -94,17 +95,21 @@ class SecondGrade {
     }
 }
 @Facade
-class Maths {
-    @Secured("ADMIN")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Integer sum(int a, int b) {
+/*final*/ class Maths { // crapa
+//    @Secured("ADMIN")
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
+    public // private crapa
+       /*final*/ // nu crapa ci o ignora
+        static // ignore
+    Integer sum(int a, int b) {
         System.out.println("executa?");
         return a + b;
     }
 //    @LoggedMethod
 //        new RuntimeException().printStackTrace();
-    @Cacheable("copiutza")
-    @Timed("produs")
+//    @Cacheable("copiutza")
+//    @Timed("produs")
     public int product(int a, int b) {
         int rezultat= 0;
         for (int i = 0; i < a; i++) {
