@@ -90,7 +90,8 @@ class SecondGrade {
 }
 @Service
 class Maths {
-    public int sum(int a, int b) {
+    public Integer sum(int a, int b) {
+        System.out.println("executa?");
         return a + b;
     }
     public int product(int a, int b) {

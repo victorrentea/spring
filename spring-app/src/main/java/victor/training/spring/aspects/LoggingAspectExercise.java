@@ -1,6 +1,7 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,10 @@ public class LoggingAspectExercise {
     //  Hint: extract them from the ProceedingJoinPoint parameter
     // TODO 3 print the returned value
     //  Hint: call the ProceedingJoinPoint#proceed() to get it
-    public void intercept() {
+
+    @Around("execution(* victor.training.spring.aspects.Maths.sum(..))")
+    public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
         log.info("INTERCEPTED");
+        return pjp.proceed();
     }
 }
