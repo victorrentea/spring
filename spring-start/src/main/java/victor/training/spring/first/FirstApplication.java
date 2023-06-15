@@ -9,15 +9,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-// - Injection: field, constructor, method
-// - PostConstruct, @EventListener, CommandLineRunner
-// - Qualifier
+// - Dependency Injection: field, constructor, method
+// - Defining beans: @Component & co, @ComponentScan
+// - Cyclic dependencies
+// - Startup code: PostConstruct, @EventListener, CommandLineRunner
+// - Qualifier, bean names
 // - Primary
-// - Profile
-// - inject List<BeanInterface>
+// - Lombok tricks: @RAC, lombok.copyableAnnotations+=
+// ----1h
+// - Profile (bean & props)
+// - @Autowired List<BeanInterface>
 // - ApplicationContext#getBean
-// [7] @Value (+Lombok @RAC) + @ConfigurationProperties
+// - @Scope
+// - @Configuration @Bean proxyMethods
 
+// - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
