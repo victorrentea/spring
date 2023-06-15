@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@SpringBootApplication
+@SpringBootApplication// (proxyBeanMethods = false) disableaza behaviorul explicat in commitul asta
 //@Configuration
 public class BeanApp {
     public static void main(String[] args) {
@@ -27,27 +28,38 @@ public class BeanApp {
         conversation.start();
     }
     @Bean
-    public Person john() {
+    public Conversation cearta() {
+        System.out.println("Se cearta?");
+        // apelurile dintr-un @bean in alt @bean sunt interceptate de spring, iti trage o tzeapa
+        // ⚠️⚠️⚠️⚠️⚠️ singurul loc in tot springu unde metodele chemate local sunt interceptate
+        return new Conversation(john(null), jane());
+    }
+    @Bean
+    public Person john(@Value("${db.password}") String pass) {
+        System.out.println("De cate ori se naste John: " + pass);
         return new Person("John");
     }
+
     @Bean
     public Person jane() {
         return new Person("Jane");
     }
-
     @Bean
-    public Conversation conversation(Person john, Person jane) {
-        return new Conversation(john, jane);
+    public Conversation impacarea() {
+        System.out.println("Se impaca?");
+        return new Conversation(john(null), jane());
     }
 }
-@Configuration
-class Config2 {
 
-    @Bean
-    public Person john2() {
-        return new Person("Jane");
-    }
-}
+//class SpringSubCapot extends BeanApp {
+//    @Override
+//    public Person john(String pass) {
+//        if (am in cache pe john) return din cache;
+//          ia pass din props
+//        return super.john(pass);
+//        put in cache
+//    }
+//}
 
 // -- intr-un jar ce-i mai jos
 // vvvvv nu pot pune @Component
