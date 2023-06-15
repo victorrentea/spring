@@ -18,7 +18,7 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.suchili("ALO");
-        repo.save(new Message("ALO"));
+        repo.save(new Message("ALOx"));
 
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
@@ -29,6 +29,8 @@ public class Playground {
     }
     @Transactional
     public void transactionTwo() {
+        System.out.println(repo.findByMessageContainingIgnoreCase("lO"));
+        System.out.println(repo.findByMessageLike("LO"));
     }
 }
 

@@ -1,7 +1,10 @@
 package victor.training.spring.transaction.playground;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 
+@ToString
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE"))
 public class Message {
