@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+// A .properties
+// B .yaml
+
 @Slf4j
 @Data // generates getters + setters
 @Component
