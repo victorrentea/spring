@@ -1,11 +1,9 @@
 package victor.training.spring.transaction.playground;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue
