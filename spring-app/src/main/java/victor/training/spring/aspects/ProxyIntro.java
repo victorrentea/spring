@@ -3,7 +3,6 @@ package victor.training.spring.aspects;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
-@SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // WE play the role of Spring here ...
@@ -14,7 +13,6 @@ public class ProxyIntro {
 }
 
 // ------------------------
-@Service
 class SecondGrade {
     private final Maths maths;
 
@@ -29,7 +27,6 @@ class SecondGrade {
     }
 }
 
-@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
