@@ -14,8 +14,8 @@ public class Y {
   @Qualifier("mailServiceImpl") // springule vreau acea isntanta cu numele asta
   private final MailService mailService; // polymorphic injection
 
-  @Value("${mail.sender}")
-  private final String mailSender;
+  @Value("${db.password}")
+  private final String dbPassword;
 
 
   // dar e design smell
@@ -34,7 +34,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
-    System.out.println("Prop citit " + mailSender);
+    System.out.println("Prop citit db pass= " + dbPassword);
     return 1;
   }
 }
