@@ -38,9 +38,9 @@ public class LoggingAspectExercise {
 
     // abuz sa faci magie de genul asta doar pentru 1-2 metode
 //    @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
-    @Around("@within(Facade)")
+//    @Around("@within(Facade)")
 //    @Around("@annotation(LoggedMethod)")
-//    @Around("@within(LoggedMethod) || @annotation(LoggedMethod)") // TODO victorrentea 2023-06-15: fix
+    @Around("@within(LoggedMethod) || @annotation(LoggedMethod)") // TODO victorrentea 2023-06-15: fix
     public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
 //        log.info("INTERCEPTED");
         String methodName = pjp.getSignature().getName();

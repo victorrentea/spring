@@ -103,7 +103,7 @@ class SecondGrade {
 
     public // private crapa
        /*final*/ // nu crapa ci o ignora
-        static // ignore
+        /*static*/ // ignore
     Integer sum(int a, int b) {
         System.out.println("executa?");
         return a + b;
