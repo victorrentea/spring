@@ -3,8 +3,10 @@ package victor.training.spring.sub;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.MailService;
+import victor.training.spring.first.X;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +16,11 @@ public class Y {
 
   @Value("${mail.sender}")
   private final String mailSender;
+
+
+  // dar e design smell
+  @Lazy
+  private final X x;
 
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";

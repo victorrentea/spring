@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 // - Primary
 // - Lombok tricks: @RAC, lombok.copyableAnnotations+=
 // ----1h
-// - @ComponentScan
-// - Profile (bean & props)
+// - @ComponentScan ok
 // - @Autowired List<BeanInterface>
+// - Profile (bean & props)
 // - ApplicationContext#getBean
 // - @Scope
 // - @Configuration @Bean proxyMethods
