@@ -8,6 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Service
 @Transactional
+@LoggedMethod
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Facade {
 }

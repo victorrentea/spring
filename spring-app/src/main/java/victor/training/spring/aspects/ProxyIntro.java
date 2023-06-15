@@ -7,7 +7,10 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -92,16 +95,23 @@ class SecondGrade {
 }
 @Facade
 class Maths {
+    @Secured("ADMIN")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer sum(int a, int b) {
         System.out.println("executa?");
         return a + b;
     }
-    @LoggedMethod
+//    @LoggedMethod
+//        new RuntimeException().printStackTrace();
     @Cacheable("copiutza")
     @Timed("produs")
     public int product(int a, int b) {
-        new RuntimeException().printStackTrace();
-        return a * b;
+        int rezultat= 0;
+        for (int i = 0; i < a; i++) {
+            rezultat = sum(rezultat, b);
+        }
+        return rezultat;
+//        return a * b;
     }
 }
 
