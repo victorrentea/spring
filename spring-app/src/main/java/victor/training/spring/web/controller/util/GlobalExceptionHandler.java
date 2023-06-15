@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,10 +15,10 @@ import victor.training.spring.web.MyException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -35,11 +36,11 @@ public class GlobalExceptionHandler {
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
 
-  //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
-  //	public String noSuchElementException() {
-  //		return "Not Found";
-  //	}
+  	@ResponseStatus(NOT_FOUND)
+  	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
+  	public String noSuchElementException() {
+  		return "Not Found";
+  	}
 
   // Return internationalized error messages in the user language from:
   // - the 'Accept-Language' request header via request.getLocale())
@@ -47,9 +48,11 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
-  public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
+  public String onMyException(MyException exception, HttpServletRequest httpRequest) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
-    Locale clientLocale = request.getLocale(); // or from the Access Token
+
+    Locale clientLocale = httpRequest.getLocale();// Accept-Language HTTP request header
+//    Locale clientLocale = SecurityContextHolder.getContext().getAuthentication()......JWT.getLocale;
     String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;
