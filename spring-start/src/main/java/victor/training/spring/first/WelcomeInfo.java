@@ -64,9 +64,9 @@ public class WelcomeInfo {
 
   @PostConstruct
   public void validateFileExists() {
-    if (!help.file.isFile()) {
-      throw new IllegalArgumentException("Valeu not found: " + help.file);
-    }
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Valeu not found: " + help.file);
+//    }
   }
 
 
