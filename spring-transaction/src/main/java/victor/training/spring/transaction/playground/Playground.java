@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 import java.sql.Connection;
@@ -31,7 +33,9 @@ public class Playground {
             otherClass.bizLogic();
         } catch (Exception e) {
             log.error("O crapat " + e);
-            totEuDarProxiat.saveInNewTransaction(e);
+            otherClass.saveInNewTransaction(e);
+            // se mai poate si fara @Transactional cu
+            // "TransactionTemplate baeldung" template.runInTransaction( -> repo.save())
         }
         alta();
         // asta nu trimite in DB inca INSERTUL pana cand nu
@@ -41,15 +45,12 @@ public class Playground {
 //        rabbit.send(new Message("GATA!!!"));
     } // proxy face flush > commit
 
-    @Autowired
-    @Lazy
-    private Playground totEuDarProxiat;
+//    @Autowired
+//    @Lazy
+//    private Playground totEuDarProxiat;
 
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveInNewTransaction(Exception e) {
-        repo.saveAndFlush(new Message("ERROR: " + e.getMessage()));
-    }
+
 
     //    @Transactional
     private void alta() {
@@ -66,6 +67,8 @@ public class Playground {
     public void transactionTwo() {
         System.out.println(repo.findByMessageContainingIgnoreCase("lO"));
         System.out.println(repo.findByMessageLike("LO"));
+        Message message = repo.findById(100L).orElseThrow();
+        message.setMessage("Altu da nu fac save dupa, tot ajunge changeul meu in DB la final de @Transaction : dirty check de @Entity");
     }
 }
 @Service
@@ -76,9 +79,15 @@ class OtherClass {
     // marcheaza tranzactia curenta (venita de la caller) ca "rollback-only"
     // din acest moment incolo, nu ai cum sa invii tranzactia asta.
     public void bizLogic() {
-        repo.save(new Message("Treaba Mea"));
+            repo.save(new Message("Treaba Mea"));
 //        repo.save(new Message(null)); // NOT NULL violation
 //        repo.save(new Message("")); // javax.validation annotaions
-         if (true) throw new IllegalArgumentException();
+//            if (true) throw new IllegalArgumentException();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Async // te muta pe alt thread => ai alta tranzactie
+    public void saveInNewTransaction(Exception e) {
+        repo.saveAndFlush(new Message("ERROR: " + e.getMessage()));
     }
 }
