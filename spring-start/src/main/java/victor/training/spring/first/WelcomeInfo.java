@@ -8,8 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -24,21 +27,23 @@ import java.util.Objects;
 @Data // generates getters + setters
 @Component
 @ConfigurationProperties(prefix = "welcome")
+@Validated
 public class WelcomeInfo {
   int gate;
+  @NotEmpty
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
+  @NotEmpty
   List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   Map<Locale, String> localContactPhone;
   HelpInfo help;
-
   public WelcomeInfo() {
 //    Objects.requireNonNull(welcomeMessage);// prea devreme in ctor
   }
 
-  @PostConstruct // ruleaza dupa injectia deps/props
-  public void validate() {
-    Objects.requireNonNull(welcomeMessage);
-  }
+//  @PostConstruct // ruleaza dupa injectia deps/props
+//  public void validate() {
+//    Objects.requireNonNull(welcomeMessage);
+//  }
   @Data
   public static class HelpInfo {
     Integer appId;
