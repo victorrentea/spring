@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@Profile("local")
-@Primary //daca-l vad, il iau
+//@Profile("local")
+//@Primary //daca-l vad, il iau
 //@Primary // springule, ori de cate ori asta se bate cu alta pt injectie, alege-o p'asta
 // TODO when starting the app locally,
 //  don't send any emails, log then instead

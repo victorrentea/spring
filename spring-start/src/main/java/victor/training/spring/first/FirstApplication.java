@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 // - Primary
 // - Lombok tricks: @RAC, lombok.copyableAnnotations+=
 // ----1h
+// - @ComponentScan
 // - Profile (bean & props)
 // - @Autowired List<BeanInterface>
 // - ApplicationContext#getBean
