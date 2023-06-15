@@ -12,7 +12,7 @@ public class Experiment {
   // in schimb, aduna tot configu default in application.properties/.yaml
   // ca sa VEZI ce poti configura, sa nu trebuiasca sa alregi prin cod
 //  @Value("${db.pasword:defaultValue}")
-  @Value("${db.pasword}") // crapa daca nu gaseste
+  @Value("${db.password}") // crapa daca nu gaseste
   private String password;
 
   @PostConstruct

@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 // A .properties
 // B .yaml
@@ -30,6 +31,14 @@ public class WelcomeInfo {
   Map<Locale, String> localContactPhone;
   HelpInfo help;
 
+  public WelcomeInfo() {
+//    Objects.requireNonNull(welcomeMessage);// prea devreme in ctor
+  }
+
+  @PostConstruct // ruleaza dupa injectia deps/props
+  public void validate() {
+    Objects.requireNonNull(welcomeMessage);
+  }
   @Data
   public static class HelpInfo {
     Integer appId;
