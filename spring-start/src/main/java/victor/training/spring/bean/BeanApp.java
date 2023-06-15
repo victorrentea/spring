@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
+import java.time.ZoneId;
+
 @SpringBootApplication// (proxyBeanMethods = false) disableaza behaviorul explicat in commitul asta
 //@Configuration
 public class BeanApp {
@@ -48,6 +51,11 @@ public class BeanApp {
     public Conversation impacarea() {
         System.out.println("Se impaca?");
         return new Conversation(john(null), jane());
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.system(ZoneId.systemDefault());
     }
 }
 

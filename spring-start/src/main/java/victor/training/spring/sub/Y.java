@@ -11,6 +11,9 @@ import victor.training.spring.first.X;
 @Service
 @RequiredArgsConstructor
 public class Y {
+//  private String currentUsername; // NICIODATA pe singleton nu tii date specifice UNUI SINGUR request/mesaj
+
+
 //  @Qualifier("mailServiceImpl") // springule vreau acea isntanta cu numele asta
   private final MailService mailServiceImpl; // polymorphic injection
   // numele punctului de injectie (camp/param) decide numele beanului Spring
