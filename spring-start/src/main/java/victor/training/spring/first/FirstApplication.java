@@ -19,15 +19,30 @@ import org.springframework.stereotype.Service;
 // [7] @Value (+Lombok @RAC) + @ConfigurationProperties
 
 @SpringBootApplication
+@RequiredArgsConstructor // Lombok e un virus de Javac care adauga cod pe care tu nu-l scrii
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
   }
 
-  @Autowired
-  private X x;
 
-  @Override // from CommandLineRunner
+  // DI: Springule, injecteaza aici un o instanta dupa tip din container
+//  @Autowired
+//  private X x; // 1 istoric: field injection
+
+  private final X x; // 2: ⭐️ constructor injection recomandat
+  private final X x2; //
+//  public FirstApplication(X x) {
+//    this.x = x;
+//  }
+
+
+//  @Autowired // 3 setter injection
+//  public void setZ(Z z) {
+//    this.z = z;
+//  }
+
+  @Override // from CommandLineRunner, chemata de spring cu param de command line
   public void run(String... args) {
     System.out.println(x.logic());
   }
