@@ -17,16 +17,22 @@ public class Playground {
     private final MessageRepo repo;
     private final EntityManager jpaCurat;
 
-    @Transactional
     public void transactionOne() {
         repo.suchili("SQL NATIV");
-        repo.saveAndFlush(new Message("SQL a")); // asta nu trimite in DB inca INSERTUL pana cand nu
-        repo.saveAndFlush(new Message("SQL b")); // asta nu trimite in DB inca INSERTUL pana cand nu
+        alta();
+        // asta nu trimite in DB inca INSERTUL pana cand nu
 //        repo.saveAndFlush(new Message("SQL NATIV")); // daca vrei sa dizablezi write behind, si sa trimit INSERT in DB pe loc, dar poti pierde performanta
         // se face FLUSH
 
         log.info("Write-behind (JPA) = ce aveai de scris in DB se flush() abia la finalul tx inainte de COMMIT");
     } // proxy face flush > commit
+
+//    @Transactional
+    private void alta() {
+        repo.save(new Message("SQL NATIV")); // chiar daca sunt in alta metoda locala, tranzactia vine dupe mine
+        // cum puiiiii mei !?!?!?!?!?!
+
+    }
 
     @Transactional
     public void transactionTwo() {
