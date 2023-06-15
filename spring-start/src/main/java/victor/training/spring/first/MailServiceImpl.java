@@ -1,9 +1,12 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+//@Profile("prod") // niciodata
+@Profile("!local")
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {

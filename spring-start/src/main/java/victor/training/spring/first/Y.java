@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
+//  @Qualifier("mailServiceImpl") // springule vreau acea isntanta cu numele asta
   private final MailService mailService; // polymorphic injection
 
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
