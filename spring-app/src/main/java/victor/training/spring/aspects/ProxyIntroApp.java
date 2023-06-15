@@ -10,7 +10,7 @@ public class ProxyIntroApp {
         SpringApplication.run(ProxyIntroApp.class, args);
     }
     @Autowired
-    public void run(SecondGrade secondGrade) {
+    public void oricum(SecondGrade secondGrade) {
         System.out.println("Running Maths class...");
         secondGrade.mathClass();
     }

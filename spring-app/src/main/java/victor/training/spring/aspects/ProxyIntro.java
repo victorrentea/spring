@@ -5,6 +5,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -73,6 +74,7 @@ public class ProxyIntro {
 //}
 
 // ------------------------  n-ai voie sa scrii nimic sub linia asta: fii-mea nu tre sa afle --------
+@Service
 class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
@@ -86,6 +88,7 @@ class SecondGrade {
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
+@Service
 class Maths {
     public int sum(int a, int b) {
         return a + b;
