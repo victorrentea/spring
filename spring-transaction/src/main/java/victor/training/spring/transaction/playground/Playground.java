@@ -68,7 +68,11 @@ public class Playground {
         System.out.println(repo.findByMessageContainingIgnoreCase("lO"));
         System.out.println(repo.findByMessageLike("LO"));
         Message message = repo.findById(100L).orElseThrow();
+        System.out.println("----");
         message.setMessage("Altu da nu fac save dupa, tot ajunge changeul meu in DB la final de @Transaction : dirty check de @Entity");
+//         repo.save(message);// +1 select, daca faci multe -> perf issues
+        //a) @Transactional fara save ⭐️
+        //b) fara @Transactional cu save()
     }
 }
 @Service
