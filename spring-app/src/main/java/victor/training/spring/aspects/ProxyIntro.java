@@ -1,6 +1,13 @@
 package victor.training.spring.aspects;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ProxyIntro {
     public static void main(String[] args) {
@@ -15,7 +22,29 @@ public class ProxyIntro {
 //            }
 //        };
         Maths realObj = new Maths();
-        Maths proxy = new MathsProxy(realObj);
+
+        Callback h = new MethodInterceptor() {
+            @Override
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+
+                // ce face springul cu acest mecanism (think: adnotari pe metode)?
+                // - logging daca vrei tu cu @Aspect
+                // - @Bean sa subclaseze @Configuration
+                // - @Transactional start ,,,,,, commit/rollback
+                // - @Validated
+                // - @Cacheable
+                // - @Secured/@PreAuthorize
+                // -
+
+                Object result = method.invoke(realObj, args);
+
+                System.out.println("SRI: " + method.getName() + " " + Arrays.toString(args) + " = " + result);
+                return result;
+            }
+        };
+        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+
+//        Maths proxy = new MathsProxy(realObj);
         SecondGrade secondGrade = new SecondGrade(proxy);
         // TODO logeaza param si rezultatele tutoro metodelor din Maths chemate de SecondGrade
         // -- pana aici ar face spring in startup
@@ -24,24 +53,24 @@ public class ProxyIntro {
     }
 }
 
-@RequiredArgsConstructor
-class MathsProxy extends Maths { // ~ decorator pattern
-    private final Maths realObject;
-
-    @Override
-    public int sum(int a, int b) {
-        int result = realObject.sum(a, b); // delegate to YOUR method
-        System.out.println("SRI: sum "+ a+ " + " + b +" = "+result); // java21
-        return result;
-    }
-
-    @Override
-    public int product(int a, int b) {
-        int result = realObject.product(a, b); // delegate to YOUR method
-        System.out.println("SRI: product "+ a+ " + " + b +" = "+result); // java21
-        return result;
-    }
-}
+//@RequiredArgsConstructor
+//class MathsProxy extends Maths { // ~ decorator pattern
+//    private final Maths realObject;
+//
+//    @Override
+//    public int sum(int a, int b) {
+//        int result = realObject.sum(a, b); // delegate to YOUR method
+//        System.out.println("SRI: sum "+ a+ " + " + b +" = "+result);
+//        return result;
+//    }
+//
+//    @Override
+//    public int product(int a, int b) {
+//        int result = realObject.product(a, b); // delegate to YOUR method
+//        System.out.println("SRI: product "+ a+ " + " + b +" = "+result);
+//        return result;
+//    }
+//}
 
 // ------------------------  n-ai voie sa scrii nimic sub linia asta: fii-mea nu tre sa afle --------
 class SecondGrade {
@@ -51,6 +80,7 @@ class SecondGrade {
     }
 
     public void mathClass() {
+        System.out.println("Oare pe ce object chem eu .sum ? " +maths.getClass());
         System.out.println("8 + 4 = " + maths.sum(8, 4));
         System.out.println("6 + 6 = " + maths.sum(6, 6));
         System.out.println("4 x 3 = " + maths.product(4, 3));
