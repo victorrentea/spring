@@ -1,81 +1,32 @@
 package victor.training.spring.aspects;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
 
 @Slf4j
 @Aspect
 @Component
 public class LoggingAspect {
+//    @Around("@within(victor.training.spring.aspects.Facade)") // all methods of a CLASS annotated with @Facade
+//    @Around("@annotation(victor.training.spring.aspects.LoggedMethod)") // @LoggedMethod on the METHOD
+//    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepo
+        // danger zone --
+//    @Around("execution(* victor.training.spring..*.*(..))") // all methods in a package
+//    @Around("execution(* *.get*(..))") // all methods named get* -> too much?
+//    @Around("execution(* victor.training.spring.aspects.Maths.sum(..))") // 100% specific -> overengineering?
 
-
-    @Around("@within(Facade))") // method of @Facade classes
-    //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod))") // @LoggedMethod method
-    //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
-
-    // -- DANGER ZONE --
-    //    @Around("execution(* victor.training.spring.web..*.*(..))") // any method of any class in a sub-package of 'web'
-    //    @Around("execution(* *.get*(..))") // all methods starting with "get" everywhere!! = naming convention = dangerous😱
-    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        if (log.isDebugEnabled()) {
-            String methodName = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
-            String currentUsername = "<user>";//SecurityContextHolder.getContext().getName()";
-            String argListConcat = Stream.of(joinPoint.getArgs()).map(this::jsonify).collect(joining(","));
-            log.debug("Invoking {}(..) (user:{}): {}", methodName, currentUsername, argListConcat);
-        }
-
-        try {
-            Object returnedObject = joinPoint.proceed(); // allow the call to propagate to original (intercepted) method
-
-            if (log.isDebugEnabled()) {
-                log.debug("Returned value: {}", jsonify(returnedObject));
-            }
-            return returnedObject;
-        } catch (Exception e) {
-            log.error("Threw exception {}: {}", e.getClass(), e.getMessage());
-            throw e;
-        }
+    // Run ProxyIntroApp.main() to test it.
+    // TODO 1 print 'INTERCEPTED' before every call to any method inside Maths
+    //  Hint: use the last @Around above
+    //  Hint: the function should take a ProceedingJoinPoint parameter
+    //  Hint: call joinPoint#proceed and return its result out
+    // TODO 2 add to the print: the method name, arguments and return value
+    //  Hint: extract them from the ProceedingJoinPoint parameter
+    // TODO 3 print the returned value
+    //  Hint: call the ProceedingJoinPoint#proceed() to get it
+    // TODO 4 try every @Around forms above
+    public void intercept() {
+        log.info("INTERCEPTED");
     }
-
-    private final ObjectMapper jackson = new ObjectMapper();
-    @PostConstruct
-    public void configureMapper() {
-        if (log.isTraceEnabled()) {
-            log.trace("JSON serialization will be indented");
-            jackson.enable(SerializationFeature.INDENT_OUTPUT);
-        }
-    }
-    private String jsonify(Object object) {
-        if (object == null) {
-            return "<null>";
-        } else if (object instanceof OutputStream) {
-            return "<OutputStream>";
-        } else if (object instanceof InputStream) {
-            return "<InputStream>";
-        } else {
-            try {
-                return jackson.writeValueAsString(object);
-            } catch (JsonProcessingException e) {
-                log.warn("Could not serialize as JSON (stacktrace on TRACE): " + e);
-                log.trace("Cannot serialize value: " + e, e);
-                return "<JSONERROR>";
-            }
-        }
-    }
-
 }
-
