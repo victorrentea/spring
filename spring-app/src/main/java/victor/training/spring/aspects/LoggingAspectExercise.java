@@ -6,6 +6,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
+import static java.lang.System.currentTimeMillis;
+
 @Slf4j
 @Aspect
 @Component
@@ -28,9 +32,16 @@ public class LoggingAspectExercise {
     // TODO 3 print the returned value
     //  Hint: call the ProceedingJoinPoint#proceed() to get it
 
-    @Around("execution(* victor.training.spring.aspects.Maths.sum(..))")
+    @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
     public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("INTERCEPTED");
-        return pjp.proceed();
+//        log.info("INTERCEPTED");
+        String methodName = pjp.getSignature().getName();
+        Object[] args = pjp.getArgs();
+        log.info("Calling {} with params {}", methodName, Arrays.toString(args));
+
+        Object result = pjp.proceed();
+
+        log.info("returned: " + result);
+        return result;
     }
 }
