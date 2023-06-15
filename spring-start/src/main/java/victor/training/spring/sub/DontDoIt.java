@@ -19,7 +19,7 @@ public class DontDoIt {
     x.logic();
   }
 }
-//@Component
+@Component
 class Nui{
   public void logic() {
     System.out.println("Logica");
