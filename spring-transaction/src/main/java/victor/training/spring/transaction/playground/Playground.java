@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -17,16 +19,13 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        repo.suchili("ALO");
-        repo.save(new Message("ALOx"));
+        repo.suchili("SQL NATIV");
+        repo.save(new Message("altnume")); // asta nu trimite in DB inca INSERTUL pana cand nu
+        // se face FLUSH
 
-        // 0 p6spy
-        // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
-        // 2 Tx propagates with your calls (in your thread😱)
-        // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
-        // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
-        // 5 Performance: connection starvation issues : debate: avoid nested transactions
-    }
+        log.info("Write-behind (JPA) = ce aveai de scris in DB se flush() abia la finalul tx inainte de COMMIT");
+    } // proxy face flush > commit
+
     @Transactional
     public void transactionTwo() {
         System.out.println(repo.findByMessageContainingIgnoreCase("lO"));
