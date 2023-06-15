@@ -20,8 +20,8 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         repo.suchili("SQL NATIV");
-        repo.save(new Message("SQL a")); // asta nu trimite in DB inca INSERTUL pana cand nu
-        repo.save(new Message("SQL b")); // asta nu trimite in DB inca INSERTUL pana cand nu
+        repo.saveAndFlush(new Message("SQL a")); // asta nu trimite in DB inca INSERTUL pana cand nu
+        repo.saveAndFlush(new Message("SQL b")); // asta nu trimite in DB inca INSERTUL pana cand nu
 //        repo.saveAndFlush(new Message("SQL NATIV")); // daca vrei sa dizablezi write behind, si sa trimit INSERT in DB pe loc, dar poti pierde performanta
         // se face FLUSH
 
