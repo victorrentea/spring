@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @ToString
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE")) // TODO victorrentea 2023-06-15:
 public class Message {
     @Id
     @GeneratedValue
