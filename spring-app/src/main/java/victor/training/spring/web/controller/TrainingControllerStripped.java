@@ -61,4 +61,9 @@ public class TrainingControllerStripped {
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
+
+//	@GetMapping("search-by-name") // ?name=dasdasd
+//	public List<TrainingDto> searchByName(@RequestParam String name) {
+//		return trainingService.search(criteria);/**/
+//	}
 }
