@@ -33,10 +33,15 @@ public class SecurityController {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
       dto.username = anotherClass.metodaChemata().get();
-    // dto.username = anotherClass.asyncMethod().get();
+
+    // userul are atribuite ROLURI(eg jdoe are REG_ADMIN, SUPPORT) si/sau permisiuni fine-grained
+    // In spring un user are o lista de stringuri "authorities"
+    // in acea lista unele stringuri incep cu "ROLE_" - alea's roluri.
+    // celelalte sunt permisiuni
+    Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
     // A) role-based security
-//    dto.role = extractOneRole(authentication.getAuthorities());
+    dto.role = extractOneRole(authorities);
 
     // B) authority-based security
 //    dto.authorities = authentication.getAuthorities().stream()
