@@ -27,7 +27,7 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+      dto.username = anotherClass.metodaChemata();
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
@@ -78,6 +78,10 @@ public class SecurityController {
   @Slf4j
   @Service
   public static class AnotherClass {
+    public String metodaChemata() {
+      // sunt pe acelasi thread, inca merge
+      return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
     //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
