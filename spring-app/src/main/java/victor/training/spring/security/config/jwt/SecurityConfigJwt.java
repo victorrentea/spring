@@ -24,8 +24,10 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // antipattern: pt ca daca modifici in @XyzMapping urlul vei uita sa modifici si aici.
-                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
-//                .mvcMatchers("/unsecured/**").permitAll()
+//                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
+
+                .mvcMatchers("/unsecured/**").permitAll() // pagina de panica
+
                 .anyRequest().authenticated();
         http.csrf().disable(); // OK daca expui strict doar REST API (adica nu .jsp .jsf)
         http.authenticationProvider(preAuthenticatedProvider())

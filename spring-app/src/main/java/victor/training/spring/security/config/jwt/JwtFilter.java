@@ -31,7 +31,8 @@ public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
     String headerValue = request.getHeader("Authorization");
     if (headerValue == null || !headerValue.startsWith("Bearer ")) {
        log.error("FAIL: No authorization bearer header: " + headerValue);
-      throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
+//      throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
+      return null;
     }
     String jwtTokenString = headerValue.substring("Bearer ".length());
     log.debug("Received JWT token string: " + jwtTokenString);
