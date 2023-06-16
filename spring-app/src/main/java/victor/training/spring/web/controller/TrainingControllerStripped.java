@@ -5,10 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.security.config.jwt.JwtPrincipal;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -63,8 +67,18 @@ public class TrainingControllerStripped {
 	// authority-based
 //	@PreAuthorize("hasAuthority('training.delete')") // nu mai e prefixat automat cu ROLE_
 	public void deleteTrainingById(@PathVariable Long id) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		JwtPrincipal jwtPrincipal = (JwtPrincipal) principal;
+		String userCountryDinToken = jwtPrincipal.getCountry();
+		Training training = trainingRepo.findById(id).orElseThrow();
+//		if (!training.getcountry .equals(userCountryDinToken)) {
+//			throw new IllegalArgumentException("na-i voie");
+//		}
+
 		trainingService.deleteById(id);
 	}
+
+	private final TrainingRepo trainingRepo;
 
 //	@GetMapping // da-l in ma-sa de REST, vreau POST sa vad frumos pe request/ postman
 	@PostMapping("search")
