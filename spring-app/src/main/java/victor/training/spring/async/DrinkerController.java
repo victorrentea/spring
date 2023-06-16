@@ -37,8 +37,10 @@ public class DrinkerController {
 
       // never in spring
 //      ExecutorService threadPool = Executors.newFixedThreadPool(2);
-      CompletableFuture<Beer> futureBeer = barman.pourBeer();
-      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
+      CompletableFuture<Beer> futureBeer = CompletableFuture
+          .supplyAsync(() -> barman.pourBeer(), barPool);
+      CompletableFuture<Vodka> futureVodka = CompletableFuture
+          .supplyAsync(() -> barman.pourVodka(), barPool);
 
 //      Beer beer = futureBeer.get(); // BLOCK threadul tomcatului pt 1 sec
 //      Vodka vodka = futureVodka.get(); // BLOCK threadul tomcatului pt 0

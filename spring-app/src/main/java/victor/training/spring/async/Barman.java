@@ -14,17 +14,19 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @Timed
 public class Barman {
-   @Async // by default mege pe asyncExecutor standard din spring
-   public CompletableFuture<Beer> pourBeer() {
-      if (true) throw new IllegalArgumentException("nu mai e bere");
+//   @Async // by default mege pe asyncExecutor standard din spring
+//   public CompletableFuture<Beer> pourBeer() {
+//      if (true) throw new IllegalArgumentException("nu mai e bere");
+   public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepMillis(1000);
-      return CompletableFuture.completedFuture(new Beer());
+      return new Beer();
    }
-   @Async("barPool")
-   public CompletableFuture<Vodka> pourVodka() {
+//   @Async("barPool")
+//   public CompletableFuture<Vodka> pourVodka() {
+   public Vodka pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepMillis(1000);
-      return CompletableFuture.completedFuture(new Vodka());
+      return new Vodka();
    }
 }
