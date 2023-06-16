@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public class Barman {
    @Async // by default mege pe asyncExecutor standard din spring
    public CompletableFuture<Beer> pourBeer() {
+      if (true) throw new IllegalArgumentException("nu mai e bere");
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepMillis(1000);
       return CompletableFuture.completedFuture(new Beer());
