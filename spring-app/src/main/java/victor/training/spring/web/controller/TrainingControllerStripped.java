@@ -61,7 +61,7 @@ public class TrainingControllerStripped {
 //	@Secured({"ROLE_ADMIN"}) //asta daca userii au doar ROLEURI.
 
 	// authority-based
-	@PreAuthorize("hasAuthority('training.delete')") // nu mai e prefixat automat cu ROLE_
+//	@PreAuthorize("hasAuthority('training.delete')") // nu mai e prefixat automat cu ROLE_
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
