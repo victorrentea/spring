@@ -3,6 +3,8 @@ package victor.training.spring.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -14,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("trainings")
+@RequestMapping("api/trainings")
 public class TrainingControllerStripped {
 	private final TrainingService trainingService;
 
@@ -44,14 +46,18 @@ public class TrainingControllerStripped {
 //		trainingService.activate(trainingId);
 //	}
 
-	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
+	// TODO Allow only for role 'ADMIN'
+	// TODO Fix UX
+	// TODO Allow also for 'POWER' role; then remove it. => update UI but forget the BE
 	// TODO Allow for authority 'training.delete'
-	// TODO The current user must manage the the teacher of that training
-	//  	User.getManagedTeacherIds.contains(training.teacher.id)
-	// TODO @accessController.canDeleteTraining(#id)
-	// TODO PermissionEvaluator
-
+	// TODO Allow only if the current user manages the programming language of the training
+	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
+	//  -> use SpEL: @accessController.canDeleteTraining(#id)
+	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
+
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Secured("ROLE_ADMIN") //asta daca userii au doar ROLEURI.
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
