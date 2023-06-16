@@ -124,6 +124,10 @@
         </dependency>
 
         <dependency>
+            <!--La intrarea in sistemul tau genereaza un TraceId unic pe care ti-l pune in log oriunde ajungi cu executia
+            chiar si pe alte threaduri folosite cata vreme submit pe un executor injectat de spring
+            mai mult, orice alta aplicatie chemi (HTTP, MQ) daca are si ea sleuth vei gasi acelasi TraceID la ei in log
+            TraceID se propaga automat peste header HTTP/MQ automat-->
             <!-- For distributed tracing of requests (printed after log level) -->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>

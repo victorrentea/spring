@@ -8,8 +8,6 @@ import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 
-import java.util.concurrent.CompletableFuture;
-
 @Slf4j
 @Service
 @Timed
@@ -28,5 +26,13 @@ public class Barman {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepMillis(1000);
       return new Vodka();
+   }
+
+
+   // foarte sanatos pentru procesari lasate in background pornite din HTTP
+   @Async
+   public void fireAndForget(String date) {
+      //chestii grele minute, ore
+      throw new IllegalArgumentException("Vreo exceptie e pusa in log automat" );
    }
 }
