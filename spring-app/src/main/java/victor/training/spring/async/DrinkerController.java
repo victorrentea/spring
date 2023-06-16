@@ -30,13 +30,13 @@ public class DrinkerController {
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
-      log.debug("Submitting my order");
+      log.debug("Submitting my order: "+barPool.getClass());
       long t0 = currentTimeMillis();
 
       // never in spring
 //      ExecutorService threadPool = Executors.newFixedThreadPool(2);
-      Future<Beer> futureBeer = barPool.submit(()->barman.pourBeer());
-      Future<Vodka> futureVodka = barPool.submit(()->barman.pourVodka());
+      Future<Beer> futureBeer = barman.pourBeer();
+      Future<Vodka> futureVodka = barman.pourVodka();
 
       Beer beer = futureBeer.get(); // BLOCK threadul tomcatului pt 1 sec
       Vodka vodka = futureVodka.get(); // BLOCK threadul tomcatului pt 0
