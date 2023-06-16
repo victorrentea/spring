@@ -2,10 +2,13 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,16 +74,16 @@ public class SecurityController {
   }
 
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
-  //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //    		// https://www.baeldung.com/spring-security-async-principal-propagation
-  //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  //    	}
+  @Bean // enable propagation of SecurityContextHolder over @Async
+  public DelegatingSecurityContextAsyncTaskExecutor barPool2(ThreadPoolTaskExecutor barPool) {
+    // https://www.baeldung.com/spring-security-async-principal-propagation
+    return new DelegatingSecurityContextAsyncTaskExecutor(barPool);
+  }
 
   @Slf4j
   @Service
   public static class AnotherClass {
-    @Async
+    @Async("barPool2")
     public CompletableFuture<String> metodaChemata() {
       // sunt pe acelasi thread, inca merge
       SecurityContext context = SecurityContextHolder.getContext();
