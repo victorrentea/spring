@@ -2,8 +2,9 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,7 +29,7 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-      dto.username = anotherClass.metodaChemata();
+      dto.username = anotherClass.metodaChemata().get();
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
@@ -78,9 +80,11 @@ public class SecurityController {
   @Slf4j
   @Service
   public static class AnotherClass {
-    public String metodaChemata() {
+    @Async
+    public CompletableFuture<String> metodaChemata() {
       // sunt pe acelasi thread, inca merge
-      return SecurityContextHolder.getContext().getAuthentication().getName();
+      SecurityContext context = SecurityContextHolder.getContext();
+      return CompletableFuture.completedFuture(context.getAuthentication().getName());
     }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
