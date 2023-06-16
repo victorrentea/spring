@@ -36,19 +36,19 @@ public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
     String jwtTokenString = headerValue.substring("Bearer ".length());
     log.debug("Received JWT token string: " + jwtTokenString);
 
-    Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
+    Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret)); // validez tokenul primit
 
     JWTVerifier verifier = JWT.require(algorithm).withIssuer("Victor").build();
 
     DecodedJWT decodedJwt = verifier.verify(jwtTokenString);
 
     UserRole role = UserRole.valueOf(decodedJwt.getClaim("role").asString());
-    String country = decodedJwt.getClaim("country").asString();
+    String country = decodedJwt.getClaim("country").asString(); // telefon, departament, email ....
     String[] authorities = decodedJwt.getClaim("authorities").asArray(String.class);
-    String username = decodedJwt.getSubject();
+    String username = decodedJwt.getSubject(); // username
     JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role, List.of(authorities));
     log.info("Login successful for " + jwtPrincipal);
-    return jwtPrincipal; // later received by UserDetailsService
+    return jwtPrincipal; // I will be able later everywhere in my app to extract this from SecurityContextHolder
   }
 
   @Override

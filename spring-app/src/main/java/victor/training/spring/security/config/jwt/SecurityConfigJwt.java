@@ -22,9 +22,9 @@ public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // antipattern: pt ca daca modifici in @XyzMapping urlul vei uita sa modifici si aici.
 //                .mvcMatchers(HttpMethod.DELETE,"/api/trainings/*").hasAuthority("training.delete")
-                .mvcMatchers("/unsecured/**").permitAll()
+//                .mvcMatchers("/unsecured/**").permitAll()
                 .anyRequest().authenticated();
-        http.csrf().disable();
+        http.csrf().disable(); // OK daca expui strict doar REST API (adica nu .jsp .jsf)
         http.authenticationProvider(preAuthenticatedProvider())
             .addFilter(jwtFilter());
 
