@@ -56,8 +56,12 @@ public class TrainingControllerStripped {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{id}")
 
+		// ROLE-Based
 //	@PreAuthorize("hasRole('ADMIN')")
-	@Secured({"ROLE_ADMIN"}) //asta daca userii au doar ROLEURI.
+//	@Secured({"ROLE_ADMIN"}) //asta daca userii au doar ROLEURI.
+
+	// authority-based
+	@PreAuthorize("hasAuthority('training.delete')") // nu mai e prefixat automat cu ROLE_
 	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}

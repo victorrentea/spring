@@ -27,8 +27,8 @@ public class JwtPrincipal implements UserDetails {
 
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
-		return List.of(() -> "ROLE_" + role.name()); // an authority is a role if it starts with ROLE_ 🤢
-//		return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+//		return List.of(() -> "ROLE_" + role.name()); // an authority is a role if it starts with ROLE_ 🤢
+		return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
 
 	@Override

@@ -65,8 +65,12 @@ public class QueryParamToJwtToken implements GatewayFilter {
             .withExpiresAt(Instant.now().plus(5, MINUTES))
             .withJWTId(UUID.randomUUID().toString());
     addExtraClaimsFromQueryParams(jwtBuilder, extraClaims);
+    // din ogc
+    List<?> actiuniPermiseUserului = (userOnUrl.equalsIgnoreCase("ADMIN") ||
+                                      userOnUrl.equalsIgnoreCase("POWER")
+                                      ) ? List.of("training.delete") : List.of();
     return jwtBuilder
-            .withClaim("authorities", userOnUrl.toUpperCase().equals("ADMIN")?List.of("training.delete"):List.of())
+            .withClaim("authorities", actiuniPermiseUserului)
             .withClaim("role", userOnUrl.toUpperCase())
             .withClaim("country", "RO")
             .sign(algorithm);

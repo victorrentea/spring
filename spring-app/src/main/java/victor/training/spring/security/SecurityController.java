@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,15 +39,16 @@ public class SecurityController {
     // In spring un user are o lista de stringuri "authorities"
     // in acea lista unele stringuri incep cu "ROLE_" - alea's roluri.
     // celelalte sunt permisiuni
-    Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
     // A) role-based security
     dto.role = extractOneRole(authorities);
 
     // B) authority-based security
-//    dto.authorities = authentication.getAuthorities().stream()
-//            .map(GrantedAuthority::getAuthority)
-//            .collect(Collectors.toList());
+    dto.authorities = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
