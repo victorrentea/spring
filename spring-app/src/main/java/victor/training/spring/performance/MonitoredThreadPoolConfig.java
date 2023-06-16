@@ -40,8 +40,5 @@ public class MonitoredThreadPoolConfig {
       return executor;
    }
 
-   @Bean
-   public TimedAspect timedAspect() {
-      return new TimedAspect(meterRegistry);
-   }
+
 }
