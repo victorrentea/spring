@@ -1,24 +1,32 @@
 package victor.training.spring.aspects;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
-
 // de ce sa fii atent astea 45 min pana la masa ?
 // @Transactional @Secured/@PreAuthorized, @Cacheable, @Timed, @Retryable, @Aspect
 public class ProxyIntro {
     public static void main(String[] args) {
         // WE play the role of Spring here ...
-        Maths maths = new MathsInterceptat();
+        Maths maths = new MathsInterceptat(new Maths()); // DECORATOR
         SecondGrade secondGrade = new SecondGrade(maths);
         // imagine un Apel HTTP aici
         secondGrade.mathClass();
     }
 }
-class MathsInterceptat  extends Maths{
+class MathsInterceptat  extends Maths { // PROXY
+    private final Maths realBean;
+    MathsInterceptat(Maths real) {
+        this.realBean = real;
+    }
+
     @Override
     public int sum(int a, int b) {
         System.out.println("Chema suma intre " + a + " cu " + b);
-        return super.sum(a, b);
+        return realBean.sum(a, b);
+    }
+
+    @Override
+    public int product(int a, int b) {
+        System.out.println("Chema produs intre " + a + " cu " + b);
+        return realBean.product(a, b);
     }
 }
 // cerinta deasupra acestei linii scrie ceva asa incat sa pui in consola toate apelurile
