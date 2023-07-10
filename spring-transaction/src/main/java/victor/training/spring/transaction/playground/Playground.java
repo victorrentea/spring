@@ -30,13 +30,17 @@ public class Playground {
 //    public void transactionTwo() {
 //    }
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
-    private final JdbcTemplate jdbc;
+    @Transactional // deschide tx daca n-ai, sau o ia pe cea curenta daca ai.
     public void altaMetoda() {
-        repo.save(new Message(null));
+        repo.save(new Message("OK"));
+        repo.save(new Message("OK2"));
+        System.out.println("Ies din metoda!");
+//        if (true) {
+//            throw new IllegalArgumentException("Biz validation exception care distruge tranzactia curenta");
+//        }
     }
 }

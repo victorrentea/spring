@@ -12,7 +12,7 @@ public class Message {
     @GeneratedValue
     private Long id;
     @NotNull // JPA NU VA PUNE NICIODATA NULL IN DB pe aceasta coloana
-    private String message;
+    private String message/* = "n/a"*/;
 
     private Message() { // for hibernate only
     }
