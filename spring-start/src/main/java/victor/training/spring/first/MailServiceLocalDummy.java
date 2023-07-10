@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("local")
-//@Primary
+@Primary // daca ai de ales intre clasa asta
+// si alta, asta castiga. are prioritate
 public class MailServiceLocalDummy
     implements MailService {
   public void sendEmail(String subject) {
