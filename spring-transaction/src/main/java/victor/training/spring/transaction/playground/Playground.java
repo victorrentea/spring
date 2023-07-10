@@ -18,8 +18,7 @@ public class Playground {
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message)" +
                     " values ( 100,'SuQiLi' )");
-        altaMetoda();
-
+        other.altaMetoda();
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -27,10 +26,6 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
-    private void altaMetoda() {
-        repo.save(new Message("JPA"));
-    }
-
 //    @Transactional
 //    public void transactionTwo() {
 //    }
@@ -40,4 +35,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+    public void altaMetoda() {
+        repo.save(new Message("JPA"));
+    }
 }
