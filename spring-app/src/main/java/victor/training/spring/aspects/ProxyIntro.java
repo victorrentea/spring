@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -52,6 +53,7 @@ public class ProxyIntro {
 // cerinta deasupra acestei linii scrie ceva asa incat sa pui in consola toate apelurile
 // pe care SecondGrade le face catre Maths (param+ return value)
 // ------------------------
+@Service
 class SecondGrade {
     private final Maths mathsProxy;
     SecondGrade(Maths mathsProxy) {
@@ -70,10 +72,13 @@ class SecondGrade {
 // spring genereaza cu CGLIB o subclasa care suprascrie toate metodele clasei tale.
 // ca sa le poata intercepta acolo unde injecteaza proxyul
 /*final CRAPA*/
+//@Facade
+@Service
 class Maths {
     public /*final method ignored*/ int sum(int a, int b) {
         return a + b;
     }
+    @LoggedMethod
     public /*static ignored*/ int product(int a, int b) {
         int produs = 0;
         for (int i = 0; i < a; i++) {

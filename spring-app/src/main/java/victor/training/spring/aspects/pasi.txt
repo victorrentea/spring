@@ -1,0 +1,9 @@
+
+1. ProxyIntroApp > RUN > TROSC. "nu gasesc SecondGrade"
+2. pui pe SecondGrade @Service
+3. pui pe Maths @Service
+-- merge (vezi niste 6 + 6 = 12 in log
+4. open LoggingAspectExercise
+5. TODO #1 pe metoda intercept ...
+puneti @Around("execution(* victor.training.spring..*.*(..))")
+hint #2...

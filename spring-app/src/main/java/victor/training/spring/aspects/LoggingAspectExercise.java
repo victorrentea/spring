@@ -1,9 +1,12 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
@@ -13,7 +16,7 @@ public class LoggingAspectExercise {
 //    @Around("@annotation(victor.training.spring.aspects.LoggedMethod)") // @LoggedMethod on the METHOD
 //    @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepo
         // danger zone --
-//    @Around("execution(* victor.training.spring..*.*(..))") // all methods in a package
+//    @Around("execution(* victor.training.spring..*.*(..))") // all methods in a package - ELDERS WISDOW
 //    @Around("execution(* *.get*(..))") // all methods named get* -> too much?
 //    @Around("execution(* victor.training.spring.aspects.Maths.sum(..))") // 100% specific -> overengineering?
 
@@ -26,7 +29,13 @@ public class LoggingAspectExercise {
     //  Hint: extract them from the ProceedingJoinPoint parameter
     // TODO 3 print the returned value
     //  Hint: call the ProceedingJoinPoint#proceed() to get it
-    public void intercept() {
-        log.info("INTERCEPTED");
+//    @Around("execution(* victor.training.spring..*.*(..))")
+//    @Around("@within(victor.training.spring.aspects.Facade)") // all methods of a CLASS annotated with @Facade
+    @Around("@annotation(victor.training.spring.aspects.LoggedMethod)") // @LoggedMethod on the METHOD
+    public Object intercept(ProceedingJoinPoint point) throws Throwable {
+        // DB call INSERT INTO audit
+        log.info("Calling {} with args {}", point.getSignature().getName(), Arrays.toString(point.getArgs()));
+        Object result = point.proceed();
+        return result;
     }
 }
