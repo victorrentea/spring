@@ -20,13 +20,13 @@ public class Y {
 
   @Autowired
 //  @Qualifier("mailServiceLocalDummy") // numesc beanul dorit
-  private Optional<MailService> mailService; // polymorphic injection
+  private MailService mailService; // polymorphic injection
 
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
 
   public int logic() {
-    mailService.get().sendEmail("I like 4 topics : " + message);
+    mailService.sendEmail("I like 4 topics : " + message);
 
     return 1;
   }
