@@ -35,7 +35,8 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
     private final MessageRepo repo;
+    private final JdbcTemplate jdbc;
     public void altaMetoda() {
-        repo.save(new Message("JPA"));
+        repo.save(new Message(null));
     }
 }

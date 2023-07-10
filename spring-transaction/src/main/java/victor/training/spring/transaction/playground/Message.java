@@ -4,13 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Message {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @NotNull // JPA NU VA PUNE NICIODATA NULL IN DB pe aceasta coloana
     private String message;
 
     private Message() { // for hibernate only
