@@ -1,4 +1,4 @@
-package victor.training.spring.bean;
+package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;

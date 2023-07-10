@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
@@ -7,6 +8,7 @@ import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -60,6 +62,7 @@ class SecondGrade {
         this.mathsProxy = mathsProxy;
     }
     public void mathClass() {
+//        Maths mathsProxy = new Maths(); // niciodata
         //cand eu chem o metoda pe 'maths', mai ruleaza cineva pana intru in acea metoda
         System.out.println("Inainte de apel. TZEAPA. obiectul pe caer Spring ti l-a " +
                            "injectat  NU E CEEA CE CREZI: " + mathsProxy.getClass());
@@ -79,6 +82,8 @@ class Maths {
         return a + b;
     }
     @LoggedMethod
+//    @Transactional
+//    @Timed
     public /*static ignored*/ int product(int a, int b) {
         int produs = 0;
         for (int i = 0; i < a; i++) {
