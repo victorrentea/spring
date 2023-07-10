@@ -1,8 +1,10 @@
 package victor.training.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.first.Y;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -44,5 +47,12 @@ public class X {
 
   public int logic() {
     return 1 + y.logic();
+  }
+
+//  @PostConstruct
+  @EventListener(ApplicationStartedEvent.class)
+    // poti sa te legi de etape in pornirea framework
+  public void laStartup() {
+    System.out.println("Hello Spring!");
   }
 }

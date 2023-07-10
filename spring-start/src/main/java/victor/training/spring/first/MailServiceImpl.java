@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MailServiceImpl implements MailService {
+public class MailServiceImpl
+    implements MailService {
   //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
   public void sendEmail(String body) {

@@ -8,22 +8,18 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.bean.X;
 
+@RequiredArgsConstructor
 @Service
 public class Y {
   @Autowired
   @Lazy // cheating
   private X x;
-  @Qualifier("mailServiceImpl")
+
+
   private final MailService mailService; // polymorphic injection
+
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
-
-
-
-  // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
-  public Y(MailService mailService) {
-    this.mailService = mailService;
-  }
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
