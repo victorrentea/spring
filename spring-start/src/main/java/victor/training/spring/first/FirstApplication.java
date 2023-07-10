@@ -24,8 +24,7 @@ import victor.training.spring.bean.X;
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
 @ComponentScan(basePackages = {
-    "victor.training.spring.bean",
-    "victor.training.spring.first"})
+    "victor.training.spring"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
