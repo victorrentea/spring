@@ -32,8 +32,8 @@ public class BeanApp {
 class MyConfig {
 
     @Bean
-    public Person john(@Value("${john.name}") String johnName) {
-        System.out.println("John se naste : " +johnName);
+    public Person john(@Value("${john.name:#{null}}") String johnName) {
+        System.out.println("John se naste : " +johnName + " dar nulu asta are uper ");
         return new Person(johnName);
     }
     @Bean
