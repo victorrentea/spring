@@ -51,27 +51,33 @@ public class ProxyIntro {
 // pe care SecondGrade le face catre Maths (param+ return value)
 // ------------------------
 class SecondGrade {
-    private final Maths maths;
-    SecondGrade(Maths maths) {
-        this.maths = maths;
+    private final Maths mathsProxy;
+    SecondGrade(Maths mathsProxy) {
+        this.mathsProxy = mathsProxy;
     }
     public void mathClass() {
         //cand eu chem o metoda pe 'maths', mai ruleaza cineva pana intru in acea metoda
         System.out.println("Inainte de apel. TZEAPA. obiectul pe caer Spring ti l-a " +
-                           "injectat  NU E CEEA CE CREZI: "+maths.getClass());
-        int rezultat = maths.sum(8, 4);
+                           "injectat  NU E CEEA CE CREZI: " + mathsProxy.getClass());
+        int rezultat = mathsProxy.sum(8, 4);
         System.out.println("8 + 4 = " + rezultat);
-        System.out.println("6 + 6 = " + maths.sum(6, 6));
-        System.out.println("4 x 3 = " + maths.product(4, 3));
+        System.out.println("6 + 6 = " + mathsProxy.sum(6, 6));
+        System.out.println("4 x 3 = " + mathsProxy.product(4, 3));
     }
 }
-class Maths {
-    public int sum(int a, int b) {
-        System.out.println("Am ajuns in metoda reala");
+// spring genereaza cu CGLIB o subclasa care suprascrie toate metodele clasei tale.
+// ca sa le poata intercepta acolo unde injecteaza proxyul
+/*final CRAPA*/ class Maths {
+    public /*final method ignored*/ int sum(int a, int b) {
         return a + b;
     }
-    public int product(int a, int b) {
-        return a * b;
+    public /*static ignored*/ int product(int a, int b) {
+        int produs = 0;
+        for (int i = 0; i < a; i++) {
+            produs = sum(produs, b); // apelurile locale in aceeasi clasa NU SUNT intereceptate
+            // pt ca nu trec printr-o referinta injectata de Spring (proxy👻)
+        }
+        return produs;
     }
 }
 
