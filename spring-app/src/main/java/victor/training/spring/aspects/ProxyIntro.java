@@ -1,9 +1,11 @@
 package victor.training.spring.aspects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -67,7 +69,8 @@ class SecondGrade {
 }
 // spring genereaza cu CGLIB o subclasa care suprascrie toate metodele clasei tale.
 // ca sa le poata intercepta acolo unde injecteaza proxyul
-/*final CRAPA*/ class Maths {
+/*final CRAPA*/
+class Maths {
     public /*final method ignored*/ int sum(int a, int b) {
         return a + b;
     }
@@ -79,6 +82,8 @@ class SecondGrade {
         }
         return produs;
     }
+//    @Autowired
+//    private Maths  totEUDarProxyatWTF;
 }
 
 
