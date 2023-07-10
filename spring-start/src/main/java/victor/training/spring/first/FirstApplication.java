@@ -30,7 +30,7 @@ public class FirstApplication implements CommandLineRunner {
     SpringApplication.run(FirstApplication.class);
   }
 
-  @Autowired
+  @Autowired // nu mai trebuie sa creez eu ob manual, in creaza zana Spring
   private X x;
 
   @Override // from CommandLineRunner
