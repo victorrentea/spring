@@ -1,11 +1,39 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 // face clasa un Bean de Spring
 //@RequiredArgsConstructor
+
+@Retention(RetentionPolicy.RUNTIME)
+@Component
+@Target(ElementType.TYPE)
+@interface Mapper {
+}
+//@Controller // nu se mai folosesc, vin din vremea .jsp, .jsf, VAADIN,  generam HTML din server cu java
+//@RestController // API REST
 @Service // = e o clasa cu logica
+//@Repository // DB access
+
+//@Component // tot ce ramane, gunoiu
+//@MessageListener // MQ
+//@Configuration
+
+//@Bean // nu aici ci pe o metoda dintr-o clasa @Configuration
+//@Mapper
+//@Mapper
 public class X {
 //  @Autowired
 //  private Y y; // #2 field injection cu reflection chiar daca e privat
