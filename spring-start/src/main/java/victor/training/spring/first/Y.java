@@ -16,7 +16,9 @@ public class Y {
   private X x;
 
 
-  private final MailService mailService; // polymorphic injection
+  @Autowired
+  @Qualifier("mailServiceLocalDummy") // numesc beanul dorit
+  private MailService mailService; // polymorphic injection
 
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
