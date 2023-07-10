@@ -52,8 +52,7 @@ class OtherClass {
             throw new IllegalArgumentException("Biz validation exception care distruge tranzactia curenta");
         }
     }
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    // sta degeba aici ca proxxy nu prinde apelurile locale
+    @Transactional(propagation = Propagation.REQUIRES_NEW) // creeaza tranzactie separata pt aceasta metoda singura.
     public void saveError(Exception e) {
         repo.save(new Message("EROARE TATA: " + e));
     }
