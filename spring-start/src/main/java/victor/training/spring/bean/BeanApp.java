@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -29,26 +30,27 @@ public class BeanApp {
 }
 @Configuration// (proxyBeanMethods = false)
 class MyConfig {
+
     @Bean
-    public Person john() {
-        System.out.println("John se naste");
-        return new Person("John");
+    public Person john(@Value("${john.name}") String johnName) {
+        System.out.println("John se naste : " +johnName);
+        return new Person(johnName);
     }
     @Bean
     public Person jane() {
         return new Person("Jane");
     }
     @Bean
-    public Conversation conversation() {
+    public Conversation conversation(Person john, Person jane) {
         System.out.println("Conversatia");
-        return new Conversation(john(), jane());
+        return new Conversation(john, jane);
         // cand dintr-o metoda @bean apelezi alta metoda @Bean intr-un @Configuration,
         // => nu chemi de fapt metoda reala ci Spring iti prinde apelul
     }
     @Bean
     public Conversation impacarea() {
         System.out.println("IMpacarea");
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane());
     }
 }
 // spring, la runtime
