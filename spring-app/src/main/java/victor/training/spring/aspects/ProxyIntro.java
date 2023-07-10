@@ -81,9 +81,9 @@ class Maths {
     public /*final method ignored*/ int sum(int a, int b) {
         return a + b;
     }
-    @LoggedMethod
 //    @Transactional
 //    @Timed
+    @LoggedMethod
     public /*static ignored*/ int product(int a, int b) {
         int produs = 0;
         for (int i = 0; i < a; i++) {

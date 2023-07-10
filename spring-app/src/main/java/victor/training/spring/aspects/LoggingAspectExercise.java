@@ -35,7 +35,11 @@ public class LoggingAspectExercise {
     public Object intercept(ProceedingJoinPoint point) throws Throwable {
         // DB call INSERT INTO audit
         log.info("Calling {} with args {}", point.getSignature().getName(), Arrays.toString(point.getArgs()));
+        // start transaction
+        // try {
         Object result = point.proceed();
+            // commit
+        // } catch { rollback; }
         return result;
     }
 }

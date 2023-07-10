@@ -11,14 +11,14 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class Playground {
     private final MessageRepo repo;
-    private final EntityManager entityManager;
-    private final JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc; // SQL direct
     private final OtherClass other;
 
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         repo.save(new Message("jpa"));
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
