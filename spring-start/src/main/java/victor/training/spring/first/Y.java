@@ -27,7 +27,9 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
-
+    System.out.println("Parola: "+ pass);
     return 1;
   }
+  @Value("${db.password}")
+  private String pass;
 }
