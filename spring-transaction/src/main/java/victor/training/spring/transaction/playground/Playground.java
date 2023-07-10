@@ -4,6 +4,7 @@ import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -22,8 +23,7 @@ public class Playground {
         try {
             other.altaMetoda();
         } catch (Exception e) {
-            repo.save(new Message("EROARE TATA: " + e)); // faci .save intr-o
-            //  tranzactie omorata de proxy de la linia 44. se va face ROLLBACK la ce ai facut aici
+            other.saveError(e);
         }
         repo.save(new Message("DUPA"));
         // 0 p6spy
@@ -33,6 +33,8 @@ public class Playground {
         // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
         // 5 Performance: connection starvation issues : debate: avoid nested transactions
     }
+
+
 //    @Transactional
 //    public void transactionTwo() {
 //    }
@@ -49,5 +51,10 @@ class OtherClass {
         if (true) {
             throw new IllegalArgumentException("Biz validation exception care distruge tranzactia curenta");
         }
+    }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    // sta degeba aici ca proxxy nu prinde apelurile locale
+    public void saveError(Exception e) {
+        repo.save(new Message("EROARE TATA: " + e));
     }
 }
