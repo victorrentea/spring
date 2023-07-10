@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.bean.X;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class Y {
@@ -17,14 +19,14 @@ public class Y {
 
 
   @Autowired
-  @Qualifier("mailServiceLocalDummy") // numesc beanul dorit
-  private MailService mailService; // polymorphic injection
+//  @Qualifier("mailServiceLocalDummy") // numesc beanul dorit
+  private Optional<MailService> mailService; // polymorphic injection
 
   //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
 
   public int logic() {
-    mailService.sendEmail("I like 4 topics : " + message);
+    mailService.get().sendEmail("I like 4 topics : " + message);
 
     return 1;
   }
