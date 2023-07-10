@@ -16,9 +16,9 @@ public class Playground {
 
     @Transactional
     public void transactionOne() {
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
-        repo.save(new Message("jpa"));
-        jdbc.update("insert into MESSAGE(id, message) values ( 100,'ALO' )");
+        jdbc.update("insert into MESSAGE(id, message) values ( 100,'SuQiLi' )");
+        repo.save(new Message("JPA"));
+
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
