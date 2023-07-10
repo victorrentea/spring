@@ -44,9 +44,10 @@ class MyConfig {
 class Conversation {
     private final Person one;
     private final Person two;
-    public Conversation(@Qualifier("john") Person one,@Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
+    public Conversation(Person john,
+                        Person jane) {
+        this.one = john;
+        this.two = jane;
     }
 
     public void start() {
