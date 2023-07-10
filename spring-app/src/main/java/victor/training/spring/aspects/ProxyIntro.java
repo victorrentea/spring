@@ -3,21 +3,19 @@ package victor.training.spring.aspects;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
-@SpringBootApplication
 public class ProxyIntro {
     public static void main(String[] args) {
         // WE play the role of Spring here ...
         Maths maths = new Maths();
         SecondGrade secondGrade = new SecondGrade(maths);
+
         secondGrade.mathClass();
     }
 }
-
 // ------------------------
 @Service
 class SecondGrade {
     private final Maths maths;
-
     SecondGrade(Maths maths) {
         this.maths = maths;
     }

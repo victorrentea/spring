@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProxyIntroApp {
+public class ProxySpringApp {
     public static void main(String[] args) {
-        SpringApplication.run(ProxyIntroApp.class, args);
+        SpringApplication.run(ProxySpringApp.class, args);
     }
     @Autowired
     public void run(SecondGrade secondGrade) {
