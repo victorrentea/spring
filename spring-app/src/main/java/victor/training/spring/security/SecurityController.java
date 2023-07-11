@@ -2,9 +2,12 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,13 +25,21 @@ import java.util.stream.Collectors;
 public class SecurityController {
   private final AnotherClass anotherClass;
 
+  static ThreadLocal<String> username = new ThreadLocal<>();
+  // asa merg: Logback MDC, security context, @Transactional, TraceID Sleuth
+  // din Thread#1 pui valoarea X
+  // din Thread#2 pui valoarea Y
+  // din Thread#1 iei valoarea -> tot X
+
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+    // pot exista 20 de req HTTP in curs de procesare, fiecare cu userul lui.
+    dto.username = anotherClass.metoda().get();
+
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
@@ -51,6 +63,8 @@ public class SecurityController {
     return dto;
   }
 
+
+
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
     // For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
     List<String> roles = authorities.stream()
@@ -69,15 +83,23 @@ public class SecurityController {
   }
 
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
-  //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //    		// https://www.baeldung.com/spring-security-async-principal-propagation
-  //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  //    	}
+      	@Bean // enable propagation of SecurityContextHolder over @Async
+      	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+      		// https://www.baeldung.com/spring-security-async-principal-propagation
+      		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+      	}
 
   @Slf4j
   @Service
   public static class AnotherClass {
+
+    @Async
+    public CompletableFuture<String> metoda() {
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      System.out.println("UPDATE ... SET LAST_MODIFIED_USER="+username);
+      return CompletableFuture.completedFuture(username);
+    }
+
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
     //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

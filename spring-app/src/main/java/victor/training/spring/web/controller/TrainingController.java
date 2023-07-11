@@ -4,10 +4,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
+import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.net.URI;
@@ -64,9 +71,33 @@ public class TrainingController {
 	// TODO PermissionEvaluator
 
 	@DeleteMapping("{id}")
+
+	// role-based authorization
+//	@PreAuthorize("hasAnyRole('ADMIN','POWER')") //sau
+//	@Secured("ROLE_ADMIN")
+
+	// feature-based authorization
+	@PreAuthorize("hasAuthority('training.delete')") //sau
 	public void deleteTrainingById(@PathVariable Long id) {
+
+		// TODO The current user must manage the the teacher of that training
+		//  	User.getManagedTeacherIds.contains(training.teacher.id)
+
+		Training training = trainingRepo.findById(id).orElseThrow();
+		String uname = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepo.findByUsernameForLogin(uname).orElseThrow();
+		if (!user.getManagedTeacherIds().contains(training.getTeacher().getId())) {
+//		if (infoDinToken.getRegion().equals(trainig.getRegion))
+			throw new IllegalArgumentException("N-ai voie!");
+		}
+
 		trainingService.deleteById(id);
 	}
+
+	@Autowired
+	private UserRepo userRepo;
+	@Autowired
+	private TrainingRepo trainingRepo;
 
 //	@GetMapping("search") // GET nu are de obicei corp, pana in 2014 era ignorat
 //	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
