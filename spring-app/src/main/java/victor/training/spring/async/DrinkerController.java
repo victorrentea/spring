@@ -10,7 +10,6 @@ import victor.training.spring.async.drinks.Vodka;
 
 import java.util.concurrent.CompletableFuture;
 
-import static java.lang.System.currentTimeMillis;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
@@ -23,20 +22,20 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
 
       CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer());
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
 
-      Beer beer = beerPromise.get(); // 1 sec stau
-      Vodka vodka = vodkaPromise.get(); // 0 sec ca deja e gata vodka
+//      // blocant
+//      Beer beer = beerPromise.get(); // 1 sec stau
+//      Vodka vodka = vodkaPromise.get(); // 0 sec ca deja e gata vodka
+//      return new DillyDilly(beer, vodka);
 
-      return new DillyDilly(beer, vodka);
-
-//      CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombine(vodkaPromise,
-//          (beer, vodka) -> new DillyDilly(beer, vodka));
-
-//      return dillyPromise;
+      // non blocant: threadul tomcat termina in millis
+      CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombine(vodkaPromise,
+          (beer, vodka) -> new DillyDilly(beer, vodka));
+      return dillyPromise;
    }
 }
