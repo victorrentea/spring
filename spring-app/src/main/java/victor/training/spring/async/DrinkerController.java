@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -17,6 +18,8 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 public class DrinkerController {
    @Autowired
    private Barman barman;
+   @Autowired
+   ThreadPoolTaskExecutor executor;
 
    // TODO [1] autowire and submit tasks to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
@@ -25,8 +28,8 @@ public class DrinkerController {
    public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
 
-      CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer());
-      CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
+      CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer(), executor);
+      CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka(), executor);
 
 //      // blocant
 //      Beer beer = beerPromise.get(); // 1 sec stau
