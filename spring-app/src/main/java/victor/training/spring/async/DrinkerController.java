@@ -28,8 +28,11 @@ public class DrinkerController {
    public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
 
-      CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer(), executor);
+      CompletableFuture<Beer> beerPromise = barman.pourBeer();
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka(), executor);
+
+      // fire-and-forget: las in spate executie sa mearga
+      barman.process("date de pus in Hazelcast");
 
 //      // blocant
 //      Beer beer = beerPromise.get(); // 1 sec stau
