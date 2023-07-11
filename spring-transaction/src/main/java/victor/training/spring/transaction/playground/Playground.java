@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,10 @@ public class Playground {
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void sendEmail(SendMailEvent event) {
     System.out.println("S-a dus mailul!");
+//    mailSender.send
   }
+//  @Autowired
+//MailSender mailSender;
 }
 
 class SendMailEvent {
