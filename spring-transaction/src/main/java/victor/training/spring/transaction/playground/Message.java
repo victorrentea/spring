@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 public class Message {
@@ -13,6 +14,9 @@ public class Message {
     private Long id;
     @NotNull // JPA NU VA PUNE NICIODATA NULL IN DB pe aceasta coloana
     private String message/* = "n/a"*/;
+
+//    private boolean flag;
+//    private LocalDateTime lastChanged;
 
     private Message() { // for hibernate only
     }
