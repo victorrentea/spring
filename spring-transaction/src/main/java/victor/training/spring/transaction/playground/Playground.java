@@ -51,8 +51,8 @@ public class Playground {
     System.out.println("S-a dus mailul!");
 //    mailSender.send
   }
-//  @Autowired
-//MailSender mailSender;
+  @Autowired
+MailSender mailSender;
 }
 
 class SendMailEvent {

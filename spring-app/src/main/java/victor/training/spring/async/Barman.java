@@ -18,13 +18,11 @@ public class Barman {
 //   public void setCurrentUsername(String currentUsername) {
 //      this.currentUsername = currentUsername;
 //   }
-   @Transactional
    public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL) for ...");
       ThreadUtils.sleepMillis(1000);
       return new Beer();
    }
-   @Transactional
    public Vodka pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepMillis(1000);

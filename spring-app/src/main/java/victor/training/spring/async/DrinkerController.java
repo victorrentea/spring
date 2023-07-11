@@ -8,7 +8,10 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.concurrent.CompletableFuture;
+
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -22,12 +25,18 @@ public class DrinkerController {
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
-      long t0 = currentTimeMillis();
 
-      Beer beer = barman.pourBeer();
-      Vodka vodka = barman.pourVodka();
+      CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer());
+      CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
 
-      log.debug("Method completed in {} millis", currentTimeMillis() - t0);
+      Beer beer = beerPromise.get();
+      Vodka vodka = vodkaPromise.get();
+
       return new DillyDilly(beer, vodka);
+
+//      CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombine(vodkaPromise,
+//          (beer, vodka) -> new DillyDilly(beer, vodka));
+
+//      return dillyPromise;
    }
 }
