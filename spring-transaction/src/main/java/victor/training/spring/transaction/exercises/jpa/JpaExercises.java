@@ -23,7 +23,7 @@ public class JpaExercises {
       // Hint: keep the transaction open between find and accessing children
    }
 
-   @Transactional
+   @Transactional()
    public void prematureAutoFlushing() {
       repo.save(new JpaEntity("newName"));
       // TODO cause the 1st level cache to be auto-flushed before the next line - try as many ways

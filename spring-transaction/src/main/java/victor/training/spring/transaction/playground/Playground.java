@@ -20,12 +20,12 @@ public class Playground {
     @Transactional
     public void transactionOne() {
         jdbc.update("insert into MESSAGE(id, message) values ( 100,'SuQiLi' )");
-        try {
-            other.altaMetoda();
-        } catch (Exception e) {
-            other.saveError(e);
-        }
-        repo.save(new Message("DUPA"));
+//        try {
+//            other.altaMetoda();
+//        } catch (Exception e) {
+//            other.saveError(e);
+//        }
+//        repo.save(new Message("DUPA"));
         // 0 p6spy
         // 1 Cause a rollback by breaking NOT NULL, throw Runtime, throw CHECKED
         // 2 Tx propagates with your calls (in your thread😱)
@@ -35,9 +35,11 @@ public class Playground {
     }
 
 
-//    @Transactional
-//    public void transactionTwo() {
-//    }
+    @Transactional
+    public void transactionTwo() {
+        Message message = repo.findById(100L).orElseThrow();
+        message.setMessage("alt mesaj");
+    }
 }
 @Service
 @RequiredArgsConstructor

@@ -11,8 +11,15 @@ import victor.training.spring.async.drinks.Vodka;
 @Service
 @Timed
 public class Barman {
+//   private String currentUsername; // nu tii pe campurile unui singleton date asoc
+//   // requestului curent.
+//
+//   public void setCurrentUsername(String currentUsername) {
+//      this.currentUsername = currentUsername;
+//   }
+
    public Beer pourBeer() {
-      log.debug("Pouring Beer (SOAP CALL)...");
+      log.debug("Pouring Beer (SOAP CALL) for ...");
       ThreadUtils.sleepMillis(1000);
       return new Beer();
    }
