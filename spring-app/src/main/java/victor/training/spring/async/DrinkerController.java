@@ -29,8 +29,8 @@ public class DrinkerController {
       CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer());
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
 
-      Beer beer = beerPromise.get();
-      Vodka vodka = vodkaPromise.get();
+      Beer beer = beerPromise.get(); // 1 sec stau
+      Vodka vodka = vodkaPromise.get(); // 0 sec ca deja e gata vodka
 
       return new DillyDilly(beer, vodka);
 
