@@ -22,12 +22,13 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     // by default Spring are ACTIVATA protectia impotriva CSRF. dar in API-uri REST o dam de obicei jos.
     // la ce ajuta acea protectie
-//    http.csrf().disable(); // OK since I never take <form> POSTs
-    CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
-    csrfTokenRepository.setCookieHttpOnly(false);
-    http.csrf().csrfTokenRepository(csrfTokenRepository);
+    http.csrf().disable(); // OK since I never take <form> POSTs
 
-    // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
+//    CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+//    csrfTokenRepository.setCookieHttpOnly(false);
+//    http.csrf().csrfTokenRepository(csrfTokenRepository);
+
+//    http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
             .anyRequest().authenticated();
