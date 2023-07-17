@@ -28,7 +28,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 //    csrfTokenRepository.setCookieHttpOnly(false);
 //    http.csrf().csrfTokenRepository(csrfTokenRepository);
 
-//    http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
+    http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
             .anyRequest().authenticated();
