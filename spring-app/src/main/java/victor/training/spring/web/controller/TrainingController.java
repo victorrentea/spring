@@ -26,6 +26,7 @@ public class TrainingController {
 
 	@GetMapping
 	public List<TrainingDto> getAll() {
+
 		List<TrainingDto> list = trainingService.getAllTrainings();
 		for (TrainingDto trainingDto : list) {
 			trainingDto.description = sanitizeDescription(trainingDto.description);
