@@ -27,7 +27,7 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+    dto.username = SecurityContextHolder.getContext().getAuthentication().getName(); // TODO
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
