@@ -2,6 +2,8 @@ package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,18 @@ public class TrainingController {
 
 	@GetMapping
 	public List<TrainingDto> getAll() {
-		return trainingService.getAllTrainings();
+		List<TrainingDto> list = trainingService.getAllTrainings();
+		for (TrainingDto trainingDto : list) {
+			trainingDto.description = sanitizeDescription(trainingDto.description);
+		}
+		return list;
 	}
 
 	@GetMapping("{id}")
 	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+		TrainingDto trainingDto = trainingService.getTrainingById(id);
+		trainingDto.description = sanitizeDescription(trainingDto.description);
+		return trainingDto;
 		//TODO return 404 if not found
 	}
 
@@ -37,6 +45,7 @@ public class TrainingController {
 	@Operation(description = "Create a training")
 	@PostMapping
 	public void create(@RequestBody TrainingDto dto) {
+		dto.description = sanitizeDescription(dto.description);
 		trainingService.createTraining(dto);
 	}
 
@@ -44,7 +53,14 @@ public class TrainingController {
 	@PutMapping("{trainingId}")
 	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
 		dto.id = trainingId;
+		String sane = sanitizeDescription(dto.description);
+		dto.description = sane;
 		trainingService.updateTraining(dto);
+	}
+
+	private static String sanitizeDescription(String description) {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS).and(Sanitizers.IMAGES); // whitelisting
+		return sanitizer.sanitize(description);
 	}
 
 	// TODO Allow only for role 'ADMIN'
