@@ -75,8 +75,8 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 
-//	@PreAuthorize("hasRole('ADMIN')")
-	@Secured("ROLE_ADMIN")
+//	@PreAuthorize("hasAnyRole('ADMIN','POWER')")
+	@Secured({"ROLE_ADMIN","ROLE_POWER"})
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
