@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 public class SecurityController {
   private final AnotherClass anotherClass;
+  private final ThreadPoolTaskExecutor taskExecutor;
 
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() throws Exception {
@@ -32,7 +33,11 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-     dto.username = anotherClass.asyncMethod().get();
+//     dto.username = anotherClass.asyncMethod().get();
+
+    // TODO depanat
+    dto.username = CompletableFuture.supplyAsync(
+         ()->anotherClass.directMethod(), taskExecutor).get();
 
     // A) role-based security
     Authentication authentication = SecurityContextHolder.getContext()
@@ -87,6 +92,11 @@ public class SecurityController {
       log.info("Pe ce thread caut userul curent acum ?!?");
       String username = SecurityContextHolder.getContext().getAuthentication().getName();
       return CompletableFuture.completedFuture(username);
+    }
+
+    public String directMethod() {
+      log.info("Pe ce thread caut userul curent acum ?!?");
+      return SecurityContextHolder.getContext().getAuthentication().getName();
     }
   }
 }
