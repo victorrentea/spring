@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
+//    if (exception instanceof AccessDeniedException) {
+//      throw exception; // allow 403 to go out
+//    }
     log.error(exception.getMessage(), exception);
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
