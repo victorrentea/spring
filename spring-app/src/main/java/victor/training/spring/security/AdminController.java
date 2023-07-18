@@ -1,9 +1,11 @@
 package victor.training.spring.security;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Secured("ROLE_ADMIN")
 public class AdminController {
 
   // TODO URL-pattern restriction: admin/**
