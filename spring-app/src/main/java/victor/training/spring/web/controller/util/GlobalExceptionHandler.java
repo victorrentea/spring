@@ -14,6 +14,7 @@ import victor.training.spring.web.MyException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -26,13 +27,15 @@ public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
-  public String onException(Exception exception, HttpServletRequest request) throws Exception {
+  @ExceptionHandler(Throwable.class)
+  public String onException(Throwable exception, HttpServletRequest request) throws Exception {
 //    if (exception instanceof AccessDeniedException) {
 //      throw exception; // allow 403 to go out
 //    }
-    log.error(exception.getMessage(), exception);
-    return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+    String id = UUID.randomUUID().toString();
+    log.error("ERROR " + id + ": " +exception.getMessage(), exception);
+//    return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+    return "Server Error, please check the logs for error id="+id;
   }
 
   //	@ResponseStatus(NOT_FOUND)
