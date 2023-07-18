@@ -69,6 +69,7 @@ public class TrainingController {
 	// TODO Allow only for role 'ADMIN'
 	// TODO Fix UX
 	// TODO Allow also for 'POWER' role; then remove it. => update UI but forget the BE
+	// CR: ne-am razgandit: POWER nu mai are voie sa stearga
 	// TODO Allow for authority 'training.delete'
 	// TODO Allow only if the current user manages the programming language of the training
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
