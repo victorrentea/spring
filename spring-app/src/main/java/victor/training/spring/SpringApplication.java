@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -24,6 +27,7 @@ import static java.lang.System.currentTimeMillis;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
+@EnableAsync
 @ConfigurationPropertiesScan
 public class SpringApplication {
     public static final long t0 = currentTimeMillis();
@@ -32,6 +36,20 @@ public class SpringApplication {
         new SpringApplicationBuilder(SpringApplication.class)
                 .listeners(new TestDBConnectionInitializer())
                 .run(args);
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor executor() {
+        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+        pool.setMaxPoolSize(10);
+        pool.setQueueCapacity(100);
+        return pool;
+    }
+
+    @Bean // enable propagation of SecurityContextHolder over @Async
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+        // https://www.baeldung.com/spring-security-async-principal-propagation
+        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
     }
 
     @Autowired

@@ -2,18 +2,22 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,16 +27,18 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername(Authentication authentication) throws Exception {
+  public CurrentUserDto getCurrentUsername() throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = SecurityContextHolder.getContext().getAuthentication().getName(); // TODO
-    // dto.username = anotherClass.asyncMethod().get();
+     dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
-//    SecurityContextHolder.getContext().getAuthentication()
+    Authentication authentication = SecurityContextHolder.getContext()
+        // obtin userul curent printr-o metoda statica!!😱 care cauta in ThreadLocal
+        // => periculos pentru ca-l pierzi daca faci @Async
+        .getAuthentication();
     dto.role = extractOneRole(authentication.getAuthorities());
 
     // B) authority-based security
@@ -71,21 +77,16 @@ public class SecurityController {
   }
 
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
-  //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //    		// https://www.baeldung.com/spring-security-async-principal-propagation
-  //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  //    	}
+
 
   @Slf4j
   @Service
   public static class AnotherClass {
-    //    @Async
-    //    public CompletableFuture<String> asyncMethod() {
-    //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //        log.info("Current authentication = {}", authentication);
-    //        return CompletableFuture.completedFuture(authentication.getName());
-    //    }
+    @Async
+    public CompletableFuture<String> asyncMethod() {
+      log.info("Pe ce thread caut userul curent acum ?!?");
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      return CompletableFuture.completedFuture(username);
+    }
   }
-
 }
