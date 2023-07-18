@@ -35,7 +35,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
         .mvcMatchers("/unsecured/**").anonymous() // nu stii cine e, dar il poti trackui
         .mvcMatchers("/altu/**").authenticated() // s-a logat, orice rol
         .mvcMatchers("/altu222/**").permitAll() // nu e logat
-        .mvcMatchers("/trei/**").hasRole("ROLE_ADMIN") //
+        .mvcMatchers("/trei/**").hasRole("ADMIN") // // cauta in authorities ale userului ROLE_ADMIN
         .anyRequest().authenticated() // toate restul requesturile neprinse mai sus, sa fie macar logati
 
 
