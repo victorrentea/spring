@@ -77,7 +77,7 @@ public class TrainingController {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 
 //	@PreAuthorize("hasAnyRole('ADMIN','POWER')")
-	@Secured({"ROLE_ADMIN","ROLE_POWER"})
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
