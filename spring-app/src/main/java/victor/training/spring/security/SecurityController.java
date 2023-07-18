@@ -33,11 +33,11 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-//     dto.username = anotherClass.asyncMethod().get();
+     dto.username = anotherClass.asyncMethod().get();
 
     // TODO depanat
-    dto.username = CompletableFuture.supplyAsync(
-         ()->anotherClass.directMethod(), taskExecutor).get();
+//    dto.username = CompletableFuture.supplyAsync(
+//         ()->anotherClass.directMethod(), taskExecutor).get();
 
     // A) role-based security
     Authentication authentication = SecurityContextHolder.getContext()

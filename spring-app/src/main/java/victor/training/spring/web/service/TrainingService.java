@@ -2,7 +2,10 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -13,6 +16,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
+import javax.annotation.security.RunAs;
 import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +98,7 @@ public class TrainingService {
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
+    @Secured("ROLE_ADMIN")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
@@ -105,3 +110,15 @@ public class TrainingService {
     }
 }
 
+@RequiredArgsConstructor
+@Component
+class MessageListener {
+    private final TrainingService trainingService;
+//    @KafkaListener
+//    @RunAs("ROLE_ADMIN")
+    public void receive(Long id) {
+        String userSiRoluri = "din mesaj...";
+//        SecurityContextHolder.setContext(new SecurityContextImpl().setAuthentication() ....;);
+        trainingService.deleteById(id);
+    }
+}
