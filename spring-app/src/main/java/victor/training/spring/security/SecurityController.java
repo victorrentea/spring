@@ -65,6 +65,7 @@ public class SecurityController {
   }
 
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
+    log.info("Spring SEcurity User are stringurile: " + authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
     // For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
     List<String> roles = authorities.stream()
             .map(GrantedAuthority::getAuthority)

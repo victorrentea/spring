@@ -196,7 +196,7 @@
         });
     }
 
-    let currentUser = {};
+    let currentUser = {}; // variabila globala in pagina curenta. La refresh se pierde
     $.ajax(restEndpoint + "/user/current", {
         method: "GET",
         success: function (user) {

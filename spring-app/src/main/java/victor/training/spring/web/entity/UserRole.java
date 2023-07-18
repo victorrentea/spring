@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public enum UserRole {
-    USER("training.search", "training.edit"),
+    USER("training.search"
+        , "training.edit"
+    ),
     POWER("training.search", "training.edit", "training.delete"),
     ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit");
     private final Set<String> authorities;
