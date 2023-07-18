@@ -43,16 +43,16 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
 
         // bine: deny by default
-        .mvcMatchers("/unsecured/**").permitAll()
-        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//        .mvcMatchers("/unsecured/**").permitAll()
+//        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
 //        .anyRequest().hasRole("USER")//
-        .anyRequest().authenticated()
+//        .anyRequest().authenticated()
 
         // rau: deny explicitly
 //        .mvcMatchers("/api/**").authenticated()
 //        .anyRequest().permitAll()
 
-            .anyRequest().authenticated()
+//            .anyRequest().authenticated()
     ;
 
     http.formLogin().defaultSuccessUrl("/", true);
