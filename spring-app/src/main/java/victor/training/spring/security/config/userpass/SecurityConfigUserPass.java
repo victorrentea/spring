@@ -2,6 +2,7 @@ package victor.training.spring.security.config.userpass;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +32,28 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
-            .anyRequest().authenticated();
+        .mvcMatchers("/unsecured/**").anonymous() // nu stii cine e, dar il poti trackui
+        .mvcMatchers("/altu/**").authenticated() // s-a logat, orice rol
+        .mvcMatchers("/altu222/**").permitAll() // nu e logat
+        .mvcMatchers("/trei/**").hasRole("ROLE_ADMIN") //
+        .anyRequest().authenticated() // toate restul requesturile neprinse mai sus, sa fie macar logati
+
+
+
+
+
+        // bine: deny by default
+        .mvcMatchers("/unsecured/**").permitAll()
+        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+//        .anyRequest().hasRole("USER")//
+        .anyRequest().authenticated()
+
+        // rau: deny explicitly
+//        .mvcMatchers("/api/**").authenticated()
+//        .anyRequest().permitAll()
+
+            .anyRequest().authenticated()
+    ;
 
     http.formLogin().defaultSuccessUrl("/", true);
 
