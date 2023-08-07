@@ -1,5 +1,10 @@
 package victor.training.spring.supb;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import victor.training.spring.first.Adapter;
 import victor.training.spring.first.Y;
 
@@ -39,4 +44,27 @@ public class X {
 
     return 1 + y.logic();
   }
+
+
+  //  @PostConstruct //
+  @EventListener
+  public void stuff(ApplicationStartedEvent event) {
+    System.out.println("At startup! " + event.getApplicationContext().getEnvironment().getProperty("mail.sender"));
+    eventPublisher.publishEvent(new MyEvent(12));
+  }
+  @Autowired
+  private ApplicationEventPublisher eventPublisher;
 }
+
+class MyEvent {
+  private final int data;
+
+  MyEvent(int data) {
+    this.data = data;
+  }
+
+  public int getData() {
+    return data;
+  }
+}
+

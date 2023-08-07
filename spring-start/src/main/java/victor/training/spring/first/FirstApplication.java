@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import victor.training.spring.supb.AnotherBean;
+import victor.training.spring.supb.SomeBean;
 import victor.training.spring.supb.X;
 
 // - Dependency Injection: field, constructor, method
@@ -26,21 +30,22 @@ import victor.training.spring.supb.X;
 @SpringBootApplication
 @Import({
         X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
-        X.class,
+        SomeBean.class,
+        AnotherBean.class
 })
 //@ComponentScan(basePackages = {"victor.training.spring.supb", "victor.training.spring.first"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
+
+//    new SpringApplicationBuilder()
+//            .sources(FirstApplication.class)
+//            .listeners(
+//                    new ApplicationEnvironmentPreparedEvent() {},
+//                    new ApplicationPreparedEventHandler(),
+//                    new ApplicationContextInitializedEventHandler(),
+//                    new ApplicationEnvironmentPreparedEventHandler())
+//            .run(args);
   }
 
   @Autowired
