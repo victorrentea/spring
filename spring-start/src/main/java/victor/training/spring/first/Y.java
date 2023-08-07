@@ -12,7 +12,10 @@ public class Y {
     private final String message = "HALO";
 
     public Y(@Lazy X x,
-             @Qualifier("mailServiceImpl") MailService mailService) {
+             @Qualifier("mailServiceImpl") MailService mailService,
+//             MailServiceImpl mailService,
+//             MailService mailService
+    ) {
         this.x = x;
         this.mailService = mailService;
     }
