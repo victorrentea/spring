@@ -9,7 +9,7 @@ import org.springframework.core.env.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Configuration
+//@Configuration
 public class CollidingPropertyChecker implements BeanFactoryPostProcessor {
 
     @Override

@@ -17,7 +17,6 @@ import victor.training.spring.supb.X;
 // - Cyclic dependencies
 // - Startup code: PostConstruct, @EventListener, CommandLineRunner
 // - ApplicationContext#getBean
-
 // - Qualifier, bean names
 // - Primary
 // - Profile (bean & props)
