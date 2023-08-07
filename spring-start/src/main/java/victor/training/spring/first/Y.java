@@ -1,5 +1,6 @@
 package victor.training.spring.first;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -8,20 +9,24 @@ import victor.training.spring.supb.X;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Service
+@Service // 1 single instance exists per app (.pod)
 public class Y {
     private final X x;
+//    private String currentUser; // WRONG> never store it in a field of a singleton
+        // if you DO, you will get a RACE BUG: multiple threads (http req) will read/write the same GLOBAL value
     private final MailService mailService; // polymorphic injection
-    private final String message = "HALO";
+    private final String message;
 
     public Y(@Lazy X x,
 //             @Qualifier("mailServiceImpl") MailService mailService,
 //             MailServiceImpl mailService,
-             MailService mailService
+             MailService mailService,
              // i want when I start the app locally, the *DummyLocal version to be used, the Impl anywhere else
-    ) {
+//             @Value("${message:defaultt}") String message) { // feels like a backdoor that no one should know about
+             @Value("${message:defaultt}") String message) {
         this.x = x;
         this.mailService = mailService;
+        this.message = message;
     }
 
     public int logic() {

@@ -24,8 +24,11 @@ welcome:
         RO: 401312121414
     supportUrls:
         - http://google.com
+        - http://chat.openai.com/
         - http://stackoverflow.com
         - http://baeldung.com
         - http://spring.io
     welcomeMessage: Welcome to Spring
-    gate: 123
+    gate: 133
+
+#message: HALO

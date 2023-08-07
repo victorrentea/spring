@@ -2,8 +2,8 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +14,87 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Slf4j
-@Data // generates getters + setters
 @Component
-public class WelcomeInfo {
-  int gate;
-  String welcomeMessage; // TODO 4a validate is not null and size >= 4
-  List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
-  Map<Locale, String> localContactPhone;
-  HelpInfo help;
+@ConfigurationProperties(prefix = "welcome")
+public class WelcomeInfo
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(WelcomeInfo.class);
+  private int gate;
+  private String welcomeMessage; // TODO 4a validate is not null and size >= 4
+  private List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
+  private Map<Locale, String> localContactPhone;
+  private HelpInfo help;
 
-  @Data
+  public int getGate() {
+    return this.gate;
+  }
+
+  public String getWelcomeMessage() {
+    return this.welcomeMessage;
+  }
+
+  public List<URL> getSupportUrls() {
+    return this.supportUrls;
+  }
+
+  public Map<Locale, String> getLocalContactPhone() {
+    return this.localContactPhone;
+  }
+
+  public HelpInfo getHelp() {
+    return this.help;
+  }
+
+  public void setGate(int gate) {
+    this.gate = gate;
+  }
+
+  public void setWelcomeMessage(String welcomeMessage) {
+    this.welcomeMessage = welcomeMessage;
+  }
+
+  public void setSupportUrls(List<URL> supportUrls) {
+    this.supportUrls = supportUrls;
+  }
+
+  public void setLocalContactPhone(Map<Locale, String> localContactPhone) {
+    this.localContactPhone = localContactPhone;
+  }
+
+  public void setHelp(HelpInfo help) {
+    this.help = help;
+  }
+
+
+  public String toString() {
+    return "WelcomeInfo(gate=" + this.getGate() + ", welcomeMessage=" + this.getWelcomeMessage() + ", supportUrls=" + this.getSupportUrls() + ", localContactPhone=" + this.getLocalContactPhone() + ", help=" + this.getHelp() + ")";
+  }
+
   public static class HelpInfo {
     Integer appId;
     File file; // TODO 4c validate exists on disk
+
+    public HelpInfo() {
+    }
+
+    public Integer getAppId() {
+      return this.appId;
+    }
+
+    public File getFile() {
+      return this.file;
+    }
+
+    public void setAppId(Integer appId) {
+      this.appId = appId;
+    }
+
+    public void setFile(File file) {
+      this.file = file;
+    }
+
+    public String toString() {
+      return "WelcomeInfo.HelpInfo(appId=" + this.getAppId() + ", file=" + this.getFile() + ")";
+    }
   }
 
   @PostConstruct
