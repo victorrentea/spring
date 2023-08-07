@@ -9,4 +9,11 @@ public class AnotherBean {
     public void alistener3(MyEvent event) {
         System.out.println("Event1 handler for my own event With data : " + event.getData());
     }
+
+    // events : 2 questions:
+    // do the publisher and listener share the same
+    // - thread ? YES, all listeners are run in the same th as publisher, according to @Order
+        // @Async
+    // - transaction ? YES
+        // Change with @TransactionalEventListener (AFTER COMMIT of the pubisher transaction)
 }
