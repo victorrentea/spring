@@ -28,25 +28,25 @@ public class BeanApp {
         return new Person("Jane");
     }
 
-    @Value("${john.name}") String johnName;
+    ;
     @Bean // in CLASS annotated with @Configuration
 //    @Profile()
 //    @ConfigurationProperties
 //    @Primary
 //    @Scope
-    public  Person john() { // creates manually a bean named 'john' of type Person
+    public  Person john(@Value("${john.name}") String johnName) { // creates manually a bean named 'john' of type Person
         System.out.println(johnName + " born👶");
         return new Person(johnName);
     }
     @Bean
     public Conversation conversation(Person jane) {
         System.out.println("That's impossible1");
-        return new Conversation(john(), jane);
+        return new Conversation(john(null), jane);
     }
     @Bean
     public Conversation brainstorm(Person jane) {
         System.out.println("That's impossible2");
-        return new Conversation(john(), jane);
+        return new Conversation(john(null), jane);
     }
 }
 // spring creates a subclass of every @Configuration class in order to
@@ -55,7 +55,9 @@ public class BeanApp {
 //class SubClass extends BeanApp {
 //    @Override
 //    public Person john() {
-//        // spring is in control:
+//        // spring is in control: can fetch more @Value properties
+// can enforce singleton lifecycle (and instantiate the bean ONCE)
+// can call @PostConstruct on Person
 //        return super.john();
 //    }
 //}
