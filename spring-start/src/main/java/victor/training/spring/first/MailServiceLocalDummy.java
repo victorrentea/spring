@@ -18,3 +18,14 @@ public class MailServiceLocalDummy implements MailService {
     System.out.println("DUMMY EMAIL SENDER sending an email with subject=" + subject);
   }
 }
+
+
+@Profile("prod") // bad. prefer a 'local' profila
+@Primary
+@Component
+class DarkCodeKinderSuprise {
+  public void method() {
+    System.out.println("# I don’t always test my code, " +
+            "but when I do, I do it in production. YOLO");
+  }
+}

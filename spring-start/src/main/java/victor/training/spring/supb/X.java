@@ -1,6 +1,7 @@
 package victor.training.spring.supb;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -73,4 +74,6 @@ class MyEvent {
     return data;
   }
 }
+
+
 
