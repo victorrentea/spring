@@ -6,8 +6,13 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -16,15 +21,20 @@ import java.util.Map;
 
 @Component
 @ConfigurationProperties(prefix = "welcome")
+@Validated
 public class WelcomeInfo {
   private static final Logger log = org.slf4j.LoggerFactory.getLogger(WelcomeInfo.class);
-  private int gate;
-  private String welcomeMessage; // TODO 4a validate is not null and size >= 4
+  @NotNull
+  private Integer gate; // todo validate not null
+
+  // TODO 4a validate size >= 4
+  @Size(min = 4)
+  private String welcomeMessage;
   private List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   private Map<Locale, String> localContactPhone;
   private HelpInfo help;
 
-  public int getGate() {
+  public Integer getGate() {
     return this.gate;
   }
 
@@ -44,7 +54,7 @@ public class WelcomeInfo {
     return this.help;
   }
 
-  public void setGate(int gate) {
+  public void setGate(Integer gate) {
     this.gate = gate;
   }
 
