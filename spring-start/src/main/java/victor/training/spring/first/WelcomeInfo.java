@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,6 +20,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @ConfigurationProperties(prefix = "welcome")
@@ -31,28 +34,62 @@ public class WelcomeInfo {
   @Size(min = 4)
   @NotNull
   private String welcomeMessage;
+  @Size(min=1)
   private List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   private Map<Locale, String> localContactPhone;
   private HelpInfo help;
 
+  public static class HelpInfo {
+    private Integer appId;
+    private File file; // TODO 4c validate exists on disk
+
+    public Integer getAppId() {
+      return appId;
+    }
+
+    public File getFile() {
+      return file;
+    }
+
+    public void setAppId(Integer appId) {
+      this.appId = appId;
+    }
+
+    public void setFile(File file) {
+      this.file = file;
+    }
+
+    public String toString() {
+      return "WelcomeInfo.HelpInfo(appId=" + getAppId() + ", file=" + getFile() + ")";
+    }
+  }
+
+  @PostConstruct
+  public void checkFileExists() {
+    if (!help.file.isFile()) {
+      throw new IllegalArgumentException("Not a file");
+    }
+    Validator v;
+  }
+  
   public Integer getGate() {
-    return this.gate;
+    return gate;
   }
 
   public String getWelcomeMessage() {
-    return this.welcomeMessage;
+    return welcomeMessage;
   }
 
   public List<URL> getSupportUrls() {
-    return this.supportUrls;
+    return supportUrls;
   }
 
   public Map<Locale, String> getLocalContactPhone() {
-    return this.localContactPhone;
+    return localContactPhone;
   }
 
   public HelpInfo getHelp() {
-    return this.help;
+    return help;
   }
 
   public void setGate(Integer gate) {
@@ -77,36 +114,10 @@ public class WelcomeInfo {
 
 
   public String toString() {
-    return "WelcomeInfo(gate=" + this.getGate() + ", welcomeMessage=" + this.getWelcomeMessage() + ", supportUrls=" + this.getSupportUrls() + ", localContactPhone=" + this.getLocalContactPhone() + ", help=" + this.getHelp() + ")";
+    return "WelcomeInfo(gate=" + getGate() + ", welcomeMessage=" + getWelcomeMessage() + ", supportUrls=" + getSupportUrls() + ", localContactPhone=" + getLocalContactPhone() + ", help=" + getHelp() + ")";
   }
 
-  public static class HelpInfo {
-    Integer appId;
-    File file; // TODO 4c validate exists on disk
 
-    public HelpInfo() {
-    }
-
-    public Integer getAppId() {
-      return this.appId;
-    }
-
-    public File getFile() {
-      return this.file;
-    }
-
-    public void setAppId(Integer appId) {
-      this.appId = appId;
-    }
-
-    public void setFile(File file) {
-      this.file = file;
-    }
-
-    public String toString() {
-      return "WelcomeInfo.HelpInfo(appId=" + this.getAppId() + ", file=" + this.getFile() + ")";
-    }
-  }
 
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
