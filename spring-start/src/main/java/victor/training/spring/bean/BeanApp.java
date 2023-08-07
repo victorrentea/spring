@@ -1,11 +1,13 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 public class BeanApp {
@@ -18,18 +20,32 @@ public class BeanApp {
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
+        Conversation conversation = new Conversation(
+                new Person("John"),
+                new Person("Jane"));
         // TODO register the two persons and the conversation as Spring beans
         conversation.start();
+    }
+
+    // i need 2+ instances of the same type as beans
+    // i need manual config of the instances 
+    @Bean
+    public Person john() { // creates manually a bean named 'john' of type Person
+        return new Person("John");
+    }
+    @Bean
+    public Person jane() {
+        return new Person("Jane");
     }
 }
 
 @Data
+@Component
 class Conversation {
     private final Person one;
     private final Person two;
 
-    public Conversation(Person one, Person two) {
+    public Conversation(@Qualifier("john") Person one, @Qualifier("jane")Person two) {
         this.one = one;
         this.two = two;
     }
