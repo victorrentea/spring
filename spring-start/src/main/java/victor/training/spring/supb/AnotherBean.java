@@ -16,4 +16,7 @@ public class AnotherBean {
         // @Async
     // - transaction ? YES
         // Change with @TransactionalEventListener (AFTER COMMIT of the pubisher transaction)
+    // vs a MQ: sending a message on Rabbit is PERSISTED
+    // vs a method call: events are MUCH MORE COMPLICATED to debug/trace DON'T, unless in the next 2-3 sprints
+            // you are planning to cut out an atom in a separate microservace.
 }

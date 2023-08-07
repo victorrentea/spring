@@ -1,6 +1,7 @@
 package victor.training.spring.supb;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -23,7 +24,7 @@ import victor.training.spring.first.Y;
 //@RestController // = REST API
 //@MessageListener // MQ
 @Adapter
-public class X {
+public class X implements CommandLineRunner {
   private final Y y;
 //  // constructor based injection ❤️
   public X(Y y) {
@@ -54,6 +55,11 @@ public class X {
   }
   @Autowired
   private ApplicationEventPublisher eventPublisher;
+
+  @Override
+  public void run(String... args) throws Exception {
+    System.out.println("at start with args: " + args);
+  }
 }
 
 class MyEvent {
