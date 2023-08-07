@@ -1,14 +1,13 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import victor.training.spring.supb.X;
 
 @Service
 public class Y {
-
-
+private final X x;
 
   @Qualifier("mailServiceImpl")
   private final MailService mailService; // polymorphic injection
@@ -16,7 +15,8 @@ public class Y {
   private final String message = "HALO";
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
-  public Y(MailService mailService) {
+  public Y(@Lazy X x, MailService mailService) {
+    this.x = x;
     this.mailService = mailService;
   }
 

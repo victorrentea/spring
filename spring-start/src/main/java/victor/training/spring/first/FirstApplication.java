@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import victor.training.spring.supb.X;
 
 // - Dependency Injection: field, constructor, method
@@ -23,7 +24,20 @@ import victor.training.spring.supb.X;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
-@ComponentScan(basePackages = {"victor.training.spring.supb", "victor.training.spring.first"})
+@Import({
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+        X.class,
+})
+//@ComponentScan(basePackages = {"victor.training.spring.supb", "victor.training.spring.first"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
