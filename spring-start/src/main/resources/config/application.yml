@@ -1,5 +1,6 @@
 db:
     password: big secret
+environment.name: local
 mail:
     sender: dummy
 spring:
