@@ -12,9 +12,10 @@ public class Y {
     private final String message = "HALO";
 
     public Y(@Lazy X x,
-             @Qualifier("mailServiceImpl") MailService mailService,
+//             @Qualifier("mailServiceImpl") MailService mailService,
 //             MailServiceImpl mailService,
-//             MailService mailService
+             MailService mailService
+             // i want when I start the app locally, the *DummyLocal version to be used, the Impl anywhere else
     ) {
         this.x = x;
         this.mailService = mailService;
