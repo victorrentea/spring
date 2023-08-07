@@ -1,10 +1,12 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service
+//@Primary
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 

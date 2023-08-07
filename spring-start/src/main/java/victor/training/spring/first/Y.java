@@ -1,5 +1,6 @@
 package victor.training.spring.first;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.supb.X;
@@ -11,7 +12,7 @@ public class Y {
     private final String message = "HALO";
 
     public Y(@Lazy X x,
-             MailService mailService) {
+             @Qualifier("mailServiceImpl") MailService mailService) {
         this.x = x;
         this.mailService = mailService;
     }
