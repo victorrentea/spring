@@ -29,6 +29,6 @@ welcome:
         - http://baeldung.com
         - http://spring.io
     welcomeMessage: Welcome to Spring
-    gate: 133
+#    gate: 133
 
 #message: HALO

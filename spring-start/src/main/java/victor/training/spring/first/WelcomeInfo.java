@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 @ConfigurationProperties(prefix = "welcome")
-public class WelcomeInfo
+public class WelcomeInfo {
   private static final Logger log = org.slf4j.LoggerFactory.getLogger(WelcomeInfo.class);
   private int gate;
   private String welcomeMessage; // TODO 4a validate is not null and size >= 4
