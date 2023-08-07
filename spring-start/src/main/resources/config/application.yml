@@ -28,7 +28,7 @@ welcome:
         - http://stackoverflow.com
         - http://baeldung.com
         - http://spring.io
-    welcomeMessage: Hello
+#    welcomeMessage: Hello
     gate: 133
 
 #message: HALO
