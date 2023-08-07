@@ -36,14 +36,14 @@ public class BeanApp {
         return new Person("John");
     }
     @Bean
-    public Conversation conversation() {
+    public Conversation conversation(Person jane) {
         System.out.println("That's impossible1");
-        return new Conversation(john(), jane());
+        return new Conversation(john(), jane);
     }
     @Bean
-    public Conversation brainstorm() {
+    public Conversation brainstorm(Person jane) {
         System.out.println("That's impossible2");
-        return new Conversation(john(), jane());
+        return new Conversation(john(), jane);
     }
 }
 // spring creates a subclass of every @Configuration class in order to
