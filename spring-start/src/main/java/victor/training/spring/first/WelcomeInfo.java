@@ -29,6 +29,7 @@ public class WelcomeInfo {
 
   // TODO 4a validate size >= 4
   @Size(min = 4)
+  @NotNull
   private String welcomeMessage;
   private List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   private Map<Locale, String> localContactPhone;
