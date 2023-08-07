@@ -2,6 +2,7 @@ package victor.training.spring.bean;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -26,14 +27,16 @@ public class BeanApp {
     public Person jane() {
         return new Person("Jane");
     }
+
+    @Value("${john.name}") String johnName;
     @Bean // in CLASS annotated with @Configuration
 //    @Profile()
 //    @ConfigurationProperties
 //    @Primary
 //    @Scope
     public  Person john() { // creates manually a bean named 'john' of type Person
-        System.out.println("John born👶");
-        return new Person("John");
+        System.out.println(johnName + " born👶");
+        return new Person(johnName);
     }
     @Bean
     public Conversation conversation(Person jane) {
