@@ -14,8 +14,11 @@ public class Playground {
   private final JdbcTemplate jdbc;
   private final OtherClass other;
 
-  @Transactional
-  public void transactionOne() throws IOException {
+  @Transactional// (rollbackFor = Exception.class)
+  // check exceptions are a MISTAKE of the Java Language (no other language has them)
+  // "leaking abstraction" and prone to "swallow"
+  // NEVER throw checked exceptions from your methods. only runtime
+  public void transactionOne()  {
     jdbc.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
     jdbc.update("insert into MESSAGE(id, message) values (101,'jooq' )");
     if (true) { // allowed credit limit exceed for customer
@@ -23,7 +26,8 @@ public class Playground {
     }
   }
 
-  @Transactional
+  @Transactional // Spring
+//  @TransactionAttribute (EJB)
   public void transactionTwo() {}
 }
 

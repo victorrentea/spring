@@ -21,11 +21,11 @@ public class TransactionsApp implements CommandLineRunner {
    @Override
    public void run(String... args) throws Exception {
       System.out.println("============= TRANSACTION ONE ==============");
-      try {
+//      try {
          playground.transactionOne();
-      } catch (IOException e) {
-         // NEVER do this (empty catch block)
-      }
+//      } catch (IOException e) {
+//         // NEVER do this (empty catch block)
+//      }
       System.out.println("============= TRANSACTION TWO ==============");
       playground.transactionTwo();
       System.out.println("============= END ==============");
