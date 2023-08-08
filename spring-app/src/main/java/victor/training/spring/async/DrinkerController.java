@@ -38,10 +38,10 @@ public class DrinkerController {
 
       // NEVER forget to pass a Spring-managed executor as the last arg to any CompletableFuture.xxxAsync method you call!!
       // in order for Spring to be able to INSTRUMENT the executor and pass metadata from the caller to the worker
-      // to copy: SpringSecurityContext (identity of the user),
+      // to copy: SpringSecurityContext (identity of the user) to be able to call @Secured methods,
       //  and TraceID (Sleuth) for correlating log entries passed between systems as header of HTTP/Message
-      Future<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.pourBeer());
-      Future<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.pourVodka());
+      Future<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.pourBeer(),executor);
+      Future<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.pourVodka(),executor);
 
 
       Beer beer = futureBeer.get(); // 1s wait for beer
