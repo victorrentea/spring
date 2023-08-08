@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,11 +15,11 @@ public class Playground {
   private final OtherClass other;
 
   @Transactional
-  public void transactionOne() {
+  public void transactionOne() throws IOException {
     jdbc.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
     jdbc.update("insert into MESSAGE(id, message) values (101,'jooq' )");
     if (true) { // allowed credit limit exceed for customer
-      throw new IllegalStateException("Too indebted");
+      throw new IOException("Too indebted");
     }
   }
 

@@ -4,6 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+
 @SpringBootApplication
 public class TransactionsApp implements CommandLineRunner {
    public TransactionsApp(Playground playground) {
@@ -19,7 +21,11 @@ public class TransactionsApp implements CommandLineRunner {
    @Override
    public void run(String... args) throws Exception {
       System.out.println("============= TRANSACTION ONE ==============");
-      playground.transactionOne();
+      try {
+         playground.transactionOne();
+      } catch (IOException e) {
+         // NEVER do this (empty catch block)
+      }
       System.out.println("============= TRANSACTION TWO ==============");
       playground.transactionTwo();
       System.out.println("============= END ==============");
