@@ -23,4 +23,9 @@ public class Barman {
       ThreadUtils.sleepMillis(1000);
       return new Vodka();
    }
+
+   public void closeFiscalDay() { // fire-and-forget
+      ThreadUtils.sleepMillis(3000);
+      log.debug("End of long processing");
+   }
 }
