@@ -10,17 +10,19 @@ import javax.persistence.EntityManager;
 @Service
 @RequiredArgsConstructor
 public class Playground {
-  private final MessageRepo repo;
-  private final EntityManager entityManager;
   private final JdbcTemplate jdbc;
   private final OtherClass other;
 
   @Transactional
   public void transactionOne() {
-    jdbc.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
+    jdbc.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
+    jdbc.update("insert into MESSAGE(id, message) values (101,'jooq' )");
+    if (true) { // allowed credit limit exceed for customer
+      throw new IllegalStateException("Too indebted");
+    }
   }
 
+  @Transactional
   public void transactionTwo() {}
 }
 

@@ -14,6 +14,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
