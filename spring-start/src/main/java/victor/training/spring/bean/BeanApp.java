@@ -88,7 +88,7 @@ class Conversation {
     }
 
     public void start() {
-        System.out.println(john.getName() + " talks with " + jane.getName());
+        System.out.println(john.getName() + " talkss with " + jane.getName());
     }
 }
 

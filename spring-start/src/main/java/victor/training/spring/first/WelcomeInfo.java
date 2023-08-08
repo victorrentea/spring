@@ -66,9 +66,9 @@ public class WelcomeInfo {
 
   @PostConstruct
   public void checkFileExists() {
-    if (!help.file.isFile()) {
-      throw new IllegalArgumentException("Not a file");
-    }
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Not a file");
+//    }
     Validator v;
   }
   
@@ -122,7 +122,7 @@ public class WelcomeInfo {
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    log.info("WelcomeInfo:\n" + jsonToString);
+    log.info("WelcomeInfo: \n" + jsonToString);
   }
 }
 // to test the points below, watch the log for 'WelcomeInfo:' output

@@ -4,10 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.PropertySource;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import victor.training.spring.supb.AnotherBean;
 import victor.training.spring.supb.SomeBean;
 import victor.training.spring.supb.X;
@@ -41,10 +53,16 @@ public class FirstApplication implements CommandLineRunner {
 //    new SpringApplicationBuilder()
 //            .sources(FirstApplication.class)
 //            .listeners(
-//                    new ApplicationEnvironmentPreparedEvent() {},
-//                    new ApplicationPreparedEventHandler(),
-//                    new ApplicationContextInitializedEventHandler(),
-//                    new ApplicationEnvironmentPreparedEventHandler())
+//                    new ApplicationListener<ApplicationEnvironmentPreparedEvent>() {
+//                      @Override
+//                      public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+//                        ConfigurableEnvironment environment = event.getEnvironment();
+//
+//                        PropertySource<?> propertySource = PropertySource.named("myProps")
+//                                .withProperty("john.name", "John Doe"));
+//                        environment.getPropertySources().addFirst(propertySource);
+//                      }
+//                    })
 //            .run(args);
   }
 
@@ -55,5 +73,20 @@ public class FirstApplication implements CommandLineRunner {
   public void run(String... args) {
     System.out.println(x.logic());
   }
+
+//  @Bean // last resort: manually construct a bean. Seek first some propertyto toggle to change Spring behavhavior
+//  MailSender mailSender(MailProperties properties) {
+//    return new MailSender() {
+//      @Override
+//      public void send(SimpleMailMessage simpleMessage) throws MailException {
+//
+//      }
+//
+//      @Override
+//      public void send(SimpleMailMessage... simpleMessages) throws MailException {
+//
+//      }
+//    };
+//  }
 }
 

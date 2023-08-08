@@ -34,3 +34,5 @@ welcome:
 #message: HALO
 
 john.name: John
+
+management.endpoints.web.exposure.include: '*'
