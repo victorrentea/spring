@@ -19,7 +19,7 @@ public class Playground {
     jdbc.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
     jdbc.update("insert into MESSAGE(id, message) values (101,'jooq' )");
     if (true) { // allowed credit limit exceed for customer
-      throw new IOException("Too indebted");
+      throw new RuntimeException("Too indebted");
     }
   }
 
