@@ -10,6 +10,7 @@ import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
@@ -35,11 +36,12 @@ public class DrinkerController {
       long t0 = currentTimeMillis();
 
 
-      Callable<Beer> beerF = () -> barman.pourBeer();
-      Callable<Vodka> vodkaF = () -> barman.pourVodka();
-
-      Future<Beer> futureBeer = executor.submit(beerF);
-      Future<Vodka> futureVodka = executor.submit(vodkaF);
+      // NEVER forget to pass a Spring-managed executor as the last arg to any CompletableFuture.xxxAsync method you call!!
+      // in order for Spring to be able to INSTRUMENT the executor and pass metadata from the caller to the worker
+      // to copy: SpringSecurityContext (identity of the user),
+      //  and TraceID (Sleuth) for correlating log entries passed between systems as header of HTTP/Message
+      Future<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.pourBeer());
+      Future<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.pourVodka());
 
 
       Beer beer = futureBeer.get(); // 1s wait for beer
