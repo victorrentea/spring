@@ -35,5 +35,6 @@ public class Barman {
       ThreadUtils.sleepMillis(3000);
       log.debug("End of long processing");
       if(true) throw new IllegalArgumentException();
+      // exception automatically logged by spring if @Async void method;
    }
 }
