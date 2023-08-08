@@ -1,12 +1,18 @@
 package victor.training.spring.aspects;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,20 +72,30 @@ class SecondGrade {
     }
 
     public void mathClass() {
+        System.out.println("Maths instance I got is: " + maths.getClass());
+        System.out.println("8 + 4 (new) = " + new Maths().sum(8, 4)); // not proxied
         System.out.println("8 + 4 = " + maths.sum(8, 4));
         System.out.println("6 + 6 = " + maths.sum(6, 6));
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
 @Facade
-class Maths {
+/*final*/ class Maths { // fail to start
     @LoggedMethod
-    public int sum(int a, int b) {
+//    @Transactional @Async @Secured() @Timed @RateLimiter @Retry() @Cacheable
+//    public static int sum(int a, int b) { // just THIS method is ignored
+    public /*final*/ int sum(int a, int b) { // just THIS method is ignored
         return a + b;
     }
     @LoggedMethod
     public int product(int a, int b) {
-        return a * b;
+        // 6 x 5 = 6 + 6 + 6 + 6 + 6
+        int result = 0;
+        for (int i = 0; i < a; i++) {
+            result = sum(result, b); // local method calls (within the same class)
+            // are NOT intercepted by spring AOP
+        }
+        return result;
     }
 }
 

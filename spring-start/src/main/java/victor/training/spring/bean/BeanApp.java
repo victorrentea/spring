@@ -29,11 +29,11 @@ public class BeanApp {
     }
 
     ;
-    @Bean // in CLASS annotated with @Configuration
 //    @Profile()
 //    @ConfigurationProperties
 //    @Primary
 //    @Scope
+    @Bean // in CLASS annotated with @Configuration
     public  Person john(@Value("${john.name}") String johnName) { // creates manually a bean named 'john' of type Person
         System.out.println(johnName + " born👶");
         return new Person(johnName);
