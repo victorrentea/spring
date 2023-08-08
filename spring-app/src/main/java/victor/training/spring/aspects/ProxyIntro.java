@@ -3,32 +3,49 @@ package victor.training.spring.aspects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ProxyIntro {
     public static void main(String[] args) {
         // WE play the role of Spring here ...
-        Maths maths = new SubClassOfMaths();
-        SecondGrade secondGrade = new SecondGrade(maths);
+        Maths realMathsBeanInstance = new Maths();
+//        Maths maths = new SubClassOfMaths();
+        Callback h = new MethodInterceptor() {
+            @Override
+            public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+                Object r = method.invoke(realMathsBeanInstance, args);
+                System.out.println(method.getName() + " (" + Arrays.toString(args) + ")=" + r);
+                return r;
+            }
+        };
+        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+        SecondGrade secondGrade = new SecondGrade(proxy);
 
         secondGrade.mathClass();
     }
 }
-class SubClassOfMaths extends Maths {
-    @Override
-    public int sum(int a, int b) {
-        int r = super.sum(a, b);
-        System.out.println("Sum (" + a + ", " + b + ")=" + r);
-        return r;
-    }
-
-    @Override
-    public int product(int a, int b) {
-        int r = super.product(a, b);
-        System.out.println("Product (" + a + ", " + b + ")=" + r);
-        return r;
-    }
-}
+//class SubClassOfMaths extends Maths {
+//    @Override
+//    public int sum(int a, int b) {
+//        int r = super.sum(a, b);
+//        System.out.println("Sum (" + a + ", " + b + ")=" + r);
+//        return r;
+//    }
+//
+//    @Override
+//    public int product(int a, int b) {
+//        int r = super.product(a, b);
+//        System.out.println("Product (" + a + ", " + b + ")=" + r);
+//        return r;
+//    }
+//}
 // TODO without my daughter finding out (ie writing code only above the line)
 //  make sure you keep track of all the sum and product operations she did  (log them)
 // ---------------------------
