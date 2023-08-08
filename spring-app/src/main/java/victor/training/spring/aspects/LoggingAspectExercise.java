@@ -24,6 +24,7 @@ public class LoggingAspectExercise {
     log.info("INTERCEPTED");
   }
 }
+// AspectJ Language
 // @Around("@within(Facade)") // method of classes annotated with @Facade
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod
 // -- DANGER ZONE --

@@ -21,7 +21,14 @@ public class ProxyIntro {
         Callback h = new MethodInterceptor() {
             @Override
             public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-                Object r = method.invoke(realMathsBeanInstance, args);
+
+//                try {
+//                    transaction.start
+                    Object r = method.invoke(realMathsBeanInstance, args);
+//                    transaction.commit
+//                }catch() {
+//                    transaction.rollback
+//                }
 //                method.getAnnotation(Transactional.class).is
                 System.out.println(method.getName() + " (" + Arrays.toString(args) + ")=" + r);
                 return r;
@@ -51,6 +58,7 @@ public class ProxyIntro {
 // TODO without my daughter finding out (ie writing code only above the line)
 //  make sure you keep track of all the sum and product operations she did  (log them)
 // ---------------------------
+@Service
 class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
@@ -63,10 +71,13 @@ class SecondGrade {
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
+@Facade
 class Maths {
+    @LoggedMethod
     public int sum(int a, int b) {
         return a + b;
     }
+    @LoggedMethod
     public int product(int a, int b) {
         return a * b;
     }
