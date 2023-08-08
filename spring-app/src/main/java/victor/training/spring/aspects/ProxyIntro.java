@@ -82,11 +82,13 @@ class SecondGrade {
 @Facade
 /*final*/ class Maths { // fail to start
     @LoggedMethod
+//    @Secured(ROLE_STUFF_POWERFUL) // never checked if method is called locally
 //    @Transactional @Async @Secured() @Timed @RateLimiter @Retry() @Cacheable
 //    public static int sum(int a, int b) { // just THIS method is ignored
     public /*final*/ int sum(int a, int b) { // just THIS method is ignored
         return a + b;
     }
+//    @Secured(ROLE_STUFF_LOW)
     @LoggedMethod
     public int product(int a, int b) {
         // 6 x 5 = 6 + 6 + 6 + 6 + 6
