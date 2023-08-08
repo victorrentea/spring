@@ -2,30 +2,38 @@ package victor.training.spring.async;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
+
+import java.util.concurrent.CompletableFuture;
+
+import static java.util.concurrent.CompletableFuture.*;
 
 @Slf4j
 @Service
 @Timed
 public class Barman {
 //   @Secured(SOME_ROLE)
-   public Beer pourBeer() {
+   @Async("barPool")
+   public CompletableFuture<Beer> pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
       ThreadUtils.sleepMillis(1000);
-      return new Beer();
+      return completedFuture(new Beer());
    }
-   public Vodka pourVodka() {
+   @Async("barPool")
+   public CompletableFuture<Vodka> pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
       ThreadUtils.sleepMillis(1000);
-      return new Vodka();
+      return completedFuture(new Vodka());
    }
 
+   @Async("barPool") // tells spring to run it on a different thread from the 'barPool' executor
    public void closeFiscalDay() { // fire-and-forget
       ThreadUtils.sleepMillis(3000);
       log.debug("End of long processing");
+      if(true) throw new IllegalArgumentException();
    }
 }

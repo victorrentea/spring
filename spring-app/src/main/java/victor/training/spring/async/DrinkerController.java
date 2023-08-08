@@ -40,10 +40,14 @@ public class DrinkerController {
       // in order for Spring to be able to INSTRUMENT the executor and pass metadata from the caller to the worker
       // to copy: SpringSecurityContext (identity of the user) to be able to call @Secured methods,
       //  and TraceID (Sleuth) for correlating log entries passed between systems as header of HTTP/Message
-      Future<Beer> futureBeer = CompletableFuture.supplyAsync(() -> barman.pourBeer(), executor);
-      Future<Vodka> futureVodka = CompletableFuture.supplyAsync(() -> barman.pourVodka(), executor);
+      Future<Beer> futureBeer = barman.pourBeer();
+      Future<Vodka> futureVodka = barman.pourVodka();
 
-      CompletableFuture.runAsync(() -> barman.closeFiscalDay(), executor); // i never wait to it to comple
+//      try {
+         barman.closeFiscalDay(); // i never wait to it to comple
+//      } catch (IllegalArgumentException e) {
+//         throw new RuntimeException(e);// this will NEVER EVER RUN!! PANIC
+//      }
 
       Beer beer = futureBeer.get(); // 1s wait for beer
       Vodka vodka = futureVodka.get(); // 0s wait for vodka (is already done)
