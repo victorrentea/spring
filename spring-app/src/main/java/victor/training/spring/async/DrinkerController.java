@@ -9,9 +9,7 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -31,28 +29,31 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
-
-
       // NEVER forget to pass a Spring-managed executor as the last arg to any CompletableFuture.xxxAsync method you call!!
       // in order for Spring to be able to INSTRUMENT the executor and pass metadata from the caller to the worker
       // to copy: SpringSecurityContext (identity of the user) to be able to call @Secured methods,
       //  and TraceID (Sleuth) for correlating log entries passed between systems as header of HTTP/Message
-      Future<Beer> futureBeer = barman.pourBeer();
-      Future<Vodka> futureVodka = barman.pourVodka();
-
+      // CompeltalbeFuture === promise in Frontend; you don't block (.get()) but chain
+      CompletableFuture<Beer> futureBeer = barman.pourBeer();
+      CompletableFuture<Vodka> futureVodka = barman.pourVodka();
 //      try {
          barman.closeFiscalDay(); // i never wait to it to comple
 //      } catch (IllegalArgumentException e) {
 //         throw new RuntimeException(e);// this will NEVER EVER RUN!! PANIC
 //      }
 
-      Beer beer = futureBeer.get(); // 1s wait for beer
-      Vodka vodka = futureVodka.get(); // 0s wait for vodka (is already done)
+//      Beer beer = futureBeer.get(); // 1s the Tomcat threads(1MB of stack memory)
+         // waits for beer, instead of serving other requests
+//      Vodka vodka = futureVodka.get(); // 0s wait for vodka (is already done)
+
+      CompletableFuture<DillyDilly> futureDilly = futureBeer.thenCombine(futureVodka,
+              (beer, vodka) -> new DillyDilly(beer, vodka));
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
-      return new DillyDilly(beer, vodka);
+//      return futureDilly.get(); //  FAIL again Tomcat still angry
+      return futureDilly; // YES! no Tomcat threads are blocked!
    }
 }
