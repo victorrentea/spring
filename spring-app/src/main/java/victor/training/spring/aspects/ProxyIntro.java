@@ -8,6 +8,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ public class ProxyIntro {
             @Override
             public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
                 Object r = method.invoke(realMathsBeanInstance, args);
+//                method.getAnnotation(Transactional.class).is
                 System.out.println(method.getName() + " (" + Arrays.toString(args) + ")=" + r);
                 return r;
             }
