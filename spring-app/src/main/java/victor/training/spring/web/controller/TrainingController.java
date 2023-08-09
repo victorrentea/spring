@@ -38,8 +38,11 @@ public class TrainingController {
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
-	public void create(@RequestBody TrainingDto dto) {
-		trainingService.createTraining(dto);
+	public ResponseEntity<Void> create(@RequestBody TrainingDto dto) {
+		long id = trainingService.createTraining(dto);
+		return ResponseEntity.status(201)
+				.header("Location", "blabla/" + id)
+				.build();
 	}
 
 	@Operation(description = "Create a training")

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import victor.training.spring.web.controller.NotFoundEx;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
@@ -14,7 +13,6 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
-import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +55,7 @@ public class TrainingService {
         }
     }
 
-    public void createTraining(TrainingDto dto) {
+    public long createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
@@ -68,6 +66,7 @@ public class TrainingService {
                 .setStartDate(dto.startDate)
                 .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
         trainingRepo.save(newEntity);
+        return newEntity.getId();
     }
 
     public void updateTraining(TrainingDto dto) {
