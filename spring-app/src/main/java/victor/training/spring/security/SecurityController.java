@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +23,15 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() throws Exception {
+  public CurrentUserDto getCurrentUsername(Principal principal) throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+    dto.username = principal.getName(); // i need the name to know what
+    // to set in the "LAST_MODIFIED_BY" column in DB ?
+
+
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
