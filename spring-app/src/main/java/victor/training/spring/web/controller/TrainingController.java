@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -14,6 +17,7 @@ import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
@@ -63,9 +67,18 @@ public class TrainingController {
 
 
 	// TODO Allow only for role 'ADMIN'
-	@Secured("ROLE_ADMIN")
+//	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language
+	@Secured("ROLE_ADMIN") // the string MUST start with ROLE_
+//	@PreAuthorize("hasAuthority('training.delete')") // Spring Expression Language
+	// spring security  associates with a principal a list of Authorities (usually strings).
+	// those authorities that start with ROLE_ are considered "ROLES" and can be used with Secured
+
+	// roles have authorities in spring. Role ->* Authority
+	// picnic priviledges are spring roles
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
+		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		System.out.println(" my authorities: " + authorities);
 		trainingService.deleteById(trainingId);
 	}
 
@@ -80,6 +93,7 @@ public class TrainingController {
 //	@GetMapping("search") // pragmatic HTTP endpoints = using POST to search
 //	public List<TrainingDto> searchBold(@RequestBody TrainingSearchCriteria criteria) {}
 
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("search") // pragmatic HTTP endpoints = using POST to search
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
