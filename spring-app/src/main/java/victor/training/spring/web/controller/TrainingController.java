@@ -68,17 +68,20 @@ public class TrainingController {
 
 	// TODO Allow only for role 'ADMIN'
 //	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language
-	@Secured("ROLE_ADMIN") // the string MUST start with ROLE_
 //	@PreAuthorize("hasAuthority('training.delete')") // Spring Expression Language
 	// spring security  associates with a principal a list of Authorities (usually strings).
 	// those authorities that start with ROLE_ are considered "ROLES" and can be used with Secured
 
 	// roles have authorities in spring. Role ->* Authority
 	// picnic priviledges are spring roles
+
+
+//	@Secured("ROLE_ADMIN") // the string MUST start with ROLE_
+	@Secured("ROLE_TRAINING_DELETE_PRIVILEGE")
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
-		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		System.out.println(" my authorities: " + authorities);
+//		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//		System.out.println(" my authorities: " + authorities);
 		trainingService.deleteById(trainingId);
 	}
 
@@ -93,7 +96,8 @@ public class TrainingController {
 //	@GetMapping("search") // pragmatic HTTP endpoints = using POST to search
 //	public List<TrainingDto> searchBold(@RequestBody TrainingSearchCriteria criteria) {}
 
-	@PreAuthorize("hasRole('USER')")
+	@Secured("ROLE_TRAINING_SEARCH_PRIVILEGE")
+//	@PreAuthorize("hasRole('USER')")
 	@PostMapping("search") // pragmatic HTTP endpoints = using POST to search
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);

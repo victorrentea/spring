@@ -28,8 +28,9 @@ public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilte
         List<String> privileges = roles.stream()
                 .flatMap(role -> rolesToPrivilegesPicnicStyle.getPrivileges(role).stream())
                 .collect(Collectors.toList());
+        log.info("Priviledges: " + privileges);
 
-        return new PreAuthHeaderPrincipal(username, roles);
+        return new PreAuthHeaderPrincipal(username, privileges);
     }
 
     @Autowired

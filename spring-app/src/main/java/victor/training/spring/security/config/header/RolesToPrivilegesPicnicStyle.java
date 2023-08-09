@@ -9,8 +9,8 @@ public class RolesToPrivilegesPicnicStyle {
 
     public Set<String> getPrivileges(String role) {
         switch (role) {
-            case "ADMIN": return Set.of("ROLE_TRAINING_DELETE", "ROLE_TRAINING_SEARCH");
-            case "USER": return Set.of("ROLE_TRAINING_SEARCH");
+            case "ADMIN": return Set.of("ROLE_TRAINING_DELETE_PRIVILEGE", "ROLE_TRAINING_SEARCH_PRIVILEGE");
+            case "USER": return Set.of("ROLE_TRAINING_SEARCH_PRIVILEGE");
             default:
                 return Set.of();
         }
