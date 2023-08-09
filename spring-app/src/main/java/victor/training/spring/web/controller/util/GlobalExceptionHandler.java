@@ -14,13 +14,13 @@ import victor.training.spring.web.MyException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // a kind of an Aspect that wraps over all HTTP endpoints
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
@@ -35,11 +35,11 @@ public class GlobalExceptionHandler {
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
 
-  //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
-  //	public String noSuchElementException() {
-  //		return "Not Found";
-  //	}
+  	@ResponseStatus(NOT_FOUND)
+  	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
+  	public String noSuchElementException() {
+  		return "Not Found";
+  	}
 
   // Return internationalized error messages in the user language from:
   // - the 'Accept-Language' request header via request.getLocale())

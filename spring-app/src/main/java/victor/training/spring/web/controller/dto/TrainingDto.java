@@ -2,16 +2,20 @@ package victor.training.spring.web.controller.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.entity.Training;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class TrainingDto {
 	public Long id;
+	@NotNull
 	@Size(min = 3, max = 50, message = "{customer.name.length}")
+	@Schema(description = "the name, duh!")
 	public String name;
 	public ContractType level;
 	public Long teacherId;

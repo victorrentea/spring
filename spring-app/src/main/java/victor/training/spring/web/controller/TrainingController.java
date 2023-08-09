@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
@@ -28,8 +29,9 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+//	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
+	public TrainingDto get(@PathVariable TrainingId id) {
+		return trainingService.getTrainingById(id.id());
 		//TODO return 404 if not found
 	}
 
@@ -68,14 +70,19 @@ public class TrainingController {
 	// GET:
 	// POST:
 
-	@PostMapping("search") // pragmatic HTTP endpoints
+//	@GetMapping("search") // pragmatic HTTP endpoints = using POST to search
+//	public List<TrainingDto> searchBold(@RequestBody TrainingSearchCriteria criteria) {}
+
+	@PostMapping("search") // pragmatic HTTP endpoints = using POST to search
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
-	@GetMapping("search") // by-the-book REST
+	@GetMapping("search") // by-the-book REST. problem= ?
+	// cannot have RequestBody (the standard allows it since 2014 but we are afraid of some old proxy that discards GET BODY requedst)
 	public List<TrainingDto> searchUsingGET(
-					@RequestParam(required = false) String name,
+					@RequestParam(required = false) String name, // search params in the url ?
+					// good to share the search with a friend
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
