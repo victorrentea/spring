@@ -28,7 +28,7 @@ public class TrainingController {
 		return trainingService.getAllTrainings();
 	}
 
-	@GetMapping("{id}")
+	@GetMapping(value = "{id}" , produces = "application/json")
 //	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
 	public TrainingDto get(@PathVariable TrainingId id) {
 		return trainingService.getTrainingById(id.id());
@@ -46,7 +46,7 @@ public class TrainingController {
 	}
 
 	@Operation(description = "Create a training")
-	@PutMapping("{trainingId}")
+	@PutMapping(value = "{trainingId}")
 	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
 		dto.id = trainingId;
 		trainingService.updateTraining(dto);
