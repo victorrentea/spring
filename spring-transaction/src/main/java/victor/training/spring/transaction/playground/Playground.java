@@ -2,11 +2,14 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
@@ -14,18 +17,21 @@ public class Playground {
   private final JdbcTemplate jdbc;
   private final OtherClass other;
 
-  @Transactional// (rollbackFor = Exception.class)
   // check exceptions are a MISTAKE of the Java Language (no other language has them)
   // "leaking abstraction" and prone to "swallow"
   // NEVER throw checked exceptions from your methods. only runtime
+  @Transactional// (rollbackFor = Exception.class)
   public void transactionOne()  {
+//    Connection connection = ...;
+//    connection.setAutoCommit(false);
     jdbc.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
-    jdbc.update("insert into MESSAGE(id, message) values (101,'jooq' )");
-    if (true) { // allowed credit limit exceed for customer
-      throw new RuntimeException("Too indebted");
-    }
+    other.method();
+//    if (true) { // allowed credit limit exceed for customer
+//      throw new RuntimeException("Too indebted");
+//    }
+//    connection.commit();
+//    connection.rollback();;
   }
-
   @Transactional // Spring
 //  @TransactionAttribute (EJB)
   public void transactionTwo() {}
@@ -35,6 +41,13 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  private final JdbcTemplate jdbc;
+
+//  @Async / stops the tx from wrapping over this method
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void method() {
+    jdbc.update("insert into MESSAGE(id, message) values (101,'2ndTx' )");
+  }
 }
 // TODO
 // 0 p6spy
