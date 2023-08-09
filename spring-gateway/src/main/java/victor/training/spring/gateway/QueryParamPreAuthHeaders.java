@@ -3,6 +3,7 @@ package victor.training.spring.gateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,8 @@ public class QueryParamPreAuthHeaders implements GatewayFilter {
       ServerHttpRequest mutatedRequest = addRequestHeaders(exchange, userInCookie);
       return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
+
+    log.error("NO user added as a header to downstream system! please add it to the url like this: http://localhost?user or http://localhost?admin");
 
     return chain.filter(exchange);
   }

@@ -1,11 +1,13 @@
 package victor.training.spring.security.config.header;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
@@ -22,8 +24,16 @@ public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilte
             return null;
         }
         List<String> roles = List.of(rolesStr.split(","));
+
+        List<String> privileges = roles.stream()
+                .flatMap(role -> rolesToPrivilegesPicnicStyle.getPrivileges(role).stream())
+                .collect(Collectors.toList());
+
         return new PreAuthHeaderPrincipal(username, roles);
     }
+
+    @Autowired
+    private RolesToPrivilegesPicnicStyle rolesToPrivilegesPicnicStyle ;
 
     @Override
     protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
