@@ -2,7 +2,7 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,14 +23,15 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername(Principal principal) throws Exception {
+  public CurrentUserDto getCurrentUsername() throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = principal.getName(); // i need the name to know what
+    dto.username = anotherClass.someMethod(); // i need the name to know what
+//    dto.username = anotherClass.asyncSomeMethod().get(); // i need the name to know what
     // to set in the "LAST_MODIFIED_BY" column in DB ?
-
+    ;
 
     // dto.username = anotherClass.asyncMethod().get();
 
@@ -82,6 +83,23 @@ public class SecurityController {
   @Slf4j
   @Service
   public static class AnotherClass {
+    private static final ThreadLocal<String> threadSpecificData = new ThreadLocal<>();
+    // an object from which threads can only see
+    // (read/write) their OWN PRIVATE COPY of a data
+    // ThreadLocal MAGIC is used to:
+    // propagate @Transactions, security context, TraceID (Sleuth), Logback MDC
+    // as long as you DON"T LOOSE THE THREAD
+    public String someMethod() {
+//      threadSpecificData.set("My preciouss staff");
+//      threadSpecificData.get();
+      return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+   @Async
+    public CompletableFuture<String> asyncSomeMethod() {
+//      threadSpecificData.set("My preciouss staff");
+//      threadSpecificData.get();
+      return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
     //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -7,11 +7,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -32,6 +33,11 @@ public class SpringApplication {
         new SpringApplicationBuilder(SpringApplication.class)
                 .listeners(new TestDBConnectionInitializer())
                 .run(args);
+    }
+
+    @Bean
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor barPool) {
+        return new DelegatingSecurityContextAsyncTaskExecutor(barPool);
     }
 
     @Autowired
