@@ -16,6 +16,7 @@ public class MicroApp {
        SpringApplication.run(MicroApp.class, args);
    }
 
+
    @GetMapping
    public String get() {
       return "Micro received username= '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
