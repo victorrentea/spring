@@ -30,17 +30,17 @@ public class FeaturesActuatorEndpoint {
     return activeFeatures;
   }
 
-  @ReadOperation // http://localhost:8080/actuator/feature-flags
+  @ReadOperation // http://localhost:8080/actuator/featureflags
   public boolean feature(@Selector FeatureFlag featureFlag) {
     return isActive(featureFlag);
   }
 
-  @WriteOperation // curl -X POST http://localhost:8080/actuator/feature-flags/DISPLAY_POST_VIEWS
+  @WriteOperation // curl -X POST http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
   public void activateFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.add(featureFlag);
   }
 
-  @DeleteOperation // curl -X DELETE http://localhost:8080/actuator/feature-flags/DISPLAY_POST_VIEWS
+  @DeleteOperation // curl -X DELETE http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
   public void disableFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.remove(featureFlag);
   }

@@ -1,7 +1,6 @@
 package victor.training.spring.actuator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -11,27 +10,27 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+@Slf4j
 @Component
 public class TeacherBioServiceHealthMetric implements HealthIndicator {
-    private static final Logger log = LoggerFactory.getLogger(TeacherBioServiceHealthMetric.class);
-    @Value("${teacher.bio.uri.base}")
-    private String teacherBioUriBase;
-    @Override
-    public Health health() {
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            Map<String, Object> responseMap = restTemplate.getForObject(teacherBioUriBase + "/actuator/health", Map.class);
-            /// rest templte call localhost:8082/actuator/health
-            // parse the JSON response as a Map
-            // check that map.get("status").equlals"UP"
-            if (responseMap.get("status").equals("UP")) {
-                return Health.up().build();
-            }
-        } catch (RestClientException e) {
-            log.error("Health check failed to " + teacherBioUriBase + " :  " + e);
-        }
+  @Value("${teacher.bio.uri.base}")
+  private String teacherBioUriBase;
 
-        return Health.down().build();
-//        return Health.up().status("SOMETHING REALLY BAD HAPPENED").build();
+  @Override
+  public Health health() {
+    try {
+      RestTemplate restTemplate = new RestTemplate();
+        String url = teacherBioUriBase + "/actuator/health";
+        Map<String, Object> responseMap = restTemplate.getForObject(url, Map.class);
+      // call localhost:8082/actuator/health to check {"status": "UP"}
+      if (responseMap.get("status").equals("UP")) {
+        return Health.up().build();
+      }
+    } catch (RestClientException e) {
+      log.error("Health check failed to " + teacherBioUriBase + " :  " + e);
     }
+
+    return Health.down().build();
+//        return Health.up().status("SOMETHING REALLY BAD HAPPENED").build();
+  }
 }

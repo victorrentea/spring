@@ -7,6 +7,7 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import victor.training.spring.actuator.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
 
@@ -17,7 +18,7 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-//@Configuration // uncomment to play
+@Configuration
 @Slf4j
 @Import(ActualPropertiesActuatorEndpoint.class) // aka @Bean X  {return new X()}
 public class DisplayAllActualPropertiesConfig {
