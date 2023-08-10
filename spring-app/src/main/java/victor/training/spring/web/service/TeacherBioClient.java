@@ -1,5 +1,8 @@
 package victor.training.spring.web.service;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +39,11 @@ public class TeacherBioClient {
 
 
   // TODO cacheable
+
+  // resilience4j
+//  @RateLimiter() // eg max 5 req / sec
+  //@Bulkhead() // eg max 2 concurrent requests any time (the old Semaphore was used in the past)
+//  @Retry() // eg max 3 retries, 100ms between them, in case Ex1 occurs.
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);

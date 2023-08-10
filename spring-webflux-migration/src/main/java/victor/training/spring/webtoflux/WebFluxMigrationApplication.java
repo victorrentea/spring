@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Record3;
 import org.jooq.Result;
+import org.jooq.SelectJoinStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -85,6 +86,7 @@ public class WebFluxMigrationApplication {
     dsl.insertInto(Book.BOOK)
             .set(Book.BOOK.ID, bookId)
             .set(Book.BOOK.TITLE, dto.title)
+            .
             .execute();
     return bookId;
   }
@@ -108,8 +110,9 @@ public class WebFluxMigrationApplication {
   @GetMapping("authors")
   public List<AuthorDto> authors() {
     List<AuthorDto> results = new ArrayList<>();
+    SelectJoinStep<Record3<Integer, String, String>> a = dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME).from(AUTHOR);
     Result<Record3<Integer, String, String>> records =
-            dsl.select(AUTHOR.ID, AUTHOR.FIRST_NAME, AUTHOR.LAST_NAME).from(AUTHOR).fetch();
+            a.fetch();
     for (Record3<Integer, String, String> r : records) {
       Integer authorId = r.value1();
       String bio = fetchBio(authorId);

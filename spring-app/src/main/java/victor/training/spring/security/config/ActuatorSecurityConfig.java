@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import victor.training.spring.security.config.apikey.ApiKeyFilter;
 
+
+//defines a SECOND security filter chain that I execute BEFORE the other
 @Order(10) // less than the default 100 => runs first picking up the actuator endpoints
 @Configuration
 @Getter @Setter

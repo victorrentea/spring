@@ -27,7 +27,7 @@ public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
 
-//            .mvcMatchers(DELETE, "api/training/*").hasRole("ADMIN") // old-style URL-based authjorization
+//            .mvcMatchers(DELETE, "/api/training/*").hasRole("ADMIN") // old-style URL-based authjorization
             .mvcMatchers(GET,"/v3/api-docs").permitAll()// old-style URL-based authjorization
             // DANGEROUS don't use, as the string above can get OUT OF SYNC with the actual URL endpoint
             .anyRequest().authenticated();
