@@ -77,7 +77,7 @@ public class TrainingController {
 
 
 //	@Secured("ROLE_ADMIN") // the string MUST start with ROLE_
-	@Secured("ROLE_TRAINING_DELETE_PRIVILEGE")
+	@Secured({"ROLE_TRAINING_DELETE_PRIVILEGE", "ROLE_TRAINING_DELETE_PRIVILEGE"})
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 //		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
