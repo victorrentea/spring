@@ -3,6 +3,8 @@ package victor.training.spring.web.service;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,14 @@ public class TeacherBioClient {
 //  @RateLimiter() // eg max 5 req / sec
   //@Bulkhead() // eg max 2 concurrent requests any time (the old Semaphore was used in the past)
 //  @Retry() // eg max 3 retries, 100ms between them, in case Ex1 occurs.
+
+  @Timed("teacherbiocall") // micrometer framework collects these metrics,
+  // that it exposes through /actuator/prometheus, and then another system called Prometheus
+  // downloads every 5 seconds these metrics and stores them.
+  // Grafana comes and displays these time series, raises alerts
+//  MeterRegistry meterRegistry;
   public String retrieveBiographyForTeacher(long teacherId) {
+//    meterRegistry.
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
     String result = callUsingFeignClient(teacherId);
