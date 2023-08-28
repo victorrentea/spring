@@ -27,6 +27,8 @@ public class DrinkerController {
       Beer beer = barman.pourBeer();
       Vodka vodka = barman.pourVodka();
 
+      barman.auditCocktail("Dilly");
+
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
    }

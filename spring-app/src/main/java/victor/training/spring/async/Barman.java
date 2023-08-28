@@ -21,4 +21,10 @@ public class Barman {
       ThreadUtils.sleepMillis(1000);
       return new Vodka();
    }
+
+   public void auditCocktail(String name) {
+      log.debug("Longer running task I don't need to wait for");
+      ThreadUtils.sleepMillis(500);
+      log.debug("DONE");
+   }
 }
