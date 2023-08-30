@@ -31,7 +31,7 @@ public class Playground {
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("Altu");
-//    repo.save(message); // oricum face auto-flush(UPDATE) daca ai modificat entitatea intr-o @Transaction
+    repo.save(message); // oricum face auto-flush(UPDATE) daca ai modificat entitatea intr-o @Transaction
   }
 }
 
