@@ -27,11 +27,11 @@ public class Playground {
   // 1) poate nu-i nevoie sa fac inser ca face tx rollback
   // 2) POT batchui odata mai multe INSERTuri la nivel de JDBC
 
-  @Transactional
+//  @Transactional
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("Altu");
-//    repo.save(message); // oricum face auto-flush(UPDATE) daca ai modificat entitatea.
+//    repo.save(message); // oricum face auto-flush(UPDATE) daca ai modificat entitatea intr-o @Transaction
   }
 }
 
