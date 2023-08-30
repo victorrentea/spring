@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +18,14 @@ public class Playground {
 
   @Transactional
   public void transactionOne() {
-    jdbc.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     repo.save(new Message("JPA"));
-  }
+    repo.save(new Message("BIS"));
+    System.out.println("ies din metoda");
+  } // WRITE-BEHIND = la inchiderea unei @Transactional JPA se uita in PersistenceContext dupa 'schimbari ce trebuie flush-uite
+  // (scrise in DB)=> PersistenceContext functioneaza ca "buffer de scriere".
+  // DE CE ?
+  // 1) poate nu-i nevoie sa fac inser ca face tx rollback
+  // 2) POT batchui odata mai multe INSERTuri la nivel de JDBC
 
   public void transactionTwo() {}
 }
