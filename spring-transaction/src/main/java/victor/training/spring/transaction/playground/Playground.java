@@ -61,7 +61,13 @@ public class Playground {
 //    repo.save(new Message(null));
 //  }
 
-  public void transactionTwo() {}
+  @Transactional
+  public void transactionTwo() {
+    Message message = repo.findById(1L).orElseThrow();
+    message.setMessage("updated"); // auto-flushing dirty changes
+//    repo.save(message); not needed: GOOD less code. BAD magic
+    System.out.println("EXIT");
+  }
 }
 
 @Service
