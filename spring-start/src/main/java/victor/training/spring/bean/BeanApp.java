@@ -1,17 +1,14 @@
 package victor.training.spring.bean;
 
 import lombok.Data;
-import org.springframework.beans.factory.BeanFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @SpringBootApplication
 public class BeanApp {
@@ -19,13 +16,11 @@ public class BeanApp {
         SpringApplication.run(BeanApp.class);
     }
 
-//    @Autowired
-//    private Conversation conversation;
+    @Autowired
+    private Conversation conversation;
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
-        Conversation conversation = new Conversation(new Person("John"), new Person("Jane"));
-        // TODO register the two persons and the conversation as Spring beans
         conversation.start();
     }
 
@@ -38,19 +33,15 @@ public class BeanApp {
         return new Person("Jane");
     }
 }
+@RequiredArgsConstructor
 @Data
 @Component
 class Conversation {
-    private final Person one;
-    private final Person two;
-
-    public Conversation(@Qualifier("john") Person one, @Qualifier("jane") Person two) {
-        this.one = one;
-        this.two = two;
-    }
+    private final Person john;
+    private final Person jane;
 
     public void start() {
-        System.out.println(one.getName() + " talks with " + two.getName());
+        System.out.println(john.getName() + " talks with " + jane.getName());
     }
 }
 
