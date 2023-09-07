@@ -40,8 +40,8 @@ public class FirstApplication implements CommandLineRunner {
   // if you want MULTIPLE instances of X with different configuration,
   // use a 2..x@Bean
 //  @Bean
-//  public XandY x() { // "x"
-//    return new XandY();
+//  public XandY x(Y y) { // "x"
+//    return new XandY(y);
 //  }
 //  @Bean
 //  public XandY x1() { // "x1"

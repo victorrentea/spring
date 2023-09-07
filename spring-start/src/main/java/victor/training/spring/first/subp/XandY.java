@@ -3,8 +3,8 @@ package victor.training.spring.first.subp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.first.Y;
 
 //@Entity NO - hibernate manages it, not Spring
@@ -29,7 +29,7 @@ public class XandY {
 
   //  @Autowired
 //  private Y y; // #2 field injection
-  private final Y y;
+  private final Y y; // immutable + testing
 //  public XandY(Y y) { // #1 ❤️constructor
 //    this.y = y;
 //  }
@@ -43,5 +43,36 @@ public class XandY {
 
   public int logic() {
     return 1 + y.logic();
+  }
+
+
+
+
+}
+
+
+
+@Component
+class A {
+//  private final B b;
+//  A(B b) {
+//    this.b = b;
+//  }
+  private B b;
+  @Autowired
+  public void setB(B b) {
+    this.b = b;
+  }
+}
+@Component
+class B {
+//  private final A a;
+//  B(A a) {
+//    this.a = a;
+//  }
+  private A a;
+  @Autowired
+  public void setA(A a) {
+    this.a = a;
   }
 }
