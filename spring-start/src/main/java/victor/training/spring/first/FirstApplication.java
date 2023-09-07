@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,11 @@ public class FirstApplication implements CommandLineRunner {
   @Override // from CommandLineRunner
   public void run(String... args) {
     System.out.println(x.logic());
+  }
+
+  @EventListener(ApplicationReadyEvent.class)
+  public void onAppStart() {
+    System.out.println("App started OK 🎉");
   }
 }
 
