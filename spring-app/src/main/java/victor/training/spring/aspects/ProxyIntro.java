@@ -8,6 +8,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
@@ -57,7 +58,8 @@ public class ProxyIntro {
 // TODO write code above this line to intercept and log args of any call that SecondGrade does on Maths
 // ------------------------
 // TODO what can I change below the line to STOP proxies from working
- class SecondGrade {
+@Service
+class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
         this.maths = maths;
@@ -70,6 +72,7 @@ public class ProxyIntro {
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
+@Service
 /*final */
 class Maths { // break startup EXCEPTION
 //    private  Maths() {} // too much
