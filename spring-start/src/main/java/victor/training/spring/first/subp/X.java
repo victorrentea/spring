@@ -1,4 +1,4 @@
-package victor.training.spring;
+package victor.training.spring.first.subp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
