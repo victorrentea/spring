@@ -3,7 +3,11 @@ package victor.training.spring.first;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class Y {
@@ -21,5 +25,15 @@ public class Y {
     mailService.sendEmail("I like 4 topics : " + message);
 
     return 1;
+  }
+
+  @PostConstruct // immediately init THIS bean after it's configured
+  public void post() {
+    System.out.println("PostConstruct");
+  }
+
+  @EventListener(ApplicationStartedEvent.class) // after ALL beans have been configured
+  public void appStarted() {
+    System.out.println("App Started");
   }
 }

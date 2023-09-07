@@ -30,7 +30,7 @@ public class SpringApplication {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringApplication.class)
-                .listeners(new TestDBConnectionInitializer())
+                .listeners(new TestDBConnectionInitializer()) // a startup hook
                 .run(args);
     }
 

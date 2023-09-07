@@ -6,7 +6,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -37,9 +39,10 @@ public class XandY {
 //  private String currentUser; // illegal
 //  private String tenantId;
 
+  private final Y y; // immutable + testing + forces the caller to HAVE a Y with Java language constructs
+
   //  @Autowired
 //  private Y y; // #2 field injection
-  private final Y y; // immutable + testing + forces the caller to HAVE a Y with Java language constructs
 //  public XandY(Y y) { // #1 ❤️constructor
 //    this.y = y;
 //  }
@@ -51,9 +54,19 @@ public class XandY {
 //    this.y2 = y;
 //  }
 
+
+//  @Autowired
+//  ApplicationContext spring;
+
   public int logic() {
+//    Y y = spring.getBean(Y.class); // dangerous: at runtime Y might not be found
+    // => crash at runtime, not at startup as DI
+
     return 1 + y.logic();
   }
+
+  // Struts, EJB, VAADIN not integrated with Spring. From them you wanted to delegate control to SPring
+  // ApplicationContext.getBean
 
 
 

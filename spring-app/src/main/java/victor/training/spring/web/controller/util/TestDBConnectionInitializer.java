@@ -3,6 +3,7 @@ package victor.training.spring.web.controller.util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import java.sql.Connection;
@@ -16,7 +17,7 @@ public class TestDBConnectionInitializer implements ApplicationListener<Applicat
          return;
       }
       try {
-         Class.forName(env.getRequiredProperty("spring.datasource.driver-class-name"));
+         Class.forName(env.getRequiredProperty("spring.datasource.driver-class-name")); // config
          log.debug("Trying to connect to {}", url);
          Connection connection = DriverManager.getConnection(url,
              env.getRequiredProperty("spring.datasource.username"),
@@ -32,7 +33,8 @@ public class TestDBConnectionInitializer implements ApplicationListener<Applicat
 
    @Override
    public void onApplicationEvent(ApplicationContextInitializedEvent event) {
-      assertCanConnectToDB(event.getApplicationContext().getEnvironment());
+      ConfigurableApplicationContext applicationContext = event.getApplicationContext();
+      assertCanConnectToDB(applicationContext.getEnvironment());
       log.info("Database connection checked OK");
    }
 }
