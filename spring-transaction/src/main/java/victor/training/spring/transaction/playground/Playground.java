@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -9,6 +10,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class Playground {
 //  @Transactional //
   // acquire a JDBC Connection from the connection pool (size=10) Hikari
   // bind the connection to the CURRENT THREAD until the end of the method
+  // start a transaction on that connection using connection.setAUtoCommit(false)
   // creating a PersistenceContext on the THREAD
   public void transactionOne() {
     var dataFromRemote = "data retrieved via an API call";
@@ -32,13 +36,11 @@ public class Playground {
 //    Playground myself = (Playground) AopContext.currentProxy(); // #2 also this!! OMG
 
     other.atomicPart(dataFromRemote);
-
 //    transactionTemplate.executeWithoutResult(status -> { // #4 programatic no aspects
 //      repo.save(new Message("JPA with " + dataFromRemote));
 //      repo.save(new Message(null));
 //    });
   }
-
   private TransactionTemplate transactionTemplate;
   @Autowired
   public void initTxTemplate(PlatformTransactionManager transactionManager) {
@@ -52,11 +54,11 @@ public class Playground {
   private OtherClass other; // #1 move method to other class and inject it proxy injected here !
     // breaking complexity apart is generally GOOD
 
-  @Transactional
-  public void atomicPart(String dataFromRemote) {
-    repo.save(new Message("JPA with " + dataFromRemote));
-    repo.save(new Message(null));
-  }
+//  @Transactional
+//  public void atomicPart(String dataFromRemote) {
+//    repo.save(new Message("JPA with " + dataFromRemote));
+//    repo.save(new Message(null));
+//  }
 
   public void transactionTwo() {}
 }
@@ -65,12 +67,20 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional
+
+  @Transactional // Tx1 is started by this proxy
   public void atomicPart(String dataFromRemote) {
     repo.save(new Message("JPA with " + dataFromRemote));
-    repo.save(new Message(null));
+
+    CompletableFuture.runAsync(() ->
+        // you are in another thread, with NO ACTIVE CONN/TX on it
+        repo.save(new Message(null)) // Tx2 is started by save() inside it (@Transactional)
+    );
   }
 }
+
+
+
 // TODO
 // 0 p6spy
 // 1 Cause a rollback by breaking NOT NULL/PK/UQ, throw Runtime, throw CHECKED
