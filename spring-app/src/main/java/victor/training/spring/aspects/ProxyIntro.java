@@ -1,5 +1,10 @@
 package victor.training.spring.aspects;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.ap.internal.model.Decorator;
 import org.springframework.cache.annotation.Cacheable;
@@ -7,9 +12,11 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -29,7 +36,7 @@ public class ProxyIntro {
                 return r;
             }
         };
-        Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+        Maths proxy = (Maths) Enhancer.create(Maths.class, h); // does not work on native image
 
         SecondGrade secondGrade = new SecondGrade(proxy);
 
@@ -74,12 +81,29 @@ class SecondGrade {
 }
 @Service
 /*final */
+@LoggedMethod
 class Maths { // break startup EXCEPTION
 //    private  Maths() {} // too much
-//    @Transactional
-//    @Cacheable
-//    @Secured("ADMIN")
+//    @Transactional // START tx before enter, COMMIT after if no exception
+
+//    @Cacheable("sum-cache") // if i've computed sum( same args), return the prev value
+//    @Secured("ROLE_ADMIN") // only ADMIN role can call it
+
+//    @Async // move the ex on a different thread
+
+//    @Retry(name = "sum") // if a certain exception is thrown : retry dep on some config
+//    @RateLimiter() // max 5 req/sec
+//    @Bulkhead() // max 5 requests at once (overlapped)
+//    @CircuitBreaker() // if that system blows, back off for 3 sec and provide this default response..
     public /*static*/ int sum(int a, int b) { // non-overridable method
+        // Aspects have programatic alternatives
+        //        TransactionTemplate tx;
+//        tx.executeWithoutResult(s-> {
+//            repo.save(new A());
+//            repo.save(new B());
+//        });
+//        MeterRegistry micrometer;
+//        micrometer.timer("a").record(() -> {stuff});
         return a + b;
     }
 

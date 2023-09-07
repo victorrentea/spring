@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -31,7 +32,10 @@ public class LoggingAspectExercise {
 //  @After()
   // AspectJ expressions
 //  @Around("execution(* product(..))") // too specific
-  @Around("execution(* victor.training..*.*(..))") // too specific
+//  @Around("execution(* victor.training..*.*(..))") // package patterns
+
+//  @Around("@annotation(LoggedMethod) ") // on method
+  @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // on method or class
   public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
     System.out.println(pjp.getSignature().getName() + " with " + Arrays.toString(pjp.getArgs()));
     Object r = pjp.proceed();
