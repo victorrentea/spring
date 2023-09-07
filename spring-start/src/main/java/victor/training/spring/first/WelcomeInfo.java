@@ -3,8 +3,10 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,10 +20,12 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // generates getters + setters
-@Component
+//@Data // generates getters + setters
+@Value
+//@Component
 @ConfigurationProperties("welcome")
 @Validated
+@ConstructorBinding
 public class WelcomeInfo {
   Integer gate = 17; // default value
   @NotNull

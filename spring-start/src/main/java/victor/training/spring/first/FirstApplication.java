@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -27,6 +28,7 @@ import victor.training.spring.first.subp.XandY;
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication // tech a @Configuration
 @EnableAsync
+@EnableConfigurationProperties(WelcomeInfo.class)
 // you can disable component scan and manualy @Import the classes you want
 //@ComponentScan(basePackages = "nothing")
 //@Import({XandY.class, .... })

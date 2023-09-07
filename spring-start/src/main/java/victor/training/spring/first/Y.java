@@ -22,7 +22,7 @@ public class Y {
   @PostConstruct
   public void useTheConfig() {
     System.out.println("URLS: " + welcomeInfo.getSupportUrls());
-    welcomeInfo.setSupportUrls(Collections.emptyList());
+//    welcomeInfo.setSupportUrls(Collections.emptyList());
   }
 
   @Qualifier("mailServiceImpl")
