@@ -69,12 +69,19 @@ public class Playground {
     System.out.println("EXIT");
   }
 
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true) // blocks the conn for too long
   public void transactionThreeReadOnlyForLazyLoading() {
     Message message = repo.findById(1L).orElseThrow();
     System.out.println("Got the message");
     System.out.println("Phone:" + message.getPhones()); //  LAZY     LOADING
   }
+  // 1. hibernate is not designed for readonly work => don't try to make @Entity immutable. you will die
+  // 2. instead of lazy loading is preferable to pre-fetch all the data you need upfront, perhaps with wsome
+  // @Query (LEFT JOIN FETCH) jpql + release the conn earlier or
+  //
+  // -====> "Light" CQRS:
+  // - read model jpql="select new ... SEarhcResultReponse) different than
+  // - WRITE MODEL (@Entity)
 }
 
 @Service
