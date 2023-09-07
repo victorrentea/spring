@@ -30,5 +30,5 @@ welcome:
         - http://spring.io
     welcomeMessage: Welcome to Spring
     gate: 123
-#prod.stuff.only: 10
-mail.sender.dummy: true
+prod.stuff.only: 10
+#mail.sender.dummy: true
