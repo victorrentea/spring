@@ -9,21 +9,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 @SpringBootApplication
-    // (proxyBeanMethods = false) don't do this unless in a library
+     (proxyBeanMethods = false) // don't do this unless in a library
 public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
     }
 
     @Autowired
-    private Conversation conversation;
+    private Conversation conversation2;
 
     @EventListener(ApplicationStartedEvent.class)
     public void onStart() {
-        conversation.start();
+        conversation2.start();
     }
 
     @Bean
@@ -35,16 +34,21 @@ public class BeanApp {
     public Person jane() {
         return new Person("Jane");
     }
+//    @Bean//I can't touch the code of Conversation.java
+//    public Conversation conversation() {
+//        System.out.println("One");
+//        return new Conversation(john(null), jane());
+//        // the only place in Spring where local method calls get intercepter
+//    }
     @Bean//I can't touch the code of Conversation.java
-    public Conversation conversation() {
-        System.out.println("One");
-        return new Conversation(john(null), jane());
-        // the only place in Spring where local method calls get intercepter
+    public Conversation conversation2(Person john, Person jane) {
+        System.out.println("Two");
+        return new Conversation(john, jane);
     }
     @Bean//I can't touch the code of Conversation.java
-    public Conversation conversation2() {
-        System.out.println("Two");
-        return new Conversation(john(null), jane());
+    public Conversation conversation3(Person john, Person jane) {
+        System.out.println("Three");
+        return new Conversation(john, jane);
     }
 }
 
