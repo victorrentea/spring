@@ -1,21 +1,34 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Service
 @RequiredArgsConstructor
 public class Playground {
   private final MessageRepo repo;
+  // tx management low level:
+//    DataSource ds;
+//    Connection connection = ds.getConnection();
+//    connection.setAutoCommit(false); // open a TX
+//    // INSERT ,,, your code
+//    connection.commit();
 
-  @Transactional
+//  @Transactional //
+  // acquire a JDBC Connection from the connection pool (size=10) Hikari
+  // bind the connection to the CURRENT THREAD until the end of the method
+  // creating a PersistenceContext on the THREAD
   public void transactionOne() {
-    repo.save(new Message("JPA"));
+    var dataFromRemote = "data retrieved via an API call";
+    // restTemplate.getForObject / webClient.block() => JDBC Connection Pool Starvation
+
+    other.atomicPart(dataFromRemote);
   }
+
+  @Autowired
+  private OtherClass other; // proxy injected here !
 
   public void transactionTwo() {}
 }
@@ -24,6 +37,11 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  @Transactional
+  public void atomicPart(String dataFromRemote) {
+    repo.save(new Message("JPA with " + dataFromRemote));
+    repo.save(new Message(null));
+  }
 }
 // TODO
 // 0 p6spy
