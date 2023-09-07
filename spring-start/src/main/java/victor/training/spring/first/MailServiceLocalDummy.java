@@ -11,8 +11,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 @Slf4j
-//@ConditionalOnProperty(value = "mail.sender.dummy",havingValue = "true")
-@Profile("local")
+@ConditionalOnProperty(value = "mail.sender.dummy", havingValue = "true")
+//@Profile("local")
 @Primary
 // TODO when starting the app locally, don't send any emails, log then instead
 public class MailServiceLocalDummy implements MailService {

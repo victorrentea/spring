@@ -12,8 +12,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 //@Profile("prod") // BAD PRACTICE: only to run in production env
-@Profile("!local") // garbage only for local env dev
-//@ConditionalOnMissingBean(MailServiceLocalDummy.class) // coupling to LOCAL env hacks
+//@Profile("!local") // garbage only for local env dev
+@ConditionalOnMissingBean(MailServiceLocalDummy.class) // coupling to LOCAL env hacks
 public class MailServiceImpl implements MailService {
   @Value("${prod.stuff.only}")
   private String cool;
