@@ -10,11 +10,20 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 
 @Slf4j
 @Service
 public class Y {
 
+  @Autowired
+  private WelcomeInfo welcomeInfo;
+
+  @PostConstruct
+  public void useTheConfig() {
+    System.out.println("URLS: " + welcomeInfo.getSupportUrls());
+    welcomeInfo.setSupportUrls(Collections.emptyList());
+  }
 
   @Qualifier("mailServiceImpl")
   private final MailService mailService; // polymorphic injection
