@@ -18,8 +18,8 @@ spring:
         allow-circular-references: true #hack to allow spring to use black magic to fix it. DONT
 welcome:
     help:
-        app-id: 1251
         file: c:/help-file.pdf
+        app-id: 123
     localContactPhone:
         FR: 430123414123
         RO: 401312121414
@@ -28,7 +28,8 @@ welcome:
         - http://stackoverflow.com
         - http://baeldung.com
         - http://spring.io
-    welcomeMessage: Welcome to Spring
     gate: 123
+    welcome-message: Hi
+
 prod.stuff.only: 10
 #mail.sender.dummy: true

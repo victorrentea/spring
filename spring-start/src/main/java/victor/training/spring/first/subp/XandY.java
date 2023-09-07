@@ -33,6 +33,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @RequiredArgsConstructor // pragmatic ctor injection
 @Service // infra/technicalities
 public class XandY {
+
+//  @Value("${welcome.help.app-id}") String appId;
+//  @Value("${welcome.help.file}") File file;
+//  @Value("${welcome.help.app-id}") String appId;
+//  @Value("${welcome.help.app-id}") String appId;
+
   // there is a SINGLE instance of X created by Spring
   // named "xandY" (small first letter)
   // ==>  needs to be STATE LESS (no request/user data in fields)

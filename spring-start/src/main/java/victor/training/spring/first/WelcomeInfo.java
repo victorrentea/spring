@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -17,8 +20,12 @@ import java.util.Map;
 @Slf4j
 @Data // generates getters + setters
 @Component
+@ConfigurationProperties("welcome")
+@Validated
 public class WelcomeInfo {
   int gate;
+  @NotNull
+      @Size(min = 5)
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
   List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   Map<Locale, String> localContactPhone;
