@@ -15,7 +15,7 @@ spring:
                         enable: true
         username: <login user to smtp server>
     main:
-#        allow-circular-references: true #hack to allow spring to use black magic to fix it
+        allow-circular-references: true #hack to allow spring to use black magic to fix it. DONT
 welcome:
     help:
         app-id: 1251
