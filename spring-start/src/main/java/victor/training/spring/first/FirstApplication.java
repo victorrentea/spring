@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import victor.training.spring.first.subp.XandY;
 
 // - Dependency Injection: field, constructor, method
@@ -25,7 +26,7 @@ import victor.training.spring.first.subp.XandY;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication // tech a @Configuration
-
+@EnableAsync
 // you can disable component scan and manualy @Import the classes you want
 //@ComponentScan(basePackages = "nothing")
 //@Import({XandY.class, .... })
