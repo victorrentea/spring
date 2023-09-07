@@ -41,8 +41,10 @@ public class Y {
 
   @EventListener(ApplicationStartedEvent.class) // after ALL beans have been configured
   public void appStarted() {
-    System.out.println("App Started");
+    System.out.println("App Started WITH PASS:" + pass);
   }
+  @org.springframework.beans.factory.annotation.Value("${db.password}")
+  String pass;
 }
 
 @Value // immutable
