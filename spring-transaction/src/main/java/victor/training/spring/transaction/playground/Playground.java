@@ -62,7 +62,17 @@ public class Playground {
   public void transactionTwo() throws IOException {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("updated"); // auto-flushing dirty changes
+    repo.flush();
 //    throw new IllegalArgumentException("BR violation"); // ROLLBACK
+
+    System.out.println("Before tjhe second findById ");
+    Message secondFetch = repo.findById(1L).orElseThrow(); // fetched from memory the same == instance as before
+    // 1st level cache
+    System.out.println("Fetch again an etity modified before in the " +
+        "same current tx:" + secondFetch.getMessage());
+    System.out.println(message ==secondFetch);
+
+
     throw new IOException("BR violation"); // causes COMMIT <- MISTAKE
     // WHY?! if it's a checked exception, someone is gonna handle it
     // REAL REASON : Legacy.
@@ -97,6 +107,8 @@ class OtherClass {
   @Transactional // Tx1 is started by this proxy
   public void atomicPart(String dataFromRemote) {
     repo.saveAndFlush(new Message("JPA with " + dataFromRemote));
+    // forces a TCP-IP request RIGHT NOW
+
     inTheSameThreadTheTxPropagatesAutomatically();
     System.out.println("AFTER the 2 .save"); // Write-behind: JPA buffers all the changes for the end of Tx
     third.method();

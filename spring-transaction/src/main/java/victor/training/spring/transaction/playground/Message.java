@@ -16,6 +16,10 @@ public class Message {
     @ElementCollection
     private List<String> phones = new ArrayList<>();
 
+    public String getMessage() {
+        return message;
+    }
+
     private Message() { // for hibernate only
     }
 
