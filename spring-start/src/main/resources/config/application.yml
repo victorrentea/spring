@@ -19,7 +19,7 @@ spring:
     datasource:
         hikari:
             auto-commit: true
-
+john.name: John
 welcome:
     help:
         file: c:/help-file.pdf

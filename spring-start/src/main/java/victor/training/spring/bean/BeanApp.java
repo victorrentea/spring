@@ -3,6 +3,7 @@ package victor.training.spring.bean;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -26,9 +27,9 @@ public class BeanApp {
     }
 
     @Bean
-    public Person john() {
-        System.out.println("NEW john");
-        return new Person("John");
+    public Person john(@Value("${john.name}") String name) {
+        System.out.println("NEW john : "+name);
+        return new Person(name);
     }
     @Bean // 2... instances of one type, manually configured
     public Person jane() {
@@ -37,13 +38,13 @@ public class BeanApp {
     @Bean//I can't touch the code of Conversation.java
     public Conversation conversation() {
         System.out.println("One");
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane());
         // the only place in Spring where local method calls get intercepter
     }
     @Bean//I can't touch the code of Conversation.java
     public Conversation conversation2() {
         System.out.println("Two");
-        return new Conversation(john(), jane());
+        return new Conversation(john(null), jane());
     }
 }
 
