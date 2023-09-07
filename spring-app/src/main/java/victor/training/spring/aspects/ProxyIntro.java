@@ -2,10 +2,13 @@ package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.ap.internal.model.Decorator;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -53,25 +56,37 @@ public class ProxyIntro {
 
 // TODO write code above this line to intercept and log args of any call that SecondGrade does on Maths
 // ------------------------
-class SecondGrade {
+// TODO what can I change below the line to STOP proxies from working
+ class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
         this.maths = maths;
     }
 
     public void mathClass() {
+//        Maths maths = new Maths(); // no proxying can happen if you don't inject a dep from DI container
         System.out.println("8 + 4 = " + maths.sum(8, 4));
         System.out.println("6 + 6 = " + maths.sum(6, 6));
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
-class Maths {
-    public int sum(int a, int b) {
+/*final */
+class Maths { // break startup EXCEPTION
+//    private  Maths() {} // too much
+//    @Transactional
+//    @Cacheable
+//    @Secured("ADMIN")
+    public /*static*/ int sum(int a, int b) { // non-overridable method
         return a + b;
     }
 
-    public int product(int a, int b) {
-        return a * b;
+    public /*final*/ int product(int a, int b) { // ignore this method, no exception at startup
+//        return a * b;
+        int product = 0;
+        for (int i = 0; i < a; i++) {
+            product = sum(product, b); // ⚠️ local method calls (on "this") cannot be proxied/intercepted by Spring
+        }
+        return product;
     }
 }
 
