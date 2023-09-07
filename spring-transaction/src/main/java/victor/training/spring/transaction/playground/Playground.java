@@ -61,7 +61,7 @@ public class Playground {
 //    repo.save(new Message(null));
 //  }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("updated"); // auto-flushing dirty changes
