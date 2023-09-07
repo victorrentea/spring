@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -67,18 +68,26 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  private final Third third;
 
   @Transactional // Tx1 is started by this proxy
   public void atomicPart(String dataFromRemote) {
     repo.save(new Message("JPA with " + dataFromRemote));
-
-    CompletableFuture.runAsync(() ->
-        // you are in another thread, with NO ACTIVE CONN/TX on it
-        repo.save(new Message(null)) // Tx2 is started by save() inside it (@Transactional)
-    );
+    third.method();
   }
 }
 
+
+@RequiredArgsConstructor
+@Service
+class Third {
+  private MessageRepo repo;
+
+  @Async // logs automatically any exception if method retunrs "void" (fire-and-forget)
+  public void method() {
+    repo.save(new Message(null));
+  }
+}
 
 
 // TODO
