@@ -2,6 +2,7 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
@@ -14,6 +15,8 @@ import javax.annotation.PostConstruct;
 //@Profile("prod") // BAD PRACTICE: only to run in production env
 //@Profile("!local") // garbage only for local env dev
 @ConditionalOnMissingBean(MailServiceLocalDummy.class) // coupling to LOCAL env hacks
+//@ConditionalOnClass(KafkaSender.class) when writing an extension to spring (bosch-spring-commons.jar)
+// that should do stuff IF kafka is in classpath.
 public class MailServiceImpl implements MailService {
   @Value("${prod.stuff.only}")
   private String cool;
