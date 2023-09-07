@@ -28,14 +28,18 @@ public class BeanApp {
     public Person john() {
         return new Person("John");
     }
-    @Bean
+    @Bean // 2... instances of one type, manually configured
     public Person jane() {
         return new Person("Jane");
     }
+    @Bean//I can't touch the code of Conversation.java
+    public Conversation conversation(Person john, Person jane) {
+        return new Conversation(john, jane);
+    }
 }
+// -- imagine you don't have acecss to the code of Conversation
 @RequiredArgsConstructor
 @Data
-@Component
 class Conversation {
     private final Person john;
     private final Person jane;
