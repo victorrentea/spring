@@ -69,8 +69,10 @@ public class Playground {
     System.out.println("EXIT");
   }
 
+  @Transactional(readOnly = true)
   public void transactionThreeReadOnlyForLazyLoading() {
     Message message = repo.findById(1L).orElseThrow();
+    System.out.println("Got the message");
     System.out.println("Phone:" + message.getPhones()); //  LAZY     LOADING
   }
 }
