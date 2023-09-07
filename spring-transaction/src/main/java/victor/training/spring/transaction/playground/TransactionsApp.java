@@ -22,6 +22,8 @@ public class TransactionsApp implements CommandLineRunner {
       playground.transactionOne();
       System.out.println("============= TRANSACTION TWO ==============");
       playground.transactionTwo();
+      System.out.println("============= TRANSACTION 3 ==============");
+      playground.transactionThreeReadOnlyForLazyLoading();
       System.out.println("============= END ==============");
    }
 }

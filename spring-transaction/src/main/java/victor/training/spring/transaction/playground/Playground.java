@@ -68,6 +68,11 @@ public class Playground {
 //    repo.save(message); not needed: GOOD less code. BAD magic
     System.out.println("EXIT");
   }
+
+  public void transactionThreeReadOnlyForLazyLoading() {
+    Message message = repo.findById(1L).orElseThrow();
+    System.out.println("Phone:" + message.getPhones()); //  LAZY     LOADING
+  }
 }
 
 @Service
