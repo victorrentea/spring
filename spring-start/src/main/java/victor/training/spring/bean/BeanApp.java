@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @SpringBootApplication
+    // (proxyBeanMethods = false) don't do this unless in a library
 public class BeanApp {
     public static void main(String[] args) {
         SpringApplication.run(BeanApp.class);
@@ -26,6 +27,7 @@ public class BeanApp {
 
     @Bean
     public Person john() {
+        System.out.println("NEW john");
         return new Person("John");
     }
     @Bean // 2... instances of one type, manually configured
@@ -33,10 +35,25 @@ public class BeanApp {
         return new Person("Jane");
     }
     @Bean//I can't touch the code of Conversation.java
-    public Conversation conversation(Person john, Person jane) {
-        return new Conversation(john, jane);
+    public Conversation conversation() {
+        System.out.println("One");
+        return new Conversation(john(), jane());
+        // the only place in Spring where local method calls get intercepter
+    }
+    @Bean//I can't touch the code of Conversation.java
+    public Conversation conversation2() {
+        System.out.println("Two");
+        return new Conversation(john(), jane());
     }
 }
+
+//class SpringSubclassesYourConfigs extends BeanApp {
+//    @Override
+//    public Person john() {
+//        if (john exists in singleton map ) return ...
+//        return super.john();
+//    }
+//}
 // -- imagine you don't have acecss to the code of Conversation
 @RequiredArgsConstructor
 @Data
