@@ -57,18 +57,20 @@ public class XandY {
 
 
 @Component
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 class A {
+  @Lazy // propagated thanks to lombok.config
   private final B b;
+  @Value("${mail.sender}")
   private final String mailSender;
 
   // annotations on injection point
-  A(@Lazy B b,
-    @Value("${mail.sender}") String mailSender) { //dark magic,
-    // allows spring to use a proxy to be able to instantiate both
-    this.b = b;
-    this.mailSender = mailSender;
-  }
+//  A(@Lazy B b,
+//    @Value("${mail.sender}") String mailSender) { //dark magic,
+//    // allows spring to use a proxy to be able to instantiate both
+//    this.b = b;
+//    this.mailSender = mailSender;
+//  }
 }
 @Component
 class B {
