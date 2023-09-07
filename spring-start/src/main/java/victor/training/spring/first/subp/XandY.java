@@ -1,12 +1,21 @@
 package victor.training.spring.first.subp;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.Y;
+
+import javax.annotation.processing.SupportedAnnotationTypes;
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 //@Entity NO - hibernate manages it, not Spring
 
@@ -54,15 +63,29 @@ public class XandY {
 //  }
 }
 
+//@Slf4j
+//interface No {
+//}
+
+//@Slf4j
+//@RequiredArgsConstructor
+//@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+//@Retention(RUNTIME) // stops javac from removing it at compilation
+//@interface Fun {
+//
+//}
 
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+//@Fun
 class A {
   @Lazy // propagated thanks to lombok.config
-  private final B b;
+  B b;
   @Value("${mail.sender}")
-  private final String mailSender;
+  String mailSender;
 
   // annotations on injection point
 //  A(@Lazy B b,
