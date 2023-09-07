@@ -62,15 +62,17 @@ public class Playground {
   public void transactionTwo() throws IOException {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("updated"); // auto-flushing dirty changes
-    repo.flush();
+//    repo.flush();
 //    throw new IllegalArgumentException("BR violation"); // ROLLBACK
 
     System.out.println("Before tjhe second findById ");
-    Message secondFetch = repo.findById(1L).orElseThrow(); // fetched from memory the same == instance as before
+    Message secondFetch = repo.findById(2L).orElseThrow(); // fetched from memory the same == instance as before
     // 1st level cache
     System.out.println("Fetch again an etity modified before in the " +
         "same current tx:" + secondFetch.getMessage());
     System.out.println(message ==secondFetch);
+
+    System.out.println("All: " + repo.findAll());
 
 
     throw new IOException("BR violation"); // causes COMMIT <- MISTAKE
