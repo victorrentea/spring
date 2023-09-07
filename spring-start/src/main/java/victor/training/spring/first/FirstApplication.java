@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import victor.training.spring.first.subp.XandY;
 
 // - Dependency Injection: field, constructor, method
@@ -23,7 +25,10 @@ import victor.training.spring.first.subp.XandY;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication // tech a @Configuration
-//@ComponentScan(pa)
+
+// you can disable component scan and manualy @Import the classes you want
+//@ComponentScan(basePackages = "nothing")
+//@Import({XandY.class, .... })
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
