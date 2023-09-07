@@ -1,10 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -12,7 +9,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.concurrent.CompletableFuture;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +58,19 @@ public class Playground {
 //    repo.save(new Message(null));
 //  }
 
-  @Transactional
-  public void transactionTwo() {
+  @Transactional//(propagation = )
+  public void transactionTwo() throws IOException {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("updated"); // auto-flushing dirty changes
-    throw new IllegalArgumentException("BR violation");
+//    throw new IllegalArgumentException("BR violation"); // ROLLBACK
+    throw new IOException("BR violation"); // causes COMMIT <- MISTAKE
+    // WHY?! if it's a checked exception, someone is gonna handle it
+    // REAL REASON : Legacy.
+    // it was 2005~ EJB 2.x was ruling the world full of XML interface and corporate bullshit (worst standards in history)
+    // the developers rioted against EJB and some created SPring.
+    // 99% of marketshare was EJB.
+//    Spring had to use the same approach to ease the migration of EJB apps to Spring.
+    // Moral: never ever ever ever throw checked exceptions. They are a mistake in the Java Language
   }
 
   @Transactional(readOnly = true) // blocks the conn for too long
@@ -91,8 +96,14 @@ class OtherClass {
 
   @Transactional // Tx1 is started by this proxy
   public void atomicPart(String dataFromRemote) {
-    repo.save(new Message("JPA with " + dataFromRemote));
+    repo.saveAndFlush(new Message("JPA with " + dataFromRemote));
+    inTheSameThreadTheTxPropagatesAutomatically();
+    System.out.println("AFTER the 2 .save"); // Write-behind: JPA buffers all the changes for the end of Tx
     third.method();
+  }
+
+  private void inTheSameThreadTheTxPropagatesAutomatically() {
+    repo.save(new Message("SECOND"));
   }
 }
 
