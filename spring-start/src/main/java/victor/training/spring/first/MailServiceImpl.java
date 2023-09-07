@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 //@Profile("prod") // BAD PRACTICE: only to run in production env
 //@Profile("!local") // garbage only for local env dev
-@ConditionalOnMissingBean(MailService.class)
+@ConditionalOnMissingBean(MailServiceLocalDummy.class) // coupling to LOCAL env hacks
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
