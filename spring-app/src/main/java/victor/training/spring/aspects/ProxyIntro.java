@@ -1,28 +1,33 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Service;
 
-@Slf4j
+
 public class ProxyIntro {
     public static void main(String[] args) {
         // WE play the role of Spring here ...
-        Maths maths = new Maths() { // subclass
-            @Override
-            public int sum(int a, int b) {
-                log.info("Calling sum(" + a + "," + b + ")");
-                return super.sum(a, b);
-            }
-            @Override
-            public int product(int a, int b) {
-                log.info("Calling product(" + a + "," + b + ")");
-                return super.product(a, b);
-            }
-        };
+        Maths maths = new Decorator(new Maths());
         SecondGrade secondGrade = new SecondGrade(maths);
 
         secondGrade.mathClass();
+    }
+}
+@Slf4j
+class Decorator extends Maths { // proxy instance is a SEPARATE instance from
+    // your real bean instance.
+    private final Maths delegate;
+    Decorator(Maths delegate) {
+        this.delegate = delegate;
+    }
+    @Override
+    public int sum(int a, int b) {
+        log.info("Calling sum(" + a + "," + b + ")");
+        return delegate.sum(a, b);
+    }
+    @Override
+    public int product(int a, int b) {
+        log.info("Calling product(" + a + "," + b + ")");
+        return delegate.product(a, b);
     }
 }
 // TODO write code above this line to intercept and log args of any call that SecondGrade does on Maths
