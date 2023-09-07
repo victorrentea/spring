@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import victor.training.spring.first.subp.XandY;
@@ -28,7 +30,6 @@ import victor.training.spring.first.subp.XandY;
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication // tech a @Configuration
 @EnableAsync
-@EnableConfigurationProperties(WelcomeInfo.class)
 // you can disable component scan and manualy @Import the classes you want
 //@ComponentScan(basePackages = "nothing")
 //@Import({XandY.class, .... })
@@ -56,3 +57,9 @@ public class FirstApplication implements CommandLineRunner {
   }
 }
 
+@ConditionalOnProperty(name = "welcome.help.app-id")
+@Configuration
+@EnableConfigurationProperties(WelcomeInfo.class)
+class PropConfig {
+
+}

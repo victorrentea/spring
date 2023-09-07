@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
@@ -26,12 +27,13 @@ import java.util.Map;
 @ConfigurationProperties("welcome")
 @Validated
 @ConstructorBinding
+
 public class WelcomeInfo {
   Integer gate = 17; // default value
-  @NotNull
-  @Size(min = 5)
+//  @NotNull
+//  @Size(min = 5)
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
-  @Size(min = 1)
+//  @Size(min = 1)
   List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   Map<Locale, String> localContactPhone;
   HelpInfo help;
