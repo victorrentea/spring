@@ -2,7 +2,8 @@ package victor.training.spring.first.subp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.Y;
@@ -29,7 +30,7 @@ public class XandY {
 
   //  @Autowired
 //  private Y y; // #2 field injection
-  private final Y y; // immutable + testing
+  private final Y y; // immutable + testing + forces the caller to HAVE a Y with Java language constructs
 //  public XandY(Y y) { // #1 ❤️constructor
 //    this.y = y;
 //  }
@@ -48,31 +49,42 @@ public class XandY {
 
 
 
+//  static {
+//    new XandY()
+//  }
 }
 
 
 
 @Component
+//@RequiredArgsConstructor
 class A {
-//  private final B b;
-//  A(B b) {
-//    this.b = b;
-//  }
-  private B b;
-  @Autowired
-  public void setB(B b) {
+  private final B b;
+  private final String mailSender;
+
+  // annotations on injection point
+  A(@Lazy B b,
+    @Value("${mail.sender}") String mailSender) { //dark magic,
+    // allows spring to use a proxy to be able to instantiate both
     this.b = b;
+    this.mailSender = mailSender;
   }
 }
 @Component
 class B {
-//  private final A a;
-//  B(A a) {
-//    this.a = a;
-//  }
-  private A a;
-  @Autowired
-  public void setA(A a) {
+  private final A a;
+
+  B(A a) {
     this.a = a;
   }
 }
+
+//class HardCore {
+//  public void method() {
+//    B bProxy = new B() {
+//       // any call to a method will dispatched to b created 2 lines below
+//    };
+//    A a = new A(bProxy);
+//    B b = new B(a);
+//  }
+//}
