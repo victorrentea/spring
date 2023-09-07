@@ -23,10 +23,11 @@ import java.util.Map;
 @ConfigurationProperties("welcome")
 @Validated
 public class WelcomeInfo {
-  int gate;
+  Integer gate = 17; // default value
   @NotNull
-      @Size(min = 5)
+  @Size(min = 5)
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
+  @Size(min = 1)
   List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
   Map<Locale, String> localContactPhone;
   HelpInfo help;
@@ -39,6 +40,9 @@ public class WelcomeInfo {
 
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Not a file :" + help.file);
+//    }
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     log.info("WelcomeInfo:\n" + jsonToString);
   }

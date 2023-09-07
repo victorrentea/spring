@@ -28,8 +28,8 @@ welcome:
         - http://stackoverflow.com
         - http://baeldung.com
         - http://spring.io
-    gate: 123
-    welcome-message: Hi
+#    gate: 123
+    welcome-message: Hello
 
 prod.stuff.only: 10
 #mail.sender.dummy: true
