@@ -27,18 +27,24 @@ public class DrinkerController {
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
    public CompletableFuture<DillyDilly> drink() throws Exception {
-      log.debug("Submitting my order");
+      log.debug("Submitting my order to barman: " + barman.getClass());
       long t0 = currentTimeMillis();
 
       // promise (JS) === CompletableFuture (Java8+)
-      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer(), executor);
+      //      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer(), executor);
+      CompletableFuture<Beer> promiseBeer = barman.pourBeer();
       // FIX: submitted my work to an executor  MANAGED(PROXIED/INSTRUMENTED) BY SPRING propagates TraceID
-      CompletableFuture<Vodka> promiseVodka = supplyAsync(() -> barman.pourVodka(), executor);
+      CompletableFuture<Vodka> promiseVodka = barman.pourVodka();
 
       CompletableFuture<DillyDilly> promiseDilly = promiseBeer.thenCombineAsync(promiseVodka,
           (beer, vodka) -> new DillyDilly(beer, vodka), executor);
 
-      CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly"), executor);
+//      CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly"), executor);
+//      try {
+      barman.auditCocktail("Dilly");
+//      } catch (IllegalArgumentException e) {
+//         throw new RuntimeException("NEVER THROWN", e);
+//      }
       // "FIRE-AND-FORGET"
       // dear biz, do we need to WAIT for AUDIT when preparing a drink? NO
       // if an error occurs in audit, should we NOT give the drink to the guy? WRONG. give the drink anyway
