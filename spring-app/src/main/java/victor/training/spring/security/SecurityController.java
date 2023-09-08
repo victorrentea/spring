@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
@@ -37,7 +38,23 @@ public class SecurityController {
     // a STATIC method gives access to the CURRENT user now runnig the request
     // what if there are 10 parallel requests !??!
     // IS BOUND TO THE CURRENT THREAD in a "ThreadLocal" variable
-//    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    authentication.getAuthorities() // roles and authorities
+    Object principal = authentication.getPrincipal(); // the actual type depends on what authn flow was used
+
+//    com.bosch.igpm.common.security.util.WebSecurityUtil
+
+
+    //[4:10 PM] Vandepoele Tom (BD/XDP5)
+    //
+    //FYI to run an integration test under a specific user, see annotation
+    //@WithMockUser
+    //
+    //if you use igpm common security:
+    //@WithUserDetails -> userDetailsServiceBeanName parameter, value should be bean name of your
+    // com.bosch.igpm.common.security.preauth.CustomPreAuthUserDetailsService bean
+
+    dto.username = authentication.getName();
 
 //    to loose it do this:
 
