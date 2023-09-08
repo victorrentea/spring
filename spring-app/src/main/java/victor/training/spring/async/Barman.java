@@ -13,6 +13,11 @@ import victor.training.spring.async.drinks.Vodka;
 public class Barman {
    public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
+      // on any REST/grpc/MQ send, the TraceId on the current thread
+      // will be sent along via a HEADER; the next system will pick
+      // it up from the header and SET IT ON ITS THREAD
+//      restTemplate.getForObject()
+//      webClient...
       ThreadUtils.sleepMillis(1000);
       return new Beer();
    }
