@@ -52,13 +52,13 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
 
 
         // # Add "ROLE_" before every role in the token
-         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // # Use roles as they are (no prefix added)
 //        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // # Convert ROLE from token into local authorities via a local enum
-        // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }

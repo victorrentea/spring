@@ -66,7 +66,14 @@ public class TrainingController {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
 //	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language (SpEL)
-	@Secured({"ROLE_ADMIN"}) // "ROLE_
+//	@Secured({"ROLE_ADMIN"}) // "ROLE_
+//	@PreAuthorized("hasAuthority('ROLE_ADMIN')") // "ROLE_
+//	@PreAuthorized("hasRole('ADMIN')") // "ROLE_
+
+
+	@Secured("ROLE_DELETE_TRAINING") // more consistency
+	@PreAuthorize("hasAuthority('training.delete')") // don't mix hasAuthority with hasRole in the same app
+	// don't mix @PreAuthorize with @Secured
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
