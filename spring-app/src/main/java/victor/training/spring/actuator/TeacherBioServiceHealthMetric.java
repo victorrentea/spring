@@ -1,6 +1,7 @@
 package victor.training.spring.actuator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -16,10 +17,12 @@ public class TeacherBioServiceHealthMetric implements HealthIndicator {
   @Value("${teacher.bio.uri.base}")
   private String teacherBioUriBase;
 
+  @Autowired
+  private RestTemplate restTemplate;
+
   @Override
   public Health health() {
     try {
-      RestTemplate restTemplate = new RestTemplate();
         String url = teacherBioUriBase + "/actuator/health";
         Map<String, Object> responseMap = restTemplate.getForObject(url, Map.class);
       // call localhost:8082/actuator/health to check {"status": "UP"}
