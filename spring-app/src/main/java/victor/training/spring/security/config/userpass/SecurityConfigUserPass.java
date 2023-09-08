@@ -19,13 +19,19 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable(); // OK since I never take <form> POSTs
+    http.csrf().disable(); // OK since I only expose REST APIS, and never take <form> POSTs (.jsp,.jsf,vaadin)
 
     // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
-        .mvcMatchers(HttpMethod.DELETE, "/api/training/*").hasRole("ADMIN")
-            .anyRequest().authenticated();
+//        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+        .mvcMatchers("/v3/api-docs").permitAll()
+        .mvcMatchers("/v3/api-docs/**").permitAll()
+        .mvcMatchers("/swagger-ui.html").permitAll()
+        .mvcMatchers("/swagger-ui/**").permitAll()
+        // the pattern are tested SEQUENTIALLY, not from most specific to most general
+        .anyRequest().authenticated()
+    ;
 
     http.formLogin().defaultSuccessUrl("/", true);
 
