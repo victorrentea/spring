@@ -31,14 +31,14 @@ public class DrinkerController {
       long t0 = currentTimeMillis();
 
       // promise (JS) === CompletableFuture (Java8+)
-      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer()); // problem; no trace ID is propagated to threads running pourBeer/Vodka
-      // because I am submitting my work to an executor NOT MANAGED(PROXIED/INSTRUMENTED) BY SPRING: global JVM ForkJoinPool.commonPool
-      CompletableFuture<Vodka> promiseVodka = supplyAsync(() -> barman.pourVodka());
+      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer(), executor);
+      // FIX: submitted my work to an executor  MANAGED(PROXIED/INSTRUMENTED) BY SPRING propagates TraceID
+      CompletableFuture<Vodka> promiseVodka = supplyAsync(() -> barman.pourVodka(), executor);
 
       CompletableFuture<DillyDilly> promiseDilly = promiseBeer.thenCombineAsync(promiseVodka,
-          (beer, vodka) -> new DillyDilly(beer, vodka));
+          (beer, vodka) -> new DillyDilly(beer, vodka), executor);
 
-      executor.submit(() -> barman.auditCocktail("Dilly"));
+      CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly"), executor);
       // "FIRE-AND-FORGET"
       // dear biz, do we need to WAIT for AUDIT when preparing a drink? NO
       // if an error occurs in audit, should we NOT give the drink to the guy? WRONG. give the drink anyway
