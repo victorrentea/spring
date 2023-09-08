@@ -71,11 +71,11 @@ public class Micrometer {
   public static class MonitoredThreadPoolConfig {
     private final MeterRegistry meterRegistry;
 
-    @Bean
-    public ExecutorService monitoredExecutor(ThreadPoolTaskExecutor taskExecutor) {
-      // TODO 5 monitor the taskExecutor with ExecutorServiceMetrics
-      return ExecutorServiceMetrics.monitor(meterRegistry, taskExecutor.getThreadPoolExecutor(), "taskExecutor");
-    }
+//    @Bean
+//    public ExecutorService monitoredExecutor(ThreadPoolTaskExecutor taskExecutor) {
+//      // TODO 5 monitor the taskExecutor with ExecutorServiceMetrics
+//      return ExecutorServiceMetrics.monitor(meterRegistry, taskExecutor.getThreadPoolExecutor(), "taskExecutor");
+//    }
 
     @Bean // enables @Timed
     public TimedAspect timedAspect() {

@@ -52,4 +52,13 @@ public class DrinkerController {
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return promiseDilly;
    }
+
+   @GetMapping("long-sql")
+   public CompletableFuture<String> longSql() {
+      return barman.fatPig();
+   }
+   @GetMapping("long-sql-bulk")
+   public String longSqlBulk() {
+      return barman.fatPigBulkhead();
+   }
 }

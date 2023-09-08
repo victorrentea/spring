@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -8,6 +9,7 @@ import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
@@ -22,8 +24,11 @@ public class Barman {
       // on any REST/grpc/MQ send, the TraceId on the current thread
       // will be sent along via a HEADER; the next system will pick
       // it up from the header and SET IT ON ITS THREAD
+
+      // we are still blocking a thread, wasting resources because the way we called the APIS/NETWORK is still blocking in nature.
+      // to fix that -> Reactive chains using Drivers/WebClient
 //      restTemplate.getForObject()
-//      webClient...
+//      webClient......block()
       ThreadUtils.sleepMillis(1000);
       return completedFuture(new Beer());
    }
@@ -42,5 +47,27 @@ public class Barman {
          throw new IllegalArgumentException("OUPS!!");
       }
       log.debug("DONE");
+   }
+
+//   @Bulkhead()
+   @Async("longsql") // throttling using a small-sized thread pool, wasting threads for a separate thread pool
+   public CompletableFuture<String> fatPig() {
+      // I want to restrict this method to max 2 calls in parallel
+      int r = new Random().nextInt();
+      log.info("START " + r);
+      ThreadUtils.sleepMillis(1000);
+      log.info("END " + r);
+      return CompletableFuture.completedFuture("data");
+   }
+
+   // like a SEMAPHORE from Faculty
+   @Bulkhead(name = "longsql") // no extra threads, but could STARVE tomcat threadpool
+   public String fatPigBulkhead() {
+      // I want to restrict this method to max 2 calls in parallel
+      int r = new Random().nextInt();
+      log.info("START " + r);
+      ThreadUtils.sleepMillis(1000);
+      log.info("END " + r);
+      return "data";
    }
 }

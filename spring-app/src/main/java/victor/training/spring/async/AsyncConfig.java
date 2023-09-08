@@ -25,6 +25,18 @@ public class AsyncConfig {
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
 	}
+
+	@Bean
+	public ThreadPoolTaskExecutor longsql() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2); // minimum size
+		executor.setMaxPoolSize(2); // max how much it can extend under pressure
+		executor.setQueueCapacity(500); // how many tasks can be waiting at some point
+		executor.setThreadNamePrefix("sql-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
 }
 
 
