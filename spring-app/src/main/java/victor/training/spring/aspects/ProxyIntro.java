@@ -86,7 +86,8 @@ class Maths { // break startup EXCEPTION
 //    private  Maths() {} // too much
 //    @Transactional // START tx before enter, COMMIT after if no exception
 
-//    @Cacheable("sum-cache") // if i've computed sum( same args), return the prev value
+    @Secured("ROLE_POWER")
+    @Cacheable("sum-cache") // if i've computed sum( same args), return the prev value
 //    @Secured("ROLE_ADMIN") // only ADMIN role can call it
 
 //    @Async // move the ex on a different thread

@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import static java.lang.System.currentTimeMillis;
 
 @SpringBootApplication
-@EnableCaching
+@EnableCaching(order = 10)
 @Slf4j
 @ConfigurationPropertiesScan
 public class SpringApplication {
