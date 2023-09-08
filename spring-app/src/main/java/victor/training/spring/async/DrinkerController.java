@@ -32,6 +32,7 @@ public class DrinkerController {
 
       // promise (JS) === CompletableFuture (Java8+)
       CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer()); // problem; no trace ID is propagated to threads running pourBeer/Vodka
+      // because I am submitting my work to an executor NOT MANAGED(PROXIED/INSTRUMENTED) BY SPRING: global JVM ForkJoinPool.commonPool
       CompletableFuture<Vodka> promiseVodka = supplyAsync(() -> barman.pourVodka());
 
       CompletableFuture<DillyDilly> promiseDilly = promiseBeer.thenCombineAsync(promiseVodka,
