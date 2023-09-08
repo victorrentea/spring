@@ -2,9 +2,12 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,13 +25,28 @@ import java.util.stream.Collectors;
 public class SecurityController {
   private final AnotherClass anotherClass;
 
+//  private final ThreadPoolTaskExecutor taskExecutor;
+  private final TaskExecutor taskExecutor;
+
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+    // a STATIC method gives access to the CURRENT user now runnig the request
+    // what if there are 10 parallel requests !??!
+    // IS BOUND TO THE CURRENT THREAD in a "ThreadLocal" variable
+//    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+//    to loose it do this:
+
+    CompletableFuture<String> userFromAnotherThread = CompletableFuture.supplyAsync(() -> {
+      log.info("WHere am I");
+      return SecurityContextHolder.getContext().getAuthentication().getName();
+    }, taskExecutor); // security context propagates over async calls done via decorated SPRING task executor
+    dto.username = userFromAnotherThread.get();
+
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
@@ -54,10 +73,10 @@ public class SecurityController {
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
     // For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
     List<String> roles = authorities.stream()
-            .map(GrantedAuthority::getAuthority)
-            .filter(authority -> authority.startsWith("ROLE_"))
-            .map(authority -> authority.substring("ROLE_".length()))
-            .collect(Collectors.toList());
+        .map(GrantedAuthority::getAuthority)
+        .filter(authority -> authority.startsWith("ROLE_"))
+        .map(authority -> authority.substring("ROLE_".length()))
+        .collect(Collectors.toList());
     if (roles.size() == 2) {
       log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
       return "N/A";
@@ -69,11 +88,6 @@ public class SecurityController {
   }
 
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
-  //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //    		// https://www.baeldung.com/spring-security-async-principal-propagation
-  //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  //    	}
 
   @Slf4j
   @Service

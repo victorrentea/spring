@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -55,5 +57,11 @@ public class SpringApplication {
                 environment.getProperty("local.server.port"),
                 jdbcUrl);
     }
+    @Bean // enable propagation of SecurityContextHolder over @Async
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+        // https://www.baeldung.com/spring-security-async-principal-propagation
+        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+    }
+
 
 }

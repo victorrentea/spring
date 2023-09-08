@@ -13,6 +13,7 @@ import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -30,6 +31,12 @@ public class TrainingController {
 	@GetMapping("{id}")
 	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
 		return trainingService.getTrainingById(id);
+
+//		try {
+//			return ResponseEntity.ok(trainingService.getTrainingById(id));
+//		} catch (NoSuchElementException e) {
+//			return ResponseEntity.notFound().build();
+//		}
 		//TODO return 404 if not found
 	}
 
