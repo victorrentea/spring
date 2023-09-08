@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.ProgrammingLanguage;
+import victor.training.spring.web.entity.Training;
+import victor.training.spring.web.entity.User;
 import victor.training.spring.web.repo.TrainingRepo;
+import victor.training.spring.web.repo.UserRepo;
 import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
@@ -65,19 +71,26 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
-//	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language (SpEL)
+	@PreAuthorize("hasRole('ADMIN') && @securityManager.canDeleteTraining(#trainingId)") // Spring Expression Language (SpEL)
 //	@Secured({"ROLE_ADMIN"}) // "ROLE_
 //	@PreAuthorized("hasAuthority('ROLE_ADMIN')") // "ROLE_
 //	@PreAuthorized("hasRole('ADMIN')") // "ROLE_
 
 
-	@Secured("ROLE_DELETE_TRAINING") // more consistency
-	@PreAuthorize("hasAuthority('training.delete')") // don't mix hasAuthority with hasRole in the same app
+//	@Secured("ROLE_DELETE_TRAINING") // more consistency
+//	@PreAuthorize("hasAuthority('training.delete')") // don't mix hasAuthority with hasRole in the same app
+
+//	@PostAuthorize("hasAuthority() && returnObject.language == principal.adminForLanguage") // GET(READ): fetch the data and just before RETURNING it,
+	// you look at what you returned
+
 	// don't mix @PreAuthorize with @Secured
+
+	// CR  can only delete training that have languages for which the current user is ADMIN for = DATA Security
 	public void delete(@PathVariable Long trainingId) {
+
 		trainingService.deleteById(trainingId);
 	}
-
+	private final UserRepo userRepo;
 	private final TrainingRepo trainingRepo;
 
 

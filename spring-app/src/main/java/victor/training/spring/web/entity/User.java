@@ -1,5 +1,8 @@
 package victor.training.spring.web.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -8,6 +11,8 @@ import static victor.training.spring.web.entity.ProgrammingLanguage.JAVA;
 
 @Entity
 @Table(name = "USERS")
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue
