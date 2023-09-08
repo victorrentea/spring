@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,7 +28,7 @@ import java.util.Map;
 @ConfigurationProperties("welcome")
 @Validated
 @ConstructorBinding
-
+@RefreshScope
 public class WelcomeInfo {
   Integer gate = 17; // default value
 //  @NotNull
