@@ -4,8 +4,10 @@ import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
@@ -28,11 +30,23 @@ public class Barman {
 
       // we are still blocking a thread, wasting resources because the way we called the APIS/NETWORK is still blocking in nature.
       // to fix that -> Reactive chains using Drivers/WebClient
-//      restTemplate.getForObject()
-//      webClient......block()
       ThreadUtils.sleepMillis(1000);
+//      String forObject = restTemplate.getForObject("...", String.class); // blocks the current thread
+//      String forObject = webClient.get......block(); // blocks the current thread
+           // exception is thrown
+
+      // a drama in Java <21 (each Java thread 1-1 OS Thread 0.5 MB, limited in number)
+      // perfectly in Java >=21 + Spring Boot 3 a Java Virtual Thread is extremely lightweight
+      // ==> Reactive Programming just to save threads would be a bad practice.
+         //    if you are only receiving/sending Mono<> (not Flux) you WON'T NEED Reactive Programming
+      // but still be the GO TO when handling async stream of events (IoT, MQ, chat, WebSockets, UI, Mobile)
+
       return completedFuture(new Beer());
    }
+
+   @Autowired
+   private RestTemplate restTemplate;
+
    @Async("executor")
    public CompletableFuture<Vodka> pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
