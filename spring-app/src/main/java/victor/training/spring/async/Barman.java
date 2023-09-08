@@ -1,6 +1,7 @@
 package victor.training.spring.async;
 
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -49,6 +50,7 @@ public class Barman {
       log.debug("DONE");
    }
 
+//   @CircuitBreaker(fallbackMethod = "dataFromCache")
 //   @Bulkhead()
    @Async("longsql") // throttling using a small-sized thread pool, wasting threads for a separate thread pool
    public CompletableFuture<String> fatPig() {
