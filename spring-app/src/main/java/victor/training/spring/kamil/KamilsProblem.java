@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 @Slf4j
@@ -24,19 +25,25 @@ public class KamilsProblem {
     SpringApplication.run(KamilsProblem.class, args);
   }
 
+  @Autowired
+  private RestTemplate restTemplate;
+
   @GetMapping("divisions")
   @CircuitBreaker(name = "divisions-circuit-breaker", fallbackMethod = "divisionsFromCache")
-  @CachePut("divisions-cache")
+  @CachePut("divisions-cache") // declaratie with a proxy
   public String divisions(@RequestParam(defaultValue = "1") int i) {
     log.info("calling API + " + i);
-    return new RestTemplate().getForObject("http://localhost:8888/spring-start.properties", String.class);
+    // if you "new" the class that you use to send HTTP/MQ, spring will NOT be able to
+    // decorate it to propagate TraceId, Micrometer
+    return restTemplate.getForObject("http://localhost:8888/spring-start.properties", String.class);
   }
 
   @Autowired
   private CacheManager cacheManager;
-  public String divisionsFromCache(int i, Throwable exception) {
+  public String divisionsFromCache(int i, Throwable e) {
+    // programatic access to cache
     String cachedVal = cacheManager.getCache("divisions-cache").get(1, String.class);
-    System.out.println("cached val  " + cachedVal);
+    System.out.println("cached val  " + cachedVal + " saving the day from the error: " + e);
 
     return Objects.requireNonNull(cachedVal, "No data cached");
 //    throw new IllegalArgumentException("No cached data for " + i);
