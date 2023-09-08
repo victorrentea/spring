@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,17 +45,17 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
         // extract REALM GLOBAL roles from realm_access
-//         var keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
+         var keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
 
         // extract APPLICATION-SCOPED roles from resource_access for the current client(=app)
-        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
+//        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
 
         // # Add "ROLE_" before every role in the token
-        // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
 
         // # Use roles as they are (no prefix added)
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
+//        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // # Convert ROLE from token into local authorities via a local enum
         // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());

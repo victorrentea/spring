@@ -67,7 +67,7 @@ public class SecurityController {
     // dto.username = anotherClass.asyncMethod().get();
 
     // A) role-based security
-//    dto.role = extractOneRole(authentication.getAuthorities());
+    dto.role = extractOneRole(authentication.getAuthorities());
 
     // B) authority-based security
 //    dto.authorities = authentication.getAuthorities().stream()
