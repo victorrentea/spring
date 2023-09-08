@@ -66,7 +66,7 @@ public class TrainingController {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
 //	@PreAuthorize("hasRole('ADMIN')") // Spring Expression Language (SpEL)
-	@Secured({"ROLE_ADMIN","ROLE_POWER"}) // "ROLE_
+	@Secured({"ROLE_ADMIN"}) // "ROLE_
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
