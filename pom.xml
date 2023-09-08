@@ -27,6 +27,7 @@
         <!--<module>spring-webflux-migration</module>-->
         <module>spring-transaction</module>
         <module>spring-app</module>
+        <module>config-server</module>
         <module>spring-sso</module>
         <module>spring-app-cdn</module>
 		<module>spring-app-attacker</module>

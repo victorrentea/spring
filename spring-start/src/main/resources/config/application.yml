@@ -19,6 +19,8 @@ spring:
     datasource:
         hikari:
             auto-commit: true
+    application:
+        name: spring-start
 john.name: John
 welcome:
     help:
@@ -37,3 +39,5 @@ welcome:
 
 prod.stuff.only: 10
 #mail.sender.dummy: true
+
+spring.config.import: configserver:http://localhost:8888
