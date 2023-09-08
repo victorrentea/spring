@@ -31,7 +31,7 @@ public class DrinkerController {
       long t0 = currentTimeMillis();
 
       // promise (JS) === CompletableFuture (Java8+)
-      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer());
+      CompletableFuture<Beer> promiseBeer = supplyAsync(() -> barman.pourBeer()); // problem; no trace ID is propagated to threads running pourBeer/Vodka
       CompletableFuture<Vodka> promiseVodka = supplyAsync(() -> barman.pourVodka());
 
       CompletableFuture<DillyDilly> promiseDilly = promiseBeer.thenCombineAsync(promiseVodka,
