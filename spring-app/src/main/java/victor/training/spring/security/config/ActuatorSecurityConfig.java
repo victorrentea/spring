@@ -41,8 +41,8 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
             // curl http://localhost:8080/actuator/health -v
             .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-            .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
+//            .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
+          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
 
     // and that authentication comes as apikey or Basic
 

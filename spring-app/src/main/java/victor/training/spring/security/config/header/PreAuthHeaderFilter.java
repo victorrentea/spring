@@ -16,6 +16,7 @@ public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilte
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
         String username = request.getHeader("x-user");
+//        String username = request.getHeader("x-api-key");
         String rolesStr = request.getHeader("x-user-role");
         if (username == null || rolesStr == null || username.isBlank() || rolesStr.isBlank()) {
             log.error("'x-user' and 'x-user-roles' NOT found in request headers");
