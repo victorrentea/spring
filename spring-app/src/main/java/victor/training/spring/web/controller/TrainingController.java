@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -56,8 +57,10 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
+//	@PostAuthorize() ???
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
+//		if (user n-are voie) throw new AmFostDobitocException();
 	}
 
 	private final TrainingRepo trainingRepo;

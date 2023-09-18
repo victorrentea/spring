@@ -26,7 +26,6 @@ public class DigitalSignatureJKS {
 
         Utils.printByteArray("signature", signature);
 
-
         // verification on the other end of the channel ----
         String receivedData = "My Company is the best!!!";
         PublicKey publicKey = getSenderCertificateFromRecipientJKS();
@@ -44,8 +43,8 @@ public class DigitalSignatureJKS {
         KeyStore keyStore = KeyStore.getInstance("JKS");
         InputStream keystoreInputStream = DigitalSignatureJKS.class.getResourceAsStream("/a.jks");
         // .load .getKey(a, storepass) as (PrivateKey)
-        keyStore.load(keystoreInputStream, "storepass".toCharArray());
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey("a", "storepass".toCharArray());
+        keyStore.load(keystoreInputStream, "storepass".toCharArray()); // JKS-wide password
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("a", "storepass".toCharArray()); // Private KEY password
         Utils.printByteArray("private key", privateKey.getEncoded());
         return privateKey;
     }
