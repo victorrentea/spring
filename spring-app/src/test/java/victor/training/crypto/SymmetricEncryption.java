@@ -15,9 +15,9 @@ public class SymmetricEncryption {
     @Test
     public void testSymmetricEncryption() throws GeneralSecurityException {
         // generate a symmetric encryption key
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
+        KeyGenerator generator = KeyGenerator.getInstance("AES"); // ftw
         generator.init(192); // allowed for AES
-        Key key = generator.generateKey();
+        Key key = generator.generateKey(); // random pe sub
         Utils.printByteArray("key", key.getEncoded());
 
         // get a random Initialization Vector (IV) for the block symmetric encryption

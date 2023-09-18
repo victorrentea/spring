@@ -13,7 +13,7 @@ public class BCrypt {
   @Test
   void explore() {
     BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(STRENGTH, new SecureRandom());
-    String encodedPassword = bcryptEncoder.encode("user");
+    String encodedPassword = bcryptEncoder.encode("parola");
 
     System.out.println("{bcrypt}" + encodedPassword);
 
