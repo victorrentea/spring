@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
@@ -18,7 +19,11 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable(); // OK since I never take <form> POSTs
+    // ENABLED CSRF protection (by default enabled)
+//    http.csrf().disable(); // OK since I never take <form> POSTs
+    CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+    csrfTokenRepository.setCookieHttpOnly(false); // ii dau voie codului JS sa citeasca acest cookie
+    http.csrf().csrfTokenRepository(csrfTokenRepository);
 
     // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 

@@ -61,6 +61,7 @@
 </script>
 
 <h5>Click the cat! - click bait: GET is unprotected => should not do any side-effects</h5>
+OMG CSRF nu te protejeaza de GET => pe GET nu faci changeuri
 <a href="http://localhost:8080/api/victim/transfer-over-get-BAD?recipientName=ATTACKER&recipientIBAN=ABC&amount=100"
    target="hiddenIframe" onclick="catimg.style.display='block'">Click here to see a lovely cat!</a>
     <img src="cat.png" name="catimg" style="display: none">
