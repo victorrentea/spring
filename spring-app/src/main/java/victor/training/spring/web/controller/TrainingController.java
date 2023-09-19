@@ -68,7 +68,7 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
-	@DeleteMapping("{trainingId}")
+	@DeleteMapping("{trainingId}/delete")
 
 //	@Secured("ROLE_ADMIN") // #1 trebuie sa incepi cu ROLE_
 //	@PreAuthorize("hasRole('ADMIN')") // #2 adauga el prefixul de ROLE_ cand cauta in lista de stringuri de authorities

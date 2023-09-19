@@ -2,6 +2,7 @@ package victor.training.spring.security.config.userpass;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,7 +30,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
             // url patterns RAU pt ca poate deveni out of sync cu URL efectiv
-            .mvcMatchers("/api/trainings/*").hasRole("ADMIN")
+            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
 
             .anyRequest().authenticated(); // DENY BY DEFAULT principle
 
