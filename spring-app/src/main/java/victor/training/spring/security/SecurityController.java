@@ -43,18 +43,18 @@ public class SecurityController {
     //        pt restu de authorities, le testezi cu @PreAuthorize('hasAuthority
 
     // A) role-based security
-    dto.role = extractOneRole(authentication.getAuthorities());
+//    dto.role = extractOneRole(authentication.getAuthorities());
 
     // B) authority-based security
-//    dto.authorities = authentication.getAuthorities().stream()
-//            .map(GrantedAuthority::getAuthority)
-//            .collect(Collectors.toList());
+    dto.authorities = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     //		dto.username = authentication.getName();
-    //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-    //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
+//    		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+//    		dto.authorities = stripRolePrefix(authentication.getAuthorities());
     //    // Optional:
     //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
     //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();

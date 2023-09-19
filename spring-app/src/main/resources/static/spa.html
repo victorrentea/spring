@@ -4,7 +4,7 @@
     <link href="toastr.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
     <script type="text/javascript" src="toastr.min.js"></script>
-    <!--<script type="text/javascript" src="malicious-lib.js"></script>-->
+    <script type="text/javascript" src="malicious-lib.js"></script>
 
 </head>
 
@@ -24,7 +24,7 @@
         keycloak.init({
             onLoad: "login-required",
             // Client > advanced settings > Proof Key for Code Exchange Code Challenge Method > S256
-            pkceMethod: 'S256'
+            pkceMethod: 'S256' // protectia la implicit flow (care a fost deprecat)
         }).then(function(authenticated) {
 
             if (authenticated) {

@@ -44,10 +44,10 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
         // extract REALM GLOBAL roles from realm_access
-//         var keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
+         var keycloakAuthenticationProvider = new KeycloakAuthenticationProvider();
 
         // extract APPLICATION-SCOPED roles from resource_access for the current client(=app)
-        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
+//        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
 
         // # Add "ROLE_" before every role in the token
@@ -57,7 +57,7 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new NullAuthoritiesMapper());
 
         // # Convert ROLE from token into local authorities via a local enum
-        // keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
+         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new RolesFromTokenToLocalAuthorities());
 
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }

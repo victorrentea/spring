@@ -18,21 +18,30 @@ public class RolesFromTokenToLocalAuthorities implements GrantedAuthoritiesMappe
     @Override
     public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
         log.debug("Input authorities: " + authorities);
+        List<UserRole> matchingRoles = findRolesInTokenMatchinMyEnum(authorities);
+        if (matchingRoles.size() != 1) {
+            KeyCloakUtils.printTheTokens();
+            throw new IllegalArgumentException("No single role found in token that matches known roles " + Arrays.toString(UserRole.values()));
+        }
+        List<SimpleGrantedAuthority> resolveAuthorities = expandRolesToAuthorities(matchingRoles);
+        log.debug("Output authorities (roles:{}) = {}", matchingRoles, resolveAuthorities);
+        return resolveAuthorities;
+    }
+
+    private static List<SimpleGrantedAuthority> expandRolesToAuthorities(List<UserRole> matchingRoles) {
+        return matchingRoles.stream()
+            .flatMap(userRole -> userRole.getAuthorities().stream())
+            .map(SimpleGrantedAuthority::new)
+            .collect(toList());
+    }
+
+    private static List<UserRole> findRolesInTokenMatchinMyEnum(Collection<? extends GrantedAuthority> authorities) {
         List<UserRole> matchingRoles = authorities.stream()
                 .map(a -> UserRole.valueOfOpt(a.getAuthority()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
-        if (matchingRoles.size() != 1) {
-            KeyCloakUtils.printTheTokens();
-            throw new IllegalArgumentException("No single role found in token that matches known roles " + Arrays.toString(UserRole.values()));
-        }
-        List<SimpleGrantedAuthority> resolveAuthorities = matchingRoles.stream()
-                .flatMap(userRole -> userRole.getAuthorities().stream())
-                .map(SimpleGrantedAuthority::new)
-                .collect(toList());
-        log.debug("Output authorities (roles:{}) = {}", matchingRoles, resolveAuthorities);
-        return resolveAuthorities;
+        return matchingRoles;
     }
 
 }

@@ -23,7 +23,7 @@ public class ClientCredentials { // CLient=Applicatie
     return restWithClientCredentials.getForObject("http://localhost:8082", String.class);
   }
 
-  @Scheduled(fixedRate = 2 * 1000)
+//  @Scheduled(fixedRate = 2 * 1000)
   public void scheduled() {
     log.info("Calling...");
     String value = restWithClientCredentials.getForObject("http://localhost:8082", String.class);
