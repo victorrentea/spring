@@ -70,8 +70,13 @@ public class TrainingController {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}/delete")
 
-	@Secured({"ROLE_ADMIN","ROLE_POWER"}) // #1 trebuie sa incepi cu ROLE_
+//	@Secured({"ROLE_ADMIN","ROLE_POWER"}) // #1 trebuie sa incepi cu ROLE_
 //	@PreAuthorize("hasRole('ADMIN')") // #2 adauga el prefixul de ROLE_ cand cauta in lista de stringuri de authorities
+	@PreAuthorize("hasAuthority('training.delete')") // #2 adauga el prefixul de ROLE_ cand cauta in lista de stringuri de authorities
+//	@Secured("ROLE_TRAINING_DELETE") // rol pt ca incepe cu "ROLE_"
+	//👍 nu vrei sa pui LISTE de ROLURI/AUTHORITIES in @Secured/@PreAuthorized
+	// => introduci un nivel superior de abstractie ("ADMIN e role composit din urmatoarele 5 sub-roluri"
+
 //	@PostAuthorize() ???
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);

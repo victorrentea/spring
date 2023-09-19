@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public enum UserRole {
+    //ROLE_TRAINING_SEARCH
     USER("training.search", "training.edit"),
     POWER("training.search", "training.edit", "training.delete"),
     ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit");
