@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -27,16 +29,12 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
+    dto.username = "<username>"; // TODO
     // dto.username = anotherClass.asyncMethod().get();
 
-    // A) role-based security
-//    dto.role = extractOneRole(authentication.getAuthorities());
+    // dto.role = extractOneRole(authentication.getAuthorities());
 
-    // B) authority-based security
-//    dto.authorities = authentication.getAuthorities().stream()
-//            .map(GrantedAuthority::getAuthority)
-//            .collect(Collectors.toList());
+    // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,7 +55,7 @@ public class SecurityController {
             .map(GrantedAuthority::getAuthority)
             .filter(authority -> authority.startsWith("ROLE_"))
             .map(authority -> authority.substring("ROLE_".length()))
-            .collect(Collectors.toList());
+            .toList();
     if (roles.size() == 2) {
       log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
       return "N/A";

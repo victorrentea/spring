@@ -35,13 +35,13 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint())
-            .authorizeRequests()
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator URLs
+        .authorizeRequests()
 
-            // curl http://localhost:8080/actuator/health -v
-            .requestMatchers(EndpointRequest.to("health")).permitAll()
+        // curl http://localhost:8080/actuator/health -v
+        .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-            .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
+        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
 //          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
 
     // and that authentication comes as apikey or Basic
@@ -53,12 +53,12 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
     http.httpBasic().and().userDetailsService(actuatorUserDetailsService());
   }
 
-    @Bean
-    public UserDetailsService actuatorUserDetailsService() {
-      UserDetails actuatorUser = User.builder()
-                      .username(username)
-                      .password(password)
-                      .authorities("ACTUATOR").build();
-      return new InMemoryUserDetailsManager(actuatorUser);
-    }
+  @Bean
+  public UserDetailsService actuatorUserDetailsService() {
+    UserDetails actuatorUser = User.builder()
+        .username(username)
+        .password(password)
+        .authorities("ACTUATOR").build();
+    return new InMemoryUserDetailsManager(actuatorUser);
+  }
 }
