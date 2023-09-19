@@ -30,7 +30,8 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
 
     http.authorizeRequests()
             // url patterns RAU pt ca poate deveni out of sync cu URL efectiv
-            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/*").hasRole("ADMIN")
+        // ** prinde orice subpath / /  / / /   ... //
+//            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/**").hasRole("ADMIN")
 
             .anyRequest().authenticated(); // DENY BY DEFAULT principle
 

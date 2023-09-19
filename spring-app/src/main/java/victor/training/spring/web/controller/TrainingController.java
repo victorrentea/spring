@@ -70,7 +70,7 @@ public class TrainingController {
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}/delete")
 
-//	@Secured("ROLE_ADMIN") // #1 trebuie sa incepi cu ROLE_
+	@Secured("ROLE_ADMIN") // #1 trebuie sa incepi cu ROLE_
 //	@PreAuthorize("hasRole('ADMIN')") // #2 adauga el prefixul de ROLE_ cand cauta in lista de stringuri de authorities
 //	@PostAuthorize() ???
 	public void delete(@PathVariable Long trainingId) {
