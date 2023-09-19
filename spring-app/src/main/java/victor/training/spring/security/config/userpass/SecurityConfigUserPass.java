@@ -28,6 +28,9 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
      http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
+            // url patterns RAU pt ca poate deveni out of sync cu URL efectiv
+            .mvcMatchers("/api/trainings/*").hasRole("ADMIN")
+
             .anyRequest().authenticated(); // DENY BY DEFAULT principle
 
     http.formLogin().defaultSuccessUrl("/", true);

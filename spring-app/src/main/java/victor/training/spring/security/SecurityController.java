@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,16 +23,27 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() throws Exception {
+  public CurrentUserDto getCurrentUsername(/*Principal principal*/) throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-            dto.username = "<username>"; // TODO
-    // dto.username = anotherClass.asyncMethod().get();
+
+    // userul curent logat acum de pe THREADUL curent (folosind un Thread Local var pe sub)
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    // daca pleci de pe thread (CompletableFuture.supplyAsync, call de @Async, executor.submit())
+
+    dto.username = authentication.getName();
+
+    // in Spring, un Principal (om,sistem) autheNtificat are:
+    // 1) username
+    // 2) o lista de stringuri (numite de Spring "authorities")
+    //     - daca un authority incepe cu prefixul "ROLE_" atunci este considerat "rol" de Spring (istorica)
+    //        pt roluri o sa ai metode dedicate de a-l testa: @Secured, @PreAuthorize('hasRole, hasRole in config
+    //        pt restu de authorities, le testezi cu @PreAuthorize('hasAuthority
 
     // A) role-based security
-//    dto.role = extractOneRole(authentication.getAuthorities());
+    dto.role = extractOneRole(authentication.getAuthorities());
 
     // B) authority-based security
 //    dto.authorities = authentication.getAuthorities().stream()
@@ -69,7 +81,7 @@ public class SecurityController {
   }
 
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
+  //    	@Bean // enable propagation of SecurityContextHolder over @Async sau alte calluri catre alte threaduri
   //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
   //    		// https://www.baeldung.com/spring-security-async-principal-propagation
   //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
