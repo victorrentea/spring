@@ -33,7 +33,9 @@ public class TrainingController {
 	}
 
 	@GetMapping("{id}")
-	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
+	// @PreAuthorize inseamna SELECT in DB sa vad daca training.country = currentUser.country +1 SELECT
+//	@PostAuthorize("#returnObject.country = currentUser.country") // optimizare
+	public TrainingDto get(@PathVariable long id) {
 		TrainingDto dto = trainingService.getTrainingById(id);
 		// defense in depth? daca mi-a hackuit deja DB si poate pune ce vrea in ea
 		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
@@ -77,7 +79,7 @@ public class TrainingController {
 	//👍 nu vrei sa pui LISTE de ROLURI/AUTHORITIES in @Secured/@PreAuthorized
 	// => introduci un nivel superior de abstractie ("ADMIN e role composit din urmatoarele 5 sub-roluri"
 
-//	@PostAuthorize() ???
+
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 //		if (user n-are voie) throw new AmFostDobitocException();

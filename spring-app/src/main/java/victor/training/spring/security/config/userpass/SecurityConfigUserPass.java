@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+
 @Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -31,7 +34,11 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
             // url patterns RAU pt ca poate deveni out of sync cu URL efectiv
         // ** prinde orice subpath / /  / / /   ... //
-//            .mvcMatchers(HttpMethod.DELETE, "/api/trainings/**").hasRole("ADMIN")
+            .mvcMatchers(DELETE, "/api/trainings/**").hasRole("ADMIN")
+            .mvcMatchers(GET, "/v3/api-docs/**").permitAll()
+            .mvcMatchers(GET, "/swagger-ui.html").permitAll()
+            .mvcMatchers(GET, "/swagger-ui/**").permitAll()
+
 
             .anyRequest().authenticated(); // DENY BY DEFAULT principle
 
