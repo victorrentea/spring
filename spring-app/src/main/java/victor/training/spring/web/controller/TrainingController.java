@@ -2,6 +2,8 @@ package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,11 @@ public class TrainingController {
 
 	@GetMapping("{id}")
 	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
+		TrainingDto dto = trainingService.getTrainingById(id);
+		// defense in depth? daca mi-a hackuit deja DB si poate pune ce vrea in ea
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
+		return dto;
 		//TODO return 404 if not found
 	}
 
@@ -38,6 +44,8 @@ public class TrainingController {
 	@Operation(description = "Create a training")
 	@PostMapping
 	public void create(@RequestBody TrainingDto dto) {
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.createTraining(dto);
 	}
 
@@ -45,6 +53,8 @@ public class TrainingController {
 	@PutMapping("{trainingId}")
 	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
 		dto.id = trainingId;
+		PolicyFactory sanitizer = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+		dto.description = sanitizer.sanitize(dto.description);
 		trainingService.updateTraining(dto);
 	}
 
