@@ -96,11 +96,11 @@
 
 
         <!-- Spring Security -->
-          <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
@@ -115,6 +115,12 @@
             <!-- OAuth2RestTemplate for Client Credentials flow -->
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <!-- manually parse/build JWT tokens -->
@@ -207,22 +213,22 @@
                 </configuration>
             </plugin>
 
-           <!-- <plugin>
-                &lt;!&ndash; scans dependencies for known vulnerabilities &ndash;&gt;
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>6.3.2</version>
-                <configuration>
-                    <suppressionFile>spring-app/suppress-vulnerabilities.xml</suppressionFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
+            <!-- <plugin>
+                 &lt;!&ndash; scans dependencies for known vulnerabilities &ndash;&gt;
+                 <groupId>org.owasp</groupId>
+                 <artifactId>dependency-check-maven</artifactId>
+                 <version>6.3.2</version>
+                 <configuration>
+                     <suppressionFile>spring-app/suppress-vulnerabilities.xml</suppressionFile>
+                 </configuration>
+                 <executions>
+                     <execution>
+                         <goals>
+                             <goal>check</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>-->
         </plugins>
     </build>
 
