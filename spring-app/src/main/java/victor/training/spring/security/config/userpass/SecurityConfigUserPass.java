@@ -55,7 +55,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
             .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()
             .username("power").password("power").roles("POWER").build();
-    return new InMemoryUserDetailsManager(user, admin);
+    return new InMemoryUserDetailsManager(user, admin, power);
   }
 
 }
