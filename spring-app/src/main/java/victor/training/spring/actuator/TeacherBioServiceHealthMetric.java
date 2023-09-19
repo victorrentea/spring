@@ -18,13 +18,13 @@ public class TeacherBioServiceHealthMetric implements HealthIndicator {
   private String teacherBioUriBase;
 
   @Autowired
-  private RestTemplate restTemplate;
+  private RestTemplate rest;
 
   @Override
   public Health health() {
     try {
         String url = teacherBioUriBase + "/actuator/health";
-        Map<String, Object> responseMap = restTemplate.getForObject(url, Map.class);
+        Map<String, Object> responseMap = rest.getForObject(url, Map.class);
       // call localhost:8082/actuator/health to check {"status": "UP"}
       if (responseMap.get("status").equals("UP")) {
         return Health.up().build();

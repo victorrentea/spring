@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class ClientCredentials { // CLient=Applicatie
@@ -25,12 +25,13 @@ public class ClientCredentials { // CLient=Applicatie
 
   @Scheduled(fixedRate = 2 * 1000)
   public void scheduled() {
+    log.info("Calling...");
     String value = restWithClientCredentials.getForObject("http://localhost:8082", String.class);
     log.info("@Scheduled got value: " + value);
   }
 
 
-//  @Configuration
+  @Configuration
   public static class ConfigureOAuth2RestTemplate {
     @Bean
     public OAuth2RestTemplate restWithClientCredentials(OAuth2ProtectedResourceDetails details) {

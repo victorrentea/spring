@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -24,6 +25,7 @@ import static java.lang.System.currentTimeMillis;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
+@EnableScheduling
 @ConfigurationPropertiesScan
 public class SpringApplication {
     public static final long t0 = currentTimeMillis();

@@ -1,8 +1,11 @@
 package victor.training.micro;
 
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +21,13 @@ public class MicroApp {
 
    @GetMapping
    public String get() {
-      return "Micro received username= '" + SecurityContextHolder.getContext().getAuthentication().getName() + "'";
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+      String accessTokenJWT = keycloakPrincipal.getKeycloakSecurityContext().getTokenString();
+      KeyCloakUtils.printTheTokens();
+
+      String username = authentication.getName();
+      return "Micro received username= '" + username + "'";
    }
 
    @GetMapping("/api/teachers/{teacherId}/bio")
