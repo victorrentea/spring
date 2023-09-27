@@ -1,5 +1,5 @@
-db:
-    password: big secret
+#db:
+#    password: big secret
 mail:
     sender: dummy
 spring:
