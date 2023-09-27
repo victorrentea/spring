@@ -14,6 +14,8 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+#    datasource:
+#        type: Oracle
 welcome:
     help:
         file: c:/help-file.pdf
@@ -28,3 +30,6 @@ welcome:
 #        - http://spring.io
 #    welcomeMessage: Welcome to Spring
     gate: 123
+pojo:
+    a: alfa
+    b: beta
