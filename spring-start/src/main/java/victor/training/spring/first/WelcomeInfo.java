@@ -40,15 +40,16 @@ public class WelcomeInfo {
   @Data
   public static class HelpInfo {
     Integer appId;
+    @FileExists
     File file; // TODO 4c validate exists on disk
   }
 
-  @PostConstruct
-  public void validateMyself() {
-    if (!help.file.isFile()) {
-      throw new IllegalArgumentException("Not a file " + help.file);
-    }
-  }
+//  @PostConstruct
+//  public void validateMyself() {
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Not a file " + help.file);
+//    }
+//  }
 
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
