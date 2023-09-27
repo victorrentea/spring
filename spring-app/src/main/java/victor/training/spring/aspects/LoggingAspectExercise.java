@@ -1,11 +1,17 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
+import static java.lang.System.currentTimeMillis;
+
 @Slf4j
-@Aspect
+@Aspect // custom made!!! CU GRIJA. NU EXAGERATI SI CERETI REVIEW DE LA UN SR.
 @Component
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()
@@ -20,9 +26,18 @@ public class LoggingAspectExercise {
   // TODO 3 print the returned value
   //  = the value returned by #proceed()
   // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+//  @Around("execution(* victor.training.spring..*.*(..))") // cam mult, de evitat
+//  @Around("@annotation(LoggedMethod)") // pe metoda
+  @Around("@within(LoggedMethod)") // adnotarea pe clasa
+  public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    log.info("INTERCEPTED " + pjp.getSignature().getName() + " cu param " + Arrays.toString(pjp.getArgs()));
+    long t0 = currentTimeMillis();
+    Object r = pjp.proceed();
+    long t1 = currentTimeMillis();
+    log.info("RETURN took{}  : " + r , t1-t0);
+    return r;
   }
+
 }
 // @Around("@within(Facade)") // method of classes annotated with @Facade
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod

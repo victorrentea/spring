@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
@@ -74,11 +75,14 @@ public class ProxyIntro {
 // TODO interceptezi orice apel facut de SecondGrade la orice metoda din Maths
 //  sa printezi param si return value (pt audit de tatic)
 // ------------------------ NU AI VOIE SA SCRII NIMIC SUB LINIA ASTA
+@Service
 class SecondGrade {
   private final Maths maths;
+
   public SecondGrade(Maths maths) {
     this.maths = maths; // spring ii injecteaza un Proxy care sta in fata instantei reale de Maths
   }
+
   public void mathClass() {
 //    Maths maths = new Maths(); // (4) mi-am bagat picioru in DI, am facut NEW
     System.out.println("Cine esti tu: " + maths.getClass());
@@ -88,8 +92,11 @@ class SecondGrade {
     System.out.println("4 x 4 = " + maths.product(4, 4));
   }
 }
+@Service
 // CE pot face in clasa Maths ca sa nu mai mearga proxyurile (sa nu mai fie interceptat metoda)
-/*final CRASH(1)*/ class Maths {
+/*final CRASH(1)*/
+@LoggedMethod
+class Maths {
 //  @Secured("ROLE_ADMIN")
 //  @Transactional
 //  @Cacheable("date-critice") // daca asta merge primu, ar putea intoarce date unui user care nu e ADMIN
@@ -99,6 +106,7 @@ class SecondGrade {
 //    if (true) throw new IllegalArgumentException(); // se vad proxy-urile in exceptii ca $$EnhancerByCGLIB$$
     return a + b;
   }
+
   public /*static NOT OVERRIDABLE(3)*/ int product(int a, int b) {
     int rezultat = 0;
 
