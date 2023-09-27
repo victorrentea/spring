@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,9 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // generates getters + setters
+@Data // Lombok generates getters + setters
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeInfo {
   int gate;
   String welcomeMessage; // TODO 4a validate is not null and size >= 4
