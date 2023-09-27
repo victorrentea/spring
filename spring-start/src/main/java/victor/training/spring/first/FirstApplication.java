@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ import org.springframework.stereotype.Service;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
+
+//@Import() // manual listing the classes to scan
+
 //@ComponentScan(basePackages = "victor.training.spring")
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {

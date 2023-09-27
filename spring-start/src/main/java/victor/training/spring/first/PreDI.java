@@ -22,7 +22,19 @@ public class PreDI {
 //  @Autowired // field greu de injectat un mock din @Test
 //  private Alta alta;
 
-  private final Alta alta;
+  private final Alta alta; // HIGH COUPLING sucks
+//  private final Alta2 alta1;
+//  private final Alta4 alta2;
+//  private final Alta6 alta3;
+//  private final Alta8 alta4;
+//  private final Alta4 alta5;
+//  private final Alta alta6;
+//  private final Alta alta7;
+//  private final Alta alta8;
+//  private final Alta alta9;
+//  private final Alta alta0;
+//  private final Alta alta12;
+//  private final Alta alta44;
 
 //  public PreDI(Alta alta) { // constructor injection
 //    this.alta = alta;

@@ -11,12 +11,17 @@ import victor.training.spring.first.PreDI;
 //@Repository // Manual DB access, nu e necesar daca extinzi o interfata din Spring Data
 //@RequiredArgsConstructor
 public class Alta {
-
-  @Autowired
-//  @Lazy // de evitat
-  private PreDI preDI;
+//  @Autowired
+////  @Lazy // de evitat
+//  private PreDI preDI;
 
   public void f() {
     System.out.println("Sa mearga");
+  }
+
+  public void init() {
+    System.out.println("verific un folder sa fie acolo");
+    System.out.println("Iau din DB ceva eg lista de tari");
+    System.out.println("dau un mail: m-am nascut!");
   }
 }
