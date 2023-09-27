@@ -17,8 +17,9 @@ public class ProxyIntro {
       @Override
       // se trateaza orice apel al unei fct publice din Maths
       public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        System.out.println("Calling " + method.getName() + " cu param " + Arrays.toString(args));
-        return method.invoke(reala, args); // <--
+        Object r = method.invoke(reala, args);
+        System.out.println("Called " + method.getName() + " " + Arrays.toString(args) +" = " +r);
+        return r; // <--
       }
     };
     //creeaza o subclasa asa cum e mai jos (comentat)
