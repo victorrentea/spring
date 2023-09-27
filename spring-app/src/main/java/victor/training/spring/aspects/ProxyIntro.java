@@ -1,15 +1,30 @@
 package victor.training.spring.aspects;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ProxyIntro {
   public static void main(String[] args) {
     // WE play the role of Spring here ...
     Maths reala = new Maths();
-    Maths maths = new UnaCareSaOExtinda(reala);
-    // scritzi aci <<
 
-    SecondGrade secondGrade = new SecondGrade(maths);
+    Callback callback = new MethodInterceptor() {
+      @Override
+      // se trateaza orice apel al unei fct publice din Maths
+      public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+        System.out.println("Calling " + method.getName() + " cu param " + Arrays.toString(args));
+        return method.invoke(reala, args); // <--
+      }
+    };
+    //creeaza o subclasa asa cum e mai jos (comentat)
+    Maths proxy = (Maths) Enhancer.create(Maths.class, callback);
+
+    SecondGrade secondGrade = new SecondGrade(proxy);
 
     secondGrade.mathClass();
   }
@@ -17,26 +32,28 @@ public class ProxyIntro {
 //Exact asa face springu!: iti ia clasa ta marcata cu eg @service si o subclaseaza,
 // @Overridand toate metodele publice.
 // Ulterior, oricine va avea nevoie sa fie injectat cu un Maths, va primi o instanta din aceasta subclasa
-class UnaCareSaOExtinda extends Maths {
-  private final Maths delegate;
+//class UnaCareSaOExtinda extends Maths {
+//  private final Maths delegate;
+//
+//  public UnaCareSaOExtinda(Maths delegate) {
+//    this.delegate = delegate;
+//  } // DECORATOR PATTERN
+//  @Override
+//  public int sum(int a, int b) {
+//    int r = delegate.sum(a, b);
+//    System.out.println("sum("+a+","+b+")="+r);
+//    return r;
+//  }
+//
+//  @Override
+//  public int product(int a, int b) {
+//    int r = delegate.product(a, b);
+//    System.out.println("produs("+a+","+b+")="+r);
+//    return r;
+//  }
+//}
 
-  public UnaCareSaOExtinda(Maths delegate) {
-    this.delegate = delegate;
-  } // DECORATOR PATTERN
-  @Override
-  public int sum(int a, int b) {
-    int r = delegate.sum(a, b);
-    System.out.println("sum("+a+","+b+")="+r);
-    return r;
-  }
 
-  @Override
-  public int product(int a, int b) {
-    int r = delegate.product(a, b);
-    System.out.println("produs("+a+","+b+")="+r);
-    return r;
-  }
-}
 // sa pp ca Emma are un tatic paranoic care vrea sa vada toate calculele facute la scoale sa le verifice/auditeze
 // taticu nu vrea sa se prinda copilul
 // TODO interceptezi orice apel facut de SecondGrade la orice metoda din Maths
@@ -51,6 +68,7 @@ class SecondGrade {
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
+    System.out.println("4 x 4 = " + maths.product(4, 4));
   }
 }
 
