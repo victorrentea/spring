@@ -21,8 +21,8 @@ welcome:
     localContactPhone:
         FR: 430123414123
         RO: 401312121414
-#    supportUrls:
-#        - http://google.com
+    supportUrls:
+        - http://google.com
 #        - http://stackoverflow.com
 #        - http://baeldung.com
 #        - http://spring.io

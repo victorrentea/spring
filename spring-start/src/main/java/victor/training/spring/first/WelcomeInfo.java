@@ -30,7 +30,7 @@ public class WelcomeInfo {
 //  @Pattern(regexp = "\\d+")
   @Size(min = 5, max = 100)
   @NotNull // adnotarea asta singura nu face nimic. trebuie ca altcineva sa zica @Validated pe instanta asta
-  String welcomeMessage; // TODO 4a validate is not null and size >= 4
+  String welcomeMessage = "Hello!"; // default value
   @Size(min = 1)
   @NotNull // mereu dupa Size la brat
   List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
