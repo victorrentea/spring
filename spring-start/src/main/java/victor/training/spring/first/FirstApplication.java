@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,13 +57,18 @@ class OClasaConfiguration {
 //  private String a;
 //  @Value("${pojo.b}")
 //  private String b;
+//  @Bean // fabric de mana si returnez o instanta de pus in containeru spring
+//  public Pojo pojo(
+//      @Value("${pojo.a}") String a,
+//      @Value("${pojo.b}") String b) {
+//    return new Pojo()
+//        .setA(a)
+//        .setB(b);
+//  }
   @Bean // fabric de mana si returnez o instanta de pus in containeru spring
-  public Pojo pojo(
-      @Value("${pojo.a}") String a,
-      @Value("${pojo.b}") String b) {
-    return new Pojo()
-        .setA(a)
-        .setB(b);
+  @ConfigurationProperties(prefix = "pojo")
+  public Pojo pojo() {
+    return new Pojo();
   }
 }
 ///// ----------
