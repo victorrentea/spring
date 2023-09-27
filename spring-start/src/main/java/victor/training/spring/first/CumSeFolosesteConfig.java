@@ -15,7 +15,7 @@ public class CumSeFolosesteConfig {
   public /*@Size(min = 5, max = 100) @NotNull*/ String method() {
     /// intr-un colt al unei app de 100K de linii de cod (mare)
     // cineva din greseala face:
-    welcomeInfo.setWelcomeMessage("oups!"); // cum previn
+//    welcomeInfo.setWelcomeMessage("oups!"); // cum previn
 
     return welcomeInfo.getWelcomeMessage();
   }

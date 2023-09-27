@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
-
+@EnableConfigurationProperties(WelcomeInfo.class)
 //@Import() // manual listing the classes to scan
 
 //@ComponentScan(basePackages = "victor.training.spring")

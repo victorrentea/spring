@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -21,26 +22,27 @@ import java.util.Map;
 
 @Slf4j
 @Data // Lombok generates getters + setters
-@Component
+//@Component
 @ConfigurationProperties(prefix = "welcome")
+@ConstructorBinding // nu mai e necesar Spring Boot 3
 @Validated
-public class WelcomeInfo {
-  int gate;
+public class WelcomeInfo { // imutabil!!!
+  private final int gate;
 //  @Email
 //  @Pattern(regexp = "\\d+")
   @Size(min = 5, max = 100)
   @NotNull // adnotarea asta singura nu face nimic. trebuie ca altcineva sa zica @Validated pe instanta asta
-  String welcomeMessage = "Hello!"; // default value
+  private final String welcomeMessage = "Hello!"; // default value
   @Size(min = 1)
   @NotNull // mereu dupa Size la brat
-  List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
-  Map<Locale, String> localContactPhone;
-  HelpInfo help;
+  private final List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
+  private final Map<Locale, String> localContactPhone;
+  private final HelpInfo help;
 
   @Data
   public static class HelpInfo {
     Integer appId;
-    @FileExists
+//    @FileExists
     File file; // TODO 4c validate exists on disk
   }
 
