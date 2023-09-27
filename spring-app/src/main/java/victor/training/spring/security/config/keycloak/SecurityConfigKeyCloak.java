@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Profile("keycloak")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implements WebMvcConfigurer {
 

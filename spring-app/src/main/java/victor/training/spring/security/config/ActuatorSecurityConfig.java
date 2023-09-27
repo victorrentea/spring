@@ -35,7 +35,7 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint())
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator URLs
             .authorizeRequests()
 
             // curl http://localhost:8080/actuator/health -v

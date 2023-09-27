@@ -2,15 +2,20 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import javax.annotation.security.RunAs;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 public class SecurityController {
   private final AnotherClass anotherClass;
 
+  @Secured({"ROLE_USER", "RUN_AS_X"})
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername(/*Principal principal*/) throws Exception {
     KeyCloakUtils.printTheTokens();
@@ -32,7 +38,6 @@ public class SecurityController {
     // userul curent logat acum de pe THREADUL curent (folosind un Thread Local var pe sub)
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     // daca pleci de pe thread (CompletableFuture.supplyAsync, call de @Async, executor.submit())
-
     dto.username = authentication.getName();
 
     // in Spring, un Principal (om,sistem) autheNtificat are:
@@ -49,6 +54,9 @@ public class SecurityController {
     dto.authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList());
+    System.out.println("DTO:" + dto);
+//    SecurityContextHolder.setContext(new SecurityContextImpl(new RunAsUserToken("xuser", null, null, List.of(new SimpleGrantedAuthority("ROLE_X")), SecurityContextHolder.getContext().getAuthentication().getClass())));
+    anotherClass.m();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,17 +72,17 @@ public class SecurityController {
   }
 
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-    // For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
+    // For Spring Security a "role" is an authority starting with "ROLE_"
     List<String> roles = authorities.stream()
             .map(GrantedAuthority::getAuthority)
-            .filter(authority -> authority.startsWith("ROLE_"))
-            .map(authority -> authority.substring("ROLE_".length()))
+            .filter(s -> s.startsWith("ROLE_"))
+            .map(s -> s.substring("ROLE_".length()))
             .collect(Collectors.toList());
     if (roles.size() == 2) {
       log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
       return "N/A";
     }
-    if (roles.size() == 0) {
+    if (roles.isEmpty()) {
       return null;
     }
     return roles.get(0);
@@ -90,6 +98,10 @@ public class SecurityController {
   @Slf4j
   @Service
   public static class AnotherClass {
+    @Secured("ROLE_RUN_AS_X")
+    public void m() {
+      log.info("Running X");
+    }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
     //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
