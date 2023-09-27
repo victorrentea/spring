@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.first.subp.Alta;
+
+import javax.annotation.PostConstruct;
 
 
 // marchez clasa ca Bean - sa fie detectata de Spring la startup:
@@ -48,7 +51,18 @@ public class PreDI {
   @GetMapping("prima")
   public String method() {
     alta.f();
-    return "amuzant😋";
+    return "amuzant😋 : "+alta;
   }
 }
 
+@RequiredArgsConstructor
+@Component
+//by default in spring orice bean este SINGLETON (1 instanta / app)
+// @Stateless (EJB) - era un pool de obiecte
+class AltaClasa {
+  private final Alta alta;
+  @PostConstruct
+  public void method() {
+    System.out.println("am primit: " + alta);
+  }
+}

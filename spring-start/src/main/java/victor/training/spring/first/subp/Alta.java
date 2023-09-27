@@ -19,6 +19,17 @@ public class Alta implements CommandLineRunner {
 ////  @Lazy // de evitat
 //  private PreDI preDI;
 
+  // sunt intr-un obiect UNIC per app
+  private String x; // nu tii date specifice UNUI request/mesaj in executie
+  // --> te vei bate cu alte threaduri pe aceleasi date comune
+
+  public void method(String currentUser) {
+    x=currentUser; // NU!!
+    // 100 ms
+    System.out.println("INSERT INTO ... CREATED_BY="+x);
+  }
+
+
   public void f() {
     System.out.println("Sa mearga");
   }
