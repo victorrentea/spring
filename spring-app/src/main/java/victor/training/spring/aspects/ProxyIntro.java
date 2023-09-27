@@ -4,6 +4,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
@@ -75,22 +76,33 @@ public class ProxyIntro {
 class SecondGrade {
   private final Maths maths;
   public SecondGrade(Maths maths) {
-    this.maths = maths;
+    this.maths = maths; // spring ii injecteaza un Proxy care sta in fata instantei reale de Maths
   }
   public void mathClass() {
+//    Maths maths = new Maths(); // (4) mi-am bagat picioru in DI, am facut NEW
+    System.out.println("Cine esti tu: " + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
     System.out.println("4 x 4 = " + maths.product(4, 4));
   }
 }
-
-class Maths {
-  public int sum(int a, int b) {
+// CE pot face in clasa Maths ca sa nu mai mearga proxyurile (sa nu mai fie interceptat metoda)
+/*final CRASH(1)*/ class Maths {
+//  @Secured("ROLE_ADMIN")
+//  @Transactional
+  public /*final SILENT IGNORE(2)*/ int sum(int a, int b) {
+//    if (true) throw new IllegalArgumentException(); // se vad proxy-urile in exceptii ca $$EnhancerByCGLIB$$
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+  public /*static NOT OVERRIDABLE(3)*/ int product(int a, int b) {
+    int rezultat = 0;
+
+    for (int i = 0; i < a; i++) {
+      // apelul local in cadrul aceluiasi obiect NU TREC PRIN PROXY(5👑)
+      rezultat = sum(rezultat, b);
+    }
+    return rezultat;
   }
 }
 
