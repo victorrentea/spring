@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
@@ -91,6 +92,9 @@ class SecondGrade {
 /*final CRASH(1)*/ class Maths {
 //  @Secured("ROLE_ADMIN")
 //  @Transactional
+//  @Cacheable("date-critice") // daca asta merge primu, ar putea intoarce date unui user care nu e ADMIN
+//  @Secured("ROLE_ADMIN")
+
   public /*final SILENT IGNORE(2)*/ int sum(int a, int b) {
 //    if (true) throw new IllegalArgumentException(); // se vad proxy-urile in exceptii ca $$EnhancerByCGLIB$$
     return a + b;
