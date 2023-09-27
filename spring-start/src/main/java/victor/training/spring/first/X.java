@@ -12,6 +12,6 @@ public class X {
   // @Autowired public void init(Y y) {this.y2 = y;}
 
   public int logic() {
-    return 1 + y.logic();
+    return 1 + 2;
   }
 }
