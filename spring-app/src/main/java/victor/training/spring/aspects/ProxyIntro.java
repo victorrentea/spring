@@ -4,9 +4,12 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
+import static java.lang.System.currentTimeMillis;
 
 public class ProxyIntro {
   public static void main(String[] args) {
@@ -17,7 +20,16 @@ public class ProxyIntro {
       @Override
       // se trateaza orice apel al unei fct publice din Maths
       public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+        // are dreptu useru sa cheme functia ? @Secured("ROLE_ADMIN") ?
+
+//        transaction.start @Transactional
+
+        long t0 = currentTimeMillis();
         Object r = method.invoke(reala, args);
+        long t1 = currentTimeMillis(); // @Timed
+
+//        transaction.commit
+
         System.out.println("Called " + method.getName() + " " + Arrays.toString(args) +" = " +r);
         return r; // <--
       }
