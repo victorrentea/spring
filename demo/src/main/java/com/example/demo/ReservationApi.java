@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -18,9 +19,12 @@ import static java.time.LocalDate.now;
 public class ReservationApi {
   private final ReservationRepo reservationRepo;
 
+  public record ReservationDetailsResponse(Long id, String name, LocalDate creationDate) {
+  }
   @GetMapping("reservations/{id}")
-  public Reservation getReservationById(@PathVariable Long id) {
-    return reservationRepo.findById(id).orElseThrow();
+  public ReservationDetailsResponse getReservationById(@PathVariable Long id) {
+    Reservation reservation = reservationRepo.findById(id).orElseThrow();
+    return new ReservationDetailsResponse(reservation.getId(), reservation.getName(), reservation.getCreationDate());
   }
 
   @PostMapping("reservations")
