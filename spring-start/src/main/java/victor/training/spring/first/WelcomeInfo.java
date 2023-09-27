@@ -44,6 +44,13 @@ public class WelcomeInfo {
   }
 
   @PostConstruct
+  public void validateMyself() {
+    if (!help.file.isFile()) {
+      throw new IllegalArgumentException("Not a file " + help.file);
+    }
+  }
+
+  @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     log.info("WelcomeInfo:\n" + jsonToString);
