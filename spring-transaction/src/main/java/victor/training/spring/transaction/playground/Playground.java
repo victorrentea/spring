@@ -11,8 +11,6 @@ import javax.persistence.EntityManager;
 @RequiredArgsConstructor
 public class Playground {
   private final MessageRepo repo;
-  private final EntityManager entityManager;
-  private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
   // Spring Data JPA: ✅JpaRepository + @Query
