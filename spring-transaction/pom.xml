@@ -26,7 +26,9 @@
             <version>2.1.212</version>
         </dependency>
         <dependency>
-            <!-- JDBC Driver proxy intercepting all DB interactions -->
+            <!-- JDBC Driver proxy intercepting+log all DB interactions -->
+            <!-- de la Vlad Mihalcea citire: (Apostol JPA) -->
+            <!--P6spy a ajuns parte din umbrela spring boot 3-->
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
