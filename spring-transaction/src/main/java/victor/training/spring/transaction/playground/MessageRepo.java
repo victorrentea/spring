@@ -12,7 +12,7 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
       """ // SQL
       ,nativeQuery = true)
   @Modifying
-  @Transactional
+  @Transactional // cand scrii prin JPA in DB ai nevoie de TX in jurul tau
   void queryNativ();
 
   //ne-nativ inseamna QL de JPA (JPQL/HQL)
