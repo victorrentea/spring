@@ -32,8 +32,8 @@ public class DrinkerController {
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
 
       // pe CF nu prea da bine faci .get
-      Beer beer = beerPromise.get(); // Threadul HTTP sta aici 1s
-      Vodka vodka = vodkaPromise.get(); // aici 0s
+      Beer beer = beerPromise.get(); // arunca exceptia aparuta in pourBear
+      Vodka vodka = vodkaPromise.get();
 
       CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly")); // aici inca 0.0s -> Fire-and-forget
       // requestul clientul nu mai asteapta sa se faca auditul
