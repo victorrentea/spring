@@ -33,5 +33,10 @@ public class JpaPlayground {
   // 🐞 UK violation sare DUPA ce iesi din DB, cand trimite JPQ INSERTURILE chiar inainte de commit
   //    dar mesajul a ramas trimis
 
-  public void transactionTwo() {}
+
+  public void transactionTwo() {
+    Message message = repo.findById(1L).orElseThrow();
+    message.setMessage("Updated");
+    repo.save(message);
+  }
 }
