@@ -23,6 +23,9 @@ public class Playground {
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
 //  @TransactionAttribute
   @Transactional
+      (rollbackFor = Exception.class)  // solutia 1
+  // Solutia 2: RENUNTA sa mai arunci CheckedExceptions <- sunt greseli oricum in limbaj; arunci doar runtime
+
   public void transactionOne() throws IOException {
     // orice metoda chemata mai jos de aceasta metoda va 'propaga' tranzactia.
     // CUM PUII🐣 MEI SE FACE ASTA ?
