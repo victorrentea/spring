@@ -38,16 +38,11 @@ public class Playground {
       // Biz: da vreau separata
       // Dev: NU! cauta-n loguri. iti pun un prefix [VALEU-0]. ridica-ti alerte
       // Dev: sau iti trimit mesaj cu eroare pe vreo alta coada (DLQ)
-      saveError(e);
+      other.saveError(e);
     }
   }
 
-  // Tzeapa KING din proxyuri: apelurile
-  // locale in acceasi clasa nu trec prin proxy
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void saveError(Exception e) {
-    repo.save(new Message("EROARE: " + e.getMessage()));
-  }
+
 
   public void transactionTwo() {}
 }
@@ -86,7 +81,10 @@ class OtherClass {
   private static void codLegacy() throws FileNotFoundException {
     if (true) throw new FileNotFoundException("N-am gasit fisieru!");
   }
-
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveError(Exception e) {
+    repo.save(new Message("EROARE: " + e.getMessage()));
+  }
   @Transactional // acest proxy vede iesind din metoda o ex runtime
   // distruge tranzactia curenta.
   // PANICA ESTE INSA CA TX CURENTA i-a venit de la altu
