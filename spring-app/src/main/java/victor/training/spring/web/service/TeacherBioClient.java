@@ -4,7 +4,9 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.ThreadUtils;
@@ -29,11 +31,13 @@ public class TeacherBioClient {
   // TODO cacheable
   /// TODO: cum masor cat dureaza metoda asta ?
   // poti monitoriza cu bani grei cu DynaTrace si DataDog sau gratis cu Micrometer/Grafana
-  @Timed
   // best practice @Timed pe orice
   // -  apel de API
   // -  zona CPU intensive
   // -  SQL huge ("fat pigs")
+
+  @Timed
+  @Cacheable("teacher-bio") // daca ai mai chemat-o cu acelasi teacherId iti da proxu-ul  din memorie rezultatul precedent.
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
