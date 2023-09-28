@@ -17,22 +17,26 @@ public class Playground {
   // JPA(Hibernate)  Session🪦, EntityManager🪦, @Entity✅
   // JdbcTemplate 2010 imbraca SQL nativ - ✅ DOAR daca nu ai JPA
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
-
+//  @TransactionAttribute
   @Transactional // nu e necesar daca faci un singur .save in metoda
   public void transactionOne() {
+    // orice metoda chemata mai jos de aceasta metoda va 'propaga' tranzactia.
+    // CUM PUII🐣 MEI SE FACE ASTA ?
+    //   !!! In java exista variabile magice "ThreadLocal" care pot tine
+    // date specifice threadului curent < acolo sta tranzactia pornita de @Transactioanl
     repo.save(new Message("JPA"));
-    repo.save(new Message("JPA"));
+    other.pasu2();
   }
 
   public void transactionTwo() {}
 }
-
-
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  public void pasu2() {
+    repo.save(new Message("JPA2"));
+  }
 }
 // TODO
 // 0 p6spy
