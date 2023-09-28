@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,10 +12,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,17 +34,15 @@ public class ReservationApi {
     return new ReservationDetailsResponse(reservation.getId(), reservation.getName(), reservation.getCreationDate());
   }
 
+  public record CreateReservationRequest(@NotNull @Size(min=4) String name){}
   @PostMapping("reservations")
-  public Long createReservation(String name) {
+  public Long createReservation(@RequestBody @Valid CreateReservationRequest request) {
     Reservation reservation = new Reservation();
-    reservation.setName(name);
+    reservation.setName(request.name());
     reservation.setCreationDate(now());
     return reservationRepo.save(reservation).getId();
   }
 
-//CR: GET /reservation/latest sa intoarca ultimele n=${max.reservations}
-// rezervari create dupa creationDate (order by descendent),
-// max.reservations citit din fisier .properties
   @Value("${max.reservations}")
   private int size;
   @GetMapping("reservations")
