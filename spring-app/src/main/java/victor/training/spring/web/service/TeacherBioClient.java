@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.System.currentTimeMillis;
+
 @RequiredArgsConstructor
 @Component
 @Slf4j
@@ -34,8 +37,14 @@ public class TeacherBioClient {
   private final RestTemplate rest;
 
 
-
   // TODO cacheable
+  /// TODO: cum masor cat dureaza metoda asta ?
+  // poti monitoriza cu bani grei cu DynaTrace si DataDog sau gratis cu Micrometer/Grafana
+  @Timed
+  // best practice @Timed pe orice
+  // -  apel de API
+  // -  zona CPU intensive
+  // -  SQL huge ("fat pigs")
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
@@ -57,26 +66,7 @@ public class TeacherBioClient {
 
   @SneakyThrows
   public String callUsingRestTemplate(long teacherId) {
-
-    // Auth#1 :) - no bearer
-//    String bearerToken = "joke";
-
-    // Auth#2 - propagating MY clients' AccessToken
-    KeycloakPrincipal<KeycloakSecurityContext> principal =
-            (KeycloakPrincipal<KeycloakSecurityContext>)
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String accessToken = principal.getKeycloakSecurityContext().getTokenString();
-
-    // Auth#3 - manually creating a JWT token
-    //          String bearerToken = Jwts.builder()
-    //                .setSubject(SecurityContextHolder.getContext().getAuthentication().getName())
-    //                .claim("country", "Country")
-    //                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-    //                .compact();
-
-
-    log.info("Sending bearer: {}", accessToken);
-    Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + accessToken));
+    Map<String, List<String>> header = Map.of();// Map.of("Authorization", List.of("Bearer " + accessToken));
     ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
             CollectionUtils.toMultiValueMap(header),
             HttpMethod.GET,
