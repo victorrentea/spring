@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class Playground {
     //   !!! In java exista variabile magice "ThreadLocal" care pot tine
     // date specifice threadului curent < acolo sta tranzactia pornita de @Transactioanl
     repo.save(new Message("JPA"));
-    other.pasu2();
+    CompletableFuture.runAsync(() -> other.pasu2());
   }
 
   public void transactionTwo() {}
