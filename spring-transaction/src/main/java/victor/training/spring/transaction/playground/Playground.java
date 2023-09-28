@@ -27,9 +27,9 @@ public class Playground {
   // Solutia 2: RENUNTA sa mai arunci CheckedExceptions <- sunt greseli oricum in limbaj; arunci doar runtime
 
   // message listener JMS
-  @Transactional
+//  @Transactional
   public void transactionOne() throws IOException {
-    repo.save(new Message("JPA"));
+
     try {
       other.bizLogicAtomic();
     } catch (Exception e) {
@@ -87,6 +87,7 @@ class OtherClass {
   // distruge tranzactia curenta.
   // PANICA ESTE INSA CA TX CURENTA i-a venit de la altu
   public void bizLogicAtomic() {
+    repo.save(new Message("JPA"));
     repo.save(new Message("Customer"));
     repo.save(new Message("Audit"));
     throw new IllegalArgumentException("ERoare de biz!");

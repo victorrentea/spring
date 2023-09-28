@@ -1,5 +1,7 @@
 package victor.training.spring.transaction.playground;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -22,6 +24,7 @@ public class Message {
 //    @ElementCollection
 //    private List<String> elemente;
 //    @OneToMany
+//    @BatchSize(20)
 //    private List<AltaEntitate> copii;
 
     private Message() { // for hibernate only
