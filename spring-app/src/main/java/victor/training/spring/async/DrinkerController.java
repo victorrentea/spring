@@ -28,18 +28,14 @@ public class DrinkerController {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      // TODO optimizati viteza
-      //  new Thread(new Runnable // niciodata
-      //  ExecutorService.... // interzis in Spring
-      // CompletableFuture === promise din FE
       CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer());
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka());
 
       // pe CF nu prea da bine faci .get
-      Beer beer = beerPromise.get(); //
-      Vodka vodka = vodkaPromise.get();
+      Beer beer = beerPromise.get(); // Threadul HTTP sta aici 1s
+      Vodka vodka = vodkaPromise.get(); // aici 0s
 
-      barman.auditCocktail("Dilly");
+      barman.auditCocktail("Dilly"); // auci inca 0.5s
 
       // TODO daca nu mai e bere ?!! Andreea
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
