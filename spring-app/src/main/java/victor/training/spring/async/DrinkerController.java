@@ -35,7 +35,7 @@ public class DrinkerController {
       Beer beer = beerPromise.get(); // arunca exceptia aparuta in pourBear
       Vodka vodka = vodkaPromise.get();
 
-      CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly")); // aici inca 0.0s -> Fire-and-forget
+      barman.auditCocktail("Dilly"); // aici inca 0.0s -> Fire-and-forget
       // requestul clientul nu mai asteapta sa se faca auditul
       // ERORILE!? trebuie sa fie returnate clientului? NU. doar logate
       // caz mai real: procesarea fisierului uploadat -> trebuie cumva sa raportezi statusul (poate si progresul %)
