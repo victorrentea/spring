@@ -12,7 +12,7 @@ public class TransactionsApp implements CommandLineRunner {
       SpringApplication.run(TransactionsApp.class, args);
    }
 
-   private final Playground playground;
+   private final JpaPlayground playground;
 
    @Override
    public void run(String... args) throws Exception {

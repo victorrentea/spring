@@ -42,8 +42,6 @@ public class Playground {
     }
   }
 
-
-
   public void transactionTwo() {}
 }
 @Service
