@@ -38,6 +38,7 @@ class OtherClass {
   private final MessageRepo repo;
   public void pasu2() {
     repo.save(new Message("NULL"));
+    if (true) throw new IllegalArgumentException("Ceva de biz");
   }
 }
 // TODO
