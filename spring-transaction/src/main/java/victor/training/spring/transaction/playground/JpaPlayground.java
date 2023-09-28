@@ -19,7 +19,13 @@ public class JpaPlayground {
   public void transactionOne() throws IOException {
     Message mess = new Message("JPA");
     repo.save(mess); // Write-Behind: INSERTul merge in baza doar la FLUSH (mai tarziu), chiar inainte de COMMIT
-    repo.save(new Message("JPA"));
+    // Motive : 1) "ca poate nu le fac ca arunca ex", 2) batching (performance)
+    repo.saveAndFlush(new Message("JPA")); // #2 saveAndFlush
+
+//    repo.flush(); // #1 manual
+
+    // #3 JPA va face automat flush la changeuri daca trimiti in DB un SELECT
+//    log.debug("n=" + repo.count());
 
     log.info("✉️ Send Rabbit/email/SMS/RMI/SOAP. id:" + mess.getId());
   }
