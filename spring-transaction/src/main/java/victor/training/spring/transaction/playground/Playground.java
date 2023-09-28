@@ -20,7 +20,7 @@ public class Playground {
 
   @Transactional
   public void transactionOne() {
-    repo.queryNativ();
+    repo.save(new Message("JPA"));
     repo.save(new Message(null));
   }
 
