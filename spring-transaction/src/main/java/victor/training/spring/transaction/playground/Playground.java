@@ -18,6 +18,7 @@ public class Playground {
   // JdbcTemplate 2010 imbraca SQL nativ - ✅ DOAR daca nu ai JPA
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
 
+  @Transactional
   public void transactionOne() {
     repo.queryNativ();
     repo.save(new Message(null));
