@@ -18,6 +18,10 @@ public class Message {
     private Message() { // for hibernate only
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Message(String message) {
         this.message = message;
     }

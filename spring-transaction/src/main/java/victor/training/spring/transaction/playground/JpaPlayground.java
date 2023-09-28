@@ -15,7 +15,10 @@ public class JpaPlayground {
 
   @Transactional
   public void transactionOne() throws IOException {
-    repo.save(new Message("JPA"));
+    Message mess = repo.save(new Message("JPA"));
+    // dupa save entitatea ta are ID
+
+    System.out.println("Send Rabbit. id:" + mess.getId());
   }
 
   public void transactionTwo() {}
