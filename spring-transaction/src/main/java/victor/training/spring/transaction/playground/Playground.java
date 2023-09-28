@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -37,8 +38,15 @@ public class Playground {
       // Biz: da vreau separata
       // Dev: NU! cauta-n loguri. iti pun un prefix [VALEU-0]. ridica-ti alerte
       // Dev: sau iti trimit mesaj cu eroare pe vreo alta coada (DLQ)
-      repo.save(new Message("EROARE: " + e.getMessage()));
+      saveError(e);
     }
+  }
+
+  // Tzeapa KING din proxyuri: apelurile
+  // locale in acceasi clasa nu trec prin proxy
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveError(Exception e) {
+    repo.save(new Message("EROARE: " + e.getMessage()));
   }
 
   public void transactionTwo() {}
@@ -79,10 +87,13 @@ class OtherClass {
     if (true) throw new FileNotFoundException("N-am gasit fisieru!");
   }
 
-  @Transactional
+  @Transactional // acest proxy vede iesind din metoda o ex runtime
+  // distruge tranzactia curenta.
+  // PANICA ESTE INSA CA TX CURENTA i-a venit de la altu
   public void bizLogicAtomic() {
     repo.save(new Message("Customer"));
     repo.save(new Message("Audit"));
+    throw new IllegalArgumentException("ERoare de biz!");
   }
 }
 // TODO
