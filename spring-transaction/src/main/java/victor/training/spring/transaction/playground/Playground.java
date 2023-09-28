@@ -37,7 +37,7 @@ public class Playground {
 class OtherClass {
   private final MessageRepo repo;
   public void pasu2() {
-    repo.save(new Message("JPA2"));
+    repo.save(new Message(null));
   }
 }
 // TODO
