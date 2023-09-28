@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,8 +22,8 @@ public class Playground {
   // JdbcTemplate 2010 imbraca SQL nativ - ✅ DOAR daca nu ai JPA
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
 //  @TransactionAttribute
-  @Transactional // nu e necesar daca faci un singur .save in metoda
-  public void transactionOne() {
+  @Transactional
+  public void transactionOne() throws IOException {
     // orice metoda chemata mai jos de aceasta metoda va 'propaga' tranzactia.
     // CUM PUII🐣 MEI SE FACE ASTA ?
     //   !!! In java exista variabile magice "ThreadLocal" care pot tine
@@ -36,9 +38,28 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  public void pasu2() {
+  public void pasu2() throws IOException {
     repo.save(new Message("NULL"));
-    if (true) throw new IllegalArgumentException("Ceva de biz");
+//    if (true) throw new IllegalArgumentException("Ceva de biz");
+
+    if (true) throw new FileNotFoundException("N-am gasit fisieru!");
+    // ce puii mei se intampla!? o exceptie checked (throws...) lasa tranzactia sa se comita !?!
+    // ce dobitoc a crezut ca e o idee buna sa faci COMMIT daca FileNotFoundException
+    // toata lumea care vede asta tzipa. si se intreaba? de ce ?!?!?!!!?!?!?!?!?
+    // Motivul este unul ISTORIC.
+
+    // Era 2005-2007, pe-afara ploua cu EJB 2.x cu muuuuuult XML🤢
+    //  cel mai urat standard din lumea java din istorie
+
+    // Intr-o padure Rod Johnson si haiducii lui  faceau un Framework
+    // sa lupte cu prostia EJB 2. 10x mai simplu.
+
+    // Iesiti din padure au fost insa incojurati de EJB de la care trebuiau
+    // sa fure OAMENI.
+    // Springu a trebuit sa faca tranzitia cat mai usoara ca sa poata fura
+    // proiect EJB -> migreze -> Spring;
+    // Springu a copiat TAMPENIA asta cu checked exceptions = COMMIT de la EJB
+    // replace "@TransactionAttribute" cu "@Transactional"
   }
 }
 // TODO
