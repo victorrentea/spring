@@ -12,12 +12,12 @@ import javax.persistence.EntityManager;
 public class Playground {
   private final MessageRepo repo;
   private final EntityManager entityManager;
-  private final JdbcTemplate jdbc;
+  private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
   @Transactional
   public void transactionOne() {
-    jdbc.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     repo.save(new Message("JPA"));
   }
 
