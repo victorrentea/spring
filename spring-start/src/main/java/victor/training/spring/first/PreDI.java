@@ -51,7 +51,7 @@ public class PreDI {
   @GetMapping("prima")
   public String method() {
     alta.f();
-    return "amuzant😋 : "+alta;
+    return "amuzant😋 cevaXYZ : "+alta;
   }
 }
 
