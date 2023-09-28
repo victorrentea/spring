@@ -23,7 +23,7 @@ public class Playground {
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
 //  @TransactionAttribute
   @Transactional
-      (rollbackFor = Exception.class)  // solutia 1
+//      (rollbackFor = Exception.class)  // solutia 1
   // Solutia 2: RENUNTA sa mai arunci CheckedExceptions <- sunt greseli oricum in limbaj; arunci doar runtime
 
   public void transactionOne() throws IOException {
@@ -41,11 +41,15 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  public void pasu2() throws IOException {
+  public void pasu2() {
     repo.save(new Message("NULL"));
 //    if (true) throw new IllegalArgumentException("Ceva de biz");
 
-    if (true) throw new FileNotFoundException("N-am gasit fisieru!");
+    try {
+      codLegacy();
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e); // asa da, ne respectam. doar runtime
+    }
     // ce puii mei se intampla!? o exceptie checked (throws...) lasa tranzactia sa se comita !?!
     // ce dobitoc a crezut ca e o idee buna sa faci COMMIT daca FileNotFoundException
     // toata lumea care vede asta tzipa. si se intreaba? de ce ?!?!?!!!?!?!?!?!?
@@ -63,6 +67,10 @@ class OtherClass {
     // proiect EJB -> migreze -> Spring;
     // Springu a copiat TAMPENIA asta cu checked exceptions = COMMIT de la EJB
     // replace "@TransactionAttribute" cu "@Transactional"
+  }
+
+  private static void codLegacy() throws FileNotFoundException {
+    if (true) throw new FileNotFoundException("N-am gasit fisieru!");
   }
 }
 // TODO
