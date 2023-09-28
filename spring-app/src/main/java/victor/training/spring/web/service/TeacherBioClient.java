@@ -4,7 +4,6 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -38,7 +37,7 @@ public class TeacherBioClient {
 
   @Timed
   @Cacheable("teacher-bio") // daca ai mai chemat-o cu acelasi teacherId iti da proxu-ul  din memorie rezultatul precedent.
-  public String retrieveBiographyForTeacher(long teacherId) {
+  public String retrieveBiographyForTeacher(long teacherId, String uuid) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
 //    String result = callUsingRestTemplate(teacherId);

@@ -16,6 +16,7 @@ import victor.training.spring.web.repo.TrainingSearchRepo;
 import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -49,7 +50,8 @@ public class TrainingService {
 
     private String retrieveTeacherBio(Long teacherId) {
         try {
-            return teacherBioClient.retrieveBiographyForTeacher(teacherId);
+            String uuid = UUID.randomUUID().toString();
+            return teacherBioClient.retrieveBiographyForTeacher(teacherId, uuid);
         } catch (RuntimeException e) {
             log.error("Error retrieving bio", e);
             return "<ERROR RETRIEVING TEACHER BIO: "+e+">";
