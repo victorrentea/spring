@@ -36,7 +36,7 @@ public class TeacherBioClient {
   // -  SQL huge ("fat pigs")
 
   @Timed
-  @Cacheable("teacher-bio") // daca ai mai chemat-o cu acelasi teacherId iti da proxu-ul  din memorie rezultatul precedent.
+  @Cacheable(value = "teacher-bio", key = "#teacherId") // daca ai mai chemat-o cu acelasi teacherId iti da proxu-ul  din memorie rezultatul precedent.
   public String retrieveBiographyForTeacher(long teacherId, String uuid) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
