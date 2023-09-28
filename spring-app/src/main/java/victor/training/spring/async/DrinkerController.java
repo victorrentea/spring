@@ -10,7 +10,6 @@ import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -27,7 +26,7 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
@@ -36,11 +35,16 @@ public class DrinkerController {
       CompletableFuture<Beer> beerPromise = supplyAsync(() -> barman.pourBeer(),executor);
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(() -> barman.pourVodka(),executor);
 
-      // pe CF nu prea da bine faci .get
-      Beer beer = beerPromise.get(); // arunca exceptia aparuta in pourBear
-      Vodka vodka = vodkaPromise.get();
-
-      barman.auditCocktail("Dilly"); // aici inca 0.0s -> Fire-and-forget
+      // pe CF nu prea da bine faci .get, ci in loc "chaineuitesi callbackuri"
+      // de ce sa nu fac get?
+      //sa nu supar TOmcat: sa nu-i blochez threadul prea mult. (sa nu-i starvez thread poolul)
+      CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombineAsync(vodkaPromise,
+          (beer, vodka) -> new DillyDilly(beer, vodka))
+          .thenApply(dilly -> {
+             barman.auditCocktail("Dilly "+dilly);
+             return dilly;
+          });
+//      barman.auditCocktail("Dilly"); // aici inca 0.0s -> Fire-and-forget
       // requestul clientul nu mai asteapta sa se faca auditul
       // ERORILE!? trebuie sa fie returnate clientului? NU. doar logate
       // caz mai real: procesarea fisierului uploadat -> trebuie cumva sa raportezi statusul (poate si progresul %)
@@ -50,8 +54,7 @@ public class DrinkerController {
       //       c) ii fac pagina dedicata in webapp unde vede statusul uploadurilor. cu erori, ...3w
 
       // TODO daca nu mai e bere ?!! Andreea
-
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
-      return new DillyDilly(beer, vodka);
+      return dillyPromise;
    }
 }
