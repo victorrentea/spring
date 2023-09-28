@@ -34,7 +34,6 @@ public class TeacherBioClient {
   // -  apel de API
   // -  zona CPU intensive
   // -  SQL huge ("fat pigs")
-
   @Timed
   @Cacheable(value = "teacher-bio", key = "#teacherId") // daca ai mai chemat-o cu acelasi teacherId iti da proxu-ul  din memorie rezultatul precedent.
   public String retrieveBiographyForTeacher(long teacherId, String uuid) {
@@ -45,6 +44,8 @@ public class TeacherBioClient {
     log.debug("Got result");
     return result;
   }
+
+
 
   private String dummyCall(long teacherId) {
     ThreadUtils.sleepMillis(500);

@@ -3,6 +3,8 @@ package victor.training.spring.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,15 @@ import static org.springframework.http.MediaType.IMAGE_JPEG;
 @RequestMapping("api/trainings")
 public class TrainingController {
 	private final TrainingService trainingService;
+
+	// in mod normal ar fi un MessageListener care asculta la TeacherUpdatedEfvetn
+	@GetMapping("evict-teacher/{id}")
+  @CacheEvict("teacher-bio")
+	public void method(@PathVariable long id) {
+
+	}
+
+
 
 	@GetMapping
 	public List<TrainingDto> getAll() {

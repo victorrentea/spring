@@ -163,6 +163,16 @@
             <version>1.5.1.Final</version>
         </dependency>
 
+   <!--     <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            &lt;!&ndash; incerci sa NU pui <version> sa rezolve spring pentru tine. &ndash;&gt;
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
         <!-- messages -->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
