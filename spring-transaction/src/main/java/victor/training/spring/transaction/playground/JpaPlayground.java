@@ -34,9 +34,18 @@ public class JpaPlayground {
   //    dar mesajul a ramas trimis
 
 
+  @Transactional
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
-    message.setMessage("Updated");
-    repo.save(message);
+    message.setMessage("Updated"); // orice modifica pe starea unui @Entity in
+    // cadrul unei @Transactional se scrie automat inapoi in DB (dirty check) la final de Tx
+
+    // Visul "Repository design pattern":
+    // cand lucrezi cu un repo sa para ca obiectele raman in memorie persistate
+
+    // Realitatea: devi modifica "din greseala" entitati care raman persistate asa in DB
+    // PTSD (Post Trauma) => interzici asa ceva, si obligi echipa sa faca mereu .save
+    // Opt1: go with the pattern: changeuri in @Transactional
+    // Opt2: old-school: nu @Transactional unde modifici, ci repo.save(updatedEntity) explicit
   }
 }
