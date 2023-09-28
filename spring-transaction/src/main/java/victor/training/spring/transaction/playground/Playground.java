@@ -22,17 +22,23 @@ public class Playground {
   // JdbcTemplate 2010 imbraca SQL nativ - ✅ DOAR daca nu ai JPA
   // JDBC🪦 90' Connection, ResultSet, PreparedStatement
 //  @TransactionAttribute
-  @Transactional
 //      (rollbackFor = Exception.class)  // solutia 1
   // Solutia 2: RENUNTA sa mai arunci CheckedExceptions <- sunt greseli oricum in limbaj; arunci doar runtime
 
+  // message listener JMS
+  @Transactional
   public void transactionOne() throws IOException {
-    // orice metoda chemata mai jos de aceasta metoda va 'propaga' tranzactia.
-    // CUM PUII🐣 MEI SE FACE ASTA ?
-    //   !!! In java exista variabile magice "ThreadLocal" care pot tine
-    // date specifice threadului curent < acolo sta tranzactia pornita de @Transactioanl
     repo.save(new Message("JPA"));
-    other.pasu2();
+    try {
+      other.bizLogicAtomic();
+    } catch (Exception e) {
+      // Change: trebuie INSERT eroare in tabela ERRORS;
+      // Dev: NU! pun in log.error
+      // Biz: da vreau separata
+      // Dev: NU! cauta-n loguri. iti pun un prefix [VALEU-0]. ridica-ti alerte
+      // Dev: sau iti trimit mesaj cu eroare pe vreo alta coada (DLQ)
+      repo.save(new Message("EROARE: " + e.getMessage()));
+    }
   }
 
   public void transactionTwo() {}
@@ -71,6 +77,12 @@ class OtherClass {
 
   private static void codLegacy() throws FileNotFoundException {
     if (true) throw new FileNotFoundException("N-am gasit fisieru!");
+  }
+
+  @Transactional
+  public void bizLogicAtomic() {
+    repo.save(new Message("Customer"));
+    repo.save(new Message("Audit"));
   }
 }
 // TODO
