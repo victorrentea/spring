@@ -8,4 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 interface TeacherBioFeignClient {
     @GetMapping("teachers/{teacherId}/bio")
     String registerSheep(@PathVariable("teacherId") long teacherId);
+
+    // structurile de date catre API lor ti le generezi din Swaggerul/OpenAPI lor cu plugin de Maven la build
 }
