@@ -39,8 +39,8 @@ public class TeacherBioClient {
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
-    String result = callUsingFeignClient(teacherId);
-//    String result = callUsingRestTemplate(teacherId);
+    String result = callUsingRestTemplate(teacherId);
+//    String result = callUsingFeignClient(teacherId);
     log.debug("Got result");
     return result;
   }
