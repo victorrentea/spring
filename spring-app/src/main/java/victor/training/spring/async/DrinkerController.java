@@ -35,9 +35,17 @@ public class DrinkerController {
       Beer beer = beerPromise.get(); // Threadul HTTP sta aici 1s
       Vodka vodka = vodkaPromise.get(); // aici 0s
 
-      barman.auditCocktail("Dilly"); // auci inca 0.5s
+      CompletableFuture.runAsync(() -> barman.auditCocktail("Dilly")); // aici inca 0.0s -> Fire-and-forget
+      // requestul clientul nu mai asteapta sa se faca auditul
+      // ERORILE!? trebuie sa fie returnate clientului? NU. doar logate
+      // caz mai real: procesarea fisierului uploadat -> trebuie cumva sa raportezi statusul (poate si progresul %)
+      //          Cum anunt userul ca fisieru nu poate fi importat?!
+      //       a) email : vai de mine n-a mers
+      //       b) server-push in interfata sa-l anunt in webpage "gata"/"errori"
+      //       c) ii fac pagina dedicata in webapp unde vede statusul uploadurilor. cu erori, ...3w
 
       // TODO daca nu mai e bere ?!! Andreea
+
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
    }
