@@ -2,9 +2,12 @@ package com.example.demo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +41,16 @@ public class ReservationApi {
     return reservationRepo.save(reservation).getId();
   }
 
+//CR: GET /reservation/latest sa intoarca ultimele n=${max.reservations}
+// rezervari create dupa creationDate (order by descendent),
+// max.reservations citit din fisier .properties
+  @Value("${max.reservations}")
+  private int size;
   @GetMapping("reservations")
   public List<ReservationBriefResponse> getAllReservations() {
-    return reservationRepo.findAll().stream()
+    PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction.DESC, "creationDate");
+
+    return reservationRepo.findAll(pageRequest).stream()
         .map(reservation -> new ReservationBriefResponse(reservation.getId(), reservation.getName()))
         .toList();
   }
