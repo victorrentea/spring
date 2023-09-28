@@ -1,8 +1,11 @@
 package com.example.demo;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,12 +45,5 @@ public class ReservationApi {
         .toList();
   }
 
-  @EventListener(ApplicationStartedEvent.class)
-  public void insertInitData() {
-    Stream.of("Isac", "George", "Radu", "Tedy")
-        .map(name -> new Reservation()
-            .setName(name)
-            .setCreationDate(now()))
-        .forEach(reservationRepo::save);
-  }
 }
+
