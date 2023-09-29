@@ -31,12 +31,13 @@ public class SecurityController {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     // datele de securitate stau pe thread local
-    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-//      CompletableFuture.supplyAsync(() ->
-//          SecurityContextHolder.getContext().getAuthentication().getName() // merge pe alt thread
-//      ).get();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    dto.username = authentication.getName();
+    List<String> stringuri = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(toList());
+    // acele stringuri pot fi roluri daca incep cu prefixul "ROLE_" sau pot fi authorities daca nu
+    // in lumea spring security, un rol este un authority care incepe cu "ROLE_"
 
-    // dto.role = extractOneRole(authentication.getAuthorities());
+     dto.role = extractOneRole(authentication.getAuthorities());
 
     // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
