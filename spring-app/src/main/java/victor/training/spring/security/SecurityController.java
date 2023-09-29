@@ -13,6 +13,7 @@ import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -29,8 +30,11 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
-    // dto.username = anotherClass.asyncMethod().get();
+    // datele de securitate stau pe thread local
+    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+//      CompletableFuture.supplyAsync(() ->
+//          SecurityContextHolder.getContext().getAuthentication().getName() // merge pe alt thread
+//      ).get();
 
     // dto.role = extractOneRole(authentication.getAuthorities());
 
