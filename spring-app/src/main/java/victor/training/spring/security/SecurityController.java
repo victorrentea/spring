@@ -39,7 +39,7 @@ public class SecurityController {
 
      dto.role = extractOneRole(authentication.getAuthorities());
 
-    // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+     dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

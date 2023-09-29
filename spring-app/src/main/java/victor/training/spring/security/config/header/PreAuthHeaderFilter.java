@@ -3,6 +3,7 @@ package victor.training.spring.security.config.header;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import victor.training.spring.web.entity.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,7 +23,9 @@ public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilte
             return null;
         }
         List<String> roles = List.of(rolesStr.split(","));
-        return new PreAuthHeaderPrincipal(username, roles);
+
+        List<String> authorities = roles.stream().flatMap(role -> UserRole.valueOf(role).getAuthorities().stream()).toList();
+        return new PreAuthHeaderPrincipal(username, authorities);
     }
 
     @Override
