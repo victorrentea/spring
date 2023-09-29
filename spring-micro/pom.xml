@@ -33,7 +33,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
-
+        <dependency>
+            <!-- 1) The real sh*t -->
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+        </dependency>
         <!-- messages -->
      <!--   <dependency>
             <groupId>org.springframework.boot</groupId>
