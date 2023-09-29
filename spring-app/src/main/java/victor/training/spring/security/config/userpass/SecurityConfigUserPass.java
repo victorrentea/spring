@@ -26,7 +26,7 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         // le ia in ORDINE!! SOC!
         .mvcMatchers("/v3/api-docs").permitAll()
-        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/**").hasRole("ADMIN")
+//        .mvcMatchers(HttpMethod.DELETE, "/api/trainings/**").hasRole("ADMIN")
         .anyRequest().authenticated()
     ;
 
