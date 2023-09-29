@@ -28,9 +28,9 @@ class SecurityConfigKeyCloak extends KeycloakWebSecurityConfigurerAdapter implem
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, @Value("${keycloak.resource}") String clientName) {
         // extract roles from realm_access
-//         var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+         var keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         // extract roles from resource_access for the current client
-        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
+//        var keycloakAuthenticationProvider = new KeycloakResourceAuthenticationProvider(clientName);
 
 
         // # Add "ROLE_" before every role in the token

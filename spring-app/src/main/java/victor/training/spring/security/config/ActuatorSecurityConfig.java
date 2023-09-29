@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
 import victor.training.spring.security.config.apikey.ApiKeyFilter;
 
 @Order(10) // less than the default 100 => runs first picking up the actuator endpoints
@@ -27,6 +28,7 @@ import victor.training.spring.security.config.apikey.ApiKeyFilter;
 @Profile({"userpass","jwt","keycloak","apikey", "header"})
 @ConfigurationProperties("actuator.security")
 public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
+  // defineste aici un al doilea security fitler chain
 
   private String apiKey;
   // or
@@ -35,19 +37,21 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator URLs
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict this filter chain only to actuator URLs
         .authorizeRequests()
 
         // curl http://localhost:8080/actuator/health -v
         .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
+//        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
+          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
 
     // and that authentication comes as apikey or Basic
 
+  //http.addFilter(new X509AuthenticationFilter())
+
     // curl http://localhost:8080/actuator/prometheus -v -H 'x-api-key: secret'
-    http.addFilter(new ApiKeyFilter(apiKey));
+//    http.addFilter(new ApiKeyFilter(apiKey));
     // -- or --
     // curl http://localhost:8080/actuator/prometheus -v -u actuator:actuator
     http.httpBasic().and().userDetailsService(actuatorUserDetailsService());
