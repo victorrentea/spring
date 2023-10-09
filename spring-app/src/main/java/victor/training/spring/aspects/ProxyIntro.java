@@ -13,7 +13,6 @@ public class ProxyIntro {
     }
 }
 // ------------------------
-@Service
 class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
@@ -27,7 +26,6 @@ class SecondGrade {
     }
 }
 
-@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
