@@ -2,11 +2,13 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import victor.training.spring.first.subp.Y;
 
+import javax.annotation.PostConstruct;
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -25,10 +27,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public class X {
   private final Y y;
   private final OClasaDintrunJar o;
+  @Value("${db.password}")
+  private String dbPass;
 
   public int logic() {
     o.method();
     return 1 + y.logic();
+  }
+
+  @PostConstruct
+  public void atStartup() {
+    System.out.println("DB PASS: " + dbPass);
   }
 
 }
