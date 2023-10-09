@@ -1,4 +1,4 @@
-package victor.training.spring;
+package victor.training.spring.first.subp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
