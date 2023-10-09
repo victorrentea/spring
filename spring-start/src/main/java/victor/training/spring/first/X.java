@@ -2,7 +2,6 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,14 +26,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @RequiredArgsConstructor // lombok = dovada ca java e '95
 public class X {
   private final Y y;
-  @Qualifier("a")
-  private final OClasaDintrunJar o;
+//  @Qualifier("a") // nu mai e necesar daca numesti punctul de injectie
+//  (ctor arg sau camp @Autowired) exact ca numele beanului dorit
+  private final OClasaDintrunJar a;
   @Value("${db.password}")
   private final String dbPass;
 
 
   public int logic() {
-    o.method();
+    a.method();
     return 1 + y.logic();
   }
 
