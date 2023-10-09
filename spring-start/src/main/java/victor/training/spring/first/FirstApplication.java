@@ -44,6 +44,7 @@ public class FirstApplication implements CommandLineRunner {
 
   @Override // from CommandLineRunner
   public void run(String... args) {
+    System.out.println("Auto");
     System.out.println(x.logic());
   }
 

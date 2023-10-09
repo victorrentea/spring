@@ -1,3 +1,4 @@
+
 db:
     password: big secret
 mail:
@@ -30,3 +31,4 @@ welcome:
     gate: 123
 
 from.email: eu
+debug: true
