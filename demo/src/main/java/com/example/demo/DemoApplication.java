@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 @RestController
 @SpringBootApplication
@@ -21,11 +23,17 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	// TODO sa intoacem un GetReservationResponse alta clasa construita din entitate
+	// TODO  sa dea 404 cand nu gaseste ID
 	@GetMapping("reservations/{id}")
-	public Reservation get(@PathVariable Long id) {
-		return repo.findById(id).get();
+	public ResponseEntity<Reservation> get(@PathVariable Long id) {
+		try {
+			return ResponseEntity.ok(repo.findById(id).get());
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
+
+
 	@PostMapping("reservations")
 	public Long create(@RequestParam String name) {
 		return repo.save(new Reservation(name)).getId();
