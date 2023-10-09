@@ -16,7 +16,8 @@ public class PlaySoundOnRestart {
   private static final String SOUND_FILE = "/sfx/vrum-low.wav";
 //  private static final String SOUND_FILE = "/sfx/tana-low.wav";
 //  private static final String SOUND_FILE = "/start.wav";
-  @EventListener(ContextRefreshedEvent.class)
+
+  //  @EventListener(ContextRefreshedEvent.class)
   public void playSound() {
     try {
       Clip clip = AudioSystem.getClip();
