@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@Primary
+//@Primary
 @Profile("local") // SPring vede clasa asta doar daca
 // profilul setat este "local"
 public class MailServiceLocalDummy
