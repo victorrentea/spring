@@ -3,10 +3,12 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,28 +29,29 @@ class TuOmSimpluCandVreiConfig {
   private final WelcomeInfo welcomeInfo;
 
   public void method() {
-    welcomeInfo.setWelcomeMessage("TZAPA!");
+//    welcomeInfo.setWelcomeMessage("TZAPA!");
   }
 
 }
 
 @Slf4j
-@Data // generates getters + setters
-@Component
+@Getter // generates getters + setters
+@ConstructorBinding
 @ConfigurationProperties(prefix = "welcome")
 @Validated
+@RequiredArgsConstructor
 public class WelcomeInfo {
-  int gate;
+  private final int gate;
   @NotNull
   @NotBlank
-  String welcomeMessage;
+  private final String welcomeMessage;
   @Size(min = 1)
   @NotNull
-  List<URL> supportUrls;
-  Map<Locale, String> localContactPhone;
-  HelpInfo help;
+  private final List<URL> supportUrls;
+  private final Map<Locale, String> localContactPhone;
+  private final HelpInfo help;
 
-  @Data
+  @Value // in lombok: clasa o imutabila: @Getter @RAC toate campurile finale si private hashcode tostring equals
   public static class HelpInfo {
     Integer appId;
 //    @FileExists
