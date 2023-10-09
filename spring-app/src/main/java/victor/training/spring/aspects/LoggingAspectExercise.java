@@ -1,8 +1,12 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
@@ -20,8 +24,17 @@ public class LoggingAspectExercise {
   // TODO 3 print the returned value
   //  = the value returned by #proceed()
   // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+
+//  @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
+//  @Around("execution(* victor.training..*DAO.*(..))") // NU
+//  @Around("@annotation(LoggedMethod)") // daca metoda e adnotata
+  @Around("@within(LoggedMethod)") // daca metoda e adnotata
+  public Object intercept(ProceedingJoinPoint point) throws Throwable {
+    log.info("Calling " + point.getSignature().getName() + " cu param " +
+        Arrays.toString(point.getArgs()));
+    Object r = point.proceed();
+    log.info("Result: " +r);
+    return r;
   }
 }
 // @Around("@within(Facade)") // method of classes annotated with @Facade

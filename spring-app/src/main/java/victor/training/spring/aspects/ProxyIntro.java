@@ -8,26 +8,28 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 @Slf4j
 public class ProxyIntro {
-  public static void main(String[] args) {
-    Maths realBean = new Maths();
-    Callback h = new MethodInterceptor() {
-      @Override
-      public Object intercept(Object o, Method method,
-                              Object[] params, MethodProxy methodProxy) throws Throwable {
-        log.debug(method.getName() + "(" + Arrays.toString(params) + ") = ");
-        return method.invoke(realBean, params);
-      }
-    };
-    Maths proxy = (Maths) Enhancer.create(Maths.class, h);
-    SecondGrade secondGrade = new SecondGrade(proxy);
-    secondGrade.mathClass();
-  }
+//  public static void main(String[] args) {
+//    Maths realBean = new Maths();
+//    Callback h = new MethodInterceptor() {
+//      @Override
+//      public Object intercept(Object o, Method method,
+//                              Object[] params, MethodProxy methodProxy) throws Throwable {
+//        log.debug(method.getName() + "(" + Arrays.toString(params) + ") = ");
+//        return method.invoke(realBean, params);
+//      }
+//    };
+//    Maths proxy = (Maths) Enhancer.create(Maths.class, h);
+//    SecondGrade secondGrade = new SecondGrade(proxy);
+//    secondGrade.mathClass();
+//  }
 }
 
 //@Slf4j
@@ -57,6 +59,7 @@ public class ProxyIntro {
 
 // TODO : ori de cate ori fii-ta din clasa 2 face o op matematica, tu vrei sa o auditezi (param+return)
 // ------------------------ // sub aceasta linie nu ai voie  sa atingi codu!
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -75,7 +78,10 @@ class SecondGrade {
 }
 
 /*final =1 crash💥*/
+@Component
+@LoggedMethod
 class Maths {
+//  @LoggedMethod
   public /*final 2silent ignore😱*/ int sum(int a, int b) {
     return a + b;
   }
