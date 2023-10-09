@@ -3,7 +3,7 @@ package victor.training.spring.first;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import victor.training.spring.subp.Y;
+import victor.training.spring.first.subp.Y;
 
 // declari aceasta clasa ca Bean in spring, o va instantia O DATA
 //@Service // = business logic  BR-4581

@@ -29,9 +29,9 @@ import org.springframework.stereotype.Service;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
-@ComponentScan(basePackages =
-    {"victor.training.spring.subp",
-        "victor.training.spring.first"})
+//@ComponentScan(basePackages =
+//    {"victor.training.spring.subp",
+//        "victor.training.spring.first"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
