@@ -1,7 +1,7 @@
 db:
     password: big secret
 mail:
-    sender: dummy
+    sender: real
 spring:
     mail:
         host: smtp.gmail.com

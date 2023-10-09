@@ -2,6 +2,7 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 //@Profile("prod") // NU pun cod netestat vreodata in prod direct.
-@Profile("!local")
+//@Profile("!local")
+@ConditionalOnMissingBean(type = "victor.training.spring.first.MailServiceLocalDummy")
 public class MailServiceImpl
     implements MailService {
   @Value("${from.email}")
