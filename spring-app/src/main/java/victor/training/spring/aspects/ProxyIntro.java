@@ -1,10 +1,13 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -15,7 +18,8 @@ public class ProxyIntro {
     Maths realBean = new Maths();
     Callback h = new MethodInterceptor() {
       @Override
-      public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
+      public Object intercept(Object o, Method method,
+                              Object[] params, MethodProxy methodProxy) throws Throwable {
         log.debug(method.getName() + "(" + Arrays.toString(params) + ") = ");
         return method.invoke(realBean, params);
       }
@@ -55,25 +59,35 @@ public class ProxyIntro {
 // ------------------------ // sub aceasta linie nu ai voie  sa atingi codu!
 class SecondGrade {
   private final Maths maths;
-
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
 
   public void mathClass() {
+//    Maths maths = new Maths(); // 5 new = fara DI = fara proxy-uri
+    System.out.println("Oare cu ce Maths lucrez aici? " + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("8 + 8 = " + maths.sum(8, 8));
+//    System.out.println("800 x 800 = " + maths.product(800, 800));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
 
+/*final =1 crash💥*/
 class Maths {
-  public int sum(int a, int b) {
+  public /*final 2silent ignore😱*/ int sum(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+  public /*static 3ignored*/ int product(int a, int b) {
+    if (b > 100) {
+      throw new IllegalArgumentException("NU POT");
+    }
+    int r = 0;
+    for (int i = 0; i < a; i++) {
+      r = sum(r, b); // 👑 4:  apelurile LOCALE in aceeasi clasa nu sunt interceptate
+    }
+    return r;
   }
 }
 
