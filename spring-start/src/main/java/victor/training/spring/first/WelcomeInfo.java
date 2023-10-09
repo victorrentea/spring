@@ -3,33 +3,64 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@Component
+@RequiredArgsConstructor
+class TuOmSimpluCandVreiConfig {
+  private final WelcomeInfo welcomeInfo;
+
+  public void method() {
+    welcomeInfo.setWelcomeMessage("TZAPA!");
+  }
+
+}
+
 @Slf4j
 @Data // generates getters + setters
 @Component
+@ConfigurationProperties(prefix = "welcome")
+@Validated
 public class WelcomeInfo {
   int gate;
-  String welcomeMessage; // TODO 4a validate is not null and size >= 4
-  List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
+  @NotNull
+  @NotBlank
+  String welcomeMessage;
+  @Size(min = 1)
+  @NotNull
+  List<URL> supportUrls;
   Map<Locale, String> localContactPhone;
   HelpInfo help;
 
   @Data
   public static class HelpInfo {
     Integer appId;
+//    @FileExists
     File file; // TODO 4c validate exists on disk
   }
 
+  @PostConstruct
+  public void atStartup() {
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Nu-i! " + help.file);
+//    }
+  }
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
