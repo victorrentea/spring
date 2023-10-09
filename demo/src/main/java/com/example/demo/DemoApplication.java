@@ -1,14 +1,13 @@
 package com.example.demo;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +52,15 @@ public class DemoApplication {
 		return repo.findAll();
 	}
 
+	@GetMapping("reservations/latest")
+	public List<Reservation> method() {
+		// CR: GET /reservation/latest sa intoarca ultimele n=5
+		// rezervari create dupa creationDate (order by descendent), max.reservations citit din fisier .properties
+		PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction.DESC, "creationDate");
+		return repo.findAll(pageRequest).getContent();
+	}
+@org.springframework.beans.factory.annotation.Value("${max.reservations}")
+private int size;
 	@Autowired
 	private ReservationRepo repo;
 }
@@ -67,8 +75,10 @@ class DummyDataInserter {
 		repo.save(new Reservation("Claudiu"));
 	}
 }
-interface ReservationRepo
-		extends JpaRepository<Reservation, Long> {}
+interface ReservationRepo extends JpaRepository<Reservation, Long> {
+	List<Reservation> findByName(String name);
+
+}
 @Data // get set hash/eq tostr
 @Entity
 class Reservation {
@@ -77,7 +87,7 @@ class Reservation {
 	private Long id;
 	@Size(min = 3)
 	private String name;
-	private LocalDate creationDate;
+	private LocalDate creationDate = LocalDate.now();
 	public Reservation() {	}
 	public Reservation(String name) {
 		this.name = name;
