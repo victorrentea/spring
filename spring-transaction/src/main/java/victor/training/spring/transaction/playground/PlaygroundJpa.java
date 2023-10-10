@@ -15,14 +15,13 @@ public class PlaygroundJpa {
   private final MessageRepo repo;
   private final OtherJpaClass other;
 
-  @Transactional
   public void transactionOne()  {
     repo.save(new Message("Ceva"));
   }
+  @Transactional
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
-    message.setMessage("altu");
-    repo.save(message);
+    message.setMessage("altu"); //SOC: modificarea unei @Entity in cadrul unei metode @Transactional ajunge automat UPDATE in DB
   }
 }
 @Service
