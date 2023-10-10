@@ -6,21 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
 public class Playground {
   private final MessageRepo repo;
-  private final EntityManager entityManager;
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
 
   @Transactional
   public void transactionOne() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )"); //SQL
-//    if (true) throw new IllegalArgumentException("Oups!"); // face rollback => atomic totul
-    repo.save(new Message(null)); // JPA insert
+    repo.sqlNativ();
+    repo.save(new Message("null")); // JPA insert
   }
 
   public void transactionTwo() {}
