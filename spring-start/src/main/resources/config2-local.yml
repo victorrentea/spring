@@ -1,0 +1,11 @@
+welcome:
+  help:
+    app-id: 9999
+    file: c:/help-file.doc
+  localContactPhone:
+    FR: 430123414123
+    RO: 401312121414
+  supportUrls:
+    - http://a.com
+  welcomeMessage: 🥺
+  gate: 888
