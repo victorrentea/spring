@@ -3,10 +3,8 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +17,8 @@ public class Playground {
   @Transactional
   public void transactionOne() {
     repo.sqlNativ();
-    repo.save(new Message("null")); // JPA insert
+    other.f();
+    repo.sqlNativ();
   }
 
   public void transactionTwo() {}
@@ -29,6 +28,11 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void f() {
+    repo.save(new Message("null")); // JPA insert
+  }
 }
 // TODO
 // 0 p6spy
