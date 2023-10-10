@@ -4,13 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Message {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @NotNull
     private String message;
 
     private Message() { // for hibernate only

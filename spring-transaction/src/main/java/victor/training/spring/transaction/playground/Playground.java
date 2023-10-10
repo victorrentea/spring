@@ -18,9 +18,9 @@ public class Playground {
 
   @Transactional
   public void transactionOne() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (1,'SQL' )"); //SQL
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )"); //SQL
 //    if (true) throw new IllegalArgumentException("Oups!"); // face rollback => atomic totul
-    repo.save(new Message("JPA")); // JPA insert
+    repo.save(new Message(null)); // JPA insert
   }
 
   public void transactionTwo() {}
