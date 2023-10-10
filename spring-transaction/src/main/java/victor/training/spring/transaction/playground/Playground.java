@@ -16,13 +16,18 @@ public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
-
+//  @TransactionAttribute (ejb)
   @Transactional
-  public void transactionOne() throws FileNotFoundException {
+  public void transactionOne()  {
     repo.sqlNativ();
     other.f();
 //      throw new IllegalArgumentException(); // runtime
-    new FileInputStream("a.dat");
+    try {
+      new FileInputStream("a.dat");
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+//      throw new MyException(ErrorCode.NASPA, e); // back to the future: 2023 anu Domnului
+    }
   }
   public void transactionTwo() {}
 }
