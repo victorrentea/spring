@@ -18,12 +18,12 @@ public class PlaygroundJpa {
   @Transactional
   public void transactionOne()  {
     repo.save(new Message("Ceva"));  //INSERT
-    repo.save(new Message("Doi")); //INSERT
+    repo.save(new Message("Ceva")); //INSERT
     // fortezi un flush mai devreme: cu..
 //    repo.saveAndFlush(new Message("Doi")); //INSERT
 //    repo.flush(); // explicit call
 //    System.out.println(repo.findByMessage("Doi"));// orice SELECT in DB hibernate il precedeaza cu un FLUSH (scrie iN DB tot ce mai avea de scris)
-    System.out.println("Ies din functie --- ");
+    System.out.println("Ies din functie: rabbit.send(), kafka.send() --- ");
   }
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
