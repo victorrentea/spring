@@ -18,10 +18,10 @@ public class PlaygroundJpa {
   public void transactionOne()  {
     repo.save(new Message("Ceva"));
   }
-  @Transactional
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("altu"); //SOC: modificarea unei @Entity in cadrul unei metode @Transactional ajunge automat UPDATE in DB
+    repo.save(message);
   }
 }
 @Service
