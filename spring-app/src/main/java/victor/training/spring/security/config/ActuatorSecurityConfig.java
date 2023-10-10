@@ -35,14 +35,14 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator URLs
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator/** URLs
         .authorizeRequests()
 
         // curl http://localhost:8080/actuator/health -v
         .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
+//        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
+          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
 
     // and that authentication comes as apikey or Basic
 
