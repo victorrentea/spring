@@ -22,7 +22,7 @@ public class Barman {
       return new Vodka();
    }
 
-   public void auditCocktail(String name) {
+   public void processLargeUpload(String name) {
       log.debug("Longer running task I don't need to wait for using data: " + name);
       ThreadUtils.sleepMillis(500);
       log.debug("DONE");
