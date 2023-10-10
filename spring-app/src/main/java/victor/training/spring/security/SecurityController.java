@@ -29,10 +29,9 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
-    // dto.username = anotherClass.asyncMethod().get();
-
-    // dto.role = extractOneRole(authentication.getAuthorities());
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    dto.username = authentication.getName();
+     dto.role = extractOneRole(authentication.getAuthorities());
 
     // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
