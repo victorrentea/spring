@@ -18,7 +18,7 @@ public class PlaygroundJpa {
   @Transactional
   public void transactionOne()  {
     repo.save(new Message("Ceva"));  //INSERT
-    repo.save(new Message("Ceva")); //INSERT
+    repo.saveAndFlush(new Message("Ceva")); //INSERT
     // fortezi un flush mai devreme: cu..
 //    repo.saveAndFlush(new Message("Doi")); //INSERT
 //    repo.flush(); // explicit call
