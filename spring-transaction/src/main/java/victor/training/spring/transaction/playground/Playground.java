@@ -29,9 +29,9 @@ public class Playground {
 class OtherClass {
   private final MessageRepo repo;
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional
   public void f() {
-    repo.save(new Message("null")); // JPA insert
+    repo.save(new Message("Job failed with status : ... ")); // JPA insert
   }
 }
 // TODO
