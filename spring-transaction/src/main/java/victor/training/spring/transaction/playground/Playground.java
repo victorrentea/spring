@@ -16,6 +16,7 @@ public class Playground {
   private final OtherClass other;
 
 
+  @Transactional
   public void transactionOne() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (1,'SQL' )"); //SQL
 //    if (true) throw new IllegalArgumentException("Oups!"); // face rollback => atomic totul
