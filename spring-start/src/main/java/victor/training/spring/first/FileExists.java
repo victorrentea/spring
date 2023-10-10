@@ -1,5 +1,6 @@
 package victor.training.spring.first;
 
+import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
@@ -9,7 +10,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
-@javax.validation.Constraint(validatedBy = FileExistsValidator.class)
+// custom javax.validation annotation
+@Constraint(validatedBy = FileExists.FileExistsValidator.class)
 @Retention(RUNTIME) // stops javac from removing it at compilation
 public @interface FileExists {
    String message() default "File does not exist";
@@ -17,11 +19,11 @@ public @interface FileExists {
    Class<?>[] groups() default {};
 
    Class<? extends Payload>[] payload() default {};
-}
-
-class FileExistsValidator implements ConstraintValidator<FileExists, File> {
-   @Override
-   public boolean isValid(File value, ConstraintValidatorContext context) {
-      return value.isFile();
+   class FileExistsValidator implements ConstraintValidator<FileExists, File> {
+      @Override
+      public boolean isValid(File value, ConstraintValidatorContext context) {
+         return value.isFile();
+      }
    }
 }
+
