@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -15,20 +18,18 @@ public class Playground {
 
 
   @Transactional
-  public void transactionOne() {
+  public void transactionOne() throws FileNotFoundException {
     repo.sqlNativ();
     other.f();
-    repo.sqlNativ();
+//      throw new IllegalArgumentException(); // runtime
+    new FileInputStream("a.dat");
   }
-
   public void transactionTwo() {}
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-
   @Transactional
   public void f() {
     repo.save(new Message("Job failed with status : ... ")); // JPA insert
