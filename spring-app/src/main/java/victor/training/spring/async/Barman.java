@@ -25,6 +25,9 @@ public class Barman {
    public void processLargeUpload(String name) {
       log.debug("Longer running task I don't need to wait for using data: " + name);
       ThreadUtils.sleepMillis(500);
+      if (true) {
+         throw new IllegalArgumentException("VALEU eroare la fisier.");
+      }
       log.debug("DONE");
    }
 }
