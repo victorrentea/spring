@@ -18,10 +18,16 @@ public class PlaygroundEx {
     try {
       other.atomic();
     } catch (Exception e) {
-      saveError(e);
+     other. saveError(e);
       throw new RuntimeException(e);
     }
   }
+
+}
+@Service
+@RequiredArgsConstructor
+class UnService {
+  private final MessageRepo repo;
   // 👑 TZEAPA nr1: daca chemi o metoda in aceeasi clasa nu se mai aplica @Transactional
   // pt ca proxyurile nu functioneaza daca chemi metoda local
   @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -29,11 +35,6 @@ public class PlaygroundEx {
     System.out.println("EU");
     repo.save(new Message("EROARE: " + e));
   }
-}
-@Service
-@RequiredArgsConstructor
-class UnService {
-  private final MessageRepo repo;
   @Transactional
   public void atomic() {
     repo.save(new Message("insert transfer"));
