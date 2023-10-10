@@ -35,7 +35,9 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()) // restrict only actuator URLs
+    http.requestMatcher(EndpointRequest.toAnyEndpoint())
+        // this config file applies to /actuator/** requests
+
         .authorizeRequests()
 
         // curl http://localhost:8080/actuator/health -v
@@ -44,13 +46,13 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
 //          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
 
-    // and that authentication comes as apikey or Basic
 
-    // curl http://localhost:8080/actuator/prometheus -v -H 'x-api-key: secret'
+    // the principal is identified using:
     http.addFilter(new ApiKeyFilter(apiKey));
-    // -- or --
-    // curl http://localhost:8080/actuator/prometheus -v -u actuator:actuator
+    // curl http://localhost:8080/actuator/prometheus -v -H 'x-api-key: secret'
+    // -- xor --
     http.httpBasic().and().userDetailsService(actuatorUserDetailsService());
+    // curl http://localhost:8080/actuator/prometheus -v -u actuator:actuator
   }
 
   @Bean
