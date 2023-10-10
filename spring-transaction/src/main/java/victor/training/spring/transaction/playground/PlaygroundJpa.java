@@ -15,8 +15,15 @@ public class PlaygroundJpa {
   private final MessageRepo repo;
   private final OtherJpaClass other;
 
+  @Transactional
   public void transactionOne()  {
-    repo.save(new Message("Ceva"));
+    repo.save(new Message("Ceva"));  //INSERT
+    repo.save(new Message("Doi")); //INSERT
+    // fortezi un flush mai devreme: cu..
+//    repo.saveAndFlush(new Message("Doi")); //INSERT
+//    repo.flush(); // explicit call
+//    System.out.println(repo.findByMessage("Doi"));// orice SELECT in DB hibernate il precedeaza cu un FLUSH (scrie iN DB tot ce mai avea de scris)
+    System.out.println("Ies din functie --- ");
   }
   public void transactionTwo() {
     Message message = repo.findById(1L).orElseThrow();

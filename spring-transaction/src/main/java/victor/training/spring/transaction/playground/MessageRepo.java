@@ -9,4 +9,6 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
       nativeQuery = true)
   @Modifying
   void sqlNativ();
+
+  Message findByMessage(String message);
 }
