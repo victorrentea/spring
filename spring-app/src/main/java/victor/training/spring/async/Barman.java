@@ -22,8 +22,9 @@ public class Barman {
       ThreadUtils.sleepMillis(1000);
       return new Vodka();
    }
-   @Async("executor")
-   public void processLargeUpload(String name) {
+   // fire-and-forget
+   @Async("fileUpload")
+   public void processLargeUploadAsync(String name) {
       log.debug("Longer running task I don't need to wait for using data: " + name);
       ThreadUtils.sleepMillis(500);
       if (true) {

@@ -37,9 +37,7 @@ public class DrinkerController {
       Beer beer = futureBeer.get();// blochez threadul curent pana cand primesc berea
       Vodka vodka = futureVodka.get();
 
-//      CompletableFuture.runAsync(
-//          () -> barman.processLargeUpload("Dilly")); // 0.5s
-      barman.processLargeUpload("Dilly");
+      barman.processLargeUploadAsync("Dilly");
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);

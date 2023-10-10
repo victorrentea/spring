@@ -21,6 +21,18 @@ public class AsyncConfig {
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
 	}
+
+	@Bean
+	public ThreadPoolTaskExecutor fileUpload() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(1);
+		executor.setMaxPoolSize(1);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("file-");
+		executor.initialize();
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		return executor;
+	}
 }
 
 
