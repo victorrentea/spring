@@ -30,7 +30,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void f() {
     repo.save(new Message("Job failed with status : ... ")); // JPA insert
   }
