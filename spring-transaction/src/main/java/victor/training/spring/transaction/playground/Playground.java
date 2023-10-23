@@ -37,6 +37,7 @@ public class Playground {
     } catch (Exception e) {
       log.error("OMG " + e);
     }
+    repo.save(new Message("never gets to DB"));
   } // after the end of tx, INSERT in DB + COMMIT
   public void transactionTwo() {}
 }
