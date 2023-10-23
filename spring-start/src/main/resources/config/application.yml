@@ -1,7 +1,5 @@
-db:
-    password: big secret
-mail:
-    sender: dummy
+db.password: big secret
+
 spring:
     mail:
         host: smtp.gmail.com
@@ -14,6 +12,8 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+
+# injected in WelcomeProps
 welcome:
     help:
         app-id: 1251

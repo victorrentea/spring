@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,28 +14,30 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // generates getters + setters
+@Data // = getters + setters
 @Component
-public class WelcomeInfo {
-  int gate;
-  String welcomeMessage; // TODO 4a validate is not null and size >= 4
-  List<URL> supportUrls; // TODO 4b validate list contains at least 1 element
+public class WelcomeProps {
+  int gate; // TODO set default
+  String welcomeMessage; // TODO not null + size >= 4
+  List<URL> supportUrls; // TODO size >= 1
   Map<Locale, String> localContactPhone;
-  HelpInfo help;
+  Help help;
 
   @Data
-  public static class HelpInfo {
+  public static class Help {
     Integer appId;
     File file; // TODO 4c validate exists on disk
   }
 
   @PostConstruct
-  public void printMyselfAtStartup() throws JsonProcessingException {
+  public void printMyself() throws JsonProcessingException {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    log.info("WelcomeInfo:\n" + jsonToString);
+    log.info("WelcomeProps:\n" + jsonToString);
   }
 }
-// to test the points below, watch the log for 'WelcomeInfo:' output
+
+
+// to test the points below, watch the log output above
 //   or create a new component in which to inject WelcomeInfo and use a property
 // TODO 1 inject welcome.welcomeMessage property in 'welcomeMessage' field
 //   Hint: @Value("${
