@@ -11,25 +11,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class ProxyIntro {
-    public static void main(String[] args) {
-        // WE play the role of Spring here ...
-        Maths real = new Maths();
-        Callback h = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Calling " + method.getName() + " with " + Arrays.toString(params));
-                Object r = method.invoke(real, params);
-                System.out.println("==>"+r);
-                return r; // call the method on the real original instance
-            }
-        };
-        Maths proxy = (Maths) Enhancer.create(Maths.class, h); // cglib
-        SecondGrade secondGrade = new SecondGrade(proxy);
-
-        secondGrade.mathClass();
-    }
-}
+//public class ProxyIntro {
+//    public static void main(String[] args) {
+//        // WE play the role of Spring here ...
+//        Maths real = new Maths();
+//    Callback h = new MethodInterceptor() {
+//        @Override
+//        public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
+//            System.out.println("Calling " + method.getName() + " with " + Arrays.toString(params));
+//            Object r = method.invoke(real, params);
+//            System.out.println("==>"+r);
+//            return r; // call the method on the real original instance
+//        }
+//    };
+//    Maths proxy = (Maths) Enhancer.create(Maths.class, h); // cglib
+//    SecondGrade secondGrade = new SecondGrade(proxy);
+//
+//        secondGrade.mathClass();
+//}
+//}
 //class MyHack extends Maths {
 //    private final Maths delegate;
 //    MyHack(Maths delegate) {
@@ -59,6 +59,8 @@ class SecondGrade {
     }
 
     public void mathClass() {
+        System.out.println("Who are you talking to ? " + maths.getClass());
+
         System.out.println("8 + 4 = " + maths.sum(8, 4));
         System.out.println("6 + 6 = " + maths.sum(6, 6));
         System.out.println("6 + 8 = " + maths.sum(6, 8));
@@ -68,13 +70,18 @@ class SecondGrade {
 
 @LoggedMethod
 @Service
+/* #2: final crash*/
 class Maths {
-    public int sum(int a, int b) {
+//    private Maths() {} // #6
+    public /* #4 final ignored*/ int sum(int a, int b) {
         return a + b;
     }
 
-    public int product(int a, int b) {
+    @Transactional
+    public /* #3 static ignored*/ int product(int a, int b) {
+        if (a > 2) {
+            throw new IllegalArgumentException("Too much!");
+        }
         return a * b;
     }
 }
-
