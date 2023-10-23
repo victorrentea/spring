@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +27,14 @@ import org.springframework.stereotype.Component;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
-@ComponentScan(basePackages = {
-    "victor.training.spring.first",
-    "another.pack"})
+//@ComponentScan(basePackages = {
+//    "victor.training.spring.first",
+//    "another.pack"})
+
+@Import({
+    X.class
+}) // we want control what classes we define as bean
+
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
