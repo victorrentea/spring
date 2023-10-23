@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import javax.swing.event.MenuEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -34,9 +35,16 @@ public class Playground {
   // what does this do?
   // starts a tx at the start and ATTEMPT to commit the tx at the end if no exception is thrown
   // we NEED transactions only if we CHANGE data in DB (DML: update,insert,delete)
-
+private final DataSource dataSource;
   @Transactional
   public void transactionOne() {
+    //try {
+    //  longRunningSELECT
+    //} catch (InterruptedException e) {
+    //  dataSource.getConnection().abort(Executors.newCachedThreadPool());
+    //}
+
+
     repo.saveAndFlush(new Message("JPA")); // will not wait for the end of the tx for the flush, send the INSERT right now in the CURRENT TX
     System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
 //    repo.saveAndFlush(new Message("JPA"));
@@ -77,7 +85,9 @@ record MyEventAfterCommitToSendOnKafka(String message) {}
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional// (rollbackFor = Exception.class) // this proxy considers OK to see a Checked exception.
+  @Transactional
+    // (isolation = )
+    // (rollbackFor = Exception.class) // this proxy considers OK to see a Checked exception.
   // WHY ? because this is how EJB did.
   public void secondMethod() throws FileNotFoundException {
     repo.save(new Message("JPA2")); // rolledback
