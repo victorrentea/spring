@@ -1,18 +1,8 @@
 package victor.training.spring.first.pack;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.first.Y;
-
-import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
 //@Controller // = HTML generated on server with .jsp .jsf VAADIN Velocity Freemarker
@@ -27,11 +17,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 //@Configuration // @Bean
 @Component // = everything else
 public class X {
-  @Autowired
-  private Y y; // #2 field injection
+  private final Y y;
 
-  // #3 method injection (rarely used)
-  // @Autowired public void init(Y y) {this.y2 = y;}
+  public X(Y y) {
+    this.y = y;
+  }
+
+  @Autowired
+  public void init(Y y, Y y2) {
+    // only when you want to DO stuff with those dependencies, not just store them as fields
+    System.out.println("Y: " + y);
+  }
 
   public int logic() {
     return 1 + y.logic();
