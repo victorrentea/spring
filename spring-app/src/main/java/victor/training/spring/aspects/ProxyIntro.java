@@ -66,8 +66,8 @@ class SecondGrade {
     }
 }
 
-@Service
 @LoggedMethod
+@Service
 class Maths {
     public int sum(int a, int b) {
         return a + b;
