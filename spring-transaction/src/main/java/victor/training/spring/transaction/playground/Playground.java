@@ -32,12 +32,8 @@ public class Playground {
   public void transactionOne() {
     repo.save(new Message("JPA")); // will not wait for the end of the tx for the flush, send the INSERT right now in the CURRENT TX
     System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
-    try {
-      other.secondMethod();
-    } catch (Exception e) {
-      log.error("OMG " + e);
-    }
-    repo.save(new Message("never gets to DB"));
+    repo.save(new Message("JPA"));
+    System.out.println("rabbit.send()");
   } // after the end of tx, INSERT in DB + COMMIT
   public void transactionTwo() {}
 }
