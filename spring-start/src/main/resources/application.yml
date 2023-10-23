@@ -3,6 +3,8 @@ db:
 some.prop: why do I have to set this on my local
 mail:
     sender: dummy
+
+##########################################################################################
 spring:
     mail:
         host: smtp.gmail.com
@@ -18,20 +20,9 @@ spring:
     datasource:
         hikari:
             auto-commit: true
+    config:
+        import: classpath:/this-too.yaml
 
 
+clear.cron: 0 0 0 * * *
 
-welcome:
-    help:
-        app-id: 1251
-        file: c:/help-file.pdf
-    localContactPhone:
-        FR: 430123414123
-        RO: 401312121414
-    supportUrls:
-        - http://google.com
-        - http://stackoverflow.com
-        - http://baeldung.com
-        - http://spring.io
-    welcomeMessage: Hi!
-#    gate: 123

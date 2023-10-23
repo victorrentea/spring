@@ -23,6 +23,7 @@ public class MailServiceImpl implements MailService {
   private String prop;
 
   public void sendEmail(String body) {
+
     SimpleMailMessage message = new SimpleMailMessage();
     message.setFrom("noreply@victorrentea.ro");
     message.setTo("victor@victorrentea.ro");
