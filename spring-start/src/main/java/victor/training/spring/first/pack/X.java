@@ -26,13 +26,11 @@ public class X {
   @Autowired
   private Y y;
   @Autowired
-//  @Qualifier("mailServiceImpl") // not needed
-  private MailService mailServiceImpl;
-
+  private MailService mailService;
 
   @PostConstruct
   public void init() {
-    System.out.println("What was I injected: " + mailServiceImpl);
+    System.out.println("What was I injected: " + mailService);
   }
 
   @Autowired
