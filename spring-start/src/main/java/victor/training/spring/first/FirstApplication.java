@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +40,7 @@ import org.springframework.context.event.EventListener;
 //    X.class
 //}) // we want control what classes we define as bean
 
+@EnableConfigurationProperties(WelcomeInfo.class)
 @Slf4j
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {

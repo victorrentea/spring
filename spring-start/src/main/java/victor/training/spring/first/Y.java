@@ -37,7 +37,7 @@ public class Y {
   public void postConstruct() {
     System.out.println("Too Early sometimes: dbpass: " + dbPass);
     String welcomeMessage = configProps.getWelcomeMessage();
-    configProps.setWelcomeMessage("OMG I HACKED YOU"); // illegal!!
+//    configProps.setWelcomeMessage("OMG I HACKED YOU"); // illegal!!
     System.out.println(
         welcomeMessage
     );
