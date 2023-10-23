@@ -28,6 +28,7 @@ import javax.annotation.PostConstruct;
 //@Lazy
 public class X {
   @Autowired
+
   private Y y;
   @Autowired
   private MailService mailService;
