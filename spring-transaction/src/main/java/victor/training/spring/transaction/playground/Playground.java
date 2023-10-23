@@ -27,6 +27,7 @@ public class Playground {
   public void transactionOne() {
 
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)", "PK violation");
     if (true) throw new IllegalArgumentException();
     entityManager.persist(new Message("JPA"));
   }
