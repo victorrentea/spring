@@ -1,10 +1,13 @@
 package victor.training.spring.aspects;
 
 import io.micrometer.core.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +62,7 @@ class SecondGrade {
     }
 
     public void mathClass() {
+//        Maths maths = new Maths(); // #5 there is no magic unless you DI-it
         System.out.println("Who are you talking to ? " + maths.getClass());
 
         System.out.println("8 + 4 = " + maths.sum(8, 4));
@@ -73,15 +77,25 @@ class SecondGrade {
 /* #2: final crash*/
 class Maths {
 //    private Maths() {} // #6
+//    @Secured("ROLE_ADMIN")
+//    @Cacheable("")
+//    @Transactional
     public /* #4 final ignored*/ int sum(int a, int b) {
         return a + b;
     }
 
-    @Transactional
-    public /* #3 static ignored*/ int product(int a, int b) {
-        if (a > 2) {
-            throw new IllegalArgumentException("Too much!");
+    /* #3 static ignored*/
+    public int product(int a, int b) {
+//        return a * b;
+        int result = 0;
+        for (int i = 0; i < a; i++) {
+            result = myselfButProxied.sum(result, b); // #1 👑 MAIN PITFALL OF PROXIES: they don't work for LOCAL METHOD CALLS
+            // withing the same class, ie this.f()
         }
-        return a * b;
+        return  result;
     }
+
+    @Autowired
+    private Maths myselfButProxied; // # life
+
 }
