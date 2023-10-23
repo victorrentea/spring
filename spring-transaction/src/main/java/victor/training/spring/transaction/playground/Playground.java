@@ -35,11 +35,12 @@ public class Playground {
 
   @Transactional
   public void transactionOne() {
-    repo.save(new Message("JPA")); // will not wait for the end of the tx for the flush, send the INSERT right now in the CURRENT TX
+    repo.saveAndFlush(new Message("JPA")); // will not wait for the end of the tx for the flush, send the INSERT right now in the CURRENT TX
     System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
-    repo.save(new Message("JPA"));
+    repo.saveAndFlush(new Message("JPA"));
 //    activemq.send()
     eventPublisher.publishEvent(new MyEventAfterCommitToSendOnKafka("Message created id: /..."));
+    log.info("exit the method");
   } // after the end of tx, INSERT in DB + COMMIT
   public void transactionTwo() {}
 
