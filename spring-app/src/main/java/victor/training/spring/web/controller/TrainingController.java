@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -23,6 +24,7 @@ public class TrainingController {
 	private final TrainingService trainingService;
 
 	@GetMapping
+// @Secured("ROLE_ADMIN")
 	public List<TrainingDto> getAll() {
 		return trainingService.getAllTrainings();
 	}
