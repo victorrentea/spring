@@ -1,5 +1,6 @@
 db:
     password: big secret
+some.prop: why do I have to set this on my local
 mail:
     sender: dummy
 spring:
@@ -14,6 +15,9 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+    datasource:
+        hikari:
+            auto-commit: true
 welcome:
     help:
         app-id: 1251
