@@ -1,4 +1,4 @@
-package victor.training.spring.first;
+package another.pack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,12 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import victor.training.spring.first.Y;
 
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Component // = everything else
 
 //@Controller // = HTML generated on server with .jsp .jsf VAADIN Velocity Freemarker
 //@RestController // REST API (JSON in out)
@@ -25,6 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 //@Adapter
 
 //@Configuration // @Bean
+@Component // = everything else
 public class X {
   @Autowired
   private Y y; // #2 field injection

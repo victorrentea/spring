@@ -1,16 +1,14 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import another.pack.X;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 // - Dependency Injection: field, constructor, method
 // - Defining beans: @Component & co, @ComponentScan
@@ -28,6 +26,9 @@ import org.springframework.stereotype.Service;
 
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
+@ComponentScan(basePackages = {
+    "victor.training.spring.first",
+    "another.pack"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
