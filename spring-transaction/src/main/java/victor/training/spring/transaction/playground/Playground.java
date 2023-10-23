@@ -15,6 +15,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import javax.swing.event.MenuEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -42,6 +44,7 @@ public class Playground {
     try {
       other.secondMethod();
     } catch (Exception e) {
+      log.error("Did the tx really commit for this exception? :   " + e);
       // nothing HAHAHA debug this !!!
     }
 
@@ -74,10 +77,22 @@ record MyEventAfterCommitToSendOnKafka(String message) {}
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional
-  public void secondMethod() {
+  @Transactional// (rollbackFor = Exception.class) // this proxy considers OK to see a Checked exception.
+  // WHY ? because this is how EJB did.
+  public void secondMethod() throws FileNotFoundException {
     repo.save(new Message("JPA2")); // rolledback
-    throw new IllegalArgumentException("Oups");
+//    throw new IllegalArgumentException("Oups");
+    throw new FileNotFoundException("Oups");
+    // MORAL? never declare "throws" in your code-base.
+    // every chceked exception you encounter wrap it in a runtime one, like this:
+//    throw new RuntimeException( new FileNotFoundException("Oups"));
   }
 
 }
+
+
+// it was 2005
+// outside was raining with EJB 2.0. one of the WORST standards in IT industry
+// XML itnerace, Home and Remote classe. Pain . Horrors. just to call a remote method on server.
+// In a forest, Ron was creating Spring.
+// They had to 'convert' EJB developers to Spring. steal man power and projects.
