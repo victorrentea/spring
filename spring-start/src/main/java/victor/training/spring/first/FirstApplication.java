@@ -1,15 +1,12 @@
 package victor.training.spring.first;
 
-import another.pack.X;
+import victor.training.spring.first.pack.X;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 // - Dependency Injection: field, constructor, method
 // - Defining beans: @Component & co, @ComponentScan
@@ -31,9 +28,9 @@ import org.springframework.stereotype.Component;
 //    "victor.training.spring.first",
 //    "another.pack"})
 
-@Import({
-    X.class
-}) // we want control what classes we define as bean
+//@Import({
+//    X.class
+//}) // we want control what classes we define as bean
 
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
