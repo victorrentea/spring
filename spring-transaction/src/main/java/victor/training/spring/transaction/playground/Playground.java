@@ -1,13 +1,17 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Playground {
@@ -25,12 +29,14 @@ public class Playground {
   // starts a tx at the start and ATTEMPT to commit the tx at the end if no exception is thrown
   // we NEED transactions only if we CHANGE data in DB (DML: update,insert,delete)
   public void transactionOne() {
-
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)", "SQL");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)", "PK violation");
-    if (true) throw new IllegalArgumentException();
-    entityManager.persist(new Message("JPA"));
-  }
+    repo.save(new Message("JPA")); // an INSERT is gonna happen at the end of the Tx (FLUSH)
+    System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
+    try {
+      other.secondMethod();
+    } catch (Exception e) {
+      log.error("OMG " + e);
+    }
+  } // after the end of tx, INSERT in DB + COMMIT
 
   public void transactionTwo() {}
 }
@@ -39,6 +45,13 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW) // why to use it?
+  public void secondMethod() {
+    repo.save(new Message("JPA2")); // rolledback
+    throw new IllegalArgumentException("Oups");
+  }
+
 }
 // TODO
 // 0 p6spy
