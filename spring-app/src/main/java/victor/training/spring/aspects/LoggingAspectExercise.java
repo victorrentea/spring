@@ -1,29 +1,36 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-@Slf4j
-@Aspect
+import java.util.Arrays;
+
+@Aspect // new !
 @Component
+@Slf4j
 public class LoggingAspectExercise {
-  // TODO 0: Run ProxySpringApp.main()
-  //  - if you see 6 + 6 = 12 in the log you're OK
-  // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
-  //  - use @Around("execution(* victor.training.spring..*.*(..))")
-  //      to intercept any method of any class in my app
-  //  - the function should take a ProceedingJoinPoint parameter
-  //  - call ProceedingJoinPoint#proceed() and return its result
-  // TODO 2 print the method name and arguments
-  //  - extract them from the ProceedingJoinPoint parameter
-  // TODO 3 print the returned value
-  //  = the value returned by #proceed()
-  // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+
+//  @Around("execution(* victor.training.spring.aspects.Maths.*(..))") // ugly don't!
+//  @Around("execution(* victor.training..*.*(..))") // dark magic
+  @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // nice
+  public Object intercept(ProceedingJoinPoint point) throws Throwable {
+    String methodName = point.getSignature().getName();
+    System.out.println("Calling " + methodName + " with " + Arrays.toString(point.getArgs()));
+
+    // call real method
+    var result = point.proceed();
+
+    System.out.println("Returned " + result);
+    return result;
   }
 }
+
+
+
+
 // @Around("@within(Facade)") // method of classes annotated with @Facade
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod
 // -- DANGER ZONE --
@@ -33,4 +40,4 @@ public class LoggingAspectExercise {
 //    aspects should be applied in MANY places => push logic INSIDE that method or to an earlier method calling it
 
 // also useful:
-// @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
+// @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.delete*(..))") // all subtypes of JpaRepository

@@ -1,9 +1,12 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -48,11 +51,13 @@ public class ProxyIntro {
 // restriction: don't edit code below the following line
 
 // ------------------------
+@Service
 class SecondGrade {
     private final Maths maths;
     public SecondGrade(Maths maths) {
         this.maths = maths;
     }
+
     public void mathClass() {
         System.out.println("8 + 4 = " + maths.sum(8, 4));
         System.out.println("6 + 6 = " + maths.sum(6, 6));
@@ -61,6 +66,8 @@ class SecondGrade {
     }
 }
 
+@Service
+@LoggedMethod
 class Maths {
     public int sum(int a, int b) {
         return a + b;
