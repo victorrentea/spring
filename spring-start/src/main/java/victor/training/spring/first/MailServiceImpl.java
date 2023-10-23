@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 //@ConditionalOnMissingBean( MailServiceLocalDummy.class)
 public class MailServiceImpl implements MailService {
   private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
-  @Value("${some.prop}")
+  @Value("${some.prop:hiddendefault value that only I know about}")
   private String prop;
 
   public void sendEmail(String body) {

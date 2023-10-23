@@ -13,8 +13,10 @@ import javax.annotation.PostConstruct;
 @Service
 @RequiredArgsConstructor
 public class Y {
-  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
-  private final String message;
+//  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
+//  private final String message;
+
+  private final WelcomeInfo configProps;
 
   @Lazy
   private final X x;
@@ -34,6 +36,11 @@ public class Y {
   @PostConstruct
   public void postConstruct() {
     System.out.println("Too Early sometimes: dbpass: " + dbPass);
+    String welcomeMessage = configProps.getWelcomeMessage();
+    configProps.setWelcomeMessage("OMG I HACKED YOU"); // illegal!!
+    System.out.println(
+        welcomeMessage
+    );
   }
 
   @EventListener(ApplicationStartedEvent.class) // listening for an even thrown by spring during startup

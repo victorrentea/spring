@@ -6,11 +6,13 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.entity.Training;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class TrainingDto {
 	public Long id;
+	@NotNull
 	@Size(min = 3, max = 50, message = "{customer.name.length}")
 	public String name;
 	public ContractType level;

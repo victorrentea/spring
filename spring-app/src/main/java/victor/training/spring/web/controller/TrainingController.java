@@ -12,6 +12,7 @@ import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class TrainingController {
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
-	public void create(@RequestBody TrainingDto dto) {
+	public void create(@RequestBody @Valid TrainingDto dto) {
 		trainingService.createTraining(dto);
 	}
 
