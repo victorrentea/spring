@@ -13,10 +13,6 @@ import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Component
-@Retention(RUNTIME) // stops javac from removing it at compilation
-@interface Adapter {}
-
 @Component // = everything else
 
 //@Controller // = HTML generated on server with .jsp .jsf VAADIN Velocity Freemarker
