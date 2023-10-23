@@ -24,10 +24,11 @@ public class Playground {
   // jdbcTemplate, EntityManager, mybatis, jooq
 
   private final OtherClass other;
-
-  @Transactional // what does this do?
+  // what does this do?
   // starts a tx at the start and ATTEMPT to commit the tx at the end if no exception is thrown
   // we NEED transactions only if we CHANGE data in DB (DML: update,insert,delete)
+
+  @Transactional
   public void transactionOne() {
     repo.save(new Message("JPA")); // an INSERT is gonna happen at the end of the Tx (FLUSH)
     System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
@@ -37,7 +38,6 @@ public class Playground {
       log.error("OMG " + e);
     }
   } // after the end of tx, INSERT in DB + COMMIT
-
   public void transactionTwo() {}
 }
 
@@ -45,18 +45,10 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-
-  @Transactional(propagation = Propagation.REQUIRES_NEW) // why to use it?
+  @Transactional
   public void secondMethod() {
     repo.save(new Message("JPA2")); // rolledback
     throw new IllegalArgumentException("Oups");
   }
 
 }
-// TODO
-// 0 p6spy
-// 1 Cause a rollback by breaking NOT NULL/PK/UQ, throw Runtime, throw CHECKED
-// 2 Tx propagates with your calls (in your thread😱)
-// 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
-// 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
-// 5 Performance: connection starvation issues : debate: avoid nested transactions
