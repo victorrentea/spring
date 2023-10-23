@@ -28,7 +28,7 @@ public class Playground {
   // starts a tx at the start and ATTEMPT to commit the tx at the end if no exception is thrown
   // we NEED transactions only if we CHANGE data in DB (DML: update,insert,delete)
 
-  @Transactional
+
   public void transactionOne() {
     repo.save(new Message("JPA")); // an INSERT is gonna happen at the end of the Tx (FLUSH)
     System.out.println("WTF: write-behind= JPA waits for the tx to finish OK before auto-flushing any pending changes");
