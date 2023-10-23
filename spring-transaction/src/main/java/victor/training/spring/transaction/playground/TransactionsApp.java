@@ -14,6 +14,8 @@ public class TransactionsApp implements CommandLineRunner {
 
    private final Playground playground;
 
+   // the caller side does NOT have a transaction yet.
+   // just like if I would hjave come from a @RestController method or @RabbitListener
    @Override
    public void run(String... args) throws Exception {
       System.out.println("============= TRANSACTION ONE ==============");
