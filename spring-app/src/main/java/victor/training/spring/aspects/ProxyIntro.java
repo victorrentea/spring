@@ -7,6 +7,8 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,10 +76,11 @@ class SecondGrade {
 
 @LoggedMethod
 @Service
+//@Scope(value = "request",proxyMode = ScopedProxyMode.TARGET_CLASS)
 /* #2: final crash*/
+//@Secured("ROLE_ADMIN")
 class Maths {
 //    private Maths() {} // #6
-//    @Secured("ROLE_ADMIN")
 //    @Cacheable("")
 //    @Transactional
     public /* #4 final ignored*/ int sum(int a, int b) {
