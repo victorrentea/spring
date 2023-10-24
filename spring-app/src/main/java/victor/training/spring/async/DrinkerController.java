@@ -46,7 +46,12 @@ public class DrinkerController {
       CompletableFuture<Beer> beerPromise = supplyAsync(()->barman.pourBeer(), executor);
       CompletableFuture<Vodka> vodkaPromise = supplyAsync(()->barman.pourVodka(), executor);
 
-      executor.submit(()->barman.auditCocktail("Dilly"));// fire-and-forget call: start but never wait to complete/throw
+      try {
+         System.out.println("Show us the proxy! " + barman.getClass());
+         barman.auditCocktail("Dilly"); // fire-and-forget call: start but never wait to complete/throw
+      } catch (IllegalArgumentException e) { // epic fail: will never run
+         throw new RuntimeException(e);
+      }
 
       CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombine(vodkaPromise,
           (beer, vodka) -> new DillyDilly(beer, vodka));

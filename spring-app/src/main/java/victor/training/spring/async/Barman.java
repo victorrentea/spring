@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import victor.training.spring.varie.ThreadUtils;
 import victor.training.spring.async.drinks.Beer;
@@ -22,6 +23,7 @@ public class Barman {
       return new Vodka();
    }
 
+   @Async("executor") // name of the thread pool bean to run on
    public void auditCocktail(String name) {
       log.debug("Longer running task I don't need to wait for using data: " + name);
       ThreadUtils.sleepMillis(500);
