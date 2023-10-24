@@ -66,7 +66,10 @@ private final DataSource dataSource;
 
 
 
-  @Transactional(readOnly = true) // for lazy loading to work
+  @Transactional
+      // these below can only be set when you START a transaction
+//      (isolation = Isolation.READ_COMMITTED)
+      (readOnly = true) // for lazy loading to work
   public void transactionTwo() {
     // WHERE message = "SQL"
 //    Message message = repo.findByMessageContainingIgnoreCase("SQL"); // throws
@@ -117,7 +120,7 @@ class OtherClass {
   public void secondMethod() throws FileNotFoundException {
     repo.save(new Message("JPA2")); // rolledback
 //    throw new IllegalArgumentException("Oups");
-    throw new FileNotFoundException("Oups");
+//    throw new FileNotFoundException("Oups");
     // MORAL? never declare "throws" in your code-base.
     // every chceked exception you encounter wrap it in a runtime one, like this:
 //    throw new RuntimeException( new FileNotFoundException("Oups"));
