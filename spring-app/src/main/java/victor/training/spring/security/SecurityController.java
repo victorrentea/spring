@@ -2,6 +2,9 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.slf4j.MDC;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,22 +37,23 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
+    MDC.put("key","value");
     dto.username = serviceMethod(principal);
     // dto.username = anotherClass.asyncMethod().get();
-
     // dto.role = extractOneRole(authentication.getAuthorities());
 
     // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
     //<editor-fold desc="KeyCloak">
-    //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //		dto.username = authentication.getName();
-    //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-    //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
-    //    // Optional:
-    //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-    //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-    //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+//    		dto.username = authentication.getName();
+//    		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
+//    		dto.authorities = stripRolePrefix(authentication.getAuthorities());
+//        // Optional:
+//    		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>)
+//            authentication.getPrincipal();
+//    		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
+//    		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
     //</editor-fold>
     return dto;
   }
@@ -59,6 +63,7 @@ public class SecurityController {
   }
 
   private String repoMethod(Principal principal) {
+//    String key = MDC.get("key");
 //    return principal.getName();
     // to avoid passing Principal everywhere:
 

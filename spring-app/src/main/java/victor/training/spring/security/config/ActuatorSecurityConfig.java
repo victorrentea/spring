@@ -36,19 +36,20 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint())
-        // this config file applies to /actuator/** requests
-
+        // this security filter chain applies to /actuator/** requests
         .authorizeRequests()
+          // curl http://localhost:8080/actuator/health -v
+          .requestMatchers(EndpointRequest.to("health")).permitAll() // unsecured endpoint
+          .requestMatchers(EndpointRequest.to("prometheus"))
+              .hasAnyAuthority("ACTUATOR", "PROMETHEUS") // unsecured endpoint
+          .anyRequest().hasAuthority("ACTUATOR")
 
-        // curl http://localhost:8080/actuator/health -v
-        .requestMatchers(EndpointRequest.to("health")).permitAll()
-
-        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
+  //        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
+    ; // require authentication for /actuator
 
 
     // the principal is identified using:
-    http.addFilter(new ApiKeyFilter(apiKey));
+//    http.addFilter(new ApiKeyFilter(apiKey));
     // curl http://localhost:8080/actuator/prometheus -v -H 'x-api-key: secret'
     // -- xor --
     http.httpBasic().and().userDetailsService(actuatorUserDetailsService());
@@ -61,6 +62,10 @@ public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
         .username(username)
         .password(password)
         .authorities("ACTUATOR").build();
-    return new InMemoryUserDetailsManager(actuatorUser);
+    UserDetails prometheus = User.withDefaultPasswordEncoder()
+        .username("p")
+        .password("p")
+        .authorities("PROMETHEUS").build();
+    return new InMemoryUserDetailsManager(actuatorUser, prometheus);
   }
 }
