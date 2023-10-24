@@ -1,6 +1,8 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
@@ -40,6 +42,8 @@ public class TrainingControllerStripped {
 		trainingService.deleteById(id);
 	}
 
+	@GetMapping // + the URL in address bar si shareable with a friend
+	@PostMapping // + to have a body
 	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
