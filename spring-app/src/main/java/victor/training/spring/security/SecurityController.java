@@ -75,7 +75,9 @@ public class SecurityController {
     // - SecurityContextHolder
     // - Logback.MDC
     // - TraceID
-    return SecurityContextHolder.getContext().getAuthentication().getName();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    List<String> strings = authentication.getAuthorities()
+    return authentication.getName();
   }
 
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {

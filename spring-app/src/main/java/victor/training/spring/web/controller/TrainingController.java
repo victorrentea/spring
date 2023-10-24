@@ -62,7 +62,10 @@ public class TrainingController {
 	@DeleteMapping("{trainingId}")
 
 //	@PreAuthorize("hasRole('ADMIN')")
-	@Secured("ROLE_ADMIN")
+//	@PreAuthorize("hasAuthority('training.search')")
+//	@Secured({"ROLE_ADMIN", "ROLE_POWER", "ROLE_SUPPORT"}) // bad
+//	@Secured({"ROLE_ADMIN", "ROLE_POWER", "ROLE_SUPPORT"})
+	@Secured("ROLE_CAN_DELETE_TRAINING")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
