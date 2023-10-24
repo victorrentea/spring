@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+// To upgrade to recent spring security habbits, see:
+// https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
+
 @Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
