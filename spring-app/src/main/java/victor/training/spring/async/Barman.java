@@ -13,7 +13,7 @@ import victor.training.spring.async.drinks.Vodka;
 public class Barman {
    public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
-      ThreadUtils.sleepMillis(1000);
+      ThreadUtils.sleepMillis(1000); // imagine a RestTemplate.get...
       return new Beer();
    }
    public Vodka pourVodka() {
