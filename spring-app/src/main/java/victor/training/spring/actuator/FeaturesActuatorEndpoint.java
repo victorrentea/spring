@@ -19,7 +19,7 @@ public class FeaturesActuatorEndpoint {
   }
 
   @Value("${feature-flags}")
-  private Set<FeatureFlag> activeFeatures = Collections.synchronizedSet(new TreeSet<>());
+  private Set<FeatureFlag> activeFeatures = Collections.synchronizedSet(new TreeSet<>(Set.of(FeatureFlag.DISPLAY_POST_VIEWS)));
 
   public boolean isActive(FeatureFlag featureFlag) {
     return activeFeatures.contains(featureFlag);
