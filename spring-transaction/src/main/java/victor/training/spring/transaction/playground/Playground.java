@@ -60,7 +60,32 @@ private final DataSource dataSource;
     eventPublisher.publishEvent(new MyEventAfterCommitToSendOnKafka("Message created id: /..."));
     log.info("exit the method");
   } // after the end of tx, INSERT in DB + COMMIT
-  public void transactionTwo() {}
+
+
+
+
+
+
+  @Transactional(readOnly = true) // for lazy loading to work
+  public void transactionTwo() {
+    // WHERE message = "SQL"
+//    Message message = repo.findByMessageContainingIgnoreCase("SQL"); // throws
+    Message message = repo.findByMessageContainingIgnoreCase("JPA2");
+    System.out.println(message); // causes a lazy load to happen
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   @Autowired
   private ApplicationEventPublisher eventPublisher;
