@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +26,15 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() throws Exception {
+  public CurrentUserDto getCurrentUsername(
+        /*HttpSession*/
+        Principal principal// limitation: auditing columns LAST_MODIFIED_BY set in the repo
+  ) throws Exception {
     KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
+    dto.username = serviceMethod(principal);
     // dto.username = anotherClass.asyncMethod().get();
 
     // dto.role = extractOneRole(authentication.getAuthorities());
@@ -47,6 +52,25 @@ public class SecurityController {
     //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
     //</editor-fold>
     return dto;
+  }
+
+  private String serviceMethod(Principal principal) {
+    return repoMethod(principal);
+  }
+
+  private String repoMethod(Principal principal) {
+//    return principal.getName();
+    // to avoid passing Principal everywhere:
+
+    // Magic: Spring can give you the username currently executing this function RIGHT NOW.
+    // even if there are multiple executions of the same function ongoing
+    // magic = ThreadLocal (java construct allowing to bind some data to the current thread)
+    //    , storing:
+    // - @Transactional / JDBC Connection
+    // - SecurityContextHolder
+    // - Logback.MDC
+    // - TraceID
+    return SecurityContextHolder.getContext().getAuthentication().getName();
   }
 
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {

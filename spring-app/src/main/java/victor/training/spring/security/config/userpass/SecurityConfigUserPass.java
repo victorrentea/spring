@@ -36,8 +36,9 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
   public UserDetailsService userDetailsService() {
     UserDetails user =
 //            User.builder().password("{bcrypt}$2a$10$9kaJk.kQ0GDLTZp0ihVgj.x7TfjuUKJ3uVGklE2mt.Fd9P5SlRoOm") // bcrypt(user)
-            User.withDefaultPasswordEncoder().password("user")
+            User.withDefaultPasswordEncoder()
             .username("user")
+            .password("user")
             .roles("USER")
 //            .authorities("training.delete")
             .build();

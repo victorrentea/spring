@@ -2,6 +2,7 @@ package victor.training.spring.web.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,11 @@ public class Teacher {
 	private String name;
 	@OneToMany(mappedBy = "teacher")
 	private List<Training> trainings = new ArrayList<>();
+
+//	@Create
+//	@LastModifiedBy
+//	private String lastModifiedBy;
+
 
 	protected Teacher() {}
 	public Teacher(Long id) {
