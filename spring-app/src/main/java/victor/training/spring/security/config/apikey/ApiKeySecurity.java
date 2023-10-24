@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Slf4j
 @Profile("apikey")
 @EnableWebSecurity
-public class SecurityConfigApiKey extends WebSecurityConfigurerAdapter {
+public class ApiKeySecurity extends WebSecurityConfigurerAdapter {
     @Value("${api-key:secret}")
     private String apiKey;
 

@@ -3,7 +3,7 @@ package victor.training.spring.security.config;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CorsGlobalConfig {
+public class CorsConfig {
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {

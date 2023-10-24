@@ -11,18 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
 
     public ApiKeyFilter(String expectedApiKey) {
-        setAuthenticationManager(new AuthenticationManager() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                if (authentication.getPrincipal() instanceof String) {
-                    String apiKeyFromHeader = (String) authentication.getPrincipal();
-                    if (expectedApiKey.equals(apiKeyFromHeader)) {
-                        authentication.setAuthenticated(true);
-                        return authentication;
-                    }
+        setAuthenticationManager(authentication -> {
+            if (authentication.getPrincipal() instanceof String apiKeyFromHeader) {
+                if (expectedApiKey.equals(apiKeyFromHeader)) {
+                    authentication.setAuthenticated(true);
+                    return authentication;
                 }
-                throw new BadCredentialsException("Incorrect api key");
             }
+            throw new BadCredentialsException("Incorrect api key");
         });
     }
 

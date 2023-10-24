@@ -8,21 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
-public class PreAuthHeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
-    public PreAuthHeaderFilter(AuthenticationManager authenticationManager) {
+public class HeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
+    public HeaderFilter(AuthenticationManager authenticationManager) {
         setAuthenticationManager(authenticationManager);
     }
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String username = request.getHeader("x-user");
-        String rolesStr = request.getHeader("x-user-role");
+    protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
+        String username = httpRequest.getHeader("x-user");
+        String rolesStr = httpRequest.getHeader("x-user-role");
         if (username == null || rolesStr == null || username.isBlank() || rolesStr.isBlank()) {
             log.error("'x-user' and 'x-user-roles' NOT found in request headers");
             return null;
         }
         List<String> roles = List.of(rolesStr.split(","));
-        return new PreAuthHeaderPrincipal(username, roles);
+        return new HeaderPrincipal(username, roles);
     }
 
     @Override

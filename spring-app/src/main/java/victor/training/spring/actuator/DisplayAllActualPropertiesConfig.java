@@ -36,7 +36,7 @@ public class DisplayAllActualPropertiesConfig {
 
     @PostConstruct
     public void printResolvedProps() {
-      log.info("All props: \n" + allProps.entrySet()
+      log.info("All properties: \n" + allProps.entrySet()
               .stream()
               .sorted(Map.Entry.comparingByKey(Comparator.comparing(Object::toString)))
               .map(e -> e.getKey() + " = " + e.getValue())

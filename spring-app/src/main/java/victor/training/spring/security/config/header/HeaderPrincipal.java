@@ -3,20 +3,17 @@ package victor.training.spring.security.config.header;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import victor.training.spring.web.entity.UserRole;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class PreAuthHeaderPrincipal implements UserDetails {
+public class HeaderPrincipal implements UserDetails {
     private final String username;
     private final List<String> authorities;
 
-    public PreAuthHeaderPrincipal(String username, List<String> roles) {
+    public HeaderPrincipal(String username, List<String> roles) {
         this.username = username;
         this.authorities = roles.stream().map(s -> "ROLE_"+s).collect(toList());
 

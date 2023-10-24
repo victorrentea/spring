@@ -6,13 +6,13 @@ import org.springframework.boot.actuate.endpoint.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.actuator.FeaturesActuatorEndpoint.FeatureFlag;
+import victor.training.spring.actuator.FeatureFlagsEndpoint.FeatureFlag;
 
 import java.util.*;
 
 @Component
 @Endpoint(id = "featureflags") // https://www.baeldung.com/spring-boot-actuators
-public class FeaturesActuatorEndpoint {
+public class FeatureFlagsEndpoint {
   public enum FeatureFlag {
     DISPLAY_POST_VIEWS,
     DISPLAY_UNLIKE_BUTTON
@@ -49,7 +49,7 @@ public class FeaturesActuatorEndpoint {
 @RequiredArgsConstructor
 @RestController
 class SomeEndpoint {
-  private final FeaturesActuatorEndpoint features;
+  private final FeatureFlagsEndpoint features;
 
   @GetMapping("variable-endpoint") // http://localhost:8080/variable-endpoint
   public String getVariableEndpoint() {

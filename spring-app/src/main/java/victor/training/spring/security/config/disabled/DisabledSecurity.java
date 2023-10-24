@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Profile("!userpass & !jwt & !keycloak & !apikey & !header")
 @EnableWebSecurity
-public class SecurityConfigDisabled extends WebSecurityConfigurerAdapter {
+public class DisabledSecurity extends WebSecurityConfigurerAdapter {
 
     @PostConstruct
     public void init() {

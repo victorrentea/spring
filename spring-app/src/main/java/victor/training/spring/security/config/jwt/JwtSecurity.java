@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @Profile("jwt")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfigJwt extends WebSecurityConfigurerAdapter {
+public class JwtSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()

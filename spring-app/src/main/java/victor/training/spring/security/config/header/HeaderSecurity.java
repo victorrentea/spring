@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @Profile("header")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
+public class HeaderSecurity extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable(); // as I don't ever take <form> POSTs
@@ -36,14 +36,14 @@ public class SecurityConfigPreAuthHeader extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public PreAuthHeaderFilter preAuthHeaderFilter() throws Exception {
-    return new PreAuthHeaderFilter(authenticationManagerBean());
+  public HeaderFilter preAuthHeaderFilter() throws Exception {
+    return new HeaderFilter(authenticationManagerBean());
   }
 
   @Bean
   public AuthenticationProvider preAuthenticatedProvider() {
     PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-    provider.setPreAuthenticatedUserDetailsService(token -> (PreAuthHeaderPrincipal) token.getPrincipal());
+    provider.setPreAuthenticatedUserDetailsService(token -> (HeaderPrincipal) token.getPrincipal());
     return provider;
   }
 }

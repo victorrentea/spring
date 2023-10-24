@@ -14,7 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Profile("userpass")
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
+public class UserPassSecurity extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -23,28 +23,24 @@ public class SecurityConfigUserPass extends WebSecurityConfigurerAdapter {
     // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
-            .anyRequest().authenticated();
+        .anyRequest().authenticated();
 
     http.formLogin().defaultSuccessUrl("/", true);
 
     http.httpBasic(); // also accept Authorization: Basic ...
+
     http.userDetailsService(userDetailsService());
   }
 
-  // *** Dummy users 100% in-mem - NEVER USE IN PRODUCTION
+  // *** Dummy users 100% in-mem with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user =
-//            User.builder().password("{bcrypt}$2a$10$9kaJk.kQ0GDLTZp0ihVgj.x7TfjuUKJ3uVGklE2mt.Fd9P5SlRoOm") // bcrypt(user)
-            User.withDefaultPasswordEncoder().password("user")
-            .username("user")
-            .roles("USER")
-//            .authorities("training.delete")
-            .build();
+    UserDetails user = User.withDefaultPasswordEncoder()
+            .username("user").password("user").roles("USER").build();
     UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin").password("admin").roles("ADMIN").build();
+        .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()
-            .username("power").password("power").roles("POWER").build();
+        .username("power").password("power").roles("POWER").build();
     return new InMemoryUserDetailsManager(user, admin, power);
   }
 

@@ -1,20 +1,14 @@
 package victor.training.spring.security.config;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,33 +17,34 @@ import victor.training.spring.security.config.apikey.ApiKeyFilter;
 
 @Order(10) // less than the default 100 => runs first picking up the actuator endpoints
 @Configuration
-@Getter @Setter
-@Profile({"userpass","jwt","keycloak","apikey", "header"})
+@Getter
+@Setter
 @ConfigurationProperties("actuator.security")
-public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
+public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
 
   private String apiKey;
-  // or
+  // xor
   private String username;
   private String password;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint())
-        // this config file applies to /actuator/** requests
+    // this security filter chain only applies to /actuator/** requests
+    http.requestMatcher(EndpointRequest.toAnyEndpoint());
 
-        .authorizeRequests()
-
+    http.authorizeRequests()
         // curl http://localhost:8080/actuator/health -v
+        // /actuator/health is unsecured
         .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-        .anyRequest().permitAll(); // DON'T USE IN PROD! instead:
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for /actuator
+        .anyRequest().permitAll(); // DON'T USE IN PROD! use👇
+//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for all remaining /actuator/** requests
 
 
     // the principal is identified using:
     http.addFilter(new ApiKeyFilter(apiKey));
     // curl http://localhost:8080/actuator/prometheus -v -H 'x-api-key: secret'
+
     // -- xor --
     http.httpBasic().and().userDetailsService(actuatorUserDetailsService());
     // curl http://localhost:8080/actuator/prometheus -v -u actuator:actuator
