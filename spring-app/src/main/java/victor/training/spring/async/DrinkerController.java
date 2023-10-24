@@ -13,6 +13,7 @@ import victor.training.spring.async.drinks.Vodka;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -39,8 +40,8 @@ public class DrinkerController {
 //      rabbitTemplate.send(message// the message will carry automatcally the TraceId to all other microservices that I call
       // Pitfall#2: move to another thread without Spring awareness (using a custom-made executor/thread)
 //      ExecutorService threadPool = Executors.newFixedThreadPool(3); // DO NOT EVER USE Executors in a Spring application
-      CompletableFuture<Beer> beerPromise = CompletableFuture.supplyAsync(()->barman.pourBeer());
-      CompletableFuture<Vodka> vodkaPromise = CompletableFuture.supplyAsync(()->barman.pourVodka());
+      CompletableFuture<Beer> beerPromise = supplyAsync(()->barman.pourBeer(), executor);
+      CompletableFuture<Vodka> vodkaPromise = supplyAsync(()->barman.pourVodka(), executor);
 
       executor.submit(()->barman.auditCocktail("Dilly"));// fire-and-forget call: start but never wait to complete/throw
 
