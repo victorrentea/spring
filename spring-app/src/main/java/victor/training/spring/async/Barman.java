@@ -26,5 +26,6 @@ public class Barman {
       log.debug("Longer running task I don't need to wait for using data: " + name);
       ThreadUtils.sleepMillis(500);
       log.debug("DONE");
+      throw new IllegalArgumentException("OUPS. BIG BAD ERROR");
    }
 }

@@ -10,6 +10,8 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.System.currentTimeMillis;
@@ -52,5 +54,15 @@ public class DrinkerController {
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return dillyPromise;
    }
+
+//   public void method(HttpServletRequest request) throws Exception {
+//      AsyncContext asyncContext = request.startAsync();
+//      // from another thread
+//      CompletableFuture<DillyDilly> drink = drink();
+//      drink.thenAccept(dilly -> {
+//         asyncContext.getResponse().getWriter().write("Response " + dilly);
+//         asyncContext.complete();
+//      })
+//   }
 
 }
