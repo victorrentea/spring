@@ -17,7 +17,7 @@ public class Message {
     @NotNull
     private String message;
 
-    protected Message() { // for hibernate only
+    protected Message() { // for hibernate eyes only
     }
 
     public Message(String message) {

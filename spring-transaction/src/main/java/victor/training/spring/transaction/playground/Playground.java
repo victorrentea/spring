@@ -16,12 +16,10 @@ public class Playground {
   private final OtherClass other;
 
   @Transactional
-  public void transactionOne() {
+  public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     repo.save(new Message("JPA"));
   }
-
-  public void transactionTwo() {}
 }
 
 @Service

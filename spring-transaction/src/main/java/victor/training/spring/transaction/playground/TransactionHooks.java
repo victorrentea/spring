@@ -25,9 +25,15 @@ public class TransactionHooks {
         log.info("End method");
     }
 
+    record CleanupAfterTransactionEvent(String workToDo) {
+    }
+
+    record SendNotificationAfterCommitEvent(String email, String text) {
+    }
+
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     public void afterCompletion(CleanupAfterTransactionEvent event) {
-        log.info("After completion: " + event.getWorkToDo());
+        log.info("After completion: " + event.workToDo());
     }
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(SendNotificationAfterCommitEvent event) {
@@ -35,13 +41,3 @@ public class TransactionHooks {
     }
 }
 
-@Value
-class CleanupAfterTransactionEvent {
-    String workToDo;
-}
-
-@Value
-class SendNotificationAfterCommitEvent {
-    String email;
-    String text;
-}
