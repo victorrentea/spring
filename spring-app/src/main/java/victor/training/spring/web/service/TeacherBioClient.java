@@ -5,7 +5,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +40,7 @@ public class TeacherBioClient {
 
 
   // TODO cacheable
+  @Cacheable("teacher-bio") // imagine hashMap.put(long teacherId, String);
   public String retrieveBiographyForTeacher(long teacherId) {
     log.debug("Calling external web endpoint... (takes time)");
 //    String result = dummyCall(teacherId);
@@ -43,6 +48,18 @@ public class TeacherBioClient {
 //    String result = callUsingRestTemplate(teacherId);
     log.debug("Got result");
     return result;
+  }
+  record TeacherBioChangedEvent(long teacherId) {}
+
+  @Autowired
+  private CacheManager cacheManager;
+
+  //  @RabbitListener
+//  @CacheEvict("teacher-bio") //Will NOT work imagine hashMap.remove(record event); // not evict evict anything ever
+  @CacheEvict(value = "teacher-bio",key = "#event.teacherId()")
+  public void onTeacherBioChanged(TeacherBioChangedEvent event) {
+    // empty function. don't delete. let the proxy magic happen!
+//    cacheManager.getCache("anotherCache").evictIfPresent(event.teacherId());
   }
 
   private String dummyCall(long teacherId) {

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -24,6 +25,10 @@ public class ClientCredentials { // CLient=Applicatie
   }
 
   @Scheduled(fixedRate = 2 * 1000)
+  //@Async // makes the scheduled task re-entrant !! CAREFUL !!
+  // +1 fun: think load balanced app on multiple pods.
+  // if you want a distributed scheduled(to fire ONCE even if your app runs on 10 macines),
+  //  use Shedlock or Quartz that coordinate via the DB, also storing the status, errors, run-time
   public void scheduled() {
     String value = restWithClientCredentials.getForObject("http://localhost:8082", String.class);
     log.info("@Scheduled got value: " + value);

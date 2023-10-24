@@ -52,7 +52,8 @@ public class DrinkerController {
       } catch (IllegalArgumentException e) { // epic fail: will never run
          throw new RuntimeException(e);
       }
-
+      // CompletableFuture have no future - Venkat
+      // because of Java 21 virtual threads
       CompletableFuture<DillyDilly> dillyPromise = beerPromise.thenCombine(vodkaPromise,
           (beer, vodka) -> new DillyDilly(beer, vodka));
 
