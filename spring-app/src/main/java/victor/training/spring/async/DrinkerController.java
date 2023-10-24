@@ -30,6 +30,7 @@ public class DrinkerController {
    // TODO [2] mark pour* methods as @Async
    // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
+   // Spring is gonna register a callback to the CF I give it to eventually send the response back to client but without blocking any threads
    public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order " + restTemplate.getClass());
       long t0 = currentTimeMillis();
