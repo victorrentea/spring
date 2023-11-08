@@ -5,6 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -15,15 +22,21 @@ public class TransactionsApp {
 
    private final Playground playground;
    private final Jpa jpa;
+   private final Concurrency concurrency;
 
    @EventListener(ApplicationStartedEvent.class)
-   public void go() {
+   public void go() throws Exception {
       System.out.println("============= TRANSACTION:START ==============");
       playground.play();
+
       System.out.println("============= JPA:ONE ==============");
       jpa.one();
       System.out.println("============= JPA:TWO ==============");
       jpa.two();
+
+      System.out.println("============= CONCURRENCY ==============");
+      List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
+      Executors.newCachedThreadPool().invokeAll(tasks);
       System.out.println("============= END ==============");
    }
 }

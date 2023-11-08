@@ -1,7 +1,6 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TransactionHooks {
+public class Listener {
     private final ApplicationEventPublisher eventPublisher;
     private final MessageRepo messageRepo;
 
