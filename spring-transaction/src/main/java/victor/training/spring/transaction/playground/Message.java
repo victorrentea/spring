@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
-@Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "message"))
+@Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue
