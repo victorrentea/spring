@@ -16,13 +16,15 @@ class MathsProxy extends Maths {
   }
   @Override
   public int sum(int a, int b) {
-    System.out.println("sum(" + a + "," + b + ")");
-    return  delegate.sum(a, b);
+    int r = delegate.sum(a, b);
+    System.out.println("sum(" + a + "," + b + ")="+r);
+    return r;
   }
   @Override
   public int product(int a, int b) {
-    System.out.println("product(" + a + "," + b + ")");
-    return  delegate.product(a, b);
+    int r = delegate.product(a, b);
+    System.out.println("product(" + a + "," + b + ")="+r);
+    return r;
   }
 }
 
