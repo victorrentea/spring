@@ -2,14 +2,27 @@ package victor.training.spring.aspects;
 
 public class ProxyIntro {
   public static void main(String[] args) {
-    Maths maths = new Maths();
+    Maths maths = new MathsSubclass();
     SecondGrade secondGrade = new SecondGrade(maths);
 
     secondGrade.mathClass();
   }
 }
+class MathsSubclass extends Maths {
+  @Override
+  public int sum(int a, int b) {
+    System.out.println("sum(" + a + "," + b + ")");
+    return super.sum(a, b);
+  }
+  @Override
+  public int product(int a, int b) {
+    System.out.println("product(" + a + "," + b + ")");
+    return super.product(a, b);
+  }
+}
 
-// ------------------------
+// TODO sa logam orice operatie face Maths, dar nu ai voie sa scrii cod sub linia asta:
+// -------------------------------------------------------------
 class SecondGrade {
   private final Maths maths;
 
@@ -25,14 +38,10 @@ class SecondGrade {
 }
 
 class Maths {
-  // TODO sa logam orice operatie face Maths
   public int sum(int a, int b) {
-    System.out.println("sum(" + a + "," + b + ")");
     return a + b;
   }
-
   public int product(int a, int b) {
-    System.out.println("product(" + a + "," + b + ")");
     return a * b;
   }
 }
