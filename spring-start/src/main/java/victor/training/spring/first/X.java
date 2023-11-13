@@ -3,12 +3,12 @@ package victor.training.spring.first;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// TODO Define Beans
 @Service
-// TODO Defining Beans
 public class X {
+  // TODO Injection
   @Autowired
   private Y y;
-  // TODO Injection
 
   public int logic() {
     return 1 + y.logic();
