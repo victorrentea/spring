@@ -2,6 +2,7 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -12,7 +13,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
-@Profile("!local") // asa DA!
+//@Profile("!local") // asa DA!
+@ConditionalOnMissingBean(MailServiceDummy.class)
 
 //@Profile("prod") // activez clasa asta doar pe productie?
     // nu si pe staging/load/acceptante,
