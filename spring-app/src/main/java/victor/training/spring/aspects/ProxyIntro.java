@@ -1,6 +1,7 @@
 package victor.training.spring.aspects;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Cache;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import victor.training.spring.varie.ThreadUtils;
 
 import javax.validation.constraints.Positive;
 import java.io.Serial;
@@ -78,11 +80,14 @@ class SecondGrade {
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
+    System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
 
 // final #2 -> startup crash: morala nu-ti face clasele de @Service&friends final/@Value/record(java17)
+@Slf4j
 @Service
+@LoggedMethod
 class Maths {
   public /*#3 final -> silent skip this method */ int sum(int a, int b) {
     return a + b;
@@ -91,13 +96,16 @@ class Maths {
   @Cacheable("produse")
   public /*#4 static -> silent skip this method*/ int product(int a, int b) {
 //    return a * b;
-    if(true)throw new IllegalArgumentException();
+//    if(true)throw new IllegalArgumentException();
     int result = 0;
+    ThreadUtils.sleepMillis(2000);
+
     for (int i = 0; i < a; i++) {
       result = sum(result, b); // #1 👑 apelul unei metode locale in aceeasi clasa
                   // NU POATE FI INTERCEPTAT de catre proxy!!
       // nu merg adnotarile de pe metoda!!
     }
+   log.error("Tata pleaca de nervi");
     return  result;
   }
 }

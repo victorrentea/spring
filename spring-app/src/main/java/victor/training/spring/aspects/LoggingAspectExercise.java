@@ -20,7 +20,9 @@ public class LoggingAspectExercise {
 //  @After
 //  @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
 //  @Around("execution(* victor.training.spring.aspects.*.*(..))")
-  @Around("execution(* victor..*.*(..))")
+//  @Around("execution(* victor..*.*(..))") // toate metodele dintr-un pachet
+//  @Around("@annotation(LoggedMethod)") // metoda adnotata
+  @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // sau clasa adniotat
   public Object intercept(ProceedingJoinPoint point) throws Throwable {
     var r= point.proceed(); // chem metoda reala
     System.out.println("Call intercepted: " +
