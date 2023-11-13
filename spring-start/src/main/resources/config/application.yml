@@ -31,3 +31,4 @@ welcome:
     welcomeMessage: Welcome to Spring
     gate: 123
 
+dinProp: config

@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
+import java.util.Arrays;
+
 // - Dependency Injection: field, constructor, method
 // - Defining beans: @Component & co, @ComponentScan
 // - Cyclic dependencies
@@ -38,8 +40,9 @@ public class FirstApplication implements CommandLineRunner {
   @Autowired
   private X x;
 
-  @Override // from CommandLineRunner
+  @Override // from CommandLineRunner, good for Batch Jobs
   public void run(String... args) {
+    System.out.println("Command line args al programului java: " + Arrays.toString(args));
     System.out.println(x.logic());
   }
 
