@@ -2,22 +2,27 @@ package victor.training.spring.aspects;
 
 public class ProxyIntro {
   public static void main(String[] args) {
-    Maths maths = new MathsSubclass();
-    SecondGrade secondGrade = new SecondGrade(maths);
+    Maths real = new Maths();
+    Maths proxy = new MathsProxy(real);
+    SecondGrade secondGrade = new SecondGrade(proxy);
 
     secondGrade.mathClass();
   }
 }
-class MathsSubclass extends Maths {
+class MathsProxy extends Maths {
+  private final Maths delegate;
+  MathsProxy(Maths delegate) {
+    this.delegate = delegate;
+  }
   @Override
   public int sum(int a, int b) {
     System.out.println("sum(" + a + "," + b + ")");
-    return super.sum(a, b);
+    return  delegate.sum(a, b);
   }
   @Override
   public int product(int a, int b) {
     System.out.println("product(" + a + "," + b + ")");
-    return super.product(a, b);
+    return  delegate.product(a, b);
   }
 }
 
