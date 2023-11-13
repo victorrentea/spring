@@ -3,6 +3,7 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,7 +22,8 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // = getters + setters
+//@Data // = getters + setters
+@Getter
 @Component
 @Validated // ii spune springului sa purice obiectul dupa adnotari de validation
 @ConfigurationProperties(prefix = "welcome")
