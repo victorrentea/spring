@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
@@ -25,7 +26,7 @@ import victor.training.spring.first.alt.X;
 // - @Configuration @Bean proxyMethods
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
-//@Import(X.class)
+@Import(X.class)
 //@Import(OClasaDintrunJar.class)
 //@ComponentScan(basePackages = {
 //    "victor.training.spring.first",
