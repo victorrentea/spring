@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
@@ -25,7 +25,7 @@ import victor.training.spring.first.alt.X;
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
 //@Import(X.class)
-@Import(OClasaDintrunJar.class)
+//@Import(OClasaDintrunJar.class)
 //@ComponentScan(basePackages = {
 //    "victor.training.spring.first",
 //    "victor.training.spring.alt"})
@@ -41,6 +41,15 @@ public class FirstApplication implements CommandLineRunner {
   public void run(String... args) {
     System.out.println(x.logic());
   }
+
+  // programatic bean definition
+  @Bean
+  public OClasaDintrunJar b() {
+    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
+    pathumeu.init();
+    return pathumeu;
+  }
+
 
   @EventListener(ApplicationReadyEvent.class)
   public void onAppStart() {
