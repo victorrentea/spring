@@ -1,28 +1,23 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class Y {
-  @Autowired
-  private MailService mailService; // polymorphic injection
-  @Autowired
-  private PersonService gigel;
-  @Value("${welcome.welcomeMessage}")
-  private String message;
+  private final MailService mailService; // polymorphic injection
+  private final PersonService gigel;
+  private final String message;
 
-
-  // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
-  public Y(MailService mailService) {
+  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
     this.mailService = mailService;
+    this.gigel = gigel;
+    this.message = message;
   }
 
-  @Autowired
-  private ApplicationContext applicationContext;
+//  @Autowired
+//  private ApplicationContext applicationContext;
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
