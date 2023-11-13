@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 // I don't always test my code, but when I do, I do it in production
 public class MailServiceImpl implements MailService {
 
-  @Value("${dinProp}")
+  @Value("${dinProp:x}")
   private String dinProp;
 
   //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
