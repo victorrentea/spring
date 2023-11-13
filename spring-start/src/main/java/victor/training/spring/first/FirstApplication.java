@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
@@ -33,7 +34,6 @@ public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
   }
-
   @Autowired
   private X x;
 
@@ -42,18 +42,25 @@ public class FirstApplication implements CommandLineRunner {
     System.out.println(x.logic());
   }
 
-  // programatic bean definition
-  @Bean
-  public OClasaDintrunJar b() {
-    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
-    pathumeu.init();
-    return pathumeu;
-  }
-
-
   @EventListener(ApplicationReadyEvent.class)
   public void onAppStart() {
     System.out.println("App started OK 🎉");
   }
 }
 
+@Configuration // scop: sa contina @Bean definitions
+class AltaClasa {
+  @Bean // programatic create a bean
+  public OClasaDintrunJar b() {
+    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
+    pathumeu.init();
+    return pathumeu;
+  }
+//  @Bean // programatic create a bean
+//  public OClasaDintrunJar c() {
+//    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
+//    pathumeu.init();
+//    return pathumeu;
+//  }
+
+}
