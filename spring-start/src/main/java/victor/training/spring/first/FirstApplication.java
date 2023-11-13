@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 // - ApplicationContext#getBean
 // - @Scope
 // - @Configuration @Bean proxyMethods
-
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner {
