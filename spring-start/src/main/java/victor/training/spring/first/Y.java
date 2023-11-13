@@ -26,6 +26,7 @@ public class Y {
 //  private ApplicationContext applicationContext;
 
   public int logic() {
+    props.setWelcomeMessage("OMG setter!!!! 🤢🤢🤢🤢🤢");
     mailService.sendEmail("I like 4 topics : " + props.getWelcomeMessage());
     // risk: s-a schimbat numele crapa
   // DI crapa la startup ❤️❤️❤️❤️❤️
