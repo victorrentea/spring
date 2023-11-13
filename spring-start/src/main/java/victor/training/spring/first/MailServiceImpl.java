@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Profile("!local") // asa DA!
+//@Profile("!local") // asa DA!
 
 //@Profile("prod") // activez clasa asta doar pe productie?
     // nu si pe staging/load/acceptante,
