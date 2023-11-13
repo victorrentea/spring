@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
@@ -24,6 +25,7 @@ import victor.training.spring.first.alt.X;
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
 //@Import(X.class)
+@Import(OClasaDintrunJar.class)
 //@ComponentScan(basePackages = {
 //    "victor.training.spring.first",
 //    "victor.training.spring.alt"})

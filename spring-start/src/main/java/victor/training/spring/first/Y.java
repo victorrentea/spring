@@ -15,9 +15,8 @@ public class Y {
 //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
 
-//  @Autowired
-////  @Lazy
-//  private X x;
+  @Autowired
+  private OClasaDintrunJar oClasaDintrunJar;
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
@@ -26,7 +25,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
-
+    oClasaDintrunJar.method();
     return 1;
   }
 }
