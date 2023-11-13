@@ -26,3 +26,4 @@ props:
     help:
         app-id: 1251
         file: c:/help-file.pdf
+        email: help@spring.io

@@ -27,6 +27,7 @@ public class Props {
   public static class Help {
     private Integer appId;
     private File file; // TODO file exists
+    private String email; // TODO valid email
   }
 
   @PostConstruct

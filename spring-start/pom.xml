@@ -19,12 +19,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <!-- auto-restart the app on any change in target/ (.class or property/yaml) -->
             <groupId>org.springframework.boot</groupId>
@@ -32,6 +26,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <!-- @NotNull & friends -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
