@@ -12,7 +12,8 @@ public class Y {
   private final String message = "HALO";
 
   @Autowired
-  private PersonService personService;
+  //@Qualifier("gigel") <- nu mai e necesar, poti doar sa numesti punctul de inejctie cum trebuie
+  private PersonService gigel;
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
@@ -21,7 +22,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
-    personService.method();
+    gigel.method();
     return 1;
   }
 }
