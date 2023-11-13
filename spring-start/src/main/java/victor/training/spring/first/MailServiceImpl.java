@@ -4,17 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service
+@Configuration
+class SomeConfig{
+  @Bean
+  @ConditionalOnMissingBean(MailService.class) // @ConditionalOnMissingBean(interface) ❤️❤️❤️❤️❤️
+  public MailServiceImpl realMailService() {
+    return new MailServiceImpl();
+  }
+}
+
+//@Service
 @RequiredArgsConstructor
 //@Profile("!local") // asa DA!
-@ConditionalOnMissingBean(MailServiceDummy.class)
+//@ConditionalOnMissingBean(MailServiceImpl.class)
 
 //@Profile("prod") // activez clasa asta doar pe productie?
     // nu si pe staging/load/acceptante,
