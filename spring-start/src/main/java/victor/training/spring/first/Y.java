@@ -2,20 +2,19 @@ package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
-  @Qualifier("mailServiceImpl")
-  private final MailService mailService; // polymorphic injection
-//  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
-  private final String message = "HALO";
-
   @Autowired
-  //@Qualifier("gigel") <- nu mai e necesar, poti doar sa numesti punctul de inejctie cum trebuie
+  private MailService mailService; // polymorphic injection
+  @Autowired
   private PersonService gigel;
-  // DI crapa la startup ❤️❤️❤️❤️❤️
+  @Value("${welcome.welcomeMessage}")
+  private String message;
+
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
@@ -28,6 +27,7 @@ public class Y {
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
     // risk: s-a schimbat numele crapa
+  // DI crapa la startup ❤️❤️❤️❤️❤️
     // crapa abia la callul metodei, potential la 2 zile dupa punerea in prod
 //    var x = applicationContext.getBean("gigel");
 //    var y = applicationContext.getBean("gigel",PersonService.class);
