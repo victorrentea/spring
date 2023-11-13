@@ -12,7 +12,8 @@ public class Y {
   private final MailService mailService; // polymorphic injection
   private final PersonService gigel;
 //  @Value("${welcome.welcomeMessage}")
-  private final String message = "skip";
+//  private final String message = "skip";
+  private final WelcomeProps props;
 
 // acum lombok genereaza EXACT ctor de mai jos
 //  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
@@ -25,7 +26,7 @@ public class Y {
 //  private ApplicationContext applicationContext;
 
   public int logic() {
-    mailService.sendEmail("I like 4 topics : " + message);
+    mailService.sendEmail("I like 4 topics : " + props.getWelcomeMessage());
     // risk: s-a schimbat numele crapa
   // DI crapa la startup ❤️❤️❤️❤️❤️
     // crapa abia la callul metodei, potential la 2 zile dupa punerea in prod

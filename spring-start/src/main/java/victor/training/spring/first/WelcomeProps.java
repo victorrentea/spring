@@ -14,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +38,8 @@ public class WelcomeProps {
   @Data
   public static class Help {
     Integer appId;
+    @NotNull
+//    @FileExists // de inteles
     File file; // TODO 4c validate exists on disk
   }
 
@@ -45,6 +48,13 @@ public class WelcomeProps {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
   }
+
+//  @PostConstruct
+//  public void atStartup() throws FileNotFoundException {
+//    if (!help.file.isFile()) {
+//      throw new FileNotFoundException(help.file.getAbsolutePath());
+//    }
+//  }
 }
 
 
