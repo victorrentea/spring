@@ -1,4 +1,4 @@
-package victor.training.spring.alt;
+package victor.training.spring.first.alt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
