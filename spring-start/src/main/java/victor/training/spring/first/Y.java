@@ -1,20 +1,25 @@
 package victor.training.spring.first;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
-
+@RequiredArgsConstructor
 public class Y {
   private final MailService mailService; // polymorphic injection
   private final PersonService gigel;
+  @Value("${welcome.welcomeMessage}")
   private final String message;
+  
 
-  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
-    this.mailService = mailService;
-    this.gigel = gigel;
-    this.message = message;
-  }
+//  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
+//    this.mailService = mailService;
+//    this.gigel = gigel;
+//    this.message = message;
+//  }
 
 //  @Autowired
 //  private ApplicationContext applicationContext;
