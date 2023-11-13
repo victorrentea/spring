@@ -1,17 +1,16 @@
 db.password: big secret
-
 spring:
-#    mail:
-#        host: smtp.gmail.com
-#        password: <login password to smtp server>
-#        port: 587
-#        properties:
-#            mail:
-#                smtp:
-#                    auth: true
-#                    starttls:
-#                        enable: true
-#        username: <login user to smtp server>
+    mail:
+        host: smtp.gmail.com
+        password: <login password to smtp server>
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+        username: <login user to smtp server>
 
     datasource:
         type:
@@ -37,3 +36,9 @@ welcome:
 
 
 dinProp: config
+# expune mai multe (toate) endpointurile pe /actuator
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
