@@ -13,8 +13,8 @@ public class Y {
   private final PersonService gigel;
   @Value("${welcome.welcomeMessage}")
   private final String message;
-  
 
+// acum lombok genereaza EXACT ctor de mai jos
 //  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
 //    this.mailService = mailService;
 //    this.gigel = gigel;
