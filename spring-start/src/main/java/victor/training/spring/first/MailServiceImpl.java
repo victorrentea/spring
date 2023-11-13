@@ -7,24 +7,27 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Configuration
-class SomeConfig{
-  @Bean
-  @ConditionalOnMissingBean(MailService.class) // @ConditionalOnMissingBean(interface) ❤️❤️❤️❤️❤️
-  public MailServiceImpl realMailService() {
-    return new MailServiceImpl();
-  }
-}
+//@Configuration
+//class SomeConfig{
+//  @Bean
+//  @ConditionalOnMissingBean(MailService.class) // @ConditionalOnMissingBean(interface) ❤️❤️❤️❤️❤️
+//  public MailServiceImpl realMailService() {
+//    return new MailServiceImpl();
+//  }
+//}
 
 //@Service
+@Component
 @RequiredArgsConstructor
 //@Profile("!local") // asa DA!
-//@ConditionalOnMissingBean(MailServiceImpl.class)
+@ConditionalOnMissingBean(MailServiceDummy.class)
 
 //@Profile("prod") // activez clasa asta doar pe productie?
     // nu si pe staging/load/acceptante,
@@ -45,7 +48,7 @@ public class MailServiceImpl implements MailService {
     System.out.println("Later, after startup of the entire app");
   }
 
-  //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
+  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
@@ -54,6 +57,6 @@ public class MailServiceImpl implements MailService {
     message.setSubject("Training Offer");
     message.setText(body);
     System.out.println("REAL EMAIL SENDER: sending email: " + message + " din prop: " + dinProp );
-    //    sender.send(message);
+        sender.send(message);
   }
 }

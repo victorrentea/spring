@@ -28,7 +28,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
+     <!--   <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>-->
         <dependency>
             <!-- monitoring performance with Micrometer -->
             <groupId>io.micrometer</groupId>
@@ -69,6 +72,7 @@
             <artifactId>h2</artifactId>
         </dependency>
         <dependency>
+            <!-- o librarie din afara umbrelei spring boot: a trebuit sa-i pun vers manuala-->
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
@@ -89,9 +93,10 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
+            <!-- extrage la startup din @RestControllere contractul tau dispo apoi la /v3/api-docs-->
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.6</version>
+            <version>1.6.15</version>
         </dependency>
 
 

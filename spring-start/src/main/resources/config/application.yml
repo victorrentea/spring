@@ -1,17 +1,20 @@
 db.password: big secret
 
 spring:
-    mail:
-        host: smtp.gmail.com
-        password: <login password to smtp server>
-        port: 587
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    starttls:
-                        enable: true
-        username: <login user to smtp server>
+#    mail:
+#        host: smtp.gmail.com
+#        password: <login password to smtp server>
+#        port: 587
+#        properties:
+#            mail:
+#                smtp:
+#                    auth: true
+#                    starttls:
+#                        enable: true
+#        username: <login user to smtp server>
+
+    datasource:
+        type:
 #    main:
 #        allow-circular-references: true
 
@@ -30,8 +33,6 @@ welcome:
         - http://baeldung.com
         - http://spring.io
     welcome-message: Hello world!
-
-
 
 
 

@@ -2,7 +2,10 @@ package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +38,7 @@ public class TrainingController {
 	}
 
 	// TODO @Validated / @Valid
-	@Operation(description = "Create a training")
+	@Operation(description = "Create a training") // documentezi api daca e expus catre alte echipe
 	@PostMapping
 	public void create(@RequestBody  @Validated TrainingDto dto) {
 		trainingService.createTraining(dto);
