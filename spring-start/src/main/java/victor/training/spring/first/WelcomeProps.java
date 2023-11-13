@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,12 +18,11 @@ import java.util.Map;
 @Slf4j
 @Data // = getters + setters
 @Component
+@ConfigurationProperties(prefix = "welcome")
 public class WelcomeProps {
-  @Value("${welcome.welcomeMessage}")
   String welcomeMessage; // TODO not null + size >= 4
   Help help;
   Map<Locale, String> localContactPhone;
-  @Value("${welcome.gate}")
   int gate; // TODO set default
   List<URL> supportUrls; // TODO size >= 1
 
