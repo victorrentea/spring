@@ -9,8 +9,8 @@ import org.springframework.integration.handler.LoggingHandler.Level;
 import org.springframework.integration.jpa.dsl.Jpa;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

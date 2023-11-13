@@ -2,9 +2,9 @@ package victor.training.crypto;
 
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.IvParameterSpec;
+import jakarta.crypto.Cipher;
+import jakarta.crypto.KeyGenerator;
+import jakarta.crypto.spec.IvParameterSpec;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;

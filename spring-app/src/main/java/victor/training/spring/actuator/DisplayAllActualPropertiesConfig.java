@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import victor.training.spring.actuator.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;

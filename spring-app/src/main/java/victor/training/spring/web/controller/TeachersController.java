@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TeacherDto;
 import victor.training.spring.web.service.TeacherService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 

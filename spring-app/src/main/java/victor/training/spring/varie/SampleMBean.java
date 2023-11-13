@@ -4,7 +4,7 @@ import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.ManagedBean;
+import jakarta.annotation.ManagedBean;
 
 @Component
 @ManagedResource(

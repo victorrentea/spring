@@ -4,8 +4,8 @@ import jdk.jfr.DataAmount;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Data

@@ -5,9 +5,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import jakarta.sound.sampled.AudioInputStream;
+import jakarta.sound.sampled.AudioSystem;
+import jakarta.sound.sampled.Clip;
 import java.io.InputStream;
 
 @Slf4j

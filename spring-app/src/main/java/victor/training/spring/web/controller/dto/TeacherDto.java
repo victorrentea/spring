@@ -2,7 +2,7 @@ package victor.training.spring.web.controller.dto;
 
 import victor.training.spring.web.entity.Teacher;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class TeacherDto {
 	public Long id;

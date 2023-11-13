@@ -1,6 +1,6 @@
 package victor.training.spring.web.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.*;
 
 import static java.util.Collections.*;

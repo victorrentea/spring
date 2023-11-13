@@ -8,7 +8,7 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.UserRepo;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;

@@ -2,10 +2,10 @@ package victor.training.crypto;
 
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import jakarta.crypto.BadPaddingException;
+import jakarta.crypto.Cipher;
+import jakarta.crypto.IllegalBlockSizeException;
+import jakarta.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.security.*;
 

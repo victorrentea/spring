@@ -4,9 +4,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class AutoValidateBeanFields implements BeanPostProcessor {
   public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
     boolean needsValidation = hasValidationAnnotationsOnFields(bean);
     if (needsValidation) {
-      System.out.println("Found bean containing javax.validation annotations on fields :  " + beanName);
+      System.out.println("Found bean containing jakarta.validation annotations on fields :  " + beanName);
       Set<ConstraintViolation<Object>> violations = validator.validate(bean);
       if (!violations.isEmpty()) {
         throw new ConstraintViolationException("Bean " + beanName + " failed validation of its fields: " + violations, violations);
@@ -41,7 +41,7 @@ public class AutoValidateBeanFields implements BeanPostProcessor {
     try {
       field.setAccessible(true); // ignore "private"
       boolean hasJavaxValidations = Arrays.stream(field.getAnnotations())
-              .anyMatch(ann -> ann.annotationType().getCanonicalName().startsWith("javax.validation"));
+              .anyMatch(ann -> ann.annotationType().getCanonicalName().startsWith("jakarta.validation"));
       if (hasJavaxValidations) return true;
     } catch (Exception e) {
       // swallow ex

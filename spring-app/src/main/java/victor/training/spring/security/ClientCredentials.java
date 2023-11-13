@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ClientCredentials { // CLient=Applicatie
   private final OAuth2RestTemplate restWithClientCredentials;
+// TODO migrate using https://stackoverflow.com/questions/58982286/spring-security-5-replacement-for-oauth2resttemplate
+
+
 
   // https://medium.com/@bcarunmail/securing-rest-api-using-keycloak-and-spring-oauth2-6ddf3a1efcc2
   @GetMapping("/api/client-credentials")

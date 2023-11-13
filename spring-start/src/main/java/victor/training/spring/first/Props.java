@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -50,7 +50,7 @@ public class Props {
 //   Ref: https://www.google.com/search?q=configuration+properties+baledung
 // TODO 4 validate (see above)
 //   - using if at startup
-//   - using javax.validation annotations + @Validated on the class
+//   - using jakarta.validation annotations + @Validated on the class
 //   Trick: provide a default to a property by assigning the field = "defaultvalue"
 // TODO 5[PRO] make this class immutable: lombok.@Value + @ConstructorBinding + @ConfigurationPropertiesScan on a @Configuration
 //  Hint: https://stackoverflow.com/questions/26137932/immutable-configurationproperties

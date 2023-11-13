@@ -6,7 +6,7 @@ import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.entity.Training;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class TrainingDto {
