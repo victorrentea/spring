@@ -35,8 +35,9 @@
         </dependency>
         <dependency>
             <!-- For distributed tracing of requests (printed after log level) -->
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <!-- SB3 replacement of org.springframework.cloud:spring-cloud-starter-sleuth -->
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
         </dependency>
 
         <!-- messages -->

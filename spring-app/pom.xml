@@ -111,11 +111,11 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <!-- OAuth2RestTemplate for Client Credentials flow -->
+      <!--  <dependency>
+            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
             <groupId>org.apache.commons</groupId>
@@ -131,8 +131,9 @@
 
         <dependency>
             <!-- For distributed tracing of requests (printed after log level) -->
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <!-- SB3 replacement of org.springframework.cloud:spring-cloud-starter-sleuth -->
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
         </dependency>
 
         <dependency>
