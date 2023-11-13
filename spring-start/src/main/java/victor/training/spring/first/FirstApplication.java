@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.first.alt.X;
 
@@ -29,7 +27,7 @@ import java.util.Arrays;
 // - @Scope
 // - @Configuration @Bean proxyMethods
 // - @Value(${}) + @ConfigurationProperties
-@SpringBootApplication
+@SpringBootApplication(nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @Import(X.class)
 //@Import(OClasaDintrunJar.class)
 //@ComponentScan(basePackages = {

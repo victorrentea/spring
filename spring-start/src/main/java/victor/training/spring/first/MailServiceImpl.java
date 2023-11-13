@@ -48,7 +48,7 @@ public class MailServiceImpl implements MailService {
     System.out.println("Later, after startup of the entire app");
   }
 
-  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
+//  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
