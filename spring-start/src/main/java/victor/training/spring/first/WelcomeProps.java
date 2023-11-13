@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,11 +24,10 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-//@Data // = getters + setters
-@Getter
-@Component
+@Value // ctor + getters
 @Validated // ii spune springului sa purice obiectul dupa adnotari de validation
 @ConfigurationProperties(prefix = "welcome")
+@ConstructorBinding // nu mai e necesara de pe Spring Boot >= 3.x
 public class WelcomeProps {
   @NotNull // !MUST HAVE langa @Size
   @Size(min = 5) // ce idiot a considerat ca daca cer string len >=5,  null e ok ?!?!
@@ -35,7 +36,7 @@ public class WelcomeProps {
   Map<Locale, String> localContactPhone;
   @NotNull
   @Min(0)
-  Integer gate = 15; // default value
+  Integer gate;// = 15; // default value
   List<URL> supportUrls; // TODO size >= 1
   @Data
   public static class Help {
