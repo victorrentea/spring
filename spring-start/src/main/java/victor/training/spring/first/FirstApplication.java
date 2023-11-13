@@ -5,9 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
-import victor.training.spring.first.alt.X;
+import victor.training.spring.alt.X;
 
 // - Dependency Injection: field, constructor, method
 // - Defining beans: @Component & co, @ComponentScan
@@ -24,6 +24,7 @@ import victor.training.spring.first.alt.X;
 // - @Configuration @Bean proxyMethods
 // - @Value(${}) + @ConfigurationProperties
 @SpringBootApplication
+@Import(X.class)
 //@ComponentScan(basePackages = {
 //    "victor.training.spring.first",
 //    "victor.training.spring.alt"})
