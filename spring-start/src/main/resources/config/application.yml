@@ -12,6 +12,8 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+#    main:
+#        allow-circular-references: true
 
 # injected in WelcomeProps
 welcome:

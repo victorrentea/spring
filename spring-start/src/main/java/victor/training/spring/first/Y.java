@@ -15,9 +15,9 @@ public class Y {
 //  @Value("${welcome.welcomeMessage}") // inject this from the configuration files
   private final String message = "HALO";
 
-  @Autowired
-  @Lazy
-  private X x;
+//  @Autowired
+////  @Lazy
+//  private X x;
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
