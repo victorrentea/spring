@@ -1,12 +1,8 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import victor.training.spring.first.alt.X;
 
 @Service
 public class Y {
@@ -16,7 +12,7 @@ public class Y {
   private final String message = "HALO";
 
   @Autowired
-  private OClasaDintrunJar oClasaDintrunJar;
+  private PersonService personService;
 
   // (recommended) constructor injection => 😏 replace with @RequiredArgsConstructor
   public Y(MailService mailService) {
@@ -25,7 +21,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("I like 4 topics : " + message);
-    oClasaDintrunJar.method();
+    personService.method();
     return 1;
   }
 }

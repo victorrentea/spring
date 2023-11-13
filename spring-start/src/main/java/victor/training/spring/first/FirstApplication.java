@@ -49,19 +49,3 @@ public class FirstApplication implements CommandLineRunner {
   }
 }
 
-@Configuration // scop: sa contina @Bean definitions
-class AltaClasa {
-  @Bean // programatic create a bean
-  public OClasaDintrunJar b() {
-    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
-    pathumeu.init();
-    return pathumeu;
-  }
-//  @Bean // programatic create a bean
-//  public OClasaDintrunJar c() {
-//    OClasaDintrunJar pathumeu = new OClasaDintrunJar("pathumeu");
-//    pathumeu.init();
-//    return pathumeu;
-//  }
-
-}
