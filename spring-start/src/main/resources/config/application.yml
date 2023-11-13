@@ -13,18 +13,16 @@ spring:
                         enable: true
         username: <login user to smtp server>
 
-# injected in WelcomeProps
-welcome:
-    help:
-        app-id: 1251
-        file: c:/help-file.pdf
-    localContactPhone:
-        FR: 430123414123
-        RO: 401312121414
+props:
+    gate: 123
+    welcomeMessage: Welcome to Spring
     supportUrls:
-        - http://google.com
         - http://stackoverflow.com
         - http://baeldung.com
         - http://spring.io
-    welcomeMessage: Welcome to Spring
-    gate: 123
+    contactPhones:
+        FR: 430123414123
+        RO: 401312121414
+    help:
+        app-id: 1251
+        file: c:/help-file.pdf

@@ -16,17 +16,17 @@ import java.util.Map;
 @Slf4j
 @Data // = getters + setters
 @Component
-public class WelcomeProps {
-  int gate; // TODO set default
-  String welcomeMessage; // TODO not null + size >= 4
-  List<URL> supportUrls; // TODO size >= 1
-  Map<Locale, String> localContactPhone;
-  Help help;
+public class Props {
+  private Integer gate; // TODO set default
+  private String welcomeMessage; // TODO not null + size >= 4
+  private List<URL> supportUrls; // TODO size >= 1
+  private Map<Locale, String> contactPhones;
+  private Help help;
 
-  @Data
+  @Data // TODO immutable
   public static class Help {
-    Integer appId;
-    File file; // TODO 4c validate exists on disk
+    private Integer appId;
+    private File file; // TODO file exists
   }
 
   @PostConstruct

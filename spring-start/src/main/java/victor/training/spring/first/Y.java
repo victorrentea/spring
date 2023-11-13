@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+// TODO @RequiredArgsConstructor with copyableAnnotations+=
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
-//  @Value("${welcome.welcomeMessage}") // from the configuration files
-  private String message = "HALO";
-  // TODO @RequiredArgsConstructor with copyableAnnotations+=
+  @Value("${props.gate}")
+  private Integer gate; // replace with injected Props
 
   public int logic() {
-    mailService.sendEmail("I like 4 topics : " + message);
+    mailService.sendEmail("Go to gate " + gate);
 
     return 1;
   }
