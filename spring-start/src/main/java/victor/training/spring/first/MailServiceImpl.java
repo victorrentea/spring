@@ -7,7 +7,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Profile("prod")
+@Profile("!local") // asa DA!
+
+//@Profile("prod") // activez clasa asta doar pe productie?
+    // nu si pe staging/load/acceptante,
+// From YOLO Dev ideology (You Only Live Once, Carpe Diem,  Depuis moi, le deluge)
+// I don't always test my code, but when I do, I do it in production
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO uncomment and watch it failing because it requires properties to be auto-defined
 
