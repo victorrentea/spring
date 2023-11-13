@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 public class ProxyIntro {
     public static void main(String[] args) {
-        // WE play the role of Spring here ...
         Maths maths = new Maths();
         SecondGrade secondGrade = new SecondGrade(maths);
 
@@ -13,7 +12,6 @@ public class ProxyIntro {
     }
 }
 // ------------------------
-@Service
 class SecondGrade {
     private final Maths maths;
     SecondGrade(Maths maths) {
@@ -26,8 +24,6 @@ class SecondGrade {
         System.out.println("4 x 3 = " + maths.product(4, 3));
     }
 }
-
-@Facade
 class Maths {
     public int sum(int a, int b) {
         return a + b;
@@ -37,11 +33,3 @@ class Maths {
         return a * b;
     }
 }
-
-
-// Key Points
-// - Class Proxy using CGLIB Enhancer to extend the proxied class
-// - Proxy limitations: final methods/classes, local calls
-// - Debug a Proxy
-// - Custom @Aspect
-
