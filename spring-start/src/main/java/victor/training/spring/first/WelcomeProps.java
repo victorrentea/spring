@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,11 +18,13 @@ import java.util.Map;
 @Data // = getters + setters
 @Component
 public class WelcomeProps {
-  int gate; // TODO set default
+  @Value("${welcome.welcomeMessage}")
   String welcomeMessage; // TODO not null + size >= 4
-  List<URL> supportUrls; // TODO size >= 1
-  Map<Locale, String> localContactPhone;
   Help help;
+  Map<Locale, String> localContactPhone;
+  @Value("${welcome.gate}")
+  int gate; // TODO set default
+  List<URL> supportUrls; // TODO size >= 1
 
   @Data
   public static class Help {
