@@ -1,10 +1,17 @@
 package victor.training.spring.aspects;
 
+import io.github.resilience4j.retry.annotation.Retry;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Positive;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -46,14 +53,27 @@ public class ProxyIntro {
 
 // TODO sa logam orice operatie face Maths, dar nu ai voie sa scrii cod sub linia asta:
 // -------------------------------------------------------------
+// ce pot face sub linie (in codul meu) sa-l stric proxy-urile
 class SecondGrade {
-  private final Maths maths;
+  private  Maths maths;
 
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
 
+//  @Secured("ROLE_LOAN_APPROVAL")
+//  @Cacheable
+//  @Transactional
+  public void approveLoan() {
+
+  }
+
   public void mathClass() {
+    approveLoan(); // nu trece prin proxy daca o chemi local
+
+//    maths = new Maths(); // #5 daca nu iei din spring obiectul, nu-ti vei lua un proxy
+    // mai sunt cazuri cand ai vrea sa interceptezi o metoda de pe un @Entity de hibernate. NU MERGE
+    // !! Poti intercepta doar metode de pe beanuri manageuite de Spring
     System.out.println("Oare ce Math class mi-a fost injectat? " +maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
@@ -61,11 +81,21 @@ class SecondGrade {
   }
 }
 
+// final #2 -> startup crash: morala nu-ti face clasele de @Service&friends final/@Value/record(java17)
 class Maths {
-  public int sum(int a, int b) {
+  public /*#3 final -> silent skip this method */ int sum(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+
+  public /*#4 static -> silent skip this method*/ int product(int a, int b) {
+//    return a * b;
+    int result = 0;
+    for (int i = 0; i < a; i++) {
+      result = sum(result, b); // #1 👑 apelul unei metode locale in aceeasi clasa
+                  // NU POATE FI INTERCEPTAT de catre proxy!!
+      // nu merg adnotarile de pe metoda!!
+    }
+    return  result;
   }
 }
+// CGLIB Enhancer subclaseaza Maths si override toate metodele
