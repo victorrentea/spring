@@ -45,7 +45,7 @@ public class FirstApplication implements CommandLineRunner {
 
   @Override // from CommandLineRunner, good for Batch Jobs
   public void run(String... args) {
-    System.out.println("Command line args al programului java: " + Arrays.toString(args));
+    System.out.println("Command line argsx al programului java: " + Arrays.toString(args));
     System.out.println(x.logic());
   }
 

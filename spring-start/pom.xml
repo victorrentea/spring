@@ -26,7 +26,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- auto-restart the app on any change in target/ (.class or property/yaml) -->
+            <!-- auto-restart the app on any change in target/ (.class or property/yaml)  foarte fain -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
