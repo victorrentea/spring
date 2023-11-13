@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,9 @@ public class Teacher {
 	@Enumerated(EnumType.STRING)
 	private ContractType contractType;
 
+	@NotNull
 	private String name;
+
 	@OneToMany(mappedBy = "teacher")
 	private List<Training> trainings = new ArrayList<>();
 

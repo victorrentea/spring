@@ -7,8 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -18,14 +22,18 @@ import java.util.Map;
 @Slf4j
 @Data // = getters + setters
 @Component
+@Validated // ii spune springului sa purice obiectul dupa adnotari de validation
 @ConfigurationProperties(prefix = "welcome")
 public class WelcomeProps {
+  @NotNull // !MUST HAVE langa @Size
+  @Size(min = 5) // ce idiot a considerat ca daca cer string len >=5,  null e ok ?!?!
   String welcomeMessage; // TODO not null + size >= 4
   Help help;
   Map<Locale, String> localContactPhone;
-  int gate; // TODO set default
+  @NotNull
+  @Min(0)
+  Integer gate = 15; // default value
   List<URL> supportUrls; // TODO size >= 1
-
   @Data
   public static class Help {
     Integer appId;

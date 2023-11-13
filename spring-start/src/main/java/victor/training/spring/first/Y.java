@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class Y {
   private final MailService mailService; // polymorphic injection
   private final PersonService gigel;
-  @Value("${welcome.welcomeMessage}")
-  private final String message;
+//  @Value("${welcome.welcomeMessage}")
+  private final String message = "skip";
 
 // acum lombok genereaza EXACT ctor de mai jos
 //  public Y(MailService mailService, PersonService gigel, @Value("${welcome.welcomeMessage}") String message) {
