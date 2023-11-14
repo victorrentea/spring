@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -57,6 +58,7 @@ class OtherClass {
   public void altaMetoda() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL2"); // UK violation
     jdbcTemplate.update("insert into MESSAGE(id, message) values (103,? )", "suchili");
+    throw new RuntimeException("Oups! Business exception");
   }
 }
 // TODO
