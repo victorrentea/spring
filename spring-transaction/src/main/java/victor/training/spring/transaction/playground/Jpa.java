@@ -38,7 +38,7 @@ public class Jpa {
   // daca acest endpoint e chemat din HTTP, Spring Boot tine conex deschisa chiar dupa ce s-a terminat tranzactia
 
   @GetMapping("lazy")
-  @Transactional(readOnly = true)
+//  @Transactional(readOnly = true)
   public String http() {
     var e = darkDeepMethod();
     log.info("Cu tagurile " + e.getTags());
@@ -47,7 +47,7 @@ public class Jpa {
   }
 
   private Message darkDeepMethod() {
-    return repo.findById(id).orElseThrow();
+    return repo.cuCopii(id);
     // conn is now release immediately after the SELECT
   }
 }

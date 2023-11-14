@@ -14,4 +14,8 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<Message> findByIdLocking(long id);
 
+
+  // JPA QL (JPQL)
+  @Query("SELECT m FROM Message m LEFT JOIN FETCH m.tags WHERE m.id = ?1")
+  Message cuCopii(Long id);
 }
