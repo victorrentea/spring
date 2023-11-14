@@ -60,7 +60,7 @@ class OtherClass {
     log.info("INSERT#2");
 
     // acum acest insert merge in DB fara tx, pe auto-commit true
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "JPA"); // UK violation
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL"); // UK violation
   }
 }
 // TODO
