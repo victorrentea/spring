@@ -29,7 +29,12 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
+
+    // cum poate o metoda statica sa-mi dea userul curent,
+    // daca eu pot avea 100 requesturi HTTP in paralel in executie pt useri diferiti
+    // e magie: se foloseste o chestie stranie numita ThreadLocal din Java
+    dto.username = altaMetodaSauAltLayer_cataVremeEPeAcelasiThread();
+
     // dto.username = anotherClass.asyncMethod().get();
 
     // dto.role = extractOneRole(authentication.getAuthorities());
@@ -47,6 +52,12 @@ public class SecurityController {
     //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
     //</editor-fold>
     return dto;
+  }
+
+  private String altaMetodaSauAltLayer_cataVremeEPeAcelasiThread() {
+    String useruCurent = SecurityContextHolder.getContext().getAuthentication().getName();
+    log.info("UPDATE .. .SET LAST_MODIFIED_BY = "+ useruCurent);
+    return useruCurent;
   }
 
   public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
