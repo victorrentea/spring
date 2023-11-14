@@ -25,11 +25,17 @@ public class Jpa {
     // poti evita featureul facand repo.saveAndFlush
   }
 
-  @Transactional
+//  @Transactional
   public void two() {
-    Message e = repo.findById(id).orElseThrow();
+//  Repository pattern: JPA incearca sa-ti dea iluzia ca obiectele din Repo vin si raman in memorie
+    Message e = darkDeepMethod();
     e.setMessage("Different");
     // Auto-flush changes: la finalul unei Tx, JPA face automat UPDATE pe toate @Entity dirty
-    // TODO lazy loading
+    log.info("Am scos entity cu id " + e.getId());
+    log.info("Cu tagurile " + e.getTags()); // lazy loading -> SELECT
+  }
+
+  private Message darkDeepMethod() {
+    return repo.findById(id).orElseThrow();
   }
 }

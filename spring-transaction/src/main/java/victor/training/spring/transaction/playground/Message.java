@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity // MUST HAVE
 @Data
@@ -16,6 +17,8 @@ public class Message {
     private Long id;
     @NotNull
     private String message;
+    @ElementCollection // @OneToMany intr-o tabela din DB cu FK la MESSAGE.ID
+    private List<String> tags;
 
     protected Message() { // for hibernate eyes only
     }
