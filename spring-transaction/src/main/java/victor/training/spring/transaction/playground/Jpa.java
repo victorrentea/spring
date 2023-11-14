@@ -25,11 +25,10 @@ public class Jpa {
     // poti evita featureul facand repo.saveAndFlush
   }
 
-  @Transactional
   public void two() {
-//    Message e = repo.findById(id).orElseThrow();
-//    e.setMessage("Different");
-
+    Message e = repo.findById(id).orElseThrow();
+    e.setMessage("Different");
+    repo.save(e);
     // TODO lazy loading
   }
 }

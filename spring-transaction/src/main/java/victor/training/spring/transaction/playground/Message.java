@@ -7,11 +7,11 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity
+@Entity // MUST HAVE
 @Data
 @Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
 public class Message {
-    @Id
+    @Id // MUST HAVE
     @GeneratedValue
     private Long id;
     @NotNull
