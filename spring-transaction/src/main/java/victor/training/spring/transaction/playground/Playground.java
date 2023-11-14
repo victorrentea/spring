@@ -54,12 +54,9 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-  @Async // muta executia metodei pe alt thread, prin intermediul unui proxy
-  public void altaMetoda() {// orice metoda chemi in acelasi thread ramane in aceeasi tranzactie
-    // tranzactia|JDBC Connection sunt BOUND pe thread
-    log.info("INSERT#2");
-
-    // acum acest insert merge in DB fara tx, pe auto-commit true
+//  @Async // muta executia metodei pe alt thread, prin intermediul unui proxy
+  @Transactional // n-are sens daca faci un singur change in DB
+  public void altaMetoda() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL"); // UK violation
   }
 }
