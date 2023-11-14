@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -16,10 +17,17 @@ public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
-  @Transactional // Spring manageuieste tranzactia cu o baza de date SQL
+  private final DataSource db1DataSource;
+  private final DataSource db2DataSource;
+
+  @Transactional
+  // Spring manageuieste tranzactia cu o baza de date SQL
   // connection = dataSource.getConnection();
   // START TX = connection.setAutoCommit(false);
   public void play() {
+    // synchronized { }
+    // WSDL call
+    // restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
   }
