@@ -18,7 +18,7 @@ public class UserPassSecurity extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable(); // OK since I never take <form> POSTs
+    http.csrf().disable(); // OK since I only expose REST APIS and never take <form> POSTs eg jsp, vaadin, jsf
 
     // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
