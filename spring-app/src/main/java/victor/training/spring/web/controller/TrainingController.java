@@ -64,7 +64,9 @@ public class TrainingController {
 
 
 //	@Secured("ROLE_ADMIN")
-	@Secured({"ROLE_ADMIN", "ROLE_POWER"}) // mai multe roluri au voie si le-ai pus cu ","
+//	@Secured({"ROLE_ADMIN", "ROLE_POWER"}) // GRESIT: mai multe roluri au voie si le-ai pus cu ","
+
+	@Secured("ROLE_TRAINING_DELETE") // de dorit: roluri fine-grained aggregate de rolurile principale ("USER") vezi UserRole.java
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);

@@ -23,6 +23,7 @@ public class UserPassSecurity extends WebSecurityConfigurerAdapter {
     // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
 
     http.authorizeRequests()
+        .mvcMatchers("/v3/api-docs").permitAll() // url-patterns: doar cand nu poti folosi adnotari: @Secured sau @PreAuthorized
         .anyRequest().authenticated();
 
     http.formLogin().defaultSuccessUrl("/", true);
