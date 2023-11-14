@@ -3,16 +3,11 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 @Slf4j
 @Service
@@ -33,9 +28,9 @@ public class Playground {
     // - WSDL call
     // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     try {
-      other.atomicStuff();
+      other.atomicStuffInTx();
     } catch (Exception e) {
-      other.saveInNewTx(e);
+      other.saveInTx(e);
     }
   }
 
@@ -61,15 +56,14 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-  @Transactional
-  public void atomicStuff() throws IOException {
+  @Transactional(rollbackFor = Exception.class)
+  public void atomicStuffInTx() throws IOException {
     log.info("INSERT#1");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     altaMetoda();
   }
 
-  @Transactional(rollbackFor = Exception.class) // are sens: ATOMIC intre cele 2 insert-uri
-  public void altaMetoda() throws IOException {
+  private void altaMetoda() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL2"); // UK violation
     jdbcTemplate.update("insert into MESSAGE(id, message) values (103,? )", "suchili");
 //    throw new RuntimeException("Oups! Business exception"); // unchecked
@@ -81,8 +75,8 @@ class OtherClass {
     // si exception handling (tampenia asta)
     // Concluzie: NICIODATA sa nu arunci exceptii cu throws din metodele tale.
   }
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void saveInNewTx(Exception e) {
+  @Transactional
+  public void saveInTx(Exception e) {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
   }
 }
