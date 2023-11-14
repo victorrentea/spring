@@ -59,7 +59,7 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-  @Transactional // are sens: ATOMIC intre cele 2 insert-uri
+  @Transactional(rollbackFor = Exception.class) // are sens: ATOMIC intre cele 2 insert-uri
   public void altaMetoda() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL2"); // UK violation
     jdbcTemplate.update("insert into MESSAGE(id, message) values (103,? )", "suchili");
