@@ -27,18 +27,23 @@ public class TransactionsApp {
 
    @EventListener(ApplicationStartedEvent.class)
    public void go() throws Exception {
-      System.out.println("============= TRANSACTION:START ==============");
-      playground.play();
+      try {
+         System.out.println("============= TRANSACTION:START ==============");
+         playground.play();
 
-      System.out.println("============= JPA:ONE ==============");
-      jpa.one();
-      System.out.println("============= JPA:TWO ==============");
-      jpa.two();
+         System.out.println("============= JPA:ONE ==============");
+         jpa.one();
+         System.out.println("============= JPA:TWO ==============");
+         jpa.two();
 
-      System.out.println("============= CONCURRENCY ==============");
-      List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
-      Executors.newCachedThreadPool().invokeAll(tasks);
-      System.out.println("============= END ==============");
+         System.out.println("============= CONCURRENCY ==============");
+         List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
+         Executors.newCachedThreadPool().invokeAll(tasks);
+         System.out.println("============= END ==============");
+      } catch (Exception e) {
+         e.printStackTrace();
+         // silence exceptions, to start the app
+      }
    }
 }
 
