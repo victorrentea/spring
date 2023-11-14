@@ -42,22 +42,21 @@ public class Playground {
   //==> din punctul de vedere al DB e aceeasi conexiune (NLS_LANG)
 }
 // in cod :
-// A) JdbcTemplate -> PL/SQL
-// B) EntityManager
-// C) Spring Data
+// A) JdbcTemplate -> PL/SQL 6/7
+// B) EntityManager 2/7
+// C) Spring Data 1/7
 // D) Jooq (DSL)
 
 //OJDBC7 + spark
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-//  @Async // muta executia metodei pe alt thread, prin intermediul unui proxy
-  @Transactional // n-are sens daca faci un singur change in DB
+  @Transactional // are sens: ATOMIC intre cele 2 insert-uri
   public void altaMetoda() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL"); // UK violation
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL2"); // UK violation
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (103,? )", "suchili");
   }
 }
 // TODO
