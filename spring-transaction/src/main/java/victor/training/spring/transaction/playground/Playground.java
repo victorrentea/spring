@@ -16,12 +16,28 @@ public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
-  @Transactional
+  @Transactional // Spring manageuieste tranzactia cu o baza de date SQL
+  // connection = dataSource.getConnection();
+  // START TX = connection.setAutoCommit(false);
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
   }
+  // COMMIT daca tot ok; connection.commit();
+  // sau ROLLBACK daca exceptioe; connection.rollback();
 }
+// in cod :
+// A) JdbcTemplate -> PL/SQL
+// B) EntityManager
+// C) Spring Data
+// D) Jooq (DSL)
+
+//OJDBC7 + spark
+
+
+
+
+
 
 @Service
 @RequiredArgsConstructor
