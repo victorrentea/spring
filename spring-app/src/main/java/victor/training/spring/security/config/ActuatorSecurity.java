@@ -37,8 +37,8 @@ public class ActuatorSecurity extends WebSecurityConfigurerAdapter {
         // /actuator/health is unsecured
         .requestMatchers(EndpointRequest.to("health")).permitAll()
 
-        .anyRequest().permitAll(); // DON'T USE IN PROD! use👇
-//          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for all remaining /actuator/** requests
+//        .anyRequest().permitAll(); // DON'T USE IN PROD! use👇
+          .anyRequest().hasAuthority("ACTUATOR"); // require authentication for all remaining /actuator/** requests
 
 
     // the principal is identified using:
