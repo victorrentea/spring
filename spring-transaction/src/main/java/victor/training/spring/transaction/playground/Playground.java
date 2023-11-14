@@ -17,22 +17,25 @@ public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass other;
 
-  private final DataSource db1DataSource;
-  private final DataSource db2DataSource;
 
-  @Transactional
   // Spring manageuieste tranzactia cu o baza de date SQL
   // connection = dataSource.getConnection();
   // START TX = connection.setAutoCommit(false);
+  @Transactional
   public void play() {
-    // synchronized { }
-    // WSDL call
-    // restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
+    // NU BLOCA:
+    // - synchronized { }
+    // - WSDL call
+    // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
+  // cand faci connection.close() pe o connex JDBC, daca acea conex a venit
+  // dintr-un pool de conexiuni, close() doar inseamna release() -> pune-o inapoi in pool,
+  // s-o foloseasca alt request dupa time
+  //==> din punctul de vedere al DB e aceeasi conexiune (NLS_LANG)
 }
 // in cod :
 // A) JdbcTemplate -> PL/SQL
