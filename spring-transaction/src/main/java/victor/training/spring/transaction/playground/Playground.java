@@ -27,20 +27,19 @@ public class Playground {
   // Spring manageuieste tranzactia cu o baza de date SQL
   // connection = dataSource.getConnection();
   // START TX = connection.setAutoCommit(false);
-  @Transactional
   public void play() {
     // NU BLOCA:
     // - synchronized { }
     // - WSDL call
     // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
-    log.info("INSERT#1");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     try {
-      other.altaMetoda();
+      other.atomicStuff();
     } catch (Exception e) {
       other.saveInNewTx(e);
     }
   }
+
+
 
 
   // COMMIT daca tot ok; connection.commit();
@@ -62,6 +61,13 @@ public class Playground {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
+  @Transactional
+  public void atomicStuff() throws IOException {
+    log.info("INSERT#1");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+    altaMetoda();
+  }
+
   @Transactional(rollbackFor = Exception.class) // are sens: ATOMIC intre cele 2 insert-uri
   public void altaMetoda() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "SQL2"); // UK violation
