@@ -68,7 +68,7 @@ class OtherClass {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (103,? )", "suchili");
 //    throw new RuntimeException("Oups! Business exception"); // unchecked
     // moment penibil pt Spring: exceptiile checked lasa tranzactia sa COMMITa
-    throw new IOException("exceptie rea, greseli in Java. Doar Java are asa mizerii");  // checked
+//    throw new IOException("exceptie rea, greseli in Java. Doar Java are asa mizerii");  // checked
     // de ce asa?
     // Spring a furat developeri din JavaEE/EJB1.1, si ca sa faca usoara tranzitia la Spring,
     // au copia comportamentul @TransactionAttribute (EJB) in @Transactional, cu tot cu propagation=

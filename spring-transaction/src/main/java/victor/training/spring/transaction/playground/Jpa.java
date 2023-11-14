@@ -11,11 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class Jpa {
   private final MessageRepo repo;
   private Long id;
+//  private final EntityManager entityManager; JPA direct
 
   @Transactional
   public void one() {
-//    id = repo.save(new Message("ONE")).getId();
-    System.out.println("End of method");
+    Message message = repo.save(new Message("SQL"));
+    id = message.getId();
+    log.info("End of method. inserted: " + id);
+    // in log INSERT apare dupa iesirea din functie
+    // Write-Behind = JPA amana INSERT/UPDATE in DB pana inainte de COMMIT. Atunci le face 'flush'
+    // PROS: poate evita sa faca INSERT daca ROLLBACK; poate BATCHEUI impreuna mai multe inserturi
+    // CONS: misleading. poate crapa UQ DUPA CE IESI din metoda.
+    // poti evita featureul facand repo.saveAndFlush
   }
 
   @Transactional
