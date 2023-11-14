@@ -12,25 +12,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
-import java.util.function.Consumer;
-
 // this will allow going in just using headers, eg:
 // curl http://localhost:8080/api/trainings -H 'X-User: user' -H 'X-User-Roles: USER'
-@Profile("header")
+@Profile("preauth")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class HeaderSecurity  {
+public class PreAuthSecurity {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf ->csrf.disable());
 
     http.authorizeHttpRequests(authz -> authz.anyRequest().authenticated());
 
-    http.apply(new AddMyFilter());
+    http.apply(new AddPreAuthFilter());
 
     var provider = new PreAuthenticatedAuthenticationProvider();
-    provider.setPreAuthenticatedUserDetailsService(token -> (HeaderPrincipal) token.getPrincipal());
+    provider.setPreAuthenticatedUserDetailsService(token -> (PreAuthPrincipal) token.getPrincipal());
     http.authenticationProvider(provider);
 
     http.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -38,11 +36,11 @@ public class HeaderSecurity  {
   }
 
   // i'm sorry: see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#accessing-the-local-authenticationmanager
-  private static class AddMyFilter extends AbstractHttpConfigurer<AddMyFilter, HttpSecurity> {
+  private static class AddPreAuthFilter extends AbstractHttpConfigurer<AddPreAuthFilter, HttpSecurity> {
     @Override
     public void configure(HttpSecurity http) {
       AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-      http.addFilter(new HeaderFilter(authenticationManager));
+      http.addFilter(new PreAuthFilter(authenticationManager));
     }
 
   }

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-public class HeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
-    public HeaderFilter(AuthenticationManager authenticationManager) {
+public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
+    public PreAuthFilter(AuthenticationManager authenticationManager) {
         setAuthenticationManager(Objects.requireNonNull(authenticationManager));
     }
     @Override
@@ -22,7 +22,7 @@ public class HeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
             return null;
         }
         List<String> roles = List.of(rolesStr.split(","));
-        return new HeaderPrincipal(username, roles);
+        return new PreAuthPrincipal(username, roles);
     }
 
     @Override

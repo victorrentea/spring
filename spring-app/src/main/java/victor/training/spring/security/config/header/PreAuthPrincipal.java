@@ -9,11 +9,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class HeaderPrincipal implements UserDetails {
+public class PreAuthPrincipal implements UserDetails {
     private final String username;
     private final List<String> authorities;
 
-    public HeaderPrincipal(String username, List<String> roles) {
+    public PreAuthPrincipal(String username, List<String> roles) {
         this.username = username;
         this.authorities = roles.stream().map(s -> "ROLE_"+s).collect(toList());
 
