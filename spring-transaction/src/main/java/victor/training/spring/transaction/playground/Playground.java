@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -37,8 +38,13 @@ public class Playground {
     try {
       other.altaMetoda();
     } catch (Exception e) {
-      jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
+      saveInNewTx(e);
     }
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveInNewTx(Exception e) {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
