@@ -15,7 +15,7 @@ public class Jpa {
 
   @Transactional
   public void one() {
-    Message message = repo.save(new Message("SQL"));
+    Message message = repo.save(new Message("JPA"));
     id = message.getId();
     log.info("End of method. inserted: " + id);
     // in log INSERT apare dupa iesirea din functie
