@@ -32,7 +32,7 @@ public class Playground {
     // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     log.info("INSERT#1");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    altaMetoda();
+    other.altaMetoda();
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
@@ -40,14 +40,6 @@ public class Playground {
   // dintr-un pool de conexiuni, close() doar inseamna release() -> pune-o inapoi in pool,
   // s-o foloseasca alt request dupa time
   //==> din punctul de vedere al DB e aceeasi conexiune (NLS_LANG)
-
-  // e degeaba pus @Async ca proxyurile n-au cum sa mearga pe apel local
-  @Async // muta executia metodei pe alt thread, prin intermediul unui proxy
-  private void altaMetoda() {// orice metoda chemi in acelasi thread ramane in aceeasi tranzactie
-    // tranzactia|JDBC Connection sunt BOUND pe thread
-    log.info("INSERT#2");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
-  }
 }
 // in cod :
 // A) JdbcTemplate -> PL/SQL
@@ -57,15 +49,17 @@ public class Playground {
 
 //OJDBC7 + spark
 
-
-
-
-
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 class OtherClass {
-  private final MessageRepo repo;
+  private final JdbcTemplate jdbcTemplate;
+  @Async // muta executia metodei pe alt thread, prin intermediul unui proxy
+  public void altaMetoda() {// orice metoda chemi in acelasi thread ramane in aceeasi tranzactie
+    // tranzactia|JDBC Connection sunt BOUND pe thread
+    log.info("INSERT#2");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
+  }
 }
 // TODO
 // 0 p6spy

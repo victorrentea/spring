@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@EnableAsync
 public class TransactionsApp {
    public static void main(String[] args) {
       SpringApplication.run(TransactionsApp.class, args);
