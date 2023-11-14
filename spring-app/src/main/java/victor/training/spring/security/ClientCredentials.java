@@ -22,7 +22,11 @@ public class ClientCredentials { // CLient=Applicatie
   public String clientCredentials() {
     return restWithClientCredentials.getForObject("http://localhost:8082", String.class);
   }
+//  List<FEX> fex;
 
+
+  // scheduled that runs every workday at 10:00
+//  @Scheduled(cron = "0 0 10 * * MON-FRI")
   @Scheduled(fixedRate = 2 * 1000)
   public void scheduled() {
     String value = restWithClientCredentials.getForObject("http://localhost:8082", String.class);
