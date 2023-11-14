@@ -28,7 +28,7 @@ public class Playground {
     // - WSDL call
     // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
+    altaMetoda();
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
@@ -36,6 +36,11 @@ public class Playground {
   // dintr-un pool de conexiuni, close() doar inseamna release() -> pune-o inapoi in pool,
   // s-o foloseasca alt request dupa time
   //==> din punctul de vedere al DB e aceeasi conexiune (NLS_LANG)
+
+  private void altaMetoda() {// orice metoda chemi in acelasi thread ramane in aceeasi tranzactie
+    // tranzactia|JDBC Connection sunt BOUND pe thread
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
+  }
 }
 // in cod :
 // A) JdbcTemplate -> PL/SQL
