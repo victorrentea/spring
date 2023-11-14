@@ -2,12 +2,13 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@RestController
 public class Jpa {
   private final MessageRepo repo;
   private Long id;
@@ -34,8 +35,18 @@ public class Jpa {
     log.info("Am scos entity cu id " + e.getId());
     log.info("Cu tagurile " + e.getTags()); // lazy loading -> SELECT
   }
+  // daca acest endpoint e chemat din HTTP, Spring Boot tine conex deschisa chiar dupa ce s-a terminat tranzactia
+
+  @GetMapping("lazy")
+  public String http() {
+    var e = darkDeepMethod();
+    log.info("Cu tagurile " + e.getTags());
+//    rest.apicall
+    return "toStringul a cerut SELECT : " + e.getTags();
+  }
 
   private Message darkDeepMethod() {
     return repo.findById(id).orElseThrow();
+    // conn is now release immediately after the SELECT
   }
 }
