@@ -21,7 +21,7 @@ public class Playground {
   // START TX = connection.setAutoCommit(false);
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
