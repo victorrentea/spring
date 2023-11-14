@@ -1,6 +1,5 @@
 package victor.training.crypto;
 
-import org.apache.commons.codec.DecoderException;
 import org.junit.jupiter.api.Test;
 
 import java.security.*;
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DigitalSignature {
 
     @Test
-    public void testAsymmetricSigningWithSignatureClasses() throws GeneralSecurityException, DecoderException {
+    public void testAsymmetricSigningWithSignatureClasses() throws GeneralSecurityException {
         KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA");
         kpGen.initialize(1024);
         KeyPair keyPair = kpGen.generateKeyPair();

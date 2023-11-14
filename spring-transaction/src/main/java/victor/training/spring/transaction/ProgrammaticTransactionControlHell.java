@@ -1,6 +1,6 @@
 package victor.training.spring.transaction;
 
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 

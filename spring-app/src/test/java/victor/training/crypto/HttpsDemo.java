@@ -1,7 +1,8 @@
 package victor.training.crypto;
 
-import jakarta.net.ssl.HttpsURLConnection;
-import jakarta.net.ssl.SSLPeerUnverifiedException;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -3,8 +3,6 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -60,12 +58,12 @@ public class TeacherBioClient {
 
     // Auth#1 :) - no bearer
 //    String bearerToken = "joke";
-
+// TODO FIX migration
     // Auth#2 - propagating MY clients' AccessToken
-    KeycloakPrincipal<KeycloakSecurityContext> principal =
-            (KeycloakPrincipal<KeycloakSecurityContext>)
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String accessToken = principal.getKeycloakSecurityContext().getTokenString();
+//    KeycloakPrincipal<KeycloakSecurityContext> principal =
+//            (KeycloakPrincipal<KeycloakSecurityContext>)
+//            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    String accessToken = principal.getKeycloakSecurityContext().getTokenString();
 
     // Auth#3 - manually creating a JWT token
     //          String bearerToken = Jwts.builder()
@@ -73,10 +71,11 @@ public class TeacherBioClient {
     //                .claim("country", "Country")
     //                .signWith(SignatureAlgorithm.HS512, jwtSecret)
     //                .compact();
+//    log.info("Sending bearer: {}", accessToken);
+//    Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + accessToken));
 
 
-    log.info("Sending bearer: {}", accessToken);
-    Map<String, List<String>> header = Map.of("Authorization", List.of("Bearer " + accessToken));
+    Map<String, List<String>> header = Map.of();
     ResponseEntity<String> response = rest.exchange(new RequestEntity<>(
             CollectionUtils.toMultiValueMap(header),
             HttpMethod.GET,

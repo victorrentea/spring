@@ -1,12 +1,12 @@
 package victor.training.crypto;
 
-import org.apache.commons.codec.binary.Hex;
+//import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.parsers.DocumentBuilder;
-import jakarta.xml.parsers.DocumentBuilderFactory;
-import jakarta.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.Key;
@@ -74,7 +74,7 @@ public class Utils {
     }
 
     public static void printByteArray(String name, byte[] bytes) {
-        System.out.println(name + ": "+ Hex.encodeHexString(bytes));
+//        System.out.println(name + ": "+ Hex.encodeHexString(bytes));// TODO FIX migration
         System.out.println(name + " length: " + bytes.length + " bytes = " + bytes.length * 8 + " bits.");
         System.out.println("\r\n");
     }

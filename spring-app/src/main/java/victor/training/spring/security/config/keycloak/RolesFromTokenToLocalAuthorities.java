@@ -24,7 +24,7 @@ public class RolesFromTokenToLocalAuthorities implements GrantedAuthoritiesMappe
                 .map(Optional::get)
                 .collect(toList());
         if (matchingRoles.size() != 1) {
-            KeyCloakUtils.printTheTokens();
+//            KeyCloakUtils.printTheTokens();
             throw new IllegalArgumentException("No single role found in token that matches known roles " + Arrays.toString(UserRole.values()));
         }
         List<SimpleGrantedAuthority> resolveAuthorities = matchingRoles.stream()

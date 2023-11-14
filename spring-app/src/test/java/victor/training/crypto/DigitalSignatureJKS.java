@@ -1,6 +1,6 @@
 package victor.training.crypto;
 
-import org.apache.commons.codec.DecoderException;
+import org.bouncycastle.util.encoders.DecoderException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DigitalSignatureJKS {
 
     @Test
-    public void testAsymmetricSigningWithSignatureClasses() throws GeneralSecurityException, DecoderException, IOException {
+    public void testAsymmetricSigningWithSignatureClasses() throws GeneralSecurityException, IOException {
         PrivateKey privateKey = getSenderPrivateKeyFromSenderJKS();
 
         String data = "My Company is the best!!!";

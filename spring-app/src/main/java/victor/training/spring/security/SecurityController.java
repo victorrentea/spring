@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.security.config.keycloak.KeyCloakUtils;
+//import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
@@ -25,7 +25,7 @@ public class SecurityController {
 
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() throws Exception {
-    KeyCloakUtils.printTheTokens();
+//    KeyCloakUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();

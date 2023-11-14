@@ -1,6 +1,5 @@
 package victor.training.crypto;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +54,8 @@ public class Hashing {
       byte[] contentBytes = IOUtils.toByteArray(inputStream);
 
       byte[] hashBytes = MessageDigest.getInstance("SHA-256").digest(contentBytes); // TODO
-      String hashHex = Hex.encodeHexString(hashBytes);
+//      String hashHex = Hex.encodeHexString(hashBytes); // TODO FIX migration
+      String hashHex = "FIX";
       System.out.println("hash(" + fileName + ") = " + hashHex);
       return hashHex;
     }

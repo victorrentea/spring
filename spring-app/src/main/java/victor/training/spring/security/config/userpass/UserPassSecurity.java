@@ -1,42 +1,52 @@
 package victor.training.spring.security.config.userpass;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @Profile("userpass")
+@Configuration
 @EnableWebSecurity // (debug = true) // see the filter chain in use
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class UserPassSecurity extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class UserPassSecurity {
+  {
+    log.info("Using form and basic authentication");
+  }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable(); // OK since I never take <form> POSTs
+  //  @Override
+//  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
 
-    // http.cors(); // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
+    // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
+    // http.cors(Customizer.withDefaults());
 
-    http.authorizeRequests()
-        .anyRequest().authenticated();
+    http.authorizeHttpRequests(authz->authz.anyRequest().authenticated());
 
-    http.formLogin().defaultSuccessUrl("/", true);
+    http.formLogin(Customizer.withDefaults()); // display a login page
 
-    http.httpBasic(); // also accept Authorization: Basic ...
+    http.httpBasic(Customizer.withDefaults()); // also accept Authorization: Basic ... request header
 
-    http.userDetailsService(userDetailsService());
+    return http.build();
   }
 
   // *** Dummy users 100% in-mem with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user").password("user").roles("USER").build();
+        .username("user").password("user").roles("USER").build();
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()

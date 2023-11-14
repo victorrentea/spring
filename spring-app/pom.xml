@@ -106,11 +106,16 @@
             <scope>test</scope>
         </dependency>
 
+
         <dependency>
-            <!-- OAuth2 with KeyCloak AuthServer -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <!--<dependency>
+            &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>
+        </dependency>-->
       <!--  <dependency>
             &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
             <groupId>org.springframework.security.oauth.boot</groupId>

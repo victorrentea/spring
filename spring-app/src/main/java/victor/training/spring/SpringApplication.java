@@ -15,7 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 
 import java.sql.SQLException;
 

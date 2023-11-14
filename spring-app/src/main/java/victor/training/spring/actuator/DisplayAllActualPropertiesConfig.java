@@ -1,5 +1,8 @@
 package victor.training.spring.actuator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
@@ -11,12 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import victor.training.spring.actuator.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
 
-import jakarta.annotation.PostConstruct;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 @Configuration
 @Slf4j
@@ -35,12 +35,10 @@ public class DisplayAllActualPropertiesConfig {
     private final Properties allProps;
 
     @PostConstruct
-    public void printResolvedProps() {
-      log.info("All properties: \n" + allProps.entrySet()
-              .stream()
-              .sorted(Map.Entry.comparingByKey(Comparator.comparing(Object::toString)))
-              .map(e -> e.getKey() + " = " + e.getValue())
-              .collect(Collectors.joining("\n")));
+    public void printResolvedProps() throws JsonProcessingException {
+      TreeMap<String, String> sortedProps = new TreeMap<>((Map<String, String>) (Map) allProps);
+      String allPropsJson = new ObjectMapper().writeValueAsString(sortedProps);
+      log.info("All properties: " + allPropsJson);
     }
 
     @ReadOperation
