@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import victor.training.spring.web.MyException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -26,13 +24,16 @@ public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
+  @ExceptionHandler(Exception.class) // daca nici un alt handler mai specific nu a tratat exceptia, intra aici
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
     log.error(exception.getMessage(), exception);
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+  }
+
+  @ResponseStatus(FORBIDDEN)
+  @ExceptionHandler(AccessDeniedException.class)
+  public String accessDenied(AccessDeniedException e) {
+    return "Ia mana! : " +e.getMessage();
   }
 
   //	@ResponseStatus(NOT_FOUND)
