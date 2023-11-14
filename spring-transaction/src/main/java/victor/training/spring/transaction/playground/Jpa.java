@@ -15,14 +15,13 @@ public class Jpa {
   @Transactional
   public void one() {
 //    id = repo.save(new Message("ONE")).getId();
-    System.out.println("End of method");
+    log.info("End of method ---"); // TODO write-behind
   }
 
-  @Transactional
   public void two() {
 //    Message e = repo.findById(id).orElseThrow();
-//    e.setMessage("Different");
+//    e.setMessage("Different"); // TODO auto-flush changes
 
-    // TODO lazy loading
+    // TODO lazy-loading
   }
 }

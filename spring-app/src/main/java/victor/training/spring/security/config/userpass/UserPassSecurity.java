@@ -24,16 +24,15 @@ public class UserPassSecurity {
     log.info("Using form and basic authentication");
   }
 
-  //  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
 
-    // needed only if .js files are served by a CDN (eg) and you want to enable CORS (by default CORS requests get blocked)
-    // http.cors(Customizer.withDefaults());
+    // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
-    http.authorizeHttpRequests(authz->authz.anyRequest().authenticated());
+    http.authorizeHttpRequests(authz -> authz
+        .anyRequest().authenticated()
+    );
 
     http.formLogin(Customizer.withDefaults()); // display a login page
 
@@ -42,7 +41,7 @@ public class UserPassSecurity {
     return http.build();
   }
 
-  // *** Dummy users 100% in-mem with plain text passwords - NEVER USE IN PRODUCTION
+  // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()

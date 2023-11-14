@@ -6,11 +6,12 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public class HeaderFilter extends AbstractPreAuthenticatedProcessingFilter {
     public HeaderFilter(AuthenticationManager authenticationManager) {
-        setAuthenticationManager(authenticationManager);
+        setAuthenticationManager(Objects.requireNonNull(authenticationManager));
     }
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
