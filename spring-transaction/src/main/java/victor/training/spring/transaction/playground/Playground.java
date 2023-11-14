@@ -58,7 +58,9 @@ class OtherClass {
   public void altaMetoda() {// orice metoda chemi in acelasi thread ramane in aceeasi tranzactie
     // tranzactia|JDBC Connection sunt BOUND pe thread
     log.info("INSERT#2");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )"); // UK violation
+
+    // acum acest insert merge in DB fara tx, pe auto-commit true
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,? )", "JPA"); // UK violation
   }
 }
 // TODO
