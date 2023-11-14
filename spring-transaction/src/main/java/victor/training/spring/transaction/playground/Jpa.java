@@ -38,6 +38,7 @@ public class Jpa {
   // daca acest endpoint e chemat din HTTP, Spring Boot tine conex deschisa chiar dupa ce s-a terminat tranzactia
 
   @GetMapping("lazy")
+  @Transactional(readOnly = true)
   public String http() {
     var e = darkDeepMethod();
     log.info("Cu tagurile " + e.getTags());
