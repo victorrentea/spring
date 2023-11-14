@@ -1,5 +1,7 @@
 package victor.training.spring.security.config.header;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -14,11 +16,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 // this will allow going in just using headers, eg:
 // curl http://localhost:8080/api/trainings -H 'X-User: user' -H 'X-User-Roles: USER'
+@Slf4j
 @Profile("preauth")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class PreAuthSecurity {
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf ->csrf.disable());

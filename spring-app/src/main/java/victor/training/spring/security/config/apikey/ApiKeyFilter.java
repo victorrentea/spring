@@ -1,5 +1,6 @@
 package victor.training.spring.security.config.apikey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -9,7 +10,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
-
     public ApiKeyFilter(String expectedApiKey) {
         setAuthenticationManager(authentication -> {
             if (authentication.getPrincipal() instanceof String apiKeyFromHeader) {

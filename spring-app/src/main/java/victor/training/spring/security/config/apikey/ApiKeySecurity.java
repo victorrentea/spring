@@ -1,24 +1,30 @@
-//package victor.training.spring.security.config.apikey;
-//
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.context.annotation.Profile;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//
-//@Slf4j
-//@Profile("apikey")
-//@EnableWebSecurity
-//public class ApiKeySecurity extends WebSecurityConfigurerAdapter {
-//    @Value("${api-key:secret}")
-//    private String apiKey;
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable(); // OK since I never take <form> POSTs
-//        http.authorizeRequests().anyRequest().authenticated();
-//        http.addFilter(new ApiKeyFilter(apiKey));
-//    }
-//
-//}
+package victor.training.spring.security.config.apikey;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Slf4j
+@Profile("apikey")
+@Configuration
+@EnableWebSecurity
+public class ApiKeySecurity {
+
+  @Value("${api-key:secret}")
+  private String apiKey;
+
+
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable());
+    http.authorizeRequests(authz -> authz.anyRequest().authenticated());
+    http.addFilter(new ApiKeyFilter(apiKey));
+    return http.build();
+  }
+
+}
