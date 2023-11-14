@@ -33,7 +33,11 @@ public class Playground {
     // - restApi.call(); // 100ms - 5 sec -> DOAMNE FERESTE! NU bloca thread-ul cand ai o tranzactie deschisa
     log.info("INSERT#1");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    other.altaMetoda();
+    try {
+      other.altaMetoda();
+    } catch (Exception e) {
+      jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
+    }
   }
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
