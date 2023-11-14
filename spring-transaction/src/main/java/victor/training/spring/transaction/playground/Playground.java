@@ -38,14 +38,11 @@ public class Playground {
     try {
       other.altaMetoda();
     } catch (Exception e) {
-      saveInNewTx(e);
+      other.saveInNewTx(e);
     }
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void saveInNewTx(Exception e) {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
-  }
+
   // COMMIT daca tot ok; connection.commit();
   // sau ROLLBACK daca exceptioe; connection.rollback();
   // cand faci connection.close() pe o connex JDBC, daca acea conex a venit
@@ -77,6 +74,10 @@ class OtherClass {
     // au copia comportamentul @TransactionAttribute (EJB) in @Transactional, cu tot cu propagation=
     // si exception handling (tampenia asta)
     // Concluzie: NICIODATA sa nu arunci exceptii cu throws din metodele tale.
+  }
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveInNewTx(Exception e) {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (105,'EROARE:' || ? )", e.getMessage());
   }
 }
 // TODO
