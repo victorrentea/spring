@@ -25,10 +25,11 @@ public class Jpa {
     // poti evita featureul facand repo.saveAndFlush
   }
 
+  @Transactional
   public void two() {
     Message e = repo.findById(id).orElseThrow();
     e.setMessage("Different");
-    repo.save(e);
+    // Auto-flush changes: la finalul unei Tx, JPA face automat UPDATE pe toate @Entity dirty
     // TODO lazy loading
   }
 }
