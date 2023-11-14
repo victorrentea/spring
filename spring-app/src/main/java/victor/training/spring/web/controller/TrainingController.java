@@ -63,7 +63,8 @@ public class TrainingController {
 
 
 
-	@Secured("ROLE_ADMIN")
+//	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN", "ROLE_POWER"}) // mai multe roluri au voie si le-ai pus cu ","
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);

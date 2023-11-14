@@ -37,7 +37,8 @@ public class SecurityController {
 
     // dto.username = anotherClass.asyncMethod().get();
 
-    // dto.role = extractOneRole(authentication.getAuthorities());
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    dto.role = extractOneRole(authentication.getAuthorities());
 
     // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
