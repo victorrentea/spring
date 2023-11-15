@@ -22,8 +22,9 @@ public class GatewayApp {
             .route("path_route", r -> r.path("/**")
                     .filters(f -> f
                             .filters(jwtFakerFilter)
-                            .filters(preAuthHeaderFakerFilter)
+//                            .filters(preAuthHeaderFakerFilter)
                     )
+
                     .uri("http://localhost:8080"))
             .build();
   }

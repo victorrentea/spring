@@ -49,7 +49,8 @@ public class QueryParamToJwtToken implements GatewayFilter {
   }
 
   private static ServerHttpRequest addBearerToRequest(ServerHttpRequest request, String jwtToken) {
-    return request.mutate().header("Authorization", "Bearer " + jwtToken).build();
+    return request.mutate()
+        .header("Authorization", "Bearer " + jwtToken).build();
   }
 
   private String extractPayload(String jwtToken) {

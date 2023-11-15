@@ -19,11 +19,11 @@ import java.util.List;
 // this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
 @Slf4j
 public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
-  @Value("${jwt.signature.shared.secret.base64}")
-  private String jwtSecret;
+  private final String jwtSecret;
 
-  public JwtFilter(AuthenticationManager authenticationManager) {
+  public JwtFilter(AuthenticationManager authenticationManager, String jwtSecret) {
     setAuthenticationManager(authenticationManager);
+    this.jwtSecret = jwtSecret;
   }
 
   @Override

@@ -11,7 +11,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Slf4j
-@Profile("!userpass & !jwt & !keycloak & !apikey & !header")
+@Profile("!userpass & !jwt & !keycloak & !apikey & !preauth")
 @Configuration
 @EnableWebSecurity
 public class DisabledSecurity {

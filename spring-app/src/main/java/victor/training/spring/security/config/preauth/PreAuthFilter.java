@@ -1,4 +1,4 @@
-package victor.training.spring.security.config.header;
+package victor.training.spring.security.config.preauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,15 +8,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 @Slf4j
 public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
     public PreAuthFilter(AuthenticationManager authenticationManager) {
-        setAuthenticationManager(Objects.requireNonNull(authenticationManager));
+        setAuthenticationManager(requireNonNull(authenticationManager));
     }
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
         String username = httpRequest.getHeader("x-user");
-        String rolesStr = httpRequest.getHeader("x-user-role");
+        String rolesStr = httpRequest.getHeader("x-user-roles");
         if (username == null || rolesStr == null || username.isBlank() || rolesStr.isBlank()) {
             log.error("'x-user' and 'x-user-roles' NOT found in request headers");
             return null;
