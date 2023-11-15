@@ -14,12 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class KeycloakLogoutHandler implements LogoutHandler {
+public class KeyCloakLogoutHandler implements LogoutHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeycloakLogoutHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeyCloakLogoutHandler.class);
     private final RestTemplate restTemplate;
 
-    public KeycloakLogoutHandler(RestTemplate restTemplate) {
+    public KeyCloakLogoutHandler(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

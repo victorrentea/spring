@@ -19,7 +19,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles.RoleLevel.CLIENT;
-import static victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles.RoleLevel.REALM;
 
 @Profile("keycloak")
 @Configuration
@@ -27,9 +26,9 @@ import static victor.training.spring.security.config.keycloak.TokenRolesToLocalR
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class KeyCloakSecurity {
 
-    private final KeycloakLogoutHandler keycloakLogoutHandler;
+    private final KeyCloakLogoutHandler keycloakLogoutHandler;
 
-    KeyCloakSecurity(KeycloakLogoutHandler keycloakLogoutHandler) {
+    KeyCloakSecurity(KeyCloakLogoutHandler keycloakLogoutHandler) {
         this.keycloakLogoutHandler = keycloakLogoutHandler;
     }
 
