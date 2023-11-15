@@ -12,9 +12,9 @@ import static java.lang.System.currentTimeMillis;
 
 @Slf4j
 @RestController
-public class DrinkApi {
+public class BarApi {
    @Autowired
-   private Barman barman;
+   private BarmanService barmanService;
 
    // TODO [1] autowire and submit tasks to a ThreadPoolTaskExecutor
    // TODO [2] mark pour* methods as @Async
@@ -24,10 +24,10 @@ public class DrinkApi {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Beer beer = barman.pourBeer();
-      Vodka vodka = barman.pourVodka();
+      Beer beer = barmanService.pourBeer();
+      Vodka vodka = barmanService.pourVodka();
 
-      barman.auditCocktail("Dilly");
+      barmanService.auditCocktail("Dilly");
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);

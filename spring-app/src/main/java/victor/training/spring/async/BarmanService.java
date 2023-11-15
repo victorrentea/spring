@@ -13,12 +13,22 @@ import victor.training.spring.async.drinks.Vodka;
 @Service
 @Timed
 @RequiredArgsConstructor
-public class Barman {
+public class BarmanService {
    private final RestTemplate restTemplate;
+   private final DrinksFeignClient drinksFeignClient;
+
    public Beer pourBeer() {
       log.debug("Pouring Beer (SOAP CALL)...");
+      // #1 traditional
       return restTemplate.getForObject("http://localhost:8080/api/beer", Beer.class);
+
+      // #2 Feign
+      // return drinksFeignClient.getBeer();
+
+      // #3 WebClient
+      // return webClient.uri(..).get() ...;
    }
+
    public Vodka pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
       return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
