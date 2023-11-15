@@ -1,22 +1,25 @@
 package victor.training.spring.web.entity;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
+import java.util.*;
 
 public enum UserRole {
-    USER("training.search", "training.edit"),
-    POWER("training.search", "training.edit", "training.delete"),
-    ADMIN("training.search" ,"training.edit", "training.delete", "teacher.edit");
-    private final Set<String> authorities;
+    USER("TRAINING_SEARCH", "TRAINING_EDIT"),
+    POWER("TRAINING_SEARCH", "TRAINING_EDIT", "TRAINING_DELETE"),
+    ADMIN("TRAINING_SEARCH" ,"TRAINING_EDIT", "TRAINING_DELETE", "TEACHER_EDIT");
+    private final List<String> authorities;
 
-    UserRole(String... authorities) {
-        this.authorities = new HashSet<>(Arrays.asList(authorities));
+    UserRole(String... subRoles) {
+        this.authorities = List.of(subRoles);
     }
 
-    public Set<String> getAuthorities() {
+    public static List<String> expandToSubRoles(List<String> tokenRoles) {
+      return tokenRoles.stream()
+            // use a local Role enum to expand to fine-grained roles
+            .flatMap(role -> valueOfOpt(role).orElseThrow().authorities.stream())
+            .toList();
+    }
+
+    public List<String> getSubRoles() {
         return authorities;
     }
 

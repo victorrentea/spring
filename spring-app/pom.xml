@@ -108,10 +108,17 @@
 
 
         <dependency>
+            <!-- Keycloak integration -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+
+       <!-- <dependency>
             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
@@ -121,6 +128,7 @@
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>-->
+
         <dependency>
             <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
             <groupId>org.apache.commons</groupId>
@@ -133,7 +141,6 @@
             <artifactId>java-jwt</artifactId>
             <version>4.3.0</version>
         </dependency>
-
         <dependency>
             <!-- For distributed tracing of requests (printed after log level) -->
             <!-- SB3 replacement of org.springframework.cloud:spring-cloud-starter-sleuth -->

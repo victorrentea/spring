@@ -5,6 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
+import victor.training.spring.web.entity.UserRole;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +26,9 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
             return null;
         }
         List<String> roles = List.of(rolesStr.split(","));
+
+//        roles = UserRole.expandToSubRoles(roles);
+
         return new PreAuthPrincipal(username, roles);
     }
 

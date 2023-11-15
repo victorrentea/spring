@@ -9,13 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 //import victor.training.spring.security.config.keycloak.KeyCloakUtils;
+import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,23 +22,22 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() throws Exception {
-//    KeyCloakUtils.printTheTokens();
+  public CurrentUserDto getCurrentUsername() {
+    TokenUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = "<username>"; // TODO
+    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
     // dto.username = anotherClass.asyncMethod().get();
 
-    // dto.role = extractOneRole(authentication.getAuthorities());
-
-    // dto.authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+    dto.authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     //		dto.username = authentication.getName();
-    //		dto.role = authentication.getAuthorities().iterator().next().getAuthority();
-    //		dto.authorities = stripRolePrefix(authentication.getAuthorities());
+    //		dto.role = authentication.getSubRoles().iterator().next().getAuthority();
+    //		dto.authorities = stripRolePrefix(authentication.getSubRoles());
     //    // Optional:
     //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
     //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
@@ -48,24 +45,6 @@ public class SecurityController {
     //</editor-fold>
     return dto;
   }
-
-  public static String extractOneRole(Collection<? extends GrantedAuthority> authorities) {
-    // For Spring Security (eg. hasRole) a role is an authority starting with "ROLE_"
-    List<String> roles = authorities.stream()
-            .map(GrantedAuthority::getAuthority)
-            .filter(authority -> authority.startsWith("ROLE_"))
-            .map(authority -> authority.substring("ROLE_".length()))
-            .toList();
-    if (roles.size() == 2) {
-      log.debug("Even though Spring allows a user to have multiple roles, we wont :)");
-      return "N/A";
-    }
-    if (roles.size() == 0) {
-      return null;
-    }
-    return roles.get(0);
-  }
-
 
   //    	@Bean // enable propagation of SecurityContextHolder over @Async
   //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {

@@ -16,13 +16,6 @@ public class PreAuthPrincipal implements UserDetails {
     public PreAuthPrincipal(String username, List<String> roles) {
         this.username = username;
         this.authorities = roles.stream().map(s -> "ROLE_"+s).collect(toList());
-
-        // expand incoming ROLE to AUTHORITIES
-//        this.authorities = roles.stream()
-//                .map(UserRole::valueOf)
-//                .map(UserRole::getAuthorities)
-//                .flatMap(Collection::stream)
-//                .collect(toList());
     }
 
     @Override

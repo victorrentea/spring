@@ -5,7 +5,7 @@
 - Start Keycloak in a docker by running one of the command lines in the .bat files in your terminal
 - Access KeyCloak admin console at localhost:8180
   - login with god/god
-- add realm, importing LearningRealm.json
+- add realm, importing realm-export.json
 - create roles (if not present): USER and ADMIN
 - add users:
   - user, with password 'user' and role USER

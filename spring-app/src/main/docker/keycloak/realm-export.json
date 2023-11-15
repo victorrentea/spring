@@ -1,7 +1,7 @@
 {
   "id": "LearningRealm",
   "realm": "LearningRealm",
-  "notBefore": 0,
+  "notBefore": 1680094729,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -46,6 +46,14 @@
   "roles": {
     "realm": [
       {
+        "id": "b2c59fff-1321-47c6-8638-c79a590a7e07",
+        "name": "TRAINING_DELETE",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "LearningRealm",
+        "attributes": {}
+      },
+      {
         "id": "0293dea9-8210-4a56-b725-232c633987a1",
         "name": "default-roles-learningrealm",
         "description": "${role_default-roles}",
@@ -67,24 +75,16 @@
         "attributes": {}
       },
       {
-        "id": "e6d1541c-661a-45ff-bb06-370b98799b63",
-        "name": "training.delete",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "LearningRealm",
-        "attributes": {}
-      },
-      {
         "id": "2b3047b4-c401-47e6-b6f5-4191f747d4f3",
         "name": "ADMIN",
         "composite": true,
         "composites": {
           "realm": [
-            "training.delete"
+            "TRAINING_DELETE"
           ],
           "client": {
             "spring-app": [
-              "training.delete"
+              "TRAINING_DELETE"
             ]
           }
         },
@@ -341,6 +341,7 @@
         }
       ],
       "security-admin-console": [],
+      "spring-sso": [],
       "spring-app": [
         {
           "id": "eda2883b-920f-494a-bc1f-4ffd6b9e7c0a",
@@ -351,21 +352,21 @@
           "attributes": {}
         },
         {
-          "id": "6f564420-0d46-4d0f-ad7b-96817f1457f0",
-          "name": "training.delete",
+          "id": "70df4d20-4539-4027-bf9d-eeef0cd1d63d",
+          "name": "TRAINING_DELETE",
           "composite": false,
           "clientRole": true,
           "containerId": "01bf3d47-d239-405d-ba6f-66b28d791f8e",
           "attributes": {}
         },
         {
-          "id": "9064390c-d22d-49ff-9391-f0aa773418d0",
-          "name": "APP_ADMIN",
+          "id": "488956c3-55e4-457e-863e-fdc1572074a1",
+          "name": "ADMIN",
           "composite": true,
           "composites": {
             "client": {
               "spring-app": [
-                "training.delete"
+                "TRAINING_DELETE"
               ]
             }
           },
@@ -858,28 +859,29 @@
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
       "publicClient": false,
-      "frontchannelLogout": false,
+      "frontchannelLogout": true,
       "protocol": "openid-connect",
       "attributes": {
-        "id.token.as.detached.signature": "false",
-        "saml.assertion.signature": "false",
         "saml.force.post.binding": "false",
         "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
         "oauth2.device.authorization.grant.enabled": "false",
-        "backchannel.logout.revoke.offline.tokens": "false",
-        "saml.server.signature": "false",
+        "backchannel.logout.revoke.offline.tokens": "true",
         "saml.server.signature.keyinfo.ext": "false",
         "use.refresh.tokens": "true",
-        "exclude.session.state.from.auth.response": "false",
         "oidc.ciba.grant.enabled": "false",
-        "saml.artifact.binding": "false",
         "backchannel.logout.session.required": "true",
         "client_credentials.use_refresh_token": "false",
         "consent.screen.text": "Spring App",
-        "saml_force_name_id_format": "false",
         "require.pushed.authorization.requests": "false",
         "saml.client.signature": "false",
+        "id.token.as.detached.signature": "false",
+        "saml.assertion.signature": "false",
+        "saml.encrypt": "false",
+        "frontchannel.logout.url": "http://localhost:8080/sso/logout",
+        "saml.server.signature": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml.artifact.binding": "false",
+        "saml_force_name_id_format": "false",
         "tls.client.certificate.bound.access.tokens": "false",
         "saml.authnstatement": "false",
         "display.on.consent.screen": "false",
@@ -916,6 +918,36 @@
             "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "73e18a3d-817a-449e-b4a5-410d8652d40a",
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "10dce0dd-ccbc-461c-8f9f-17db2e5fe80b",
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
             "jsonType.label": "String"
           }
         },
@@ -969,6 +1001,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
       "redirectUris": [
         "http://localhost:8082/*"
       ],
@@ -1040,10 +1073,77 @@
       "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": true,
-      "implicitFlowEnabled": true,
+      "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
       "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "id.token.as.detached.signature": "false",
+        "saml.assertion.signature": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.encrypt": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "use.refresh.tokens": "true",
+        "exclude.session.state.from.auth.response": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "saml.artifact.binding": "false",
+        "backchannel.logout.session.required": "true",
+        "client_credentials.use_refresh_token": "false",
+        "saml_force_name_id_format": "false",
+        "require.pushed.authorization.requests": "false",
+        "saml.client.signature": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "saml.authnstatement": "false",
+        "display.on.consent.screen": "false",
+        "pkce.code.challenge.method": "S256",
+        "saml.onetimeuse.condition": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "4685403c-8a57-4ec7-b732-d460b2e2e0d1",
+      "clientId": "spring-sso",
+      "rootUrl": "http://localhost:8088",
+      "adminUrl": "http://localhost:8088",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**********",
+      "redirectUris": [
+        "http://localhost:8088/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8088"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
