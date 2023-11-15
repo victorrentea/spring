@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.scope.ValidationMessage.Severity;
-import victor.training.spring.varie.ThreadUtils;
+import victor.training.spring.varie.Sleep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ScopePrototype {
     String foo = "some text to validate";
     String bar = "a pub";
     dataValidator.getValidationMessages().clear();
-    ThreadUtils.sleepMillis(3000); // allow the race
+    Sleep.millis(3000); // allow the race
     dataValidator.validateFoo(foo);
     dataValidator.validateBar(bar);
     return dataValidator.getValidationMessages();

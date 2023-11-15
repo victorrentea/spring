@@ -1,8 +1,8 @@
 package victor.training.spring.varie;
 
-public class ThreadUtils {
+public class Sleep {
 	
-	public static void sleepMillis(long millis) {
+	public static void millis(long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

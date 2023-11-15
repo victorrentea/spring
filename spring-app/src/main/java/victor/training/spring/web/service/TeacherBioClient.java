@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
-import victor.training.spring.varie.ThreadUtils;
+import victor.training.spring.varie.Sleep;
 
 import java.net.URI;
 import java.util.List;
@@ -44,7 +43,7 @@ public class TeacherBioClient {
   }
 
   private String dummyCall(long teacherId) {
-    ThreadUtils.sleepMillis(500);
+    Sleep.millis(500);
     return "Amazing bio for teacher " + teacherId;
   }
 

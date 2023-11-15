@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.varie.ThreadUtils;
+import victor.training.spring.varie.Sleep;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ class AnotherBean {
   private final RequestMetadata requestScoped;
 
   public String method() {
-    ThreadUtils.sleepMillis(3000); // fake some delay to allow the race bug
+    Sleep.millis(3000); // fake some delay to allow the race bug
     String metadata = requestScoped.getMetadata();
     log.info("Got metadata deep in code: " + metadata);
     return "Obtained magically: " + metadata;

@@ -12,7 +12,7 @@ import static java.lang.System.currentTimeMillis;
 
 @Slf4j
 @RestController
-public class DrinkerController {
+public class DrinkApi {
    @Autowired
    private Barman barman;
 
