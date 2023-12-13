@@ -34,5 +34,4 @@ public class ApiKeySecurity {
     http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
     return http.build();
   }
-
 }
