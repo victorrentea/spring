@@ -1,5 +1,6 @@
 package victor.training.spring.security.config.apikey;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,11 @@ public class ApiKeySecurity {
 
   @Value("${api-key:secret}")
   private String apiKey;
+
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
