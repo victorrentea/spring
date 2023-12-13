@@ -166,6 +166,7 @@
     }
 
     function showDescription(id) {
+        // permits XSS
         document.getElementById("showRichDescription").innerHTML =
             trainingsData.find(t => t.id === id).description;
     }

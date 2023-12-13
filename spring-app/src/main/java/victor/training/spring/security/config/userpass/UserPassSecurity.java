@@ -36,7 +36,9 @@ public class UserPassSecurity {
         .anyRequest().authenticated()
     );
 
-    http.formLogin(Customizer.withDefaults()); // display a login page
+    // display a login page
+    http.formLogin(Customizer.withDefaults())
+        .userDetailsService(userDetailsService()); // must reference the bean as there is a 2nd one defined in ActuatorSecurity.java
 
     http.httpBasic(Customizer.withDefaults()); // also accept Authorization: Basic ... request header
 
