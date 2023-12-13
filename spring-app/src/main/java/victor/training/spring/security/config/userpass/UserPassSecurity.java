@@ -48,7 +48,7 @@ public class UserPassSecurity {
   // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
+    UserDetails user = User.withDefaultPasswordEncoder() // NU CUMVA IN PROD SA SCAPI PAROLE IN CLAR
         .username("user").password("user").roles("USER").build();
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin").password("admin").roles("ADMIN").build();
