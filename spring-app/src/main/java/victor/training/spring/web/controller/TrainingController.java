@@ -63,7 +63,8 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
-	@Secured("ROLE_ADMIN") // sau 	@PreAuthorize("hasRole('ADMIN')")
+//	@Secured("ROLE_ADMIN") // sau 	@PreAuthorize("hasRole('ADMIN')")
+	@Secured({"ROLE_ADMIN", "ROLE_POWER"}) // BAD PRACTICE: nu pune vreodata liste de ROLURI
 	public void delete(@PathVariable Long trainingId) {
 //		var currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 //		var roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities(); // rolurile
