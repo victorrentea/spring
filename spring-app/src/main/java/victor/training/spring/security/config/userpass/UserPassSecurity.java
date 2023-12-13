@@ -36,9 +36,11 @@ public class UserPassSecurity {
         .anyRequest().authenticated()
     );
 
-    http.formLogin(Customizer.withDefaults()); // display a login page
+    http.formLogin(Customizer.withDefaults()) // display a login page
+        .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
-    http.httpBasic(Customizer.withDefaults()); // also accept Authorization: Basic ... request header
+    http.httpBasic(Customizer.withDefaults()) // also accept Authorization: Basic ... request header
+        .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
     return http.build();
   }

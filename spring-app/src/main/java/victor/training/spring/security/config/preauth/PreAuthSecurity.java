@@ -33,6 +33,7 @@ public class PreAuthSecurity {
   public void hi() {
     log.warn("Using");
   }
+
   @Bean
   @Order(2)
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
