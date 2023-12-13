@@ -7,6 +7,8 @@ import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -61,12 +63,13 @@ public class TrainingController {
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
 	@DeleteMapping("{trainingId}")
+	@Secured("ROLE_ADMIN") // sau 	@PreAuthorize("hasRole('ADMIN')")
 	public void delete(@PathVariable Long trainingId) {
-		var currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-		var roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities(); // rolurile
-		if (roles.stream().noneMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
-			throw new RuntimeException("Only admins can delete");
-		}
+//		var currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+//		var roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities(); // rolurile
+//		if (roles.stream().noneMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
+//			throw new RuntimeException("Only admins can delete");
+//		}
 		trainingService.deleteById(trainingId);
 	}
 

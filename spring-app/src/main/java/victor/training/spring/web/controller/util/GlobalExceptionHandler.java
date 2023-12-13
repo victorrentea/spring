@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -28,11 +27,15 @@ public class GlobalExceptionHandler {
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
     log.error(exception.getMessage(), exception);
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+  }
+
+  @ResponseStatus(UNAUTHORIZED)
+  @ExceptionHandler(AccessDeniedException.class)
+  public String onAccessDeniedException(AccessDeniedException exception, HttpServletRequest request) throws Exception {
+    log.error(exception.getMessage(), exception);
+    return "Ia mana!";
   }
 
   //	@ResponseStatus(NOT_FOUND)
