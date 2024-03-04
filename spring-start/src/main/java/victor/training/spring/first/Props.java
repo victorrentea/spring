@@ -4,28 +4,44 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Slf4j
 @Data // = getters + setters
+@ConfigurationProperties(prefix = "props")
 public class Props { // spring-managed bean
 //  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
-  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
+//  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
   private Integer gate; // TODO set default
-  @Value("${props.welcomeMessage}")
+//  @Value("${props.welcomeMessage}")
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
-  private Help help;
 
+
+//  static {
+//    // magic used by spring under the scenes: Java Reflection
+//    List<String> allFieldNames = new ArrayList<>();
+//    for (Field field : Props.class.getDeclaredFields()) {
+//      field.setAccessible(true);
+//      allFieldNames.add(field.getName());
+//      field.getAnnotation()
+//    }
+//  }
+
+  private static final Logger log = LoggerFactory.getLogger(Props.class);
   @Data // TODO immutable
   public static class Help {
     private Integer appId;
