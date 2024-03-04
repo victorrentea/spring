@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 @ComponentScan(basePackages = {"foo"})
 @Import({
+    Props.class,
     MyConfig.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.

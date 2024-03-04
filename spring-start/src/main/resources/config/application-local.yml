@@ -1,1 +1,4 @@
 db.password: local password
+
+
+#inherits the rest of the properties from application.yml

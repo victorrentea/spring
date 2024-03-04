@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -15,8 +16,9 @@ import java.util.Map;
 
 @Slf4j
 @Data // = getters + setters
-@Component
-public class Props {
+public class Props { // spring-managed bean
+//  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
+  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
@@ -30,9 +32,10 @@ public class Props {
     private String email; // TODO valid email
   }
 
-  @PostConstruct
+  @PostConstruct // called after the bean creation by Spring
   public void printMyself() throws JsonProcessingException {
-    String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter()
+        .writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
   }
 }
