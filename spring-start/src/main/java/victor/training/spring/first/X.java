@@ -7,6 +7,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Component
+@Retention(RUNTIME) // stops javac from removing it at compilation
+@interface Adapter {
+
+}
 // TODO Define Beans
 //@Service // by default (not in Picnic) Spring detects this class automatically and creates a bean
 // Picnic didn't like that.
@@ -18,9 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 //@Controller // never use anymore, comes from the time .jsp/.jsf/.thymeleaf/VAADIN - not in Picnic
 //@RestController // REST API returning JSON (@ResponseBody)
 
-@Service // busine$$ logic
+//@Service // busine$$ logic
 //@Component // anything else (like a utility class)
 
+@Adapter
 //@Repository // DB access
 public class X { // ONLY ONE INSTANCE IS CREATED BY SPRING = SINGLETON
 
