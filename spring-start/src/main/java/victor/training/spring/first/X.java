@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 //@Service // busine$$ logic
 //@Component // anything else (like a utility class)
 
-@Adapter
+//@Adapter
 //@Repository // DB access
 public class X { // ONLY ONE INSTANCE IS CREATED BY SPRING = SINGLETON
 
