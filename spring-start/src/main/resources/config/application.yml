@@ -16,7 +16,7 @@ spring:
         username: <login user to smtp server>
 
 props:
-    gate: a123adfashgf
+    gate: 123
     welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com

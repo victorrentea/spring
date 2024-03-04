@@ -20,6 +20,7 @@ public class Props { // spring-managed bean
 //  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
   @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
   private Integer gate; // TODO set default
+  @Value("${props.welcomeMessage}")
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
