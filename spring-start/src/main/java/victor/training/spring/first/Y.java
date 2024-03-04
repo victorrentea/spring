@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 public class Y {
-  public Y() {
-    System.out.println("Y created");
-  }
   @Autowired
   private MailService mailService; // polymorphic injection
   @Value("${props.gate}")
