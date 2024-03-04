@@ -17,44 +17,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 @Validated
 @ConfigurationProperties(prefix = "props")
-public class Props { // spring-managed bean
-  //  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
-//  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
-  @NotNull // declaring the field as not null
-  private final Integer gate; // TODO set default
-  @NotBlank
-  private final String welcomeMessage; // TODO not null + size >= 4
-  @Size(min = 1)
-  private final List<URL> supportUrls; // TODO size >= 1
-  private final Map<Locale, String> contactPhones;
-  private final Help help;
-
-  public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones, Help help) {
-    this.gate = gate;
-    this.welcomeMessage = welcomeMessage;
-    this.supportUrls = supportUrls;
-    this.contactPhones = contactPhones;
-    this.help = help;
-  }
+public record Props(
+    @NotNull Integer gate,
+    @NotBlank String welcomeMessage,
+    @Size(min = 1) List<URL> supportUrls,
+    Map<Locale, String> contactPhones,
+    Help help
+) {
 
   public record Help(Integer appId, File file, String email) {
   }
 
-  public Help help() {
-    return help;
-  }
-
-
-//  @PostConstruct
-//  public void check() {
-//    if (gate == null) {
-//      throw new IllegalStateException("gate is mandatory");
-//    }
-//  }
-
+  private static final Logger log = LoggerFactory.getLogger(Props.class);
 
   @PostConstruct // called after the bean creation by Spring
   public void printMyself() throws JsonProcessingException {
@@ -62,28 +38,7 @@ public class Props { // spring-managed bean
         .writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
   }
-
-
-  private static final Logger log = LoggerFactory.getLogger(Props.class);
-
-  public Integer gate() {
-    return gate;
-  }
-
-  public String welcomeMessage() {
-    return welcomeMessage;
-  }
-
-  public List<URL> supportUrls() {
-    return supportUrls;
-  }
-
-  public Map<Locale, String> contactPhones() {
-    return contactPhones;
-  }
-
 }
-
 
 // to test the points below, watch the log output above
 //   or create a new component in which to inject WelcomeInfo and use a property
