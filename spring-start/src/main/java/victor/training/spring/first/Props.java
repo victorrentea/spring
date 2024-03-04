@@ -27,7 +27,11 @@ public record Props(
     Help help
 ) {
 
-  public record Help(Integer appId, File file, String email) {
+  public record Help(
+      @NotNull
+      Integer appId,
+      File file,
+      String email) {
   }
 
   private static final Logger log = LoggerFactory.getLogger(Props.class);
