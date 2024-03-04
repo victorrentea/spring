@@ -2,34 +2,34 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // = getters + setters
 @ConfigurationProperties(prefix = "props")
 public class Props { // spring-managed bean
-//  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
+  //  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
 //  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
-  private Integer gate; // TODO set default
-//  @Value("${props.welcomeMessage}")
-  private String welcomeMessage; // TODO not null + size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
-  private Map<Locale, String> contactPhones;
+  private final Integer gate; // TODO set default
+  //  @Value("${props.welcomeMessage}")
+  private final String welcomeMessage; // TODO not null + size >= 4
+  private final List<URL> supportUrls; // TODO size >= 1
+  private final Map<Locale, String> contactPhones;
 
+  public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones) {
+    this.gate = gate;
+    this.welcomeMessage = welcomeMessage;
+    this.supportUrls = supportUrls;
+    this.contactPhones = contactPhones;
+  }
 
 //  static {
 //    // magic used by spring under the scenes: Java Reflection
@@ -41,7 +41,7 @@ public class Props { // spring-managed bean
 //    }
 //  }
 
-  private static final Logger log = LoggerFactory.getLogger(Props.class);
+
   @Data // TODO immutable
   public static class Help {
     private Integer appId;
@@ -55,6 +55,26 @@ public class Props { // spring-managed bean
         .writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
   }
+
+
+  private static final Logger log = LoggerFactory.getLogger(Props.class);
+
+  public Integer getGate() {
+    return gate;
+  }
+
+  public String getWelcomeMessage() {
+    return welcomeMessage;
+  }
+
+  public List<URL> getSupportUrls() {
+    return supportUrls;
+  }
+
+  public Map<Locale, String> getContactPhones() {
+    return contactPhones;
+  }
+
 }
 
 
