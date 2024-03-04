@@ -3,44 +3,51 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
+
+@Validated
 @ConfigurationProperties(prefix = "props")
 public class Props { // spring-managed bean
   //  @Value("${props.gate:1}") // default - Victor hates this as it feels like a backdoor/hack that no one should know about
 //  @Value("${props.gate}") // !! YEEHAAA!: fails to start if that is not defined
+  @NotNull // declaring the field as not null
   private final Integer gate; // TODO set default
-  //  @Value("${props.welcomeMessage}")
+  @NotBlank
   private final String welcomeMessage; // TODO not null + size >= 4
+  @Size(min = 1)
   private final List<URL> supportUrls; // TODO size >= 1
   private final Map<Locale, String> contactPhones;
 
   public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones) {
-    this.gate = gate;
+//    this.gate = Objects.requireNonNull(gate); // bad error
+    this.gate = gate; // bad error
     this.welcomeMessage = welcomeMessage;
     this.supportUrls = supportUrls;
     this.contactPhones = contactPhones;
   }
 
-//  static {
-//    // magic used by spring under the scenes: Java Reflection
-//    List<String> allFieldNames = new ArrayList<>();
-//    for (Field field : Props.class.getDeclaredFields()) {
-//      field.setAccessible(true);
-//      allFieldNames.add(field.getName());
-//      field.getAnnotation()
+//  @PostConstruct
+//  public void check() {
+//    if (gate == null) {
+//      throw new IllegalStateException("gate is mandatory");
 //    }
 //  }
-
 
   @Data // TODO immutable
   public static class Help {

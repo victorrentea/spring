@@ -18,9 +18,6 @@ spring:
 props:
 
     supportUrls:
-        - http://stackoverflow.com
-        - http://baeldung.com
-        - http://spring.io
     contactPhones:
         FR: 430123414123
         RO: 401312121414
@@ -29,4 +26,4 @@ props:
         file: c:/help-file.pdf
         email: help@spring.io
 #    gate: 1234
-    welcome-message: Welcome to the Spring Boot application
+    welcome-message: ""
