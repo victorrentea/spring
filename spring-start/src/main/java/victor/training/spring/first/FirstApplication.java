@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 @ComponentScan(basePackages = {"foo"})
 @Import({
+    MyConfig.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.
-    X.class,
-    Y.class,
+
     MailServiceImpl.class})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
