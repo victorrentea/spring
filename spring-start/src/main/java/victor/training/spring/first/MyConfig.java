@@ -19,9 +19,9 @@ public class MyConfig {// implements somth from Spring
     // NOW, the call to y() is seen as a reference to a Spring Bean
   }
   @Bean
-  public Y y() {
+  public Y y(MailService mailService, Props props) {
     System.out.println("Y");
-    return new Y();
+    return new Y(mailService, props);
   }
   @Bean
   public MeeToo meeToo(Y y) {

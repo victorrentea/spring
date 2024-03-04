@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 public class Y {
-  @Autowired
-  private MailService mailService; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate; // replace with injected Props
+  private final MailService mailService; // polymorphic injection
+  private final Props props;
+
+  public Y(MailService mailService, Props props) {
+    this.mailService = mailService;
+    this.props = props;
+  }
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail(
+        "Go to gate " + props.getGate());
 
     return 1;
   }
