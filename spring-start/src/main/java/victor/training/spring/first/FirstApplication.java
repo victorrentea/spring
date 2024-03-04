@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 @ComponentScan(basePackages = {"foo"})
 @EnableConfigurationProperties(Props.class)
 @Import({
+    PropsConfig.class,
     MyConfig.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.

@@ -16,7 +16,6 @@ spring:
         username: <login user to smtp server>
 
 props:
-
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com
