@@ -1,6 +1,8 @@
 db.password: big secret
 
 spring:
+#    main:
+#        allow-circular-references: true
     mail:
         host: smtp.gmail.com
         password: <login password to smtp server>
