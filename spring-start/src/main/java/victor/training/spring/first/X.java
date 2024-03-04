@@ -43,10 +43,10 @@ public class X { // ONLY ONE INSTANCE IS CREATED BY SPRING = SINGLETON
     this.y = y;
   }
   // method-based injection for startup logic
-  @Autowired
-  public void met(Y y) { // imagine I wanted to send a kafka event only at the app start up
-    System.out.println("I got a y: " + y);
-  }
+//  @Autowired
+//  public void met(Y y) { // imagine I wanted to send a kafka event only at the app start up
+//    System.out.println("I got a y: " + y);
+//  }
 
   public int logic() {
     System.out.println("X.logic");
