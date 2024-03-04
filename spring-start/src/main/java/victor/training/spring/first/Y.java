@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
-// TODO @RequiredArgsConstructor with copyableAnnotations+=
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
