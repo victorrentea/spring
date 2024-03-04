@@ -32,40 +32,18 @@ public class Props { // spring-managed bean
   private final Map<Locale, String> contactPhones;
   private final Help help;
 
-
-
   public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones, Help help) {
-//    this.gate = Objects.requireNonNull(gate); // bad error
-    this.gate = gate; // bad error
+    this.gate = gate;
     this.welcomeMessage = welcomeMessage;
     this.supportUrls = supportUrls;
     this.contactPhones = contactPhones;
     this.help = help;
   }
-  public static class Help {
-    private final Integer appId;
-    private final File file; // TODO file exists
-    private final String email; // TODO valid email
 
-    public Help(Integer appId, File file, String email) {
-      this.appId = appId;
-      this.file = file;
-      this.email = email;
-    }
-
-    public File getFile() {
-      return file;
-    }
-
-    public Integer getAppId() {
-      return appId;
-    }
-
-    public String getEmail() {
-      return email;
-    }
+  public record Help(Integer appId, File file, String email) {
   }
-   public Help help() {
+
+  public Help help() {
     return help;
   }
 
