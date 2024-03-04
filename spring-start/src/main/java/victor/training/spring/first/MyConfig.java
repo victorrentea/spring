@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 //@Configuration //no application logic, only Spring glue, beans, annotation ,.. etc
 @Import({
 //    X.class,
-    Y.class,
+//    Y.class,
 })
 public class MyConfig {// implements somth from Spring
   private final Y y;
@@ -18,5 +18,10 @@ public class MyConfig {// implements somth from Spring
   @Bean
   public X x() {
     return new X(y);
+  }
+
+  @Bean
+  public Y y() {
+    return new Y();
   }
 }
