@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.
 
-    MailServiceImpl.class})
+    MailServiceImpl.class, MailServiceDummy.class})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
