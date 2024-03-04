@@ -1,11 +1,5 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 public class Y {
   private final MailService mailService; // polymorphic injection
   private final Props props;
@@ -17,7 +11,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail(
-        "Go to gate " + props.getGate());
+        "Go to gate " + props.gate());
 
     return 1;
   }

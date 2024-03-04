@@ -3,11 +3,9 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,7 +16,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Validated
@@ -33,14 +30,45 @@ public class Props { // spring-managed bean
   @Size(min = 1)
   private final List<URL> supportUrls; // TODO size >= 1
   private final Map<Locale, String> contactPhones;
+  private final Help help;
 
-  public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones) {
+
+
+  public Props(Integer gate, String welcomeMessage, List<URL> supportUrls, Map<Locale, String> contactPhones, Help help) {
 //    this.gate = Objects.requireNonNull(gate); // bad error
     this.gate = gate; // bad error
     this.welcomeMessage = welcomeMessage;
     this.supportUrls = supportUrls;
     this.contactPhones = contactPhones;
+    this.help = help;
   }
+  public static class Help {
+    private final Integer appId;
+    private final File file; // TODO file exists
+    private final String email; // TODO valid email
+
+    public Help(Integer appId, File file, String email) {
+      this.appId = appId;
+      this.file = file;
+      this.email = email;
+    }
+
+    public File getFile() {
+      return file;
+    }
+
+    public Integer getAppId() {
+      return appId;
+    }
+
+    public String getEmail() {
+      return email;
+    }
+  }
+   public Help help() {
+    return help;
+  }
+
 
 //  @PostConstruct
 //  public void check() {
@@ -49,12 +77,6 @@ public class Props { // spring-managed bean
 //    }
 //  }
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-    private File file; // TODO file exists
-    private String email; // TODO valid email
-  }
 
   @PostConstruct // called after the bean creation by Spring
   public void printMyself() throws JsonProcessingException {
@@ -66,19 +88,19 @@ public class Props { // spring-managed bean
 
   private static final Logger log = LoggerFactory.getLogger(Props.class);
 
-  public Integer getGate() {
+  public Integer gate() {
     return gate;
   }
 
-  public String getWelcomeMessage() {
+  public String welcomeMessage() {
     return welcomeMessage;
   }
 
-  public List<URL> getSupportUrls() {
+  public List<URL> supportUrls() {
     return supportUrls;
   }
 
-  public Map<Locale, String> getContactPhones() {
+  public Map<Locale, String> contactPhones() {
     return contactPhones;
   }
 
