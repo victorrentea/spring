@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 //@Service // busine$$ logic
 //@Component // anything else (like a utility class)
 
+
+//@Scope("prototype") // new instance for each injection
 //@Adapter
 //@Repository // DB access
 public class X { // ONLY ONE INSTANCE IS CREATED BY SPRING = SINGLETON
