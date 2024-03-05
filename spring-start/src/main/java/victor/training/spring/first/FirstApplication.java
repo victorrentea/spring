@@ -19,7 +19,7 @@ import victor.training.spring.first.events.invoicing.StockManagementService;
 import victor.training.spring.first.events.order.OrderService;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"foo"})
+@ComponentScan(basePackages = {"com.picnic.myapp"})
 @EnableConfigurationProperties(Props.class)
 @Import({
     PropsConfig.class,

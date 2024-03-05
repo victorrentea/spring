@@ -16,13 +16,11 @@ import victor.training.spring.first.events.invoicing.StockManagementService;
 @RestController
 public class OrderService  {
 	private static final Logger log = LoggerFactory.getLogger(OrderService.class);
-	private final StockManagementService stockManagementService;
-	private final InvoiceService invoiceService;
+//	private final StockManagementService stockManagementService;
+//	private final InvoiceService invoiceService;
 	private final ApplicationEventPublisher eventPublisher;
 
-  public OrderService(StockManagementService stockManagementService, InvoiceService invoiceService, ApplicationEventPublisher eventPublisher) {
-    this.stockManagementService = stockManagementService;
-    this.invoiceService = invoiceService;
+  public OrderService(ApplicationEventPublisher eventPublisher) {
     this.eventPublisher = eventPublisher;
   }
 
