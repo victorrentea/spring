@@ -13,11 +13,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class Playground {
-  private static final Logger log = LoggerFactory.getLogger(Playground.class);
-  private final MessageRepo repo;
-  private final EntityManager entityManager;
   private final JdbcTemplate jdbcTemplate;
-  private final OtherClass other;
 
   @Transactional
   public void play() {
