@@ -102,18 +102,26 @@ class SecondGrade {
 @Retention(RUNTIME) // stops javac from removing it at compilation
 @Component
 @interface Facade{
-
 }
-
+// what can you put below this line -------
+// to stop proxies from working? (ie no logging should happen)
 @Facade
 @LoggedMethod
-class Maths {
-  public int sum(int a, int b) {
+/*final#1startup crash*/ class Maths {
+//  @Secured("ROLE_ADMIN")
+  @Cacheable("sums")
+  public /*#2 static | #3 final = silentignore*/ int sum(int a, int b) {
     return a + b;
   }
 
   public int product(int a, int b) {
-    return a * b;
+//     return a * b;
+    int result = 0;
+    for (int i = 0; i < b; i++) {
+      result = sum(result, a);
+      // #4 ?? local method calls are not intercepted
+    }
+    return result;
   }
 }
 
