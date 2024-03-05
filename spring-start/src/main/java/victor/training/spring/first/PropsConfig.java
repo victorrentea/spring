@@ -33,6 +33,7 @@ class Client {
 
 //  @Transactional //does not work here
 //  @PostConstruct
+  // how can the app call this?
   @EventListener(ApplicationStartedEvent.class)
   public void method() {
     System.out.println("The config is " + config.getGate() + " and " + config.getWelcomeMessage());
