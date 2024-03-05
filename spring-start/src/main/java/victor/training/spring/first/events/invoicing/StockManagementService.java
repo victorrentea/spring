@@ -10,7 +10,7 @@ import victor.training.spring.first.events.order.OrderPlacedEvent;
 @Slf4j
 @Service
 public class StockManagementService {
-   private int stock = 3; // silly implem :D
+   private int stock = 0; // silly implem :D
 private final ApplicationEventPublisher eventPublisher;
 
   public StockManagementService(ApplicationEventPublisher eventPublisher) {

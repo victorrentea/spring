@@ -20,3 +20,7 @@ public class InvoiceService {
 }
 
 // avoid events, they make the code harder to navigate/reason about
+
+// events should be immutable
+
+// events are published synchronously to all listeners
