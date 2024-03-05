@@ -22,6 +22,8 @@ public class LoggingAspectExercise {
 
     // danger: dev not aware of @Aspect
     // danger: performance-wise: if NETWORK CALLS
+    // 'synchronized' - crimial act on Reavtive and/or Java 21
+    //
     return r;
   }
 }
