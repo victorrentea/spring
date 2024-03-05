@@ -14,24 +14,25 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class Playground {
   private final JdbcTemplate jdbcTemplate;
+  private final OtherClass otherClass;
 
-//  @Transactional // no transactions exist now! therefore any (DSL)/JdbcTemplate DB call gets "commited" separately
-//  = AUTO-COMMIT mode in play here!
+  @Transactional
   public void play() {
+    System.out.println("On what otherClass do I call my method ?" + otherClass.getClass().getCanonicalName());
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    anotherMethodICall();
-  }
-
-  private void anotherMethodICall() {
-    // the fact that in the log you see "connection 0" for both INSERT => they run on the same JDBC transaction
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
+    otherClass.anotherMethodICall();
   }
 }
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
-  private final MessageRepo repo;
+  private final JdbcTemplate jdbcTemplate;
+
+  @Transactional
+  public void anotherMethodICall() {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
+  }
 }
 // TODO
 // 0 p6spy
