@@ -1,11 +1,13 @@
 package victor.training.spring.first.aop;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ProxyIntro {
   public static void main(String[] args) {
@@ -18,7 +20,9 @@ public class ProxyIntro {
     Callback callHandler = new MethodInterceptor() {
       @Override
       public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-        System.out.println("yey!");
+        Cacheable annotation = method.getAnnotation(Cacheable.class);
+        System.out.println("Cacheable: " + annotation);
+        System.out.println("Calling " + method.getName() + " " + Arrays.toString(args));
         return method.invoke(realBeanInstance, args);
       }
     };
