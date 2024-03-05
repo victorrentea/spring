@@ -21,6 +21,7 @@ public class Playground {
     anotherMethodICall();
   }
 
+  @Transactional // COMPLETELY USELESS as all calls to a private method go within the same class -> can't be proxied.
   private void anotherMethodICall() {
     // the fact that in the log you see "connection 0" for both INSERT => they run on the same JDBC transaction
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
