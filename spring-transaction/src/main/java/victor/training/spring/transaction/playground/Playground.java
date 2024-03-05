@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -12,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass otherClass;
@@ -20,17 +22,28 @@ public class Playground {
   public void play() {
     System.out.println("On what otherClass do I call my method ?" + otherClass.getClass().getCanonicalName());
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    otherClass.anotherMethodICall();
+    try {
+      otherClass.anotherMethodICall();
+    } catch (Exception e) {
+      //
+    }
   }
 }
+
+// what's wrong with transactions:
+// they require and hold a connection to the database for the entire duration of the transaction
+// they can cause DB connection starvation issues
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
 
-  @Transactional
+  @Transactional (propagation = Propagation.REQUIRES_NEW)
+    //(propagation = Propagation.NEVER)// throws: only use in @Test to block @Transactional inherited from AbstractPostgresTest
+             // or in a method tha only reads data (SELECT) unless you do SELECT FOR UPDATE! - row-level lock
   public void anotherMethodICall() {
+    System.out.println("Second");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
   }
 }

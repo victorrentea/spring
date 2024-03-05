@@ -6,12 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
 @SpringBootApplication
+@RestController
 @RequiredArgsConstructor
 public class TransactionsApp {
    public static void main(String[] args) {
@@ -23,7 +25,7 @@ public class TransactionsApp {
    private final Concurrency concurrency;
 
 //   @GetMapping
-   @EventListener(ApplicationStartedEvent.class)
+//   @EventListener(ApplicationStartedEvent.class)
    public void start() throws Exception {
       try {
          System.out.println("============= TRANSACTION:START ==============");
@@ -41,6 +43,12 @@ public class TransactionsApp {
       } catch (Exception e) {
          e.printStackTrace();
       }
+   }
+
+   @GetMapping("tx")
+   public void method() {
+      System.out.println("Start");
+      playground.play();
    }
 }
 
