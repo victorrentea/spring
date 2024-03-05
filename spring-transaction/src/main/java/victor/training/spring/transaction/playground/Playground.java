@@ -1,6 +1,8 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class Playground {
+  private static final Logger log = LoggerFactory.getLogger(Playground.class);
   private final MessageRepo repo;
   private final EntityManager entityManager;
   private final JdbcTemplate jdbcTemplate;
@@ -19,7 +22,11 @@ public class Playground {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
+    try {
+      jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
+    }catch(Exception e) { // if the exception never gets out of the method, the transaction is not rolled back -> COMMITS
+      log.error("Exception", e);
+    }
   }
 }
 
