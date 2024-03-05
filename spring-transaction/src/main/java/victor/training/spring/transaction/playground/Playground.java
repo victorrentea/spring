@@ -15,14 +15,14 @@ import java.util.concurrent.CompletableFuture;
 public class Playground {
   private final JdbcTemplate jdbcTemplate;
 
-  @Transactional
+//  @Transactional // no transactions exist now! therefore any (DSL)/JdbcTemplate DB call gets "commited" separately
+//  = AUTO-COMMIT mode in play here!
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     anotherMethodICall();
   }
 
-  @Transactional // COMPLETELY USELESS as all calls to a private method go within the same class -> can't be proxied.
-  public void anotherMethodICall() {
+  private void anotherMethodICall() {
     // the fact that in the log you see "connection 0" for both INSERT => they run on the same JDBC transaction
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
   }
