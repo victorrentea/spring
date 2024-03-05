@@ -1,13 +1,11 @@
-package victor.training.spring.first.events;
+package victor.training.spring.first.events.order;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import victor.training.spring.first.events.inventory.InvoiceService;
+import victor.training.spring.first.events.invoicing.StockManagementService;
 
 @RequiredArgsConstructor
 @Slf4j

@@ -1,4 +1,4 @@
-package victor.training.spring.first.events;
+package victor.training.spring.first.events.invoicing;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
