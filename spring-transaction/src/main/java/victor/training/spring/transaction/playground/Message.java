@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
+@Entity // you are using jooq: less magic, supports reactive
 @Data
 @Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
 public class Message {
