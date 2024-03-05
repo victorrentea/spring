@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import victor.training.spring.first.events.inventory.InvoiceService;
+import victor.training.spring.first.events.invoicing.StockManagementService;
+import victor.training.spring.first.events.order.OrderService;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"foo"})
@@ -22,6 +25,9 @@ import org.springframework.stereotype.Service;
     PropsConfig.class,
     MyConfig.class,
     RestFTW.class,
+    InvoiceService.class,
+    StockManagementService.class,
+    OrderService.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.
 
