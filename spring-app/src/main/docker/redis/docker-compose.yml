@@ -5,3 +5,5 @@ services:
     image: redis:latest
     ports:
       - 6379:6379
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=redis

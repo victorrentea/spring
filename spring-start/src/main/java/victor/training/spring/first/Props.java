@@ -24,6 +24,7 @@ public record Props(
     @NotBlank String welcomeMessage,
     @Size(min = 1) List<URL> supportUrls,
     Map<Locale, String> contactPhones,
+    List<ABC> list,
     Help help
 ) {
 
@@ -33,6 +34,8 @@ public record Props(
       File file,
       String email) {
   }
+
+  public record ABC(String a, String b, String c){}
 
   private static final Logger log = LoggerFactory.getLogger(Props.class);
 

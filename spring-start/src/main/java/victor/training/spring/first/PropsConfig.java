@@ -3,6 +3,7 @@ package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
@@ -10,12 +11,15 @@ import org.springframework.context.event.EventListener;
 @Import(Client.class)
 public class PropsConfig {
   @Bean
+  @ConfigurationProperties(prefix="props")
   public MatteosConfigFromLibrary config(
-      @Value("${props.gate}") String gate,
-      @Value("${props.welcome-message}") String welcomeMessage) {
+//      @Value("${props.gate}") String gate,
+//      @Value("${props.welcome-message}") String welcomeMessage
+  ) {
     return new MatteosConfigFromLibrary()
-        .setGate(gate)
-        .setWelcomeMessage(welcomeMessage);
+//        .setGate(gate)
+//        .setWelcomeMessage(welcomeMessage)
+        ;
   }
 
 }
@@ -27,6 +31,7 @@ class Client {
     this.config = config;
   }
 
+//  @Transactional //does not work here
 //  @PostConstruct
   @EventListener(ApplicationStartedEvent.class)
   public void method() {

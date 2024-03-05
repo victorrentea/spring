@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Import({
     PropsConfig.class,
     MyConfig.class,
+    RestFTW.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.
 

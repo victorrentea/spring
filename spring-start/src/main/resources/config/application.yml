@@ -28,4 +28,11 @@ props:
         file: c:/help-file.pdf
         email: help@spring.io
     gate: 1234
+    list:
+        - a: 1
+          b: 2
+          c: 3
+        - a: 3
+          b: 4
+          c: 5
     welcome-message: Welcome to the Spring Boot application
