@@ -5,18 +5,30 @@ import org.springframework.stereotype.Service;
 public class ProxyIntro {
   public static void main(String[] args) {
     // WE play the role of Spring here ...
-    Maths maths = new Maths();
+    Maths maths = new Hack();
     SecondGrade secondGrade = new SecondGrade(maths);
 
     secondGrade.mathClass();
   }
 }
+class Hack extends Maths {
+  @Override
+  public int sum(int a, int b) {
+    System.out.println("Yey!");
+    return super.sum(a, b);
+  }
 
-// ------------------------
-@Service
+  @Override
+  public int product(int a, int b) {
+    System.out.println("Yey!");
+    return super.product(a, b);
+  }
+}
+// Challenge: without touching code below this line, print a message to console
+// when second grade calls any method of Maths
+// --------------------------------------
 class SecondGrade {
   private final Maths maths;
-
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
@@ -28,7 +40,6 @@ class SecondGrade {
   }
 }
 
-@Service
 class Maths {
   public int sum(int a, int b) {
     return a + b;
