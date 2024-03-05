@@ -22,11 +22,12 @@ public class Playground {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    try {
-      jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
-    }catch(Exception e) { // if the exception never gets out of the method, the transaction is not rolled back -> COMMITS
-      log.error("Exception", e);
-    }
+    anotherMethodICall();
+  }
+
+  private void anotherMethodICall() {
+    // the fact that in the log you see "connection 0" for both INSERT => they run on the same JDBC transaction
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
   }
 }
 
