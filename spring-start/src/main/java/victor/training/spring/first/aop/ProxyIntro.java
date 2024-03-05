@@ -1,13 +1,20 @@
 package victor.training.spring.first.aop;
 
+import lombok.extern.java.Log;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 public class ProxyIntro {
   public static void main(String[] args) {
@@ -77,12 +84,14 @@ public class ProxyIntro {
 // Challenge: without touching code below this line, print a message to console
 // when second grade calls any method of Maths
 // --------------------------------------
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
 
+  @LoggedMethod
   public void mathClass() {
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
@@ -90,6 +99,14 @@ class SecondGrade {
   }
 }
 
+@Retention(RUNTIME) // stops javac from removing it at compilation
+@Component
+@interface Facade{
+
+}
+
+@Facade
+@LoggedMethod
 class Maths {
   public int sum(int a, int b) {
     return a + b;
