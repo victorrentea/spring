@@ -108,8 +108,10 @@ class SecondGrade {
 @Facade
 @LoggedMethod
 /*final#1startup crash*/ class Maths {
+
+//  @Cacheable("sums")  // might return no a non-admin data stored after an admin call if runs first.
 //  @Secured("ROLE_ADMIN")
-  @Cacheable("sums")
+
   public /*#2 static | #3 final = silentignore*/ int sum(int a, int b) {
     return a + b;
   }
