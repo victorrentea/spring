@@ -45,7 +45,8 @@ class OtherClass {
   public void anotherMethodICall() {
     System.out.println("Second");
     https://rcoh.me/posts/postgres-unique-constraints-deadlock/
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (1014,'SQL3' )");
+//    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,'SQL' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,null )");
   }
 }
 // TODO
