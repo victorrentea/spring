@@ -25,7 +25,7 @@ public class TransactionsApp {
    private final Concurrency concurrency;
 
 //   @GetMapping
-//   @EventListener(ApplicationStartedEvent.class)
+   @EventListener(ApplicationStartedEvent.class)
    public void start() throws Exception {
       try {
          System.out.println("============= TRANSACTION:START ==============");

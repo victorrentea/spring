@@ -44,7 +44,8 @@ class OtherClass {
              // or in a method tha only reads data (SELECT) unless you do SELECT FOR UPDATE! - row-level lock
   public void anotherMethodICall() {
     System.out.println("Second");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL' )");
+    https://rcoh.me/posts/postgres-unique-constraints-deadlock/
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (1014,'SQL3' )");
   }
 }
 // TODO
