@@ -1,5 +1,7 @@
 package victor.training.spring.first.async;
 
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,4 +58,15 @@ public class BarApi {
   //then java 21 virtual threads happened, making all of the above a nonesense!!!!!
   // we don't mind blocking the thread anymore, because it's not a real thread, it's a virtual thread
   // tomcat could have at one momnent 100K concurrent request running at one point
+
+  // what spring does under the hood is use servlet async processing (which is not the same as reactive)
+//  public void process(HttpServletRequest req) { // 15 years old
+//    AsyncContext asyncContext = req.startAsync();
+//    drink().thenAccept(dilly -> {
+//      // do some work
+//      asyncContext.getResponse().getOutputStream().write("Dilly is ready".getBytes());
+//      req.getAsyncContext().complete(); // closes the socket to the client
+//    });
+//    // do some work
+//  }
 }
