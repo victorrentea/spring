@@ -107,8 +107,8 @@
         </dependency>
 
 
-        <dependency>
-            <!-- Keycloak integration -->
+       <!-- <dependency>
+            &lt;!&ndash; Keycloak integration &ndash;&gt;
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
@@ -116,7 +116,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
-
+-->
 
        <!-- <dependency>
             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;

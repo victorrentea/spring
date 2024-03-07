@@ -20,6 +20,7 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
         String username = httpRequest.getHeader("x-user");
+//        String username = httpRequest.getHeader("picnic-api-key");
         String rolesStr = httpRequest.getHeader("x-user-roles");
         if (username == null || rolesStr == null || username.isBlank() || rolesStr.isBlank()) {
             log.error("'x-user' and 'x-user-roles' NOT found in request headers");

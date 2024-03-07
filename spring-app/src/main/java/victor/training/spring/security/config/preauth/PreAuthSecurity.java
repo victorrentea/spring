@@ -17,9 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import victor.training.spring.security.config.AddFilterDSL;
 import victor.training.spring.security.config.jwt.JwtPrincipal;
-import victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles;
+//import victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles;
 
-import static victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles.RoleLevel.CLIENT;
+//import static victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles.RoleLevel.CLIENT;
 
 // this will allow going in just using headers, eg:
 // curl http://localhost:8080/api/trainings -H 'X-User: user' -H 'X-User-Roles: USER'
