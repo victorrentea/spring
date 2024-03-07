@@ -37,25 +37,29 @@ public class Playground {
       //
     }
   }
-}
 
+  @Transactional
+  public void stuff() {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'BAD' )");
+//    restApi.call(); // for the duration of the call (drama:1sec), the connections is held
+    // DO NOT ever do NETWORK calls in @Transactional methods: connection_acquisition_tiem
+    // idea: let's increase the connection pool size: 10 -> 50 : danger for DB
+  }
+}
 // what's wrong with transactions:
 // they require and hold a connection to the database for the entire duration of the transaction
 // they can cause DB connection starvation issues
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-
   @Transactional (propagation = Propagation.REQUIRES_NEW)
-    //(propagation = Propagation.NEVER)// throws: only use in @Test to block @Transactional inherited from AbstractPostgresTest
-             // or in a method tha only reads data (SELECT) unless you do SELECT FOR UPDATE! - row-level lock
   public void anotherMethodICall() {
-    System.out.println("Second");
     https://rcoh.me/posts/postgres-unique-constraints-deadlock/
-//    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,'SQL' )");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,null )");
+    // when a transaction isnerts a value guarded by an unique constraint, it locks that UQ so if
+    // no other transaction can insert the same value until the first Tx commits.
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,'SQL2' )");
+//    jdbcTemplate.update("insert into MESSAGE(id, message) values (102,null )");
   }
 }
 // TODO
@@ -65,3 +69,7 @@ class OtherClass {
 // 3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
 // 4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
 // 5 Performance: connection starvation issues : debate: avoid nested transactions
+
+
+// nesting transactions is dangerous: deadlocks and can cause
+// connection starvation issues

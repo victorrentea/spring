@@ -1,5 +1,4 @@
 db.password: big secret
-
 spring:
 #    main:
 #        allow-circular-references: true
@@ -14,6 +13,8 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+    aop:
+        auto: false
 
 props:
     supportUrls:
@@ -36,3 +37,11 @@ props:
           b: 4
           c: 5
     welcome-message: Welcome to the Spring Boot application
+#server:
+server:
+    tomcat:
+        threads:
+            max: 400 #+ 1800 MB RAM (1 thread=0.5..1MB)
+#    port: 8081
+debug: true
+
