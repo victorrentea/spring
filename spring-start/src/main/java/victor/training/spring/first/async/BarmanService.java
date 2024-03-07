@@ -40,8 +40,10 @@ public class BarmanService {
 
   @SneakyThrows
   public void auditCocktail(String name) {
-    log.debug("Longer running task I don't want to wait for: auditing drink: " + name);
+    log.info("Longer running task I don't want to wait for: auditing drink: " + name);
     Thread.sleep(500); // pretend send emails or import/export a file
-    log.debug("DONE");
+    log.info("DONE");
+    if (true) throw new RuntimeException("I don't like Dilly");
+    log.info("AFTER");
   }
 }
