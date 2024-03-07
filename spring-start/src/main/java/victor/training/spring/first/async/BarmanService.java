@@ -4,6 +4,7 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.async.drinks.Beer;
 import victor.training.spring.first.async.drinks.Vodka;
@@ -38,6 +39,7 @@ public class BarmanService {
 //      return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
   }
 
+  @Async // void @Async method if throws spring logs the exception!!
   @SneakyThrows
   public void auditCocktail(String name) {
     log.info("Longer running task I don't want to wait for: auditing drink: " + name);

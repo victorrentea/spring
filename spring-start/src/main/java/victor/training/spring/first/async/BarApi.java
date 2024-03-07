@@ -41,8 +41,7 @@ public class BarApi {
 
     DillyDilly cocktail = new DillyDilly(beer, vodka);
     // fire-and-forget
-    CompletableFuture.runAsync(() ->
-        barmanService.auditCocktail("Dilly: " + cocktail)); // send to kafka, send an email
+    barmanService.auditCocktail("Dilly: " + cocktail); // send to kafka, send an email
 
     log.debug("Method completed in {} millis", currentTimeMillis() - t0);
     return cocktail;

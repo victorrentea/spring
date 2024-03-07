@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.async.BarApi;
@@ -43,6 +44,7 @@ import victor.training.spring.first.events.order.OrderService;
 
     MailServiceImpl.class, MailServiceDummy.class})
 @EnableScheduling
+@EnableAsync
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
