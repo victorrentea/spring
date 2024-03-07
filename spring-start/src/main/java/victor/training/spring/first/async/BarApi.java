@@ -40,7 +40,8 @@ public class BarApi {
     // blocking is BAD
 
     DillyDilly cocktail = new DillyDilly(beer, vodka);
-    barmanService.auditCocktail("Dilly: " + cocktail);
+    // fire-and-forget
+    CompletableFuture.runAsync(() -> barmanService.auditCocktail("Dilly: " + cocktail)); // send to kafka, send an email
 
     log.debug("Method completed in {} millis", currentTimeMillis() - t0);
     return cocktail;
