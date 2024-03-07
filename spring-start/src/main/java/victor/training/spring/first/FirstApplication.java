@@ -23,6 +23,9 @@ import victor.training.spring.first.events.order.OrderService;
 @ComponentScan(basePackages = {"com.picnic.myapp"})
 @EnableConfigurationProperties(Props.class)
 @Import({
+    RestApi.class,
+    GlobalExceptionHandler.class,
+    Repo.class,
     PropsConfig.class,
     MyConfig.class,
     RestFTW.class,
