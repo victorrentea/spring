@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.events.inventory.InvoiceService;
 import victor.training.spring.first.events.invoicing.StockManagementService;
@@ -31,11 +32,13 @@ import victor.training.spring.first.events.order.OrderService;
     RestFTW.class,
     InvoiceService.class,
     StockManagementService.class,
+    ScheduledPlay.class,
     OrderService.class,
     // don't let this list discourage you from extracting a new class from an existing
     // larger one.
 
     MailServiceImpl.class, MailServiceDummy.class})
+@EnableScheduling
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
