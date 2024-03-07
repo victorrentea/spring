@@ -44,4 +44,8 @@ server:
             max: 400 #+ 1800 MB RAM (1 thread=0.5..1MB)
 #    port: 8081
 debug: true
-
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"

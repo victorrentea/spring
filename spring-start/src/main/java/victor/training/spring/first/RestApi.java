@@ -1,6 +1,8 @@
 package victor.training.spring.first;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -8,11 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 record ReservationRequest(
-    @NotNull String name,
+    @NotNull @Size(min = 3) String name,
     @NotNull String phone
 ) {
 //  ReservationRequest{
 //    Objects.requireNonNull(name);
+//  if (size < )
 //    Objects.requireNonNull(phone, "phone");
 //  }
 }
@@ -25,7 +28,11 @@ public class RestApi {
     this.repo = repo;
   }
 
-  @PostMapping
+  @Operation(summary = "Create a new reservation")
+  @PostMapping // should this be IDEMPOTENT? NO = "create". 2 request = 2 creates
+  // to make this idempotent, include a unique identifier in the request
+  // for example a id=UUID.randomUUID() on the client side < "client-side generate ID" pattern
+  // id here acts as an "idempotency key"
   public void create(@RequestBody @Validated ReservationRequest orderRequest) {
     System.out.println("Order created: " + orderRequest);
   }
@@ -40,12 +47,15 @@ public class RestApi {
 //    }
 //  }
 
-  @GetMapping("{id}")
+  @GetMapping("{id}") // should this be IDEMPOTENT? YES = "read"
   public String get(@PathVariable long id) {
     return repo.findById(id).get();
   }
 
-//  @PutMapping("{id}")
+  // idempotent = the same request can be sent multiple times without changing the outcome on server
+  // synonim to "retryable"
+
+//  @PutMapping("{id}") // should this be IDEMPOTENT? YES = "overwrite", "set"
 //  public void update( @PathVariable long id, @RequestBody String newContent) {
 //    repo.findById(id).if
 //  }
