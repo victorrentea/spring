@@ -85,7 +85,7 @@
                                     <inputSchema>public</inputSchema>
                                 </database>
                                 <target>
-                                    <packageName>victor.training.spring.flux.jooq</packageName>
+                                    <packageName>victor.training.spring.jooq</packageName>
                                 </target>
                             </generator>
                         </configuration>

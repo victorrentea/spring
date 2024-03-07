@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.jooq.DSLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +10,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+import victor.training.spring.jooq.tables.Message;
+
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -17,9 +20,15 @@ import java.util.concurrent.CompletableFuture;
 public class Playground {
   private final JdbcTemplate jdbcTemplate;
   private final OtherClass otherClass;
+    private final DSLContext jooq;
+
 
   @Transactional
   public void play() {
+//      jooq.insertInto(Message.MESSAGE)
+//          .set(Message.MESSAGE.ID, 100L)
+//          .set(Message.MESSAGE.MESSAGE_, "SQL")
+//          .execute();
     System.out.println("On what otherClass do I call my method ?" + otherClass.getClass().getCanonicalName());
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     try {
