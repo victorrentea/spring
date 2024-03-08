@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import victor.training.spring.web.entity.UserRole;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,9 +27,9 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
         }
         List<String> roles = List.of(rolesStr.split(","));
 
-//        roles = UserRole.expandToSubRoles(roles);
+        var priviledges = UserRole.expandRoleToPriviledges(roles);
 
-        return new PreAuthPrincipal(username, roles);
+        return new PreAuthPrincipal(username, priviledges);
     }
 
     @Override

@@ -6,7 +6,7 @@ import jakarta.annotation.security.RunAs;
 //  private final TrainingService trainingService;
 //
 //  @RabbitListener(queues = "training-queue")
-//  @RunAs("ROLE_ADMIN")
+//  @RunAs({"ROLE_DELETE_TRAINING", "ROLE_UPDATE_TRAINING"})
 //  public void method() {
 //    trainingService.deleteById(1L);
 //  }

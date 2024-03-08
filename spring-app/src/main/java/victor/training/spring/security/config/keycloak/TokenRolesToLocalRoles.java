@@ -48,7 +48,7 @@
 //
 //        List<String> localRoles;
 //        if (expandRoles) {
-//            localRoles = UserRole.expandToSubRoles(tokenRoles);
+//            localRoles = UserRole.expandRoleToPriviledges(tokenRoles);
 //            log.debug("Expanded roles: {}", tokenRoles);
 //        } else {
 //            localRoles = tokenRoles;

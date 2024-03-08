@@ -70,7 +70,8 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
-    @Secured({"ROLE_ADMIN", "ROLE_POWER"})
+//    @Secured({"ROLE_ADMIN", "ROLE_POWER"}) // never have >1 role in the same annotation
+    @Secured("ROLE_UPDATE_TRAINING")
     public void updateTraining(TrainingDto dto) {
         if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
             throw new IllegalArgumentException("Another training with that name already exists");
@@ -96,11 +97,12 @@ public class TrainingService {
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 //"ROLE_POWER"
-    @Secured({"ROLE_ADMIN", "ROLE_POWER"}) // in picnic on the @Service because
+//    @Secured({"ROLE_ADMIN", "ROLE_POWER"}) // in picnic on the @Service because
     // these same methods are  called by REST or Rabbit/Kafka
     // messages don't natively carry credentials. YOU TRUST the messages.
 
     // @Secured all strings must start with "ROLE_"
+    @Secured("ROLE_DELETE_TRAINING")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
