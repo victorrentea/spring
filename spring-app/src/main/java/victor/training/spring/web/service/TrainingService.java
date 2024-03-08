@@ -70,6 +70,7 @@ public class TrainingService {
         trainingRepo.save(newEntity);
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_POWER"})
     public void updateTraining(TrainingDto dto) {
         if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
             throw new IllegalArgumentException("Another training with that name already exists");
@@ -94,10 +95,12 @@ public class TrainingService {
         // PESSIMISTIC LOCKING
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
-
-    @Secured("ROLE_ADMIN") // in picnic on the @Service because
+//"ROLE_POWER"
+    @Secured({"ROLE_ADMIN", "ROLE_POWER"}) // in picnic on the @Service because
     // these same methods are  called by REST or Rabbit/Kafka
     // messages don't natively carry credentials. YOU TRUST the messages.
+
+    // @Secured all strings must start with "ROLE_"
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
