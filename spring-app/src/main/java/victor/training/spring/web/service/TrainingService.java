@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +95,9 @@ public class TrainingService {
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
+    @Secured("ROLE_ADMIN") // in picnic on the @Service because
+    // these same methods are  called by REST or Rabbit/Kafka
+    // messages don't natively carry credentials. YOU TRUST the messages.
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
