@@ -1,5 +1,5 @@
-drop table public.comment;
-drop table public.post;
+drop table if exists public.comment;
+drop table if exists public.post;
 
 create table public.post
 (
