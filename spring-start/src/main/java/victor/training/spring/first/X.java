@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 // TODO Define Beans
 @Service
 public class X {
-  // TODO Injection
-  @Autowired
-  private Y y;
+//  @Autowired // field injection
+//  private Y y;
+
+  private final Y y;
+  public X(Y y) { // constructor injection
+    this.y = y;
+  }
 
   public int logic() {
     return 1 + y.logic();

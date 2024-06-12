@@ -23,7 +23,7 @@ public class Props {
   private Map<Locale, String> contactPhones;
   private Help help;
 
-  @Data // TODO immutable
+  @Data // TODO make immutable
   public static class Help {
     private Integer appId;
     private File file; // TODO file exists
@@ -42,15 +42,15 @@ public class Props {
 //   or create a new component in which to inject WelcomeInfo and use a property
 // TODO 1 inject welcome.welcomeMessage property in 'welcomeMessage' field
 //   Hint: @Value("${
-//   Question: what happens if the property is NOT defined ?
-//     TODO 1* provide a default value by @Value("${...:defaultvalue}")
+//   Experiment: what happens if the property is NOT defined ?
+//     TODO 1b provide a default value by @Value("${...:defaultvalue}")
 // TODO 2 inject welcome.gate in the 'gate' field'
-//   Question: what happens if the value of the property is not an INT ?
+//   Experiment: what happens if the actual value of the property is not a number ?
 // TODO 3 inject all properties at once using @ConfigurationProperties(prefix=...)
 //   Ref: https://www.google.com/search?q=configuration+properties+baledung
 // TODO 4 validate (see above)
-//   - using if at startup
+//   - using if at app startup
 //   - using jakarta.validation annotations + @Validated on the class
 //   Trick: provide a default to a property by assigning the field = "defaultvalue"
-// TODO 5[PRO] make this class immutable: lombok.@Value + @ConstructorBinding + @ConfigurationPropertiesScan on a @Configuration
+// TODO 5[PRO] make all these classes immutable: lombok.@Value [+ @ConstructorBinding] + @ConfigurationPropertiesScan on a @Configuration
 //  Hint: https://stackoverflow.com/questions/26137932/immutable-configurationproperties

@@ -3,6 +3,8 @@ package victor.training.spring.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,13 +75,14 @@ public class TrainingController {
 		return trainingService.search(criteria);
 	}
 
-	@GetMapping("search") // by-the-book REST
+
+//	@GetMapping("search") // by-the-book REST
 	public List<TrainingDto> searchUsingGET(
 					@RequestParam(required = false) String name,
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
-	//	@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
+		@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
