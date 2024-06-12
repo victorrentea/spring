@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 //@Component // techn stuff
 //@Repository // DB stuff
 public class Y {
-  @Autowired
+  @Autowired // injection point
+  @Qualifier("mailServiceImpl") //🤞 JDD
   private MailService mailService; // polymorphic injection
+
 //  @Value("${props.gate}")
 //  private Integer gate; // replace with injected Props
   @Autowired

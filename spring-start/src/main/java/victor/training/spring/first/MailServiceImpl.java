@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service // nume default = "mailServiceImpl"
 @RequiredArgsConstructor
-public class MailServiceImpl implements MailService {
+public class MailServiceImpl
+    implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
 
   public void sendEmail(String body) {
