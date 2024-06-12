@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ public class Maths { // crapa la startup
 
   //    @Secured("ROLE_ADMIN") sau @Transactional  NU MERG!!!!
   @Cacheable("sums")
+//  @CacheEvict / @CachePut
   /*final sau static*/
   public int sum(int a, int b) { // ignora metoda
-    System.out.println("Thinking...🤔");
+    System.out.println("Thinking...🤔 " + a + " + " + b);
     return a + b;
   }
 

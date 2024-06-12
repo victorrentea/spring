@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import lombok.SneakyThrows;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
@@ -65,17 +66,24 @@ class SecondGrade {
 //  @Scheduled(fixedRate = 60000 )
   @Scheduled(fixedRateString = "${polling.rate.millis}" )
   public void soFiSchimbatCevaInDB() {
-    System.out.println("SELECT yuhuu");
+//    System.out.println("SELECT yuhuu: nu sunati, mai cobor eu din cand in cand");
   }
 
+  @SneakyThrows
   public void mathClass() {
 //        maths = new Maths(); // nu mai e proxy
     System.out.println(maths.getClass().getName());
+
     System.out.println("8 + 4 = " + maths.sum(8, 4));
+    Thread.sleep(2000);
     System.out.println("6 + 6 = " + maths.sum(6, 6));
-    System.out.println("6 + 6 = " + maths.sum(6, 6));
+    Thread.sleep(2000);
     System.out.println("5 + 5 = " + maths.sum(5, 5));
+    Thread.sleep(2000);
+    System.out.println("6 + 6 = " + maths.sum(6, 6));
+    Thread.sleep(2000);
     System.out.println("4 x 3 = " + maths.product(4, 3));
+    Thread.sleep(2000);
   }
 }
 

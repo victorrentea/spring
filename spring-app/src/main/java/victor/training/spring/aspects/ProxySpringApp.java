@@ -1,28 +1,56 @@
 package victor.training.spring.aspects;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import java.util.concurrent.TimeUnit;
+
+@EnableCaching
 @EnableScheduling
-//@EnableMethodSecurity()
-//@EnableGlobalMethodSecurity(order = 2)
-//@EnableCaching(order = 5)
 @SpringBootApplication
 public class ProxySpringApp {
-    public static void main(String[] args) {
-        SpringApplication.run(ProxySpringApp.class, args);
-    }
-    @Autowired
-    public void run(SecondGrade secondGrade) {
-        System.out.println("Running Maths class...");
-        secondGrade.mathClass();
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(ProxySpringApp.class, args);
+  }
+
+  @Bean
+  public CacheManager cacheManager(Caffeine caffeine) {
+    CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+    caffeineCacheManager.setCaffeine(caffeine);
+    return caffeineCacheManager;
+  }
+//
+  @Bean
+  public Caffeine caffeineConfig() {
+    return Caffeine.newBuilder()
+        .maximumSize(4)
+        .expireAfterWrite(1, TimeUnit.HOURS) // TTL
+        ;
+  }
+
+
+//    @Autowired // nu merge @Cacheable intre SecondGrade si Maths pentru ca
+  // flxuul pornit din @Autowired sau @PostConstruct e PREA DEVREME
+  // si proxy-urile nu sunt gata.
+//    public void run(SecondGrade secondGrade) {
+  @Autowired
+  private SecondGrade secondGrade;
+
+  @EventListener(ApplicationStartedEvent.class) // ruleaza mai tarziu
+  // cand beanurile au proxyurile pe ele.
+  public void run() {
+    System.out.println("Running Maths class...");
+    secondGrade.mathClass();
+  }
 }
 
 // cum fac un proxy care sa intercepteze

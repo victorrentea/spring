@@ -105,29 +105,36 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-
-       <!-- <dependency>
-            &lt;!&ndash; Keycloak integration &ndash;&gt;
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>-->
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!-- <dependency>
+             &lt;!&ndash; Keycloak integration &ndash;&gt;
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-oauth2-client</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+         </dependency>-->
 
 
-       <!-- <dependency>
-            &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>-->
-      <!--  <dependency>
-            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>-->
+        <!-- <dependency>
+             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
+             <groupId>org.keycloak</groupId>
+             <artifactId>keycloak-spring-boot-starter</artifactId>
+         </dependency>-->
+        <!--  <dependency>
+              &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
+              <groupId>org.springframework.security.oauth.boot</groupId>
+              <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+          </dependency>-->
 
         <dependency>
             <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
