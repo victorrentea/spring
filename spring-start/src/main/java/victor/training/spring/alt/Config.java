@@ -1,4 +1,4 @@
-package victor.training.spring.first;
+package victor.training.spring.alt;
 
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import victor.training.spring.first.Props;
 import victor.training.spring.pachet.pachet.X;
 
 @Configuration

@@ -8,12 +8,15 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
+import victor.training.spring.alt.Config;
 import victor.training.spring.pachet.pachet.X;
 
 @SpringBootApplication
 @EnableConfigurationProperties(Props.class)
 @ComponentScan("victor") // scaneaza de la victor/** in jos
+@Import(Config.class)
 public class FirstApplication  {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
