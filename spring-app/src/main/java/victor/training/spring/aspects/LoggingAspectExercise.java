@@ -23,7 +23,7 @@ public class LoggingAspectExercise {
     System.out.println(joint.getSignature().getName() +
                        " " + Arrays.toString(joint.getArgs()));
     Object r = joint.proceed();// apeleaza metoda interceptata
-    System.out.println("Result: " + r);
+//    System.out.println("Result: " + r);
     return r;
   }
 }
