@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 // TODO @RequiredArgsConstructor with copyableAnnotations+=
 
-//@Service
+@Service
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
