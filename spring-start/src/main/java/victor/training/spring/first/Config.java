@@ -18,7 +18,7 @@ public class Config
   public void run(String... args) {
     System.out.println(x.logic());
   }
-  @EventListeneevr(ApplicationStartedEvent.class)
+  @EventListener(ApplicationStartedEvent.class)
   public void start() {
     System.out.println("Hello events");
   }
