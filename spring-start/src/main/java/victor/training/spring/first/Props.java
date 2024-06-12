@@ -6,7 +6,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -21,20 +21,21 @@ import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
-@Data // = getters + setters
-@Component
+//@Getter
+@Value // = @Getter + @AllArgsConstructor + @ToString + @EqualsAndHashCode +
+// face toate campurile final private
 @Validated
 @ConfigurationProperties(prefix = "props.bou")
 public class Props {
   @NotNull
-  private Integer gate; // TODO set default
+  Integer gate; // TODO set default
   @NotNull
   @NotBlank
   @Size(min = 4)
-  private String welcomeMessage; // TODO not null + size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+  String welcomeMessage; // TODO not null + size >= 4
+  List<URL> supportUrls; // TODO size >= 1
+  Map<Locale, String> contactPhones;
+  Help help;
 
   @Data // TODO make immutable
   public static class Help {

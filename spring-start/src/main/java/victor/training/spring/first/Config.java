@@ -24,6 +24,6 @@ public class Config
   }
   @Autowired
   public void hack(Props props) {
-    props.setGate(null);
+//    props.setGate(null);
   }
 }
