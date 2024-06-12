@@ -22,20 +22,20 @@ import java.util.Map;
 
 @Slf4j
 //@Getter
-@Value // = @Getter + @AllArgsConstructor + @ToString + @EqualsAndHashCode +
+//@Value // = @Getter + @AllArgsConstructor + @ToString + @EqualsAndHashCode +
 // face toate campurile final private
 @Validated
 @ConfigurationProperties(prefix = "props.bou")
-public class Props {
+public record Props (
   @NotNull
-  Integer gate; // TODO set default
+  Integer gate, // TODO set default
   @NotNull
   @NotBlank
   @Size(min = 4)
-  String welcomeMessage; // TODO not null + size >= 4
-  List<URL> supportUrls; // TODO size >= 1
-  Map<Locale, String> contactPhones;
-  Help help;
+  String welcomeMessage, // TODO not null + size >= 4
+  List<URL> supportUrls, // TODO size >= 1
+  Map<Locale, String> contactPhones,
+  Help help) {
 
   @Data // TODO make immutable
   public static class Help {

@@ -28,7 +28,7 @@ public class Y {
 
   public int logic() {
     mailService.sendEmail("Go to gate "
-        + props.getGate());
+        + props.gate());
 
     return 1;
   }
