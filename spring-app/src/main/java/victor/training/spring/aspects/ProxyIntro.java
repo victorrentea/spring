@@ -56,7 +56,7 @@ public class ProxyIntro {
 // ------------------------
 @Service
 class SecondGrade {
-    private  Maths maths; // spring a injectat aici un proxy
+    private final Maths maths; // spring a injectat aici un proxy
     SecondGrade(Maths maths) {
         this.maths = maths;
     }

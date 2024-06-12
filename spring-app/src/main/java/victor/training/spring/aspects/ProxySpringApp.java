@@ -15,3 +15,9 @@ public class ProxySpringApp {
         secondGrade.mathClass();
     }
 }
+
+// cum fac un proxy care sa intercepteze
+// apeluri de metode
+// intre beanurile Spring din
+// pachetul victor..
+// cu @Around
