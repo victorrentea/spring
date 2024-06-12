@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import java.util.Map;
 @Component
 public class Props {
   private Integer gate; // TODO set default
+  @Value("${props.welcomeMessage}")
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
@@ -30,13 +32,12 @@ public class Props {
     private String email; // TODO valid email
   }
 
-  @PostConstruct
+  @PostConstruct // ruleaza la startup dupa injectarea beanului curent
   public void printMyself() throws JsonProcessingException {
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
   }
 }
-
 
 // to test the points below, watch the log output above
 //   or create a new component in which to inject WelcomeInfo and use a property
