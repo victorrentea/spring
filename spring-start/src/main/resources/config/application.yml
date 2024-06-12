@@ -1,5 +1,4 @@
 db.password: big secret
-
 spring:
     mail:
         host: smtp.gmail.com
@@ -12,6 +11,8 @@ spring:
                     starttls:
                         enable: true
         username: <login user to smtp server>
+    profiles:
+        active: local
 
 # props.welcomeMessage=Welcome to Spring
 props.bou:
