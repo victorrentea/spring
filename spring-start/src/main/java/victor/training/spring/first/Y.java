@@ -21,11 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate; // replace with injected Props
+//  @Value("${props.gate}")
+//  private Integer gate; // replace with injected Props
+  @Autowired
+  private Props props;
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate "
+        + props.getGate());
 
     return 1;
   }

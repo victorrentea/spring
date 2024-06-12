@@ -29,7 +29,8 @@ public class TeachersController {
   }
 
   @PostMapping
-  public void createTeacher(@Valid @RequestBody TeacherDto dto) {
+  public void createTeacher(
+      @Valid @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
   }
 

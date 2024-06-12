@@ -27,4 +27,4 @@ props:
         file: c:/help-file.pdf
         email: help@spring.io
     gate: 1234
-    welcome-message: Welcome to Spring
+    welcome-message: Halo!
