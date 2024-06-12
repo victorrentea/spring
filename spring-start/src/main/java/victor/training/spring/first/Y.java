@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //@RestController // REST stuff
 //@Controller // se folosea in fremurile (apuse) ale .jsp, JSF, VAADIN, velocity, etc
-@Service // business logic
+//@Service // business logic
 //@Component // techn stuff
 //@Repository // DB stuff
 public class Y {

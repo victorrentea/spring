@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service // nume default = "mailServiceImpl"
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring

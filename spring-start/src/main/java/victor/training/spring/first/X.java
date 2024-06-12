@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+@Service // numele e "x"
 @RequiredArgsConstructor // 😎genereaza un constructor cu toate campurile final
 public class X {
 //  @Autowired // field injection
