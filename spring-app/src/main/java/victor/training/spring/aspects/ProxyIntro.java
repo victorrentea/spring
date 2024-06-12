@@ -70,6 +70,7 @@ class SecondGrade {
     }
 }
 @Service
+    @LoggedMethod
 /*final*/ class Maths { // crapa la startup
 //    @Secured("ROLE_ADMIN") sau @Transactional  NU MERG!!!!
     public /*final sau static*/ int sum(int a, int b) { // ignora metoda
