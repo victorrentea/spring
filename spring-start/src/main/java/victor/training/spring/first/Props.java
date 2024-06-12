@@ -39,15 +39,15 @@ public class Props {
   @Data // TODO make immutable
   public static class Help {
     private Integer appId;
-//    @FileExists
+    @FileExists
     private File file; // TODO file exists
     private String email; // TODO valid email
   }
 //  public boolean este()// e asta nu e numit ca un getter, deci nu merge
-  @AssertTrue
-  public boolean getEFisieru() { // o "proprietate" booleana
-    return new File(help.file.getPath()).exists();
-  }
+//  @AssertTrue
+//  public boolean getEFisieru() { // o "proprietate" booleana
+//    return new File(help.file.getPath()).exists();
+//  }
 
   @PostConstruct // ruleaza la startup dupa injectarea beanului curent
   public void printMyself() throws JsonProcessingException {
