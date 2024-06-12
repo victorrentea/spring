@@ -16,7 +16,7 @@ spring:
 # props.welcomeMessage=Welcome to Spring
 props:
     gate: 123
-#    welcomeMessage: Welcome to Spring
+    welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com

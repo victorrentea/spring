@@ -18,8 +18,9 @@ import java.util.Map;
 @Data // = getters + setters
 @Component
 public class Props {
+  @Value("${props.gate}")
   private Integer gate; // TODO set default
-  @Value("${props.welcomeMessage:Halo}") // cu default
+  @Value("${props.welcomeMessage}") // cu default
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
@@ -41,11 +42,11 @@ public class Props {
 
 // to test the points below, watch the log output above
 //   or create a new component in which to inject WelcomeInfo and use a property
-// TODO 1 inject welcome.welcomeMessage property in 'welcomeMessage' field
+// TODO 1 inject props.welcomeMessage property in 'welcomeMessage' field
 //   Hint: @Value("${
 //   Experiment: what happens if the property is NOT defined ?
 //     TODO 1b provide a default value by @Value("${...:defaultvalue}")
-// TODO 2 inject welcome.gate in the 'gate' field'
+// TODO 2 inject props.gate in the 'gate' field'
 //   Experiment: what happens if the actual value of the property is not a number ?
 // TODO 3 inject all properties at once using @ConfigurationProperties(prefix=...)
 //   Ref: https://www.google.com/search?q=configuration+properties+baledung
