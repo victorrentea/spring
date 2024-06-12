@@ -31,7 +31,7 @@ public record Props (
   Integer gate, // TODO set default
   @NotNull
   @NotBlank
-  @Size(min = 4)
+  @Size(min = 3)
   String welcomeMessage, // TODO not null + size >= 4
   List<URL> supportUrls, // TODO size >= 1
   Map<Locale, String> contactPhones,

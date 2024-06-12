@@ -1,1 +1,3 @@
 db.password: local password
+scheduler.rate.millis: 1
+support.email: victorrentea@gmail.com

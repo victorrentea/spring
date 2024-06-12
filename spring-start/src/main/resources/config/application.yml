@@ -1,3 +1,4 @@
+#propsuri ca pt primu linux (pt dev)
 db.password: big secret
 spring:
     mail:
@@ -12,7 +13,8 @@ spring:
                         enable: true
         username: <login user to smtp server>
     profiles:
-        active: local
+        active: sit,pic
+        include: prod,local
 
 # props.welcomeMessage=Welcome to Spring
 props.bou:
