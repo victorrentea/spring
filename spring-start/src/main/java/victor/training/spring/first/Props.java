@@ -24,7 +24,7 @@ import java.util.Map;
 @Data // = getters + setters
 @Component
 @Validated
-@ConfigurationProperties(prefix = "props")
+@ConfigurationProperties(prefix = "props.bou")
 public class Props {
   @NotNull
   private Integer gate; // TODO set default
@@ -39,7 +39,7 @@ public class Props {
   @Data // TODO make immutable
   public static class Help {
     private Integer appId;
-    @FileExists
+//    @FileExists
     private File file; // TODO file exists
     private String email; // TODO valid email
   }

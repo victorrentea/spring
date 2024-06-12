@@ -14,7 +14,7 @@ spring:
         username: <login user to smtp server>
 
 # props.welcomeMessage=Welcome to Spring
-props:
+props.bou:
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com
