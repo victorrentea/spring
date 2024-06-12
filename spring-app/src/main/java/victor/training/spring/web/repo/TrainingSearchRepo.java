@@ -8,6 +8,8 @@ import victor.training.spring.web.entity.Training;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import victor.training.spring.web.service.TrainingService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Map;
 @Repository
 @RequiredArgsConstructor
 public class TrainingSearchRepo {
+//   private final TrainingService service;//pt ca #pot
    private final EntityManager entityManager;
 
    public List<Training> search(TrainingSearchCriteria searchCriteria) {
