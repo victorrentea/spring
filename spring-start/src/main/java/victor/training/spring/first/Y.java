@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Y {
   @Autowired // injection point
 //  @Qualifier("mailServiceImpl") //🤞 JDD
-  private MailService mailServiceImpl; // polymorphic injection
+  private MailService mailService; // polymorphic injection
 
 //  @Value("${props.gate}")
 //  private Integer gate; // replace with injected Props
@@ -20,8 +20,8 @@ public class Y {
   private Props props;
 
   public int logic() {
-    mailServiceImpl.sendEmail("Go to gate "
-                              + props.gate());
+    mailService.sendEmail("Go to gate "
+                          + props.gate());
 
     return 1;
   }
