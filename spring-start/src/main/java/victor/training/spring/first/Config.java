@@ -1,5 +1,6 @@
 package victor.training.spring.first;
 
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -23,7 +24,8 @@ public class Config
     System.out.println("Hello events");
   }
   @Autowired
-  public void hack(Props props) {
+  public void hack(@NonNull Props props) {
+    // if (props == null) throw NPE("😈"); //
 //    props.setGate(null);
   }
 }
