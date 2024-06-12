@@ -1,15 +1,6 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 //@Bean
 
@@ -20,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 //@Repository // DB stuff
 public class Y {
   @Autowired // injection point
-  @Qualifier("mailServiceImpl") //🤞 JDD
-  private MailService mailService; // polymorphic injection
+//  @Qualifier("mailServiceImpl") //🤞 JDD
+  private MailService mailServiceImpl; // polymorphic injection
 
 //  @Value("${props.gate}")
 //  private Integer gate; // replace with injected Props
@@ -29,8 +20,8 @@ public class Y {
   private Props props;
 
   public int logic() {
-    mailService.sendEmail("Go to gate "
-        + props.gate());
+    mailServiceImpl.sendEmail("Go to gate "
+                              + props.gate());
 
     return 1;
   }
