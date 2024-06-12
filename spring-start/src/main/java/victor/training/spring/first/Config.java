@@ -22,4 +22,8 @@ public class Config
   public void start() {
     System.out.println("Hello events");
   }
+  @Autowired
+  public void hack(Props props) {
+    props.setGate(null);
+  }
 }
