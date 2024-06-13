@@ -1,6 +1,7 @@
 package victor.training.spring.varie.advancedvalidation;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 
 @Slf4j
 @RestController
+@Transactional
 public class CustomerController {
     @PostMapping("customers/{id}/draft")
     public String saveDraftCustomer(@PathVariable long id, @RequestBody @Valid CustomerDto dto) {

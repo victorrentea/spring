@@ -3,19 +3,26 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@Transactional // pt tata lumea!!
 public class Jpa {
   private final MessageRepo repo; // Spring Data
 //  private final EntityManager entityManager;// modu vechi de JPA
   private Long id;
-  @Transactional
   public void one() {
 //    et2();
-    id = repo.save(new Message("ONE")).getId();
+    Message message = new Message("ONE");
+    message.setHashtag(List.of("#rezist", "#coruptie", "#pnl", "#psd", "#usr", "#haur"));
+    id = repo.save(message).getId();
     log.info("End of method ---"); // WRITE-BEHIND = insert apare dupa ce iesi din functie, exact inainte de COMMIT
     // 1) ca sa nu faca insert daca urmeaza rollback
     // 2) ca sa poata BATCHEUI inserturile impreuna.
@@ -38,13 +45,13 @@ public class Jpa {
             id = repo.saveAndFlush(new Message("ONE2")).getId();
           }
   //@GetMapping
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true) // => vrea sa pot sa LAZY LOAD
+//  @Transactional(propagation = NOT_SUPPORTED)// blocheaza tx ce vine => lazy loading NU MAI MERGE
   public void two() {
-    Message m = repo.findById(id).orElseThrow();
-    friFix(m);
+    Message m = repo.findByMessage("ONE").orElseThrow();
+    m.setMessage("CHANGED2"); // auto-flush dirty entities
+    System.out.println("Inainte---");
+    System.out.println(m.getHashtag()); // lazy loading = +1 select la nevoie
   }
 
-  private void friFix(Message m) {
-    m.setMessage("CHANGED2"); // auto-flush dirty entities
-  }
 }

@@ -1,11 +1,12 @@
 package victor.training.spring.transaction.playground;
 
-import jdk.jfr.DataAmount;
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +18,9 @@ public class Message {
     private Long id;
     @NotNull
     private String message;
+
+    @ElementCollection
+    private List<String> hashtag = new ArrayList<>();
 
     protected Message() { // for hibernate eyes only
     }
