@@ -65,10 +65,22 @@ public class Jpa {
 @RequiredArgsConstructor
 class Other {
   private final MessageRepo repo;
-  @Async
+    // async cand e procesare lunga ce nu vrei sa o astepti:
+    // - genereaza raport (de trimis pe mail la user)
+    // - import un XML/CSV/XLS de 18G
+    // - ai de anuntat o promotie la emag catre 10M clienti
+  // in JDBC standard NU e permisa scrierea pe acceasi conex de JDBC din > 1 thread
+//  @Async
+
+
   public void bizFlow() {
     log.info("biz");
     Message m = repo.findByMessage("ONE").orElseThrow();
     m.setMessage("CHANGED3");
   }
+
+  // @PostMapping uploadFile {
+  // create temp file
+  // scrie ce vine pe http in fisier
+  // cheama metoda async (fiser temporar)
 }
