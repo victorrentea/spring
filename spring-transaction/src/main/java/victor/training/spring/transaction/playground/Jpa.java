@@ -24,8 +24,8 @@ public class Jpa {
 //    throw new RuntimeException("Boom");
   }
       private void et2() {
-        maiJos();
         beci();
+        maiJos();
       }
           private void maiJos() {
             id = repo.saveAndFlush(new Message("ONE")).getId();
