@@ -2,11 +2,14 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
@@ -16,8 +19,9 @@ import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORT
 @Transactional // pt tata lumea!!
 public class Jpa {
   private final MessageRepo repo; // Spring Data
-//  private final EntityManager entityManager;// modu vechi de JPA
+  //  private final EntityManager entityManager;// modu vechi de JPA
   private Long id;
+
   public void one() {
 //    et2();
     Message message = new Message("ONE");
@@ -29,29 +33,41 @@ public class Jpa {
     //   Batch insert ca sa reduci durata jobului de la 8h la 20min (24x)
 //    throw new RuntimeException("Boom");
   }
-      private void et2() {
-        beci();
+
+  private void et2() {
+    beci();
 //        repo.flush(); // ex aici
-        System.out.println("Inainte");
-        System.out.println("#sieu: "+repo.findByMessage("ONE"));
-        mansarda();
-      }
-          private void beci() {
-            repo.save(new Message("ONE")); // forteaza INSERTUL in DB
-            //+ crapa UQ -=>exceptie la botu' calului
-            //- disableaza batching, ca trimite repede pe loc INSERTUL
-          }
-          private void mansarda() {
-            id = repo.saveAndFlush(new Message("ONE2")).getId();
-          }
-  //@GetMapping
-  @Transactional(readOnly = true) // => vrea sa pot sa LAZY LOAD
-//  @Transactional(propagation = NOT_SUPPORTED)// blocheaza tx ce vine => lazy loading NU MAI MERGE
-  public void two() {
-    Message m = repo.findByMessage("ONE").orElseThrow();
-    m.setMessage("CHANGED2"); // auto-flush dirty entities
-    System.out.println("Inainte---");
-    System.out.println(m.getHashtag()); // lazy loading = +1 select la nevoie
+    System.out.println("Inainte");
+    System.out.println("#sieu: " + repo.findByMessage("ONE"));
+    mansarda();
   }
 
+  private void beci() {
+    repo.save(new Message("ONE")); // forteaza INSERTUL in DB
+    //+ crapa UQ -=>exceptie la botu' calului
+    //- disableaza batching, ca trimite repede pe loc INSERTUL
+  }
+
+  private void mansarda() {
+    id = repo.saveAndFlush(new Message("ONE2")).getId();
+  }
+
+  @Transactional
+  public void two() {
+    log.info("entry. oare pe cine chem? " + other.getClass().getName());
+    other.bizFlow();
+  }
+  private final Other other;
+}
+@Slf4j
+@Service
+@RequiredArgsConstructor
+class Other {
+  private final MessageRepo repo;
+  @Async
+  public void bizFlow() {
+    log.info("biz");
+    Message m = repo.findByMessage("ONE").orElseThrow();
+    m.setMessage("CHANGED3");
+  }
 }
