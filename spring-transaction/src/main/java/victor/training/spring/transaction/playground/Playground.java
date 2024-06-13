@@ -19,7 +19,7 @@ public class Playground {
   private final JdbcTemplate jdbcTemplate; // SQL
   private final OtherClass other;
 
-  @Transactional
+  @Transactional(rollbackFor = Exception.class)
   // exceptia checked lasa tranzactia sa commita😱😱😱😱
   // pt ca exact asa facea si @TransactionAttribute din EJBulshit 2005
   // cand Spring a incercat sa-i converteasca la Spring,
