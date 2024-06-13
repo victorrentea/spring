@@ -42,7 +42,7 @@ public class Jpa {
   public void two() {
     Message m = repo.findById(id).orElseThrow();
     m.setMessage("CHANGED");
-    repo.save(new Message("AUDIT"));
     repo.save(m);
+    repo.save(new Message("AUDIT"));
   }
 }
