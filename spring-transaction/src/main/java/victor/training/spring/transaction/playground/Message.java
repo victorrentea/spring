@@ -9,7 +9,8 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Data
-@Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
+@Table(uniqueConstraints =
+  @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue

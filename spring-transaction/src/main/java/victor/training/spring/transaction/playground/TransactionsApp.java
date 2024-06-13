@@ -25,7 +25,7 @@ public class TransactionsApp {
    public void start() throws Exception {
       try {
          System.out.println("============= 🎺 TRANSACTION:START ==============");
-         playground.play();
+         //playground.play();
          System.out.println("============= JPA:ONE ==============");
          jpa.one();
          System.out.println("============= JPA:TWO ==============");
