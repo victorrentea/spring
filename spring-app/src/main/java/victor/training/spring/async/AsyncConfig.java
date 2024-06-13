@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,16 +12,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 @Configuration
 public class AsyncConfig {
-	@Autowired
-	ApplicationContext spring;
+//	@Autowired
+//	ApplicationContext spring;
 	@Bean
+	@ConfigurationProperties(prefix = "carciuma.din.balta")
 	public ThreadPoolTaskExecutor poolBar(
-			@Value("${pool.bar.size}") int poolSize
+//			@Value("${pool.bar.size}") int poolSize
 	) {
 //		spring.getEnvironment().getProperty("pool.bar."+"size")
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(poolSize); // 20 x.5 = 10G
-		executor.setMaxPoolSize(poolSize);
+//		executor.setCorePoolSize(poolSize); // 20 x.5 = 10G
+//		executor.setMaxPoolSize(poolSize);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
