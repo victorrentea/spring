@@ -20,9 +20,8 @@ public class Playground {
   public void play() {
 //    repo.findAll()// out of memory
 //    repo.findAllById(List.of(1,3,4,5));// SELECT * FROM MESSAGE WHERE ID IN (1,3,4,5)
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-//    repo.save(new Message("J PA"));
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'a' )");
+    throw new RuntimeException("Boom");
   }
 }
 
