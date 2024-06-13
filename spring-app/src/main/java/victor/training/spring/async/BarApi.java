@@ -39,7 +39,9 @@ public class BarApi {
       Vodka vodka = vodkaPromise.get(); // http asteapta 0, ca vodka e deja gata cand berea e gata
 
       // fire-and-forget
-      runAsync(()->barmanService.auditCocktail("Dilly"), poolBar); // 0.5 sec
+      // niciodata nu face runAsync, ci fa metoda @Async
+//      runAsync(()->barmanService.auditCocktail("Dilly"), poolBar); // 0.5 sec
+        barmanService.auditCocktail("Dilly"); // 0.5 sec
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
