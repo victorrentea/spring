@@ -41,8 +41,10 @@ public class Jpa {
   @Transactional
   public void two() {
     Message m = repo.findById(id).orElseThrow();
-    m.setMessage("CHANGED");
-    repo.save(m);
-    repo.save(new Message("AUDIT"));
+    friFix(m);
+  }
+
+  private void friFix(Message m) {
+    m.setMessage("CHANGED2"); // auto-flush dirty entities
   }
 }
