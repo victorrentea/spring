@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -19,19 +20,26 @@ import static java.util.concurrent.CompletableFuture.*;
 @RequiredArgsConstructor
 public class BarApi {
    private final BarmanService barmanService;
+   private final ThreadPoolTaskExecutor poolBar;
+
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      var beerPromise = supplyAsync(()->barmanService.pourBeer());
-      var vodkaPromise = supplyAsync(()->barmanService.pourVodka());
+      // NICIODATA sa nu executi cod cu CompletableFuture in spring fara
+      // sa pasezi argumentul 2 (Executor);
+      // orice threaduri pornesti sa pornesti pe un thread pool injectat de spring
+      var beerPromise = supplyAsync(
+          ()->barmanService.pourBeer(), poolBar);
+      var vodkaPromise = supplyAsync(
+          ()->barmanService.pourVodka(),poolBar);
       log.debug("Mi-a luat comanda");
       Beer beer = beerPromise.get(); // http asteapta 1 sec
       Vodka vodka = vodkaPromise.get(); // http asteapta 0, ca vodka e deja gata cand berea e gata
 
       // fire-and-forget
-      runAsync(()->barmanService.auditCocktail("Dilly")); // 0.5 sec
+      runAsync(()->barmanService.auditCocktail("Dilly"), poolBar); // 0.5 sec
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
