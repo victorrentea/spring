@@ -31,7 +31,7 @@ public class Jpa {
             id = repo.saveAndFlush(new Message("ONE")).getId();
           }
           private void beci() {
-            repo.saveAndFlush(new Message("ONE")); // forteaza INSERTUL in DB
+            repo.save(new Message("ONE")); // forteaza INSERTUL in DB
             // crapa UQ -=>exceptie la botu' calului
           }
 
