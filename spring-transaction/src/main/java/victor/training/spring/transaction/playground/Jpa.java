@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -55,7 +56,12 @@ public class Jpa {
   @Transactional
   public void two() {
     log.info("entry. oare pe cine chem? ");
-    other.bizFlow();
+    try{
+      other.bizFlow();
+    } catch (Exception tat) {
+      other.saveError(tat);
+      throw tat;
+    }
   }
   private final Other other;
 }
@@ -65,18 +71,21 @@ public class Jpa {
 @RequiredArgsConstructor
 class Other {
   private final MessageRepo repo;
+  @Transactional(propagation = REQUIRES_NEW)
+  public void saveError(Exception tat) {
+    repo.save(new Message("EROARE::: " + tat.getMessage()));
+  }
     // async cand e procesare lunga ce nu vrei sa o astepti:
     // - genereaza raport (de trimis pe mail la user)
     // - import un XML/CSV/XLS de 18G
     // - ai de anuntat o promotie la emag catre 10M clienti
   // in JDBC standard NU e permisa scrierea pe acceasi conex de JDBC din > 1 thread
 //  @Async
-
-
   public void bizFlow() {
     log.info("biz");
     Message m = repo.findByMessage("ONE").orElseThrow();
     m.setMessage("CHANGED3");
+    throw new RuntimeException("din cauza de biz. e de la ei. if credit cerut > 100KE dar sta cu mama => throw");
   }
 
   // @PostMapping uploadFile {
