@@ -41,6 +41,7 @@ public class Jpa {
   @Transactional
   public void two() {
     Message m = repo.findById(id).orElseThrow();
+    m=new Message();
     friFix(m);
   }
 
