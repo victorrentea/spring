@@ -15,10 +15,6 @@ import static java.lang.System.currentTimeMillis;
 public class BarApi {
    @Autowired
    private BarmanService barmanService;
-
-   // TODO [1] autowire and submit tasks to a ThreadPoolTaskExecutor
-   // TODO [2] mark pour* methods as @Async
-   // TODO [3] Make this endpoint non-blocking
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
