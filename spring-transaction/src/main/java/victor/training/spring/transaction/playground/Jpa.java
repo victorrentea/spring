@@ -12,10 +12,10 @@ public class Jpa {
   private final MessageRepo repo; // Spring Data
 //  private final EntityManager entityManager;// modu vechi de JPA
   private Long id;
-
   @Transactional
   public void one() {
-    et2();
+//    et2();
+    id = repo.save(new Message("ONE")).getId();
     log.info("End of method ---"); // WRITE-BEHIND = insert apare dupa ce iesi din functie, exact inainte de COMMIT
     // 1) ca sa nu faca insert daca urmeaza rollback
     // 2) ca sa poata BATCHEUI inserturile impreuna.
@@ -37,11 +37,10 @@ public class Jpa {
           private void mansarda() {
             id = repo.saveAndFlush(new Message("ONE2")).getId();
           }
-
+  //@GetMapping
   public void two() {
-//    Message e = repo.findById(id).orElseThrow();
-//    e.setMessage("Different"); // TODO auto-flush changes
-
-    // TODO lazy-loading
+    Message m = repo.findById(id).orElseThrow();
+    m.setMessage("CHANGED");
+    repo.save(m);
   }
 }
