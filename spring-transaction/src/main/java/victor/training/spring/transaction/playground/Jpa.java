@@ -1,6 +1,5 @@
 package victor.training.spring.transaction.playground;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,14 +24,17 @@ public class Jpa {
   }
       private void et2() {
         beci();
-        maiJos();
+        repo.flush(); // ex aici
+        mansarda();
       }
-          private void maiJos() {
-            id = repo.saveAndFlush(new Message("ONE")).getId();
-          }
           private void beci() {
             repo.save(new Message("ONE")); // forteaza INSERTUL in DB
-            // crapa UQ -=>exceptie la botu' calului
+            repo.save(new Message("ONE")); // forteaza INSERTUL in DB
+            //+ crapa UQ -=>exceptie la botu' calului
+            //- disableaza batching, ca trimite repede pe loc INSERTUL
+          }
+          private void mansarda() {
+            id = repo.saveAndFlush(new Message("ONE2")).getId();
           }
 
   public void two() {
