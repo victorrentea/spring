@@ -38,9 +38,11 @@ public class Jpa {
             id = repo.saveAndFlush(new Message("ONE2")).getId();
           }
   //@GetMapping
+  @Transactional
   public void two() {
     Message m = repo.findById(id).orElseThrow();
     m.setMessage("CHANGED");
+    repo.save(new Message("AUDIT"));
     repo.save(m);
   }
 }
