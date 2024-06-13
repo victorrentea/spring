@@ -24,11 +24,12 @@ public class Jpa {
   }
       private void et2() {
         beci();
-        repo.flush(); // ex aici
+//        repo.flush(); // ex aici
+        System.out.println("Inainte");
+        System.out.println("#sieu: "+repo.findByMessage("ONE"));
         mansarda();
       }
           private void beci() {
-            repo.save(new Message("ONE")); // forteaza INSERTUL in DB
             repo.save(new Message("ONE")); // forteaza INSERTUL in DB
             //+ crapa UQ -=>exceptie la botu' calului
             //- disableaza batching, ca trimite repede pe loc INSERTUL

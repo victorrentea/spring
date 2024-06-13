@@ -28,6 +28,7 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 //      """, nativeQuery = true) // mai bine decat JdbcTemplate
 //  Optional<Message> findByMessageLike(String message);
 
+  Optional<Message> findByMessage(String message);
 
   @Query("FROM Message WHERE id = ?1")
   @Lock(LockModeType.PESSIMISTIC_WRITE) // db row lock via "SELECT .. FOR UPDATE"
