@@ -11,15 +11,18 @@ import java.util.concurrent.CompletableFuture;
 @Service
 @RequiredArgsConstructor
 public class Playground {
-  private final MessageRepo repo;
-  private final EntityManager entityManager;
-  private final JdbcTemplate jdbcTemplate;
+  private final MessageRepo repo; // Spring Data JPA
+  private final EntityManager entityManager; // JPA
+  private final JdbcTemplate jdbcTemplate; // SQL
   private final OtherClass other;
 
   @Transactional
   public void play() {
+//    repo.findAll()// out of memory
+//    repo.findAllById(List.of(1,3,4,5));// SELECT * FROM MESSAGE WHERE ID IN (1,3,4,5)
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("J PA"));
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+//    repo.save(new Message("J PA"));
   }
 }
 
