@@ -75,15 +75,15 @@ class SecondGrade {
     System.out.println(maths.getClass().getName());
 
     System.out.println("8 + 4 = " + maths.sum(8, 4));
-    Thread.sleep(2000);
+
     System.out.println("6 + 6 = " + maths.sum(6, 6));
-    Thread.sleep(2000);
+
     System.out.println("5 + 5 = " + maths.sum(5, 5));
-    Thread.sleep(2000);
+
     System.out.println("6 + 6 = " + maths.sum(6, 6));
-    Thread.sleep(2000);
+
     System.out.println("4 x 3 = " + maths.product(4, 3));
-    Thread.sleep(2000);
+
   }
 }
 

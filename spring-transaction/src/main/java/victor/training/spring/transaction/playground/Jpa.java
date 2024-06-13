@@ -53,7 +53,7 @@ public class Jpa {
     id = repo.saveAndFlush(new Message("ONE2")).getId();
   }
 
-  @Transactional
+
   public void two() {
     log.info("entry. oare pe cine chem? ");
     try{
@@ -71,7 +71,6 @@ public class Jpa {
 @RequiredArgsConstructor
 class Other {
   private final MessageRepo repo;
-  @Transactional(propagation = REQUIRES_NEW)
   public void saveError(Exception tat) {
     repo.save(new Message("EROARE::: " + tat.getMessage()));
   }
@@ -81,6 +80,7 @@ class Other {
     // - ai de anuntat o promotie la emag catre 10M clienti
   // in JDBC standard NU e permisa scrierea pe acceasi conex de JDBC din > 1 thread
 //  @Async
+  @Transactional
   public void bizFlow() {
     log.info("biz");
     Message m = repo.findByMessage("ONE").orElseThrow();
