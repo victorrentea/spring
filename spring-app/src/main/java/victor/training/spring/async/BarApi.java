@@ -42,6 +42,10 @@ public class BarApi {
       // niciodata nu face runAsync, ci fa metoda @Async
 //      runAsync(()->barmanService.auditCocktail("Dilly"), poolBar); // 0.5 sec
         barmanService.auditCocktail("Dilly"); // 0.5 sec
+      // VALEU daca cade curentu pana apuc sa auditez, si sunt inca in coada din memorie -> pierd apelul.
+      // 1) Coada Rabbit/Kafka/ActiveMQ/Redis/ActiveMQ
+      // 2) INSERT taskRepo.save(new Task("auditCocktail", "Dilly"));
+         //   +  @Scheduled(fixedRate = 1000) public void polling() {
 
       log.debug("Method completed in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
