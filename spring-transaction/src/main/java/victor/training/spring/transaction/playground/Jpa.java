@@ -54,16 +54,10 @@ public class Jpa {
 
   @Transactional
   public void two() {
-    log.info("entry. oare pe cine chem? " + other.getClass().getName());
-    other.bizFlow();
+    log.info("entry. oare pe cine chem? ");
+    bizFlow();
   }
-  private final Other other;
-}
-@Slf4j
-@Service
-@RequiredArgsConstructor
-class Other {
-  private final MessageRepo repo;
+
   @Async
   public void bizFlow() {
     log.info("biz");
