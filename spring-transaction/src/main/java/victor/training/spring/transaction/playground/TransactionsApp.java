@@ -24,9 +24,8 @@ public class TransactionsApp {
    @EventListener(ApplicationStartedEvent.class)
    public void start() throws Exception {
       try {
-         System.out.println("============= TRANSACTION:START ==============");
+         System.out.println("============= 🎺 TRANSACTION:START ==============");
          playground.play();
-
          System.out.println("============= JPA:ONE ==============");
          jpa.one();
          System.out.println("============= JPA:TWO ==============");

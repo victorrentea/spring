@@ -19,7 +19,7 @@ public class Playground {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
+    repo.save(new Message("J PA"));
   }
 }
 
