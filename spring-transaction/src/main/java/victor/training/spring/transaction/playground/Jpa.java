@@ -38,10 +38,9 @@ public class Jpa {
             id = repo.saveAndFlush(new Message("ONE2")).getId();
           }
   //@GetMapping
-  @Transactional
+  @Transactional(readOnly = true)
   public void two() {
     Message m = repo.findById(id).orElseThrow();
-    m=new Message();
     friFix(m);
   }
 
