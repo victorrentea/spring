@@ -55,7 +55,7 @@ public class ActuatorSecurity {
 //          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD!
           .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
     );
-
+ // AUthorization:
     http.httpBasic(Customizer.withDefaults()).userDetailsService(actuatorUserDetailsService());
 
     http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie

@@ -7,6 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -20,7 +23,7 @@ import static org.springframework.http.MediaType.IMAGE_JPEG;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/trainings")
+@RequestMapping("apisanatate/trainings")
 public class TrainingController {
 	private final TrainingService trainingService;
 
@@ -57,8 +60,17 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
+
+	// #1 adnotari = recomandat
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Secured("ROLE_ADMIN")
+
 	@DeleteMapping("{trainingId}")
-	public void delete(@PathVariable Long trainingId) {
+	public void delete(@PathVariable Long trainingId, Authentication auth) {
+		// #3 la nevoie
+//		if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+//			throw new RuntimeException("Only admins can delete");
+//		}
 		trainingService.deleteById(trainingId);
 	}
 
