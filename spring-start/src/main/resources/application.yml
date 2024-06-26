@@ -1,5 +1,3 @@
-db.password: big secret
-
 spring:
     mail:
         host: smtp.gmail.com
@@ -14,6 +12,7 @@ spring:
         username: <login user to smtp server>
 
 props:
+    env: prod
     gate: 123
     welcomeMessage: Welcome to Spring
     supportUrls:

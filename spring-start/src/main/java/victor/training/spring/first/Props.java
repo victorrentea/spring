@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Slf4j
-@Data // = getters + setters
+@Data // for getters & setters
 @Component
 public class Props {
+  private String env;
   private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO not null + size >= 4
+  private String welcomeMessage; // TODO not null & size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
   private Help help;
@@ -32,8 +32,8 @@ public class Props {
 
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
-    String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    log.info("WelcomeProps:\n" + jsonToString);
+    String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    System.out.println("WelcomeProps:\n" + json);
   }
 }
 
