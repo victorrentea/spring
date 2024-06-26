@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,7 @@ public class DemoApplication {
   @PostMapping
   public ResponseEntity<Void> createReservation(@Validated @RequestBody ReservationDto dto) {
 //    try {
-      reservationService.create(dto);
+    reservationService.create(dto);
 //    } catch (IllegalArgumentException e) {
 //      return ResponseEntity.badRequest().build();
 //    }
@@ -60,18 +62,17 @@ public class DemoApplication {
   public List<ReservationDto> findAllReservations() {
     return reservationService.findAll();
   }
+}
 
-  @Value("${startup.debug}")
-  private Boolean debug;
-
-//  @PostConstruct // asta uneori ruleaza PREA DEVREME,
-  // cand alte beanuri/aspecte din app NU SUNT INCA GATA
-
+@Component
+@ConditionalOnProperty( // un fel de @Profile pe steroizi
+    value = "startup.debug",
+    havingValue = "true",
+    matchIfMissing = true)
+class Init {
   @EventListener(ApplicationStartedEvent.class) // cand toate beanurile sunt gata
   public void init(){
-    if (debug) {
       System.out.println("Debugging...");
-    }
   }
 }
 
