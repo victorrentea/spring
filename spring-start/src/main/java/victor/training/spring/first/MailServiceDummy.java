@@ -1,9 +1,12 @@
 package victor.training.spring.first;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 // TODO for local dev only
-@Service//("mailServiceImpl") // nume custom
+@Service
+@Profile("local")
+//("mailServiceImpl") // nume custom
 // numele default al acestui bean este "mailServiceDummy" (cu prima lower)
 public class MailServiceDummy implements MailService {
   public void sendEmail(String subject) {
