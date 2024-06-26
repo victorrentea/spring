@@ -3,6 +3,7 @@ package sub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import victor.training.spring.first.MailService;
+import victor.training.spring.first.Props;
 
 //toate astea il fac pe Spring sa def un bean din aceasta clasa
 //@RestController - REST API
@@ -19,11 +20,16 @@ public class Y {
   @Autowired
   private MailService mailService;
 
-  @Value("${props.gate}")
-  private Integer gate; // replace with injected Props
+//  @Value("${props.gate}")
+//  private Integer gate; // replace with injected Props
+
+  @Autowired
+  private Props props;
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    props.setGate(-1); // NU AR TREBUI SA FIE POSIBIL
+
+    mailService.sendEmail("Go to gate " + props.getGate());
 
     return 1;
   }
