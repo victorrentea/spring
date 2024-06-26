@@ -36,11 +36,11 @@ public class DemoApplication {
 
   @PostMapping
   public ResponseEntity<Void> createReservation(@Validated @RequestBody ReservationDto dto) {
-    try {
+//    try {
       reservationService.create(dto);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().build();
-    }
+//    } catch (IllegalArgumentException e) {
+//      return ResponseEntity.badRequest().build();
+//    }
     return ResponseEntity.ok()
         .header("X-Custom", "BUN") // motiv bun pentru ResponseEntity
         .build();
