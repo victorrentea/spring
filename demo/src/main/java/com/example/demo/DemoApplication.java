@@ -19,7 +19,7 @@ public class DemoApplication {
   @GetMapping("hello/{id}")
   public String hello(
       @PathVariable long id,
-		  @RequestParam String style) {
+		  @RequestParam(required = false) String style) {
     return "Hello " + id + " ? " + style;
   }
 
