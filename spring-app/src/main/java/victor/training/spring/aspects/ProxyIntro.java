@@ -1,10 +1,15 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.annotation.Timed;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -63,6 +68,13 @@ class SecondGrade {
 
 @Service
 class Maths {
+  // acestea sunt utilizari ale proxyurilor
+//  @Transactional // tot ce face cu DB va fi ATOMIC (tranzactionat impreuna)
+//  @Secured("ROLE_ADMIN") // nu da voie apelului decat daca esti ADMIN
+//  @Cacheable("sume") // daca chemi a doua oara metoda asta cu aceiasi parametrii, va lua din cache din memo
+//  @Async // executa aceasta metoda pe alt thread
+//  @Timed // masoara durata executiei (gen t0,t1) si o raporteaza ca metrica
+//  @RateLimiter limiteaza de cate poti chema aceasta metoda max (10/sec)
   public int sum(int a, int b) {
     return a + b;
   }
