@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+// recomandarea e sa NU PREA FACI TU ASPECTE NOI. decat cu batranu (senioru spring) langa tine
 public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
