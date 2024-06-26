@@ -1,13 +1,18 @@
-package victor.training.spring.first;
+package victor.training.spring.first.sub;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import victor.training.spring.first.MailService;
 
-@Service
-// TODO @RequiredArgsConstructor with copyableAnnotations+=
+//toate astea il fac pe Spring sa def un bean din aceasta clasa
+//@RestController - REST API
+@Service // business logic
+//@Repository - DB access
+
+//@Component - ceva ce nu se incadreaza in celelalte
+
+//@Controller ------ (istoric) cand se genera HTML pe server: .jsp, .jsfx, .thymeleaf, .velocity, .freemarker
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
