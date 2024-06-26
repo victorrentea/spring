@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Data // = getters + setters
@@ -21,7 +22,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "props")
 public class Props {
   private Integer gate; // TODO set default
-  private String welcomeMessage = "Hi!"; // TODO not null + size >= 4
+  private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
   private Help help;
@@ -35,6 +36,10 @@ public class Props {
 
   @PostConstruct // ruleaza dupa injectia dep/prop
   public void printMyself() throws JsonProcessingException {
+//    if (welcomeMessage == null) {
+//      throw new IllegalArgumentException();
+//    }
+    Objects.requireNonNull(welcomeMessage);
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter()
         .writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
