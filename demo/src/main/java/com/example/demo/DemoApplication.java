@@ -1,11 +1,13 @@
 package com.example.demo;
 
+import jakarta.validation.constraints.Size;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@SpringBootApplication
 @RestController
+@SpringBootApplication
 public class DemoApplication {
 
   public static void main(String[] args) {
@@ -19,9 +21,9 @@ public class DemoApplication {
 		  @RequestParam(required = false) String style) {
     return "Hello " + id + " ? " + style;
   }
-  record ReservationDto(String name){}
+  record ReservationDto(@Size(min=10) String name){}
   @PostMapping
-  public void createReservation(@RequestBody ReservationDto dto) {
+  public void createReservation(@Validated @RequestBody ReservationDto dto) {
     System.out.println(dto);
   }
 
