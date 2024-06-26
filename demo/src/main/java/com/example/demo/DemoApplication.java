@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.DemoApplication.ReservationDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,8 @@ public class DemoApplication {
   @Autowired
   ReservationService reservationService;
 
-  record ReservationDto(@Size(min = 10) String name) {
+  record ReservationDto(@Schema(description = "Name of person for which is the reservation")
+                        @Size(min = 10) String name) {
   }
 
   @PostMapping
@@ -49,6 +52,7 @@ public class DemoApplication {
   }
 
   @GetMapping
+  @Operation(description = "Get all reservations")
   public List<ReservationDto> findAllReservations() {
     return reservationService.findAll();
   }
