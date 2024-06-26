@@ -62,7 +62,7 @@ class SecondGrade {
   public void mathClass() {
     System.out.println("APelul poate fi proxiat doar cand e facut pe o referinta" +
                        "injectata de spring, ca asta:\n" + maths.getClass());
-    System.out.println("8 + 4 = " + maths.sum(8, 4));
+    System.out.println("8 + 4 === " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 2 = " + maths.product(4, 2));
   }
@@ -82,6 +82,7 @@ class Maths {
   /*final=IGNORE*/
   /*static=IGNORE*/
   public int sum(int a, int b) {
+//    if (true) throw new IllegalArgumentException("INTENTIONAT");
     return a + b;
   }
 
