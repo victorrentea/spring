@@ -21,7 +21,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "props")
 public class Props {
   private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO not null + size >= 4
+  private String welcomeMessage = "Hi!"; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
   private Help help;
