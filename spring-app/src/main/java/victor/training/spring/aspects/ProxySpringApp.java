@@ -26,3 +26,4 @@ public class ProxySpringApp {
 //2. Change the aspect to target only method annotated with a custom annotation
 //3. If I annotate the class, all methods should be intercepted.
 //4. Write another aspect to measure the execution time of these methods.
+// sample: https://chatgpt.com/share/3cdeb17b-ce60-4c11-a9b1-76af8cd929e1
