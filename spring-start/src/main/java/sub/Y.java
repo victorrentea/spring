@@ -7,7 +7,7 @@ import victor.training.spring.first.MailService;
 
 //toate astea il fac pe Spring sa def un bean din aceasta clasa
 //@RestController - REST API
-@Service // business logic
+//@Service // business logic
 //@Repository - DB access
 
 //@Component - ceva ce nu se incadreaza in celelalte
