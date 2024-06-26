@@ -2,6 +2,8 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -31,7 +33,7 @@ public class Props {
   // 2) jpaRepo.save( -> automat se verifica @ pe @Entity de hibernate
   // 3) validator.validate(objAdnotat); dar iti trebuie sa-ti injectezi un Validator 🤢🤢
   private Integer gate; // TODO set default
-  @NotNull
+  @NotBlank
   private String welcomeMessage; // TODO not null + size >= 4
   @NotEmpty
   private List<URL> supportUrls; // TODO size >= 1
@@ -42,7 +44,8 @@ public class Props {
   public static class Help {
     private Integer appId;
     private File file; // TODO file exists
-    private String email; // TODO valid email
+    @Email
+    private String email;
   }
 
   @PostConstruct // ruleaza dupa injectia dep/prop
