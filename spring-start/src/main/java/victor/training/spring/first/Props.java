@@ -2,6 +2,8 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -20,9 +24,16 @@ import java.util.Objects;
 @Data // = getters + setters
 @Component
 @ConfigurationProperties(prefix = "props")
+@Validated
 public class Props {
+  @NotNull // adnotarile de validare nu merg decat daca TU CERI sa fie verificate
+  // 1) @Validated (aici pe clasa, in REST API pe @RequestBody, sau pe param oricarei metode)
+  // 2) jpaRepo.save( -> automat se verifica @ pe @Entity de hibernate
+  // 3) validator.validate(objAdnotat); dar iti trebuie sa-ti injectezi un Validator 🤢🤢
   private Integer gate; // TODO set default
+  @NotNull
   private String welcomeMessage; // TODO not null + size >= 4
+  @NotEmpty
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
   private Help help;
@@ -40,8 +51,8 @@ public class Props {
 //      throw new IllegalArgumentException();
 //    }
     // validarea cu IFuri e de evitat pt checkuri simple
-    Objects.requireNonNull(welcomeMessage, "message");
-    Objects.requireNonNull(gate, "gate"); // daca ambele lipsesc vei vedea DOAR PRIMA eroare
+//    Objects.requireNonNull(welcomeMessage, "message");
+//    Objects.requireNonNull(gate, "gate"); // daca ambele lipsesc vei vedea DOAR PRIMA eroare
 
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter()
         .writeValueAsString(this);
