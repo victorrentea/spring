@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -17,5 +19,11 @@ public class ReservationService {
     Reservation reservation = new Reservation();
     reservation.setName(dto.name());
     reservationRepo.save(reservation);
+  }
+
+  public List<ReservationDto> findAll() {
+    return reservationRepo.findAll().stream()
+        .map(reservation -> new ReservationDto(reservation.getName()))
+        .toList();
   }
 }

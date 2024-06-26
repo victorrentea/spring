@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @SpringBootApplication
 public class DemoApplication {
@@ -44,6 +46,11 @@ public class DemoApplication {
     return ResponseEntity.ok()
         .header("X-Custom", "BUN") // motiv bun pentru ResponseEntity
         .build();
+  }
+
+  @GetMapping
+  public List<ReservationDto> findAllReservations() {
+    return reservationService.findAll();
   }
 }
 
