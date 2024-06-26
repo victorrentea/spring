@@ -80,10 +80,12 @@ class Maths {
 //  @RateLimiter limiteaza de cate poti chema aceasta metoda max (10/sec)
   /*final=IGNORE*/
   /*static=IGNORE*/
+  @Logged
   public int sum(int a, int b) {
     return a + b;
   }
 
+  @Logged
   public int product(int a, int b) {
 //    return a * b;
     int r = 0;
