@@ -3,12 +3,16 @@ package com.example.demo;
 import com.example.demo.DemoApplication.ReservationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -56,6 +60,18 @@ public class DemoApplication {
   public List<ReservationDto> findAllReservations() {
     return reservationService.findAll();
   }
+
+  @Value("${startup.debug}")
+  private Boolean debug;
+
+//  @PostConstruct // asta uneori ruleaza PREA DEVREME,
+  // cand alte beanuri/aspecte din app NU SUNT INCA GATA
+
+  @EventListener(ApplicationStartedEvent.class) // cand toate beanurile sunt gata
+  public void init(){
+    if (debug) {
+      System.out.println("Debugging...");
+    }
+  }
 }
 
-//TODO ResponseEntity - de ce nu
