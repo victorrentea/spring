@@ -1,10 +1,13 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service
+//@Profile("prod") // periculos
+@Profile("!local") // merge. dar mai bine stergi asta si pui @Primary pe alalalt
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
