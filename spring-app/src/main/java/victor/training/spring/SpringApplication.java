@@ -38,14 +38,14 @@ public class SpringApplication {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    private DataSource dataSource;
 
     @Bean
     public RestTemplate rest() {
         return new RestTemplate();
     }
 
+    @Autowired
+    private DataSource dataSource;
     @EventListener(ApplicationStartedEvent.class)
     @Order
     public void printAppStarted() throws SQLException {

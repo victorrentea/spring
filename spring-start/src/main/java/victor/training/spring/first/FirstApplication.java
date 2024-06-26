@@ -18,7 +18,7 @@ public class FirstApplication implements CommandLineRunner {
     SpringApplication.run(FirstApplication.class);
   }
 
-  @Autowired
+  @Autowired // Springule, pune-mi aici o instanta de X
   private X x;
 
   @Override // from CommandLineRunner
