@@ -28,7 +28,7 @@ public class Props {
   // 3) validator.validate(objAdnotat); dar iti trebuie sa-ti injectezi un Validator 🤢🤢
   Integer gate;
   @NotBlank
-  String welcomeMessage; // TODO not null + size >= 4
+  String welcomeMessages; // TODO not null + size >= 4
   @NotEmpty
   List<URL> supportUrls;
   Map<Locale, String> contactPhones;
