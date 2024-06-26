@@ -1,7 +1,6 @@
 spring:
     mail:
         host: smtp.gmail.com
-        password: <login password to smtp server>
         port: 587
         properties:
             mail:
@@ -9,7 +8,8 @@ spring:
                     auth: true
                     starttls:
                         enable: true
-        username: <login user to smtp server>
+        username: user
+        password: pass
 
 props:
     env: prod
