@@ -106,27 +106,7 @@
         </dependency>
 
 
-        <dependency>
-            <!-- Keycloak integration -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
 
-
-       <!-- <dependency>
-            &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>-->
-      <!--  <dependency>
-            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>-->
 
         <dependency>
             <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
@@ -204,17 +184,6 @@
         </dependency>-->
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.keycloak.bom</groupId>
-                <artifactId>keycloak-adapter-bom</artifactId>
-                <version>21.1.2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
