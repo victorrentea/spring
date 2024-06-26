@@ -9,9 +9,7 @@ import victor.training.spring.first.MailService;
 //@RestController - REST API
 //@Service // business logic
 //@Repository - DB access
-
 //@Component - ceva ce nu se incadreaza in celelalte
-
 //@Controller ------ (istoric) cand se genera HTML pe server: .jsp, .jsfx, .thymeleaf, .velocity, .freemarker
 public class Y {
   @Autowired
