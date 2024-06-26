@@ -70,6 +70,7 @@ class SecondGrade {
 // CUM POT SA STRIC PROXIEREA? Sa-l opresc pe Spring sa faca proxy-uri?
 @Service
 /*final=CRASH*/
+@Logged
 class Maths {
   // acestea sunt utilizari ale proxyurilor
 //  @Transactional // tot ce face cu DB va fi ATOMIC (tranzactionat impreuna)
@@ -80,12 +81,10 @@ class Maths {
 //  @RateLimiter limiteaza de cate poti chema aceasta metoda max (10/sec)
   /*final=IGNORE*/
   /*static=IGNORE*/
-  @Logged
   public int sum(int a, int b) {
     return a + b;
   }
 
-  @Logged
   public int product(int a, int b) {
 //    return a * b;
     int r = 0;

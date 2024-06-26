@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Before("@annotation(victor.training.spring.aspects.Logged)")
+//    @Before("@annotation(victor.training.spring.aspects.Logged)")
+    @Before("@within(victor.training.spring.aspects.Logged) || @annotation(victor.training.spring.aspects.Logged)")
     public void logMethodCall(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
