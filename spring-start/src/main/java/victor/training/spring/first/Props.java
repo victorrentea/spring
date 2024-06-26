@@ -39,7 +39,10 @@ public class Props {
 //    if (welcomeMessage == null) {
 //      throw new IllegalArgumentException();
 //    }
-    Objects.requireNonNull(welcomeMessage);
+    // validarea cu IFuri e de evitat pt checkuri simple
+    Objects.requireNonNull(welcomeMessage, "message");
+    Objects.requireNonNull(gate, "gate"); // daca ambele lipsesc vei vedea DOAR PRIMA eroare
+
     String jsonToString = new ObjectMapper().writerWithDefaultPrettyPrinter()
         .writeValueAsString(this);
     log.info("WelcomeProps:\n" + jsonToString);
