@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 //@Profile("prod") // periculos
-@Profile("!local") // merge. dar mai bine stergi asta si pui @Primary pe alalalt
+//@Profile("!local") // merge. dar mai bine stergi asta si pui @Primary pe alalalt
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
