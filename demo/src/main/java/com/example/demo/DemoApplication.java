@@ -47,13 +47,4 @@ public class DemoApplication {
   }
 }
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
-class ReservationService {
-  public void create(ReservationDto dto) {
-    System.out.println(dto);
-    if (dto.name().contains("s")) throw new IllegalArgumentException("No S allowed");
-  }
-}
 //TODO ResponseEntity - de ce nu
