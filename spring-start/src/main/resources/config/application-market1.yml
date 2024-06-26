@@ -1,1 +1,3 @@
 db.password: market1 password
+props:
+    gate: 1
