@@ -60,13 +60,16 @@ class SecondGrade {
   }
 
   public void mathClass() {
+    System.out.println("APelul poate fi proxiat doar cand e facut pe o referinta" +
+                       "injectata de spring, ca asta:\n" + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 2 = " + maths.product(4, 2));
   }
 }
-
+// CUM POT SA STRIC PROXIEREA? Sa-l opresc pe Spring sa faca proxy-uri?
 @Service
+/*final=CRASH*/
 class Maths {
   // acestea sunt utilizari ale proxyurilor
 //  @Transactional // tot ce face cu DB va fi ATOMIC (tranzactionat impreuna)
@@ -75,12 +78,19 @@ class Maths {
 //  @Async // executa aceasta metoda pe alt thread
 //  @Timed // masoara durata executiei (gen t0,t1) si o raporteaza ca metrica
 //  @RateLimiter limiteaza de cate poti chema aceasta metoda max (10/sec)
+  /*final=IGNORE*/
+  /*static=IGNORE*/
   public int sum(int a, int b) {
     return a + b;
   }
 
   public int product(int a, int b) {
-    return a * b;
+//    return a * b;
+    int r = 0;
+    for (int i = 0; i < a; i++) {
+      r = sum(r, b); // TZEAPA👑👑: NU MERG PROXY-URILE cand apelul e in aceeasi clasa.
+    }
+    return r;
   }
 }
 
