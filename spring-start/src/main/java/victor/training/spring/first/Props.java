@@ -20,7 +20,7 @@ import java.util.Map;
 public class Props {
   @Value("${props.gate}")
   private Integer gate; // TODO set default
-  @Value("${props.welcomeMessage}")
+  @Value("${props.welcomeMessage:Hi!}")
   private String welcomeMessage; // TODO not null + size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
