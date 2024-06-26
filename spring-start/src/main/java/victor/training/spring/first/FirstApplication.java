@@ -40,6 +40,7 @@ public class FirstApplication implements CommandLineRunner {
 @Configuration
 class Config { // rupt ciclul mutand definitia Y in alta clasa
   @Bean
+  // numele beanului defaul= numele metodei
   public Y y() { // definitie manuala
     return new Y();
   }
