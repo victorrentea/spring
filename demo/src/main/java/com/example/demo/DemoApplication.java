@@ -2,10 +2,7 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
@@ -22,6 +19,11 @@ public class DemoApplication {
 		  @RequestParam(required = false) String style) {
     return "Hello " + id + " ? " + style;
   }
+  record ReservationDto(String name){}
+  @PostMapping
+  public void createReservation(@RequestBody ReservationDto dto) {
+    System.out.println(dto);
+  }
 
-  //TODO ResponseEntity - de ce nu
 }
+//TODO ResponseEntity - de ce nu
