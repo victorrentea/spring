@@ -27,7 +27,7 @@ public class Y {
   private Props props;
 
   public int logic() {
-    props.setGate(-1); // NU AR TREBUI SA FIE POSIBIL
+//    props.setGate(-1); // NU AR TREBUI SA FIE POSIBIL
 
     mailService.sendEmail("Go to gate " + props.getGate());
 

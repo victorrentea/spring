@@ -3,11 +3,9 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.validation.annotation.Validated;
@@ -17,11 +15,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
-@Data // = getters + setters
-@Component
+@Value // = getters +ctor
+//@Component
 @ConfigurationProperties(prefix = "props")
 @Validated
 public class Props {
@@ -29,21 +26,18 @@ public class Props {
   // 1) @Validated (aici pe clasa, in REST API pe @RequestBody, sau pe param oricarei metode)
   // 2) jpaRepo.save( -> automat se verifica @ pe @Entity de hibernate
   // 3) validator.validate(objAdnotat); dar iti trebuie sa-ti injectezi un Validator 🤢🤢
-  private Integer gate;
+  Integer gate;
   @NotBlank
-  private String welcomeMessage; // TODO not null + size >= 4
+  String welcomeMessage; // TODO not null + size >= 4
   @NotEmpty
-  private List<URL> supportUrls;
-  private Map<Locale, String> contactPhones;
-  private Help help;
+  List<URL> supportUrls;
+  Map<Locale, String> contactPhones;
+  Help help;
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-//    @FileExists
-    private File file; // TODO file exists
-    @Email
-    private String email;
+  public record Help(
+      Integer appId,
+      File file,
+      @Email String email) {
   }
 
   @PostConstruct // ruleaza dupa injectia dep/prop

@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import sub.Y;
 
 @SpringBootApplication // "mosteneste @Configuration din asta"
 // nu recomand, dar se poate
+@EnableConfigurationProperties(Props.class)
 @ComponentScan(basePackages = {"sub","victor.training.spring.first"})
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
