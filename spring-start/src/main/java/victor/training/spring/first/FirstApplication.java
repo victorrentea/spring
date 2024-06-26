@@ -37,7 +37,7 @@ public class FirstApplication implements CommandLineRunner {
   }
 
   @Bean
-  public Y y() {
+  public Y y() { // definitie manuala
     return new Y();
   }
 }
