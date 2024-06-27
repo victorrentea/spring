@@ -1,4 +1,4 @@
-package victor.training.spring.transaction.playground;
+package victor.training.spring.transaction.playground.extra;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import victor.training.spring.transaction.playground.Message;
+import victor.training.spring.transaction.playground.MessageRepo;
 
 @Slf4j
 @Component

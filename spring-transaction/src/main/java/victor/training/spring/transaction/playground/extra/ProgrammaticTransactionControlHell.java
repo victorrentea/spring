@@ -1,4 +1,4 @@
-package victor.training.spring.transaction.playground;
+package victor.training.spring.transaction.playground.extra;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

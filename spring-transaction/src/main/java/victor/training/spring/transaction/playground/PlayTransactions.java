@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 @Service
 @RequiredArgsConstructor
-public class Transactions {
+public class PlayTransactions {
   private final DataSource dataSource; // 1998
   private final JdbcTemplate jdbcTemplate; // 2001
   private final EntityManager entityManager; // 2006

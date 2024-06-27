@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Disabled
 @SpringBootTest
-public class JpaExercisesTest {
+public class PlayJpaExercisesTest {
    @Autowired
    JpaExercises jpaExercises;
    @Autowired

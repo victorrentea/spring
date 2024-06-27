@@ -3,14 +3,13 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class Concurrency {
+public class PlayLocking {
   private final MessageRepo repo;
 
   @SneakyThrows

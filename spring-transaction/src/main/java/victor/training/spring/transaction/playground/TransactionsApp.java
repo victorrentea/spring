@@ -1,14 +1,16 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
+import victor.training.spring.transaction.playground.extra.DBPrinter;
 
-import static java.util.concurrent.CompletableFuture.allOf;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
+@Slf4j
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp {
@@ -16,32 +18,36 @@ public class TransactionsApp {
     SpringApplication.run(TransactionsApp.class, args);
   }
 
-  private final Transactions transactions;
-  private final Jpa jpa;
-  private final Concurrency concurrency;
+  private final PlayTransactions playTransactions;
+  private final PlayJpa playJpa;
+  private final PlayLocking playLocking;
   private final MessageRepo repo;
+  private final DBPrinter dbPrinter;
 
   @EventListener(ApplicationStartedEvent.class)
   public void start() {
     try {
-      System.out.println("⚠️ DB is re-created empty at each restart ⚠️");
-      System.out.println("============= START ==============");
-      transactions.play();
+      log.info("⚠️ DB is re-created empty at each restart ⚠️");
+      log.info("============= START EXPERIMENTS ==============");
+      playTransactions.play();
 
-//      System.out.println("============= JPA:ONE ==============");
-//      jpa.one();
-//      System.out.println("============= JPA:TWO ==============");
-//      jpa.two();
+//      log.info("============= JPA:writeBehind ==============");
+//      jpa.writeBehind();
+//      log.info("============= JPA:autoSave ==============");
+//      jpa.autoSave();
+//      log.info("============= JPA:lazyLoading ==============");
+//      jpa.lazyLoading();
 
-//      System.out.println("============= CONCURRENCY ==============");
+//      log.info("============= LOCKING ==============");
 //      allOf(runAsync(concurrency::thread), runAsync(concurrency::thread)).join();
-      System.out.println("============= END ==============");
+      log.info("============= END EXPERIMENTS ==============");
     } catch (Exception e) {
       e.printStackTrace();
       // swallow exception to allow app to start
     }
-    System.out.println("==== DATABASE CONTENTS http://localhost:8080/h2-console/ ====");
-    repo.findAll().forEach(System.out::println);
+    dbPrinter.print();
   }
+
+
 }
 
