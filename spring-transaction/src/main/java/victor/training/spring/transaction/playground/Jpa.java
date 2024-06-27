@@ -25,7 +25,7 @@ public class Jpa {
   } // write-behind: DUPA ce ies din metoda TxInterc face FLUSH(trimite IN DB insert/update/delete) + COMMIT
 
   private void iaopasta() {
-    repo.save(new Message("TWO"));
+    repo.saveAndFlush(new Message("TWO")); // forteaza FLUSH dupa insert.
   }
 
   private void h() {
@@ -37,7 +37,7 @@ public class Jpa {
   }
 
   private void f() {
-    repo.save(new Message("TWO"));
+    repo.saveAndFlush(new Message("TWO"));
   }
 
   public void two() {
