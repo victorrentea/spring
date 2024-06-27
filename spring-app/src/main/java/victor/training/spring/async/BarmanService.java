@@ -66,7 +66,7 @@ public class BarmanService {
     apiSend(email);
   }
 
-  @Scheduled(fixedRate = 1000)
+  @Scheduled(fixedRateString = "${scheduler.rate.millis}")
   public void iauDinBazaCeAmDeTrimis() {
 //    log.info("Caut in DB");
     List<EmailDeTrimis> lista = emailRepository.findAll();
