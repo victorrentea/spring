@@ -2,6 +2,8 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,20 +28,24 @@ public class Playground {
       repo.save(new Message("Tranzactia se mosteneste"));
       other.extracted();
     } catch (Exception e) {
-      other.saveError(e);
+//      other.saveError(e);
+      eventPublisher.publishEvent(new PlayError(e));
       throw e;
     }
   }
+  private final ApplicationEventPublisher eventPublisher;
 }
+record PlayError(Exception e) {}
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void saveError(Exception e) {
-    repo.save(new Message("Error in transaction: " + e.getMessage()));
+//  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @EventListener
+  public void saveError(PlayError event) {
+    repo.save(new Message("Error in transaction: " + event.e().getMessage()));
   }
   //  @Async
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
