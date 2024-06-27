@@ -30,12 +30,13 @@ public class BarApi {
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
-
       Future<Beer> futureBeer = executor.submit(() -> barmanService.pourBeer());
       Future<Vodka> futureVodka = executor.submit(() -> barmanService.pourVodka());
-
+      log.debug("Am pornit comenzile " + (System.currentTimeMillis()-t0));
       Beer beer = futureBeer.get();
-      Vodka vodka = futureVodka.get();
+      log.debug("Am berea "+(System.currentTimeMillis()-t0));
+      Vodka vodka = futureVodka.get(); // 0ms waiting , ca e deja turnata
+      log.debug("Am vodka "+(System.currentTimeMillis()-t0));
 
       barmanService.auditCocktail("Dilly");
 
