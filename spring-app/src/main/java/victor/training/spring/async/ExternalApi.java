@@ -16,7 +16,7 @@ public class ExternalApi { // pretend it's a different app
 
   @GetMapping("/api/vodka")
   public Vodka vodka() {
-    Sleep.millis(1000);
+    Sleep.millis(1500);
     return new Vodka();
   }
 }

@@ -35,7 +35,7 @@ public class BarApi {
       log.debug("Am pornit comenzile " + (System.currentTimeMillis()-t0));
       Beer beer = futureBeer.get();
       log.debug("Am berea "+(System.currentTimeMillis()-t0));
-      Vodka vodka = futureVodka.get(); // 0ms waiting , ca e deja turnata
+      Vodka vodka = futureVodka.get(); // 500ms waiting , ca mai are un pic 1500(vodka)-1000(bere)
       log.debug("Am vodka "+(System.currentTimeMillis()-t0));
 
       barmanService.auditCocktail("Dilly");
