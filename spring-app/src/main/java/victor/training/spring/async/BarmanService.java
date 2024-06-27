@@ -16,6 +16,8 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 import victor.training.spring.varie.Sleep;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @Timed
@@ -51,7 +53,7 @@ public class BarmanService {
   public void auditCocktail(String name) {
     log.debug("Longer running task I don't want to wait for: auditing drink: " + name);
     Sleep.millis(500); // pretend send emails or import/export a file
-    if (true) throw new RuntimeException("Intentional"); // Spring o logeaza automat
+//    if (true) throw new RuntimeException("Intentional"); // Spring o logeaza automat
     log.debug("DONE Audit");
     // utilizari practice de metoda @Async void = aka "fire and forget"
     // - importuri de fisiere uploadate
@@ -66,7 +68,12 @@ public class BarmanService {
 
   @Scheduled(fixedRate = 1000)
   public void iauDinBazaCeAmDeTrimis() {
-    EmailDeTrimis deTrimis = emailRepository.findAll().get(0);
+//    log.info("Caut in DB");
+    List<EmailDeTrimis> lista = emailRepository.findAll();
+    if (lista.isEmpty()) {
+      return;
+    }
+    EmailDeTrimis deTrimis = lista.get(0);
     apiSend(deTrimis.getEmail());
     emailRepository.delete(deTrimis);
   }

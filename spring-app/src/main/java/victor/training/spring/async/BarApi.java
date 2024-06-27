@@ -41,7 +41,8 @@ public class BarApi {
     // 1) imi trimit singur un mesaj pe coada (Rabbit/ActiveMQ/Kafka/WMQ)
     // 2) Outbox Pattern: inserez in DB meu ce vreau sa trimit
 //      barmanService.asynSendEmail("email");
-//    emailRepository.save(new EmailDeTrimis().setEmail("email")); // atat
+    emailRepository.save(new EmailDeTrimis()
+        .setEmail("email"+System.currentTimeMillis())); // atat
 
     log.debug("Method completed in {} millis", currentTimeMillis() - t0);
     return new DillyDilly(beer, vodka);
