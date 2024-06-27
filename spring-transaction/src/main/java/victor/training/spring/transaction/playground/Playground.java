@@ -15,7 +15,8 @@ public class Playground {
 
   @Transactional
   public void play() {
-    jdbc.update("insert into MESSAGE(id, message) values (1, ?)", "SQL");
+    new RuntimeException().printStackTrace();// uite in log TransactionInterceptor
+    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
     extracted();
   }
 
