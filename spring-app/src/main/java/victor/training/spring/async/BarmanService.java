@@ -21,7 +21,7 @@ public class BarmanService {
    public Beer pourBeer(String beer) {
       log.debug("Pouring Beer (SOAP CALL)...");
       // #1 traditional
-      return restTemplate.getForObject("http://localhost:8080/api/" + beer, Beer.class);
+      return restTemplate.getForObject("http://localhost:8080/api/{drink}", Beer.class, beer);
 
       // #2 Feign
       // return drinksFeignClient.getBeer();
