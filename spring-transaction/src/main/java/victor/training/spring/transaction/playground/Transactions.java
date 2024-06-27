@@ -6,14 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
-import java.util.concurrent.CompletableFuture;
+
+import javax.sql.DataSource;
 
 @Service
 @RequiredArgsConstructor
-public class Playground {
-  private final MessageRepo repo;
-  private final EntityManager entityManager;
-  private final JdbcTemplate jdbcTemplate;
+public class Transactions {
+  private final DataSource dataSource; // 1998
+  private final JdbcTemplate jdbcTemplate; // 2001
+  private final EntityManager entityManager; // 2006
+  private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
   @Transactional

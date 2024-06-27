@@ -6,9 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
+import static java.util.concurrent.CompletableFuture.allOf;
+import static java.util.concurrent.CompletableFuture.runAsync;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -17,15 +16,17 @@ public class TransactionsApp {
     SpringApplication.run(TransactionsApp.class, args);
   }
 
-  private final Playground playground;
+  private final Transactions transactions;
   private final Jpa jpa;
   private final Concurrency concurrency;
+  private final MessageRepo repo;
 
   @EventListener(ApplicationStartedEvent.class)
-  public void start() throws Exception {
+  public void start() {
     try {
+      System.out.println("⚠️ DB is re-created empty at each restart ⚠️");
       System.out.println("============= START ==============");
-      playground.play();
+      transactions.play();
 
 //      System.out.println("============= JPA:ONE ==============");
 //      jpa.one();
@@ -33,12 +34,14 @@ public class TransactionsApp {
 //      jpa.two();
 
 //      System.out.println("============= CONCURRENCY ==============");
-//      List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
-//      Executors.newCachedThreadPool().invokeAll(tasks);
+//      allOf(runAsync(concurrency::thread), runAsync(concurrency::thread)).join();
       System.out.println("============= END ==============");
     } catch (Exception e) {
       e.printStackTrace();
+      // swallow exception to allow app to start
     }
+    System.out.println("==== DATABASE CONTENTS http://localhost:8080/h2-console/ ====");
+    repo.findAll().forEach(System.out::println);
   }
 }
 
