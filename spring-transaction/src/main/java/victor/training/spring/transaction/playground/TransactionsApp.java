@@ -39,7 +39,9 @@ public class TransactionsApp {
          System.out.println("============= END ==============");
       } catch (Exception e) {
          e.printStackTrace();
+         repo.save(new Message("Error in transaction: " + e.getMessage()));
       }
    }
+   private final MessageRepo repo;
 }
 

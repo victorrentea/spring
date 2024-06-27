@@ -21,14 +21,14 @@ public class Playground {
   @Transactional
       //(rollbackFor = Exception.class)// Solutia #1
   public void play() {
-    try {
+//    try {
       jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
       repo.save(new Message("Tranzactia se mosteneste"));
       other.extracted();
-    } catch (Exception e) {
-      repo.save(new Message("Error in transaction: " + e.getMessage()));
-      throw e;
-    }
+//    } catch (Exception e) {
+//      repo.save(new Message("Error in transaction: " + e.getMessage()));
+//      throw e;
+//    }
   }
 }
 
