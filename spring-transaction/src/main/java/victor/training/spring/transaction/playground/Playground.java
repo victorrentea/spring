@@ -1,12 +1,16 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class Playground {
   private final JdbcTemplate jdbc; // NU JPA/ORM/Hibernate. SQL curat.
 //  private final EntityManager entityManager; // JPA in stilu Java EE
@@ -15,20 +19,22 @@ public class Playground {
 
   @Transactional
   public void play() {
-    new RuntimeException().printStackTrace();// uite in log TransactionInterceptor
-    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
-    extracted();
-  }
-
-  private void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
-    repo.save(new Message("JPA"));
+//    new RuntimeException().printStackTrace();// uite in log TransactionInterceptor
+    jdbc.update("insert into MESSAGE(id, message) values (1, ?)", "SQL");
+    log.info("1");
+    other.extracted();
   }
 }
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class OtherClass {
   private final MessageRepo repo;
+  @Async
+  public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
+    log.info("2");
+    repo.save(new Message("JPA"));
+  }
 }
 // TODO
 // 0 p6spy

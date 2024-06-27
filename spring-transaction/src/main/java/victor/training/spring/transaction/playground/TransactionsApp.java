@@ -5,11 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
+@EnableAsync // activeaza efectul @Async
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp {
@@ -26,15 +28,14 @@ public class TransactionsApp {
       try {
          System.out.println("============= TRANSACTION:START ==============");
          playground.play();
-
-         System.out.println("============= JPA:ONE ==============");
-         jpa.one();
-         System.out.println("============= JPA:TWO ==============");
-         jpa.two();
-
-         System.out.println("============= CONCURRENCY ==============");
-         List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
-         Executors.newCachedThreadPool().invokeAll(tasks);
+//         System.out.println("============= JPA:ONE ==============");
+//         jpa.one();
+//         System.out.println("============= JPA:TWO ==============");
+//         jpa.two();
+//
+//         System.out.println("============= CONCURRENCY ==============");
+//         List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
+//         Executors.newCachedThreadPool().invokeAll(tasks);
          System.out.println("============= END ==============");
       } catch (Exception e) {
          e.printStackTrace();
