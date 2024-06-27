@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @RestController
@@ -62,9 +66,13 @@ public class DemoApplication {
   public List<ReservationDto> findAllReservations() {
     return reservationService.findAll();
   }
+
 }
 
+// Convention over configuration = ideea ca daca nu specific nimic, se folosesc defaulturi bune
 @Component
+//@ConditionalOnClass(RedisKungFu.class) // daca e in classpath
+//@ConditionalOnMissingBean(DataSource.class) // daca nu exista deja un astfel de bean
 @ConditionalOnProperty( // un fel de @Profile pe steroizi
     value = "startup.debug",
     havingValue = "true",
