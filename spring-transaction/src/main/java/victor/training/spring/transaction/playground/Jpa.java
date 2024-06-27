@@ -21,6 +21,7 @@ public class Jpa {
     iaopasta();
 //    repo.findAll().forEach(System.out::println); // cauzeaza autoflush prematur
     h();
+//    repo.flush(); // sau asa
     log.info("End of method ---");
   } // write-behind: DUPA ce ies din metoda TxInterc face FLUSH(trimite IN DB insert/update/delete) + COMMIT
 
