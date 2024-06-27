@@ -5,20 +5,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-import java.util.concurrent.CompletableFuture;
-
 @Service
 @RequiredArgsConstructor
 public class Playground {
-  private final MessageRepo repo;
-  private final EntityManager entityManager;
-  private final JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbc; // NU JPA/ORM/Hibernate. SQL curat.
+//  private final EntityManager entityManager; // JPA in stilu Java EE
+  private final MessageRepo repo; // moderna cu JPA
   private final OtherClass other;
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
+    // if (true) throw new RuntimeException("Boom");// face ca insertul de mai sus sa NU ajunga in DB
     repo.save(new Message("JPA"));
   }
 }
