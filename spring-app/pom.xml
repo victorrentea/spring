@@ -107,13 +107,6 @@
 
 
 
-
-        <dependency>
-            <!-- Library vulnerable to Insecure Deserialization https://waratek.com/blog/java-deserialization-vulnerability -->
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.0</version>
-        </dependency>
         <dependency>
             <!-- manually parse/build JWT tokens -->
             <groupId>com.auth0</groupId>
