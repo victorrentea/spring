@@ -47,6 +47,7 @@ public class Jpa {
   public void two() {
     Message e = repo.findById(1L).orElseThrow();
     e.setMessage("schimbare"); // nu se duce in DB ca e este 'detasata'
+    System.out.println("---");
     System.out.println(e.getTags());
   }
 }
