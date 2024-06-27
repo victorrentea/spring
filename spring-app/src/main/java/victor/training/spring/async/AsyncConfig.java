@@ -9,12 +9,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor poolBar() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(1);
 		executor.setMaxPoolSize(1);
 		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("bar-");
+		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;

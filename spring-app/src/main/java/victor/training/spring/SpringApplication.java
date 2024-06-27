@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
 import javax.sql.DataSource;
-
 import java.sql.SQLException;
 
 import static java.lang.System.currentTimeMillis;
@@ -27,34 +27,34 @@ import static java.lang.System.currentTimeMillis;
 @ConfigurationPropertiesScan
 @EnableFeignClients
 public class SpringApplication {
-    public static final long t0 = currentTimeMillis();
+  public static final long t0 = currentTimeMillis();
 
-    public static void main(String[] args) {
-        new SpringApplicationBuilder(SpringApplication.class)
-                .listeners(new TestDBConnectionInitializer())
-                .run(args);
-    }
+  public static void main(String[] args) {
+    new SpringApplicationBuilder(SpringApplication.class)
+        .listeners(new TestDBConnectionInitializer())
+        .run(args);
+  }
 
-    @Autowired
-    private Environment environment;
+  @Autowired
+  private Environment environment;
 
-    @Autowired
-    private DataSource dataSource;
+  @Autowired
+  private DataSource dataSource;
 
-    @Bean
-    public RestTemplate rest() {
-        return new RestTemplate();
-    }
+  @Bean // instrumented by micrometer-tracing
+  public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    return builder.build();
+  }
 
-    @EventListener(ApplicationStartedEvent.class)
-    @Order
-    public void printAppStarted() throws SQLException {
-        long t1 = currentTimeMillis();
-        String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
-        log.info("🎈🎈🎈 Application started in {}ms on port :{} connected to DB {} 🎈🎈🎈",
-                t1-t0,
-                environment.getProperty("local.server.port"),
-                jdbcUrl);
-    }
+  @EventListener(ApplicationStartedEvent.class)
+  @Order
+  public void printAppStarted() throws SQLException {
+    long t1 = currentTimeMillis();
+    String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
+    log.info("🎈🎈🎈 Application started in {}ms on port :{} connected to DB {} 🎈🎈🎈",
+        t1 - t0,
+        environment.getProperty("local.server.port"),
+        jdbcUrl);
+  }
 
 }
