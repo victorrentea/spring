@@ -9,8 +9,6 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
@@ -30,7 +28,7 @@ public class BarApi {
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
-      Future<Beer> futureBeer = executor.submit(() -> barmanService.pourBeer());
+      Future<Beer> futureBeer = executor.submit(() -> barmanService.pourBeer("beer"));
       Future<Vodka> futureVodka = executor.submit(() -> barmanService.pourVodka());
       log.debug("Am pornit comenzile " + (System.currentTimeMillis()-t0));
       Beer beer = futureBeer.get();
