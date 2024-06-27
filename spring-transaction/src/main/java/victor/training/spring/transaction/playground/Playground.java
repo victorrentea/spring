@@ -19,8 +19,8 @@ public class Playground {
   private final OtherClass other;
 
   @Transactional
-      (rollbackFor = Exception.class)// Solutia #1
-  public void play() throws FileNotFoundException {
+      //(rollbackFor = Exception.class)// Solutia #1
+  public void play() {
     try {
       jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
       repo.save(new Message("Tranzactia se mosteneste"));
@@ -39,9 +39,14 @@ class OtherClass {
   private final MessageRepo repo;
   //  @Async
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void extracted() throws FileNotFoundException { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
-    repo.save(new Message("JPA"));
-    throw new FileNotFoundException("Eroare"); // checked exception
+  public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
+    try {
+      repo.save(new Message("JPA"));
+      throw new FileNotFoundException("Eroare"); // checked exception
+    } catch (FileNotFoundException e) {
+      // solutia #2 NU MAI ARUNCA NICIODATA IN APLICATIE JAVA BACKED checked exceptions!!
+      throw new RuntimeException(e);
+    }
   }
 }
 // TODO
