@@ -41,11 +41,10 @@ public class Jpa {
     repo.saveAndFlush(new Message("TWO"));
   }
 
+  @Transactional
   public void two() {
     Message e = repo.findById(1L).orElseThrow();
-    e.setMessage("DIFFERENT"); // TODO auto-flush changes
-    repo.save(e); // lucreaza UPDATE atunci cand e.id!=null
-    // => face intai SELECT si apoi compara ce param i-ai dat cu ce a venit din baza
-    // TODO lazy-loading
+    e.setMessage("AUTO-FLUSHED la final de TX"); // TODO auto-flush changes
+
   }
 }
