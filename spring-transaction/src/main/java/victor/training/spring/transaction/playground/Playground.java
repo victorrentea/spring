@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileNotFoundException;
@@ -18,6 +19,7 @@ public class Playground {
   private final OtherClass other;
 
   @Transactional
+      (rollbackFor = Exception.class)// Solutia #1
   public void play() throws FileNotFoundException {
     try {
       jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
