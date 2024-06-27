@@ -15,8 +15,8 @@ public class Playground {
 
   @Transactional
   public void play() {
-    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
-     if (true) throw new RuntimeException("Boom");// face ca insertul de mai sus sa NU ajunga in DB
+    jdbc.update("insert into MESSAGE(id, message) values (1, ?)", "SQL");
+//     if (true) throw new RuntimeException("Boom");// face ca insertul de mai sus sa NU ajunga in DB
     repo.save(new Message("JPA"));
   }
 }
