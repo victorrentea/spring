@@ -14,10 +14,12 @@ public class Jpa {
 
   @Transactional
   public void one() {
-//    Message m = new Message("ONE");
-//    repo.save(m);
-//    id = m.getId(); is same as:
-    id = repo.save(new Message("ONE")).getId();
+    Message m = new Message("ONE");
+    m.getTags().add("tag1");
+    m.getTags().add("tag2");
+    repo.save(m);
+    id = m.getId();// is same as:
+//    id = repo.save(new Message("ONE")).getId();
     iaopasta();
 //    repo.findAll().forEach(System.out::println); // cauzeaza autoflush prematur
     h();
@@ -41,9 +43,9 @@ public class Jpa {
     repo.saveAndFlush(new Message("TWO"));
   }
 
-
   public void two() {
     Message e = repo.findById(1L).orElseThrow();
     e.setMessage("schimbare"); // nu se duce in DB ca e este 'detasata'
+    System.out.println(e.getTags());
   }
 }

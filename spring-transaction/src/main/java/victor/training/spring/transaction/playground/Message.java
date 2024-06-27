@@ -7,6 +7,9 @@ import org.springframework.lang.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Table(uniqueConstraints = @UniqueConstraint(name = "UQ_MESSAGE", columnNames = "MESSAGE"))
@@ -16,6 +19,8 @@ public class Message {
     private Long id;
     @NotNull
     private String message;
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
 
     protected Message() { // for hibernate eyes only
     }
