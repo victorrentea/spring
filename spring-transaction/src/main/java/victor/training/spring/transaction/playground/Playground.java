@@ -21,14 +21,14 @@ public class Playground {
   @Transactional
       //(rollbackFor = Exception.class)// Solutia #1
   public void play() {
-//    try {
+    try {
       jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
       repo.save(new Message("Tranzactia se mosteneste"));
       other.extracted();
-//    } catch (Exception e) {
-//      repo.save(new Message("Error in transaction: " + e.getMessage()));
-//      throw e;
-//    }
+    } catch (Exception e) {
+      other.saveError(e);
+      throw e;
+    }
   }
 }
 
@@ -37,6 +37,10 @@ public class Playground {
 @Slf4j
 class OtherClass {
   private final MessageRepo repo;
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveError(Exception e) {
+    repo.save(new Message("Error in transaction: " + e.getMessage()));
+  }
   //  @Async
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
