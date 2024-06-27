@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.io.FileNotFoundException;
 
@@ -42,10 +44,13 @@ record PlayError(Exception e) {}
 @Slf4j
 class OtherClass {
   private final MessageRepo repo;
-//  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  @EventListener
+  // dupa ce s-a rollbackuit tx din care s-a facut publish, executa metoda asta.
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void saveError(PlayError event) {
+    log.info("Rulez #sieu");
     repo.save(new Message("Error in transaction: " + event.e().getMessage()));
+    log.info("End");
   }
   //  @Async
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
