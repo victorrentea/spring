@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -31,7 +32,8 @@ public class Playground {
 @Slf4j
 class OtherClass {
   private final MessageRepo repo;
-  @Async
+//  @Async
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
     log.info("2");
     repo.save(new Message("JPA"));
