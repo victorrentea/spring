@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.Sleep;
 import victor.training.spring.async.drinks.Beer;
@@ -21,18 +22,24 @@ public class BarmanService {
    public Beer pourBeer(String beer) {
       log.debug("Pouring Beer (SOAP CALL)...");
       // #1 traditional
-      return restTemplate.getForObject("http://localhost:8080/api/{drink}", Beer.class, beer);
+//      return restTemplate.getForObject("http://localhost:8080/api/{drink}", Beer.class, beer);
 
       // #2 Feign
-      // return drinksFeignClient.getBeer();
+       return drinksFeignClient.getBeer();
 
-      // #3 WebClient
-      // return webClient.uri(..).get() ...;
+      // #3 sau: folosesti un client java generat!! din OpenAPI/Swagger spec
+      // api-ului pe care-l folosesti din codul tau
+      //  openapi-generator-maven-plugin
    }
 
    public Vodka pourVodka() {
       log.debug("Pouring Vodka (REST CALL)...");
-      return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
+
+//      return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
+      // mai recent
+      return RestClient.create().get().uri("http://localhost:8080/api/vodka")
+          .retrieve()
+          .body(Vodka.class);
    }
 
    @Async("executor") // numele beanului de tip ThreadPoolTaskExecutor
