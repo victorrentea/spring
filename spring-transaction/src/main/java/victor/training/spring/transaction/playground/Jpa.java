@@ -26,7 +26,7 @@ public class Jpa {
   } // write-behind: DUPA ce ies din metoda TxInterc face FLUSH(trimite IN DB insert/update/delete) + COMMIT
 
   private void iaopasta() {
-    repo.saveAndFlush(new Message("TWO")); // forteaza FLUSH dupa insert.
+    repo.saveAndFlush(new Message("TWObis")); // forteaza FLUSH dupa insert.
   }
 
   private void h() {
@@ -42,9 +42,10 @@ public class Jpa {
   }
 
   public void two() {
-//    Message e = repo.findById(id).orElseThrow();
-//    e.setMessage("Different"); // TODO auto-flush changes
-
+    Message e = repo.findById(1L).orElseThrow();
+    e.setMessage("DIFFERENT"); // TODO auto-flush changes
+    repo.save(e); // lucreaza UPDATE atunci cand e.id!=null
+    // => face intai SELECT si apoi compara ce param i-ai dat cu ce a venit din baza
     // TODO lazy-loading
   }
 }
