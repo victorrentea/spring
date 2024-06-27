@@ -18,12 +18,27 @@ public class Jpa {
 //    repo.save(m);
 //    id = m.getId(); is same as:
     id = repo.save(new Message("ONE")).getId();
-    repo.save(new Message("TWO"));
-    repo.findAll().forEach(System.out::println); // cauzeaza autoflush prematur
-
-//    repo.save(new Message("TWO"));
+    iaopasta();
+//    repo.findAll().forEach(System.out::println); // cauzeaza autoflush prematur
+    h();
     log.info("End of method ---");
   } // write-behind: DUPA ce ies din metoda TxInterc face FLUSH(trimite IN DB insert/update/delete) + COMMIT
+
+  private void iaopasta() {
+    repo.save(new Message("TWO"));
+  }
+
+  private void h() {
+    g();
+  }
+
+  private void g() {
+    f();
+  }
+
+  private void f() {
+    repo.save(new Message("TWO"));
+  }
 
   public void two() {
 //    Message e = repo.findById(id).orElseThrow();
