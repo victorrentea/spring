@@ -43,11 +43,12 @@ public class Jpa {
     repo.saveAndFlush(new Message("TWO"));
   }
 
-  @Transactional(readOnly = true)
+//  @Transactional(readOnly = true)
   public void two() {
     Message e = repo.findById(1L).orElseThrow();
     e.setMessage("schimbare"); // nu se duce in DB ca e este 'detasata'
     System.out.println("---");
-    System.out.println(e.getTags());
+//    System.out.println(e.getTags());
+    repo.save(e);
   }
 }
