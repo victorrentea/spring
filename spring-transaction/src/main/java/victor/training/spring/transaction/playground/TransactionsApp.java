@@ -27,11 +27,11 @@ public class TransactionsApp {
    public void start() throws Exception {
       try {
          System.out.println("============= TRANSACTION:START ==============");
-         playground.play();
-//         System.out.println("============= JPA:ONE ==============");
-//         jpa.one();
-//         System.out.println("============= JPA:TWO ==============");
-//         jpa.two();
+//         playground.play();
+         System.out.println("============= JPA:ONE ==============");
+         jpa.one();
+         System.out.println("============= JPA:TWO ==============");
+         jpa.two();
 //
 //         System.out.println("============= CONCURRENCY ==============");
 //         List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);

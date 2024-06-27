@@ -14,7 +14,11 @@ public class Jpa {
 
   @Transactional
   public void one() {
-//    id = repo.save(new Message("ONE")).getId();
+//    Message m = new Message("ONE");
+//    repo.save(m);
+//    id = m.getId(); is same as:
+
+    id = repo.save(new Message("ONE")).getId();
     log.info("End of method ---"); // TODO write-behind
   }
 
