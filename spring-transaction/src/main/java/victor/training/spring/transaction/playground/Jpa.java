@@ -2,12 +2,17 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+//@Component
+@RestController
 public class Jpa {
   private final MessageRepo repo;
   private Long id;
@@ -43,12 +48,18 @@ public class Jpa {
     repo.saveAndFlush(new Message("TWO"));
   }
 
-//  @Transactional(readOnly = true)
-  public void two() {
+  @GetMapping // daca esti intr-un HTTP request, Spring tine conexiune deschisa pt tine pana la finalul requestului
+  // lazy load merge via HTTP dar nu daca incepi fluxul din
+  // @Scheduled sau @Async sau Rabbit/Kafka listener, @EventListener(ApplicationStartedEvent.class)
+  @Transactional(readOnly = true) // daca vrei lazy loading sa mearga, e mai cinstit asa
+  public Long two() {
     Message e = repo.findById(1L).orElseThrow();
     e.setMessage("schimbare"); // nu se duce in DB ca e este 'detasata'
     System.out.println("---");
-//    System.out.println(e.getTags());
-    repo.save(e);
+    System.out.println(e.getTags());
+    return e.getId();
   }
+
 }
+// met async nu mosteneste th cu tranzactie
+// daca cine te-a chemat vrea sa-ti astepte returnul, el tot va ASTEPTA sa termini.
