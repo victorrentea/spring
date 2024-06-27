@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileNotFoundException;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -16,7 +18,7 @@ public class Playground {
   private final OtherClass other;
 
   @Transactional
-  public void play() {
+  public void play() throws FileNotFoundException {
     try {
       jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
       repo.save(new Message("Tranzactia se mosteneste"));
@@ -35,9 +37,9 @@ class OtherClass {
   private final MessageRepo repo;
   //  @Async
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
+  public void extracted() throws FileNotFoundException { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
     repo.save(new Message("JPA"));
-    throw new RuntimeException("Eroare");
+    throw new FileNotFoundException("Eroare"); // checked exception
   }
 }
 // TODO
