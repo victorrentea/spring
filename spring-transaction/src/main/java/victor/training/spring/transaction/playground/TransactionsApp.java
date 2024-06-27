@@ -13,32 +13,32 @@ import java.util.concurrent.Executors;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp {
-   public static void main(String[] args) {
-      SpringApplication.run(TransactionsApp.class, args);
-   }
+  public static void main(String[] args) {
+    SpringApplication.run(TransactionsApp.class, args);
+  }
 
-   private final Playground playground;
-   private final Jpa jpa;
-   private final Concurrency concurrency;
+  private final Playground playground;
+  private final Jpa jpa;
+  private final Concurrency concurrency;
 
-   @EventListener(ApplicationStartedEvent.class)
-   public void start() throws Exception {
-      try {
-         System.out.println("============= TRANSACTION:START ==============");
-         playground.play();
+  @EventListener(ApplicationStartedEvent.class)
+  public void start() throws Exception {
+    try {
+      System.out.println("============= START ==============");
+      playground.play();
 
-         System.out.println("============= JPA:ONE ==============");
-         jpa.one();
-         System.out.println("============= JPA:TWO ==============");
-         jpa.two();
+//      System.out.println("============= JPA:ONE ==============");
+//      jpa.one();
+//      System.out.println("============= JPA:TWO ==============");
+//      jpa.two();
 
-         System.out.println("============= CONCURRENCY ==============");
-         List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
-         Executors.newCachedThreadPool().invokeAll(tasks);
-         System.out.println("============= END ==============");
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-   }
+//      System.out.println("============= CONCURRENCY ==============");
+//      List<Callable<Object>> tasks = List.of(concurrency::thread, concurrency::thread);
+//      Executors.newCachedThreadPool().invokeAll(tasks);
+      System.out.println("============= END ==============");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }
 

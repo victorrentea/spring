@@ -11,7 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class Listener {
+public class TransactionListener {
     private final ApplicationEventPublisher eventPublisher;
     private final MessageRepo messageRepo;
 

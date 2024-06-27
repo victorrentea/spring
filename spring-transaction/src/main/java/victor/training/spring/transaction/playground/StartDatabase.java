@@ -1,4 +1,4 @@
-package victor.training.spring.transaction;
+package victor.training.spring.transaction.playground;
 
 import java.io.File;
 import java.sql.SQLException;
