@@ -16,7 +16,10 @@ public class Playground {
   @Transactional
   public void play() {
     jdbc.update("insert into MESSAGE(id, message) values (1, ?)", "SQL");
-//     if (true) throw new RuntimeException("Boom");// face ca insertul de mai sus sa NU ajunga in DB
+    extracted();
+  }
+
+  private void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
     repo.save(new Message("JPA"));
   }
 }
