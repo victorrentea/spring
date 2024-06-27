@@ -2,11 +2,8 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -14,29 +11,33 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class Playground {
   private final JdbcTemplate jdbc; // NU JPA/ORM/Hibernate. SQL curat.
-//  private final EntityManager entityManager; // JPA in stilu Java EE
+  //  private final EntityManager entityManager; // JPA in stilu Java EE
   private final MessageRepo repo; // moderna cu JPA
   private final OtherClass other;
 
   @Transactional
   public void play() {
-//    new RuntimeException().printStackTrace();// uite in log TransactionInterceptor
-    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
-    log.info("1");
-    repo.save(new Message("Tranzactia se mosteneste"));
-    other.extracted();
+    try {
+      jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
+      repo.save(new Message("Tranzactia se mosteneste"));
+      other.extracted();
+    } catch (Exception e) {
+      repo.save(new Message("Error in transaction: " + e.getMessage()));
+      throw e;
+    }
   }
 }
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 class OtherClass {
   private final MessageRepo repo;
-//  @Async
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  //  @Async
+//  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void extracted() { // orice metoda chemata dintr-o met @Transactional 'mosteneste' tranzactia
-    log.info("2");
     repo.save(new Message("JPA"));
+    throw new RuntimeException("Eroare");
   }
 }
 // TODO
