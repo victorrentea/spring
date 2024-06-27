@@ -20,8 +20,9 @@ public class Playground {
   @Transactional
   public void play() {
 //    new RuntimeException().printStackTrace();// uite in log TransactionInterceptor
-    jdbc.update("insert into MESSAGE(id, message) values (1, ?)", "SQL");
+    jdbc.update("insert into MESSAGE(id, message) values (100, ?)", "SQL");
     log.info("1");
+    repo.save(new Message("Tranzactia se mosteneste"));
     other.extracted();
   }
 }
