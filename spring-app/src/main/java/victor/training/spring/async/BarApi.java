@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -19,15 +20,19 @@ import static java.lang.System.currentTimeMillis;
 public class BarApi {
    @Autowired
    private BarmanService barmanService;
+   // nu mai ai thread leak dar e descurajat in Spring sa creezi de mana thr pool
+   // =>> foloseste thread pool de-al lui spring
+//      private  final ExecutorService threadPool = Executors.newFixedThreadPool(2);
+   @Autowired
+   ThreadPoolTaskExecutor executor;
 
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      ExecutorService threadPool = Executors.newFixedThreadPool(2);
-      Future<Beer> futureBeer = threadPool.submit(() -> barmanService.pourBeer());
-      Future<Vodka> futureVodka = threadPool.submit(() -> barmanService.pourVodka());
+      Future<Beer> futureBeer = executor.submit(() -> barmanService.pourBeer());
+      Future<Vodka> futureVodka = executor.submit(() -> barmanService.pourVodka());
 
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();
