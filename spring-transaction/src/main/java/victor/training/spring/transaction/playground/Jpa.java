@@ -19,7 +19,9 @@ public class Jpa {
 //    id = m.getId(); is same as:
     id = repo.save(new Message("ONE")).getId();
     repo.save(new Message("TWO"));
-//    if (true) throw new RuntimeException("e"); // #1 nici nu mai VEZI inserturi, ca interceptorul stie ca le-a facut si le-ar trimite oricum degeaba
+    repo.findAll().forEach(System.out::println); // cauzeaza autoflush prematur
+
+//    repo.save(new Message("TWO"));
     log.info("End of method ---");
   } // write-behind: DUPA ce ies din metoda TxInterc face FLUSH(trimite IN DB insert/update/delete) + COMMIT
 
