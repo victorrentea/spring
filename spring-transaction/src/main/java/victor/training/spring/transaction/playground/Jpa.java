@@ -41,7 +41,7 @@ public class Jpa {
     repo.saveAndFlush(new Message("TWO"));
   }
 
-  @Transactional
+  @Transactional(readOnly = true) // fix?
   public void two() {
     Message e = repo.findById(1L).orElseThrow();
     e.setMessage("AUTO-FLUSHED la final de TX"); // TODO auto-flush changes
