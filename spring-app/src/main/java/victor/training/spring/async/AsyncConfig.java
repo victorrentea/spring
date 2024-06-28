@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -15,7 +16,7 @@ public class AsyncConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix = "executor")
-	public ThreadPoolTaskExecutor executor() {
+	public ThreadPoolTaskExecutor executor(TaskDecorator taskDecorator) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 //		executor.setCorePoolSize(threadCount);
 //		executor.setMaxPoolSize(threadCount);
@@ -23,6 +24,7 @@ public class AsyncConfig {
 //		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
+		executor.setTaskDecorator(taskDecorator);
 		return executor;
 	}
 //	@Bean // initial
