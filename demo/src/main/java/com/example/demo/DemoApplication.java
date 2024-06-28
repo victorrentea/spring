@@ -65,7 +65,7 @@ public class DemoApplication {
   @GetMapping
   @Operation(description = "Get all reservations")
   public List<ReservationDto> findAllReservations() {
-    log.info("Finding all reservations");
+    log.debug("Finding all reservations");
     return reservationService.findAll();
   }
 
