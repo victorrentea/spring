@@ -78,14 +78,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- genereaza documentatie OpenAPI din codul scris-->
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.5.0</version><!-- potential jar conflict-->
         </dependency>
-            <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
+        <dependency>
+            <!--@Validated-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -104,17 +106,17 @@
             </plugin>
         </plugins>
     </build>
-<!--<dependencyManagement>
-    <dependencies>
-        <dependency>
-        daca nu poti mosteni din spring-boot-parent, poti sa importi dependintele
-            <artifactId>spring-boot-dependencies</artifactId>
-            <groupId>org.springframework.boot</groupId>
-            <scope>import</scope>
-            <type>pom</type>
-            <version>2.1.4.RELEASE</version>
-        </dependency>
-    </dependencies>
-</dependencyManagement>-->
+    <!--<dependencyManagement>
+        <dependencies>
+            <dependency>
+            daca nu poti mosteni din spring-boot-parent, poti sa importi dependintele
+                <artifactId>spring-boot-dependencies</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>2.1.4.RELEASE</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>-->
 
 </project>

@@ -28,6 +28,7 @@ import java.util.List;
 
 @RestController
 @SpringBootApplication
+@Slf4j
 public class DemoApplication {
 
   public static void main(String[] args) {
@@ -64,6 +65,7 @@ public class DemoApplication {
   @GetMapping
   @Operation(description = "Get all reservations")
   public List<ReservationDto> findAllReservations() {
+    log.info("Finding all reservations");
     return reservationService.findAll();
   }
 
