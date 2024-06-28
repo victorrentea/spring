@@ -2,18 +2,15 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-//import victor.training.spring.security.config.keycloak.KeyCloakUtils;
-import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,11 +19,11 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() {
-
+  public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
+    dto.username = anotherClass.metoda().get();
+    // se propaga automat pe orice apel facut in THREADU CURENT
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -41,6 +38,7 @@ public class SecurityController {
     return dto;
   }
 
+
   //    	@Bean // enable propagation of SecurityContextHolder over @Async
   //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
   //    		// https://www.baeldung.com/spring-security-async-principal-propagation
@@ -50,6 +48,11 @@ public class SecurityController {
   @Slf4j
   @Service
   public static class AnotherClass {
+    @Async
+    public CompletableFuture<String> metoda() {
+      return CompletableFuture.completedFuture(
+          SecurityContextHolder.getContext().getAuthentication().getName());
+    }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
     //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
