@@ -1,29 +1,23 @@
 package com.example.demo;
 
-import com.example.demo.DemoApplication.ReservationDto;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Size;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @RestController
@@ -66,9 +60,20 @@ public class DemoApplication {
   @Operation(description = "Get all reservations")
   public List<ReservationDto> findAllReservations() {
     log.debug("Finding all reservations");
+    meterRegistry.counter("finduri").increment(); // sau nr de loginuri, nr de tranzactii facute, bani castigati azi
     return reservationService.findAll();
   }
 
+  @Autowired
+  private MeterRegistry meterRegistry; // micrometer= framework spring pentru colectare metrici
+
+  @Bean // enables @Timed
+  public TimedAspect timedAspect() {
+    return new TimedAspect(meterRegistry);
+  }
+
+  // apoi te duci la http://localhost:8080 dai 3 x refresh
+  // apoi te duci la http://localhost:8080/actuator/prometheus si cauti textul "finduri"
 }
 
 // Convention over configuration = ideea ca daca nu specific nimic, se folosesc defaulturi bune
@@ -81,8 +86,8 @@ public class DemoApplication {
     matchIfMissing = true)
 class Init {
   @EventListener(ApplicationStartedEvent.class) // cand toate beanurile sunt gata
-  public void init(){
-      System.out.println("Debugging...");
+  public void init() {
+    System.out.println("Debugging...");
   }
 }
 
