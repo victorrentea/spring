@@ -35,12 +35,12 @@ public class FeatureFlagsEndpoint {
     return isActive(featureFlag);
   }
 
-  @WriteOperation // curl -X POST http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
+  @WriteOperation // curl -u actuator:actuator -X POST http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
   public void activateFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.add(featureFlag);
   }
 
-  @DeleteOperation // curl -X DELETE http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
+  @DeleteOperation // curl -u actuator:actuator -X DELETE http://localhost:8080/actuator/featureflags/DISPLAY_POST_VIEWS
   public void disableFeature(@Selector FeatureFlag featureFlag) {
     activeFeatures.remove(featureFlag);
   }
