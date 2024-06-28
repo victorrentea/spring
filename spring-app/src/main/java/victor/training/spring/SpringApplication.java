@@ -15,6 +15,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -49,6 +51,12 @@ public class SpringApplication {
   @Bean // instrumented by micrometer-tracing sa trimita TraceID header automat catre cine chemi
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
     return builder.build();
+  }
+
+  @Bean // propagates SecurityContext to any task you start on 'applicationTaskExecutor' executor
+  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(
+      ThreadPoolTaskExecutor applicationTaskExecutor) { // injection point name = bean name
+    return new DelegatingSecurityContextAsyncTaskExecutor(applicationTaskExecutor);
   }
 
   @Bean // propagate tracing over all Spring-managed thread pools

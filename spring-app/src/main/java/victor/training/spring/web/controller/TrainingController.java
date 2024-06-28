@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -55,6 +56,7 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);

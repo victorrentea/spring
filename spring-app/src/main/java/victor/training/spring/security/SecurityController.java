@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.security.Principal;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -19,8 +20,8 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
-    log.info("Return current user");
+  public CurrentUserDto getCurrentUsername(Principal principal) throws ExecutionException, InterruptedException {
+    log.info("Return current user : "+principal.getName());
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = anotherClass.metoda().get();
     // se propaga automat pe orice apel facut in THREADU CURENT
