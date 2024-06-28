@@ -1,5 +1,6 @@
 package victor.training.spring;
 
+import io.micrometer.context.ContextSnapshot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.TaskDecorator;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -44,6 +46,11 @@ public class SpringApplication {
   @Bean // instrumented by micrometer-tracing
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
     return builder.build();
+  }
+
+   @Bean // propagate tracing over all Spring-managed thread pools
+  public TaskDecorator taskDecorator() {
+    return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
   }
 
   @EventListener(ApplicationStartedEvent.class)
