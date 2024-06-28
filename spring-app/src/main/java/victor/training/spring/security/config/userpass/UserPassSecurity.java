@@ -45,7 +45,7 @@ public class UserPassSecurity {
     return http.build();
   }
 
-  // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
+  // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION!!
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()

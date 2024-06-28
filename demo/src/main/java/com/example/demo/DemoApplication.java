@@ -4,6 +4,7 @@ import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,8 @@ public class DemoApplication {
 
   @GetMapping
   @Operation(description = "Get all reservations")
-  public List<ReservationDto> findAllReservations() {
+  public List<ReservationDto> findAllReservations(HttpServletRequest request) {
+    System.out.println(request.getHeader("Accept"));
     log.debug("Finding all reservations");
     meterRegistry.counter("finduri").increment(); // sau nr de loginuri, nr de tranzactii facute, bani castigati azi
     return reservationService.findAll();

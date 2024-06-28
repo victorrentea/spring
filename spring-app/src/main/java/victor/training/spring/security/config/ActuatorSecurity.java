@@ -44,8 +44,10 @@ public class ActuatorSecurity {
   public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable());
 
+    // Asta e autorizare la nivel de URL
     // this security filter chain only applies to /actuator/**
-    http.securityMatcher(EndpointRequest.toAnyEndpoint());
+//    http.securityMatcher(EndpointRequest.toAnyEndpoint());
+    http.securityMatcher("/actuator/**"); // equivalent with above
 
     http.authorizeHttpRequests(authz -> authz
           // http://localhost:8080/actuator/health is unsecured

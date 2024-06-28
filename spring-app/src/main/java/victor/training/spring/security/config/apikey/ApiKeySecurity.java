@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.List;
+
 @Slf4j
 @Profile("apikey")
 @Configuration
@@ -29,7 +31,7 @@ public class ApiKeySecurity {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable());
     http.authorizeRequests(authz -> authz.anyRequest().authenticated());
-    http.addFilter(new ApiKeyFilter(apiKey));
+    http.addFilter(new ApiKeyFilter(List.of(apiKey)));
     http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
     return http.build();
   }

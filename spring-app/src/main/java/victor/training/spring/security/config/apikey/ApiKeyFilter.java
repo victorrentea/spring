@@ -5,8 +5,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
+import java.util.List;
+
 public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
-  public ApiKeyFilter(String expectedApiKey) {
+  public ApiKeyFilter(List<String> expectedApiKey) {
     setAuthenticationManager(authentication -> acceptApiKeyUser(expectedApiKey, authentication));
   }
 
@@ -15,9 +17,9 @@ public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
     return httpRequest.getHeader("x-api-key"); // return principal name = api key
   }
 
-  private Authentication acceptApiKeyUser(String expectedApiKey, Authentication authentication) {
+  private Authentication acceptApiKeyUser(List<String> knownApiKeys, Authentication authentication) {
     if (authentication.getPrincipal() instanceof String apiKeyFromHeader &&
-        expectedApiKey.equals(apiKeyFromHeader)) {
+        knownApiKeys.contains(apiKeyFromHeader)) {
       authentication.setAuthenticated(true);
       return authentication;
     }
