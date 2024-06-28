@@ -22,6 +22,7 @@ public class ReservationService {
   }
 
   public List<ReservationDto> findAll() {
+    log.debug("Cautand in disperare motivul crapaului din productie nereproductibil pe local");
     return reservationRepo.findAll().stream()
         .map(reservation -> new ReservationDto(reservation.getName()))
         .toList();
