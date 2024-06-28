@@ -24,7 +24,7 @@ public class AsyncConfig {
 //		executor.setThreadNamePrefix("bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
-		executor.setTaskDecorator(taskDecorator);
+		executor.setTaskDecorator(taskDecorator); // propaga TraceID cand pornesti cele 2 threaduri (beer, vodka)
 		return executor;
 	}
 //	@Bean // initial
