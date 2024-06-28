@@ -23,15 +23,10 @@ public class SecurityController {
 
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() {
-    TokenUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = "<username>"; // TODO
-    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-    // dto.username = anotherClass.asyncMethod().get();
-
-    dto.authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
