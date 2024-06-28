@@ -50,8 +50,9 @@ public class SecurityController {
   public static class AnotherClass {
     @Async
     public CompletableFuture<String> metoda() {
-      return CompletableFuture.completedFuture(
-          SecurityContextHolder.getContext().getAuthentication().getName());
+      String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+      log.info("UPDATE ... WHER ... SET LAST_MODIFIED_BY="+currentUser);
+      return CompletableFuture.completedFuture(currentUser);
     }
     //    @Async
     //    public CompletableFuture<String> asyncMethod() {
