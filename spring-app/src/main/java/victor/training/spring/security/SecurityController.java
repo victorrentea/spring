@@ -3,6 +3,7 @@ package victor.training.spring.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -20,10 +23,13 @@ public class SecurityController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername(Principal principal) throws ExecutionException, InterruptedException {
+  public CurrentUserDto getCurrentUser(Principal principal) throws ExecutionException, InterruptedException {
     log.info("Return current user : "+principal.getName());
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = anotherClass.metoda().get();
+    Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+    List<String> authoritiesStr = authorities.stream().map(GrantedAuthority::getAuthority).toList();
+    dto.authorities= authoritiesStr;
     // se propaga automat pe orice apel facut in THREADU CURENT
 
     //<editor-fold desc="KeyCloak">
