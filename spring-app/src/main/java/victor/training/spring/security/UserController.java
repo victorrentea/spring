@@ -2,9 +2,6 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
-import java.util.Collection;
-import java.util.List;
-
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class SecurityController {
+public class UserController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
@@ -27,11 +21,7 @@ public class SecurityController {
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<username>"; // TODO
-    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
-    // dto.username = anotherClass.asyncMethod().get();
-
-    dto.authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+    dto.username = "<todo-username>"; // TODO
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,11 +36,10 @@ public class SecurityController {
     return dto;
   }
 
-  //    	@Bean // enable propagation of SecurityContextHolder over @Async
-  //    	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //    		// https://www.baeldung.com/spring-security-async-principal-propagation
-  //    		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  //    	}
+  //  @Bean // enable propagation of SecurityContextHolder over @Async
+  //	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+  //		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+  // 	}
 
   @Slf4j
   @Service
