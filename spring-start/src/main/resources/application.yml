@@ -28,7 +28,7 @@ props:
         app-id: 1251
         file: c:/help-file.pdf
         email: help@spring.io
-    welcome-message: asda
+    welcome-message: Magic of @Configuration + @Bean
 
 management:
     endpoints:
