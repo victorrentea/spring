@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -13,24 +14,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // for getters & setters
-@Component
-public class Props {
-  private String env;
-  private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO not null & size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+@ConfigurationProperties(prefix = "props")
+public record Props(
+  String env,
+  Integer gate, // TODO set default
+  String welcomeMessage, // TODO not null & size >= 4
+  List<URL> supportUrls, // TODO size >= 1
+  Map<Locale, String> contactPhones,
+  Help help) {
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-    private File file; // TODO file exists
-    private String email; // TODO valid email
-  }
+  public record Help(
+      Integer appId,
+      File file, // TODO file exists
+      String email) // TODO valid email
+  {}
 
-  @PostConstruct
+  @PostConstruct // ~ @EventListener(ApplicationReadyEvent.class)
   public void printMyself() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     System.out.println("WelcomeProps:\n" + json);
