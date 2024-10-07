@@ -21,6 +21,9 @@ public @interface FileExists {
    class FileExistsValidator implements ConstraintValidator<FileExists, File> {
       @Override
       public boolean isValid(File value, ConstraintValidatorContext context) {
+         if (value == null) {
+            return true;
+         }
          return value.isFile();
       }
    }

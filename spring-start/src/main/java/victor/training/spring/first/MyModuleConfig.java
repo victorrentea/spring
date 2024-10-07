@@ -11,9 +11,11 @@ import org.springframework.context.annotation.Import;
 // from /src/main/resources or /src/main/resources/config
 @Import({
     X.class,
+    Y2WithProps.class,
     X2.class,
     YMe.class,
     Y2.class,
+    ValidatingRequestPayload.class,
     MailServiceImpl.class
 })
 public class MyModuleConfig {

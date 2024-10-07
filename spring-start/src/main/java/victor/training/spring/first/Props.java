@@ -2,32 +2,51 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+//@Slf4j
+@Validated // whenever you see a @NotNull (&friends) there should be a @Validated somewhere
+// tells spring to validate the properties
 @ConfigurationProperties(prefix = "props")
 public record Props(
+  @NotNull
+  @NotBlank
   String env,
+  @NotNull
+  @Min(0)
   Integer gate, // TODO set default
   String welcomeMessage, // TODO not null & size >= 4
+  @Size(min = 1)
   List<URL> supportUrls, // TODO size >= 1
   Map<Locale, String> contactPhones,
   Help help) {
 
   public record Help(
       Integer appId,
+//      @FileExists
       File file, // TODO file exists
       String email) // TODO valid email
   {}
+
+//  private static final Logger log = LoggerFactory.getLogger(Props.class);
 
   @PostConstruct // ~ @EventListener(ApplicationReadyEvent.class)
   public void printMyself() throws JsonProcessingException {
