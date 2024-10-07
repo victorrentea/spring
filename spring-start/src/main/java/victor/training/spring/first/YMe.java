@@ -1,13 +1,10 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-public class Y {
-  Y() {
+public class YMe {
+  YMe() {
     System.out.println("Y created");
   }
   @Autowired

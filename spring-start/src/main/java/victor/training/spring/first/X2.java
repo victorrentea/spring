@@ -1,18 +1,17 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 
 public class X2 {
   @Autowired // field injection 😡😡 not good; tells spring to inject a Y instance here
-  private Y y; // framework will set this field for you using reflection
+  private YMe y; // framework will set this field for you using reflection
 
   // @Bean
   // @GetMapping
   // @Scheduled
   // @EventListener
   @Autowired // method injection 😡(not traditional)
-  public void method(Y y) {
+  public void method(YMe y) {
     System.out.println("Got "+ y + " called by Spring" +
                        " that acts here as an IoC (Inversion of Control)" +
                        " container");

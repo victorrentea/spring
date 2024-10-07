@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 @Import({
     X.class,
     X2.class,
-    Y.class,
+    YMe.class,
     Y2.class,
     MailServiceImpl.class
 })

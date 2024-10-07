@@ -1,15 +1,12 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class X {
-  private final Y y;
+  private final YMe y;
   private final ApplicationContext applicationContext; // gateway to the Spring container
   // TERRIBLE MISTAKE in a spring-managed bean: mutable state
   // Spring beans are SINGLETONS by default, so they should not have
@@ -26,7 +23,7 @@ public class X {
   // ImmutableList
   // Immutables
   // records
-  public X(Y y, ApplicationContext applicationContext) { // constructor injection💖
+  public X(YMe y, ApplicationContext applicationContext) { // constructor injection💖
     this.y = y;
     this.applicationContext = applicationContext;
   }
@@ -35,8 +32,8 @@ public class X {
   public int logic() {
     // DON'T DO THIS:
     Y2 y1 = applicationContext.getBean(Y2.class);// programatically retrieve a bean by type
-    Y y2 = applicationContext.getBean
-        ("victor.training.spring.first.Y", Y.class); // or by name
+    YMe y2 = applicationContext.getBean
+        ("victor.training.spring.first.Y", YMe.class); // or by name
     return 1 + y.logic();
   }
 }
