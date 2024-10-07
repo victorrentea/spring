@@ -21,7 +21,7 @@ public class FirstApplication implements CommandLineRunner {
   private X x;
 
   @Override // from CommandLineRunner
-  public void run(String... args) {
+  public void run(String... commandLineArgs) {
 //    System.out.println(x.logic());
   }
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class YMe {
   private final MailService mailService; // polymorphic injection
-
+//  private final X x;
   YMe(MailService mailService) {
     this.mailService = mailService;
     System.out.println("Y created");

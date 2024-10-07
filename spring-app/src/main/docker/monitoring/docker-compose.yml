@@ -3,6 +3,9 @@ version: '3.8'
 services:
   prometheus:
     image: prom/prometheus:latest
+    environment:
+        - TZ=UTC
+        - PROPS_ENV=dev
     ports:
       - 9090:9090
     volumes:

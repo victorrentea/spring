@@ -7,9 +7,11 @@ import org.springframework.context.event.EventListener;
 
 public class Y2WithProps {
   private final Props props;
+  private final  ClassFromAJar classFromAJar;
 
-  public Y2WithProps(Props props) {
+  public Y2WithProps(Props props, ClassFromAJar classFromAJar) {
     this.props = props;
+    this.classFromAJar = classFromAJar;
   }
   // no @Value("${}") anymore anywhere
 

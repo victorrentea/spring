@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 @EnableConfigurationProperties(Props.class)
@@ -18,8 +19,15 @@ import org.springframework.context.annotation.Import;
     ValidatingRequestPayload.class,
     MailServiceImpl.class,
     MailServiceDummy.class,
+//    ClassFromAJar.class,// wont work because the class needs manual initialization
 })
 public class MyModuleConfig {
+  @Bean // allows to create a bean in the Spring context programatically
+  public ClassFromAJar theBeanName() {
+    ClassFromAJar bean = new ClassFromAJar("init");
+    bean.setState(1);
+    return bean;
+  }
 }
 
 //@Configuration // without

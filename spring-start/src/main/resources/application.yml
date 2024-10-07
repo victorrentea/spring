@@ -10,7 +10,10 @@ spring:
                         enable: true
         username: user
         password: pass
-
+#circu
+    cache:
+        caffeine:
+            spec: maximumSize=500,expireAfterAccess=5m
 props:
     env: "prod"
     gate: 123
