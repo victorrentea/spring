@@ -1,2 +1,3 @@
-props:
-    env: local
+props.env: local
+props.gate: 667
+spring.mail.password: realOne

@@ -1,12 +1,11 @@
 package victor.training.spring.first;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class MailServiceImpl implements MailService {
+@Primary
+public class MailServiceImpl
+    implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
 
   public void sendEmail(String body) {

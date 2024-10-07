@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Import;
     YMe.class,
     Y2.class,
     ValidatingRequestPayload.class,
-    MailServiceImpl.class
+    MailServiceImpl.class,
+    MailServiceDummy.class,
 })
 public class MyModuleConfig {
 }

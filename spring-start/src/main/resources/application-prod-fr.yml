@@ -1,0 +1,3 @@
+#prod.db.password: forEverynewHireToSee
+#this will be loaded from the Hashicorp Vault
+#prod.db.password: ${vault.db.password}
