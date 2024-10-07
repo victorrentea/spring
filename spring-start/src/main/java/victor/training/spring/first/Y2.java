@@ -5,13 +5,12 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 
 public class Y2 {
-  Y2() { // in order to write in the gate field,
-    // spring first has to 'new' this class
-    System.out.println("Gate constructor: " + gate); // too early
-  }
+  private final int gate;
 
-  @Value("${props.gate}")
-  private Integer gate;
+  Y2(@Value("${props.gate}") int gate) {
+    this.gate = gate;
+    System.out.println("gate in ctor " + gate);
+  }
 
   @EventListener(ApplicationStartedEvent.class)
   public void spring_pleaseCallThisWhenTheAppIsReadyToReceiveRequests() {
