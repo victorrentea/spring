@@ -12,9 +12,15 @@ public class X {
   // handling multiple requests in parallel
 
   // mutable data; and this data is bound to ONE request
-  private String currentUsername;
-  private String currentBasketId;
-  private String currentOrderId;
+//  private String currentUsername;
+//  private String currentBasketId;
+//  private String currentOrderId;
+
+  // at picnic they take immutability very very serious
+  // final *
+  // ImmutableList
+  // Immutables
+  // records
 
   public X(Y y) { // constructor injection💖
     this.y = y;
