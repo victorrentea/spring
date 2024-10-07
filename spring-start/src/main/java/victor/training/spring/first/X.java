@@ -33,7 +33,7 @@ public class X {
     // DON'T DO THIS:
     Y2 y1 = applicationContext.getBean(Y2.class);// programatically retrieve a bean by type
     YMe y2 = applicationContext.getBean
-        ("victor.training.spring.first.Y", YMe.class); // or by name
+        ("victor.training.spring.first.YMe", YMe.class); // or by name
     return 1 + y.logic();
   }
 }
