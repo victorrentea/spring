@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
     X.class,
     X2.class,
     Y.class,
+    Y2.class,
     MailServiceImpl.class
 })
 public class MyModuleConfig {

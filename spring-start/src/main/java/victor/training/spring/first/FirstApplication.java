@@ -22,7 +22,7 @@ public class FirstApplication implements CommandLineRunner {
 
   @Override // from CommandLineRunner
   public void run(String... args) {
-    System.out.println(x.logic());
+//    System.out.println(x.logic());
   }
 
   @EventListener(ApplicationReadyEvent.class)
