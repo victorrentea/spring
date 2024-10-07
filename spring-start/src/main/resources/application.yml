@@ -13,7 +13,7 @@ spring:
 
 props:
     env: prod
-    gate: 123
+    gate: B123
     welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com
