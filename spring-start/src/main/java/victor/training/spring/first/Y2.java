@@ -8,7 +8,7 @@ import org.springframework.context.event.EventListener;
 public class Y2 {
   private final int gate;
 
-  Y2(@Value("${props.gateOUPS}") int gate, ApplicationContext applicationContext) {
+  Y2(@Value("${props.gateOUPS:-1}") int gate, ApplicationContext applicationContext) {
     this.gate = gate;
     this.applicationContext = applicationContext;
     System.out.println("gate in ctor " + gate);
