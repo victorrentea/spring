@@ -19,10 +19,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AuthorizationTest {
-  @Autowired
-  private MockMvc mockMvc;
+      // in unit test not (Spring) is the one creating your
+  // instance but the unit testing framework consequence spring
+  // is only called later in the game to wire up your field.
+  // It is not spring instant sheet the test class,
+  // but it is (Spring) who's called later to wire those dependencies.
+  @Autowired // in tests
+  MockMvc mockMvc;
   @MockBean
-  private TrainingService trainingService;
+  TrainingService trainingService;
 
   @WithMockUser(authorities = "training.delete")
   @Disabled("if needed")

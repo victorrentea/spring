@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Import;
 
 public class X2 {
   @Autowired // field injection 😡😡 not good; tells spring to inject a Y instance here
-  private Y y;
+  private Y y; // framework will set this field for you using reflection
 
   // @Bean
   // @GetMapping
