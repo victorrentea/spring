@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
-@Import(Y.class)
 public class X {
 //  programmatic singleton = garbage;
 //  private static X INSTANCE;

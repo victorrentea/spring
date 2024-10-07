@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Import;
 
 @Import({
     X.class,
-    X2.class
+    X2.class,
+    Y.class,
+    MailServiceImpl.class
 })
 public class MyModuleConfig {
 }
