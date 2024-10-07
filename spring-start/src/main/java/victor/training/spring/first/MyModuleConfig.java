@@ -3,6 +3,7 @@ package victor.training.spring.first;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 
 @EnableConfigurationProperties(Props.class)
 // fill the fields of this class with the values from application.properties/.yml
@@ -22,13 +23,30 @@ import org.springframework.context.annotation.Import;
 //    ClassFromAJar.class,// wont work because the class needs manual initialization
 })
 public class MyModuleConfig {
+  @Profile("local")
   @Bean // allows to create a bean in the Spring context programatically
-  public ClassFromAJar theBeanName() {
+//  public ClassFromAJar theBeanName(@Value("${props.gate}") int gate) {
+  public ClassFromAJar theBeanName(Props props) {
     ClassFromAJar bean = new ClassFromAJar("init");
-    bean.setState(1);
+    bean.setState(props.gate()); // < props.gate
     return bean;
   }
+//  @Bean use this!!
+//  public ExternalClass externalClass(ClassFromAJar dep) {
+//    return new ExternalClass(dep);
+//  }
+  @Bean
+  public ExternalClass externalClass() {
+    return new ExternalClass(theBeanName(null));
+  }
 }
+class ExternalClass {
+  private final ClassFromAJar dep;
 
+  ExternalClass(ClassFromAJar dep) {
+    this.dep = dep;
+    System.out.println("Got a class from a jar with state: " + dep.getName());
+  }
+}
 //@Configuration // without
 
