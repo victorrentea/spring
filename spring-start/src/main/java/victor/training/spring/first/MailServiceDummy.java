@@ -1,6 +1,8 @@
 package victor.training.spring.first;
 
-// TODO for local dev only
+import org.springframework.context.annotation.Profile;
+
+@Profile("local")
 public class MailServiceDummy
     implements MailService {
 

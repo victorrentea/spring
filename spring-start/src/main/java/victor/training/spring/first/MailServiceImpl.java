@@ -1,9 +1,12 @@
 package victor.training.spring.first;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 
-@Primary
+//@Primary
+//@Profile({"dev","prod-fr, "}) BAD
+@Profile("!local")
 public class MailServiceImpl
     implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
