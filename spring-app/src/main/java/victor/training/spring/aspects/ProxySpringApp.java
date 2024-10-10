@@ -1,12 +1,19 @@
 package victor.training.spring.aspects;
 
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
+//@EnableGlobalMethodSecurity(order = 1)
+//@EnableCaching(order=2)
 @SpringBootApplication
 @Import({SecondGrade.class, Maths.class})
 public class ProxySpringApp {
@@ -21,6 +28,11 @@ public class ProxySpringApp {
     public void run() {
         System.out.println("Running Maths class...");
         secondGrade.mathClass();
+    }
+
+    @Bean // enables @Timed
+    public TimedAspect timedAspect(MeterRegistry meterRegistry) {
+        return new TimedAspect(meterRegistry);
     }
 }
 //AI Prompts:

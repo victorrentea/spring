@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -75,16 +76,17 @@ class SecondGrade {
 }
 
 // ======= after this line change something for proxies not to work
+@LoggedMethod
+@Timed
 /*final:crash*/ class Maths {
   // @Secured("ROLE_CAN_SUM_NUMBERS") everyone calling this method "from outside" needs to have this role
   //  but what if I call it from within the class the role is not checked
   public /*final:ignored*/ int sum(int a, int b) {
+    new RuntimeException().printStackTrace();
     nour();
     return a + b;
   }
 
-  @Timed
-  @LoggedMethod
   public /*static:ignored*/ int product(int a, int b) {
     int result = 0;
     for (int i = 0; i < b; i++) {

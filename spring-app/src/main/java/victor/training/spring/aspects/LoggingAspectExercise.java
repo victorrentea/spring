@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Aspect
 @Component
+//@Order
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()
   //  - if you see 6 + 6 = 12 in the log you're OK
@@ -25,7 +27,7 @@ public class LoggingAspectExercise {
 
 //  @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
 //  @Around("execution(* *.get*(..))") // all methods whose name start with "get"!! = naming convention = dangerous😱
-  @Around("@annotation(LoggedMethod)")
+  @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // methods or classes annotated with @LoggedMethod
   public Object intercept(ProceedingJoinPoint point) throws Throwable {
     Object r = point.proceed();
     log.info("Method {} called with args {} returned {}", point.getSignature().getName(), point.getArgs(), r);
