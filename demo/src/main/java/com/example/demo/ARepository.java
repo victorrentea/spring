@@ -1,0 +1,32 @@
+package com.example.demo;
+
+import com.example.demo.jooq.tables.Person;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+
+public class ARepository {
+  private final JdbcTemplate jdbcTemplate;
+  private final DSLContext dsl;
+
+  public ARepository(JdbcTemplate jdbcTemplate, DSLContext dsl) {
+    this.jdbcTemplate = jdbcTemplate;
+    this.dsl = dsl;
+  }
+
+  public String hi() {
+    var list = jdbcTemplate.queryForList(
+        "SELECT name from person", String.class);
+    return list.toString();
+  }
+
+  public String hiJooq() {
+    List<String> list = dsl.select(Person.PERSON.NAME)
+        .from(Person.PERSON)
+        .fetch()
+        .getValues(Person.PERSON.NAME);
+    return list.toString();
+  }
+}
