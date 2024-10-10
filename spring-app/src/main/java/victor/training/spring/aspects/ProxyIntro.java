@@ -75,14 +75,16 @@ class SecondGrade {
 
 class Maths {
   public int sum(int a, int b) {
-    throw new RuntimeException("For @Ishan");
-//    return a + b;
+    return a + b;
   }
 
   public int product(int a, int b) {
     return a * b;
   }
 }
+
+
+
 
 
 //  @Timed // exposes a metric on how long this method takes at /actuator/promehteus
