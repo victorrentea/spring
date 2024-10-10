@@ -22,6 +22,7 @@ public class OrderService  {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
 
+		// by defaul an exception in any @EventListener will stop the event chain and throw an exception at next line
 		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
 
 		//instead of ...

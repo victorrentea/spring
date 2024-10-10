@@ -5,6 +5,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
+import static java.lang.Math.random;
+
 @Slf4j
 @Service
 public class InvoiceService {
@@ -12,7 +14,7 @@ public class InvoiceService {
    @EventListener
    public void process(OrderPlacedEvent event) {
       log.info("Generating invoice for order " + event.orderId());
-      // if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
+       if (random() < .3) throw new RuntimeException("Invoice Generation Failed for @Marko");
       log.info(">> PERSIST Invoice!!");
    }
 }
