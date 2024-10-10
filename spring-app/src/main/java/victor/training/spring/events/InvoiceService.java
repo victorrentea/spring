@@ -11,7 +11,7 @@ import static java.lang.Math.random;
 @Slf4j
 @Service
 public class InvoiceService {
-   @Async
+   @Async // fire-and-forget = returns void from an async method
    @Order(2)
    @EventListener
    public void process(OrderPlacedEvent event) {
