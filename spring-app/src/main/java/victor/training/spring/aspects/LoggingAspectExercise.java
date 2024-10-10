@@ -1,6 +1,8 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +22,14 @@ public class LoggingAspectExercise {
   // TODO 3 print the returned value
   //  = the value returned by #proceed()
   // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+
+//  @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
+//  @Around("execution(* *.get*(..))") // all methods whose name start with "get"!! = naming convention = dangerous😱
+  @Around("@annotation(LoggedMethod)")
+  public Object intercept(ProceedingJoinPoint point) throws Throwable {
+    Object r = point.proceed();
+    log.info("Method {} called with args {} returned {}", point.getSignature().getName(), point.getArgs(), r);
+    return r;
   }
 }
 // @Around("@within(RestController)") // method of classes annotated with @RestController

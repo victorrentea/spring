@@ -84,6 +84,7 @@ class SecondGrade {
   }
 
   @Timed
+  @LoggedMethod
   public /*static:ignored*/ int product(int a, int b) {
     int result = 0;
     for (int i = 0; i < b; i++) {
