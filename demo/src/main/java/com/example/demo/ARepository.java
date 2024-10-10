@@ -1,8 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.jooq.tables.Person;
+import com.example.demo.jooq.tables.records.PersonRecord;
 import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -28,5 +28,19 @@ public class ARepository {
         .fetch()
         .getValues(Person.PERSON.NAME);
     return list.toString();
+  }
+
+  public int create(String name) {
+    return dsl.insertInto(Person.PERSON, Person.PERSON.NAME)
+        .values(name)
+        .returning(Person.PERSON.ID)
+        .fetchOne()
+        .getValue(Person.PERSON.ID);
+
+    // OOP:
+//    PersonRecord r = new PersonRecord();
+//    r.setName(name);
+//    dsl.executeInsert(r);
+//    return r.getId();
   }
 }
