@@ -2,26 +2,32 @@ package victor.training.spring.events;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @Slf4j
 @RestController
+@RequestMapping("order")
 public class OrderService  {
-	private final StockManagementService stockManagementService;
-	private final InvoiceService invoiceService;
+	private final ApplicationEventPublisher eventPublisher;
 
-	@GetMapping("place-order")
-	public void placeOrder() {
+  public OrderService(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
+  }
+
+  @GetMapping("place-order")
+	public String placeOrder() {
 		log.debug(">> PERSIST new Order");
 		long orderId = 13L;
-		stockManagementService.process(orderId);
-		invoiceService.sendInvoice(orderId);
+
+		eventPublisher.publishEvent(new OrderPlacedEvent(orderId));
+
+		//instead of ...
+//		stockManagementService.process(orderId);
+//		invoiceService.sendInvoice(orderId);
+		return "ok";
 	}
 }
 
