@@ -2,10 +2,12 @@ package victor.training.spring.aspects;
 
 
 import io.micrometer.core.annotation.Timed;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.lang.reflect.Method;
@@ -82,7 +84,7 @@ class SecondGrade {
   // @Secured("ROLE_CAN_SUM_NUMBERS") everyone calling this method "from outside" needs to have this role
   //  but what if I call it from within the class the role is not checked
   public /*final:ignored*/ int sum(int a, int b) {
-    new RuntimeException().printStackTrace();
+//    new RuntimeException().printStackTrace();
     nour();
     return a + b;
   }
@@ -90,7 +92,7 @@ class SecondGrade {
   public /*static:ignored*/ int product(int a, int b) {
     int result = 0;
     for (int i = 0; i < b; i++) {
-      result = sum(result, a); // 👑 #1 source of pain: local method call don't go through the proxy
+      result = myselfButProxied.sum(result, a); // 👑 #1 source of pain: local method call don't go through the proxy
     }
     return result;
   }
@@ -99,6 +101,15 @@ class SecondGrade {
   private void nour() { // private methods are not proxied
     // System.out.println("Nour");
   }
+
+  @Lazy// this tells (Spring) to inject here a proxy to the class because you
+  // can't possibly out wire yourself while you are still in creation that's
+  // why what (Spring) gives you there is a temporary proxy just to get the
+  // wiring done when when you call any method on that reference, you're gonna
+  // get through (Spring) back into yourself, but it's not this which is injected
+  /// to break the cyclic dep.
+  @Autowired
+  Maths myselfButProxied; // soooo creepy!!
 }
 
 

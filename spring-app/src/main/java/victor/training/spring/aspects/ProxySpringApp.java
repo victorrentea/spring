@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 //@EnableGlobalMethodSecurity(order = 1)
@@ -30,9 +31,11 @@ public class ProxySpringApp {
         secondGrade.mathClass();
     }
 
+    @Order(1)
     @Bean // enables @Timed
     public TimedAspect timedAspect(MeterRegistry meterRegistry) {
-        return new TimedAspect(meterRegistry);
+        TimedAspect timedAspect = new TimedAspect(meterRegistry);
+        return timedAspect;
     }
 }
 //AI Prompts:

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-//@Order
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()
   //  - if you see 6 + 6 = 12 in the log you're OK
@@ -25,6 +24,7 @@ public class LoggingAspectExercise {
   //  = the value returned by #proceed()
   // TODO 4 (optional) experiment with other @Around annotations below
 
+  @Order(2)
 //  @Around("execution(* victor.training.spring.aspects.Maths.*(..))")
 //  @Around("execution(* *.get*(..))") // all methods whose name start with "get"!! = naming convention = dangerous😱
   @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // methods or classes annotated with @LoggedMethod
