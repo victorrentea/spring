@@ -1,6 +1,7 @@
 package victor.training.spring.aspects;
 
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
@@ -18,7 +19,7 @@ public class ProxyIntro {
     Callback callback = new MethodInterceptor() {
       @Override
       public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-        System.out.println("Method " + method.getName() + " called with args " + Arrays.toString(args));
+        System.out.println(">> Method " + method.getName() + " called with args " + Arrays.toString(args));
         return method.invoke(real, args);
       }
     };
@@ -73,13 +74,27 @@ class SecondGrade {
   }
 }
 
-class Maths {
-  public int sum(int a, int b) {
+// ======= after this line change something for proxies not to work
+/*final:crash*/ class Maths {
+  // @Secured("ROLE_CAN_SUM_NUMBERS") everyone calling this method "from outside" needs to have this role
+  //  but what if I call it from within the class the role is not checked
+  public /*final:ignored*/ int sum(int a, int b) {
+    nour();
     return a + b;
   }
 
-  public int product(int a, int b) {
-    return a * b;
+  @Timed
+  public /*static:ignored*/ int product(int a, int b) {
+    int result = 0;
+    for (int i = 0; i < b; i++) {
+      result = sum(result, a); // 👑 #1 source of pain: local method call don't go through the proxy
+    }
+    return result;
+  }
+
+  // @Nour
+  private void nour() { // private methods are not proxied
+    // System.out.println("Nour");
   }
 }
 
