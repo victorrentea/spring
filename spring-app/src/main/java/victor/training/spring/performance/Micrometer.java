@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
-@RequiredArgsConstructor
 @RestController
 public class Micrometer {
   private final JackpotRepo jackpotRepo;
   private final MeterRegistry micrometer;
+
+  public Micrometer(JackpotRepo jackpotRepo, MeterRegistry micrometer) {
+    this.jackpotRepo = jackpotRepo;
+    this.micrometer = micrometer;
+  }
 
   @EventListener(ApplicationStartedEvent.class)
   public void initGauge() {

@@ -15,7 +15,7 @@ public class StockManagementService {
     this.eventPublisher = eventPublisher;
   }
 
-  @EventListener
+   @EventListener
    @Order(1)
    public void process(OrderPlacedEvent event) {
       log.info("Checking stock for products in order " + event.orderId());
