@@ -75,7 +75,8 @@ class SecondGrade {
 
 class Maths {
   public int sum(int a, int b) {
-    return a + b;
+    throw new RuntimeException("For @Ishan");
+//    return a + b;
   }
 
   public int product(int a, int b) {
