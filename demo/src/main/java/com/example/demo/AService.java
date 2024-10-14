@@ -2,9 +2,6 @@ package com.example.demo;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-
 public class AService {
   private final ARepository repository;
 
@@ -26,6 +23,9 @@ public class AService {
   @Transactional
   public int create(String name) {
     repository.create(name);
+    if (name.equals("fail")){
+      throw new RuntimeException("fail");
+    }
     return repository.create(name+" Soul Mate");
   }
 }

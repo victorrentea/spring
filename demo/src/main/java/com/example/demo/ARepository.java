@@ -31,6 +31,7 @@ public class ARepository {
   }
 
   public int create(String name) {
+    System.out.println(name + " created");
     return dsl.insertInto(Person.PERSON, Person.PERSON.NAME)
         .values(name)
         .returning(Person.PERSON.ID)
