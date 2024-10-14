@@ -22,7 +22,7 @@ public class AController {
 //  @PostMapping
   @GetMapping("/create")
   public int create(
-      @RequestParam(defaultValue = "John Doe") String name) throws IOException {
+      @RequestParam(defaultValue = "John Doe") String name) {
     return service.create(name);
   }
 }

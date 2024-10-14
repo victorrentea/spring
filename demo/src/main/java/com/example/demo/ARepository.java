@@ -6,6 +6,7 @@ import org.jooq.DSLContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ARepository {
   private final JdbcTemplate jdbcTemplate;
@@ -29,7 +30,7 @@ public class ARepository {
         .getValues(Person.PERSON.NAME);
     return list.toString();
   }
-
+@Transactional(readOnly = true)
   public int create(String name) {
     System.out.println(name + " created");
     return dsl.insertInto(Person.PERSON, Person.PERSON.NAME)

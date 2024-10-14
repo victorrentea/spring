@@ -21,13 +21,9 @@ public class AService {
 //    connection.commit();
 //    } catch (Exception) { connection.rollback();}
 //
-  @Transactional
-  // @Transactional(rollbackFor = Exception.class) to make it work
-  public int create(String name) throws IOException {
+  @Transactional(readOnly=true)
+  public int create(String name) {
     repository.create(name);
-    if (name.equals("fail")){
-      throw new IOException("fail");
-    }
     return repository.create(name+" Soul Mate");
   }
 }
