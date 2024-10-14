@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.IOException;
 import org.springframework.transaction.annotation.Transactional;
 
 public class AService {
@@ -21,10 +22,11 @@ public class AService {
 //    } catch (Exception) { connection.rollback();}
 //
   @Transactional
-  public int create(String name) {
+  // @Transactional(rollbackFor = Exception.class) to make it work
+  public int create(String name) throws IOException {
     repository.create(name);
     if (name.equals("fail")){
-      throw new RuntimeException("fail");
+      throw new IOException("fail");
     }
     return repository.create(name+" Soul Mate");
   }

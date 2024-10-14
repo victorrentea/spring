@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.IOException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class AController {
 //  @PostMapping
   @GetMapping("/create")
   public int create(
-      @RequestParam(defaultValue = "John Doe") String name) {
+      @RequestParam(defaultValue = "John Doe") String name) throws IOException {
     return service.create(name);
   }
 }
