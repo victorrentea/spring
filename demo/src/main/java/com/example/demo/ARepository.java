@@ -30,7 +30,6 @@ public class ARepository {
         .getValues(Person.PERSON.NAME);
     return list.toString();
   }
-@Transactional(readOnly = true)
   public int create(String name) {
     System.out.println(name + " created");
     return dsl.insertInto(Person.PERSON, Person.PERSON.NAME)
