@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Aspect
 @Component
+@ConditionalOnProperty(name = "logging.on", havingValue = "true")
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()
   //  - if you see 6 + 6 = 12 in the log you're OK
