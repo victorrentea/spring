@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,13 @@ public class AController {
   public String hi() {
     return service.hi();
   }
+
+  @GetMapping("cached")
+  @Cacheable("cached")
+  public String cached(@RequestParam(defaultValue = "a") String q) {
+    return "Hello" + System.currentTimeMillis();
+  }
+
 
   @GetMapping("/propagation")
   public void propagation() {
