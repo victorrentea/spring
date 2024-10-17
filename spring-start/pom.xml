@@ -20,6 +20,15 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.2.1-jre</version>
+        </dependency>
+        <dependency>
             <!-- auto-restart the app on any change in target/ (.class or property/yaml) -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -29,6 +38,7 @@
             <!-- @NotNull & friends -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+            <!--<version>3.3.4</version> &lt;!&ndash;BAD!!!! avoid putting versions to -starter or to any library &ndash;&gt;-->
         </dependency>
         <dependency>
             <!-- Enables auto-completion in IntelliJ based on @ConfigurationProperties -->
