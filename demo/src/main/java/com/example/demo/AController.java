@@ -21,7 +21,12 @@ public class AController {
 //  @PostMapping
   @GetMapping("/create")
   public int create(
-      @RequestParam(defaultValue = "John Doe") String name) {
-    return service.create(name);
+      @RequestParam(defaultValue = "John Doe") String name) throws Exception {
+    //return service.create(name);
+    //service.createAtomic(name);
+    //return service.createAtomic(name);
+    return service.createReadOnly(name);
+    //return service.createWithException(name);
+//    return service.createWithIOException(name);
   }
 }
