@@ -1,16 +1,19 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
 
 public class AService {
   private final ARepository repository;
 
-  public AService(ARepository repository, AnotherClass anotherClass) {
+  public AService(ARepository repository, PlatformTransactionManager tm, AnotherClass anotherClass) {
     this.repository = repository;
+    this.tm = tm;
     this.anotherClass = anotherClass;
   }
 
@@ -67,9 +70,17 @@ public class AService {
       bizMethod();
       bizMethod2();
     } catch (Exception e) {
-      anotherClass.saveError(e);
+//      anotherClass.saveError(e);
+      TransactionTemplate tx = new TransactionTemplate(tm);
+      tx.setPropagationBehaviorName("PROPAGATION_REQUIRES_NEW");
+      tx.executeWithoutResult(status -> saveErrorCalledLocally(e));
       throw e;
     }
+  }
+  private final PlatformTransactionManager tm;
+
+  public void saveErrorCalledLocally(Exception e) {
+    repository.create("Error! ");
   }
   private final AnotherClass anotherClass;
 
