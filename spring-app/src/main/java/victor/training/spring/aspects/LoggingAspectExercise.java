@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.core.annotation.Order;
-import org.springframework.kafka.streams.KafkaStreamsMicrometerListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
