@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-@ConditionalOnProperty(name = "logging.on", havingValue = "true",
+@ConditionalOnProperty(
+    name = "logging.on",
+    havingValue = "true",
     matchIfMissing = true)
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()

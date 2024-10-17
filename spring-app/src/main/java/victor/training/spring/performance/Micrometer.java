@@ -82,7 +82,7 @@ public class Micrometer {
     }
 
     @Bean // enables @Timed
-    public TimedAspect timedAspect() {
+    public TimedAspect timedAspect2() {
       return new TimedAspect(meterRegistry);
     }
   }
