@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-@ConditionalOnProperty(name = "logging.on", havingValue = "true")
+@ConditionalOnProperty(name = "logging.on", havingValue = "true",
+    matchIfMissing = true)
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main()
   //  - if you see 6 + 6 = 12 in the log you're OK
