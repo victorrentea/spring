@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,20 @@ public class AController {
   public void propagation() {
     service.propagation();
   }
+//  @GetMapping("/propagation")
+//   DONT!!!
+//  public ResponseEntity<String> propagation() {
+//    try {
+//      service.propagation();
+//    }catch (Exception e) {
+//      return ResponseEntity.internalServerError()
+//          .body(e.getMessage());
+//    }
+//    return ResponseEntity.ok("👍");
+//  }
+
+
+
 //  @PostMapping
   @GetMapping("/create")
   public int create(

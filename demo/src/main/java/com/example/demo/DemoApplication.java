@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 @Import({AController.class,
 		AnotherClass.class,
+		GlobalExceptionHandler.class,
 		AService.class, ARepository.class})
 @ComponentScan(basePackages = "nopackage")
 public class DemoApplication {

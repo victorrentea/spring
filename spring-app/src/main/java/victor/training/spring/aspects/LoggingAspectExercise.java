@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
     havingValue = "true",
     matchIfMissing = true)
 @ConditionalOnClass(name="org.springframework.kafka.streams.KafkaStreamsMicrometerListener")
+//@ConOnMiB
 public class LoggingAspectExercise {
 
   // TODO 0: Run ProxySpringApp.main()
