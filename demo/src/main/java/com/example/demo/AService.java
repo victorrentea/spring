@@ -29,6 +29,7 @@ public class AService {
 //    } catch (Exception) { connection.rollback();}
 //
   @Transactional
+  @LoggedException
   public int create(String name) {
     repository.create(name);
     return repository.create(name+" Soul Mate");
