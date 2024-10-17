@@ -50,10 +50,10 @@ public class UserPassSecurity {
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()
         .username("user").password("user").roles("USER").build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-        .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()
         .username("power").password("power").roles("POWER").build();
+    UserDetails admin = User.withDefaultPasswordEncoder()
+        .username("admin").password("admin").roles("ADMIN").build();
     return new InMemoryUserDetailsManager(user, admin, power);
   }
 
