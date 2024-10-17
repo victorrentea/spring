@@ -23,11 +23,15 @@ public class AService {
 //    } catch (Exception) { connection.rollback();}
 //
   //@Transactional
-  //@LogExceptions
-  public int create(String name) {
+  @LogExceptions
+  // because the method cannot be overridden in the proxy
+  // generated super class, so when the controller causes this method,
+  // the method tries to use a field,
+  // which was not dependency injected by (Spring)
+  public final int create(String name) {
 
     repository.create(name);
-    if (name.equals("fail")){
+    if (name.equals("65fail")){
       justForHijack();
       throw new RuntimeException("fail");
     }

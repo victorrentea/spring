@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 
 @Aspect
-@Configurable
+//@Configurable // pure 👿 evil!! never use this
 public class LoggingAspect {
     @Around("@annotation(LogExceptions)")
-    public Object logMessage(ProceedingJoinPoint point) {
+    public Object logMessage(ProceedingJoinPoint point) throws Throwable {
         try {
             return point.proceed();
         } catch (Throwable e) {
             System.out.println("we have an error ! "+ e.getMessage());
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 }

@@ -8,7 +8,10 @@ import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({AController.class, AService.class, ARepository.class, LoggingAspect.class})
+@Import({AController.class,
+		AService.class,
+		ARepository.class,
+		LoggingAspect.class})
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "nopackage")
 public class DemoApplication {
