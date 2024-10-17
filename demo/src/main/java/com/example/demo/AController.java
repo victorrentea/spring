@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +17,10 @@ public class AController {
     return service.hi();
   }
 
+  @GetMapping("/propagation")
+  public void propagation() {
+    service.propagation();
+  }
 //  @PostMapping
   @GetMapping("/create")
   public int create(
@@ -26,7 +29,7 @@ public class AController {
     //service.createAtomic(name);
     //return service.createAtomic(name);
     return service.createReadOnly(name);
-    //return service.createWithException(name);
-//    return service.createWithIOException(name);
+//    return service.createThrowingRuntimeException(name);
+//    return service.createThrowingCheckedException(name);
   }
 }

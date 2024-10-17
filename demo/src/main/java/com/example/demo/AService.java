@@ -1,10 +1,9 @@
 package com.example.demo;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
 
 public class AService {
   private final ARepository repository;
@@ -42,21 +41,49 @@ public class AService {
   }
 
   @Transactional
-  public int createWithException(String name) throws Exception {
-    repository.create(name);  // Will be registered in DB because there isn't any rollback strategy
+  public int createThrowingRuntimeException(String name)  {
+    int id = repository.create(name);  // Will be registered in DB because there isn't any rollback strategy
     if (name.equals("Ex")) {
-      throw new Exception("Ex");
+      throw new RuntimeException("Ex");
     }
-    return repository.create(name);
+    return id;
   }
-
-  //@LogExceptions
-  @Transactional(rollbackFor = IOException.class)
-  public int createWithIOException(String name) throws IOException {
-    repository.create(name);  // This will not be registered in DB, it will be rolled back
+  @Transactional//(rollbackFor = IOException.class)
+  public int createThrowingCheckedException(String name) throws IOException {
+    int id = repository.create(name);  // Will be registered in DB because there isn't any rollback strategy
     if (name.equals("Ex")) {
       throw new IOException("Ex");
     }
-    return repository.create(name);
+    return id;
   }
+  //@LogExceptions
+
+  @Transactional // (rollbackFor = Exception.class) // fix #1 for the weird behavior of COMMIT at checked exception
+  // fix #2 GIVE UP on checked exceptions forever (a mistake in the Java Language). Only use unchecked exceptions.
+  public void propagation() {
+    try {
+      bizMethod();
+      bizMethod2();
+    } catch (Exception e) {
+      saveError(e);
+      throw e;
+    }
+  }
+
+  // local method calls are never proxied.!!!!
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveError(Exception e) {
+    repository.create("Error report: " + e);
+  }
+
+  private void bizMethod() {
+    repository.create("A1");
+//    if (Math.random()<0.5) {
+    throw new RuntimeException("Random error");
+//    }
+  }
+  private void bizMethod2() {
+    repository.create("A2");
+  }
+
 }
