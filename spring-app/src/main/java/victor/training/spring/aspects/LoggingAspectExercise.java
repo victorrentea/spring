@@ -4,8 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.core.annotation.Order;
+import org.springframework.kafka.streams.KafkaStreamsMicrometerListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -15,7 +18,9 @@ import org.springframework.stereotype.Component;
     name = "logging.on",
     havingValue = "true",
     matchIfMissing = true)
+@ConditionalOnClass(name="org.springframework.kafka.streams.KafkaStreamsMicrometerListener")
 public class LoggingAspectExercise {
+
   // TODO 0: Run ProxySpringApp.main()
   //  - if you see 6 + 6 = 12 in the log you're OK
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
