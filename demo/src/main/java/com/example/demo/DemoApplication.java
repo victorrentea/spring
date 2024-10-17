@@ -6,7 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({AController.class, AService.class, ARepository.class})
+@Import({AController.class,
+		AnotherClass.class,
+		AService.class, ARepository.class})
 @ComponentScan(basePackages = "nopackage")
 public class DemoApplication {
 

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,8 +9,9 @@ import java.io.IOException;
 public class AService {
   private final ARepository repository;
 
-  public AService(ARepository repository) {
+  public AService(ARepository repository, AnotherClass anotherClass) {
     this.repository = repository;
+    this.anotherClass = anotherClass;
   }
 
   public String hi() {
@@ -65,16 +67,11 @@ public class AService {
       bizMethod();
       bizMethod2();
     } catch (Exception e) {
-      saveError(e);
+      anotherClass.saveError(e);
       throw e;
     }
   }
-
-  // local method calls are never proxied.!!!!
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void saveError(Exception e) {
-    repository.create("Error report: " + e);
-  }
+  private final AnotherClass anotherClass;
 
   private void bizMethod() {
     repository.create("A1");
@@ -85,5 +82,17 @@ public class AService {
   private void bizMethod2() {
     repository.create("A2");
   }
+}
 
+
+class AnotherClass {
+  private final ARepository repository;
+  AnotherClass(ARepository repository) {
+    this.repository = repository;
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void saveError(Exception e) {
+    repository.create("Error! ");
+  }
 }
