@@ -108,10 +108,12 @@ public class AService {
     repository.create("A2");
   }
 
-  @Async // starts this method in the backgroud
+  @Async("poolBar") // starts this method in the backgroud
   public void startTaskAsync(String taskId, String work) {
     try {
+      log.info("Start");
       Thread.sleep(10000);
+      log.info("End");
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
