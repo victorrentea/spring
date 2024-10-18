@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,16 +28,10 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-
+	@ConfigurationProperties(prefix = "pool.bar")
 	@Bean
-	public ThreadPoolTaskExecutor poolBar(
-			@Value("${pool.bar.size}") int poolSize
-	) {
+	public ThreadPoolTaskExecutor poolBar() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(poolSize);
-		executor.setMaxPoolSize(poolSize);
-		executor.setQueueCapacity(500);
-		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
