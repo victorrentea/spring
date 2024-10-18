@@ -5,7 +5,7 @@ import java.util.*;
 public enum UserRole {
     USER("TRAINING_SEARCH", "TRAINING_EDIT"),
     POWER("TRAINING_SEARCH", "TRAINING_EDIT", "TRAINING_DELETE"),
-    ADMIN("TRAINING_SEARCH" ,"TRAINING_EDIT", "TRAINING_DELETE", "TEACHER_EDIT");
+    ADMIN("TRAINING_SEARCH" , "CAN_DELETE_TRAINING", "TRAINING_EDIT", "TRAINING_DELETE", "TEACHER_EDIT");
     private final List<String> authorities;
 
     UserRole(String... subRoles) {
