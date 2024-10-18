@@ -3,8 +3,11 @@ package com.example.demo;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 public class AController {
@@ -43,6 +46,17 @@ public class AController {
 //  }
 
 
+  // http://localhost:8080/submit?work=something
+  @GetMapping("submit")
+  public String start(@RequestParam String work) {
+    String taskId = UUID.randomUUID().toString();
+    service.startTaskAsync(taskId, work);
+    return taskId;
+  }
+  @GetMapping("result/{taskId}")
+  public String result(@PathVariable String taskId) {
+    return service.getResult(taskId);
+  }
 
 //  @PostMapping
   @GetMapping("/create")

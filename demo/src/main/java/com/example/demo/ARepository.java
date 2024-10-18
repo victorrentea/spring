@@ -1,11 +1,12 @@
 package com.example.demo;
 
 import com.example.demo.jooq.tables.Person;
-import com.example.demo.jooq.tables.records.PersonRecord;
 import org.jooq.DSLContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ARepository {
   private final JdbcTemplate jdbcTemplate;
@@ -43,4 +44,6 @@ public class ARepository {
 //    dsl.executeInsert(r);
 //    return r.getId();
   }
+
+
 }

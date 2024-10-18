@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AService {
   private static final Logger log = LoggerFactory.getLogger(AService.class);
@@ -26,7 +29,6 @@ public class AService {
   public void poll() {
     log.info("Polling...");
   }
-
 
   public String hi() {
     return repository.hiJooq();
@@ -105,6 +107,26 @@ public class AService {
   private void bizMethod2() {
     repository.create("A2");
   }
+
+  @Async // starts this method in the backgroud
+  public void startTaskAsync(String taskId, String work) {
+    try {
+      Thread.sleep(10000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+    String result = work.toUpperCase();
+    results.put(taskId, result);
+    // TODO exercise: keep a status: PENDING, RUNNING, DONE, ERROR
+    // TODO report exceptions occurred
+    // TODO save the task{id,status,exception,result} in DB
+
+  }
+  public String getResult(String taskId) {
+    return results.get(taskId);
+  }
+
+  private final Map<String, String> results = new HashMap<>();
 }
 
 
