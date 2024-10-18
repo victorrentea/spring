@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,6 +12,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.io.IOException;
 
 public class AService {
+  private static final Logger log = LoggerFactory.getLogger(AService.class);
   private final ARepository repository;
 
   public AService(ARepository repository, PlatformTransactionManager tm, AnotherClass anotherClass) {
@@ -16,6 +20,13 @@ public class AService {
     this.tm = tm;
     this.anotherClass = anotherClass;
   }
+
+//  @Scheduled(fixedRate = 1000)
+  @Scheduled(cron = "0/5 * * * * *")
+  public void poll() {
+    log.info("Polling...");
+  }
+
 
   public String hi() {
     return repository.hiJooq();
