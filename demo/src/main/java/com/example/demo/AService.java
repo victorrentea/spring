@@ -27,7 +27,7 @@ public class AService {
 //  @Scheduled(fixedRate = 1000)
   @Scheduled(cron = "0/5 * * * * *")
   public void poll() {
-    log.info("Polling...");
+//    log.info("Polling...");
   }
 
   public String hi() {
@@ -108,10 +108,16 @@ public class AService {
     repository.create("A2");
   }
 
+  // this method is gonna run on any available worker track,
+  // but until it gets to start, it's gonna wait in an in memory queue for its turn in case of a power failure data loss
+  // 1. Logging. log everything and wait for support to investigate
+  // 2. Store it in the DB INSERT INTO ... VALUES (PENDING, taskId, work) + @Scheduled or external trigger ± concurrency protection
+  // 3. Send yourself a message (rabbit/kafka) to start the task iff you have a message infra around.
+  //     Kafka guarantees that messages sent to one partition are consumed sequentially in order they were sent by ONE thread only.
   @Async("poolBar") // starts this method in the backgroud
   public void startTaskAsync(String taskId, String work) {
     try {
-      log.info("Start");
+      log.info("Start {}",taskId);
       Thread.sleep(10000);
       log.info("End");
     } catch (InterruptedException e) {

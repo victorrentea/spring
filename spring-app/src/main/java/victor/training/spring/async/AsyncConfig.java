@@ -13,7 +13,7 @@ public class AsyncConfig {
 	public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		execxutor.setMaxPoolSize(1);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
