@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AController {
   private final AService aService;
 
+  private String message;
+
   @GetMapping
   public String hi() {
     return "Hi!";

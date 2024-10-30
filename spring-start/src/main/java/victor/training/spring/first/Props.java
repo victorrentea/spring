@@ -4,6 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -15,7 +21,8 @@ import java.util.Map;
 
 @Data // for getters & setters
 @Component
-public class Props {
+@ConfigurationProperties(prefix = "props")
+public class Props implements CommandLineRunner {
   private String env;
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null & size >= 4
@@ -30,9 +37,28 @@ public class Props {
     private String email; // TODO valid email
   }
 
-  @PostConstruct
-  public void printMyself() throws JsonProcessingException {
-    String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+  @Override// in joburi spring pe care le pornesti si mor dupa ce termina
+  public void run(String... commandLIneArgsDeCumTeaLansat) throws Exception {
+    System.out.println("Param de comanda: " + commandLIneArgsDeCumTeaLansat);
+  }
+
+  // @Transactional // nu merge aici pt ca nu e inca in contextul de Spring
+//  public void printMyself() throws JsonProcessingException {
+
+  //@PostConstruct // poate rula prea devreme intr-o aplicatie
+  void crapaDacaFisierulNuExista() {
+    if (!help.file.exists()) {
+      throw new IllegalArgumentException("File not found: " + help.file);
+    }
+  }
+
+  // 💖
+//  @Transactional // ar merge
+  @EventListener(ApplicationStartedEvent.class) // Springule, cand te-ai pornit, da-mi un semn
+  public void method() throws JsonProcessingException {
+    String json = new ObjectMapper()
+        .writerWithDefaultPrettyPrinter()
+        .writeValueAsString(this);
     System.out.println("WelcomeProps:\n" + json);
   }
 }

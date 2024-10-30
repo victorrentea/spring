@@ -16,7 +16,7 @@ spring:
 props:
     env: prod
     gate: 123
-    welcomeMessage: Welcome to Spring
+    welcomeMessage: Welcome to Spring PI BUNE
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com

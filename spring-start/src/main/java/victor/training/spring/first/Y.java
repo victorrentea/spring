@@ -9,12 +9,18 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.lib.X;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class Y {
+  // evita :default pt ca vrei in properties/yaml sa le gasesti pe toate
+//  @Value("${props.gateNumber:85}")
   @Value("${props.gate}")
-  private Integer gate; // replace with injected Props
+  private final int gate; // replace with injected Props
+//  private final LocalDate gate; // #fun 🤓
+  // alte tipuri: File/UUID/URL/Resource/Class/Pattern/Charset/TimeZone
 
   private final MailService mailService; // polymorphic injection
   @Lazy // ce e aia?!
@@ -23,7 +29,7 @@ public class Y {
 
   public int logic() {
     System.out.println(
-        "Oare ce x mi-a injectat springu? "
+        gate + " Oare ce x mi-a injectat springu? "
          + x.getClass());
     mailService.sendEmail("Go to gate " + gate);
     System.out.println(x.f());
