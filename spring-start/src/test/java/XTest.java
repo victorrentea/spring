@@ -13,6 +13,7 @@
 //    @Mock
 //    private Y y;
 //
+// @InjectMocks // si merge injectia in campuri private>>> folostete totusi contructor injection.
 //    private X x;
 //
 //    @BeforeEach

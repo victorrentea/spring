@@ -10,6 +10,8 @@ spring:
                         enable: true
         username: user
         password: pass
+    main:
+        allow-circular-references: true
 
 props:
     env: prod
