@@ -4,14 +4,25 @@ import org.springframework.stereotype.Service;
 
 public class ProxyIntro {
   public static void main(String[] args) {
-    // WE play the role of Spring here ...
     Maths maths = new Maths();
-    SecondGrade secondGrade = new SecondGrade(maths);
+    SecondGrade secondGrade = new SecondGrade(new Subclasa());
     secondGrade.mathClass();
   }
 }
+class Subclasa extends Maths {
+  @Override
+  public int sum(int a, int b) {
+    System.out.println("sum " + a + " and " + b);
+    return super.sum(a, b);
+  }
+  @Override
+  public int product(int a, int b) {
+    System.out.println("product " + a + " and " + b);
+    return super.product(a, b);
+  }
+}
+// orice metoda se cheama in Maths, logeaza-i parametrii, fara sa modifici nimic sub linie
 // ------------------------ THE LINE ------------------
-@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -23,7 +34,6 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Service
 class Maths {
   public int sum(int a, int b) {
     return a + b;
