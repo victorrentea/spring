@@ -2,6 +2,9 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -19,8 +22,12 @@ import java.util.Map;
 @Component
 @ConfigurationProperties(prefix = "props")
 public class Props implements CommandLineRunner {
-  private String env;
+  @NotNull
+  @NotBlank
+  @Size(min = 4,max = 20)
+  private String env; // nenul!
   private int gate =42; // set default
+  @NotNull
   private String welcomeMessage; // TODO not null & size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
