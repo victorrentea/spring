@@ -24,6 +24,7 @@ public class Y {
   //injectia dep (camp/ctor) se face DOAR o data, la inceput
 
   public int logic() {
+//    props.setEnv("Doamne fereste!");
     System.out.println(
         props.getGate() + " Oare ce x mi-a injectat springu? "
         + x.getClass());

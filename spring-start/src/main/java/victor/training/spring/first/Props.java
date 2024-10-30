@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,10 +19,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // for getters & setters
+//@Data // = getters + setters + equals/hashCode + toString
+@Getter
+@EqualsAndHashCode
+@ToString
+
 @Component
 @ConfigurationProperties(prefix = "props")
 @Validated
+//TODO stersi setterii > @Value (lombok!) > record sau  sau !
 public class Props implements CommandLineRunner {
   @NotBlank
   @Size(min = 4,max = 20)
