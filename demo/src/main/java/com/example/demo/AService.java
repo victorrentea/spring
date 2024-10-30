@@ -8,4 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AService {
+  @Log
+  public String f() {
+    return "Hi! ";
+  }
 }
