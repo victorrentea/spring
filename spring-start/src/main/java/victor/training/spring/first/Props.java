@@ -3,16 +3,12 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "props")
 public class Props implements CommandLineRunner {
   private String env;
-  private Integer gate; // TODO set default
+  private int gate =42; // set default
   private String welcomeMessage; // TODO not null & size >= 4
   private List<URL> supportUrls; // TODO size >= 1
   private Map<Locale, String> contactPhones;
@@ -47,9 +43,9 @@ public class Props implements CommandLineRunner {
 
   //@PostConstruct // poate rula prea devreme intr-o aplicatie
   void crapaDacaFisierulNuExista() {
-    if (!help.file.exists()) {
-      throw new IllegalArgumentException("File not found: " + help.file);
-    }
+//    if (!help.file.exists()) {
+//      throw new IllegalArgumentException("File not found: " + help.file);
+//    }
   }
 
   // 💖
