@@ -13,13 +13,13 @@ spring:
         password: pass
     main:
         allow-circular-references: true
-    profiles:
-        active: local
+#    profiles:
+#        active: local
 
 props:
 #    env: prod
     gate: 12
-    welcomeMessage: Welcome to Spring PI BUNE
+#    welcomeMessage: Welcome to Spring PI BUNE
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com

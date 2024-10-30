@@ -11,6 +11,7 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
 import java.net.URL;
@@ -21,8 +22,8 @@ import java.util.Map;
 @Data // for getters & setters
 @Component
 @ConfigurationProperties(prefix = "props")
+@Validated
 public class Props implements CommandLineRunner {
-  @NotNull
   @NotBlank
   @Size(min = 4,max = 20)
   private String env; // nenul!
