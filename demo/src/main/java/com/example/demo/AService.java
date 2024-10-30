@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+  @Log
 @RequiredArgsConstructor
 public class AService {
-  @Log
   public String f() {
     return "Hi! ";
   }

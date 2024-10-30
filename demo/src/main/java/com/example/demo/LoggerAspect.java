@@ -15,10 +15,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Component
 @Aspect
 public class LoggerAspect {
-  // stil anii 90s
-//  @Around("execution(* victor.training..*.*(..))") // inseamna : intercepteaza toate metodele din toate clasele din package-ul victor.training
-  @Around("@annotation(Log)") // intercepteaza toate metodele care au adnotarea @Log
+  // stil anii 90s //  @Around("execution(* victor.training..*.*(..))") // inseamna : intercepteaza toate metodele din toate clasele din package-ul victor.training
+
+  @Around("@within(Log) || @annotation(Log)")
   public Object log(ProceedingJoinPoint pjp) throws Throwable {
+//    throw ex
+    // network call (DB, REST, SOAP) care sa intarzie sau sa crape
     log.info("Calling method: " + pjp.getSignature().getName() +
              " with args: " + Arrays.toString(pjp.getArgs()));
     Object r = pjp.proceed(); // chem metoda reala
