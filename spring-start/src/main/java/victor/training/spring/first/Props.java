@@ -6,11 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
@@ -27,55 +25,55 @@ import java.util.Map;
 //@ToString
 // === astea 4 de mai sus sunt echivalente cu @Value
 // mai face si campurile private final
-@Value
-
-//@Component
-@ConfigurationProperties(prefix = "props")
-@Validated
-//TODO stersi setterii > @Value (lombok!) > record sau  sau !
-public class Props implements CommandLineRunner {
-  @NotBlank
-  @Size(min = 4,max = 20)
-  String env; // nenul!
-  int gate; // set default
-  @NotNull
-  String welcomeMessage; // TODO not null & size >= 4
-  List<URL> supportUrls; // TODO size >= 1
-  Map<Locale, String> contactPhones;
-  Help help;
-
-  @Value // TODO immutable
-  public static class Help {
-     Integer appId;
-     File file; // TODO file exists
-     String email; // TODO valid email
-  }
-
-  @Override// in joburi spring pe care le pornesti si mor dupa ce termina
-  public void run(String... commandLIneArgsDeCumTeaLansat) throws Exception {
-    System.out.println("Param de comanda: " + commandLIneArgsDeCumTeaLansat);
-  }
-
-  // @Transactional // nu merge aici pt ca nu e inca in contextul de Spring
-//  public void printMyself() throws JsonProcessingException {
-
-  //@PostConstruct // poate rula prea devreme intr-o aplicatie
-  void crapaDacaFisierulNuExista() {
-//    if (!help.file.exists()) {
-//      throw new IllegalArgumentException("File not found: " + help.file);
-//    }
-  }
-
-  // 💖
-//  @Transactional // ar merge
-  @EventListener(ApplicationStartedEvent.class) // Springule, cand te-ai pornit, da-mi un semn
-  public void method() throws JsonProcessingException {
-    String json = new ObjectMapper()
-        .writerWithDefaultPrettyPrinter()
-        .writeValueAsString(this);
-    System.out.println("WelcomeProps:\n" + json);
-  }
-}
+//@Value
+//
+////@Component
+//@ConfigurationProperties(prefix = "props")
+//@Validated
+////TODO stersi setterii > @Value (lombok!) > record sau  sau !
+//public class Props /*implements CommandLineRunner*/ {
+//  @NotBlank
+//  @Size(min = 4,max = 20)
+//  String env; // nenul!
+//  int gate; // set default
+//  @NotNull
+//  String welcomeMessage; // TODO not null & size >= 4
+//  List<URL> supportUrls; // TODO size >= 1
+//  Map<Locale, String> contactPhones;
+//  Help help;
+//
+//  @Value // TODO immutable
+//  public static class Help {
+//     Integer appId;
+//     File file; // TODO file exists
+//     String email; // TODO valid email
+//  }
+//
+////  @Override// in joburi spring pe care le pornesti si mor dupa ce termina
+////  public void run(String... commandLIneArgsDeCumTeaLansat) throws Exception {
+////    System.out.println("Param de comanda: " + commandLIneArgsDeCumTeaLansat);
+////  }
+//
+//  // @Transactional // nu merge aici pt ca nu e inca in contextul de Spring
+////  public void printMyself() throws JsonProcessingException {
+//
+//  //@PostConstruct // poate rula prea devreme intr-o aplicatie
+//  void crapaDacaFisierulNuExista() {
+////    if (!help.file.exists()) {
+////      throw new IllegalArgumentException("File not found: " + help.file);
+////    }
+//  }
+//
+//  // 💖
+////  @Transactional // ar merge
+//  @EventListener(ApplicationStartedEvent.class) // Springule, cand te-ai pornit, da-mi un semn
+//  public void method() throws JsonProcessingException {
+//    String json = new ObjectMapper()
+//        .writerWithDefaultPrettyPrinter()
+//        .writeValueAsString(this);
+//    System.out.println("WelcomeProps:\n" + json);
+//  }
+//}
 
 
 // to test the points below, watch the log output above
@@ -94,3 +92,42 @@ public class Props implements CommandLineRunner {
 //   Trick: provide a default to a property by assigning the field = "defaultvalue"
 // TODO 5[PRO] make this class immutable: lombok.@Value + @ConstructorBinding + @ConfigurationPropertiesScan on a @Configuration
 //  Hint: https://stackoverflow.com/questions/26137932/immutable-configurationproperties
+
+
+
+
+
+
+
+@ConfigurationProperties(prefix = "props")
+@Validated
+public record Props(
+  @NotBlank
+  @Size(min = 4,max = 20)
+  String env,
+
+  int gate,
+
+  @NotNull
+  String welcomeMessage,
+
+  List<URL> supportUrls,
+
+  Map<Locale, String> contactPhones,
+
+  Help help) {
+
+  public record Help(
+      Integer appId,
+      File file,
+      String email) {
+  }
+
+  @EventListener(ApplicationStartedEvent.class)
+  public void method() throws JsonProcessingException {
+    String json = new ObjectMapper()
+        .writerWithDefaultPrettyPrinter()
+        .writeValueAsString(this);
+    System.out.println("WelcomeProps:\n" + json);
+  }
+}

@@ -26,9 +26,9 @@ public class Y {
   public int logic() {
 //    props.setEnv("Doamne fereste!");
     System.out.println(
-        props.getGate() + " Oare ce x mi-a injectat springu? "
+        props.gate() + " Oare ce x mi-a injectat springu? "
         + x.getClass());
-    mailService.sendEmail("Go to gate " + props.getGate());
+    mailService.sendEmail("Go to gate " + props.gate());
     System.out.println(x.f());
     System.out.println(
         "Oare ce x mi-a injectat springu? "
