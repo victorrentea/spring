@@ -5,3 +5,5 @@ services:
     image: redis:latest
     ports:
       - 6379:6379
+    environment:
+      - PROP_B:2025-12-25
