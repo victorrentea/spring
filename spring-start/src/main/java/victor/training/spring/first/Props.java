@@ -19,10 +19,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-//@Data // = getters + setters + equals/hashCode + toString
-@Getter
-@EqualsAndHashCode
-@ToString
+//@Data // = @Setter + cele 4 de mai jos
+
+//@RequiredArgsConstructor
+//@Getter
+//@EqualsAndHashCode
+//@ToString
+// === astea 4 de mai sus sunt echivalente cu @Value
+// mai face si campurile private final
+@Value
 
 //@Component
 @ConfigurationProperties(prefix = "props")
@@ -31,33 +36,19 @@ import java.util.Map;
 public class Props implements CommandLineRunner {
   @NotBlank
   @Size(min = 4,max = 20)
-  private final String env; // nenul!
-  private int gate =42; // set default
+  String env; // nenul!
+  int gate; // set default
   @NotNull
-  private final String welcomeMessage; // TODO not null & size >= 4
-  private final List<URL> supportUrls; // TODO size >= 1
-  private final Map<Locale, String> contactPhones;
-  private final Help help;
+  String welcomeMessage; // TODO not null & size >= 4
+  List<URL> supportUrls; // TODO size >= 1
+  Map<Locale, String> contactPhones;
+  Help help;
 
-  public Props(String env,
-               int gate,
-               String welcomeMessage,
-               List<URL> supportUrls,
-               Map<Locale, String> contactPhones,
-               Help help) {
-    this.env = env;
-    this.gate = gate;
-    this.welcomeMessage = welcomeMessage;
-    this.supportUrls = supportUrls;
-    this.contactPhones = contactPhones;
-    this.help = help;
-  }
-
-  @Data // TODO immutable
+  @Value // TODO immutable
   public static class Help {
-    private Integer appId;
-    private File file; // TODO file exists
-    private String email; // TODO valid email
+     Integer appId;
+     File file; // TODO file exists
+     String email; // TODO valid email
   }
 
   @Override// in joburi spring pe care le pornesti si mor dupa ce termina
