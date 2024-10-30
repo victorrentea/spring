@@ -48,7 +48,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- only needed because there are 3 main() classes candidates -->
-                    <mainClass>victor.training.spring.first.config.FirstApplication</mainClass>
+                    <mainClass>victor.training.spring.first.FirstApplication</mainClass>
                 </configuration>
             </plugin>
 
