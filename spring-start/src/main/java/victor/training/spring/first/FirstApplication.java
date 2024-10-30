@@ -19,6 +19,8 @@ import victor.training.spring.lib.X;
 //})
 @Import(UnConfig.class)
 @SpringBootApplication
+
+// defineste beanul (~ in loc de @Component pe record)!!
 @EnableConfigurationProperties(Props.class)
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
