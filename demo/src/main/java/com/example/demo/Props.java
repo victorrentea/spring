@@ -21,6 +21,6 @@ public record Props(
 
   @EventListener(ApplicationReadyEvent.class)
   public void printProps() {
-    log.info(this.toString());
+    log.info(toString());
   }
 }
