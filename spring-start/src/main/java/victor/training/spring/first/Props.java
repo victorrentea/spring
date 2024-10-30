@@ -24,20 +24,34 @@ import java.util.Map;
 @EqualsAndHashCode
 @ToString
 
-@Component
+//@Component
 @ConfigurationProperties(prefix = "props")
 @Validated
 //TODO stersi setterii > @Value (lombok!) > record sau  sau !
 public class Props implements CommandLineRunner {
   @NotBlank
   @Size(min = 4,max = 20)
-  private String env; // nenul!
+  private final String env; // nenul!
   private int gate =42; // set default
   @NotNull
-  private String welcomeMessage; // TODO not null & size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+  private final String welcomeMessage; // TODO not null & size >= 4
+  private final List<URL> supportUrls; // TODO size >= 1
+  private final Map<Locale, String> contactPhones;
+  private final Help help;
+
+  public Props(String env,
+               int gate,
+               String welcomeMessage,
+               List<URL> supportUrls,
+               Map<Locale, String> contactPhones,
+               Help help) {
+    this.env = env;
+    this.gate = gate;
+    this.welcomeMessage = welcomeMessage;
+    this.supportUrls = supportUrls;
+    this.contactPhones = contactPhones;
+    this.help = help;
+  }
 
   @Data // TODO immutable
   public static class Help {
