@@ -1,24 +1,29 @@
 package victor.training.spring.aspects;
 
-import org.springframework.stereotype.Service;
-
 public class ProxyIntro {
   public static void main(String[] args) {
-    Maths maths = new Maths();
-    SecondGrade secondGrade = new SecondGrade(new Subclasa());
+    Maths real = new Maths(); // instanta curata din beanul tau
+    SubclasaPtLog proxy = new SubclasaPtLog(real); // subclasandu-ti clasa ta
+    SecondGrade secondGrade = new SecondGrade(proxy);
     secondGrade.mathClass();
   }
 }
-class Subclasa extends Maths {
+
+class SubclasaPtLog extends Maths {
+  private final Maths delegate;
+  public SubclasaPtLog(Maths delegate) {
+    this.delegate = delegate;
+  }
+
   @Override
   public int sum(int a, int b) {
     System.out.println("sum " + a + " and " + b);
-    return super.sum(a, b);
+    return delegate.sum(a, b);
   }
   @Override
   public int product(int a, int b) {
     System.out.println("product " + a + " and " + b);
-    return super.product(a, b);
+    return delegate.product(a, b);
   }
 }
 // orice metoda se cheama in Maths, logeaza-i parametrii, fara sa modifici nimic sub linie
@@ -42,7 +47,6 @@ class Maths {
     return a * b;
   }
 }
-
 
 // Key Points
 // - Class Proxy using CGLIB Enhancer to extend the proxied class
