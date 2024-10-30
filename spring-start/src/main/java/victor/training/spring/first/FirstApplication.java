@@ -5,7 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
+import victor.training.spring.lib.UnConfig;
+import victor.training.spring.lib.X;
 
 //@ComponentScan(basePackages = "aiurea")
 //@Import({
@@ -13,6 +16,7 @@ import org.springframework.context.event.EventListener;
 //    Y.class,
 //    MailServiceDummy.class
 //})
+@Import(UnConfig.class)
 @SpringBootApplication
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
@@ -21,6 +25,8 @@ public class FirstApplication implements CommandLineRunner {
 
   @Autowired
   private X x;
+  @Autowired
+  private X x2;
 
   @Override // from CommandLineRunner
   public void run(String... args) {
