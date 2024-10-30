@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -29,25 +30,26 @@ public class ProxyIntro {
 }
 
 // exact ce genereaza springul cu CGLIB care acronim vine de la Code Generation Library
-//class SubclasaPtLog extends Maths {
-//  private final Maths delegate;
-//  public SubclasaPtLog(Maths delegate) {
-//    this.delegate = delegate;
-//  }
-//
-//  @Override
-//  public int sum(int a, int b) {
-//    System.out.println("sum " + a + " and " + b);
-//    return delegate.sum(a, b);
-//  }
-//  @Override
-//  public int product(int a, int b) {
-//    System.out.println("product " + a + " and " + b);
-//    return delegate.product(a, b);
-//  }
-//}
+class SubclasaPtLog extends Maths {
+  private final Maths delegate;
+  public SubclasaPtLog(Maths delegate) {
+    this.delegate = delegate;
+  }
+
+  @Override
+  public int sum(int a, int b) {
+    System.out.println("sum " + a + " and " + b);
+    return delegate.sum(a, b);
+  }
+  @Override
+  public int product(int a, int b) {
+    System.out.println("product " + a + " and " + b);
+    return delegate.product(a, b);
+  }
+}
 // orice metoda se cheama in Maths, logeaza-i parametrii, fara sa modifici nimic sub linie
 // ------------------------ THE LINE ------------------
+@Service
 class SecondGrade {
   private final Maths maths;
 
@@ -64,12 +66,14 @@ class SecondGrade {
   }
 }
 /*final:CRASH*/ // de aia nici nu ai voie sa faci bean spring record
-@RequiredArgsConstructor
+@Service
 class Maths {
-  @Secured("ROLE_ALEX_ILIE")
+//  @Secured("ROLE_ALEX_ILIE")
   public /*static:ignore*/ int sum(int a, int b) { // nu merge interceptia pe Util/Hellper
+    //new RuntimeException("Intentionat").printStackTrace();
     return a + b;
   }
+  @Log
   public /*final:weirdBug*/ int product(int a, int b) {
 //    return a * b;
     int result = 0;
