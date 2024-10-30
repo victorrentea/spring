@@ -17,7 +17,7 @@ spring:
 #        active: local
 
 props:
-    env: prod
+    env: x
     gate: 12
     welcomeMessage: Welcome to Spring PI BUNE
     supportUrls:
