@@ -27,11 +27,12 @@ public class AController {
     return repo.findAll();
   }
   @GetMapping("/modify")
-//  @Transactional // #1 autoflush dirty
+  @Transactional // #1 autoflush dirty
   public void modify() {
     User user = repo.findById(1).get();
     user.setName("modificat");
-    repo.save(user); // #2 manual save
+//    repo.save(user); // #2 manual save
+    throw new IllegalArgumentException("Oups");
   }
 
 
