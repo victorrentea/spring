@@ -1,5 +1,9 @@
 package victor.training.spring.async;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +61,10 @@ public class Barman {
   }
 
   @Async
+//  @RateLimiter() // max 30/sec
+      //@Bulkhead() // max 2 odata
+//  @CircuitBreaker() // mai lasa-l cand cade..
+  @Retry(name="send-email")
   public void sendEmail(String email) { // TODO outbox pattern
     log.debug("Sending report {}...", email);
     Sleep.millis(500); // critical but slow work that can fail
