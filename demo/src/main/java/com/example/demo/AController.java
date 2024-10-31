@@ -2,6 +2,7 @@ package com.example.demo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +27,12 @@ public class AController {
   public List<User> users() {
     return repo.findAll();
   }
-  @GetMapping("/modify")
+
+  @GetMapping("/modify") // trebuia PUT
   @Transactional // #1 autoflush dirty
+  @Async // exec metoda pe un nou thread
   public void modify() {
+    log.info("Unde sunt?!!");
     User user = repo.findById(1).get();
     user.setName("modificat");
 //    repo.save(user); // #2 manual save
