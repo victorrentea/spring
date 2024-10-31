@@ -26,36 +26,9 @@ public class PlayTransactions {
   @SneakyThrows
   @Transactional
   public void play() {
-    Connection connection = dataSource.getConnection();  // conn poate fi folosita doar
-    // din threadul care a obtinut-o (thread-bound)
-    connection.setAutoCommit(false); // = start Tx
-    CompletableFuture.runAsync(() -> {
-//      repo.save(new Message("JPA1")); // fol connex #1
-      try {
-        connection.createStatement()
-            .execute("insert into MESSAGE(id, message) values (100,'JDBC' )");
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      }
-    });
-    CompletableFuture.runAsync(() -> {
-//      repo.save(new Message("JPA2")); // fol connex #2
-      try {
-        connection.createStatement()
-            .execute("insert into MESSAGE(id, message) values (100,'JDBC' )");
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      }
-    });
-    connection.commit(); // = end Tx
-
-
-
-
-
-
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     repo.save(new Message("JPA"));
+    throw new RuntimeException("ca vreau eu");
   }
 }
 
