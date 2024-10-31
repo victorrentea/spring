@@ -11,11 +11,11 @@ import org.springframework.web.client.RestClient;
 @EnableAsync
 @Configuration
 public class AsyncConfig {
-	@Value("${pool.bar.size}")
-	private int poolBarSize;
+	;
 	@Bean
 	public ThreadPoolTaskExecutor poolBar(
-			TaskDecorator taskDecorator) {
+			TaskDecorator taskDecorator,
+			@Value("${pool.bar.size}") int poolBarSize) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(poolBarSize);
 		executor.setMaxPoolSize(poolBarSize);
