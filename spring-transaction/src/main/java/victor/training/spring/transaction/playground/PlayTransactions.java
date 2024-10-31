@@ -47,16 +47,37 @@ public class PlayTransactions {
   // 2) pentru a le putea batheui impreuna (JDBC Batching) - cand importi fisiere
 
 
+//  @Transactional// by default face rollback doar pt alea runtime
+  // ce BOU a facut asta?? > EJB , si Springu l-a imitat!
+  // era 2005. Ploua afara cu rahat. Cel mai urat standard din Java: EJB 2.x
+  // Intr-un codru des Ron facea Spring Framework
+  // toate corporatiile mari foloseau EJB 2.x
+  // Ron a vrut sa converteasca developerii existenti la Spring
+  // a facut @Transactional sa imite comportamentul lui @TransactionAttribute
+
+  // tl;dr: NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
+//  @Transactional(rollbackFor = Exception.class) // fix
+
   @Transactional
-  public void andrei() {
+  public void andrei() throws BusinessException {
     log.info("Asta-i pentru Andrei");
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("Ceva Diferit");
-    if (message.getMessage().contains(" ")) {//biz rule!
-      throw new IllegalArgumentException("No spaces allowed");
+    if (false) {//biz rule!
+      throw new IllegalArgumentException("No spaces allowed"); // unchecked 💖
+//      throw new BusinessException("No spaces allowed"); // 🤬 checked, au murit vreo 7 ani in urma
+      // o greseala a limbajului Java; NU AI VOIE SA ARUNCI EXCEPTII DECAT RUNTIME/UNCHECKED
     } else {
-      repo.save(message);
+      //repo.save(message); inutil daca vrei sa UPDATE o entity luata cu find in metoda @Transactioal
+      // intr-o @Trasactional, orice modificare faci pe entitatea ta,
+      // ea se duce automat in baza la final de Tx.
+      // = auto flush dirty entities
     }
+  }
+}
+class BusinessException extends Exception {
+  public BusinessException(String message) {
+    super(message);
   }
 }
 @Service
