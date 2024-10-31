@@ -40,7 +40,7 @@ public class AController {
     throw new IllegalArgumentException("Oups");
   }
 
-  @Scheduled(fixedRate = 1000)
+  @Scheduled(fixedRateString = "${polling.millis}")
   public void ping() {
     log.info("pong");
   }
