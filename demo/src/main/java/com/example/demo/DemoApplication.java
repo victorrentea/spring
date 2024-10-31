@@ -23,7 +23,7 @@ import java.sql.SQLException;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EnableConfigurationProperties(Props.class)
+@EnableConfigurationProperties({Props.class, Features.class})
 //@ConfigurationPropertiesScan // a gasit-o @Teo
 public class DemoApplication {
 

@@ -1,11 +1,14 @@
 package com.example.demo;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -18,21 +21,39 @@ public class AController {
   private final AService aService;
   private final Props props;
   private final UserRepository repo;
+  private final Features features;
 
   @GetMapping
   public String hi() {
     boolean ePananCraciun = LocalDate.now().isBefore(props.b());
-    return aService.f() + ePananCraciun;
+    return aService.f() + ePananCraciun + " " + features.flags();
   }
   @GetMapping("/users")
+  @Operation(summary = "Get all users")
   public List<User> users() {
     return repo.findAll();
   }
 
+  record UserDto(
+      @Schema(description = "The user's full name")
+      String name,
+      String email) {
+  }
+  @PostMapping
+  public UserDto create(@RequestBody UserDto userDto) {
+    return userDto;
+  }
+
+
+
   @GetMapping("/modify") // trebuia PUT
   @Transactional // #1 autoflush dirty
-  @Async // exec metoda pe un nou thread
+//  @Async // exec metoda pe un nou thread
   public void modify() {
+    bizLogic();
+  }
+
+  private void bizLogic() {
     log.info("Unde sunt?!!");
     User user = repo.findById(1).get();
     user.setName("modificat");
