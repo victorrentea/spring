@@ -2,6 +2,7 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
@@ -26,12 +28,28 @@ public class PlayTransactions {
   @SneakyThrows
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
-    throw new RuntimeException("ca vreau eu");
-  }
-}
+    // 1. helper al springului peste SQL ca sa nu pui tu mana pe Connection, DataSource, SQLException, .commit
+    jdbcTemplate.update(
+        "insert into MESSAGE(id, message) values (100,'SQL' )");
 
+    // 2. JPA/Hibernate(ORM) folosit prin Spring Data JPA
+    repo.saveAndFlush(new Message("JPA")); // nu pleaca nici un INSERT inca spre DB
+    altaMaiJosPeste7ClaseDepartare();
+    // hibernate face flush la entitati inainte de a face select
+    repo.count(); // intai  flush=insert; SELECT COUNT(*) FROM MESSAGE
+    log.info("Ies din metoda");
+  } // dupa ce iesi din metoda te intorci la TransactionInterceptor cauzat de @Transactional
+
+  private void altaMaiJosPeste7ClaseDepartare() {
+    repo.saveAndFlush(new Message("JPA")); // arunca ex
+  }
+  // care incearca sa faca COMMIT la tot ce ai facut.
+  // Atunci el insa se prinde ca JPA inca nu a facut flush la entitati in DB
+  // si face intai inserturile in DB, apoi face commit-ul
+  // de ce amana inseturile JPA-ul = "Write-Behind"
+  // 1) ca poate nici nu nevoie sa le scrie (ca sare exceptie)
+  // 2) pentru a le putea batheui impreuna (JDBC Batching) - cand importi fisiere
+}
 @Service
 @RequiredArgsConstructor
 class OtherClass {
