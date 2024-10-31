@@ -54,6 +54,7 @@ public class Barman {
     // #4 generated client from open-api/swagger 💖
   }
 
+  @Async
   public void auditCocktail(String name) { // TODO fire-and-forget
     log.debug("Longer running task I don't want to wait for: auditing drink: {}", name);
     Sleep.millis(500); // non-critical work
@@ -70,6 +71,18 @@ public class Barman {
     Sleep.millis(500); // critical but slow work that can fail
     if (Math.random() < 0.5) throw new RuntimeException("Email server down");
     log.debug("Email sent!");
+
+    // emailToSendRepo.save(email);
   }
 
+  // @Scheduled(fixedRate = 1000)
+//  public void sendEmails() {
+//    log.debug("Sending emails...");
+//   var list = emailToSendRepo.findAll();
+  // for (String email : list) {
+  //    sendEmail(email);
+  // }
+  // emailToSendRepo.deleteAll(list);
+//    log.debug("All emails sent!");
+//  }
 }
