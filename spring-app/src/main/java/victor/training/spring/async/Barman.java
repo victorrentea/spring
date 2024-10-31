@@ -3,7 +3,9 @@ package victor.training.spring.async;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
@@ -14,6 +16,8 @@ import victor.training.spring.varie.Sleep;
 @Timed
 @RequiredArgsConstructor
 public class Barman {
+//  @Qualifier("restClientPtBauturi")
+  private final RestClient restClientPtBauturi;
   private final RestTemplate restTemplate;
   private final DrinksFeignClient drinksFeignClient;
 
@@ -21,18 +25,27 @@ public class Barman {
     log.debug("Fetching Beer...");
     // #1 traditional
     String type = "blond";
-    return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
+//    return restTemplate.getForObject(
+//    "http://localhost:8080/api/beer/{type}",
+//        Beer.class, type);
 
     // #2 Feign
-    // return drinksFeignClient.getBeer(type);
+     return drinksFeignClient.getBeer(type);
   }
 
   public Vodka pourVodka() {
     log.debug("Fetching Vodka...");
-    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
+//    return restTemplate.getForObject("http://localhost:8080/api/vodka",
+//    Vodka.class);
 
     // #3 RestClient
-    // return restClient.uri(..).get() ...;
+    // #4 sau WebClient pe web-flux
+   return restClientPtBauturi
+       .get()
+       .uri("http://localhost:8080/api/vodka")
+       .retrieve()
+       .body(Vodka.class);
+
 
     // #4 generated client from open-api/swagger 💖
   }
@@ -43,6 +56,7 @@ public class Barman {
     log.debug("DONE Audit");
   }
 
+  @Async
   public void sendEmail(String email) { // TODO outbox pattern
     log.debug("Sending report {}...", email);
     Sleep.millis(500); // critical but slow work that can fail

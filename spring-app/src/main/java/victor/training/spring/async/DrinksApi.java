@@ -8,7 +8,8 @@ import victor.training.spring.async.drinks.Vodka;
 import victor.training.spring.varie.Sleep;
 
 @RestController
-public class DrinksApi { // pretend it's running in a different app
+public class DrinksApi {
+  // pretend it's running in a different app
   @GetMapping("/api/beer/{type}")
   public Beer beer(@PathVariable String type) {
     Sleep.millis(1000);
