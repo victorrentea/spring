@@ -26,7 +26,7 @@ public class BarApi {
       long t0 = currentTimeMillis();
 
 //      ExecutorService pool = Executors.newFixedThreadPool(2); //java SE
-      Future<Beer> futureBeer = poolBar.submit(() -> barman.pourBeer());
+      Future<Beer> futureBeer = poolBar.submit(barman::pourBeer);
       Future<Vodka> futureVodka = poolBar.submit(() -> barman.pourVodka());
       // am plasat 2 comenzi la mall: una la Pep&Pepper pt ea, una la Spartan pt el
 
