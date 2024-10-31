@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Retention;
@@ -14,6 +15,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Slf4j
 @Component
 @Aspect
+
+// sa mearga doar daca exista o proprietate numita
+// 'logging.enabled' in application.properties
+// egala cu 'true'
+
+// sau lipseste acea propr
+@ConditionalOnProperty(name = "logging.enabled"
+  ,havingValue = "true",
+  matchIfMissing = true)
 public class LoggerAspect {
   // stil anii 90s //  @Around("execution(* victor.training..*.*(..))") // inseamna : intercepteaza toate metodele din toate clasele din package-ul victor.training
 
