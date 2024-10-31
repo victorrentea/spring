@@ -10,10 +10,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 //@PropertySource("c:/win")
 @SpringBootApplication
 @EnableAsync
+@EnableScheduling
 @EnableConfigurationProperties(Props.class)
 //@ConfigurationPropertiesScan // a gasit-o @Teo
 public class DemoApplication {
