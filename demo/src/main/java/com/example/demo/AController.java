@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -13,12 +14,18 @@ import java.time.LocalDate;
 public class AController {
   private final AService aService;
   private final Props props;
+  private final UserRepository repo;
 
   @GetMapping
   public String hi() {
     boolean ePananCraciun = LocalDate.now().isBefore(props.b());
     return aService.f() + ePananCraciun;
   }
+  @GetMapping("/users")
+  public List<User> users() {
+    return repo.findAll();
+  }
+
 
 }
 // controller sa cheme service
