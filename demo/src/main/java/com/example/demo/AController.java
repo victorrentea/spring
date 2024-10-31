@@ -40,7 +40,12 @@ public class AController {
     throw new IllegalArgumentException("Oups");
   }
 
+  // cron exp = regular expression pentru timp
+  // fiecare duminica noaptea la 03:00
+  // @Scheduled(cron = "0 0 3 * * SUN")
   @Scheduled(fixedRateString = "${polling.millis}")
+  // de evitat cand deployezi pe 2+ masini si executi cu DB unica.
+  // folseste SchedLock
   public void ping() {
     log.info("pong");
   }
