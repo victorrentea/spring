@@ -37,17 +37,11 @@ public class Barman {
     // #4 generated client from open-api/swagger 💖
   }
 
-  public void auditCocktail(String name) { // TODO fire-and-forget
-    log.debug("Longer running task I don't want to wait for: auditing drink: {}", name);
-    Sleep.millis(500); // non-critical work
-    log.debug("DONE Audit");
-  }
-
-  public void sendEmail(String email) { // TODO outbox pattern
-    log.debug("Sending report {}...", email);
+  public void sendNotification(String email) { // TODO outbox pattern
+    log.debug("Sending notification (takes time and might fail) {}...", email);
     Sleep.millis(500); // critical but slow work that can fail
     if (Math.random() < 0.5) throw new RuntimeException("Email server down");
-    log.debug("Email sent!");
+    log.debug("Notification sent!");
   }
 
 }

@@ -24,9 +24,7 @@ public class BarApi {
       Beer beer = barman.pourBeer();
       Vodka vodka = barman.pourVodka();
 
-      barman.auditCocktail("Dilly");
-
-      barman.sendEmail("Reporting Dilly");
+      barman.sendNotification("Dilly");
 
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
