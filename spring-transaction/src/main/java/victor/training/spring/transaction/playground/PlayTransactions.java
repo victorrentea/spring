@@ -3,16 +3,15 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -25,19 +24,28 @@ public class PlayTransactions {
   private final OtherClass other;
 
 
+//  @Scheduled(cron = "0 0 0 * * *")
   @SneakyThrows
-  @Transactional
+  @Transactional //(propagation = REQ)
   public void play() {
     // 1. helper al springului peste SQL ca sa nu pui tu mana pe Connection, DataSource, SQLException, .commit
     jdbcTemplate.update(
         "insert into MESSAGE(id, message) values (100,'SQL' )");
-
+    eventPublisher.publishEvent(new DupaComitEvent("trimite un mai lui Alex Ilie"));
     // 2. JPA/Hibernate(ORM) folosit prin Spring Data JPA
     repo.saveAndFlush(new Message("JPA")); // nu pleaca nici un INSERT inca spre DB
     // hibernate face flush la entitati inainte de a face select
     repo.count(); // intai  flush=insert; SELECT COUNT(*) FROM MESSAGE
     log.info("Ies din metoda");
   } // dupa ce iesi din metoda te intorci la TransactionInterceptor cauzat de @Transactional
+
+  private final ApplicationEventPublisher eventPublisher;
+
+  record DupaComitEvent(String text){}
+  @TransactionalEventListener
+  public void dupaCommit(DupaComitEvent event) {
+    log.info("Ruelaza dupa comit: " + event.text());
+  }
 
   // care incearca sa faca COMMIT la tot ce ai facut.
   // Atunci el insa se prinde ca JPA inca nu a facut flush la entitati in DB
@@ -58,21 +66,27 @@ public class PlayTransactions {
   // tl;dr: NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
 //  @Transactional(rollbackFor = Exception.class) // fix
 
+
   @Transactional
   public void andrei() throws BusinessException {
     log.info("Asta-i pentru Andrei");
     Message message = repo.findById(1L).orElseThrow();
+    log.info("oare ent e curata" + message.getClass());
     message.setMessage("Ceva Diferit");
     if (false) {//biz rule!
       throw new IllegalArgumentException("No spaces allowed"); // unchecked 💖
 //      throw new BusinessException("No spaces allowed"); // 🤬 checked, au murit vreo 7 ani in urma
       // o greseala a limbajului Java; NU AI VOIE SA ARUNCI EXCEPTII DECAT RUNTIME/UNCHECKED
     } else {
-      //repo.save(message); inutil daca vrei sa UPDATE o entity luata cu find in metoda @Transactioal
+//      repo.save(message);
       // intr-o @Trasactional, orice modificare faci pe entitatea ta,
       // ea se duce automat in baza la final de Tx.
       // = auto flush dirty entities
+      // DE CE ?
+      // JPA implementeaza patternul de Repository
+      // = vrea sa crezi ca obiectele cu care lucrezi NU PLEACA VREODATA DIN MEMORIE
     }
+
   }
 }
 class BusinessException extends Exception {
