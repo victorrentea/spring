@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -17,5 +18,14 @@ public class DemoApplication {
 
   public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
+	}
+
+	@Autowired
+	private UserRepository repo;
+	@EventListener(ApplicationReadyEvent.class)
+	public void init() {
+		User user = new User();
+		user.setName("Ion");
+		repo.save(user);
 	}
 }
