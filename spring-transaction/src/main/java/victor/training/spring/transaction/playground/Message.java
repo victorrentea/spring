@@ -2,6 +2,8 @@ package victor.training.spring.transaction.playground;
 
 import jdk.jfr.DataAmount;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import jakarta.persistence.*;
@@ -11,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
 public class Message {
     @Id
