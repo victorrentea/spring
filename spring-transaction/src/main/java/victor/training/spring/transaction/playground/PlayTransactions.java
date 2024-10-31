@@ -34,21 +34,30 @@ public class PlayTransactions {
 
     // 2. JPA/Hibernate(ORM) folosit prin Spring Data JPA
     repo.saveAndFlush(new Message("JPA")); // nu pleaca nici un INSERT inca spre DB
-    altaMaiJosPeste7ClaseDepartare();
     // hibernate face flush la entitati inainte de a face select
     repo.count(); // intai  flush=insert; SELECT COUNT(*) FROM MESSAGE
     log.info("Ies din metoda");
   } // dupa ce iesi din metoda te intorci la TransactionInterceptor cauzat de @Transactional
 
-  private void altaMaiJosPeste7ClaseDepartare() {
-    repo.saveAndFlush(new Message("JPA")); // arunca ex
-  }
   // care incearca sa faca COMMIT la tot ce ai facut.
   // Atunci el insa se prinde ca JPA inca nu a facut flush la entitati in DB
   // si face intai inserturile in DB, apoi face commit-ul
   // de ce amana inseturile JPA-ul = "Write-Behind"
   // 1) ca poate nici nu nevoie sa le scrie (ca sare exceptie)
   // 2) pentru a le putea batheui impreuna (JDBC Batching) - cand importi fisiere
+
+
+  @Transactional
+  public void andrei() {
+    log.info("Asta-i pentru Andrei");
+    Message message = repo.findById(1L).orElseThrow();
+    message.setMessage("Ceva Diferit");
+    if (message.getMessage().contains(" ")) {//biz rule!
+      throw new IllegalArgumentException("No spaces allowed");
+    } else {
+      repo.save(message);
+    }
+  }
 }
 @Service
 @RequiredArgsConstructor
