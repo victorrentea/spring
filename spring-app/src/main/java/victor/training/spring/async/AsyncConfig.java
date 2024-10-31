@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
@@ -10,11 +11,14 @@ import org.springframework.web.client.RestClient;
 @EnableAsync
 @Configuration
 public class AsyncConfig {
+	@Value("${pool.bar.size}")
+	private int poolBarSize;
 	@Bean
-	public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
+	public ThreadPoolTaskExecutor poolBar(
+			TaskDecorator taskDecorator) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(poolBarSize);
+		executor.setMaxPoolSize(poolBarSize);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
