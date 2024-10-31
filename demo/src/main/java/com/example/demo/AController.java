@@ -2,6 +2,7 @@ package com.example.demo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,13 @@ public class AController {
   @GetMapping("/users")
   public List<User> users() {
     return repo.findAll();
+  }
+  @GetMapping("/modify")
+//  @Transactional // #1 autoflush dirty
+  public void modify() {
+    User user = repo.findById(1).get();
+    user.setName("modificat");
+    repo.save(user); // #2 manual save
   }
 
 
