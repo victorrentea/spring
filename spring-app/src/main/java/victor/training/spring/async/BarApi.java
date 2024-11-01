@@ -25,21 +25,14 @@ public class BarApi {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-//      ExecutorService pool = Executors.newFixedThreadPool(2); //java SE
       Future<Beer> futureBeer = poolBar.submit(barman::pourBeer);
-      Future<Vodka> futureVodka = poolBar.submit(() -> barman.pourVodka());
-      // am plasat 2 comenzi la mall: una la Pep&Pepper pt ea, una la Spartan pt el
+      Future<Vodka> futureVodka = poolBar.submit(barman::pourVodka);
 
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();
-//      pool.shutdown();// fara asta -> out of memory
 
       barman.auditCocktail("Dilly");
-
-      // fire and forget task
       barman.sendEmail("Reporting Dilly");
-      // gresit: Mono.fromRunnable(() -> barman.sendEmail("Reporting Dilly")).subscribe();
-
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
    }
