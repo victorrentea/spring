@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
+import victor.training.spring.web.entity.ContractType;
+import victor.training.spring.web.repo.TeacherRepo;
 
-import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -22,8 +22,14 @@ public class BarApi {
    private final Barman barman;
    private final ThreadPoolTaskExecutor poolBar;
 
+   @GetMapping("accept-payment")
+    public void acceptPayment() { // va da 503 daca sunt sute de req in curs pe /api/drink
+      // = unfairness
+        log.info("Payment accepted");
+    }
+
    @GetMapping("api/drink")
-   public DillyDilly drink() throws Exception {
+   public CompletableFuture<DillyDilly> drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
@@ -42,16 +48,18 @@ public class BarApi {
       CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(barman::pourBeer, poolBar);
       CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(barman::pourVodka, poolBar);
 
-      Beer beer = futureBeer.get();
-      Vodka vodka = futureVodka.get();
+      CompletableFuture<DillyDilly> futureDilly = futureBeer
+          .thenCombine(futureVodka, (b, v) -> new DillyDilly(b, v));
 
       barman.auditCocktail("Dilly");
       barman.sendEmail("Reporting Dilly");
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
-      return new DillyDilly(beer, vodka);
+      return futureDilly; // spring va face .thenAccept si va scrie pe response HTTP cand e gata dilly.
    }
 
    private void altaMetodaChemaInAcelasiThread() {
       log.info("I'm doing something else in the same thread");
+      teacherRepo.findByContractType(ContractType.INDEPENDENT);
    }
+   private final TeacherRepo teacherRepo;
 }

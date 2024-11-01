@@ -25,6 +25,7 @@ public class Barman {
   private final RestTemplate restTemplate;
   private final DrinksFeignClient drinksFeignClient;
 
+  @Timed
   public Beer pourBeer() {
     log.debug("Fetching Beer...");
     // #1 traditional
@@ -37,12 +38,17 @@ public class Barman {
      return drinksFeignClient.getBeer(type);
   }
 
+  @Timed
   public Vodka pourVodka() {
     log.debug("Fetching Vodka...");
     // GRESIT ca nu propaga TraceID
 //    return new RestTemplate()
-    return restTemplate
+    return restTemplate// asta tot mananca acum .5 mb de ram cat faci apelu
         .getForObject("http://localhost:8080/api/vodka", Vodka.class);
+  // daca vrei sa poti scala mult:
+    // a) nu blochezi nci un thread cu WebClient din webflux
+    // b) folosesti Virtual Thread si threadul blocat = 1kb nu .5mb
+
 
     // #3 RestClient
     // #4 sau WebClient pe web-flux
