@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -64,4 +64,12 @@ public class GlobalExceptionHandler {
     log.error("Validation failed. Returning: " + response, e);
     return response;
   }
+
+  @ResponseStatus(UNAUTHORIZED)
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public String onAuthorizationDeniedException(AuthorizationDeniedException e) {
+    log.error("Authorization Denied: " + e.getMessage(), e);
+    return "Ia mana, sa-ti fie #rushine!";
+  }
+
 }

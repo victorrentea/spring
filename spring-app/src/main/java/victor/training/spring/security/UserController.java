@@ -2,12 +2,18 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 //import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
+
+import java.security.Principal;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,12 +22,18 @@ public class UserController {
   private final AnotherClass anotherClass;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() {
+  public CurrentUserDto getCurrentUsername(
+      @AuthenticationPrincipal User user) {
     TokenUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<todo-username>"; // TODO
+//    dto.username = user.getUsername(); // usor
+
+    // magic: obtine userul curent de pe threadul activ, cum si Tranzactia si TraceID se propaga
+    dto.username = SecurityContextHolder.getContext().getAuthentication().getName();
+    dto.authorities = SecurityContextHolder.getContext().getAuthentication()
+        .getAuthorities().stream().map(Object::toString).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
