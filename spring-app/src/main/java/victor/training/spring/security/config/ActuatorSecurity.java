@@ -16,6 +16,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,7 @@ import victor.training.spring.security.config.apikey.ApiKeySecurity;
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
+//@ConfigurationProperties(prefix = "actuator.security") // TODO
 public class ActuatorSecurity {
   @PostConstruct
   public void hi() {

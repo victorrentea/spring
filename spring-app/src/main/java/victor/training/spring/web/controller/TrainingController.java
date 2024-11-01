@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -49,7 +50,8 @@ public class TrainingController {
 	}
 
 	@DeleteMapping("{trainingId}")
-	@Secured({"ROLE_ADMIN"/*, "ROLE_POWER"*/})// oups, uitasem
+//	@Secured("ROLE_ADMIN")// oups, uitasem
+	@PreAuthorize("hasRole('ROLE_TRAINING_DELETE') && @unBean.daVoie(#trainingId)") //  mai flexibila
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
