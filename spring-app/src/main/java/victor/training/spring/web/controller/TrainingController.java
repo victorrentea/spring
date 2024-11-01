@@ -49,7 +49,7 @@ public class TrainingController {
 	}
 
 	@DeleteMapping("{trainingId}")
-	@Secured({"ROLE_ADMIN", "ROLE_POWER"})
+	@Secured({"ROLE_ADMIN"/*, "ROLE_POWER"*/})// oups, uitasem
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}
