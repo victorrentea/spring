@@ -27,9 +27,20 @@ public class BarApi {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Future<Beer> futureBeer = poolBar.submit(barman::pourBeer);
-      Future<Vodka> futureVodka = poolBar.submit(barman::pourVodka);
-//      CompletableFuture.supplyAsync(barman::pourBeer);
+      altaMetodaChemaInAcelasiThread();
+//      Future<Beer> futureBeer = poolBar.submit(barman::pourBeer);
+//      Future<Vodka> futureVodka = poolBar.submit(barman::pourVodka);
+      // Gafa: sa folosesti CompletableFuture care by default submite pe ForkJoinPool global din JVM
+      // acel thread pool JVM nu face thread-hopping de metadata, si
+      // - pierzi traceID-ul
+      // - pierzi si identitatea userului care a pornit fluxul (SecurityContext)
+//      CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(barman::pourBeer);
+//      CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(barman::pourVodka);
+
+      // REGULA in spring daca vrei sa fol COmpletableFuture in orice metoda care se termina in
+      // ...Async trebuie sa ii dai si un ThreadPoolTaskExecutor injectat de spring pe care sa execute.
+      CompletableFuture<Beer> futureBeer = CompletableFuture.supplyAsync(barman::pourBeer, poolBar);
+      CompletableFuture<Vodka> futureVodka = CompletableFuture.supplyAsync(barman::pourVodka, poolBar);
 
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();
@@ -38,5 +49,9 @@ public class BarApi {
       barman.sendEmail("Reporting Dilly");
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(beer, vodka);
+   }
+
+   private void altaMetodaChemaInAcelasiThread() {
+      log.info("I'm doing something else in the same thread");
    }
 }

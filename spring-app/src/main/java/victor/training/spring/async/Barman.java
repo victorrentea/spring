@@ -39,7 +39,10 @@ public class Barman {
 
   public Vodka pourVodka() {
     log.debug("Fetching Vodka...");
-    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
+    // GRESIT ca nu propaga TraceID
+//    return new RestTemplate()
+    return restTemplate
+        .getForObject("http://localhost:8080/api/vodka", Vodka.class);
 
     // #3 RestClient
     // #4 sau WebClient pe web-flux

@@ -50,6 +50,7 @@ public class SpringApplication {
 
    @Bean // propagate tracing over all Spring-managed thread pools
   public TaskDecorator taskDecorator() {
+    // Cheia
     return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
   }
 
