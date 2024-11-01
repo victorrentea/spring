@@ -9,6 +9,8 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.io.Serializable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import static java.lang.System.currentTimeMillis;
@@ -27,6 +29,7 @@ public class BarApi {
 
       Future<Beer> futureBeer = poolBar.submit(barman::pourBeer);
       Future<Vodka> futureVodka = poolBar.submit(barman::pourVodka);
+//      CompletableFuture.supplyAsync(barman::pourBeer);
 
       Beer beer = futureBeer.get();
       Vodka vodka = futureVodka.get();

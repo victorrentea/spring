@@ -39,16 +39,15 @@ public class Barman {
 
   public Vodka pourVodka() {
     log.debug("Fetching Vodka...");
-//    return restTemplate.getForObject("http://localhost:8080/api/vodka",
-//    Vodka.class);
+    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
 
     // #3 RestClient
     // #4 sau WebClient pe web-flux
-   return restClientPtBauturi
-       .get()
-       .uri("http://localhost:8080/api/vodka")
-       .retrieve()
-       .body(Vodka.class);
+//   return restClientPtBauturi
+//       .get()
+//       .uri("http://localhost:8080/api/vodka")
+//       .retrieve()
+//       .body(Vodka.class);
 
 
     // #4 generated client from open-api/swagger 💖
