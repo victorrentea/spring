@@ -27,7 +27,7 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
         }
         List<String> roles = List.of(rolesStr.split(","));
 
-//        roles = UserRole.expandToSubRoles(roles);
+        roles = UserRole.expandToSubRoles(roles);
 
         return new PreAuthPrincipal(username, roles);
     }
