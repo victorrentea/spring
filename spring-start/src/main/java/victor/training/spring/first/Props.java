@@ -36,6 +36,24 @@ public class Props {
     private File file; // TODO file exists
     private String email; // TODO valid email
   }
+  @PostConstruct
+  public void validate() {
+    if (env == null) {
+      throw new IllegalArgumentException("env is mandatory");
+    }
+    if (gate == null) {
+      throw new IllegalArgumentException("gate is mandatory");
+    }
+    if (welcomeMessage == null) {
+      throw new IllegalArgumentException("welcomeMessage is mandatory");
+    }
+    if (supportUrls == null || supportUrls.isEmpty()) {
+      throw new IllegalArgumentException("supportUrls is mandatory");
+    }
+    if (contactPhones == null || contactPhones.isEmpty()) {
+      throw new IllegalArgumentException("contactPhones is mandatory");
+    }
+  }
 
 //  @Transactional nu merge pe postconstruct petru ca magia asociata acestei anotari se porneste dupa postconstruct
 //  @PostConstruct // ruleaza metoda dupa ce componenta e construita si toate dependintele sunt injectate
