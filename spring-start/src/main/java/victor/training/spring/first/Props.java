@@ -17,7 +17,7 @@ import java.util.Map;
 @Data // for getters & setters
 @Component
 public class Props {
-  @Value("${props.env}")
+  @Value("${props.env:667}")
   private String env;
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null & size >= 4
