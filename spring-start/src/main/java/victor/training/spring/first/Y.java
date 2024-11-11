@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestController
 public class Y { // 1 instanta
-  @Autowired
-  private MailService mailService; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate; // replace with injected Props
+  private final MailService mailService;
+  private final Integer gate;
 
-  Y() {
-    // spring iti instantiaza o singura data beanurile (clasele marcate cu @Component & friends)
-    // = SINGLETON.
-    // stiind ca exista o singura instanta, ce nu ar trebui sa tii in campurile unui bean
-    System.out.println("new instance");
+  public Y(MailService mailService,
+           @Value("${props.gate}") Integer gate) {
+    this.mailService = mailService;
+    this.gate = gate;
   }
+
+
+
 
 //  private /*static*/ int requestCount; // race bug
 

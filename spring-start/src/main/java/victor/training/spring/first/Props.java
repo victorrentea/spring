@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Data // for getters & setters
 @Component
 public class Props {
+  @Value("${props.env}")
   private String env;
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null & size >= 4
