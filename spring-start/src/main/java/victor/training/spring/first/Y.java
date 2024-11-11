@@ -13,20 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class Y { // 1 instanta
   private final MailService mailService;
-  @Value("${props.gate}")
-  private final Integer gate;
-
+  private final Props props;
+//  @Value("${props.gate}")
+//  private final Integer gate;
 //  public Y(MailService mailService,
 //           @Value("${props.gate}") Integer gate) {
 //    this.mailService = mailService;
 //    this.gate = gate;
 //  }
-
-
-
-
-
-
 
 //  private /*static*/ int requestCount; // race bug
 
@@ -43,7 +37,7 @@ public class Y { // 1 instanta
 
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.getGate());
 
     return 1;
   }
