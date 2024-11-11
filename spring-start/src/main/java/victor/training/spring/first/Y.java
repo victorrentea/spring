@@ -13,6 +13,12 @@ public class Y {
   @Value("${props.gate}")
   private Integer gate; // replace with injected Props
 
+  Y() {
+    // spring iti instantiaza o singura data beanurile (clasele marcate cu @Component & friends)
+    // = SINGLETON
+    System.out.println("new instance");
+  }
+
   public int logic() {
     mailService.sendEmail("Go to gate " + gate);
 
