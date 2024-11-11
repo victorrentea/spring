@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 public class ProxyIntro {
@@ -11,7 +12,6 @@ public class ProxyIntro {
   }
 }
 // ------------------------ THE LINE ------------------
-@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -23,20 +23,16 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Service
+// TODO: orice apel catre Maths sa logeze parametrii
+@Slf4j
 class Maths {
   public int sum(int a, int b) {
+    log.info("sum ({},{})", a, b);
     return a + b;
   }
   public int product(int a, int b) {
+    log.info("product ({},{})", a, b);
     return a * b;
   }
 }
-
-
-// Key Points
-// - Class Proxy using CGLIB Enhancer to extend the proxied class
-// - Proxy limitations: final methods/classes, local calls
-// - Debug a Proxy
-// - Custom @Aspect
 
