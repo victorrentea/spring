@@ -45,9 +45,11 @@ public class ProxyIntro {
 // se simte ca si cum interceptam apeluri de metode.
 // TODO: orice apel catre Maths sa logeze parametrii; Scrie doar deasupra liniei
 // ------------------------ THE LINE ------------------
+// scrie ceva sub linie sa opresti proxyurile din a merge
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
+//    this.maths = new Maths(); #1
     this.maths = maths;
   }
   public void mathClass() {
@@ -57,12 +59,27 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-class Maths {
-  public int sum(int a, int b) {
+/*final crash*/ class Maths {
+  // @Secured("ROLE_ADMIN") sau @PreAuthorize("hasRole('ADMIN')") sau @RolesAllowed("ADMIN")
+  // @Transactional executa in tranzactie
+  // @Cacheable("productCache") - cacheaza rezultatul
+  // @Async - executa in alt thread
+  // @Retryable - daca da exceptie, reincearca de N ori configurabil...
+  public /*final ignored*/ int sum(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+  public /*static ignored*/ int product(int a, int b) { // nu poti intercepta statice StringUtil.toCamelCase
+    int result = 0;
+    for(int i = 0; i < b; i++) {
+      result = sum(result, a); // ?? apelul local (in aceeasi clasa) nu e interceptat!!!
+    }
+    return result;
   }
 }
 
+
+
+// In spring @ puse pe metode pot face:
+// 1) IoC - Inversion of Control: @PostConstruct, @Scheduled, @EventListener, @GetMapping
+// 2) AOP - Aspect Oriented Programming (interceptie de apeluri): @Transactional, @Secured, @Cacheable, @Async, @Retryable
+// aop merge pt ca noi facem DI (luam de la Spring ob real sau proxiat daca trebuie)
