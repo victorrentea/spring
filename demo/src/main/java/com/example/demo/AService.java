@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@Logged
 @RequiredArgsConstructor
-public class AService {
+public class AService { // subclasat de proxy
   private final Config config;
   public String m() {
+//    if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
     return "hello! " + config.x();
   }
 }
