@@ -39,7 +39,7 @@ public class TrainingService {
     }
 
     public TrainingDto getTrainingById(Long id) {
-        Training training = trainingRepo.findById(id).orElseThrow();
+        Training training = trainingRepo.findById(id).orElseThrow(); // throws NoSuchElementException
         TrainingDto dto = new TrainingDto(training);
         dto.teacherBio = retrieveTeacherBio(dto.teacherId);
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();

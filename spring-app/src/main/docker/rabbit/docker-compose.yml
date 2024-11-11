@@ -3,6 +3,8 @@ version: '3.8'
 services:
   rabbit:
     image: rabbitmq:3-management #has the management plugin preinstalled
+#    environment:
+#      CONFIG_X: 9
     ports:
       - "5672:5672" #main port
       - "15672:15672" #admin port
