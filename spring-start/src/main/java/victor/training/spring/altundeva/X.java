@@ -36,16 +36,8 @@ public class X {
 //  public void setY(Y y) {
 //    this.y = y;
 //  }
-
   // 💖 constructor-based injection
   private final Y y;
-  private final Y y2;
-  private final Y y3;
-  private final Y y4;
-  private final Y y5;
-  private final Y y6;
-  private final Y y7;
-  private final Y y8;
 
 //  public X(Y y, Y y2, Y y3, Y y4, Y y5, Y y6, Y y7, Y y8) {
 //    this.y = y;
