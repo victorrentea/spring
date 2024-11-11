@@ -16,14 +16,14 @@ public class FirstApplication implements CommandLineRunner {
   @Autowired
   private X x;
 
-  @Override // from CommandLineRunner
-  public void run(String... args) {
-    System.out.println(x.logic());
-  }
-
   @EventListener(ApplicationReadyEvent.class)
   public void onAppStart() {
     System.out.println("App started OK 🎉");
+  }
+
+  @Override // from CommandLineRunner
+  public void run(String... args) {
+    System.out.println(x.logic());
   }
 }
 

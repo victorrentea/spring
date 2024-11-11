@@ -13,27 +13,27 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // for getters & setters
+@Data // generates getters & setters
 @Component
 public class Props {
   private String env;
   private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO not null & size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
+  private String welcomeMessage; // TODO validate not null & size >= 4
+  private List<URL> supportUrls; // TODO validate size >= 1
   private Map<Locale, String> contactPhones;
   private Help help;
 
   @Data // TODO immutable
   public static class Help {
     private Integer appId;
-    private File file; // TODO file exists
-    private String email; // TODO valid email
+    private File file; // TODO validate file exists
+    private String email; // TODO validate email pattern
   }
 
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    System.out.println("WelcomeProps:\n" + json);
+    System.out.println("Props:\n" + json);
   }
 }
 
