@@ -10,15 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestController
+@RequiredArgsConstructor
 public class Y { // 1 instanta
   private final MailService mailService;
+  @Value("${props.gate}")
   private final Integer gate;
 
-  public Y(MailService mailService,
-           @Value("${props.gate}") Integer gate) {
-    this.mailService = mailService;
-    this.gate = gate;
-  }
+//  public Y(MailService mailService,
+//           @Value("${props.gate}") Integer gate) {
+//    this.mailService = mailService;
+//    this.gate = gate;
+//  }
+
+
+
 
 
 
