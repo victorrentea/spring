@@ -2,20 +2,15 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
@@ -25,25 +20,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Getter
-@ConfigurationProperties(prefix = "props")
 @Validated // ii zice lui Spring sa ia la puricat campurile si sa le valideze fata de anotarile de mai jos
-@RequiredArgsConstructor
-public class Props {
-  @NotBlank
-  private final String env;
-  @NotNull
-  private final Integer gate; // TODO set default
-  private final String welcomeMessage; // TODO not null & size >= 4
-  private final List<URL> supportUrls; // TODO size >= 1
-  private final Map<Locale, String> contactPhones;
-  private final Help help;
+@ConfigurationProperties(prefix = "props")
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-    private File file; // TODO file exists
-    private String email; // TODO valid email
+//@Getter @RequiredArgsConstructor // generate de record
+public record Props(
+    @NotBlank
+    String env,
+    @NotNull
+    Integer gate, // TODO set default
+    String welcomeMessage, // TODO not null & size >= 4
+    List<URL> supportUrls, // TODO size >= 1
+    Map<Locale, String> contactPhones,
+    Help help) {
+
+
+  //  @Data // TODO immutable
+  public record Help(
+      Integer appId,
+      File file, // TODO file exists
+      String email) { // TODO valid email
   }
 
 

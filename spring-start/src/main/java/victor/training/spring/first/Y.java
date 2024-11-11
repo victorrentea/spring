@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequiredArgsConstructor
 public class Y { // 1 instanta
@@ -37,9 +39,10 @@ public class Y { // 1 instanta
 
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + props.getGate());
+    mailService.sendEmail("Go to gate " + props.gate());
 //    props.setGate(667);
-
+//    props.supportUrls().clear(); // to merge cu #hate
+    System.out.println("Acum props = " + props);
     return 1;
   }
 }
