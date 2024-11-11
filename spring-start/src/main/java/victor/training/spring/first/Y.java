@@ -38,7 +38,7 @@ public class Y { // 1 instanta
 
   public int logic() {
     mailService.sendEmail("Go to gate " + props.getGate());
-    props.setGate(667);
+//    props.setGate(667);
 
     return 1;
   }

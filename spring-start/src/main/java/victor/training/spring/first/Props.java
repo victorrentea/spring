@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -23,19 +25,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // for getters & setters
-@Component
+@Getter
 @ConfigurationProperties(prefix = "props")
 @Validated // ii zice lui Spring sa ia la puricat campurile si sa le valideze fata de anotarile de mai jos
+@RequiredArgsConstructor
 public class Props {
   @NotBlank
-  private String env;
+  private final String env;
   @NotNull
-  private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO not null & size >= 4
-  private List<URL> supportUrls; // TODO size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+  private final Integer gate; // TODO set default
+  private final String welcomeMessage; // TODO not null & size >= 4
+  private final List<URL> supportUrls; // TODO size >= 1
+  private final Map<Locale, String> contactPhones;
+  private final Help help;
 
   @Data // TODO immutable
   public static class Help {
