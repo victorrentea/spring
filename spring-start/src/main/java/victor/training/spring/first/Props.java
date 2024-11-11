@@ -2,6 +2,8 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
@@ -22,8 +26,11 @@ import java.util.Map;
 @Data // for getters & setters
 @Component
 @ConfigurationProperties(prefix = "props")
+@Validated // ii zice lui Spring sa ia la puricat campurile si sa le valideze fata de anotarile de mai jos
 public class Props {
+  @NotBlank
   private String env;
+  @NotNull
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null & size >= 4
   private List<URL> supportUrls; // TODO size >= 1
@@ -36,24 +43,7 @@ public class Props {
     private File file; // TODO file exists
     private String email; // TODO valid email
   }
-  @PostConstruct
-  public void validate() {
-    if (env == null) {
-      throw new IllegalArgumentException("env is mandatory");
-    }
-    if (gate == null) {
-      throw new IllegalArgumentException("gate is mandatory");
-    }
-    if (welcomeMessage == null) {
-      throw new IllegalArgumentException("welcomeMessage is mandatory");
-    }
-    if (supportUrls == null || supportUrls.isEmpty()) {
-      throw new IllegalArgumentException("supportUrls is mandatory");
-    }
-    if (contactPhones == null || contactPhones.isEmpty()) {
-      throw new IllegalArgumentException("contactPhones is mandatory");
-    }
-  }
+
 
 //  @Transactional nu merge pe postconstruct petru ca magia asociata acestei anotari se porneste dupa postconstruct
 //  @PostConstruct // ruleaza metoda dupa ce componenta e construita si toate dependintele sunt injectate
