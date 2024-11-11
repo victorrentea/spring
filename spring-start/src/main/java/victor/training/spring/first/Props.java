@@ -34,8 +34,6 @@ public record Props(
     Map<Locale, String> contactPhones,
     Help help) {
 
-
-  //  @Data // TODO immutable
   public record Help(
       Integer appId,
       File file, // TODO file exists
