@@ -57,7 +57,7 @@ public class TrainingControllerStripped {
   }
 
   @GetMapping("search") // GET /api/trainings/search?name=Java&date=2021-12-01
-  public List<TrainingDto> searchGet(@RequestParam TrainingSearchCriteria criteria) {
+  public List<TrainingDto> searchGet(TrainingSearchCriteria criteria) {
     System.out.println("params cititi din ? = " + criteria);
     return trainingService.search(criteria);
   }
