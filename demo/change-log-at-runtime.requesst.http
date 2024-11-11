@@ -1,0 +1,18 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+
+###
+
+# curl -i -X POST -H 'Content-Type: application/json' -d '{"configuredLevel": "TRACE"}'
+#  http://localhost:8080/actuator/loggers/com.baeldung.spring.boot.management.logging
+POST http://localhost:8080/actuator/loggers/com.example.demo
+Content-Type: application/json
+
+{"configuredLevel": "TRACE"}
+
+###
+
+
+###

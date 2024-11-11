@@ -2,16 +2,19 @@ package com.example.demo;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @Logged
+@Slf4j
 @RequiredArgsConstructor
 public class AService { // subclasat de proxy
   private final Config config;
   @Timed
   public String metodaSmechera() {
-    if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
+    //if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
+    log.trace("debug pt o problema nereproductibila pe local, ci doar in productie "+config);
     return "hello! " + config.x();
   }
 }

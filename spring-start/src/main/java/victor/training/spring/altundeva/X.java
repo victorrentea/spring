@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import victor.training.spring.first.MailServiceImpl;
 import victor.training.spring.first.Y;
 
 // face o componenta care va fi manageriata de Spring
@@ -30,7 +31,6 @@ public class X {
 //  private Y y; // e 'private'
   // toate frameworkurile java isi bat joc (ignora) de private folosind Reflection
   // Spring, JPA, Jackson, Mongo
-
   // ❌nu folosi: method injection
 //  @Autowired
 //  public void setY(Y y) {
@@ -38,7 +38,6 @@ public class X {
 //  }
   // 💖 constructor-based injection
   private final Y y;
-
 //  public X(Y y, Y y2, Y y3, Y y4, Y y5, Y y6, Y y7, Y y8) {
 //    this.y = y;
 //    this.y2 = y2;
@@ -49,8 +48,13 @@ public class X {
 //    this.y7 = y7;
 //    this.y8 = y8;
 //  }
-
   public int logic() {
     return 1 + y.logic();
   }
+
+
+//  static {
+//    Y y = new Y(new MailServiceImpl(), proxyLaXCareVaDelegaApelurileLaXCreatDupa);
+//    X x = new X(y);
+//  }
 }

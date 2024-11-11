@@ -1,13 +1,16 @@
 package victor.training.spring.first;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import victor.training.spring.altundeva.X;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -15,6 +18,8 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class Y { // 1 instanta
   private final MailService mailService;
+  @Lazy // a proxy is injecting
+  private final X x;
   private final Props props;
 //  @Value("${props.gate}")
 //  private final Integer gate;
@@ -30,6 +35,11 @@ public class Y { // 1 instanta
   // pe campurile de instanta ale beanurilor spring
   // nu tii data specifice unui request,
   // pt ca pot fi mai multe req in || la un moment dat
+
+  @PostConstruct
+  public void init() {
+    System.out.println("Oare ce X mi se da? "+ x.getClass());
+  }
 
   // IoC
   @GetMapping // apelabila peste HTTP
