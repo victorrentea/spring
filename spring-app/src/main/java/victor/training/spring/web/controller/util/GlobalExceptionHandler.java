@@ -14,16 +14,22 @@ import victor.training.spring.web.MyException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
+
+  @ExceptionHandler(NoSuchElementException.class)
+  @ResponseStatus(NOT_FOUND)
+  public String noSuchElementException() {
+    return "Not Found";
+  }
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)

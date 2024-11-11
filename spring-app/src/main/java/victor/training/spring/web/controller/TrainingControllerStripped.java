@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -9,6 +10,7 @@ import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("api/trainings")
@@ -25,6 +27,14 @@ public class TrainingControllerStripped {
   public TrainingDto getTrainingById(@PathVariable Long trainingId) {
     return trainingService.getTrainingById(trainingId);
   }
+  // asa NU:
+//  public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long trainingId) {
+//    try {
+//      return ResponseEntity.ok(trainingService.getTrainingById(trainingId));
+//    } catch (NoSuchElementException e) { // niciodata asa!
+//      return ResponseEntity.notFound().build();
+//    }
+//  }
 
   @PostMapping
   public void createTraining(
