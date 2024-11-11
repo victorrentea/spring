@@ -35,6 +35,7 @@ public class Y { // 1 instanta
   // nu tii data specifice unui request,
   // pt ca pot fi mai multe req in || la un moment dat
 
+  // IoC
   @GetMapping // apelabila peste HTTP
   public void method() { // metoda asta poate rula pe 2,3..200 de threaduri in paralel
 //    requestCount++;

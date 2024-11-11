@@ -12,6 +12,7 @@ spring:
         password: pass
 
 props:
+    env: local
     gate: 123
     welcomeMessage: Welcome to Spring
     supportUrls:

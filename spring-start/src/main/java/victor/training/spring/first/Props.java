@@ -5,19 +5,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 @Data // for getters & setters
 @Component
+@ConfigurationProperties(prefix = "props")
 public class Props {
-  @Value("${props.env:667}")
   private String env;
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO not null & size >= 4
@@ -32,10 +37,24 @@ public class Props {
     private String email; // TODO valid email
   }
 
-  @PostConstruct
+//  @Transactional nu merge pe postconstruct petru ca magia asociata acestei anotari se porneste dupa postconstruct
+//  @PostConstruct // ruleaza metoda dupa ce componenta e construita si toate dependintele sunt injectate
+
+
+  // IoC: springu ma cheama cand vrea el
+  // = Hollywood Principle: "Don't call us, we'll call you"
+  @EventListener(ApplicationStartedEvent.class) // cand toata app e gata (mai tarziu)
   public void printMyself() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     System.out.println("WelcomeProps:\n" + json);
+  }
+}
+
+@Component
+class IntrUnJob implements CommandLineRunner {
+  @Override
+  public void run(String... commandLineArgs) throws Exception {
+    System.out.println("App pornita cu param " + Arrays.toString(commandLineArgs));
   }
 }
 
