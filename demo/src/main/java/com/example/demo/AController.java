@@ -12,7 +12,7 @@ public class AController {
   @GetMapping // http://localhost:8080
   public String hello() {
     System.out.println("Chem pe "+ aService.getClass());
-    return aService.m();
+    return aService.metodaSmechera();
   }
 
 }

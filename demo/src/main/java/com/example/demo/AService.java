@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AService { // subclasat de proxy
   private final Config config;
-  public String m() {
-//    if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
+  @Timed
+  public String metodaSmechera() {
+    if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
     return "hello! " + config.x();
   }
 }

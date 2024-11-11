@@ -3,12 +3,13 @@ package com.example.demo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Aspect
-@Component
 public class LoggerAspect {
 
   //  @Before("execution(* com.example..*.*DAO(..))") << nu recomand
