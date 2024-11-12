@@ -28,6 +28,7 @@ public class Message {
     @Embedded // cel mai 😎 feat din JPA nefolosit.
     private Garantii garantii;
 
+
     protected Message() { // for hibernate only
     }
 
