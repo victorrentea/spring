@@ -14,6 +14,7 @@ public class PlayJpa {
   @Transactional
   public void writeBehind() {
     departe();
+    System.out.println(repo.count());
     log.info("--- End of method");
     // inserturile by default se trimit in DB fix inainte de COMMIT, aici dupa iesirea din metoda
     // De ce:
