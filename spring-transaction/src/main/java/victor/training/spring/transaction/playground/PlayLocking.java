@@ -16,7 +16,7 @@ public class PlayLocking {
   @Transactional
   public int thread() {
     Message message = repo.findById(1L).orElseThrow();
-//    Message message = repo.findByIdLocking(1L).orElseThrow();
+    // Message message = repo.findByIdLocking(1L).orElseThrow();
     log.info("START");
     Thread.sleep(100);
     log.info("END: {}", message);

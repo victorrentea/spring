@@ -22,8 +22,9 @@ public class PlayJpa {
     entity.setMessage("Different");
   }
 
+  @Transactional
   public void lazyLoading() {
     Message entity = repo.findById(1L).orElseThrow();
-    log.info("Message: " /*+ entity*/);
+    log.info("Message: " + entity);
   }
 }
