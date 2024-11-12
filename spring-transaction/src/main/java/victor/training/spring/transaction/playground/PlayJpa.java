@@ -22,8 +22,9 @@ public class PlayJpa {
   }
 
   private void departe() {
-    repo.saveAndFlush(new Message("ONE"));
-    repo.saveAndFlush(new Message("ONE")); // PTSD - Post @Transactional Stress Disorder
+    repo.save(new Message("ONE"));
+    repo.save(new Message("ONE")); // PTSD - Post @Transactional Stress Disorder
+    repo.flush();
     // greu de debug gafa e aici, eroarea sare mai tarziu de mai sus
   }
 
