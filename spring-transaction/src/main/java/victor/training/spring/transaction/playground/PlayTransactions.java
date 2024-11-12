@@ -36,7 +36,7 @@ public class PlayTransactions {
   // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
   @Transactional  //(rollbackFor = Exception.class)// Fix#1
   public void play(String nume) throws IOException {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)", nume);
     CompletableFuture.runAsync(() -> other.extracted());
 //    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?// comportament preluat din EJB - greselile tineretii te bantuie la batranete
     throw new RuntimeException("BUM");

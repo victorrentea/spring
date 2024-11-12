@@ -13,8 +13,18 @@ public class PlayJpa {
 
   @Transactional
   public void writeBehind() {
-    repo.save(new Message("ONE"));
+    departe();
     log.info("--- End of method");
+    // inserturile by default se trimit in DB fix inainte de COMMIT, aici dupa iesirea din metoda
+    // De ce:
+    // - poate nu mai e nevoie sa le fac deloc (lene), de ex ca sare exceptie
+    // - sa le batcheuie impreuna cate 100-1000 odata
+  }
+
+  private void departe() {
+    repo.saveAndFlush(new Message("ONE"));
+    repo.saveAndFlush(new Message("ONE")); // PTSD - Post @Transactional Stress Disorder
+    // greu de debug gafa e aici, eroarea sare mai tarziu de mai sus
   }
 
   public void autoSave() {
