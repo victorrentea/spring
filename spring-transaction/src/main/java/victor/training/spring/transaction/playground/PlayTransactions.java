@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
-  @Transactional
 public class PlayTransactions {
   private final DataSource dataSource; // 1998
   private final JdbcTemplate jdbcTemplate; // 2001
@@ -35,12 +35,25 @@ public class PlayTransactions {
 //  }
 
   // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
-  public void play(String nume) {
+  @Transactional // Fix#1 (rollbackFor = Exception.class)
+  public void play(String nume) throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
-    // orice cod executi in timpul metodei @Transactional va fi in tranzactie cu tine (by default)
-    throw new RuntimeException("BUM");
+//    throw new RuntimeException("BUM"); //  runtime da rollback
+    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?
+    // comportament preluat din EJB - greselile tineretii te bantuie la batranete
+
+    // Fix#2 de azi pana la pensie NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
+    // oricum sunt greseli in limbajul java. *nici un alt limbaj nu are exceptii checked*
   }
+
+
+
+
+
+
+
+
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
 
   private void extracted() {
