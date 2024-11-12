@@ -33,13 +33,23 @@ public class PlayTransactions {
 //    connection.close();
 //  }
 
-  // tranzactia se porneste pe 1 conex cu baza.
-  @Transactional //obtine o conexiune din JDBC Connection Pool(n=10)
+  // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
+  @Transactional
   public void play(String nume) {
-//                                                nume = "');DROP TABLE MESSAGE WHERE (''='";
-//    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'" + nume + "' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL2' )");
+    extracted();
+    // orice cod executi in timpul metodei @Transactional va fi in tranzactie cu tine (by default)
+  }
+  // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
+
+  private void extracted() {
+    // INSERTUL asta merge in baza pe aceeasi connex ca INSERTul de mai sus.
+    // Conex JDBC ramane agatata de Threadul curent
+    extracted1();
+  }
+
+  private void extracted1() {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL2')");
   }
 }
 
