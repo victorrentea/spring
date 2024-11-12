@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
@@ -48,12 +49,11 @@ public class DemoApplication {
 		System.out.println(userRepository.findAll());
 	}
 
-	@Value("${pool.size}")
-	int size;
 	@Bean
-	public ThreadPoolTaskExecutor exportPool(){ // numele beanului = numele metodei
-		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(size);
-		return executor;
+	@ConfigurationProperties(prefix = "pool")
+	public ThreadPoolTaskExecutor exportPool(/*@Value("${pool.size}")
+																						 int size*/){ // numele beanului = numele metodei
+    //		executor.setCorePoolSize(size);
+		return new ThreadPoolTaskExecutor();
 	}
 }
