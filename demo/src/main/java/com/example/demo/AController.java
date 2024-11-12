@@ -32,7 +32,6 @@ public class AController {
     return new Dto(aService.metodaSmechera(), "b");
   }
 
-
   @GetMapping("/export")
   public void export() throws IOException {
     aService.generate();
