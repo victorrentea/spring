@@ -11,7 +11,7 @@ public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection
   @Value("${props.gate}")
-  private Integer gate; // TODO replace with injected Props
+  private Integer gate;
 
   public int logic() {
     mailService.sendEmail("Go to gate " + gate);
