@@ -35,14 +35,14 @@ public class PlayTransactions {
 //  }
 
   // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
-  @Transactional  (rollbackFor = Exception.class)// Fix#1
+  @Transactional  //(rollbackFor = Exception.class)// Fix#1
   public void play(String nume) throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
-//    throw new RuntimeException("BUM"); //  runtime da rollback
-    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?
+//    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?
     // comportament preluat din EJB - greselile tineretii te bantuie la batranete
 
+    throw new RuntimeException("BUM"); //  runtime da rollback
     // Fix#2 de azi pana la pensie NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
     // oricum sunt greseli in limbajul java. *nici un alt limbaj nu are exceptii checked*
   }
