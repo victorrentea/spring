@@ -3,12 +3,20 @@ package com.example.demo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+// by default sa mearga aspectul,
+// dar sa-l pot dezactiva scriind
+// intercept.enabled=false in proprietati
+@ConditionalOnProperty(name = "intercept.enabled",
+  havingValue = "true",
+  matchIfMissing = true)
+@Component
 @Aspect
 public class LoggerAspect {
 
