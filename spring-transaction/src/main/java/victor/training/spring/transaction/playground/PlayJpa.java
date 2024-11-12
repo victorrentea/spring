@@ -23,11 +23,10 @@ public class PlayJpa {
 
   @Transactional
   public void autoSave() { // ruleaza dupa writeBehind
-    Message entity = repo.findById(1L).orElseThrow();
+    long id = 1L;
+    Message entity = repo.findById(id).orElseThrow();
     entity.setMessage("TWO");// ajunge in DB si fara repo.save
-    // TODO scrie aici ceva in DB care sa ramana chiar daca tx curenta da ROLLBACK
-    otherClass.oricumComite();
-  }
+  } // dupa iesirea din metoda, proxy-ul vede ca ai modificat obiectul => UPDATE
 
 
 

@@ -18,7 +18,8 @@ public class AController {
 
   record Dto(
       @Schema(description = "A field")
-      @NotNull @Size(max = 20) String a,
+      @NotNull @Size(max = 20)
+      String a,
       String b) {
   }
 
