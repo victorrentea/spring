@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class AController {
@@ -28,13 +31,13 @@ public class AController {
     return new Dto(aService.metodaSmechera(), "b");
   }
 
+  private final UserRepository userRepository;
   @GetMapping("/export")
-  public void export() {
-    writeExportFile();
-  }
-
-  @SneakyThrows
-  private static void writeExportFile()  {
-    Thread.sleep(10000);
+  public void export() throws IOException {
+    try (FileWriter fileWriter = new FileWriter("export.csv")) {
+      for (User user : userRepository.findAll()) {
+        fileWriter.write(user.getName() + ";" + user.getEmail() + "\n");
+      }
+    }
   }
 }
