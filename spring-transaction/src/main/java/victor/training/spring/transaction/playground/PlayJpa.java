@@ -32,14 +32,15 @@ public class PlayJpa {
   @Transactional
   public void autoSave() { // ruleaza dupa writeBehind
     Message entity = repo.findById(1L).orElseThrow();
-    entity.setMessage("Different");
-    repo.save(entity);
-    repo.save(new Message("AUDIT ca s-a modificat"));
+    entity.setMessage("Different");// ajunge in DB si fara repo.save
+    // intr-o metoda @Transactional orice @Entitate ai luat din JPA
+    // daca o modifici schimbarile ajung automat in DB, si fara .save
   }
 
-  @Transactional
+  @Transactional(readOnly = true) // necesar pentru lazy load
   public void lazyLoading() {
     Message entity = repo.findById(1L).orElseThrow();
-    log.info("Message: " + entity);
+    log.info("Luat entity din DB --- ");
+    log.info("Message: " + entity.getTags()); // un SELECT ascuns sa-ti scoata si copii
   }
 }
