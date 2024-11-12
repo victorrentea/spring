@@ -39,7 +39,7 @@ public class PlayTransactions {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
     // orice cod executi in timpul metodei @Transactional va fi in tranzactie cu tine (by default)
-    System.out.println("ies din metoda---");
+    throw new RuntimeException("BUM");
   }
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
 
