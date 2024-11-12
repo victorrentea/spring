@@ -35,8 +35,10 @@ public class PlayTransactions {
 
   // tranzactia se porneste pe 1 conex cu baza.
   @Transactional //obtine o conexiune din JDBC Connection Pool(n=10)
-  public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL1' )");
+  public void play(String nume) {
+//                                                nume = "');DROP TABLE MESSAGE WHERE (''='";
+//    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'" + nume + "' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL2' )");
   }
 }

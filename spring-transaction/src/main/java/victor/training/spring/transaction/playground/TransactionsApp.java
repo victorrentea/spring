@@ -29,7 +29,7 @@ public class TransactionsApp {
     try {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
       log.info("============= START EXPERIMENTS ==============");
-      playTransactions.play();
+      playTransactions.play("SQL1");
 
 //      log.info("============= JPA:writeBehind ==============");
 //      jpa.writeBehind();
