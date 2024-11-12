@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -59,6 +60,11 @@ class OtherClass {
     // Conex JDBC ramane agatata de Threadul curent
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW) //fa-mi tx noua pe conexiune noua luata din pool
+  public void oricumComite() {
+    repo.save(new Message("SA RAMANE CHIAR DACA ROLLBACK"));
   }
 }
 // TODO

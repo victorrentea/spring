@@ -15,7 +15,7 @@ public class CumSaStarvezConnectionPoolul {
   public String starve() {
     Message message = repo.findById(1L).orElseThrow();
     message.setMessage("Altu");
-    chemUnRestApi();
+    chemUnRestApi(); // api call in @Transctional care tine conexiunea ocupata
     return "Starving Connection Pool";
   }
   @GetMapping("/iaibanii")
