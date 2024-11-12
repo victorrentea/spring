@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 @Service
 @Logged
 @Slf4j
@@ -28,5 +31,19 @@ public class AService { // subclasat de proxy
     log.info("End");
   }
 
+
+
+  private final UserRepository userRepository;
+  @Async
+  protected void generate()  {
+    try (FileWriter fileWriter = new FileWriter("export.csv")) {
+      for (User user : userRepository.findAll()) {
+        fileWriter.write(user.getName() + ";" + user.getEmail() + "\n");
+      }
+      Thread.sleep(3000);
+    } catch (IOException | InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
 }

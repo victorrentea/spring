@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,13 +32,11 @@ public class AController {
     return new Dto(aService.metodaSmechera(), "b");
   }
 
-  private final UserRepository userRepository;
+
   @GetMapping("/export")
   public void export() throws IOException {
-    try (FileWriter fileWriter = new FileWriter("export.csv")) {
-      for (User user : userRepository.findAll()) {
-        fileWriter.write(user.getName() + ";" + user.getEmail() + "\n");
-      }
-    }
+    aService.generate();
   }
+
+
 }
