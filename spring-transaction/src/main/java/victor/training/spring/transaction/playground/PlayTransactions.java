@@ -37,13 +37,20 @@ public class PlayTransactions {
   @Transactional  //(rollbackFor = Exception.class)// Fix#1
   public void play(String nume) throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
-    CompletableFuture.runAsync(() -> extracted());
+    CompletableFuture.runAsync(() -> other.extracted());
 //    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?// comportament preluat din EJB - greselile tineretii te bantuie la batranete
     throw new RuntimeException("BUM");
     //  runtime da rollback
     // Fix#2 de azi pana la pensie NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
     // oricum sunt greseli in limbajul java. *nici un alt limbaj nu are exceptii checked*
   }
+}
+
+@Service
+@RequiredArgsConstructor
+class OtherClass {
+  private final MessageRepo repo;
+  private final JdbcTemplate jdbcTemplate;
 
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
   @Transactional // e pus prost aici ca e chemat local in aceeasi clasa
@@ -53,13 +60,6 @@ public class PlayTransactions {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
   }
-
-}
-
-@Service
-@RequiredArgsConstructor
-class OtherClass {
-  private final MessageRepo repo;
 }
 // TODO
 // 0 p6spy
