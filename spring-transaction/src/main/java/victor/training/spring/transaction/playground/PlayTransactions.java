@@ -7,14 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
-  private final DataSource dataSource; // 1998
+//  private final DataSource dataSource; // 1998
   private final JdbcTemplate jdbcTemplate; // 2001
   private final EntityManager entityManager; // 2006
   private final MessageRepo repo; // = Spring Data JPA, 2011
@@ -38,33 +37,21 @@ public class PlayTransactions {
   @Transactional  //(rollbackFor = Exception.class)// Fix#1
   public void play(String nume) throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
-    extracted();
-//    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?
-    // comportament preluat din EJB - greselile tineretii te bantuie la batranete
-
-    throw new RuntimeException("BUM"); //  runtime da rollback
+    CompletableFuture.runAsync(() -> extracted());
+//    throw new IOException("BUM"); // exceptie checked da commit . CE BOU A FACUT ASTA?// comportament preluat din EJB - greselile tineretii te bantuie la batranete
+    throw new RuntimeException("BUM");
+    //  runtime da rollback
     // Fix#2 de azi pana la pensie NU MAI ARUNCA NICIODATA EXCEPTII CHECKED
     // oricum sunt greseli in limbajul java. *nici un alt limbaj nu are exceptii checked*
   }
 
-
-
-
-
-
-
-
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
-
   private void extracted() {
     // INSERTUL asta merge in baza pe aceeasi connex ca INSERTul de mai sus.
     // Conex JDBC ramane agatata de Threadul curent
-    extracted1();
-  }
-
-  private void extracted1() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
   }
+
 }
 
 @Service
