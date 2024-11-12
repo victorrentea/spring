@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,25 @@ public class PlayTransactions {
   private final EntityManager entityManager; // 2006
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
+// anii 2000
+//    Connection connection = dataSource.getConnection();
+//    connection.setAutoCommit(false); // adica nu scrie direct in DB ce INSERT/UPDATE/DELETE
+//  try{
+//    f(connection);
+//    connection.createStatement().executeQuery("INSERT")
+//    connection.createStatement().executeQuery("INSERT")
+//    connection.commit();
+//  }catch(Exception e){
+//      connection.rollback();
+//    }
+//  finally {
+//    connection.close();
+//  }
 
-  @Transactional
+  // tranzactia se porneste pe 1 conex cu baza.
   public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    repo.save(new Message("JPA"));
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL1' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL2' )");
   }
 }
 
