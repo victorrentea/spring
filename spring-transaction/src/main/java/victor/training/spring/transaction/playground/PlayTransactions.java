@@ -35,7 +35,7 @@ public class PlayTransactions {
 //  }
 
   // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
-  @Transactional // Fix#1 (rollbackFor = Exception.class)
+  @Transactional  (rollbackFor = Exception.class)// Fix#1
   public void play(String nume) throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
