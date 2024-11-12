@@ -12,6 +12,7 @@ import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
+  @Transactional
 public class PlayTransactions {
   private final DataSource dataSource; // 1998
   private final JdbcTemplate jdbcTemplate; // 2001
@@ -34,7 +35,6 @@ public class PlayTransactions {
 //  }
 
   // proxyul deschide tx pe conex luata din JDBC conn pool inainte de intrarea in metoda
-  @Transactional
   public void play(String nume) {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
