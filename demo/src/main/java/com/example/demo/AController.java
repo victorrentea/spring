@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +26,15 @@ public class AController {
   public Dto hello() {
     System.out.println("Chem pe " + aService.getClass());
     return new Dto(aService.metodaSmechera(), "b");
+  }
+
+  @GetMapping("/export")
+  public void export() {
+    writeExportFile();
+  }
+
+  @SneakyThrows
+  private static void writeExportFile()  {
+    Thread.sleep(10000);
   }
 }
