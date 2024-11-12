@@ -5,14 +5,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +30,10 @@ public class AController {
   }
 
   @GetMapping("/export")
-  public void export() throws IOException {
-    aService.generate();
+  public String export() throws IOException {
+    var id = UUID.randomUUID().toString();
+    aService.generate(id);
+    return id;
   }
 
 

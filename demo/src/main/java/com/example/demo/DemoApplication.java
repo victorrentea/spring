@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.micrometer.core.aop.TimedAspect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -15,6 +16,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.sql.DataSource;
 
@@ -44,5 +46,14 @@ public class DemoApplication {
 					.setName("name"+i));
 		}
 		System.out.println(userRepository.findAll());
+	}
+
+	@Value("${pool.size}")
+	int size;
+	@Bean
+	public ThreadPoolTaskExecutor exportPool(){ // numele beanului = numele metodei
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(size);
+		return executor;
 	}
 }

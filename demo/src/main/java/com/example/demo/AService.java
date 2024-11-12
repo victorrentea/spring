@@ -16,12 +16,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AService { // subclasat de proxy
   private final Config config;
+
   @Timed
   public String metodaSmechera() {
     //if(true) throw new RuntimeException("Intentionat sa vezi proxyul in fata meodei asteia in call stack");
-    log.trace("debug pt o problema nereproductibila pe local, ci doar in productie "+config);
+    log.trace("debug pt o problema nereproductibila pe local, ci doar in productie " + config);
     return "hello! " + config.x();
   }
+
   @Scheduled(fixedRateString = "${rate.millis}")
 //  @Async // EVITA
 //  @Scheduled(cron = "${cron.expression}")
@@ -32,15 +34,18 @@ public class AService { // subclasat de proxy
   }
 
 
-
   private final UserRepository userRepository;
-  @Async
-  protected void generate()  {
-    try (FileWriter fileWriter = new FileWriter("export.csv")) {
+
+  // fire-and-forget
+  @Async("exportPool") //logeaza orice eroare daca e @Async void
+  protected void generate(String id) {
+    log.info("Start");
+    try (FileWriter fileWriter = new FileWriter("export-%s.csv".formatted(id))) {
       for (User user : userRepository.findAll()) {
         fileWriter.write(user.getName() + ";" + user.getEmail() + "\n");
       }
       Thread.sleep(3000);
+      log.info("End");
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
