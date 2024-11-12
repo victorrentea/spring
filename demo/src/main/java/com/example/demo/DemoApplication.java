@@ -10,12 +10,16 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.sql.DataSource;
 
 //@EnableCaching(order = 2)
 @EnableConfigurationProperties(Config.class)
 @SpringBootApplication
+@EnableScheduling
+@EnableAsync
 public class DemoApplication {
 
 	public static void main(String[] args) {

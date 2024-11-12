@@ -3,6 +3,8 @@ package com.example.demo;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,12 +19,15 @@ public class AService { // subclasat de proxy
     log.trace("debug pt o problema nereproductibila pe local, ci doar in productie "+config);
     return "hello! " + config.x();
   }
+
+  @Scheduled(fixedRateString = "${rate.millis}")
+//  @Async // EVITA
+//  @Scheduled(cron = "${cron.expression}")
+  public void salut() throws InterruptedException {
+    log.info("Start");
+    Thread.sleep(2000); // nu e re-entrant decat daca @Async (=o cauti)
+    log.info("End");
+  }
+
+
 }
-
-//https://chat.openai.com/
-// ** Sunt un dev java. Folosesc spring boot 3.
-// vreau sa scriu un aspect care sa interecepteze apelurile
-// facute din com.example.demo.AController in com.example.demo.AService
-
-// ** Dupa ce merge zi-i:
-// Vreau sa interceptez pe baza de adnotare custom.
