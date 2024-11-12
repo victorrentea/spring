@@ -12,7 +12,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import victor.training.spring.actuator.DisplayAllActualPropertiesConfig.ActualPropertiesActuatorEndpoint;
+import victor.training.spring.actuator.ActualPropertiesEndpoint.ActuatorEndpoint;
 
 import java.util.Map;
 import java.util.Properties;
@@ -20,18 +20,19 @@ import java.util.TreeMap;
 
 @Configuration
 @Slf4j
-@Import(ActualPropertiesActuatorEndpoint.class) // aka @Bean X  {return new X()}
-public class DisplayAllActualPropertiesConfig {
-  @ConfigurationProperties
+@Import(ActuatorEndpoint.class) // aka @Bean X  {return new X()}
+public class ActualPropertiesEndpoint {
+  @ConfigurationProperties // without prefix to get all properties
   @Bean
   public Properties allProps() {
     return new Properties();
   }
 
-  @Endpoint(id = "actual-properties") // http://localhost:8080/actuator/actual-properties
-  @RefreshScope // reload at /refresh
+  @Endpoint(id = "actual-properties")
+  // http://localhost:8080/actuator/actual-properties
+  @RefreshScope // reload at http://localhost:8080/actuator/refresh
   @RequiredArgsConstructor
-  public static class ActualPropertiesActuatorEndpoint {
+  public static class ActuatorEndpoint {
     private final Properties allProps;
 
     @PostConstruct
