@@ -10,8 +10,7 @@ public class ProxyIntro {
     secondGrade.mathClass();
   }
 }
-// ------------------------ THE LINE ------------------
-@Service
+// ------------------- LINE ------------------
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -23,7 +22,6 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Service
 class Maths {
   public int sum(int a, int b) {
     return a + b;
