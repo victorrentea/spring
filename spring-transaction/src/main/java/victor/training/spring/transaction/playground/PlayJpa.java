@@ -23,15 +23,18 @@ public class PlayJpa {
   }
 
   private void departe() {
-    repo.save(new Message("ONE"));
-    repo.save(new Message("ONE")); // PTSD - Post @Transactional Stress Disorder
+    repo.save(new Message("ONE")); // primeste id=1
+//    repo.save(new Message("ONE")); // PTSD - Post @Transactional Stress Disorder
 //    repo.flush();
     // greu de debug gafa e aici, eroarea sare mai tarziu de mai sus
   }
 
-  public void autoSave() {
+  @Transactional
+  public void autoSave() { // ruleaza dupa writeBehind
     Message entity = repo.findById(1L).orElseThrow();
     entity.setMessage("Different");
+    repo.save(entity);
+    repo.save(new Message("AUDIT ca s-a modificat"));
   }
 
   @Transactional
