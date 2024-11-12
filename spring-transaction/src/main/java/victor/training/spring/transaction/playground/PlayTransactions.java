@@ -39,6 +39,7 @@ public class PlayTransactions {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,?)",nume);
     extracted();
     // orice cod executi in timpul metodei @Transactional va fi in tranzactie cu tine (by default)
+    System.out.println("ies din metoda---");
   }
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
 
@@ -49,7 +50,7 @@ public class PlayTransactions {
   }
 
   private void extracted1() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL2')");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
   }
 }
 
