@@ -19,7 +19,6 @@ public class AService { // subclasat de proxy
     log.trace("debug pt o problema nereproductibila pe local, ci doar in productie "+config);
     return "hello! " + config.x();
   }
-
   @Scheduled(fixedRateString = "${rate.millis}")
 //  @Async // EVITA
 //  @Scheduled(cron = "${cron.expression}")
