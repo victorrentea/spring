@@ -46,9 +46,11 @@ public class PlayTransactions {
   }
 
   // proxyul din fata metodei face COMMIT automat dupa iesirea din metoda
-  private void extracted() {
+  @Transactional // e pus prost aici ca e chemat local in aceeasi clasa
+  public void extracted() {
     // INSERTUL asta merge in baza pe aceeasi connex ca INSERTul de mai sus.
     // Conex JDBC ramane agatata de Threadul curent
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2')");
   }
 
