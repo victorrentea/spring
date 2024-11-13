@@ -16,6 +16,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -32,6 +34,12 @@ import static java.lang.System.currentTimeMillis;
 @EnableFeignClients
 public class SpringApplication {
   public static final long t0 = currentTimeMillis();
+
+  @Bean
+  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(
+      ThreadPoolTaskExecutor poolBar) {
+    return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
+  }
 
   public static void main(String[] args) {
     new SpringApplicationBuilder(SpringApplication.class)
