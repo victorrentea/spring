@@ -2,6 +2,9 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,19 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class UserController {
   private final AnotherClass anotherClass;
 
+//  static String currentUsername; // rau ca pot exista mai multe req HTTP in executie
+
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() {
+  public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
     TokenUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<todo-username>"; // TODO
+    // in Java exista un clasa magica numita ThreadLocal in care pot pune userul de pe acest thread
+    Authentication authentication = anotherClass.getUser().get();
+    dto.username = authentication.getName();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,6 +48,8 @@ public class UserController {
     return dto;
   }
 
+
+
   //  @Bean // enable propagation of SecurityContextHolder over @Async
   //	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
   //		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
@@ -44,12 +58,11 @@ public class UserController {
   @Slf4j
   @Service
   public static class AnotherClass {
-    //    @Async
-    //    public CompletableFuture<String> asyncMethod() {
-    //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //        log.info("Current authentication = {}", authentication);
-    //        return CompletableFuture.completedFuture(authentication.getName());
-    //    }
+    @Async
+    public CompletableFuture<Authentication> getUser() {
+      log.info("pe ce thread sunt maica?");
+      return completedFuture(SecurityContextHolder.getContext().getAuthentication());
+    }
   }
 
 }
