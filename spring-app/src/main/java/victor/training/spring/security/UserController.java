@@ -2,6 +2,7 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,33 +29,18 @@ public class UserController {
   @GetMapping("api/user/current")
   public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
     TokenUtils.printTheTokens();
-
+    MDC.put("correlationId", "zau?"); // = Logback Diagnostic Context pe ThreadLocal
     log.info("Return current user");
+    met();
     CurrentUserDto dto = new CurrentUserDto();
     // in Java exista un clasa magica numita ThreadLocal in care pot pune userul de pe acest thread
     Authentication authentication = anotherClass.getUser().get();
     dto.username = authentication.getName();
-
-    //<editor-fold desc="KeyCloak">
-    //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //		dto.username = authentication.getName();
-    //		dto.role = authentication.getSubRoles().iterator().next().getAuthority();
-    //		dto.authorities = stripRolePrefix(authentication.getSubRoles());
-    //    // Optional:
-    //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-    //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-    //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
-    //</editor-fold>
     return dto;
   }
-
-
-
-  //  @Bean // enable propagation of SecurityContextHolder over @Async
-  //	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  // 	}
-
+  private void met() {
+    log.info("Tot in fluxu meu dar 20 de clase mai incolo");
+  }
   @Slf4j
   @Service
   public static class AnotherClass {
