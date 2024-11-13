@@ -36,6 +36,7 @@ public class UserController {
     // in Java exista un clasa magica numita ThreadLocal in care pot pune userul de pe acest thread
     Authentication authentication = anotherClass.getUser().get();
     dto.username = authentication.getName();
+    dto.authorities = authentication.getAuthorities().stream().map(Object::toString).toList();
     return dto;
   }
   private void met() {

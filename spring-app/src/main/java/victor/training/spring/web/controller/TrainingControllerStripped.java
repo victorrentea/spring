@@ -2,6 +2,9 @@ package victor.training.spring.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -49,17 +52,8 @@ public class TrainingControllerStripped {
     dto.id = trainingId;
     trainingService.updateTraining(dto);
   }
-  // TODO Allow only for role 'ADMIN'... or POWER or SUPER
-  // TODO Allow for authority 'training.delete'
-  // TODO The current user must manage the the teacher of that training
-  //  	User.getManagedTeacherIds.contains(training.teacher.id)
-  // TODO @accessController.canDeleteTraining(#id)
-  // TODO PermissionEvaluator
 
-  @DeleteMapping("{id}")
-  public void deleteTrainingById(@PathVariable Long id) {
-    trainingService.deleteById(id);
-  }
+
 
   @PostMapping("search") // #traditie
   public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
@@ -70,5 +64,19 @@ public class TrainingControllerStripped {
   public List<TrainingDto> searchGet(TrainingSearchCriteria criteria) {
     System.out.println("params cititi din ? = " + criteria);
     return trainingService.search(criteria);
+  }
+
+  @DeleteMapping("{id}")
+//  @Secured("ROLE_ADMIN") // !!! mereu stringu incepe cu ROLE_ !!!
+  @PreAuthorize("hasRole('ADMIN') && @authorizationService.areVoie(#id)") // SpEL
+  public void deleteTrainingById(@PathVariable Long id) {
+    trainingService.deleteById(id);
+  }
+}
+@Component
+class AuthorizationService {
+  public boolean areVoie(long trainingId) {
+    System.out.println("#sieu");
+    return true;
   }
 }

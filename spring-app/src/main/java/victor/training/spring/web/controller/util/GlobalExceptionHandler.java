@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,6 +30,11 @@ public class GlobalExceptionHandler {
   @ResponseStatus(NOT_FOUND)
   public String noSuchElementException() {
     return "Not Found";
+  }
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  @ResponseStatus(FORBIDDEN)
+  public String AuthorizationDeniedException() {
+    return "Ia mana!";
   }
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
