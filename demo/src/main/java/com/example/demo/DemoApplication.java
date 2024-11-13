@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.zaxxer.hikari.HikariDataSource;
 import io.micrometer.core.aop.TimedAspect;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
@@ -20,17 +23,33 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.sql.DataSource;
+import java.util.concurrent.TimeUnit;
 
 //@EnableCaching(order = 2)
 @EnableConfigurationProperties(Config.class)
 @SpringBootApplication
 //@EnableScheduling
 @EnableAsync
+@EnableCaching
 @RequiredArgsConstructor
 public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
+	}
+
+
+	@Bean
+	public Caffeine caffeineConfig() {
+		return Caffeine.newBuilder()
+				.expireAfterWrite(3, TimeUnit.SECONDS);
+	}
+
+	@Bean
+	public CacheManager cacheManager(Caffeine caffeine) {
+		CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+		caffeineCacheManager.setCaffeine(caffeine);
+		return caffeineCacheManager;
 	}
 
 	@Bean // definesc programatic beanuri

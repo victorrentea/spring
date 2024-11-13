@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class ProxyIntro {
 // TODO: orice apel catre Maths sa logeze parametrii; Scrie doar deasupra liniei
 // ------------------------ THE LINE ------------------
 // scrie ceva sub linie sa opresti proxyurile din a merge
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -59,6 +61,7 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
+@Service
 /*final crash*/ class Maths {
   // @Secured("ROLE_ADMIN") sau @PreAuthorize("hasRole('ADMIN')") sau @RolesAllowed("ADMIN")
   // @Transactional executa in tranzactie
