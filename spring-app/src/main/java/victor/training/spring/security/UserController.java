@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 //import victor.training.spring.security.config.keycloak.KeyCloakUtils;
 import victor.training.spring.security.config.keycloak.TokenUtils;
+import victor.training.spring.security.config.preauth.PreAuthPrincipal;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,6 +38,11 @@ public class UserController {
     Authentication authentication = anotherClass.getUser().get();
     dto.username = authentication.getName();
     dto.authorities = authentication.getAuthorities().stream().map(Object::toString).toList();
+
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    PreAuthPrincipal preAuthPrincipal =
+        (PreAuthPrincipal) principal;
     return dto;
   }
   private void met() {
