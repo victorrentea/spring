@@ -1,5 +1,6 @@
 package victor.training.spring.aspects;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 public class ProxyIntro {
@@ -11,6 +12,7 @@ public class ProxyIntro {
   }
 }
 // ------------------- LINE ------------------
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -22,6 +24,7 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
+@Component
 class Maths {
   public int sum(int a, int b) {
     return a + b;
