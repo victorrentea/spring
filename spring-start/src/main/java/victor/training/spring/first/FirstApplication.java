@@ -32,11 +32,4 @@ public class FirstApplication implements CommandLineRunner {
 //    System.out.println(x.logic());
   }
 }
-@Configuration
-class AltaClasa {
-  @Bean
-  public Y y() {
-    return new Y();
-  }
-}
 

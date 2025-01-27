@@ -3,6 +3,7 @@ package victor.training.spring.first;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public class X {
 
   // #2 DI prin ctor, nu e necesara @Autowired
   private final Y y;
-  public X(Y y) { // ori de cate ori se poate
+  public X(/*@Lazy*/ Y y) { // ori de cate ori se poate
     this.y = y;
   }
 
