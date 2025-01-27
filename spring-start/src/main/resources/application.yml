@@ -13,9 +13,8 @@ spring:
         password: pass
 
 props:
-
+    env: prod
     gate: 1234
-    welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com
@@ -27,3 +26,4 @@ props:
         app-id: 1251
         file: c:/help-file.pdf
         email: help@spring.io
+    welcome-message: 👋Hello
