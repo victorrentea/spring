@@ -13,7 +13,7 @@ spring:
         password: pass
 
 props:
-#    env: prod
+    env: prod
     gate: 1234
     supportUrls:
         - http://stackoverflow.com

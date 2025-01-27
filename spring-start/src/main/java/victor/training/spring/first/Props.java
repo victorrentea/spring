@@ -2,17 +2,12 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
@@ -21,33 +16,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-//@Data // generates getters & setters = MUST HAVE
-@Getter
-@Component
 @ConfigurationProperties(prefix = "props")
-@Validated
-public class Props {
-//  @Value("${props.env:${null}}")
-  @NotNull
-  private String env;
-//  @Value("${props.gate}")
-  @Min(0)
-  private Integer gate; // TODO set default
-  @Size(min = 5, max = 100)// mereu trebuie pus si notnull
-  @NotNull
-  private String welcomeMessage; // TODO validate not null & size >= 4
-  @Size(min=1)
-  @NotNull
-  private List<URL> supportUrls; // TODO validate size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
-
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-//    @FileExists(emptyIsOk = true)
-    private File file; // TODO validate file exists
-    private String email; // TODO validate email pattern
+@Validated // MUST-HAVE
+public record Props(
+    @NotNull
+    String env,
+    @Min(0)
+    Integer gate, // TODO set default
+    @Size(min = 5, max = 100)// mereu trebuie pus si notnull
+    @NotNull
+    String welcomeMessage, // TODO validate not null & size >= 4
+    @Size(min = 1)
+    @NotNull
+    List<URL> supportUrls, // TODO validate size >= 1
+    Map<Locale, String> contactPhones,
+    Help help
+) {
+  public static record Help(
+     Integer appId,
+    //    @FileExists(emptyIsOk = true)
+     File file, // TODO validate file exists
+     String email) // TODO validate email pattern
+  {
   }
 
 
@@ -62,6 +52,49 @@ public class Props {
     System.out.println("Props:\n" + json);
   }
 }
+
+
+////@Data // generates getters & setters = MUST HAVE
+//@Getter
+//@Component
+//@ConfigurationProperties(prefix = "props")
+//@Validated
+//public class Props {
+////  @Value("${props.env:${null}}")
+//  @NotNull
+//  private String env;
+////  @Value("${props.gate}")
+//  @Min(0)
+//  private Integer gate; // TODO set default
+//  @Size(min = 5, max = 100)// mereu trebuie pus si notnull
+//  @NotNull
+//  private String welcomeMessage; // TODO validate not null & size >= 4
+//  @Size(min=1)
+//  @NotNull
+//  private List<URL> supportUrls; // TODO validate size >= 1
+//  private Map<Locale, String> contactPhones;
+//  private Help help;
+//
+//  @Data // TODO immutable
+//  public static class Help {
+//    private Integer appId;
+////    @FileExists(emptyIsOk = true)
+//    private File file; // TODO validate file exists
+//    private String email; // TODO validate email pattern
+//  }
+//
+//
+//  @PostConstruct
+//  public void printMyself() throws JsonProcessingException {
+//
+////    if (!help.file.exists())
+////      throw new IllegalArgumentException("File does not exist: " + help.file);
+//
+//    String json = new ObjectMapper().writerWithDefaultPrettyPrinter()
+//        .writeValueAsString(this);
+//    System.out.println("Props:\n" + json);
+//  }
+//}
 
 
 // to test the points below, watch the log output above

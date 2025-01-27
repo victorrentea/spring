@@ -56,7 +56,7 @@ public class Y {
 
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + props.getGate());
+    mailService.sendEmail("Go to gate " + props.gate());
  //   props.setGate(-1); // modificare de date globale
 
     return 1;
