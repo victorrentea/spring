@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class TeacherDto {
 	public Long id;
-	@NotNull
+	@NotNull(message = "{teacher.name.mandatory}")
 	public String name;
 	
 	public TeacherDto() {
