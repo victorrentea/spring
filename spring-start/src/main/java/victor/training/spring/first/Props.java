@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,12 +21,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // generates getters & setters
+//@Data // generates getters & setters = MUST HAVE
+@Getter
 @Component
 @ConfigurationProperties(prefix = "props")
 @Validated
 public class Props {
-//  @Value("${props.env}")
+//  @Value("${props.env:${null}}")
   @NotNull
   private String env;
 //  @Value("${props.gate}")
