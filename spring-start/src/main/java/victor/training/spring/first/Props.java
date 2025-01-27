@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -15,8 +17,11 @@ import java.util.Map;
 
 @Data // generates getters & setters
 @Component
+//@ConfigurationProperties(prefix = "props")
 public class Props {
+  @Value("${props.env:#{null}}")
   private String env;
+  @Value("${props.gate}")
   private Integer gate; // TODO set default
   private String welcomeMessage; // TODO validate not null & size >= 4
   private List<URL> supportUrls; // TODO validate size >= 1
@@ -32,7 +37,8 @@ public class Props {
 
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
-    String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    String json = new ObjectMapper().writerWithDefaultPrettyPrinter()
+        .writeValueAsString(this);
     System.out.println("Props:\n" + json);
   }
 }
