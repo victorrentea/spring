@@ -28,9 +28,9 @@ public class OpenApiConfig {
     Contact contact = new Contact();
     contact.setName(contactName);
     info.setContact(contact);
-    OpenAPI api = new OpenAPI();
+    OpenAPI api = new OpenAPI(); // construesti de mana
     api.setInfo(info);
-    return api;
+    return api; // ii dai lui Spring o instanta s-o puna intre cele mangeuite
   }
   // endregion
 

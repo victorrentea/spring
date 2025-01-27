@@ -1,12 +1,11 @@
-package victor.training.spring.first;
+package victor.training.spring;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import victor.training.spring.first.MailService;
 
-@Service
+//@Service
 public class Y {
   @Autowired
   private MailService mailService; // polymorphic injection

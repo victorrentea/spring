@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import victor.training.spring.Y;
 
 // se creaza un bean de spring = o instanta care fa fi mageuita de containerul de Spring
 // Spring face "new X"
