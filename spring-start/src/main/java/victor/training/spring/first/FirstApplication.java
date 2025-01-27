@@ -14,7 +14,8 @@ public class FirstApplication implements CommandLineRunner {
   }
 
   @Autowired
-  private X x;
+  private X x; // Dependency Injection= Spring iti leaga aici o ref la instanta X
+  // desi este private Springu poate oricum sa-l scrie folosind magie: Java Reflection
 
   @EventListener(ApplicationReadyEvent.class)
   public void onAppStart() {
@@ -23,7 +24,7 @@ public class FirstApplication implements CommandLineRunner {
 
   @Override // from CommandLineRunner
   public void run(String... args) {
-    System.out.println(x.logic());
+//    System.out.println(x.logic());
   }
 }
 
