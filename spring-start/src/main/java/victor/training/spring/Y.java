@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import victor.training.spring.first.MailService;
 
+import java.util.List;
+
 //@Service
 public class Y {
   @Autowired// injection point
-  private MailService mailService; // crapa, ca nu stie pecare
+  private MailService mailService; // crapa, ca nu stie pecar
 
 //  @Autowired(required = false)
 //  private KafkaAuditor kafkaAuditor;
-
 
 //  @Autowired
 //  @Qualifier("mailServiceDummy") // numele beanului
