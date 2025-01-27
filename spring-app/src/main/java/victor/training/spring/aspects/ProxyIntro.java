@@ -1,9 +1,11 @@
 package victor.training.spring.aspects;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -68,6 +70,20 @@ class SecondGrade {
 /*record #4 error ca e final*/
 @Logged
 class Maths {
+
+  @Secured("ROLE_HR") //A) if (naiVoie) throw new SecurityException();
+  // inchipui-o pusa pe o superclasa a lui Math
+  @Cacheable("salarii") //B) if (cacheExista) return cache; else return apeleaza;
+  public short getSalariu(String angajat) {
+    return 0;//
+  }
+  // CRIMA:
+  // 1. vine o HRista si acceseaza salariul lui Victor
+  // 2. colegu mai sr+10ani ca Victor si vrea sa vada salariul lui
+  // il vede ca @Cacheable are de adineauri valoarea
+  // Se intampla buba <=> B ruleaza inaintea lui A
+
+
   public /*static #1 ignored*/ int sum(int a, int b) {
     return a + b;
   }

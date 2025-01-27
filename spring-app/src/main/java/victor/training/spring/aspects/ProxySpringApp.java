@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.event.EventListener;
 
+//@EnableCaching(order = 100000)
 @SpringBootApplication
 public class ProxySpringApp {
     public static void main(String[] args) {
