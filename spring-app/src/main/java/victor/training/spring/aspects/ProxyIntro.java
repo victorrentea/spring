@@ -1,18 +1,25 @@
 package victor.training.spring.aspects;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 public class ProxyIntro {
   public static void main(String[] args) {
-    // WE play the role of Spring here ...
-    Maths maths = new Maths();
+    Maths maths = new MathsProxy();
     SecondGrade secondGrade = new SecondGrade(maths);
     secondGrade.mathClass();
   }
 }
-// ------------------- LINE ------------------
-@Service
+class MathsProxy extends Maths {
+  Maths maths = new Maths();
+  public int sum(int a, int b) {
+    System.out.println("sum called with " + a + " and " + b);
+    return maths.sum(a, b);
+  }
+  public int product(int a, int b) {
+    System.out.println("product called with " + a + " and " + b);
+    return maths.product(a, b);
+  }
+}
+// afiseaza param fiecarui apel de metoda in Maths, fara a scrie nimic sub linie
+// ------------------- LINIE ------------------
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -24,7 +31,6 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Component
 class Maths {
   public int sum(int a, int b) {
     return a + b;
@@ -33,11 +39,4 @@ class Maths {
     return a * b;
   }
 }
-
-
-// Key Points
-// - Class Proxy using CGLIB Enhancer to extend the proxied class
-// - Proxy limitations: final methods/classes, local calls
-// - Debug a Proxy
-// - Custom @Aspect
 
