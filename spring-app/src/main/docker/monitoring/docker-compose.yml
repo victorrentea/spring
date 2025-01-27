@@ -3,6 +3,8 @@ version: '3.8'
 services:
   prometheus:
     image: prom/prometheus:latest
+    environment:
+      PROP_ONE: 15 #injectabila in @Value("${prop.one}")
     ports:
       - 9090:9090
     volumes:

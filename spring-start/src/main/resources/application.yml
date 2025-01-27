@@ -1,3 +1,4 @@
+o.prop.care.nu.exista: 42
 spring:
     mail:
         host: smtp.gmail.com

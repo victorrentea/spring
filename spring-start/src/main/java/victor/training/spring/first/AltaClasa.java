@@ -6,8 +6,8 @@ import victor.training.spring.Y;
 
 @Configuration
 public class AltaClasa {
-  @Bean
-  public Y y() {
-    return new Y();
-  }
+//  @Bean
+//  public Y y() {
+//    return new Y();
+//  }
 }
