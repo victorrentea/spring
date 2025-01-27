@@ -1,5 +1,6 @@
 package victor.training.spring.web.entity;
 
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class Teacher {
 	@Enumerated(EnumType.STRING)
 	private ContractType contractType;
 
+	@Size(min = 3, max = 100) // automat validate la INSERT/UPDATE
 	private String name;
 	@OneToMany(mappedBy = "teacher")
 	private List<Training> trainings = new ArrayList<>();

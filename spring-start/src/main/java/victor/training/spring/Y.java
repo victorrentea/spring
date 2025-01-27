@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.MailService;
+import victor.training.spring.first.Props;
 
 import java.util.List;
 
@@ -23,8 +24,9 @@ public class Y {
 //    this.mailService = mailService;
 //  }
   private final MailService mailService;
-  @Value("${props.gate}") // apare acum pe param de ctor datorita lombok.config
-  private final Integer gate;
+//  @Value("${props.gate}") // apare acum pe param de ctor datorita lombok.config
+//  private final Integer gate;
+  private final Props props;
 
   @Value("${o.prop.care.nu.exista}")
   Integer p;
@@ -54,7 +56,7 @@ public class Y {
 
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.getGate());
 
     return 1;
   }
