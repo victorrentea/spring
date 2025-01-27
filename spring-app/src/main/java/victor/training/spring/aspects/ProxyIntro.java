@@ -49,6 +49,7 @@ public class ProxyIntro {
 // afiseaza param fiecarui apel de metoda in Maths, fara a scrie nimic sub linie
 // ------------------- LINIE ------------------
 // ce pot scrie sub linie sa nu mearga interceptia metodei
+@Service
 class SecondGrade {
   private  Maths maths;
   SecondGrade(Maths maths) {
@@ -62,9 +63,10 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-//@Service
+@Service
 /*final class #3 error*/
 /*record #4 error ca e final*/
+@Logged
 class Maths {
   public /*static #1 ignored*/ int sum(int a, int b) {
     return a + b;

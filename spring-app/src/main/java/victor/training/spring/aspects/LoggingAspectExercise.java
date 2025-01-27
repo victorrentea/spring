@@ -1,6 +1,8 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +22,19 @@ public class LoggingAspectExercise {
   // TODO 3 print the returned value
   //  = the value returned by #proceed()
   // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+
+
+  @Around("@annotation(Logged) || @within(Logged)") // methods or classes annotated with @LoggedMethod
+  public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    log.debug("INTERCEPTED");
+    String methodName = joinPoint.getSignature().getName();
+    Object[] args = joinPoint.getArgs();
+    log.debug("Method {} called with params {}", methodName, args);
+    Object result = joinPoint.proceed();
+    log.debug("Method {} returned {}", methodName, result);
+    return result;
   }
+
 }
 // @Around("@within(RestController)") // method of classes annotated with @RestController
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod
