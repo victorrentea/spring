@@ -43,12 +43,18 @@ public class Props {
   @Data // TODO immutable
   public static class Help {
     private Integer appId;
+//    @FileExists(emptyIsOk = true)
     private File file; // TODO validate file exists
     private String email; // TODO validate email pattern
   }
 
+
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
+
+//    if (!help.file.exists())
+//      throw new IllegalArgumentException("File does not exist: " + help.file);
+
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter()
         .writeValueAsString(this);
     System.out.println("Props:\n" + json);
