@@ -24,6 +24,7 @@ public class BarApi {
       Beer beer = barman.pourBeer();
       Vodka vodka = barman.pourVodka();
 
+      // fire-and-forget
       barman.sendNotification("Dilly");
 
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
