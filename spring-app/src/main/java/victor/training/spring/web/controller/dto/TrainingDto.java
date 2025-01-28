@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class TrainingDto {
 	public Long id;
-	@Size(min = 3, max = 50, message = "{customer.name.length}")
+	@Size(min = 3, max = 50, message = "{training.name.length}")
 	public String name;
 	public ContractType level;
 	public Long teacherId;
@@ -20,6 +20,8 @@ public class TrainingDto {
 	public String teacherName;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	public LocalDate startDate;
+	@Size(min=5)
+//	@Sanitize
 	public String description;
 	public Long version;
 

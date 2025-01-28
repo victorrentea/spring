@@ -175,7 +175,7 @@
         $.ajax(restEndpoint + "/trainings", {
             method: "GET",
             success: function (trainings) {
-                fillTable(trainings);
+                fillTable(trainings.trainings);
                 toastr.info("Trainings reloaded")
             }
         });
@@ -190,7 +190,7 @@
             }),
             contentType: "application/json",
             success: function (trainings) {
-                fillTable(trainings);
+                fillTable(trainings.trainings);
                 toastr.info("Search results displayed")
             }
         });

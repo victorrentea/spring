@@ -2,6 +2,7 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,6 @@ import victor.training.spring.web.repo.TeacherRepo;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.repo.TrainingSearchRepo;
 
-import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class TrainingService {
         }
     }
 
-    public void createTraining(TrainingDto dto) {
+    public Long createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name) != null) {
             throw new IllegalArgumentException("Another training with that name already exists");
         }
@@ -66,7 +66,8 @@ public class TrainingService {
                 .setProgrammingLanguage(dto.language)
                 .setStartDate(dto.startDate)
                 .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
-        trainingRepo.save(newEntity);
+        newEntity = trainingRepo.save(newEntity); // INSERT. muteaza param dat
+        return newEntity.getId(); // ala generat din secventa din DB
     }
 
     public void updateTraining(TrainingDto dto) {

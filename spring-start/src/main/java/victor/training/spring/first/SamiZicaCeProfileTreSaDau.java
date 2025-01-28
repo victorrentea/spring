@@ -17,7 +17,7 @@ public class SamiZicaCeProfileTreSaDau {
     if (activeProfiles.length != 1 ||
         !activeProfiles[0].equals("prod") &&
         !activeProfiles[0].equals("dev")) {
-      throw new IllegalStateException("Trebuie sa dai unul dintre profilele 'prod' sau 'dev' ca argument la java -Dspring.profiles.active=prod");
+//      throw new IllegalStateException("Trebuie sa dai unul dintre profilele 'prod' sau 'dev' ca argument la java -Dspring.profiles.active=prod");
     }
 
   }

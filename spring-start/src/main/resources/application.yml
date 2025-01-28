@@ -11,6 +11,8 @@ spring:
                         enable: true
         username: user
         password: pass
+#    profiles:
+#        active: prod
 
 props:
     env: prod
