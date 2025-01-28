@@ -10,6 +10,8 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 import victor.training.spring.varie.Sleep;
 
+import static java.lang.System.currentTimeMillis;
+
 @Slf4j
 @Service
 @Timed
@@ -18,6 +20,7 @@ public class Barman {
   private final RestTemplate restTemplate;
   private final DrinksFeignClient drinksFeignClient;
 
+  @Timed("pour-beer-pt-alex")
   public Beer pourBeer() {
     log.debug("Fetching Beer...");
     // #1 traditional
