@@ -12,10 +12,13 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = "MESSAGE",
+    name = "UQ_MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue
