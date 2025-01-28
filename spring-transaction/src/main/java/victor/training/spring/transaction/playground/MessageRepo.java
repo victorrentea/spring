@@ -3,9 +3,12 @@ package victor.training.spring.transaction.playground;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
@@ -14,7 +17,9 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<Message> findByIdLocking(long id);
 
-  @Query(value = "/*+ */insert into MESSAGE(id, message) values (100, ?1)",
+  @Transactional
+  @Modifying
+  @Query(value = "/*+ */insert into MESSAGE(id, message) values (42, ?1)",
       nativeQuery = true)
   void insert(String name);
 
