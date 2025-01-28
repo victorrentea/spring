@@ -22,7 +22,7 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 
   // tranzactia se propaga automat PE THREAD catre orice metode chem
   @Transactional//(propagation = REQUIRES_NEW) // daca nu te joci  cu din astea
-  @Async
+  //@Async
   @Modifying
   @Query(value = "/*+ */insert into MESSAGE(id, message) values (42, ?1)",
       nativeQuery = true)

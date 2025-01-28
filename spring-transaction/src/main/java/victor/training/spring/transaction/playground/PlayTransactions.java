@@ -14,15 +14,18 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @SneakyThrows
+  @Transactional
   public void play() {
     chemataLocal();
-//    Thread.sleep(1000);
+    // o tx face rollback daca sare orice exceptie din metoda @Transactional
+    // de ex cand oricare din cele 2 queruri crapa
   }
 
-  @Transactional
   private void chemataLocal() { // sonar se prinde
     repo.insert("SQL");
-    repo.save(new Message("SQL"));
+    repo.save(new Message("SQL2"));
+    if (Math.random()<1)throw new IllegalArgumentException("ghinion");
+
   }
 
 }
