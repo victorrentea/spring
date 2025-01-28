@@ -12,7 +12,7 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  //@Transactional
+  @Transactional
   public void play() {
     repo.insert("SQL");
     repo.save(new Message("SQL"));

@@ -17,7 +17,8 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<Message> findByIdLocking(long id);
 
-  @Transactional
+  // tranzactia se propaga automat PE THREAD catre orice metode chem
+  @Transactional//(propagation = REQUIRES_NEW) // daca nu te joci  cu din astea
   @Modifying
   @Query(value = "/*+ */insert into MESSAGE(id, message) values (42, ?1)",
       nativeQuery = true)
