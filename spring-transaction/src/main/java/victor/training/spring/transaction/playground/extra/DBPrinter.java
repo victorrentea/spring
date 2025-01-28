@@ -21,7 +21,7 @@ public class DBPrinter {
   @Transactional(readOnly = true)
   public void print() {
     String contents = repo.findAll().stream().map(Message::toString).collect(joining("\n"));
-    log.info("🏁🏁🏁 FINAL DATABASE CONTENTS: " + contents+"""
+    log.info("🏁🏁🏁 FINAL DATABASE CONTENTS:\n" + (contents.isEmpty()?"<EMPTY>":contents)+"""
        
        
        See more at  http://localhost:8080/h2-console/ using:
