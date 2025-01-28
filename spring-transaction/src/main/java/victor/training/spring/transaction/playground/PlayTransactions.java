@@ -14,8 +14,9 @@ public class PlayTransactions {
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, ?)",
-        "SQL");
+//    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, ?)",
+//        "SQL");
+    repo.insert("SQL");
     repo.save(new Message("SQL"));
   }
 }

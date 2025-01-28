@@ -14,6 +14,9 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<Message> findByIdLocking(long id);
 
+  @Query(value = "/*+ */insert into MESSAGE(id, message) values (100, ?1)",
+      nativeQuery = true)
+  void insert(String name);
 
   // o metoda fara implementare, care va fi implementata de Spring Data JPA
   // asta merge pentru ca metoda se numeste findByMessage
