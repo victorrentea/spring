@@ -6,11 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableAsync;
 import victor.training.spring.transaction.playground.extra.DBPrinter;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 @Slf4j
+@EnableAsync//@Async e atat de periculos ca se asigura ca vrei sa ti-o faci cu mana ta.
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp {

@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +13,12 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
+  @SneakyThrows
   @Transactional
   public void play() {
     repo.insert("SQL");
     repo.save(new Message("SQL"));
+//    Thread.sleep(1000);
   }
 }
 

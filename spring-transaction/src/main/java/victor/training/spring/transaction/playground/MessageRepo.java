@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
   @Query("FROM Message WHERE id = ?1")
@@ -19,6 +22,7 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 
   // tranzactia se propaga automat PE THREAD catre orice metode chem
   @Transactional//(propagation = REQUIRES_NEW) // daca nu te joci  cu din astea
+  @Async
   @Modifying
   @Query(value = "/*+ */insert into MESSAGE(id, message) values (42, ?1)",
       nativeQuery = true)
