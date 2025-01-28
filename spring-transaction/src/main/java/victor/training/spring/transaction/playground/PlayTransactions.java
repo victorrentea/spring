@@ -14,12 +14,17 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @SneakyThrows
-  @Transactional
   public void play() {
-    repo.insert("SQL");
-    repo.save(new Message("SQL"));
+    chemataLocal();
 //    Thread.sleep(1000);
   }
+
+  @Transactional
+  private void chemataLocal() { // sonar se prinde
+    repo.insert("SQL");
+    repo.save(new Message("SQL"));
+  }
+
 }
 
 @Service
