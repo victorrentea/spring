@@ -2,6 +2,8 @@ package victor.training.spring.async;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -18,15 +20,25 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @RequiredArgsConstructor
 public class BarApi {
    private final Barman barman;
+   private final ThreadPoolTaskExecutor executor;
 
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
-
+//
+      // Unele lucruri se stocheaza pe threadul curent:
+      // - MDC.put("userId","jdoe"); folosit apoi in log pattern
+      // - SecurityContextHolder -> @Secured,@RolesAllowed
+      // - traceID
+      // - @Trasactional/JDBC Connection(s)
+      // echivalentul pe Reactor (WebClient) este Reactor Context
+/**/
       // pasi independenti in paralel, foloseste CompletableFuture, NU @Async
-      var  futureBeer = supplyAsync(barman::pourBeer);
-      var futureVodka = supplyAsync(barman::pourVodka);
+      var  futureBeer =
+          supplyAsync(barman::pourBeer, executor);
+      var futureVodka =
+          supplyAsync(barman::pourVodka, executor);
 
       // fire-and-forget -> foloseste @Async
       barman.sendNotification("Dilly");

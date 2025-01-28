@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,10 +9,12 @@ import victor.training.spring.async.drinks.Vodka;
 import victor.training.spring.varie.Sleep;
 
 @RestController
+@Slf4j
 public class DrinksApi { // pretend it's running in a different app
   @GetMapping("/api/beer/{type}")
   public Beer beer(@PathVariable String type) {
     Sleep.millis(1000);
+    log.info("In microserviciul pe care il chem: torn bere");
     return new Beer().setType(type);
   }
 

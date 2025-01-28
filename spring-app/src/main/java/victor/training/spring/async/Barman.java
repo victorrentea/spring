@@ -4,6 +4,7 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.async.drinks.Beer;
@@ -21,6 +22,7 @@ public class Barman {
   private final DrinksFeignClient drinksFeignClient;
 
   @Timed("pour-beer-pt-alex")
+//  @Secured("ROLE_SEFU")
   public Beer pourBeer() {
     log.debug("Fetching Beer...");
     // #1 traditional
