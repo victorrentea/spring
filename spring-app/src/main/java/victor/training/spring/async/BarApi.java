@@ -8,7 +8,10 @@ import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
 import victor.training.spring.async.drinks.Vodka;
 
+import java.util.concurrent.CompletableFuture;
+
 import static java.lang.System.currentTimeMillis;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Slf4j
 @RestController
@@ -21,13 +24,14 @@ public class BarApi {
       log.debug("Submitting my order");
       long t0 = currentTimeMillis();
 
-      Beer beer = barman.pourBeer();
-      Vodka vodka = barman.pourVodka();
+      // pasi independenti in paralel, foloseste CompletableFuture, NU @Async
+      var  futureBeer = supplyAsync(barman::pourBeer);
+      var futureVodka = supplyAsync(barman::pourVodka);
 
-      // fire-and-forget
+      // fire-and-forget -> foloseste @Async
       barman.sendNotification("Dilly");
 
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
-      return new DillyDilly(beer, vodka);
+      return new DillyDilly(futureBeer.get(), futureVodka.get());
    }
 }
