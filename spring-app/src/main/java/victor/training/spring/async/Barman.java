@@ -42,7 +42,7 @@ public class Barman {
 
     // #4 generated client from open-api/swagger 💖
   }
-  @Async
+  @Async("notificationPool")
   public void sendNotification(String email) { // TODO outbox pattern
     log.debug("Sending notification (takes time and might fail) {}...", email);
     Sleep.millis(500); // critical but slow work that can fail
@@ -51,8 +51,9 @@ public class Barman {
     // Ganduri:
     // - crapa in background, cum ma prind?
     // - se blocheaza, nici nu sare eroare in log.
-    // - race condition (atacul secretarei colerice)
+    // - race condition (atacul secretarei colerice~>)
     // - iti da k8s kill/redeploy TU > si tu nu ai testa daca podu isi termina treaba pana moare
+    // - pe cate threaduri ruleaza asta?
   }
 
 }

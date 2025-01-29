@@ -72,9 +72,9 @@ public class Micrometer {
     private final MeterRegistry meterRegistry;
 
     @Bean
-    public ExecutorService monitoredExecutor(ThreadPoolTaskExecutor taskExecutor) {
+    public ExecutorService monitoredExecutor(ThreadPoolTaskExecutor poolBar) {
       // TODO 5 monitor the taskExecutor with ExecutorServiceMetrics
-      return ExecutorServiceMetrics.monitor(meterRegistry, taskExecutor.getThreadPoolExecutor(), "taskExecutor");
+      return ExecutorServiceMetrics.monitor(meterRegistry, poolBar.getThreadPoolExecutor(), "taskExecutor");
     }
 
     @Bean // enables @Timed

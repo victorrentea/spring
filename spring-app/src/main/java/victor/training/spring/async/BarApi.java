@@ -2,15 +2,10 @@ package victor.training.spring.async;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.DillyDilly;
-import victor.training.spring.async.drinks.Vodka;
-
-import java.util.concurrent.CompletableFuture;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -20,7 +15,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @RequiredArgsConstructor
 public class BarApi {
    private final Barman barman;
-   private final ThreadPoolTaskExecutor executor;
+   private final ThreadPoolTaskExecutor poolBar;
 
    @GetMapping("api/drink")
    public DillyDilly drink() throws Exception {
@@ -34,13 +29,13 @@ public class BarApi {
       // - @Trasactional/JDBC Connection(s)
       // echivalentul pe Reactor (WebClient) este Reactor Context
 /**/
-      // pasi independenti in paralel, foloseste CompletableFuture, NU @Async
+      // A) pasi independenti in paralel, foloseste CompletableFuture, NU @Async
       var  futureBeer =
-          supplyAsync(barman::pourBeer, executor);
+          supplyAsync(barman::pourBeer, poolBar);
       var futureVodka =
-          supplyAsync(barman::pourVodka, executor);
+          supplyAsync(barman::pourVodka, poolBar);
 
-      // fire-and-forget -> foloseste @Async
+      // B) fire-and-forget -> foloseste @Async
       barman.sendNotification("Dilly");
 
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
