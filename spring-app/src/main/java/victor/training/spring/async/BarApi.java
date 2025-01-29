@@ -29,9 +29,11 @@ public class BarApi {
       // - @Trasactional/JDBC Connection(s)
       // echivalentul pe Reactor (WebClient) este Reactor Context
 /**/
+//      WebClient......doOnNext(->)
+      // Sfat: WebClient....block() AS SOON AS POSSIBLE.
       // A) pasi independenti in paralel, foloseste CompletableFuture, NU @Async
       var  futureBeer =
-          supplyAsync(barman::pourBeer, poolBar);
+          supplyAsync(barman::pourBeer, poolBar); // pasezi mereu un Thread Pool manageuit de SPring
       var futureVodka =
           supplyAsync(barman::pourVodka, poolBar);
 
