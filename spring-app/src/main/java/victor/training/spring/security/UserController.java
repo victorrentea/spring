@@ -54,7 +54,9 @@ public class UserController {
   public static class AnotherClass {
     @Async("taskExecutor")
     public CompletableFuture<String> altaMetoda() {
-      return CompletableFuture.completedFuture(SecurityContextHolder.getContext().getAuthentication().getName());
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      System.out.println("UPDATED_BY="+username);
+      return CompletableFuture.completedFuture(username);
     }
   }
 }
