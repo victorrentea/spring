@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @SpringBootApplication
-//@ComponentScan(excludeFilters = @ComponentScan.Filter(ConfigurationProperties.class))
 @EnableConfigurationProperties(CatProps.class)
 public class DemoApplication {
 	public static void main(String[] args) {
