@@ -4,6 +4,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +18,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
@@ -88,4 +95,16 @@ class Cat {
 	private Long id;
 	private String name;
 	private String breed;
+}
+@Component
+class HttpHeaderInterceptor extends HttpFilter {
+	@Override
+	protected void doFilter(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+
+		System.out.println("Request Headers: " + Collections.list(request.getHeaderNames()));
+		super.doFilter(request, response, chain);
+	}
 }
