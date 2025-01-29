@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UserController {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = anotherClass.altaMetoda().get(); // TODO
-
+//SecurityContextHolder.getContext().getAuthentication().getAuthorities() // roluri
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     //		dto.username = authentication.getName();
@@ -54,7 +55,9 @@ public class UserController {
   public static class AnotherClass {
     @Async("taskExecutor")
     public CompletableFuture<String> altaMetoda() {
-      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//      ((KeyCloackPrincipal)authentication.getPrincipal()).getClaim("preferred_username");
+      String username = authentication.getName();
       System.out.println("UPDATED_BY="+username);
       return CompletableFuture.completedFuture(username);
     }

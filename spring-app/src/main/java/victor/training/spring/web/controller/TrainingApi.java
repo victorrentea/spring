@@ -6,6 +6,8 @@ import org.owasp.html.Sanitizers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
@@ -77,7 +79,9 @@ public class TrainingApi {
 	// TODO PermissionEvaluator
 
 	@DeleteMapping("{id}")
-	public void deleteTrainingById(Long id) {
+//	@Secured("ROLE_ADMIN") // role-based authorization prin aspected💖
+//	@PreAuthorize("hasRole('ADMIN')")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 

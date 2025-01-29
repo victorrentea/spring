@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,11 +30,16 @@ public class GlobalExceptionHandler {
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
+//    if (exception instanceof AccessDeniedException) {
+//      throw exception; // allow 403 to go out ca sa vada security briciul toti!
+//    }
     log.error(exception.getMessage(), exception);
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+  }
+  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public String onException() throws Exception {
+    return "ia mana!"; // don't leak stack traces to clients (Security Best Practice)
   }
 
   	@ResponseStatus(NOT_FOUND)

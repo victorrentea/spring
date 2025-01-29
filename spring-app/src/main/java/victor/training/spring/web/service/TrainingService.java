@@ -3,6 +3,7 @@ package victor.training.spring.web.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +96,7 @@ public class TrainingService {
         //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
+    @Secured("ROLE_ADMIN")
     public void deleteById(Long id) {
         trainingRepo.deleteById(id);
     }
