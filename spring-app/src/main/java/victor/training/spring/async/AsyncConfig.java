@@ -1,15 +1,12 @@
 package victor.training.spring.async;
 
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
-import java.util.concurrent.CompletableFuture;
 
 @EnableAsync
 @Configuration
@@ -24,22 +21,10 @@ public class AsyncConfig {
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		// copy MDC from parent thread to workerthread
-		executor.setTaskDecorator(new TaskDecorator() {
-			@Override
-			public Runnable decorate(Runnable runnable) {
-				var parent = MDC.getCopyOfContextMap();
-				return () -> {
-					if (parent != null) {
-						MDC.setContextMap(parent); // on the child thread
-					}
-					try {
-						runnable.run();
-					}finally {
-						MDC.clear();
-					}
-				};
-			}
-		});
+		executor.setTaskDecorator(new CopyMDCToWorker());
+
+		Gauge.builder( "poolbar.pool.size", executor::getPoolSize).register(Metrics.globalRegistry);
+		Gauge.builder( "poolbar.queue.size", executor::getQueueSize).register(Metrics.globalRegistry);
 		return executor;
 	}
 
