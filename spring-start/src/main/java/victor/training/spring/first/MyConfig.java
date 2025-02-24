@@ -13,7 +13,7 @@ public class MyConfig {
 
   // if I need to do manually "new" an object or configure it manually (eg. call init())
   @Bean
-  public MailServiceDummy dummy() { //  name of the bean = method name("dummy")
+  public MailServiceDummy dummy2() { //  name of the bean = method name("dummy")
     MailServiceDummy mailServiceDummy = new MailServiceDummy(1);
     mailServiceDummy.init();
     System.out.println("I win in MyConfig");
