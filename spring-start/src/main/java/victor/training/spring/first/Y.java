@@ -11,7 +11,7 @@ public class Y {
   private MailService mailService; // polymorphic injection
   @Value("${props.gate}")
   private Integer gate;
-  @Value("${props.welcomeMessage}")
+  @Value("${props.welcomeMessage:Hi!}")
   private String message;
 
   public int logic() {
