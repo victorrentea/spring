@@ -11,7 +11,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
-@Import(MyConfig.class)
+@Import({ SecondConfig.class, MyConfig.class})
 @ComponentScan(basePackages = "kodagcidscgdhcgvdsuyfeqw")
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
@@ -25,6 +25,7 @@ public class FirstApplication implements CommandLineRunner {
   public void onAppStart() {
     System.out.println("App started OK 🎉");
   }
+
 
   @Override // from CommandLineRunner
   public void run(String... args) {

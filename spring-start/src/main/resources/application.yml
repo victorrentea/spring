@@ -15,7 +15,7 @@ spring:
 
 # expose all actuator endpoints over http
 management.endpoints.web.exposure.include: "*"
-
+spring.main.allow-bean-definition-overriding: true
 props:
     env: prod
     gate: 123
