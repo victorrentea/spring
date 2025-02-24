@@ -36,7 +36,10 @@ class Offer2 {
 
   @EventListener
   @Order(6) // hard to maintain = global coupling point
+
   @Async // runs in a separate thread
+  // 1) to ignore any errors occurring
+  // 2) not wait for a long processing
   public void onCartEvent(CartEvent event) {
     log.info("Offer2: " + event);
     // event handlers run by default in the same thread as publisher, one AFTER THE OTHER in an unspecified order
