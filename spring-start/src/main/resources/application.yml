@@ -10,7 +10,8 @@ spring:
                         enable: true
         username: user
         password: pass
-
+#    beans:
+#        name-generator: org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator
 props:
     env: prod
     gate: 123
