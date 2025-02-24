@@ -20,6 +20,17 @@ public class FirstApplication implements CommandLineRunner {
     SpringApplication.run(FirstApplication.class);
   }
 
+//  private static FirstApplication INSTANCE;
+//
+//  public static FirstApplication getInstance() {
+//    if (INSTANCE == null) {
+//      INSTANCE = new FirstApplication();
+//    }
+//    return INSTANCE;
+//  }
+//
+//  private FirstApplication() {
+//  }
   @Autowired
   private X x;
 

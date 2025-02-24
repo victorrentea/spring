@@ -9,7 +9,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -25,6 +27,8 @@ import java.util.Objects;
 @Validated
 @ConfigurationProperties(prefix = "props")
 public record Props(
+  @NotNull
+  @Size(min=5, max=20)
   String env,
   Integer gate, // TODO set default
   @NotNull
@@ -47,12 +51,15 @@ public record Props(
     String email){ // TODO validate email pattern
   }
 
-  @PostConstruct
+//  @PostConstruct
+  @EventListener(ApplicationStartedEvent.class)
   public void printMyself() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-    System.out.println("Props:\n" + json);
+    System.out.println("Props with event:\n" + json);
   }
 }
+// IoC:DI
+// The holywood principle: "Don't call us, we'll call you"
 
 
 // to test the points below, watch the log output above
