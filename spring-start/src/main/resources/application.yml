@@ -10,8 +10,22 @@ spring:
                         enable: true
         username: user
         password: pass
-#    beans:
-#        name-generator: org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator
+    beans:
+        name-generator: org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator
+
+# expose all actuator endpoints over http
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+#exclude mail health probe
+    endpoint:
+        health:
+            mail:
+                enabled: false
+
+
 props:
     env: prod
     gate: 123
