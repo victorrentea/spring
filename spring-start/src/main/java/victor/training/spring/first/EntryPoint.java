@@ -36,7 +36,7 @@ class Offer2 {
 
   @EventListener
   @Order(6) // hard to maintain = global coupling point
-//  @Async // runs in a separate thread
+  @Async // runs in a separate thread
   public void onCartEvent(CartEvent event) {
     log.info("Offer2: " + event);
     // event handlers run by default in the same thread as publisher, one AFTER THE OTHER in an unspecified order
@@ -67,6 +67,14 @@ class CartEvent {
   public CartEvent(List<String> items, Integer price) {
     this.items = items;
     this.price = price;
+  }
+
+  @Override
+  public String toString() {
+    return "CartEvent{" +
+           "items=" + items +
+           ", price=" + price +
+           '}';
   }
 }
 

@@ -8,7 +8,10 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+@EnableAsync // YES, dear spring, I do want to die in a pool of threads
+// I had .a problem and I thought of using multi thread to solve it. Now two problems have I.
 @SpringBootApplication
 @Import({ SecondConfig.class, MyConfig.class, EntryPoint.class, Offer1.class, Offer2.class})
 @EnableConfigurationProperties(Props.class)
