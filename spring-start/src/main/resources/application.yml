@@ -19,6 +19,7 @@ spring.main.allow-bean-definition-overriding: true
 props:
     env: prod
     gate: 123
+    welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com

@@ -6,16 +6,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
-  @Autowired
-//  @Qualifier("dummy") // bean name
-  private MailService mailService; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate;
-  @Value("${props.welcomeMessage:Hi!}")
-  private String message;
+  private final MailService mailService; // polymorphic injection
+//  @Value("${props.gate}")
+//  private Integer gate;
+//  @Value("${props.welcomeMessage:Hi!}")
+//  private String message;
+  private final Props props;
+
+  public Y(MailService mailService, Props props) {
+    this.mailService = mailService;
+    this.props = props;
+  }
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.gate());
 
     return 1;
   }

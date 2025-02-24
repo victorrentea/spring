@@ -7,11 +7,13 @@ import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 @Import({ SecondConfig.class, MyConfig.class})
+@EnableConfigurationProperties(Props.class)
 @ComponentScan(basePackages = "kodagcidscgdhcgvdsuyfeqw")
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {

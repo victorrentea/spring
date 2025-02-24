@@ -2,32 +2,49 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
-@Data // generates getters & setters
-@Component
-public class Props {
-  private String env;
-  private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO validate not null & size >= 4
-  private List<URL> supportUrls; // TODO validate size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+@Validated
+@ConfigurationProperties(prefix = "props")
+public record Props(
+  String env,
+  Integer gate, // TODO set default
+  @NotNull
+  String welcomeMessage, // TODO validate not null & size >= 4
+  @NotEmpty
+  List<URL> supportUrls, // TODO validate size >= 1
+  Map<Locale, String> contactPhones,
+  Help help) {
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-    private File file; // TODO validate file exists
-    private String email; // TODO validate email pattern
+  public Props {
+//    Objects.requireNonNull(welcomeMessage);
+//    Objects.requireNonNull(env);
+    // bad because only reports first error
+  }
+
+  public record Help(
+    Integer appId,
+    File file, // TODO validate file exists
+    @Email
+    String email){ // TODO validate email pattern
   }
 
   @PostConstruct
