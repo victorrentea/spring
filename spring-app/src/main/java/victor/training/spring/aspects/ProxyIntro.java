@@ -8,6 +8,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -58,6 +59,7 @@ public class ProxyIntro {
 // Log the arguments of Maths#sum() and Maths#product() methods without changing any code below this line
 // ------------------- LINE ------------------
 // change something below the line to STOP proxies from working
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -70,10 +72,15 @@ class SecondGrade {
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
+
+    // FP alternative to Aspect Oriented Programming:
+//    meterRegistry.timer("product").record(() -> maths.product(4, 3));
   }
 }
 /*final=crash*/
 /*record=crash*/
+@Service
+@Logged
 class Maths {
 //  @Timed
 //  @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -81,12 +88,19 @@ class Maths {
 //  @Transactional
 //  @Cacheable
   // @Secured("ROLE_CAN_DO_SUM")
+  @Timed
   public /*final=ignored|crash*/ int sum(int a, int b) {
-    return a + b;
+    throw new RuntimeException("Intentional");
+//    return a + b;
   }
   // @Secured("ROLE_CAN_DO_PRODUCT") // you might (WRONG) expect that the user will also be demanded to have
   // ROLE_..SUM
   // @Secured({"ROLE_CAN_DO_PRODUCT", "ROLE_CAN_DO_SUM"}) << correct way
+//  @Logged
+
+  // if these 2 aspects happen run in this order, you get a security breach. To fix: google
+//  @Cacheable
+//  @Secured("ROLE_ADMIN")
   public /*static eg util=ignored*/ int product(int a, int b) {
     int result = 0;
     for (int i = 0; i < a; i++) {
