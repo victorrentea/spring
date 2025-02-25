@@ -18,7 +18,8 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    throw new RuntimeException("SOme error later in the flow in the same tx");
+    repo.save(new Message("JPA"));
+//    throw new RuntimeException("SOme error later in the flow in the same tx");
   }
 }
 
