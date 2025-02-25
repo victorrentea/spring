@@ -2,7 +2,10 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +27,28 @@ public class DemoApplication {
 	String get() {
 		return "REST";
 	}
-
 }
+
+//define a bean that prints at startup "life has many aspects" only if there is a property called "intercept.methods" set to "true" >
+//Tip: @ConditionalOnProperty+@Configuration class {@Bean method}
+
+@Configuration
+class Config {
+	@Bean
+	@ConditionalOnProperty(name = "intercept.methods", havingValue = "true")
+	MyBean aspect() {
+		return new MyBean();
+	}
+}
+class MyBean {
+	@EventListener(ApplicationStartedEvent.class)
+	public void method() {
+		System.out.println("life has many aspects");
+	}
+}
+
+
+
 
 // TODOs
 // a) inject a prop with @Value + default value
