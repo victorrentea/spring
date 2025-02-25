@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -15,20 +16,20 @@ import java.io.IOException;
 public class PlayTransactions {
   private final MessageRepo repo;
   private final OtherClass other;
-
   @Transactional
-  public void play() throws IOException {
+  public void play() {
+    other.play2();
     repo.save(new Message("JPA"));
-//    throw new RuntimeException("💖causes a rollbacl");
-    throw new IOException("😡causes a COMMIT (WTF!!?!?) - EJB starndard legacy");
-    // to avoid this inherited mistake, NEVER THROW CHECKED EXCEPTIONS!
   }
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  @Transactional // enlisting in the existing transaction on the current thread
+  public void play2() {
+    repo.save(new Message("JPA"));
+  }
 }
 // TODO
 // 0 p6spy
