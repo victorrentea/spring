@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +17,11 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional
-  public void play() {
+  public void play() throws IOException {
     repo.save(new Message("JPA"));
-    repo.save(new Message("JPA"));
-//    throw new RuntimeException("SOme error later in the flow in the same tx");
+//    throw new RuntimeException("💖causes a rollbacl");
+    throw new IOException("😡causes a COMMIT (WTF!!?!?) - EJB starndard legacy");
+    // to avoid this inherited mistake, NEVER THROW CHECKED EXCEPTIONS!
   }
 }
 
