@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.aop.TimedAspect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,8 +25,14 @@ public class DemoApplication {
 		System.out.println("Hi");
 	}
 
+	@Bean
+	public TimedAspect aspect() { // hey Spring, intercept all calls to @Timed methods
+		return new TimedAspect();
+	}
+
+	@Timed
 	@GetMapping
-	String get() {
+	String getbeer() {
 		return "REST";
 	}
 }
@@ -36,7 +44,7 @@ public class DemoApplication {
 class Config {
 	@Bean
 	@ConditionalOnProperty(name = "intercept.methods", havingValue = "true")
-	MyBean aspect() {
+	MyBean myBean() {
 		return new MyBean();
 	}
 }

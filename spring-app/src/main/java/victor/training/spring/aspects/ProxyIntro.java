@@ -1,5 +1,7 @@
 package victor.training.spring.aspects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,8 @@ public class ProxyIntro {
     secondGrade.mathClass();
   }
 }
+// Requirement: log the arguments of Maths#sum() and Maths#product() methods
 // ------------------- LINE ------------------
-@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -24,20 +26,15 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Component
 class Maths {
+  private static final Logger log = LoggerFactory.getLogger(Maths.class);
+
   public int sum(int a, int b) {
+    log.info("sum ({},{})", a, b);
     return a + b;
   }
   public int product(int a, int b) {
+    log.info("product ({},{})", a, b);
     return a * b;
   }
 }
-
-
-// Key Points
-// - Class Proxy using CGLIB Enhancer to extend the proxied class
-// - Proxy limitations: final methods/classes, local calls
-// - Debug a Proxy
-// - Custom @Aspect
-
