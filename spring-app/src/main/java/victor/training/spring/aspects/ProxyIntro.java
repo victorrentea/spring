@@ -2,17 +2,34 @@ package victor.training.spring.aspects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 import static java.lang.System.currentTimeMillis;
 
 public class ProxyIntro {
+  private static final Logger log = LoggerFactory.getLogger(ProxyIntro.class);
+
   public static void main(String[] args) {
     // WE play the role of Spring here ...
     Maths maths = new Maths();
-    var decorator = new LoggingDecorator(maths);
+//    Maths decorator = new LoggingDecorator(maths);
+    Callback callHandler = new MethodInterceptor() {
+      @Override
+      public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        log.info("{} ({})", method.getName(), Arrays.toString(args));
+        return method.invoke(maths, args);
+      }
+    };
+    Maths decorator = (Maths) Enhancer.create(Maths.class, callHandler);
     SecondGrade secondGrade = new SecondGrade(decorator);
     secondGrade.mathClass();
   }
