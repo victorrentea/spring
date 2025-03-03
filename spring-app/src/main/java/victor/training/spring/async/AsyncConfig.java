@@ -12,7 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
+	public ThreadPoolTaskExecutor poolBar() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(1);
 		executor.setMaxPoolSize(1);
@@ -23,8 +23,9 @@ public class AsyncConfig {
 		// copy MDC from parent thread to workerthread
 		executor.setTaskDecorator(new CopyMDCToWorker());
 
-		Gauge.builder( "poolbar.pool.size", executor::getPoolSize).register(Metrics.globalRegistry);
-		Gauge.builder( "poolbar.queue.size", executor::getQueueSize).register(Metrics.globalRegistry);
+		Gauge.builder( "poolbar_pool_size", executor::getPoolSize).register(Metrics.globalRegistry);
+		Gauge.builder( "poolbar_queue_size", executor::getQueueSize).register(Metrics.globalRegistry);
+		// find them in /actuator/prometheus
 		return executor;
 	}
 
