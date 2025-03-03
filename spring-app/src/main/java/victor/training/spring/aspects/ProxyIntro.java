@@ -90,8 +90,8 @@ class Maths {
   // @Secured("ROLE_CAN_DO_SUM")
   @Timed
   public /*final=ignored|crash*/ int sum(int a, int b) {
-    throw new RuntimeException("Intentional");
-//    return a + b;
+//    throw new RuntimeException("Intentional");
+    return a + b;
   }
   // @Secured("ROLE_CAN_DO_PRODUCT") // you might (WRONG) expect that the user will also be demanded to have
   // ROLE_..SUM
