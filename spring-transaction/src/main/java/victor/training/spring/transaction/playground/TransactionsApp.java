@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.transaction.playground.extra.DBPrinter;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
@@ -30,6 +31,7 @@ public class TransactionsApp {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
       log.info("============= START EXPERIMENTS ==============");
       playTransactions.play();
+//      System.out.println("After COMMIT");
 
 //      log.info("============= JPA:writeBehind ==============");
 //      jpa.writeBehind();

@@ -9,6 +9,7 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,10 +49,20 @@ class Config {
 		return new MyBean();
 	}
 }
+@Service
 class MyBean {
+
 	@EventListener(ApplicationStartedEvent.class)
 	public void method() {
+		other.met();
 		System.out.println("life has many aspects");
+	}
+}
+
+@Service
+class Other {
+	public void met() {
+
 	}
 }
 

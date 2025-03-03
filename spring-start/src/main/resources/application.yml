@@ -34,7 +34,7 @@ props:
         file: c:/help-file.pdf
         email: help@spring.io
 server:
-    port: 8081
+    port: 8080
 logging:
     level:
       victor: DEBUG

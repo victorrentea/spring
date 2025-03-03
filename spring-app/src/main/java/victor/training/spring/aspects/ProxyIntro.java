@@ -74,7 +74,7 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
 
     // FP alternative to Aspect Oriented Programming:
-//    meterRegistry.timer("product").record(() -> maths.product(4, 3));
+//    meterRegistry.timer("product").record(() -> api.call(4, 3));
   }
 }
 /*final=crash*/
