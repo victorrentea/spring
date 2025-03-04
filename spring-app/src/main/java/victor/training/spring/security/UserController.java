@@ -2,6 +2,8 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +21,14 @@ public class UserController {
   public CurrentUserDto getCurrentUsername() {
     TokenUtils.printTheTokens();
 
+    SecurityContext context = SecurityContextHolder.getContext();
+
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<todo-username>"; // TODO
+    dto.username = context.getAuthentication().getName();
+    dto.authorities = context.getAuthentication().getAuthorities().stream()
+        .map(Object::toString)
+        .toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

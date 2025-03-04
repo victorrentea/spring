@@ -1,0 +1,10 @@
+GET http://127.0.0.1:8080/place-order
+
+###
+
+GET http://127.0.0.1:8080/api/user/current
+x-user: admin
+x-user-roles: ADMIN,POWER
+
+###
+
