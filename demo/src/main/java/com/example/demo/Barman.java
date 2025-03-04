@@ -24,7 +24,11 @@ public class Barman {
     return webClient.get()
         .uri("http://localhost:8080/api/beer/{type}", "blond")
         .retrieve()
-        .bodyToMono(Beer.class);
+        .bodyToMono(Beer.class)
+        .delayUntil(b-> Mono.deferContextual(context -> {
+          log.info("Requesting for user {}", (String) context.get("username"));
+          return Mono.empty();
+        }));
   }
 
   public Mono<Vodka> pourVodka() {

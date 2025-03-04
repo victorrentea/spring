@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Profile("userpass")
 @Configuration
 @EnableWebSecurity // (debug = true) // see the filter chain in use
-@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // @Secured
 public class UserPassSecurity {
   @PostConstruct
   public void hi() {
@@ -30,7 +30,7 @@ public class UserPassSecurity {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
 
-    // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
+//     http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
     http.authorizeHttpRequests(authz -> authz
         .anyRequest().authenticated()
@@ -39,6 +39,7 @@ public class UserPassSecurity {
     http.formLogin(Customizer.withDefaults()) // display a login page
         .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
+    // alternatively accept HTTP requests coming with
     http.httpBasic(Customizer.withDefaults()) // also accept Authorization: Basic ... request header
         .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 

@@ -9,16 +9,22 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 @RestController
 public class DemoApplication {
 
-	public static void main(String[] args) {
+  public DemoApplication(AService aService) {
+    this.aService = aService;
+  }
+
+  public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
@@ -34,10 +40,20 @@ public class DemoApplication {
 
 	@Timed
 	@GetMapping
-	String getbeer() {
-		return "REST";
+	Mono<String> getbeer() {
+		return aService. critical();
 	}
+private final AService aService;
 }
+@Component
+class AService {
+//	@Secured("ROLE_ADMIN")
+	public Mono<String> critical() {
+		return Mono.just("REST");
+	}
+
+}
+
 
 //define a bean that prints at startup "life has many aspects" only if there is a property called "intercept.methods" set to "true" >
 //Tip: @ConditionalOnProperty+@Configuration class {@Bean method}
