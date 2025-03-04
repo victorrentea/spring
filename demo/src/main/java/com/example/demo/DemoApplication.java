@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 @RestController
@@ -48,13 +49,17 @@ class Config {
 	MyBean myBean() {
 		return new MyBean();
 	}
+
+	@Bean
+	public WebClient webClient() {
+		return WebClient.create();
+	}
 }
 @Service
 class MyBean {
 
 	@EventListener(ApplicationStartedEvent.class)
 	public void method() {
-		other.met();
 		System.out.println("life has many aspects");
 	}
 }
