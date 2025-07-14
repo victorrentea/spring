@@ -8,7 +8,7 @@ import victor.training.spring.first.Y;
 //class C {}
 //@Controller// pe vremuri se scria HTML in server .jsp, .jsf, Vaadin
 //@RestController // @GetMapping api REST
-@Service // logica de business
+//@Service // logica de business
 //@Repository // acces la DB
 
 //@Component // = nimic de mai sus; respo tehnice: filtru http, interceptor, aspect
