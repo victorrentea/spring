@@ -2,6 +2,7 @@ package victor.training.spring.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TeacherDto;
 import victor.training.spring.web.service.TeacherService;
@@ -29,7 +30,7 @@ public class TeachersController {
   }
 
   @PostMapping
-  public void createTeacher(@Valid @RequestBody TeacherDto dto) {
+  public void createTeacher(@Validated @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
   }
 

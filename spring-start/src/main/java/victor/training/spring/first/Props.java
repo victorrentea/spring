@@ -2,11 +2,17 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -15,9 +21,13 @@ import java.util.Map;
 
 @Data // generates getters & setters
 @Component
+@ConfigurationProperties(prefix = "props")
+@Validated
 public class Props {
+  @NotNull
   private String env;
   private Integer gate; // TODO set default
+  @Size(max=10)
   private String welcomeMessage; // TODO validate not null & size >= 4
   private List<URL> supportUrls; // TODO validate size >= 1
   private Map<Locale, String> contactPhones;
