@@ -15,7 +15,6 @@ import victor.training.spring.altu.X;
 @SpringBootApplication // defineste o app spring boot
 @RequiredArgsConstructor
 @ConfigurationPropertiesScan
-//@EnableConfigurationProperties(Props.class)
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);

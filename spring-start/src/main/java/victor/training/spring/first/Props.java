@@ -3,6 +3,7 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -31,10 +32,18 @@ public record Props(
 
   public record Help(
     Integer appId,
-    File file, // TODO validate file exists
+//    @FileExists // mai geek, adnotare custom ca cea de @Email, @NotNull,
+    File file, // TODO validate file exists\
+    @Email
     String email){ // TODO validate email pattern
   }
 
+  @PostConstruct
+  public void validateFileExists()  {
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("Nu-i: " + help.file());
+//    }
+  }
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
