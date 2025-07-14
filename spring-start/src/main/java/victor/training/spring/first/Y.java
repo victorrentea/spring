@@ -10,13 +10,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class Y { // numele "y"
-  @Autowired
-  private MailService mailService; // polymorphic injection
-  @Autowired
-  private List<MailService> toateImplementarile;
-  @Value("${props.gate}")
-  private Integer gate;
+//  public Y(MailService mailService,
+//           List<MailService> toateImplementarile,
+//           @Value("${props.gate}")Integer gate) {
+//    this.mailService = mailService;
+//    this.toateImplementarile = toateImplementarile;
+//    this.gate = gate;
+//  }
+  private final MailService mailService; // polymorphic injection
+  private final List<MailService> toateImplementarile;
+  @Value("${props.gate}") // copiat pe param de ctor prin lombok.config
+  private final Integer gate;
 
   @PostConstruct // Springule, ruleaz-o dupa ce ai injectat toate dep
   public void init() {
