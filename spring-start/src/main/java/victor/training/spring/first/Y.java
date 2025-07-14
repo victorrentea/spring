@@ -32,7 +32,8 @@ public class Y { // numele "y"
   }
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + props.getGate());
+    mailService.sendEmail("Go to gate " + props.gate());
+//    props.setGate(-1);
 
     return 1;
   }
