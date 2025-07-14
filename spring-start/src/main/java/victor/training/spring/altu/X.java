@@ -16,8 +16,12 @@ import victor.training.spring.first.Y;
 //@Configuration // defineste @Bean
 public class X {
   // un bean = o instanta managed by Spring din clasa ta
-  @Autowired
-  private Y y;
+
+  private final Y y;
+
+  public X(Y y) {
+    this.y = y;
+  }
 
   public int logic() {
     return 1 + y.logic();
