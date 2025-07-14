@@ -21,8 +21,10 @@ public class Y { // numele "y"
 //  }
   private final MailService mailService; // polymorphic injection
   private final List<MailService> toateImplementarile;
-  @Value("${props.gate}") // copiat pe param de ctor prin lombok.config
-  private final Integer gate;
+  private final Props props;
+//  @Value("${props.gate:667}") // copiat pe param de ctor prin lombok.config
+//  private final Integer gate;
+
 
   @PostConstruct // Springule, ruleaz-o dupa ce ai injectat toate dep
   public void init() {
@@ -30,7 +32,7 @@ public class Y { // numele "y"
   }
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.getGate());
 
     return 1;
   }

@@ -26,7 +26,7 @@ import java.util.Map;
 public class Props {
   @NotNull
   private String env;
-  private Integer gate; // TODO set default
+  private Integer gate=667; // TODO set default
   @Size(max=10)
   private String welcomeMessage; // TODO validate not null & size >= 4
   private List<URL> supportUrls; // TODO validate size >= 1

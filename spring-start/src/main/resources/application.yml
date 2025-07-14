@@ -13,7 +13,7 @@ spring:
 
 props:
     env: prod
-    gate: 125
+#    gate: 125
     welcomeMessage: Welcome
     supportUrls:
         - http://stackoverflow.com
