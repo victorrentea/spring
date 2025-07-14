@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.altu.X;
 
@@ -23,7 +24,7 @@ public class FirstApplication implements CommandLineRunner {
 //  @Qualifier("x1")
   // suficient sa numesti campul/param ctor ca numele beanului dorit
   private final X x1;
-
+  private final ApplicationEventPublisher eventPublisher;
 
 //  @Autowired // method-based
 //  void init(X x, Y y) {
@@ -36,8 +37,9 @@ public class FirstApplication implements CommandLineRunner {
   }
 
   @Override // from CommandLineRunner
-  public void run(String... args) {
+  public void run(String... args) { // ideal pt joburi
     System.out.println(x1.logic());
+    eventPublisher.publishEvent(new MyEvent("nu ma folosi"));
   }
 }
-
+record MyEvent(String data) {}

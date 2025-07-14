@@ -1,15 +1,17 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
 @Component
 public class LoggingAspectExercise {
-  // TODO 0: Run ProxySpringApp.main()
-  //  - if you see 6 + 6 = 12 in the log you're OK
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
   //  - use @Around("execution(* victor.training.spring..*.*(..))")
   //      to intercept any method of any class in my app
@@ -17,11 +19,13 @@ public class LoggingAspectExercise {
   //  - call ProceedingJoinPoint#proceed() and return its result
   // TODO 2 print the method name and arguments
   //  - extract them from the ProceedingJoinPoint parameter
-  // TODO 3 print the returned value
-  //  = the value returned by #proceed()
-  // TODO 4 (optional) experiment with other @Around annotations below
-  public void intercept() {
-    log.info("INTERCEPTED");
+  // TODO ▶️ Test launching ProxySpringApp.java
+//  @Around("execution(* victor.training.spring..Maths.*(..))")
+  @Around("@within(Logged) || @annotation(Logged)")
+  public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    System.out.println("INTERCEPTED " + pjp.getSignature().getName() +
+                       " with args: " + Arrays.toString(pjp.getArgs()));
+    return pjp.proceed();
   }
 }
 // @Around("@within(RestController)") // method of classes annotated with @RestController

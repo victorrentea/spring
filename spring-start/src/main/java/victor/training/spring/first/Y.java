@@ -2,14 +2,22 @@ package victor.training.spring.first;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 @Service
+@Retention(RetentionPolicy.RUNTIME)
+@interface DomainService {
+}
+
+@Slf4j
+@DomainService
 @RequiredArgsConstructor
 public class Y { // numele "y"
 //  public Y(MailService mailService,
@@ -34,7 +42,13 @@ public class Y { // numele "y"
   public int logic() {
     mailService.sendEmail("Go to gate " + props.gate());
 //    props.setGate(-1);
-
     return 1;
+  }
+
+  @EventListener
+//  @Async // dar multe  mai vei avea probleme acum
+  public void message(MyEvent event){
+    log.info(event.data());
+    // SHOCK: ruleaza in threadul si tranzactia publisherului
   }
 }

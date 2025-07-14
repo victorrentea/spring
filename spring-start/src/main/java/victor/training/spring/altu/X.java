@@ -1,6 +1,7 @@
 package victor.training.spring.altu;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import victor.training.spring.first.Y;
 
@@ -18,12 +19,18 @@ public class X {
   // un bean = o instanta managed by Spring din clasa ta
 
   private final Y y;
+  private final ApplicationContext applicationContext;
 
-  public X(Y y) {
-    this.y = y;
+  public X(Y y, ApplicationContext applicationContext) {
+    this.y = y; // # DI = bine
+    this.applicationContext = applicationContext;
   }
 
   public int logic() {
+//    var y = applicationContext.getBean(Y.class); // # rau dep fetching:
+    // 1 pot depinde de orice
+    // 2 greu de testat -> @Mock 🤢
+    // 3 crapa prea tarziu: la runtime, nu la init
     return 1 + y.logic();
   }
 }
