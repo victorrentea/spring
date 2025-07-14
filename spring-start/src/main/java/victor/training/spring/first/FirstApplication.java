@@ -8,10 +8,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import victor.training.spring.altu.X;
 
-//@Import(X.class) // fara auto-scan de @Component
+@Import(X.class) // fara auto-scan de @Component
 //@ComponentScan("victor.training.spring")
 @SpringBootApplication // defineste o app spring boot
 @RequiredArgsConstructor

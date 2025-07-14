@@ -27,6 +27,8 @@ public class LoggingAspectExercise {
                        " with args: " + Arrays.toString(pjp.getArgs()));
     return pjp.proceed();
   }
+//  @Around("execution(* victor.training..*.*(..))")
+    // +1 ORA set NLS_LANG =
 }
 // @Around("@within(RestController)") // method of classes annotated with @RestController
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod

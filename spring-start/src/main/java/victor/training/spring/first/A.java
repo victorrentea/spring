@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,9 +25,7 @@ public class A {
     System.out.println("Cellalt");
   }
 //  {
-//    B b= new B(new A() {
-//      // fals
-//    });
+//    B b= new B(proxy de A care va delega catre A apeluri cand va sa vie);
 //    A a = new A(b);
 //  }
 }

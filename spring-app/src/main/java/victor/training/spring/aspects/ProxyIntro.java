@@ -67,7 +67,8 @@ class SecondGrade {
 //******* CE trebuie sa fac sub aceasta LINIE pt ca sa NU mai mearga interceptia metodelor
 @Logged
 @Service
-/*final💥*/class Maths {
+/*final💥*/
+class Maths {
   /*final😶*/ public int sum(int a, int b) {
     return a + b;
   }
