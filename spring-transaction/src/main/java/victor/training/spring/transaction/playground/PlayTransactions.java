@@ -18,7 +18,7 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional
+
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     if (true) throw new RuntimeException();
