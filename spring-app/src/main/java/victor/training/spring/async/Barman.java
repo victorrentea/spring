@@ -19,9 +19,6 @@ public class Barman {
 
   public Beer pourBeer() {
     log.debug("Fetching Beer...");
-    if (true) {
-      throw new IllegalStateException("NU mai e bere!");
-    }
     // #1 traditional
     String type = "blond";
     return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
