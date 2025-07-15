@@ -26,6 +26,7 @@ public class Message {
     @NotNull
     private String message;
     @ElementCollection
+        (fetch = FetchType.EAGER) // costisitor: cauzeaza multe select ± joinuri inutile multe ori
     private List<String> tags = new ArrayList<>();
 
     protected Message() { // for hibernate only
