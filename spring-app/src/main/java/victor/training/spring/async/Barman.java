@@ -21,6 +21,7 @@ public class Barman {
     log.debug("Fetching Beer...");
     // #1 traditional
     String type = "blond";
+    // TODO
     return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
 
     // #2 Feign

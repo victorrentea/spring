@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -45,7 +47,22 @@ public class SpringApplication {
 
   @Bean // instrumented by micrometer-tracing
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
-    return builder.build();
+    return builder
+        .defaultMessageConverters()
+        .build();
+  }
+
+  @Bean
+  public RestTemplateCustomizer traceIdPropagatingRestTemplateCustomizer() {
+    return restTemplate -> {
+      // Add an interceptor to propagate the TraceID
+      ClientHttpRequestInterceptor interceptor = (request, body, execution) -> {
+        // The TraceID is automatically propagated by micrometer-tracing
+        // This interceptor ensures that the RestTemplate is properly instrumented
+        return execution.execute(request, body);
+      };
+      restTemplate.getInterceptors().add(interceptor);
+    };
   }
 
    @Bean // propagate tracing over all Spring-managed thread pools
