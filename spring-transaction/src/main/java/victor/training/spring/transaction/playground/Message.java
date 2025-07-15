@@ -17,7 +17,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
+@Table(uniqueConstraints =
+@UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
 public class Message {
     @Id
     @GeneratedValue

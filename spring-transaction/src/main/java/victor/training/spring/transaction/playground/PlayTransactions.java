@@ -13,16 +13,16 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
-  private final DataSource dataSource; // 1998
   private final JdbcTemplate jdbcTemplate; // 2001
-  private final EntityManager entityManager; // 2006
-  private final MessageRepo repo; // = Spring Data JPA, 2011
+  private final MessageRepo repo; // = 💖 Spring Data JPA, 2011
   private final OtherClass other;
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (1,'SQL' )");
     repo.save(new Message("JPA"));
+    repo.save(new Message("JPA"));
+    // aceste inserturi sunt trimise in baza ('flush') dupa iesirea din functie
+    System.out.println("Ies din functie");
   }
 }
 
