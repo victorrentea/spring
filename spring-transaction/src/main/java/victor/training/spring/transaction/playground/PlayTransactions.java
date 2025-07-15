@@ -21,6 +21,7 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+    if (true) throw new RuntimeException();
     repo.save(new Message("JPA"));
   }
 }
