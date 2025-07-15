@@ -29,7 +29,7 @@ class OtherClass {
   private final MessageRepo repo;
   @Transactional
   public void extracted() {
-    repo.save(new Message("JPA2"));
+    repo.saveAndFlush(new Message("JPA2"));
   }
 }
 // TODO
