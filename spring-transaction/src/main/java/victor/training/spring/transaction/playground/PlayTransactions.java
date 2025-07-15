@@ -18,18 +18,22 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    other.extracted();
+    try {
+      other.extracted();
+    } catch (Exception e) {
+      // nimic: sa ma caute colegii cu drujba mai tarziu
+    }
     log.info("Ies din functie");
-    throw new IllegalArgumentException();
   }
 }
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional
+
   public void extracted() {
     repo.saveAndFlush(new Message("JPA2"));
+    throw new RuntimeException();
   }
 }
 // TODO
