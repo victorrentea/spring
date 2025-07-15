@@ -7,11 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-
-import javax.sql.DataSource;
-import java.io.IOException;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,21 +18,21 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    extracted();
+    other.extracted();
     log.info("Ies din functie");
     throw new IllegalArgumentException();
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void extracted() {
-    repo.save(new Message("JPA2"));
-  }
 }
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void extracted() {
+    repo.save(new Message("JPA2"));
+  }
 }
 // TODO
 // 0 p6spy
