@@ -20,9 +20,8 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional
-  public void play() throws IOException {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    if (true) throw new IOException(); // MORALA: NU arunca vreodata exceptii checked
+  public void play() {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (1,'SQL' )");
     repo.save(new Message("JPA"));
   }
 }
