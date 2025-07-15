@@ -22,7 +22,7 @@ public class PlayTransactions {
   @Transactional
   public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    if (true) throw new IOException();
+    if (true) throw new IOException(); // MORALA: NU arunca vreodata exceptii checked
     repo.save(new Message("JPA"));
   }
 }
