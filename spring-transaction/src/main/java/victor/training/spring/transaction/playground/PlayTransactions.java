@@ -20,7 +20,8 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    repo.save(new Message("JPA"));
+    repo.save(new Message("JPA2"));
+    repo.count(); // SELECT
     // aceste inserturi sunt trimise in baza ('flush') dupa iesirea din functie
     System.out.println("Ies din functie");
   }
