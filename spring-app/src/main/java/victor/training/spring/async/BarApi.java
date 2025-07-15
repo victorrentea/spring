@@ -32,7 +32,8 @@ public class BarApi {
       Vodka vodka = barman.pourVodka(); // 1s
 
       var beer = futureBeer.get();
-      CompletableFuture.runAsync(()->barman.sendNotification("Dilly"), e); // 0.5s - dureaza timp si/sau mai crapa
+//      CompletableFuture.runAsync(()->barman.sendNotification("Dilly"), e); // 0.5s - dureaza timp si/sau mai crapa
+      barman.sendNotification("Dilly"); // 0.5s - dureaza timp si/sau mai crapa
 
       log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
       return new DillyDilly(

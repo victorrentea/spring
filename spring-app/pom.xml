@@ -30,6 +30,7 @@
         </dependency>
 
         <dependency>
+            <!-- AICI-->
             <!-- monitoring performance with Micrometer -->
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
