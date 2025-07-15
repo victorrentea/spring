@@ -22,14 +22,12 @@ public class PlayTransactions {
     log.info("Ies din functie");
     throw new IllegalArgumentException();
   }
-
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional
   public void extracted() {
     repo.save(new Message("JPA2"));
   }
