@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -22,10 +23,14 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    repo.save(new Message("JPA2"));
-//    repo.count(); // SELECT
-    // aceste inserturi sunt trimise in baza ('flush') dupa iesirea din functie
+    extracted();
     log.info("Ies din functie");
+    throw new IllegalArgumentException();
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void extracted() {
+    repo.save(new Message("JPA2"));
   }
 }
 
