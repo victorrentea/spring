@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -18,11 +20,7 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA"));
-    try {
-      other.extracted();
-    } catch (Exception e) {
-      // nimic: sa ma caute colegii cu drujba mai tarziu
-    }
+    CompletableFuture.runAsync(()->other.extracted());
     log.info("Ies din functie");
   }
 }

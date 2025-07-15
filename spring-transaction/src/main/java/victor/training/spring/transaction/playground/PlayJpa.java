@@ -29,7 +29,7 @@ public class PlayJpa {
 
 //  @Transactional(readOnly = true) // ca sa mearga lazy loading
   public void lazyLoading() {
-    Message entity = repo.findById(1L).orElseThrow();
+    Message entity = repo.findByIdCuCopii(1L).orElseThrow();
     log.info("Luat din DB");
     log.info("Message: " + entity);
   }
