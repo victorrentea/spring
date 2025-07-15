@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // 2001
@@ -21,9 +23,9 @@ public class PlayTransactions {
   public void play() {
     repo.save(new Message("JPA"));
     repo.save(new Message("JPA2"));
-    repo.count(); // SELECT
+//    repo.count(); // SELECT
     // aceste inserturi sunt trimise in baza ('flush') dupa iesirea din functie
-    System.out.println("Ies din functie");
+    log.info("Ies din functie");
   }
 }
 
