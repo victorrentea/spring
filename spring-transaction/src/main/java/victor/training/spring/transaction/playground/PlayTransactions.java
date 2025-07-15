@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +19,10 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-
-  public void play() {
+  @Transactional
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
-    if (true) throw new RuntimeException();
+    if (true) throw new IOException();
     repo.save(new Message("JPA"));
   }
 }
