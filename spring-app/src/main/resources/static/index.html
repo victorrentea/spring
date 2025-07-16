@@ -154,6 +154,7 @@
             row += '<td>';
             row += `<input type="button" value="Edit" onclick="openEditTraining(${training.id})" />`;
 
+
             // if (currentUser.authorities.includes('ROLE_TRAINING_DELETE'))
             if (currentUser.authorities.includes('ROLE_ADMIN') )
                 row += `<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(${training.id})" />`;
