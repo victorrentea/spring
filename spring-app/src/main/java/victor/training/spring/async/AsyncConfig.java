@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.Metrics;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
@@ -11,11 +12,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 @Configuration
 public class AsyncConfig {
+
 	@Bean
-	public ThreadPoolTaskExecutor poolBar() {
+	public ThreadPoolTaskExecutor poolBar(
+			@Value("${pool.bar.size}") int itDepends) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setCorePoolSize(1);
-		executor.setMaxPoolSize(1);
+		executor.setCorePoolSize(itDepends);
+		executor.setMaxPoolSize(itDepends);
 		executor.setQueueCapacity(500);
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
