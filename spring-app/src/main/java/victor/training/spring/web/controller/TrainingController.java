@@ -64,7 +64,7 @@ public class TrainingController {
 
 
 //	@PreAuthorize("hasRole('ADMIN')")
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN","ROLE_POWER"})
 	@DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
