@@ -28,28 +28,27 @@ public class UserPassSecurity {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
+    http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs, only REST API calls
 
     // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
-    http.authorizeHttpRequests(authz -> authz
-        .anyRequest().authenticated()
-    );
-
-    http.formLogin(Customizer.withDefaults()) // display a login page
+    http.formLogin(Customizer.withDefaults()) // display a login page 90s'
         .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
     http.httpBasic(Customizer.withDefaults()) // also accept Authorization: Basic ... request header
         .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
+    http.authorizeHttpRequests(authz -> authz
+        .anyRequest().authenticated()
+    );
     return http.build();
   }
 
   // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user").password("user").roles("USER").build();
+    UserDetails user = User.builder()
+        .username("user").password("{bcrypt}$2a$10$BO1iNvJGeHWEoxmwcyO4OOD1Ym02jhjR6wDFCpCyLLfAiXiG8DLlO").roles("USER").build();
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()

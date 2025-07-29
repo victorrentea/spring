@@ -19,7 +19,7 @@ public class BCrypt {
 
     // TODO assert that bcrypt#matches is true
     BCryptPasswordEncoder bcryptMatcher = new BCryptPasswordEncoder(STRENGTH, new SecureRandom());
-    Assertions.assertThat(bcryptMatcher.matches("parola", encodedPassword)).isTrue();
+    Assertions.assertThat(bcryptMatcher.matches("user", encodedPassword)).isTrue();
 
     // TODO assert that bcrypt#matches is false
     Assertions.assertThat(bcryptMatcher.matches("different", encodedPassword)).isFalse();
