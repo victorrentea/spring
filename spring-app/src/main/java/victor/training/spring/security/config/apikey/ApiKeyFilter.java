@@ -1,23 +1,34 @@
 package victor.training.spring.security.config.apikey;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
+import java.util.List;
+
 public class ApiKeyFilter extends AbstractPreAuthenticatedProcessingFilter {
-  public ApiKeyFilter(String expectedApiKey) {
-    setAuthenticationManager(authentication -> acceptApiKeyUser(expectedApiKey, authentication));
+  public ApiKeyFilter(List<String> acceptedApiKeys) {
+    setAuthenticationManager(new AuthenticationManager() {
+      @Override
+      public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        return ApiKeyFilter.this.acceptApiKeyUser(acceptedApiKeys, authentication);
+      }
+    });
   }
 
   @Override
   protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
+//    UsernamePasswordAuthenticationToken
     return httpRequest.getHeader("x-api-key"); // return principal name = api key
   }
 
-  private Authentication acceptApiKeyUser(String expectedApiKey, Authentication authentication) {
-    if (authentication.getPrincipal() instanceof String apiKeyFromHeader &&
-        expectedApiKey.equals(apiKeyFromHeader)) {
+  private Authentication acceptApiKeyUser(List<String> expectedApiKey, Authentication authentication) {
+    Object principal = authentication.getPrincipal();
+    if (principal instanceof String apiKeyFromHeader &&
+        expectedApiKey.contains(apiKeyFromHeader)) {
       authentication.setAuthenticated(true);
       return authentication;
     }

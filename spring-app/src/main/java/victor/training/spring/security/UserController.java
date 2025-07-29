@@ -41,14 +41,14 @@ public class UserController {
         .toList();
 
     //<editor-fold desc="KeyCloak">
-    //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //		dto.username = authentication.getName();
-    //		dto.role = authentication.getSubRoles().iterator().next().getAuthority();
-    //		dto.authorities = stripRolePrefix(authentication.getSubRoles());
-    //    // Optional:
-    //		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-    //		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
-    //		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+    		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    		dto.username = authentication.getName();
+//    		dto.role = authentication.getSubRoles().iterator().next().getAuthority();
+//    		dto.authorities = stripRolePrefix(authentication.getSubRoles());
+        // Optional:
+//    		KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+//    		dto.fullName = keycloakToken.getKeycloakSecurityContext().getIdToken().getName();
+//    		log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
     //</editor-fold>
     return dto;
   }
