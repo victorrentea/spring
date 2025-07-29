@@ -16,6 +16,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ import victor.training.spring.security.config.apikey.ApiKeySecurity;
 
 @Configuration
 @Slf4j
+@EnableWebSecurity // (debug = true) // see the filter chain in use
 @RequiredArgsConstructor
 public class ActuatorSecurity {
   @PostConstruct
@@ -44,22 +46,24 @@ public class ActuatorSecurity {
   public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable());
 
-    // this security filter chain only applies to /actuator/**
+    // this security filter chain only applies to these URL patterns:
     http.securityMatcher(EndpointRequest.toAnyEndpoint());
 //    http.securityMatcher("/actuator/**"); // equivalent with above
 
     http.authorizeHttpRequests(authz -> authz
           // http://localhost:8080/actuator/health is unsecured
-          .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+//          .requestMatchers("/actuator/health").permitAll()
+          .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll() // equivalent with above
 
           // the rest of actuator:
 //          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD!
           .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
     );
 
-    http.httpBasic(Customizer.withDefaults()).userDetailsService(actuatorUserDetailsService());
+    http.httpBasic(b->b.realmName("Actuator")).userDetailsService(actuatorUserDetailsService());
 
-    http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
+    http.sessionManagement(config ->
+        config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
     return http.build();
   }
 
