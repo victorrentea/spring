@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ public class TeacherService {
     @Autowired
     private TeacherRepo teacherRepo;
 
-    // TODO Cacheable for list-of-all
     public List<TeacherDto> getAllTeachers() {
         return teacherRepo.findAll().stream().map(TeacherDto::new).collect(toList());
     }

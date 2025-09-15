@@ -1,6 +1,8 @@
 package victor.training.spring;
 
 import io.micrometer.context.ContextSnapshot;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,6 +45,8 @@ public class SpringApplication {
   @Autowired
   private DataSource dataSource;
 
+
+
   @Bean // instrumented by micrometer-tracing
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
     return builder.build();
@@ -51,6 +55,11 @@ public class SpringApplication {
    @Bean // propagate tracing over all Spring-managed thread pools
   public TaskDecorator taskDecorator() {
     return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
+  }
+
+  @Bean
+  public TimedAspect timedAspect(MeterRegistry registry) {
+    return new TimedAspect(registry);
   }
 
   @EventListener(ApplicationStartedEvent.class)

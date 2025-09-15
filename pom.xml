@@ -26,8 +26,8 @@
         <module>spring-app</module>
         <!--<module>spring-gateway</module>-->
 <!--        <module>spring-sso</module>-->
-<!--        <module>spring-micro</module>-->
         <!--<module>spring-app-cdn</module>-->
+       <!--<module>spring-micro</module>-->
 		<!--<module>spring-app-attacker</module>-->
     </modules>
 

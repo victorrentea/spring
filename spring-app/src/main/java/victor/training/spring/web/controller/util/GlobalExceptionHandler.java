@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import victor.training.spring.web.MyException;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
+
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -20,31 +20,25 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
-@RestControllerAdvice
 @RequiredArgsConstructor
+// TODO annotate as @RestControllerAdvice
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
-  public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
+  // TODO handle any Exception subtype so exception stack traces are not exposed to clients; return code 500.
+  //  To test, try to violate a validation rule enforced previously
+  public String onException(Exception exception) {
     log.error(exception.getMessage(), exception);
-    return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+    return exception.getMessage();
   }
 
-  //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
-  //	public String noSuchElementException() {
-  //		return "Not Found";
-  //	}
+  // TODO handle NoSuchElementException to return 400 with body = "Not Found"
 
   // Return internationalized error messages in the user language from:
   // - the 'Accept-Language' request header via request.getLocale())
   // - the language in the Access Token via SecurityContextHolder
 
+  // Example: mapping application exceptions to [internationalize-able] error messages in messages.properties
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
   public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
@@ -55,13 +49,13 @@ public class GlobalExceptionHandler {
     return responseBody;
   }
 
-  @ResponseStatus(BAD_REQUEST)
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public String onJavaxValidationException(MethodArgumentNotValidException e) {
-    String response = e.getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.joining(", \n"));
-    log.error("Validation failed. Returning: " + response, e);
-    return response;
-  }
+//  @ResponseStatus(BAD_REQUEST)
+//  @ExceptionHandler(MethodArgumentNotValidException.class)
+//  public String onJavaxValidationException(MethodArgumentNotValidException e) {
+//    String response = e.getAllErrors().stream()
+//            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+//            .collect(Collectors.joining(", \n"));
+//    log.error("Validation failed. Returning: " + response, e);
+//    return response;
+//  }
 }

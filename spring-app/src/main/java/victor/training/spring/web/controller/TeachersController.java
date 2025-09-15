@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class TeachersController {
   private final TeacherService service;
 
   @GetMapping
+  @Timed
   public List<TeacherDto> getAllTeachers() {
     return service.getAllTeachers();
   }
