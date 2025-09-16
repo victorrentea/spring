@@ -23,7 +23,7 @@ public class ProxyIntro {
       public Object intercept(Object obj, Method method, Object[] params, MethodProxy proxy) throws Throwable {
         System.out.println("Calling " + method.getName() + " with params: " + Arrays.toString(params));
         long t0 = currentTimeMillis();
-        System.out.println("TU cine mai esti?  proxy tata: " + obj.getClass());
+//        System.out.println("TU cine mai esti?  proxy tata: " + obj.getClass());
         Object r = method.invoke(real, params);
         long t1 = currentTimeMillis();
         System.out.println("a durat "+ (t1 - t0) + " ms");
@@ -58,25 +58,36 @@ public class ProxyIntro {
 // TODO: printati param si val returnata de orice metoda chemata din Maths de catre SecondGrade
 //  FARA SA MODIFICI CODUL SUB LINIE
 // ------------------- LINE ------------------
+// Ce pot scrie sub linie (la mine-n gradina) ca sa nu mai mearga proxurile
 @Service
 @RequiredArgsConstructor
 class SecondGrade {
   private final Maths maths;
   public void mathClass() {
     System.out.println("Oare cu cine vorbesc??? " + maths.getClass());
-    System.out.println("8 + 5 = " + maths.sum(8, 5));
-    System.out.println("6 + 6 = " + maths.sum(6, 6));
+    System.out.println("8 + 5 = " + maths.suma(8, 5));
+    System.out.println("6 + 6 = " + maths.suma(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
 @Slf4j
 @Component
+/*final💥*/
+/*record💥*/
 class Maths {
-  public int sum(int a, int b) {
+  // @Timed
+  // @Secured('ROLE_ADMIN')
+  // @Transactional
+  // @Cacheable
+  public /*final😶💥*/ int suma(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+  public /*Util.static😶*/ int product(int a, int b) {
+    int rezultat = 0;
+    for (int i = 0; i < a; i++) {
+      rezultat = suma(rezultat, b); // 👑apel local NU POATE FI interceptat
+    }
+    return rezultat;
   }
 }
 
