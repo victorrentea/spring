@@ -28,7 +28,7 @@ import static java.lang.System.currentTimeMillis;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
-@ConfigurationPropertiesScan
+@ConfigurationPropertiesScan // scaneaza toate clasele dupa @ConfigurationProperties si le definete ca beanuri injectabile
 @EnableFeignClients
 public class SpringApplication {
   public static final long t0 = currentTimeMillis();

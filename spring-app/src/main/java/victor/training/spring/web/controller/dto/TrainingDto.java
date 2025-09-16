@@ -10,9 +10,12 @@ import victor.training.spring.web.entity.Training;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
-public class TrainingDto {
+public class TrainingDto { // obiect cu date care vine/pleaca in APIul meu. Nu spring in creeaza!
+  // eu il "new" cand raspund
+  // Jackson il "new" cand vine req la mine
 	public Long id;
-	@Size(min = 3, max = 50, message = "{customer.name.length}")
+  @NotNull
+	@Size(min = 3, max = 50, message = "{training.name.length}")
 	public String name;
 	public ContractType level;
 	public Long teacherId;

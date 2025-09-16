@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,15 +22,29 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @RequiredArgsConstructor
-// TODO annotate as @RestControllerAdvice
+@RestControllerAdvice // vin aici toate ex scapate din orice metoda @GetMapping&friends
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
   // TODO handle any Exception subtype so exception stack traces are not exposed to clients; return code 500.
   //  To test, try to violate a validation rule enforced previously
-  public String onException(Exception exception) {
+  @ExceptionHandler(Exception.class) // tata la tot raul.
+//  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  public ResponseEntity<String> onException(Exception exception) {
     log.error(exception.getMessage(), exception);
-    return exception.getMessage();
+    return ResponseEntity.status(500)
+        .header("x-kone","crane")
+        .body(exception.getMessage());
+  }
+
+  @ResponseStatus(BAD_REQUEST)
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public String onJavaxValidationException(MethodArgumentNotValidException e) {
+    String response = e.getAllErrors().stream()
+        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+        .collect(Collectors.joining(", \n"));
+    log.error("Validation failed. Returning: " + response, e);
+    return response;
   }
 
   // TODO handle NoSuchElementException to return 400 with body = "Not Found"
@@ -44,18 +59,11 @@ public class GlobalExceptionHandler {
   public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
     Locale clientLocale = request.getLocale(); // or from the Access Token
-    String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
+    String responseBody = messageSource.getMessage(
+        errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;
   }
 
-//  @ResponseStatus(BAD_REQUEST)
-//  @ExceptionHandler(MethodArgumentNotValidException.class)
-//  public String onJavaxValidationException(MethodArgumentNotValidException e) {
-//    String response = e.getAllErrors().stream()
-//            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//            .collect(Collectors.joining(", \n"));
-//    log.error("Validation failed. Returning: " + response, e);
-//    return response;
-//  }
+
 }

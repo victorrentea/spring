@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
+import victor.training.spring.props.Props;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
@@ -21,6 +23,19 @@ import java.util.List;
 @Slf4j // log
 public class TrainingController {
   private final TrainingService trainingService;
+//  @Value("${props.env}")
+//  private final String propsEnv;
+  private final Props props;
+  // lombokul nu va copia adnotarea @Value decat daca-l rogi cu lombok.config
+
+  @GetMapping("config")
+  public String getConfig() {
+    return props.env();
+  }
+
+  // TODO injectati 'props.env' din config intr-un camp si expuneti valoarea ei
+  //  intr-un endpoint /api/trainings/config
+  // Hint: ChatGPT va va sugera sa adnotati campul cu @Value("${...}")
 
   @GetMapping
   public List<TrainingDto> getAllTrainings() {
