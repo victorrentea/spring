@@ -2,6 +2,7 @@ package victor.training.spring.web.controller.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.entity.Training;
@@ -18,6 +19,7 @@ public class TrainingDto {
 	public String teacherBio;
 	public ProgrammingLanguage language;
 	public String teacherName;
+  @NotNull
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	public LocalDate startDate;
 	public String description;
