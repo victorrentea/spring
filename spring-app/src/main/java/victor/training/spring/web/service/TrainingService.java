@@ -36,6 +36,7 @@ public class TrainingService {
     for (Training training : trainingRepo.findAll()) {
       dtos.add(new TrainingDto(training));
     }
+    new RuntimeException("nearuncata").printStackTrace();
     return dtos;
   }
 

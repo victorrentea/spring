@@ -42,6 +42,9 @@ public class TrainingController {
   @GetMapping
   public List<TrainingDto> getAllTrainings() {
     return trainingService.getAllTrainings();
+    // tu nu chemi de fapt metoda pe care crezi tu.
+    // ci spring iti "FURA" apelul pt ca ti-a injectat un PROXY la clasa ceruta.
+    // ca sa te pacaleasca, si sat- intercepteze apelul sa-ti ia metrica.
   }
 
   @GetMapping("{id}")
