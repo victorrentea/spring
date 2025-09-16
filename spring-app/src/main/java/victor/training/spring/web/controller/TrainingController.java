@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Value;
 import victor.training.spring.props.Props;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.service.NotificationService;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
@@ -26,10 +26,12 @@ public class TrainingController {
 //  @Value("${props.env}")
 //  private final String propsEnv;
   private final Props props;
+  private final NotificationService notificationService;
   // lombokul nu va copia adnotarea @Value decat daca-l rogi cu lombok.config
 
   @GetMapping("config")
   public String getConfig() {
+    notificationService.notify("Barfa!");
     return props.env();
   }
 
