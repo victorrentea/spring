@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 //@Scope("singleton") // default. si nu ar trebui altceva
 public class StockManagementService {
-   private int stock = 0; // silly implem :D
+   private int stock = 3; // silly implem :D
   // NU TE PRIND cu state neprotejat anti-concurrency
   // in beanuri singletoane Spring
 

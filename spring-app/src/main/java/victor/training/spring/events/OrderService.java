@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class OrderService  {
 //		stockManagementService.process(orderId);
 //		invoiceService.sendInvoice(orderId);
     applicationEventPublisher.publishEvent(new OrderPlacedEvent(orderId));
+    log.debug(">> sa scriu in DB orderul");
 	}
 }
 
