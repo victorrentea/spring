@@ -23,6 +23,7 @@ public class LoggingAspect {
     long start = System.currentTimeMillis();
     try {
       Object result = pjp.proceed();
+      // API -call
       log.info("{}({}) -> {} ({} ms)",
           pjp.getSignature(),
           Arrays.toString(pjp.getArgs()),

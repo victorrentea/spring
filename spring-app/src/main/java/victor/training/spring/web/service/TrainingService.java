@@ -3,9 +3,13 @@ package victor.training.spring.web.service;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.aspects.Logged;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
@@ -30,8 +34,13 @@ public class TrainingService {
   private final EmailSender emailSender;
   private final TeacherBioClient teacherBioClient;
 
+  private final ApplicationContext spring;
+
+  @Cacheable("cache-name") // Reminder: nu folosi
   @Timed
+  @Secured({"ROLE_USER","ROLE_ADMIN"})
   public List<TrainingDto> getAllTrainings() {
+//    var trainingRepo = spring.getBean(TrainingRepo.class);
     List<TrainingDto> dtos = new ArrayList<>();
     for (Training training : trainingRepo.findAll()) {
       dtos.add(new TrainingDto(training));
