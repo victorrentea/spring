@@ -3,6 +3,7 @@ package victor.training.spring.web.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.props.Props;
@@ -68,6 +69,7 @@ public class TrainingController {
     trainingService.updateTraining(dto);
   }
 
+  @Secured("ROLE_ADMIN")
   // TODO maine, de altu- Allow only for role 'ADMIN'
   @DeleteMapping("{id}")
   public void deleteTrainingById(@PathVariable Long id) {

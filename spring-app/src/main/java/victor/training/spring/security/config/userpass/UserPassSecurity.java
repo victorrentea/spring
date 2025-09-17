@@ -33,6 +33,7 @@ public class UserPassSecurity {
     // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
     http.authorizeHttpRequests(authz -> authz
+        .requestMatchers("/v3/api-docs").permitAll()
         .anyRequest().authenticated()
     );
 
