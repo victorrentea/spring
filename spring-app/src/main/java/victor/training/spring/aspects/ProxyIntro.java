@@ -8,6 +8,7 @@ import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import victor.training.spring.Adapter;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ class SecondGrade {
   }
 }
 @Slf4j
-@Component
+@Adapter
 /*final💥*/
 /*record💥*/
 class Maths {
