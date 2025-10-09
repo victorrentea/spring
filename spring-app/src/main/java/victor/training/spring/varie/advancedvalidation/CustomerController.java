@@ -17,7 +17,7 @@ public class CustomerController {
     }
 
     @PostMapping("customers/{id}/activate")
-    public String activateCustomer(@PathVariable long id, @RequestBody @Validated(CustomerDto.ActivationUC.class) CustomerDto dto) {
+    public String activateCustomer(@PathVariable long id, @RequestBody @Valid  CustomerDto dto) {
         String message = "Activated " + dto.name;
         log.info(message);
         return message;

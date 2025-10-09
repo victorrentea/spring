@@ -2,20 +2,29 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
+@Validated // hey spring, validate these fields please
 @ConfigurationProperties(prefix = "props")
 public record Props(
+  @NotNull
   String env,
   Integer gate, // TODO set default
+  @NotBlank
   String welcomeMessage, // TODO validate not null & size >= 4
+  @Size(min = 1)
   List<URL> supportUrls, // TODO validate size >= 1
   Map<Locale, String> contactPhones,
   Help help) {
@@ -30,6 +39,9 @@ public record Props(
   public void printMyselfAsJsonAtStartupInLog() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     System.out.println("Props:\n" + json);
+//    if (env==null || welcomeMessage.isBlank())
+//      throw new IllegalArgumentException("env and welcomeMessage must be set");
+
 //    if (!help.file.isFile()) {
 //      throw new IllegalArgumentException("help.file does not exist: " + help.file);
 //    }
