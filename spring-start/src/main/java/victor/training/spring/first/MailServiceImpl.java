@@ -2,15 +2,14 @@ package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
+@Service("impl")
+@Profile("!local")
 //@Primary // this wins against any other at an injection point
-// name of this bean = "mailServiceImpl"
 public class MailServiceImpl implements MailService {
-  //  private final MailSender sender; // TODO this bean is automatically defined by spring
 
   public void sendEmail(String body) {
     SimpleMailMessage message = new SimpleMailMessage();
