@@ -2,12 +2,17 @@ package victor.training.spring.first;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service("impl")
+@ConditionalOnProperty(
+    value = "email.active",
+    havingValue = "real",
+    matchIfMissing = true)
 //@Profile("!local")
 //@Primary // this wins against any other at an injection point
 public class MailServiceImpl implements MailService {
