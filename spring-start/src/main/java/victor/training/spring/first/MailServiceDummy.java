@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
     value = "email.active",
     havingValue = "dummy")
 //@Profile("local") // use this class only when the profile "local" is ACTIVE
-@Primary
+//@Primary
 public class MailServiceDummy implements MailService {
   public void sendEmail(String subject) {
     System.out.println("DUMMY SENDER: " + subject);
