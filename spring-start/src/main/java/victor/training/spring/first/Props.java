@@ -2,9 +2,7 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import jakarta.annotation.PostConstruct;
 import java.io.File;
@@ -13,27 +11,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-@Data // generates getters & setters
-@Component
-public class Props {
-  private String env;
-  private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO validate not null & size >= 4
-  private List<URL> supportUrls; // TODO validate size >= 1
-  private Map<Locale, String> contactPhones;
-  private Help help;
+@ConfigurationProperties(prefix = "props")
+public record Props(
+  String env,
+  Integer gate, // TODO set default
+  String welcomeMessage, // TODO validate not null & size >= 4
+  List<URL> supportUrls, // TODO validate size >= 1
+  Map<Locale, String> contactPhones,
+  Help help) {
 
-  @Data // TODO immutable
-  public static class Help {
-    private Integer appId;
-    private File file; // TODO validate file exists
-    private String email; // TODO validate email pattern
+  public record Help(
+    Integer appId,
+    File file, // TODO validate file exists
+    String email){ // TODO validate email pattern
   }
 
-  @PostConstruct
-  public void printMyself() throws JsonProcessingException {
+  @PostConstruct // IoC (Inversion of Control)
+  public void printMyselfAsJsonAtStartupInLog() throws JsonProcessingException {
     String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
     System.out.println("Props:\n" + json);
+//    if (!help.file.isFile()) {
+//      throw new IllegalArgumentException("help.file does not exist: " + help.file);
+//    }
   }
 }
 

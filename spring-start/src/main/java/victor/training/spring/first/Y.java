@@ -6,14 +6,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class Y {
   private final MailService mailServiceImpl; // polymorphic injection
-  @Value("${props.env}")
-  private String env;
+
+  private final String env;
 
 //  public Y(MailService mailService) { // fails 2 found. unless @Primary
 //  public Y(MailServiceImpl mailService) {
 //  public Y(@Qualifier("impl") MailService mailService) {
-  public Y(MailService mailService) {
+  public Y(MailService mailService,
+           @Value("${props.env:default_DONTDOTHIS}") String env) {
     this.mailServiceImpl = mailService;
+    this.env = env;
   }
 
   public int logic() {
