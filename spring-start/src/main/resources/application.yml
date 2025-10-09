@@ -1,3 +1,4 @@
+email.active: dummy
 spring:
     mail:
         host: smtp.gmail.com
