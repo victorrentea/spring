@@ -1,14 +1,13 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
   private final MailService mailServiceImpl; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate;
+  @Value("${props.env}")
+  private String env;
 
 //  public Y(MailService mailService) { // fails 2 found. unless @Primary
 //  public Y(MailServiceImpl mailService) {
@@ -18,7 +17,7 @@ public class Y {
   }
 
   public int logic() {
-    mailServiceImpl.sendEmail("Go to gate " + gate);
+    mailServiceImpl.sendEmail("Deployed in " + env);
 
     return 1;
   }

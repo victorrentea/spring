@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service("impl")
-@Profile("!local")
+//@Profile("!local")
 //@Primary // this wins against any other at an injection point
 public class MailServiceImpl implements MailService {
 
