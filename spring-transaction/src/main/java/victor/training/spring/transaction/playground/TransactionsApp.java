@@ -31,13 +31,6 @@ public class TransactionsApp {
       log.info("============= START EXPERIMENTS ==============");
       playTransactions.play();
 
-//      log.info("============= JPA:writeBehind ==============");
-//      jpa.writeBehind();
-//      log.info("============= JPA:autoSave ==============");
-//      jpa.autoSave();
-//      log.info("============= JPA:lazyLoading ==============");
-//      jpa.lazyLoading();
-
 //      log.info("============= LOCKING ==============");
 //      allOf(runAsync(concurrency::thread), runAsync(concurrency::thread)).join();
       log.info("============= END EXPERIMENTS ==============");
