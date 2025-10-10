@@ -18,6 +18,10 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
+    extracted();
+  }
+
+  private void extracted() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
   }
 }
