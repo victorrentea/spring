@@ -15,15 +15,14 @@ public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // 2001
   private final OtherClass other;
 
-  @Transactional
   // stores the tx in a ThreadLocal on the current thread (spring-web)
   // stores the tx in reactor-context (spring-webflux): TODO ask the reactor trainer
+  @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
     other.extracted();
   }
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
