@@ -1,8 +1,11 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -12,6 +15,7 @@ import javax.sql.DataSource;
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
+  private static final Logger log = LoggerFactory.getLogger(PlayTransactions.class);
   private final JdbcTemplate jdbcTemplate; // 2001
   private final OtherClass other;
 
@@ -20,14 +24,22 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
-    other.extracted();
+    try {
+      other.extracted();
+    }catch(Exception e) {
+      log.warn("Ignoring: "+ e);
+      throw new RuntimeException(e);
+    }
+    System.out.println("Exiting method");
   }
+
 }
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-  @Transactional
+//  @Transactional(propagation = Propagation.NOT_SUPPORTED)// suspends the old, and enters the method with NO TX
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void extracted() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
   }
