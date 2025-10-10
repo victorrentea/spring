@@ -1,18 +1,31 @@
 package victor.training.spring.aspects;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 public class ProxyIntro {
   public static void main(String[] args) {
-    // WE play the role of Spring here ...
-    Maths maths = new Maths();
-    SecondGrade secondGrade = new SecondGrade(maths);
+    Maths real = new Maths();
+    Maths proxy = new MathsProxy(real);
+    SecondGrade secondGrade = new SecondGrade(proxy);
     secondGrade.mathClass();
   }
 }
+class MathsProxy extends Maths {
+  private final Maths delegate;
+  MathsProxy(Maths delegate) {
+    this.delegate = delegate;
+  }
+  @Override
+  public int sum(int a, int b) {
+    System.out.println("sum called with " + a + " and " + b);
+    return delegate.sum(a, b);
+  }
+  @Override
+  public int product(int a, int b) {
+    System.out.println("product called with " + a + " and " + b);
+    return delegate.product(a, b);
+  }
+}
+// whenever SecondGrade calls sum() or product(), print the params, without changing any code below the line
 // ------------------- LINE ------------------
-@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
@@ -24,7 +37,6 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-@Component
 class Maths {
   public int sum(int a, int b) {
     return a + b;
@@ -33,6 +45,8 @@ class Maths {
     return a * b;
   }
 }
+
+
 
 
 // Key Points
