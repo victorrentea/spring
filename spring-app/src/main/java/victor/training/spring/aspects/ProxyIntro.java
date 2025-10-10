@@ -4,6 +4,7 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ public class ProxyIntro {
     secondGrade.mathClass();
   }
 }
+
 // Mockito @Mock mock( and Spring use these technique to hack your code
 //class MathsProxy extends Maths {
 //  private final Maths delegate;
@@ -44,11 +46,14 @@ public class ProxyIntro {
 //}
 // whenever SecondGrade calls sum() or product(), print the params, without changing any code below the line
 // ------------------- LINE ------------------
+@Service
 class SecondGrade {
   private final Maths maths;
+
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
+
   public void mathClass() {
 //    Maths maths = new Maths();😶  new MyImmutable, new MyRecord, new Dto, new JooqRecord
     System.out.println("What maths class did Spring injected me here? " + maths.getClass());
@@ -61,6 +66,7 @@ class SecondGrade {
 // Edit some code below this line that will stop the proxy from working
 /*final🚫*/
 /*record🚫*/
+@Service
 class Maths {
   // @Async starts the method on another thread
   // @Timed/@Observed // expose a metric on how long this method took

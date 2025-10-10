@@ -24,6 +24,10 @@ public class LoggingAspectExercise {
     log.info("INTERCEPTED");
   }
 }
+
+
+
+
 // @Around("@within(RestController)") // method of classes annotated with @RestController
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod
 // @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // methods or classes annotated with @LoggedMethod
