@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +23,13 @@ public class PlayTransactions {
   // stores the tx in a ThreadLocal on the current thread (spring-web)
   // stores the tx in reactor-context (spring-webflux): TODO ask the reactor trainer
   @Transactional
-  public void play() {
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
     try {
       other.extracted();
     }catch(Exception e) {
       log.warn("Ignoring: "+ e);
-      throw new RuntimeException(e);
+      throw new IOException(e);
     }
     System.out.println("Exiting method");
   }
