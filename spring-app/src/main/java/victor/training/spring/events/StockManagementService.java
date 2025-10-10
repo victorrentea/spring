@@ -1,6 +1,9 @@
 package victor.training.spring.events;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
@@ -14,6 +17,11 @@ public class StockManagementService {
 
   public StockManagementService(ApplicationEventPublisher applicationEventPublisher) {
     this.applicationEventPublisher = applicationEventPublisher;
+  }
+
+  @EventListener({ApplicationStartedEvent.class, ApplicationReadyEvent.class, ApplicationContextInitializedEvent.class})
+  public void meAgain(Object e) {
+    System.out.println("Got " + e);
   }
 
   @EventListener
