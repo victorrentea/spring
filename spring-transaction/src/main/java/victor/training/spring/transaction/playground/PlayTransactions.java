@@ -11,25 +11,27 @@ import javax.sql.DataSource;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // 2001
   private final OtherClass other;
 
+  @Transactional
+  // stores the tx in a ThreadLocal on the current thread (spring-web)
+  // stores the tx in reactor-context (spring-webflux): TODO ask the reactor trainer
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
-    extracted();
-  }
-
-  private void extracted() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
+    other.extracted();
   }
 }
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
-  private final MessageRepo repo;
+  private final JdbcTemplate jdbcTemplate;
+  @Transactional
+  public void extracted() {
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
+  }
 }
 // TODO
 // 0 p6spy
