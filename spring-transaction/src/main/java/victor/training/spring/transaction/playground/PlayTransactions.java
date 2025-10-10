@@ -11,11 +11,11 @@ import javax.sql.DataSource;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // 2001
   private final OtherClass other;
 
-  @Transactional
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
     extracted();
