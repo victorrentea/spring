@@ -21,9 +21,10 @@ public class LoggingAspectExercise {
 
   // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
 
-  // TODO 5 Make the interception work by annotating methods with @Logged
-  //   Hint: @Around("@annotation(Logged)") targets methods annotated with @Logged
-  //   Hint: @Around("@within(Logged)") targets methods in classes annotated with @Logged
+  // TODO 5 Target the interception via @Logged annotation (defined in this package)
+  //   - @Around("@annotation(Logged)") targets methods annotated with @Logged
+  //   - @Around("@within(Logged)") targets methods in classes annotated with @Logged
+  //   - @Around("@within(Logged) || @annotation(Logged)") -> ⭐️ methods and/or classes annotated with @Logged
   public void intercept() {
     log.info("INTERCEPTED");
   }
