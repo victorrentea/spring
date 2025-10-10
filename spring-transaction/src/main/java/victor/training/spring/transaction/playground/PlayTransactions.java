@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 
 @Service
@@ -29,14 +30,14 @@ public class PlayTransactions {
   // stores the tx in a ThreadLocal on the current thread (spring-web)
   // stores the tx in reactor-context (spring-webflux): TODO ask the reactor trainer
   @Transactional
-  public void play() /*throws IOException*/ {
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
     try {
       other.extracted();
     } catch (Exception e) {
-      log.warn("Ignoring: " + e);
+      log.warn("Ignoring: " + e, e);
 //      throw new IOException(e);
-      jdbcTemplate.update("insert into MESSAGE(id, message) values (100412, 'error' )");
+//      jdbcTemplate.update("insert into MESSAGE(id, message) values (100412, 'error' )");
     }
     System.out.println("Exiting method");
   }
@@ -47,7 +48,6 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-
   //  @Transactional(propagation = Propagation.NOT_SUPPORTED)// suspends the old, and enters the method with NO TX
 //  @Transactional(propagation = Propagation.REQUIRES_NEW)
   @Transactional
