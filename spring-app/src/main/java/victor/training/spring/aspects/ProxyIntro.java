@@ -8,6 +8,7 @@ public class ProxyIntro {
     secondGrade.mathClass();
   }
 }
+// Mockito @Mock mock( and Spring use these technique to hack your code
 class MathsProxy extends Maths {
   private final Maths delegate;
   MathsProxy(Maths delegate) {
