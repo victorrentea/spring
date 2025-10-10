@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -32,10 +33,12 @@ import java.lang.annotation.RetentionPolicy;
 public class X {
   private final Y y;
   private final Z z;
+//  private final ApplicationContext applicationContext;
 
-  public X(Y y, Z z) { // hey spring, inject here an instance of the bean Y
+  public X(Y y, Z z, ApplicationContext applicationContext) { // hey spring, inject here an instance of the bean Y
     this.y = y;
     this.z = z;
+//    this.applicationContext = applicationContext;
   }
 
 //  @Autowired // don't
@@ -43,6 +46,8 @@ public class X {
 //    y.callThisAtStart()
 //  }
   public int logic() {
+//    MailService bean = applicationContext.getBean(MailService.class);// risky, avoid!
+    // only fails when logic() is called if there's no such bean
     return 1 + y.logic();
   }
 }
