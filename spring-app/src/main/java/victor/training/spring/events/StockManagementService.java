@@ -1,6 +1,7 @@
 package victor.training.spring.events;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -8,10 +9,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class StockManagementService {
-   private int stock = 3; // silly implem :D
+  private final ApplicationEventPublisher applicationEventPublisher;
+  private int stock = 3; // silly implem :D
 
-   @EventListener
-   @Order(10)
+  public StockManagementService(ApplicationEventPublisher applicationEventPublisher) {
+    this.applicationEventPublisher = applicationEventPublisher;
+  }
+
+  @EventListener
    public void process(OrderPlaced event) {
       log.info("Checking stock for products in order " + event.orderId());
       if (stock == 0) {
@@ -19,5 +24,6 @@ public class StockManagementService {
       }
       stock--;
       log.info(">> PERSIST new STOCK!!");
+    applicationEventPublisher.publishEvent(new StockReservedEvent(event.orderId()));
    }
 }

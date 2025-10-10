@@ -17,9 +17,9 @@ public class InvoiceService {
   // blockign the publisher until theyre done
   // in some arbitrary order
   // on exception, next listener(s) do not run!
-   @Order(20)
+//   @Order(20)
    @Async // WTF is this??
-   public void sendInvoice(OrderPlaced event) {
+   public void sendInvoice(StockReservedEvent event) {
 //    if (...) throw new UncheckedIOException()
       log.info("Generating invoice for order " +event.orderId());
       // if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
