@@ -1,6 +1,7 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -21,12 +22,21 @@ public class LoggingAspectExercise {
 
   // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
 
-  // TODO 5 Target the interception via @Logged annotation (defined in this package)
+  // TODO 5 Trigger the interception via @Logged annotation (defined in this package)
   //   - @Around("@annotation(Logged)") targets methods annotated with @Logged
   //   - @Around("@within(Logged)") targets methods in classes annotated with @Logged
-  //   - @Around("@within(Logged) || @annotation(Logged)") -> ⭐️ methods and/or classes annotated with @Logged
-  public void intercept() {
-    log.info("INTERCEPTED");
+  //   - @Around("@within(Logged) || @annotation(Logged)") -> ⭐️ methods and/or classes
+//  public void intercept() {
+//    log.info("INTERCEPTED");
+//  }
+  @Around("@annotation(Logged) || @within(Logged)")
+  public Object interceptWithDetails(ProceedingJoinPoint pjp) throws Throwable {
+    String methodName = pjp.getSignature().getName();
+    Object[] args = pjp.getArgs();
+    log.info("INTERCEPTED: " + methodName + " with args " + java.util.Arrays.toString(args));
+    Object result = pjp.proceed();
+    log.info("Method " + methodName + " returned " + result);
+    return result;
   }
 }
 

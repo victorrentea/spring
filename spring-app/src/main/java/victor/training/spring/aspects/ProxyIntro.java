@@ -77,6 +77,7 @@ class Maths {
   public /*final😶*/ int sum(int a, int b) {
     return a + b;
   }
+  @Logged
   public /*static😶*/ int product(int a, int b) {
 //    return a * b;
     System.out.println("What class am I now in ? " + this.getClass());
