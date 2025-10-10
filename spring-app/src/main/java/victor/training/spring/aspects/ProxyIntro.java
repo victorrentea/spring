@@ -43,12 +43,14 @@ public class ProxyIntro {
 //}
 // whenever SecondGrade calls sum() or product(), print the params, without changing any code below the line
 // ------------------- LINE ------------------
+// Change something below this line to stop proxies from working
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
   public void mathClass() {
+    System.out.println("What maths class did Spring injected me here? " + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
