@@ -12,8 +12,8 @@ public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main() -> if you see 6 + 6 = 12 in the log you're OK
 
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
-  //  - use @Around("execution(* victor.training.spring..*.*(..))")
-  //      to intercept any method of any class in my package
+  //  - use @Around("@annotation(Logged)") to intercept any method annotated with @Logged
+  //     The @Logged annotation is defined in this package
   //  - the function should take a ProceedingJoinPoint parameter
   //  - call ProceedingJoinPoint#proceed() and return its result
 
@@ -21,14 +21,17 @@ public class LoggingAspectExercise {
 
   // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
 
-  // TODO 5 Target the interception via @Logged annotation (defined in this package)
-  //   - @Around("@annotation(Logged)") targets methods annotated with @Logged
-  //   - @Around("@within(Logged)") targets methods in classes annotated with @Logged
-  //   - @Around("@within(Logged) || @annotation(Logged)") -> ⭐️ methods and/or classes annotated with @Logged
+  // TODO 4 ⭐️ make this aspect also target all methods in classes annotated with @Logged
+  //   - use @Around("@within(Logged) || @annotation(Logged)")
   public void intercept() {
     log.info("INTERCEPTED");
   }
 }
+
+
+
+
+// more details
 // @Around("@within(RestController)") // method of classes annotated with @RestController
 // @Around("@annotation(LoggedMethod)") // methods annotated with @LoggedMethod
 // @Around("@annotation(LoggedMethod) || @within(LoggedMethod)") // methods or classes annotated with @LoggedMethod
