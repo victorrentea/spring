@@ -43,9 +43,12 @@ public class FirstApplication implements CommandLineRunner {
   public void onAppStart() {
     log.debug("It's morning and I feel a bit depressed today");
     log.info("App started OK 🎉 " +
-                       applicationContext.getEnvironment()
-                           .getProperty("props.gate") // DONT! risky vs typos, changes in yaml
+             applicationContext.getEnvironment()
+                 .getProperty("props.gate") // DONT! risky vs typos, changes in yaml
     );
+
+
+
   }
 
   @Override // from CommandLineRunner
