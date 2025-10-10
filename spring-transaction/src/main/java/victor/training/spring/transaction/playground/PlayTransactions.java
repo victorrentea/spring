@@ -5,13 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-
 import javax.sql.DataSource;
-import java.io.IOException;
+import java.sql.Connection;
 
 @Service
 @RequiredArgsConstructor
@@ -19,30 +16,46 @@ public class PlayTransactions {
   private static final Logger log = LoggerFactory.getLogger(PlayTransactions.class);
   private final JdbcTemplate jdbcTemplate; // 2001
   private final OtherClass other;
+  private final DataSource dataSource;
+
+//  public void transactionsInJDBC_90sStyle() {
+//    Connection conn = dataSource.getConnection();
+//    conn.setAutoCommit(false); // begin transaction
+//    conn.createStatement().executeQuery("UPDATE")
+//    conn.createStatement().executeQuery("UPDATE")
+//    conn.commit();
+//  }
 
   // stores the tx in a ThreadLocal on the current thread (spring-web)
   // stores the tx in reactor-context (spring-webflux): TODO ask the reactor trainer
   @Transactional
-  public void play() throws IOException {
+  public void play() /*throws IOException*/ {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'SQL' )");
     try {
       other.extracted();
-    }catch(Exception e) {
-      log.warn("Ignoring: "+ e);
-      throw new IOException(e);
+    } catch (Exception e) {
+      log.warn("Ignoring: " + e);
+//      throw new IOException(e);
+      jdbcTemplate.update("insert into MESSAGE(id, message) values (100412, 'error' )");
     }
     System.out.println("Exiting method");
   }
 
 }
+
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-//  @Transactional(propagation = Propagation.NOT_SUPPORTED)// suspends the old, and enters the method with NO TX
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+
+  //  @Transactional(propagation = Propagation.NOT_SUPPORTED)// suspends the old, and enters the method with NO TX
+//  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional
   public void extracted() {
-    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
+//    jdbcTemplate.update("insert into MESSAGE(id, message) values (100, 'second' )");
+    throw new RuntimeException(
+        "a runtime exception going out through a @Transactional proxy makes " +
+        "the entire tx irreversibly invalid");
   }
 }
 // TODO
