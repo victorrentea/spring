@@ -13,21 +13,27 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+// TODO
+//  - set default env = prod
+//  - validate welcomeMessage not null and min 4 chars
+//  - validate supportUrl.size >= 1
+//  - validate file exists
+//  - validate email is valid
 @Data // generates getters & setters
 @Component
 public class Props {
   private String env;
-  private Integer gate; // TODO set default
-  private String welcomeMessage; // TODO validate not null & size >= 4
-  private List<URL> supportUrls; // TODO validate size >= 1
+  private Integer gate;
+  private String welcomeMessage;
+  private List<URL> supportUrls;
   private Map<Locale, String> contactPhones;
   private Help help;
 
-  @Data // TODO immutable
+  @Data
   public static class Help {
     private Integer appId;
-    private File file; // TODO validate file exists
-    private String email; // TODO validate email pattern
+    private File file;
+    private String email;
   }
 
   @PostConstruct
