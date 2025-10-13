@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAspectExercise {
-  // TODO 0: Run ProxySpringApp.main() -> if you see 6 + 6 = 12 in the log you're OK
+  // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
 
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
   //  - use @Around("@annotation(Logged)") to intercept any method annotated with @Logged
