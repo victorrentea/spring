@@ -1,5 +1,6 @@
 package victor.training.spring.web.controller;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ public class TrainingControllerStripped {
   }
 
   @GetMapping
+  @Timed // http://localhost:8080/actuator/prometheus
+  // sa pui si TimedAspect ca @Bean
   public List<TrainingDto> getAllTrainings() {
     log.info("(2)Loading...");
 //    if (true) throw new RuntimeException("BUG🐞");

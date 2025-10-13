@@ -1,5 +1,6 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -106,5 +107,6 @@ public class TrainingService {
             .map(TrainingDto::new)
             .collect(toList());
     }
+
 }
 
