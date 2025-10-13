@@ -4,6 +4,8 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -43,23 +45,40 @@ public class ProxyIntro {
 // logeaza param primiti de metodele din Maths fara sa modifici cod sub linie
 // sau: ti-e #rusine sa copii cod de 7 ori
 // ------------------- LINE ------------------
+// fa ceva sub linie sa nu mai mearga interceptia de metode
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
   public void mathClass() {
+    /*4:var maths = new Maths();*/
+    System.out.println("Eu am cerut o instante de Maths, oare ce-am primit? " + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 7 = " + maths.sum(6, 7));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-class Maths {
-  public int sum(int a, int b) {
+@Service
+@Logged
+/*3:final💥*/ class Maths {
+  // @Transactional =  begin inainte, COMMIT dupa
+  // @Secured("ROLE_ADMIN") = iti arunca ex daca callerul nu e ADMIN
+  // @Timed = masoara timpul de executie
+//  @Secured("ROLE_ADMIN")
+  public /*1:final😶*/ int sum(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+
+
+  public /*2:static😶*/ int product(int a, int b) {
+//    return a * b;
+    int result = 0;
+    for (int i = 0; i < a; i++) {
+      result = sum(result, b); // 👑 apel local in aceeasi clasa NU e interceptat!
+    }
+    return result;
   }
 }
 

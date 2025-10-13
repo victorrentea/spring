@@ -1,15 +1,18 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Slf4j
-@Aspect
+@Aspect // nu pentru muritori
 @Component
 public class LoggingAspectExercise {
-  // TODO 0: Run ProxySpringApp.main() -> if you see 6 + 6 = 12 in the log you're OK
+  // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
 
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
   //  - use @Around("@annotation(Logged)") to intercept any method annotated with @Logged
@@ -23,12 +26,19 @@ public class LoggingAspectExercise {
 
   // TODO 4 ⭐️ make this aspect also target all methods in classes annotated with @Logged
   //   - use @Around("@within(Logged) || @annotation(Logged)")
-  public void intercept() {
-    log.info("INTERCEPTED");
+  @Around("@within(Logged) || @annotation(Logged)")
+  public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    String methodName = pjp.getSignature().getName();
+    Object[] args = pjp.getArgs();
+    log.info("INTERCEPTED: " + methodName + " called with " + Arrays.toString(args));
+    Object ret = pjp.proceed(); // executa metoda tinta
+    log.info(methodName + " returned " + ret);
+    return ret;
   }
 }
 
-
+// TODO 5: also include the time the method took to execute
+// TODO 6: @Logged(LogLevel.TRACE) should log on 'trace' level, @Logged(INFO) on info...
 
 
 // more details
