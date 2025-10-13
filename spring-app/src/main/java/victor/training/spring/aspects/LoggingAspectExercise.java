@@ -30,6 +30,9 @@ public class LoggingAspectExercise {
 
 
 
+// TODO 5: also include the time the method took to execute
+// TODO 6: @Logged(LogLevel.TRACE) should log on 'trace' level, @Logged(INFO) on info...
+
 
 // more details
 // @Around("@within(RestController)") // method of classes annotated with @RestController
