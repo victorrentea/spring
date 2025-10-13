@@ -15,7 +15,7 @@ public class MailServiceImpl implements MailService {
     message.setTo("victor@victorrentea.ro");
     message.setSubject("Training Offer");
     message.setText(body);
-    System.out.println("REAL EMAIL SENDER: sending email: " + message);
+    System.out.println("MailServiceImpl: sending email (pretend): " + message);
     //    sender.send(message);
   }
 }
