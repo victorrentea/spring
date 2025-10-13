@@ -12,9 +12,9 @@ spring:
         password: pass
 
 props:
-    env: prod
     gate: 123
-    welcomeMessage: Welcome to Spring
+#    env: prod
+    welcomeMessage: Buna!
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com

@@ -2,11 +2,15 @@ package victor.training.spring.first;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.validation.annotation.Validated;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -19,26 +23,34 @@ import java.util.Map;
 //  - validate supportUrl.size >= 1
 //  - validate file exists
 //  - validate email is valid
-@Data // generates getters & setters
-@Component
-public class Props {
-  private String env;
-  private Integer gate;
-  private String welcomeMessage;
-  private List<URL> supportUrls;
-  private Map<Locale, String> contactPhones;
-  private Help help;
+@Validated
+@ConfigurationProperties(prefix = "props")
+public record Props(
+    String env,
+    Integer gate,
+    @NotBlank
+    String welcomeMessage,
+    @NotEmpty
+    List<URL> supportUrls,
+    Map<Locale, String> contactPhones,
+    Help help
+) {
 
-  @Data
-  public static class Help {
-    private Integer appId;
-    private File file;
-    private String email;
-  }
+  public record Help(
+      Integer appId,
+      File file,
+      @Email
+      String email
+  ) {}
 
   @PostConstruct
   public void printMyself() throws JsonProcessingException {
-    String json = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+//    if (!help.file.exists()) {
+//      throw new IllegalArgumentException("File does not exist: " + help.file.getAbsolutePath());
+//    }
+    String json = new ObjectMapper()
+        .writerWithDefaultPrettyPrinter()
+        .writeValueAsString(this);
     System.out.println("Props:\n" + json);
   }
 }
