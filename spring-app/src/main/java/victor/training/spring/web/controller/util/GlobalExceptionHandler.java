@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // 'decoreaza toate @RestController'
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
@@ -45,17 +45,18 @@ public class GlobalExceptionHandler {
   // - the 'Accept-Language' request header via request.getLocale())
   // - the language in the Access Token via SecurityContextHolder
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(MyException.class)
+  @ExceptionHandler(MyException.class) // daca scapa vreo d'asta din orice HTTP endppoint
+  @ResponseStatus(INTERNAL_SERVER_ERROR) // intorc 500
   public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
     Locale clientLocale = request.getLocale(); // or from the Access Token
-    String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
+    String responseBody = messageSource.getMessage(errorMessageKey,
+        exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;
   }
 
-  @ResponseStatus(BAD_REQUEST)
+  @ResponseStatus(BAD_REQUEST) //
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public String onJavaxValidationException(MethodArgumentNotValidException e) {
     String response = e.getAllErrors().stream()

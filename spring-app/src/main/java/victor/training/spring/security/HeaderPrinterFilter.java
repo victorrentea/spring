@@ -19,14 +19,16 @@ import static java.util.Collections.list;
 import static java.util.stream.Collectors.joining;
 
 @Slf4j
-//@Component
+@Component
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER - 1000) // run in before Spring's Security Filter Chain
 public class HeaderPrinterFilter extends HttpFilter {
    @Override
    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-      log.info("\nRequest Headers for "  + request.getRequestURI()+"\n" + getHeadersAsMap(list(request.getHeaderNames()), name -> list(request.getHeaders(name))));
+      log.info("\nRequest Headers for "  + request.getRequestURI()+"\n" +
+               getHeadersAsMap(list(request.getHeaderNames()), name -> list(request.getHeaders(name))));
       chain.doFilter(request, response);
-      log.info("\nResponse Headers for "  + request.getRequestURI()+"\n" + getHeadersAsMap(response.getHeaderNames(), response::getHeaders));
+      log.info("\nResponse Headers for "  + request.getRequestURI()+"\n" +
+               getHeadersAsMap(response.getHeaderNames(), response::getHeaders));
    }
 
    private static String getHeadersAsMap(Collection<String> names, Function<String, Collection<String>> valueByName) {
