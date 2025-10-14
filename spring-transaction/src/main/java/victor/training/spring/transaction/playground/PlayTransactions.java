@@ -19,6 +19,7 @@ public class PlayTransactions {
   public void play() {
     repo.save(new Message("JPA").addTag("eticheta"));
     other.extracted();
+    System.out.println(repo.count());// forteaza flush prematur
     System.out.println("--------------------------");
   }
   // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
