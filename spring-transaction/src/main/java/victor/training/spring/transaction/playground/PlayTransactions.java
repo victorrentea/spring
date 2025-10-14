@@ -18,7 +18,7 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA").addTag("eticheta"));
-    repo.save(new Message("JPA")); // UQ violation care crapa tx
+    repo.saveAndFlush(new Message("JPA")); // UQ violation care crapa tx
     System.out.println("--------------------------");
   } // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
 }
