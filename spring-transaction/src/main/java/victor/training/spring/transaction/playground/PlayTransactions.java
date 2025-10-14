@@ -31,7 +31,7 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  @Transactional
+  //@Transactional
   public void extracted() {
     repo.save(new Message("JPA2"));
     if (true) throw new RuntimeException("Runtime causes rollback");
