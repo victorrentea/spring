@@ -18,8 +18,9 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA").addTag("eticheta"));
-    other.extracted();
-    System.out.println(repo.count());// forteaza flush prematur
+    try {
+      other.extracted();
+    } catch (Exception e) {}
     System.out.println("--------------------------");
   }
   // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
@@ -33,6 +34,7 @@ class OtherClass {
   @Transactional
   public void extracted() {
     repo.save(new Message("JPA2"));
+    if (true) throw new RuntimeException("Runtime causes rollback");
   }
 }
 // TODO
