@@ -18,19 +18,21 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new Message("JPA").addTag("eticheta"));
-    repo.save(new Message("JPA2"));
+    other.extracted();
     System.out.println("--------------------------");
   }
   // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
   // -- pt performanta: BATCHING, poate nu-i nevoie ca crapa pe drum
   // ! in ciuda FLUSH, transactional in continuare tine tot ATOMIC
-
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+  @Transactional
+  public void extracted() {
+    repo.save(new Message("JPA2"));
+  }
 }
 // TODO
 // 0 p6spy
