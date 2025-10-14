@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,9 @@ public class PlayTransactions {
     repo.save(new Message("JPA").addTag("eticheta"));
     try {
       other.extracted();
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     System.out.println("--------------------------");
   }
   // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
@@ -31,10 +34,12 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
-  //@Transactional
-  public void extracted() {
+  @Transactional//(rollbackFor = Exception.class) //~@TransactionAttribute din EJB
+  public void extracted() throws IOException {
+    // SA NU TE PRIND CU THROWS CHECKED! in metoda @Transactional in cod nou
     repo.save(new Message("JPA2"));
-    if (true) throw new RuntimeException("Runtime causes rollback");
+//    if (true) throw new RuntimeException("Runtime causes rollback");
+    if (true) throw new IOException("Checked causes commit! ca au copiat <CENZURAT> din EJBullshit");
   }
 }
 // TODO
