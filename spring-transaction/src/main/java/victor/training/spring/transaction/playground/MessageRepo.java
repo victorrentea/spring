@@ -8,9 +8,19 @@ import jakarta.persistence.LockModeType;
 import java.util.Optional;
 
 public interface MessageRepo extends JpaRepository<Message, Long> {
-  @Query("FROM Message WHERE id = ?1")
-  @Lock(LockModeType.PESSIMISTIC_WRITE) // db row lock via "SELECT .. FOR UPDATE"
-  // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
-  Optional<Message> findByIdLocking(long id);
+  Optional<Message> findByMessageContains(String q);
+  // Spring genereaza pt tine SQL prin naming convention
 
+  @Query("""
+        SELECT message 
+        FROM Message message
+        WHERE message.message LIKE '%' || :q || '%' 
+        """)// JPQL
+  Optional<Message> findDeMana(String q);
+//  @Query(value = """
+//        SELECT 1
+//        FROM MESSAGE message
+//        WHERE message.message LIKE '%' || :q || '%'
+//        """,nativeQuery = true)// JPQL
+//  Optional<Message> findDeMana(String q);
 }

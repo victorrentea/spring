@@ -17,14 +17,22 @@ public class PlayJpa {
     log.info("--- End of method");
   }
 
+  @Transactional
   public void autoSave() {
-    Message entity = repo.findById(1L).orElseThrow();
+    Message entity = repo.findDeMana("N").orElseThrow();
+    // in spate JPA isi tine o copie a datelor initiale
     entity.setMessage("Different"); // TODO send update in DB
-    repo.save(entity);
+  }// daca s-a modificat entity in metoda => update automat
+
+  public void maiCrestin() {
+    Message entity = repo.findByMessageContains("N").orElseThrow();
+    entity.setMessage("Different");
+    repo.save(entity);// TODO send update in DB
   }
 
+  //@Transactional(readOnly = true) // ca nu modific
   public void lazyLoading() {
     Message entity = repo.findById(1L).orElseThrow();
-    log.info("Message: " /*+ entity*/);
+    log.debug("Message: {}", entity);
   }
 }
