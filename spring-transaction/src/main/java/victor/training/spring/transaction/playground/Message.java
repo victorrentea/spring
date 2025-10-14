@@ -38,7 +38,7 @@ public class Message {
   public String toString() {
     return "Message(id=" + this.getId() +
            ", message=" + this.getMessage() +
-           ", tags=" + this.getTags() +
+           //", tags=" + this.getTags() +
            ", version=" + this.getVersion() + ")";
   }
 }
