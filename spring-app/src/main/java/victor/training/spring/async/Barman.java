@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.async.drinks.Beer;
@@ -37,6 +38,7 @@ public class Barman {
     // #4 generated client from open-api/swagger 💖
   }
 
+  @Async // modul recomandat de a face fire-and-forget in background
   public void sendNotification(String email) { // TODO outbox pattern
     log.debug("Sending notification (takes time and might fail) {}...", email);
     Sleep.millis(500); // critical but slow work that can fail
