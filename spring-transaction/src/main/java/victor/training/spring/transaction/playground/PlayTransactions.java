@@ -17,9 +17,7 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional
   public void play() {
-    repo.save(new Message("JPA").addTag("eticheta"));
     try {
       other.extracted();
     } catch (Exception e) {
@@ -38,11 +36,12 @@ class OtherClass {
   private final MessageRepo repo;
   @Transactional//(propagation = Propagation.REQUIRES_NEW)//(rollbackFor = Exception.class) //~@TransactionAttribute din EJB
   public void extracted() throws IOException {
+    repo.save(new Message("JPA").addTag("eticheta"));
     repo.save(new Message("JPA2"));
     if (true) throw new RuntimeException("Runtime causes rollback");
     //if (true) throw new IOException("Checked causes commit! ca au copiat <CENZURAT> din EJBullshit");
   }
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional//(propagation = Propagation.REQUIRES_NEW)
   public void txNoua(Exception e) {
     new RuntimeException("Doar sa vad stack").printStackTrace();
     repo.saveAndFlush(new Message(e.getMessage()));
