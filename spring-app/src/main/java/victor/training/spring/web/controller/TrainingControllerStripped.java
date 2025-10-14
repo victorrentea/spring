@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -56,6 +57,7 @@ public class TrainingControllerStripped {
 
   @Operation(description = "Stergi cursu, duh!")// http://localhost:8080/v3/api-docs
   @DeleteMapping("{id}") // IoC
+  @Secured("ROLE_ADMIN")
   public void deleteTrainingById(@PathVariable Long id) {
     trainingService.deleteById(id);
   }

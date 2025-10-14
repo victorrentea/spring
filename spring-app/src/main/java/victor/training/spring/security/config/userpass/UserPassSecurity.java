@@ -48,8 +48,12 @@ public class UserPassSecurity {
   // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user").password("user").roles("USER").build();
+    UserDetails user = User.builder()
+        .username("user")
+        // inseamna "user", da sa nu se prinda cine citeste codu
+        .password("{bcrypt}$2b$10$gEsqXVMqrRYoI33m.URY0eNH1bo0HzGWDu1XJq9T0IOSaUCHKwSzq")
+        .roles("USER")
+        .build();
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()

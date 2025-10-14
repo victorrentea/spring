@@ -4,11 +4,14 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.async.drinks.Beer;
 import victor.training.spring.async.drinks.Vodka;
 import victor.training.spring.varie.Sleep;
+
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Slf4j
 @Service
@@ -17,6 +20,8 @@ import victor.training.spring.varie.Sleep;
 public class Barman {
   private final RestTemplate restTemplate;
   private final DrinksFeignClient drinksFeignClient;
+
+
 
   public Beer pourBeer() {
     log.debug("Fetching Beer...");

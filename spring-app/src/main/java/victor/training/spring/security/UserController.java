@@ -2,6 +2,11 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,19 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.security.config.keycloak.TokenUtils;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class UserController {
   private final AnotherClass anotherClass;
+  private final DelegatingSecurityContextAsyncTaskExecutor taskExecutor;
 
   @GetMapping("api/user/current")
-  public CurrentUserDto getCurrentUsername() {
+  public CurrentUserDto getCurrentUsername() throws ExecutionException, InterruptedException {
     TokenUtils.printTheTokens();
 
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
-    dto.username = "<todo-username>"; // TODO
+    dto.username = CompletableFuture.supplyAsync(()->getUsername(), taskExecutor).get();
+    dto.authorities = SecurityContextHolder.getContext().getAuthentication()
+        .getAuthorities().stream()
+        .map(Object::toString).toList();
 
     //<editor-fold desc="KeyCloak">
     //		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,10 +48,11 @@ public class UserController {
     return dto;
   }
 
-  //  @Bean // enable propagation of SecurityContextHolder over @Async
-  //	public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
-  //		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-  // 	}
+  private String getUsername() {
+    return SecurityContextHolder.getContext().getAuthentication().getName();
+  }
+
+
 
   @Slf4j
   @Service
@@ -52,4 +65,11 @@ public class UserController {
     //    }
   }
 
+}
+@Configuration
+class UnConfig {
+  @Bean // enable propagation of SecurityContextHolder over @Async
+  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor executor) {
+    return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+  }
 }
