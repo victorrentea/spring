@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -19,6 +20,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @RequiredArgsConstructor
 public class BarApi {
   private final Barman barman;
+  private final ThreadPoolTaskExecutor executor;
 
   @Operation(description = "Sub 1 sec")
   @GetMapping("api/drink")
@@ -26,10 +28,15 @@ public class BarApi {
     log.debug("Submitting my order");
     long t0 = currentTimeMillis();
 
-    CompletableFuture<Beer> futureBeer = supplyAsync(barman::pourBeer);
-    CompletableFuture<Vodka> futureVodka = supplyAsync(barman::pourVodka);
+    // linia urmatoare NU trebuie sa apara in cod Spring!
+//    CompletableFuture<Vodka> futureVodka = supplyAsync(barman::pourVodka); // NICIODATA
+    // 1) pierzi TraceID
+    // 2) competitionezi cu oricine lucreaza pe ForkJoinPool.commonPool() => orice .parallelStream si orice alt CompletableFuture.
+    // 3) nu are max queue size
+    CompletableFuture<Vodka> futureVodka = supplyAsync(barman::pourVodka, executor); // DA
 
-    Beer beer = futureBeer.get();
+    Beer beer = barman.pourBeer();
+
     Vodka vodka = futureVodka.get();
 
     barman.sendNotification("Dilly"); // ---- 0.5s FIRE-AND-FORGET pattern: nu-mi pasa de erori, nu vreau sa-l astept
