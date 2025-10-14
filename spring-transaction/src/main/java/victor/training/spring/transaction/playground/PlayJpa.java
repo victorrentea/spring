@@ -33,6 +33,6 @@ public class PlayJpa {
   //@Transactional(readOnly = true) // ca nu modific
   public void lazyLoading() {
     Message entity = repo.findById(1L).orElseThrow();
-    log.debug("Message: {}", entity);
+    log.debug("Message: {}", entity); //bun!
   }
 }
