@@ -15,10 +15,12 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional  // degeaba, ca faci o singura interact cu baza
+  @Transactional
   public void play() {
     repo.save(new Message("JPA").addTag("eticheta"));
-  }
+    repo.save(new Message("JPA")); // UQ violation care crapa tx
+    System.out.println("--------------------------");
+  } // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
 }
 
 @Service
