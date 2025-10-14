@@ -20,7 +20,11 @@ public class PlayTransactions {
     repo.save(new Message("JPA").addTag("eticheta"));
     repo.saveAndFlush(new Message("JPA")); // UQ violation care crapa tx
     System.out.println("--------------------------");
-  } // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
+  }
+  // JPA WRITE-BEHIND: insert/update/delete sunt trimise in DB exact inainte de commit
+  // -- pt performanta: BATCHING, poate nu-i nevoie ca crapa pe drum
+  // ! in ciuda FLUSH, transactional in continuare tine tot ATOMIC
+
 }
 
 @Service
