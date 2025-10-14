@@ -89,6 +89,7 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
       <dependency>
+          <!-- face sa apara /v3/api-docs -->
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.3.0</version>

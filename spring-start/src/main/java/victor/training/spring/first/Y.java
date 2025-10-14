@@ -17,6 +17,7 @@ public class Y {
 //  private String env;
   @Value("${database.password}") // copiat in param ctorului de lombok.config`§
   private final String dbPassword;
+  private final X x;
 
 //  public Y(Props props,
 //           MailService serviceDummy,

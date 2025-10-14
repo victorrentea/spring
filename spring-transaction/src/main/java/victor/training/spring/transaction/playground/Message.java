@@ -1,10 +1,7 @@
 package victor.training.spring.transaction.playground;
 
-import jdk.jfr.DataAmount;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -31,4 +28,9 @@ public class Message {
     public Message(String message) {
         this.message = message;
     }
+
+  public Message addTag(String tag) {
+    tags.add(tag); // => +1 INSERT
+    return this;
+  }
 }

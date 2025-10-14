@@ -24,7 +24,7 @@ public class TransactionsApp {
   private final MessageRepo repo;
   private final DBPrinter dbPrinter;
 
-  @EventListener(ApplicationStartedEvent.class)
+  @EventListener(ApplicationStartedEvent.class) // IoC: hook : sa ma cheme spring
   public void start() {
     try {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
