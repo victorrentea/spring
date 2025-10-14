@@ -18,8 +18,8 @@ public class TransactionsApp {
     SpringApplication.run(TransactionsApp.class, args);
   }
 
-  private final PlayTransactions playTransactions;
-  private final PlayJpa playJpa;
+  private final PlayTransactions transactions;
+  private final PlayJpa jpa;
   private final PlayLocking playLocking;
   private final MessageRepo repo;
   private final DBPrinter dbPrinter;
@@ -29,7 +29,7 @@ public class TransactionsApp {
     try {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
       log.info("============= START EXPERIMENTS ==============");
-      playTransactions.play();
+      transactions.play();
 
 //      log.info("============= JPA:writeBehind ==============");
 //      jpa.writeBehind();

@@ -15,6 +15,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -48,9 +50,14 @@ public class SpringApplication {
     return builder.build();
   }
 
-   @Bean // propagate tracing over all Spring-managed thread pools
+  @Bean // propagate tracing over all Spring-managed thread pools
   public TaskDecorator taskDecorator() {
     return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
+  }
+
+  @Bean // enable propagation of SecurityContextHolder over @Async
+  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
+    return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
   }
 
   @EventListener(ApplicationStartedEvent.class)

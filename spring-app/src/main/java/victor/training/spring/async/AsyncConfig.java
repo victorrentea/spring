@@ -20,8 +20,7 @@ public class AsyncConfig {
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
-		// copy MDC from parent thread to workerthread
-		executor.setTaskDecorator(new CopyMDCToWorker());
+		executor.setTaskDecorator(new CopyMDCToWorker()); // copies TraceID
 
 		Gauge.builder( "poolbar_pool_size", executor::getPoolSize).register(Metrics.globalRegistry);
 		Gauge.builder( "poolbar_queue_size", executor::getQueueSize).register(Metrics.globalRegistry);

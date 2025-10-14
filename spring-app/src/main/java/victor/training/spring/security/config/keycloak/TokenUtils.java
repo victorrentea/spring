@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import victor.training.spring.web.controller.dto.CurrentUserDto;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,6 +57,15 @@ public class TokenUtils {
     return map.entrySet().stream().sorted(Map.Entry.comparingByKey())
         .map(e -> "\t" + e.getKey() + ": " + e.getValue())
         .collect(Collectors.joining("\n"));
+  }
+
+  private List<String> extractAuthoritiesAfterKeycloakAuthn() {
+    TokenUtils.printTheTokens();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+//    log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
+//    return keycloakToken.getSubRoles();
+    return List.of();
   }
 
 }

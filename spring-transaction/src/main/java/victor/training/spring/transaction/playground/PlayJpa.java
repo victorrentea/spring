@@ -18,8 +18,9 @@ public class PlayJpa {
   }
 
   public void autoSave() {
-    Message entity = repo.findById(1L).orElseThrow();
-    entity.setMessage("Different");
+    Message message = repo.findById(1L).orElseThrow();
+    message.setMessage("Different");
+    // TODO send update in DB
   }
 
   public void lazyLoading() {
