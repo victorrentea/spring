@@ -2,6 +2,8 @@ package victor.training.spring.web.controller.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.ProgrammingLanguage;
 import victor.training.spring.web.entity.Training;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 public class TrainingDto {
 	public Long id;
 	@Size(min = 3, max = 50, message = "{customer.name.length}")
+  @NotNull // Picnic handles this with Immutables throw. null checker!!TODO test it
+  @NotBlank
 	public String name;
 	public ContractType level;
 	public Long teacherId;

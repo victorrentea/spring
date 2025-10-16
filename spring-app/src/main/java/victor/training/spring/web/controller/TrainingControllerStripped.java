@@ -1,31 +1,53 @@
 package victor.training.spring.web.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.service.TrainingService;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
 
+@RestController // +add this to an @Import on a @Configuration
+@RequestMapping("api/trainings")
 public class TrainingControllerStripped {
 	@Autowired
 	private TrainingService trainingService;
 
-	public List<TrainingDto> getAllTrainings() {
-		return trainingService.getAllTrainings();
-	}
+//  @GetMapping// GET /api/trainings
+//	public List<TrainingDto> getAllTrainings() {
+//		return trainingService.getAllTrainings();
+//	}
 
-	public TrainingDto getTrainingById(Long id) {
-		return trainingService.getTrainingById(id);
-	}
+  @GetMapping("{trainingId}") // GET /api/trainings/17
+  public TrainingDto getTrainingById(
+      @PathVariable Long trainingId/*,
+      @PathVariable String ver*/) {
+//    System.out.println("Ver: " + ver);
+    return trainingService.getTrainingById(trainingId);
+  }
 
-	// TODO @Valid
-	public void createTraining(TrainingDto dto) throws ParseException {
-		trainingService.createTraining(dto);
-	}
+  @PostMapping // POST /api/trainings {body} -> server generates the ID (DB sequence)
+	public ResponseEntity<Void> createTraining(@RequestBody @Valid TrainingDto dto) throws ParseException {
+		var id = trainingService.createTraining(dto);
 
-	public void updateTraining(Long trainingId, TrainingDto dto) throws ParseException {
+    URI urlOfNewlyCreatedResource = URI.create("/api/trainings/" + id);
+    return ResponseEntity.created(urlOfNewlyCreatedResource)
+        .header("your-stuff","is cool")
+        .build();
+	}
+//  -> client generates the UUID
+//  @PutMapping("{uuid}") // PUT /api/trainings/aada-afs-das-das-das-as-dc-123 {body with name, ...}
+  // the server will attempt to insert this new ID in DB. fail if already there,
+  // chances = 0, unless you retried. any retry will NOT create a new row, but fail with UK violation
+  // ==> create becomes idempotent
+
+  @PutMapping("{trainingId}")
+	public void updateTraining(@PathVariable Long trainingId, @RequestBody @Valid TrainingDto dto) throws ParseException {
 		dto.id = trainingId;
 		trainingService.updateTraining(dto);
 	}
@@ -36,11 +58,24 @@ public class TrainingControllerStripped {
 	// TODO @accessController.canDeleteTraining(#id)
 	// TODO PermissionEvaluator
 
-	public void deleteTrainingById(Long id) {
+  @DeleteMapping("{id}")
+	public void deleteTrainingById(@PathVariable Long id) {
 		trainingService.deleteById(id);
 	}
 
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+//  @GetMapping
+//	public List<TrainingDto> search(
+//      @RequestParam(required = false) String name,
+//      @RequestParam(required = false) Long teacherId) {
+//    TrainingSearchCriteria criteria = new TrainingSearchCriteria();
+//    criteria.name = name;
+//    criteria.teacherId = teacherId;
+
+  @GetMapping // eg http://localhost:8080/api/trainings?teacherId=2
+	public List<TrainingDto> search(TrainingSearchCriteria criteria) { // spring automatically maps requests query params ?name= to fields of this obj
 		return trainingService.search(criteria);
 	}
+  // for large criteria, the long URL can be truncated > 2000 (lost) by servers on the way
+  // for sensitive criteria (phonenumbers, address) -> the URL gets saved by some servers
+  // ==> criteria -> BODY
 }
