@@ -2,6 +2,7 @@ package victor.training.spring.web.controller.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.ContractType;
@@ -11,6 +12,21 @@ import victor.training.spring.web.entity.Training;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
+//language=json
+@Schema(examples = """
+    {
+      "id": 1,
+      "name": "Java Basics",
+      "level": "JUNIOR",
+      "teacherId": 2,
+      "teacherBio": "Senior Java Developer",
+      "language": "JAVA",
+      "teacherName": "John Doe",
+      "startDate": "15-09-2023",
+      "description": "An introductory course to Java programming.",
+      "version": 1
+    }
+    """)
 public class TrainingDto {
 	public Long id;
 	@Size(min = 3, max = 50, message = "{customer.name.length}")

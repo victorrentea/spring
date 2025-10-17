@@ -1,10 +1,13 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.MyException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
@@ -28,8 +31,9 @@ public class TrainingService {
     private final TeacherRepo teacherRepo;
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
+  private final MeterRegistry meterRegistry;
 
-    public List<TrainingDto> getAllTrainings() {
+  public List<TrainingDto> getAllTrainings() {
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
             dtos.add(new TrainingDto(training));
@@ -37,13 +41,18 @@ public class TrainingService {
         return dtos;
     }
 
+//    @Timed
     public TrainingDto getTrainingById(Long id) {
+      meterRegistry.counter("moneyearnedtoday").increment(2f);
+
+      return meterRegistry.timer("getbyid").record( ()-> {
         Training training = trainingRepo.findById(id).orElseThrow();
         TrainingDto dto = new TrainingDto(training);
-        dto.teacherBio = retrieveTeacherBio(dto.teacherId);
+//        dto.teacherBio = retrieveTeacherBio(dto.teacherId);
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 //        training.startEdit(currentUser); // PESSIMISTIC LOCKING
         return dto;
+      });
     }
 
     private String retrieveTeacherBio(Long teacherId) {
@@ -57,7 +66,8 @@ public class TrainingService {
 
     public Long createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+//            throw new IllegalArgumentException("Another training with that name already exists");
+          throw new MyException(MyException.ErrorCode.DUPLICATE_TRAINING_NAME);
         }
         Training newEntity = new Training()
                 .setName(dto.name)
@@ -71,7 +81,8 @@ public class TrainingService {
 
     public void updateTraining(TrainingDto dto) {
         if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+            //throw new IllegalArgumentException("Another training with that name already exists");
+          throw new MyException(MyException.ErrorCode.DUPLICATE_TRAINING_NAME);
         }
         Training training = trainingRepo.findById(dto.id).orElseThrow()
                 .setName(dto.name)

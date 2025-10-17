@@ -19,8 +19,13 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
+
+//  in DB: ö
+// in screen they search: o
+// => should I return ö => yes.
+// PG should know to 'strip accents from chars'
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // an aspect wraps all methods of every @RestController
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
@@ -45,11 +50,11 @@ public class GlobalExceptionHandler {
   // - the 'Accept-Language' request header via request.getLocale())
   // - the language in the Access Token via SecurityContextHolder
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
-  public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
+  @ResponseStatus(INTERNAL_SERVER_ERROR)
+  public String onMyException(MyException exception, HttpServletRequest httpRequest) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
-    Locale clientLocale = request.getLocale(); // or from the Access Token
+    Locale clientLocale = httpRequest.getLocale(); // or from the Access Token
     String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;
