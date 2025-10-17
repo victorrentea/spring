@@ -44,6 +44,7 @@ public class TrainingService {
 //    @Timed
     public TrainingDto getTrainingById(Long id) {
       meterRegistry.counter("moneyearnedtoday").increment(2f);
+      log.info("Hi!");
 
       return meterRegistry.timer("getbyid").record( ()-> {
         Training training = trainingRepo.findById(id).orElseThrow();

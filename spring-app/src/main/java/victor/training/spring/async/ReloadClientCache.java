@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class ReloadClientCache {
 
 //  @Scheduled(cron = "0 */5 * * * *")
-  @Scheduled( fixedRateString = "1000") //spring drives
+//  @Scheduled( fixedRateString = "1000") //spring drives
 
   // @PutMapping =REST api called via a curl command by cron job in OS
   public void pullsAllClientData() {
