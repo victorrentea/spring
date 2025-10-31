@@ -26,6 +26,12 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <!-- jsonify Duration -->
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+        <dependency>
             <!-- @NotNull & friends -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
