@@ -28,7 +28,6 @@
 <!--        <module>spring-sso</module>-->
 <!--        <module>spring-micro</module>-->
         <!--<module>spring-app-cdn</module>-->
-		<!--<module>spring-app-attacker</module>-->
     </modules>
 
     <dependencyManagement>
