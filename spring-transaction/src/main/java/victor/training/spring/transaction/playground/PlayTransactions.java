@@ -23,7 +23,7 @@ public class PlayTransactions {
   public void play() {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     repo.save(new Message("JPA"));
-    repo.save(new Message("JPA"));
+    throw new RuntimeException();// validare de business, randul 20 din 100 a avut o eroare -> cancel la toate 100
   }
 }
 
