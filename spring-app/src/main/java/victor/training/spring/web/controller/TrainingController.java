@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -36,7 +37,7 @@ public class TrainingController {
 	// TODO @Validated / @Valid
 	@Operation(description = "Create a training")
 	@PostMapping
-	public void create(@RequestBody TrainingDto dto) {
+	public void create(@RequestBody @Validated TrainingDto dto) {
 		trainingService.createTraining(dto);
 	}
 

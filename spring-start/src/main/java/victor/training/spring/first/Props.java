@@ -1,10 +1,12 @@
 package victor.training.spring.first;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,7 +25,7 @@ import java.util.Map;
 
 @Validated
 @ConfigurationProperties(prefix = "props")
-record Props( //❤️
+record Props( //❤️ record ca orice Dto ±@Builder (lombok)
     @NotNull
     String env,
     Integer gate,
@@ -45,19 +47,25 @@ record Props( //❤️
 
   record Help(
       Integer appId,
-      @FileExists // adnotarea mea, pt ca pot 💪
+//      @FileExists // adnotarea mea, pt ca pot 💪
       File file,
       String email
   ){}
 
 //  @EventListener(ApplicationStartedEvent.class) // cand toate beanurile-s gata
-//  @PostConstruct // cand e beanul tau gata = mai repede
+//  @PostConstruct // cand e beanul tau gata = mai repede. era mai bine cu assertTrue - sar toate erorile odata
 //  public void checkFileExists() {
 //    if (!help.file.exists()) {
 //      throw new IllegalArgumentException("Nu-i: " + help.file);
 //    }
 //  }
-
+  @AssertTrue(message = "File must exist") // ❤️
+  @JsonIgnore // ⚠️daca esti pe DTO, sa nu creada swagger ca ai un camp
+  public boolean isFileExist() { // cu is-
+    // MUST have la multi-field validations; daca field1==DRAFT => field2 != null
+    if (help.file==null) return true;
+    return help.file.exists();
+  }
 
   @PostConstruct
   public void printMyselfAtStartup() throws JsonProcessingException {
