@@ -34,9 +34,9 @@ class OtherClass {
 }
 
 // TODO
-//  0 p6spy
-//  1 Cause a rollback by breaking NOT NULL/PK/UQ, throw Runtime, throw CHECKED
-//  2 Tx propagates with your calls (in your thread😱)
-//  3 Difference with/out @Transactional on f() called: zombie transactions; mind local calls⚠️
-//  4 Game: persist error from within zombie transaction: REQUIRES_NEW or NOT_SUPPORTED
-//  5 Performance: connection starvation issues : debate: avoid nested transactions
+//  0 p6spy shows connection id, commit/rollback, actual query params (not ?) - everywhere < prod
+//  1 rollback on runtime exception, commit on checked exception 🤬
+//  2 Tx propagates with your calls (on thread)
+//  3 @Tx on local method called within the same class - has no effect
+//  4 Tx propagation control REQUIRES_NEW or NOT_SUPPORTED
+//  5 Performance: JDBC connection starvation

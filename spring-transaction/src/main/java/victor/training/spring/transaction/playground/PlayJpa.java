@@ -28,3 +28,9 @@ public class PlayJpa {
     log.info("Message: " /*+ entity*/);
   }
 }
+// TODO
+//  - write behind = insert/update/delete sent to DB (=flush) after method end, before tx COMMIT
+//  - flush (!= commit) also triggered: before any SELECT, repo.saveAndFlush, repo.flush()
+//  - auto-save any changes to an @Entity returned by JPA within a tx
+//  - lazy loading requires surrounding tx (or http request with open-session-in-view/SpringBoot)
+//  - JPA 1st level cache = findById(id) returns previous entity from memory (without SELECT)

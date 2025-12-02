@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 
-@ToString
 @Setter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
 public class Message {
@@ -34,5 +33,13 @@ public class Message {
   public Message addTag(String tag) {
     tags.add(tag);
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "Message{" +
+           "id=" + id +
+           ", message='" + message + '\'' +
+           '}';
   }
 }
