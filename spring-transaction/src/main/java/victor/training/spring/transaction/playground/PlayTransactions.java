@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+import victor.training.spring.transaction.TransactionalMindit;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -21,7 +22,8 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional(rollbackFor = Exception.class) // ~ @TransactionAttribute (EJB)
+//  @Transactional(rollbackFor = Exception.class) // ~ @TransactionAttribute (EJB)
+  @TransactionalMindit
   public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
