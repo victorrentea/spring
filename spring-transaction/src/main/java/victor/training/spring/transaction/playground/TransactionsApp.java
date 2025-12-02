@@ -33,6 +33,8 @@ public class TransactionsApp {
 //      transactions.play();
 //      transactions.extracted();
 //      transactions.locala();
+      jpa.saveAndSend();
+
 
       log.info("============= JPA:writeBehind ==============");
       jpa.writeBehind();

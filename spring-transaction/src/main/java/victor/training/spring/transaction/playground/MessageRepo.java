@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 
+// @Repository - nu e necesar
 public interface MessageRepo extends JpaRepository<Message, Long> {
   @Query(value = "insert into MESSAGE(id, message) values (104,?1 )",nativeQuery = true)
   @Modifying
