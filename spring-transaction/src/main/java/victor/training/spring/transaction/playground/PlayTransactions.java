@@ -22,8 +22,7 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional // ~ @TransactionAttribute (EJB)
-  @SneakyThrows
-  public void play()  {
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
     if (true) throw new IOException("Atomic pana acolo");
