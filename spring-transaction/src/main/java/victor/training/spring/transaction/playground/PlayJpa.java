@@ -17,7 +17,8 @@ public class PlayJpa {
     log.info("Dupa save");
     // #1 @Entity e in memoria Java
     log.info("Gasesc?: " + repo.findById(id)); // nu face SELECT IN DB pt ca il iei dupa ID = 1st-level JPA caching
-    log.info("Gasesc?: " + repo.findByMessage("ONE")); // Face! SELECT IN DB
+    log.info("Gasesc?: " + repo.findByMessage("ONE")); // Face INSERT ca urmeaza un SELECT IN DB
+    log.info("Gasesc?: " + repo.findByMessage("nullu nu face bine la om"));
     // #2 @Entity e INSERT in DB (dar nu COMMITuit inca)
 //    if (true) throw new RuntimeException("INTENTIONAL");
     log.info("--- End of method");
