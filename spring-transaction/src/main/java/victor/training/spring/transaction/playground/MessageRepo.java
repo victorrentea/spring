@@ -21,4 +21,5 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<Message> findByIdLocking(long id);
 
+  Object findByMessage(String message);
 }

@@ -11,11 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayJpa {
   private final MessageRepo repo;
 
+  @Transactional // intr-o tx daca JPA ti-a dat un @Entity, cand o iei din nou dupa ID nu mai face SELECT, ti-o dat in cache
   public void writeBehind() {
     var id = repo.save(new Message("ONE")).getId();
-    log.info("Gasesc?: " + repo.findById(id));
+    log.info("Dupa save");
+    // #1 @Entity e in memoria Java
+    log.info("Gasesc?: " + repo.findById(id)); // nu face SELECT IN DB pt ca il iei dupa ID = 1st-level JPA caching
+    log.info("Gasesc?: " + repo.findByMessage("ONE")); // Face! SELECT IN DB
+    // #2 @Entity e INSERT in DB (dar nu COMMITuit inca)
+//    if (true) throw new RuntimeException("INTENTIONAL");
     log.info("--- End of method");
   }
+  // #3 @Entity e INSERT in DB (si COMMITuit)
 
   public void autoSave() {
     Message message = repo.findById(1L).orElseThrow();
