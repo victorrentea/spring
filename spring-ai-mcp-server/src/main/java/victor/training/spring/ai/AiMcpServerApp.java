@@ -7,15 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class McpServerApplication {
+public class AiMcpServerApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(McpServerApplication.class, args);
+		SpringApplication.run(AiMcpServerApp.class, args);
 	}
 
 	@Bean
-	public ToolCallbackProvider weatherTools(WeatherMCP weatherMCP, VictorTrainingCatalog victorTrainingCatalog) {
-		return MethodToolCallbackProvider.builder().toolObjects(weatherMCP,victorTrainingCatalog).build();
+	MethodToolCallbackProvider methodToolCallbackProvider(JobAdoptionScheduler jobAdoptionScheduler) {
+    return MethodToolCallbackProvider.builder().toolObjects(jobAdoptionScheduler).build();
 	}
 
 }

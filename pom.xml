@@ -25,6 +25,7 @@
         <module>spring-transaction</module>
         <module>spring-app</module>
         <module>spring-ai</module>
+        <module>spring-ai-mcp-server</module>
         <!--<module>spring-gateway</module>-->
 <!--        <module>spring-sso</module>-->
 <!--        <module>spring-micro</module>-->

@@ -1,0 +1,38 @@
+package victor.training.spring.ai;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Slf4j
+@Component
+class JobAdoptionScheduler {
+  private final DogRepo dogRepo;
+  private final PgVectorStore vectorStore;
+
+  JobAdoptionScheduler(DogRepo dogRepo, PgVectorStore vectorStore) {
+    this.dogRepo = dogRepo;
+    this.vectorStore = vectorStore;
+  }
+
+  @Tool(description = "schedule an appointment to pickup or adopt a dog from a location")
+  String scheduleAdoption(
+      @ToolParam(description = "the id of the dog") int dogId,
+      @ToolParam(description = "the name of the dog") String dogName,
+      @ToolParam(description = "the username of the adopter") String username) {
+    log.info("Scheduling adoption for dog {} with id {} for user {}", dogName, dogId, username);
+    Dog dog = dogRepo.findById(dogId).orElseThrow();
+    if (dog.getOwner() != null) {
+      throw new IllegalStateException("Dog with id %d is already adopted".formatted(dogId));
+    }
+    dog.setOwner(username);
+    dogRepo.save(dog);
+    vectorStore.delete(List.of(dog.getVectorId()));
+    return LocalDate.now().plusDays(3).toString();
+  }
+}
