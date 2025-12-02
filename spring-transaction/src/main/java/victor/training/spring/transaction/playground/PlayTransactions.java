@@ -21,7 +21,7 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional // ~ @TransactionAttribute (EJB)
+  @Transactional(rollbackFor = Exception.class) // ~ @TransactionAttribute (EJB)
   public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
