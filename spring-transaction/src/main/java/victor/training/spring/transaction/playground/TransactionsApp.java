@@ -20,8 +20,8 @@ public class TransactionsApp {
 
   private final PlayTransactions transactions;
   private final PlayJpa jpa;
-  private final PlayLocking playLocking;
-  private final MessageRepo repo;
+  private final PlayLocks locks;
+  private final MyEntityRepo repo;
   private final DBPrinter dbPrinter;
 
   @EventListener(ApplicationStartedEvent.class)
@@ -38,12 +38,12 @@ public class TransactionsApp {
 //      log.info("============= JPA:lazyLoading ==============");
 //      jpa.lazyLoading();
 
-//      log.info("============= LOCKING ==============");
-//      allOf(runAsync(concurrency::thread), runAsync(concurrency::thread)).join();
+//      log.info("============= LOCKS ==============");
+//      allOf(runAsync(locks::thread), runAsync(locks::thread)).join();
       log.info("============= END EXPERIMENTS ==============");
     } catch (Exception e) {
       e.printStackTrace();
-      // swallow exception to allow app to start
+      // print and ignore exception to allow the application to start
     }
     dbPrinter.print();
   }

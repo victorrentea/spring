@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-import victor.training.spring.transaction.playground.Message;
-import victor.training.spring.transaction.playground.MessageRepo;
+import victor.training.spring.transaction.playground.MyEntity;
+import victor.training.spring.transaction.playground.MyEntityRepo;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class TransactionListener {
     private final ApplicationEventPublisher eventPublisher;
-    private final MessageRepo messageRepo;
+    private final MyEntityRepo myEntityRepo;
 
     @Transactional
     public void insideATransaction() {
-        messageRepo.save(new Message("Start"));
+        myEntityRepo.save(new MyEntity("Start"));
         eventPublisher.publishEvent(new CleanupAfterTransactionEvent("Delete files, mark rows DONE, ACK a message"));
         eventPublisher.publishEvent(new SendNotificationAfterCommitEvent("boss@corp.io", "The transaction was completed"));
-        messageRepo.save(new Message("End"));
+        myEntityRepo.save(new MyEntity("End"));
         log.info("End method");
     }
 

@@ -2,35 +2,37 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@RestController
 public class PlayJpa {
-  private final MessageRepo repo;
+  private final MyEntityRepo repo;
 
   @Transactional
   public void writeBehind() {
-    repo.save(new Message("ONE"));
-    log.info("--- End of method");
+    repo.save(new MyEntity("ONE"));
+    log.info("--- End of method ---");
   }
 
   public void autoSave() {
-    Message message = repo.findById(1L).orElseThrow();
-    message.setMessage("Different");
+    MyEntity e = repo.findById(1L).orElseThrow();
+    e.setName("Different");
     // TODO send update in DB
   }
 
-  public void lazyLoading() {
-    Message entity = repo.findById(1L).orElseThrow();
-    log.info("Message: " /*+ entity*/);
+  //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
+  public void lazyLoading() { // b) !REST-called =
+    MyEntity e = repo.findById(1L).orElseThrow();
+    log.info("Message: {}", e.getTags());
   }
+
 }
 // TODO
 //  - write behind = insert/update/delete sent to DB (=flush) after method end, before tx COMMIT
 //  - flush (!= commit) also triggered: before any SELECT, repo.saveAndFlush, repo.flush()
 //  - auto-save any changes to an @Entity returned by JPA within a tx
-//  - lazy loading requires surrounding tx (or http request with open-session-in-view/SpringBoot)
+//  - lazy loading requires a) surrounding tx or b) active http request with open-session-in-view=true (default)
 //  - JPA 1st level cache = findById(id) returns previous entity from memory (without SELECT)

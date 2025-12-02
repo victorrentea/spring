@@ -2,7 +2,6 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -21,44 +20,44 @@ public class JdbcTemplateDemo {
 
   public void varargs() {
     jdbcTemplate.update("""
-            insert into MESSAGE(id, message) 
+            insert into MY_ENTITY(id, name) 
             values (?, ?)
             """,
         100L, "SQL");
   }
 
   public void rowMapper() {
-    List<Message> query = jdbcTemplate.query("""
-                SELECT id, message
-                FROM Message
+    List<MyEntity> query = jdbcTemplate.query("""
+                SELECT id, name
+                FROM MY_ENTITY
                 WHERE ID = ?
             """, this::fromResultSet,
         100);
 
   }
 
-  private Message fromResultSet(ResultSet rs, int rowNum) throws SQLException {
-    Message message = new Message();
-    message.setId(rs.getLong("id"));
-    message.setMessage(rs.getString("message")); // or a null-safe friend
-    return message;
+  private MyEntity fromResultSet(ResultSet rs, int rowNum) throws SQLException {
+    MyEntity myEntity = new MyEntity();
+    myEntity.setId(rs.getLong("id"));
+    myEntity.setName(rs.getString("name")); // or a null-safe friend
+    return myEntity;
   }
 
-  public void dynamicQuery(String message) {
+  public void dynamicQuery(String name) {
     List<String> sqlParts = new ArrayList<>();
     Map<String, Object> params = new HashMap<>();
     // language=sql
     sqlParts.add("""
-        SELECT m.id, m.message
-        FROM MESSAGE m
+        SELECT m.id, m.name
+        FROM MY_ENTITY m
         WHERE 1=1""");
 
-    if (message != null) {
-      sqlParts.add("AND m.message = :message"); // or LIKE
-      params.put("message", message);
+    if (name != null) {
+      sqlParts.add("AND m.name = :name"); // or LIKE
+      params.put("name", name);
     }
 
     String sql = String.join(" ", sqlParts);
-    List<Message> list = namedParameterJdbcTemplate.query(sql, params, this::fromResultSet);
+    List<MyEntity> list = namedParameterJdbcTemplate.query(sql, params, this::fromResultSet);
   }
 }

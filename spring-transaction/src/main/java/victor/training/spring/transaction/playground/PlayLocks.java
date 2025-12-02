@@ -9,17 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PlayLocking {
-  private final MessageRepo repo;
+public class PlayLocks {
+  private final MyEntityRepo repo;
 
   @SneakyThrows
   @Transactional
   public int thread() {
-    Message message = repo.findById(1L).orElseThrow();
+    MyEntity myEntity = repo.findById(1L).orElseThrow();
 //    Message message = repo.findByIdLocking(1L).orElseThrow();
     log.info("START");
     Thread.sleep(100);
-    log.info("END: {}", message);
+    log.info("END: {}", myEntity);
     return 0;
   }
 }

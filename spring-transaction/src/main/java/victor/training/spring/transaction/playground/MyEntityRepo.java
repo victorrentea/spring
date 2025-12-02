@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 
-public interface MessageRepo extends JpaRepository<Message, Long> {
-  @Query("FROM Message WHERE id = ?1")
+public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
+  @Query("FROM MyEntity WHERE id = ?1")
   @Lock(LockModeType.PESSIMISTIC_WRITE) // db row lock via "SELECT .. FOR UPDATE"
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
-  Optional<Message> findByIdLocking(long id);
+  Optional<MyEntity> findByIdLocking(long id);
 
 }

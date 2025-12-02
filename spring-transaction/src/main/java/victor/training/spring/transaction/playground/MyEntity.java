@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,33 +12,33 @@ import java.util.List;
 @Getter
 
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
-public class Message {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "NAME", name = "UQ_NAME"))
+public class MyEntity {
   @Id
   @GeneratedValue
   private Long id;
   @NotNull
-  private String message;
+  private String name;
   @ElementCollection
   private List<String> tags = new ArrayList<>();
 
-  protected Message() { // for hibernate only
+  protected MyEntity() { // for hibernate only
   }
 
-  public Message(String message) {
-    this.message = message;
+  public MyEntity(String name) {
+    this.name = name;
   }
 
-  public Message addTag(String tag) {
+  public MyEntity addTag(String tag) {
     tags.add(tag);
     return this;
   }
 
   @Override
   public String toString() {
-    return "Message{" +
+    return "MyEntity{" +
            "id=" + id +
-           ", message='" + message + '\'' +
+           ", name='" + name + '\'' +
            '}';
   }
 }
