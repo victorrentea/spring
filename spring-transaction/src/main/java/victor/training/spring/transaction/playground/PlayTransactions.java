@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,8 +101,12 @@ class OtherClass {
 
   @Transactional(propagation = Propagation.NOT_SUPPORTED) // chiar daca pe clasa cica vor toate metodele tx, asta nu vrea
   // daca sare vreo ex runtime, nu strica tx callerului
+
+//  @Async// muta executia metodei pe ALT THREAD. JDBC connection e legat de thread (THreadLocal) => ai pierdut tx callerului
+//  @Transactional
   public void extracted() {
     repo.save(new Message("JPA2"));
+    repo.save(new Message("JPA22"));
     if (true) throw new MyEx();
   }
 }
