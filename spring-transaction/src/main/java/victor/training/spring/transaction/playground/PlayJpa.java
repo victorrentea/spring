@@ -1,12 +1,16 @@
 package victor.training.spring.transaction.playground;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
+
+import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayJpa {
   private final MessageRepo repo;
   private final EntityManager entityManager;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   @Transactional(isolation = Isolation.READ_UNCOMMITTED) // intr-o tx daca JPA ti-a dat un @Entity, cand o iei din nou dupa ID nu mai face SELECT, ti-o dat in cache
   public void writeBehind() {
@@ -72,20 +77,53 @@ public class PlayJpa {
 
 
   // Dual Write problem: DB + Messaging (Kafka, RabbitMQ, ...) in aceeasi tx
-//  @Transactional
+  @Transactional
   public void saveAndSend() { // merge daca o muti in afara clasei
-    altaMetoda();
-    kafkaTemplateSend("mesaj"); // ✅nu e tranzactat mesajul pleaca ACUM⚠️ OrderPlacedEvent
-  }
-
-  @Transactional // nare efect daca o chemi din aceeasi clasa = nu merg proxyurile
-  public void altaMetoda() {
     repo.save(new Message("Primu"));
     repo.saveAndFlush(new Message("in DB")); // INSERT acum!
+    applicationEventPublisher.publishEvent(new EventuMeu("mesaj"));
+    repo.save(new Message("OUTBOX table un rand cu mesajul de trimis"));
   }
+  public record EventuMeu(String mesajDeTrimis){}
+
+  // in-mem e riscant:
+  // 🙁 daca pica kafka send ❌, DB a facut commit✅ = inconsistenta
+  // 🙁 daca pica podul meu pana apuca sa ruleze dupaCommit() = pierzi event
+  @TransactionalEventListener(phase = AFTER_COMMIT) // ruleaza dupa COMMITul tx din care s-a facut .publish
+  public void dupaCommit(EventuMeu event) {
+    kafkaTemplateSend(event.mesajDeTrimis()); // ✅nu e tranzactat mesajul pleaca ACUM⚠️ OrderPlacedEvent
+    // dureaza 10ms, iar k8s te lasa  3 x 5sec (interval de liveness) pana-ti da kill pod
+    // iar brokerul de kafka nu pica
+    // ! AVRO serialization failed
+  }
+  // daca vrei super robust: in loc de .publish() faci
+  // outboxRepo.save(new MesajDeTrimis(in db)) si-i dai COMMIT cu restul
+  // a) @Scheduler 1/sec incerci sa trimiti > delete
+  // b) debezium.io/CDC: un plugin in DB trimite direct din DB in kafka
 
   private void kafkaTemplateSend(String mesaj) {
     System.out.println("kafkaTemplate.send " + mesaj);
   }
   // COMMIT in SQL DUPA❌
+
+
+  // ce ma fac daca asta ruleaza pe 3 poduri
+  @Scheduled(fixedRateString = "1000")
+//  @SchedulerLock(name = "TaskScheduler_scheduledTask",
+//      lockAtLeastFor = "PT5M", // rate minim
+//      lockAtMostFor = "PT14M") // ⭐️printr-o tabela pe care ti-o creezi in DB
+  // se asigura ca nu porneste un alt POD metoda asta min(cat ea ruleaza,lockAtMostFor)
+  public void poll() throws InterruptedException {
+    log.info("START cu DB (una) din 3 poduri");
+    // redis lock, SELECT FOR UPDATE, .... ..... . STOP! => use shedlock
+    Thread.sleep(1300);
+    log.info("END");
+  }
+
+//  @Scheduled(fixedRateString = "1000") // bate separat pe th lui
+//  public void poll2() throws InterruptedException {
+//    log.info("START2");
+//    Thread.sleep(1300);
+//    log.info("END2");
+//  }
 }

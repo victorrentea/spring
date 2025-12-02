@@ -1,20 +1,13 @@
 package victor.training.spring.transaction.playground;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.EntityManager;
 import org.springframework.transaction.support.TransactionTemplate;
-import victor.training.spring.transaction.TransactionalMindit;
-
-import javax.sql.DataSource;
-import java.io.IOException;
 
 
 // spring va injecta tutoror care cer o PlayTransaction o instanta din proxy
@@ -56,7 +49,8 @@ public class PlayTransactions {
 //    Message messageWithId = repo.save(new Message("JPA"));
 //    log.info("Deja i-a pus id, chiar daca nu-i INSERT inca:" + messageWithId);
 //    repo.save/*AndFlush*/(new Message("JPA2")); // #1
-////    repo.flush(); // #2 sau asa
+
+  ////    repo.flush(); // #2 sau asa
 //    System.out.println(repo.count());// #3 inainte de orice SQL lansat in DB
 //
 //    log.info("'JPA Write-Behind' dupa ce ies, @Transactional vrea sa dea commit. inainte de asta, face flush la toate schimbarile ramase 'de trimis in DB'");
@@ -73,28 +67,38 @@ public class PlayTransactions {
   @Transactional // cum merge? -> trebuie ca spring sa intercepteze apelurile acestei metode
   public void play() {
     repo.save(new Message("JPA")); // 😱 are el intern @Transactional
-          // => NU ai nevoie de @Transactional pe metoda ta daca faci un singur save
+    // => NU ai nevoie de @Transactional pe metoda ta daca faci un singur save
     //extracted(); // apelul local (in aceeasi clasa) nu trece prin proxy! ⚠️⚠️⚠️⚠️⚠️
 
 
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void extracted() {
-    repo.save(new Message("JPA2"));
-  }
 
-  @Transactional
-  public void locala() {
+  @Transactional//(noRollbackFor = MyRuntimeException.class)
+  public void entry() {
     play();
-    extracted();
+    try {
+      other.extracted();
+    } catch (MyEx ignored) {
+      log.warn("Swallow");
+    } // swallow ex: cum sa enervezi senioru
+    repo.save(new Message("Dupa"));
   }
 }
+class MyEx extends RuntimeException {}
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MessageRepo repo;
+
+  //  @Transactional(propagation = Propagation.REQUIRED) // default: propaga daca e, sau creeaza daca nu-i
+//  @Transactional // default: propaga daca e, sau creeaza daca nu-i
+  @Transactional(propagation = Propagation.REQUIRES_NEW) // tx 2 e ROLLBACK
+  public void extracted() {
+    repo.save(new Message("JPA2"));
+    if (true) throw new MyEx();
+  }
 }
 
 // TODO

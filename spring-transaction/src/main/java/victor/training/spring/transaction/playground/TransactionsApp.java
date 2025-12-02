@@ -4,11 +4,27 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import victor.training.spring.transaction.playground.extra.DBPrinter;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
+
+@EnableScheduling
+@Configuration
+//@Profile("!test")
+@ConditionalOnProperty(
+    value = "schedulers.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
+    // in application-test.properties am setat schedulers.enabled=false
+class SchedulerConfig {
+
+}
 
 @Slf4j
 @SpringBootApplication
@@ -32,7 +48,8 @@ public class TransactionsApp {
       log.info("Chem metoda pe un proxy injectat de Spring " + transactions.getClass());
 //      transactions.play();
 //      transactions.extracted();
-//      transactions.locala();
+      transactions.entry();
+
       jpa.saveAndSend();
 
 
