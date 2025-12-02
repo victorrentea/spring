@@ -22,13 +22,18 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-//  @Transactional(rollbackFor = Exception.class) // ~ @TransactionAttribute (EJB)
-  @TransactionalMindit
+//  @TransactionalMindit
+  @Transactional
   public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
-    if (true) throw new IOException("Atomic pana acolo");
+    repo.met("sql3");
+    Message messageWithId = repo.save(new Message("JPA"));
+    log.info("Deja i-a pus id, chiar daca nu-i INSERT inca:" + messageWithId);
     repo.save(new Message("JPA"));
+    log.info("'JPA Write-Behind' dupa ce ies, @Transactional vrea sa dea commit. inainte de asta, face flush la toate schimbarile ramase 'de trimis in DB'");
+    // 😊 performance🔼: ca poate nu-i nevoie. si sa trimita in batchuri daca activezi JDBC batching spring.jpa.properties.hibernate.jdbc.batch_size = 100
+    // 🙁 debugging: daca INSERT SQL crapa cu PK/UK/NOT NULL/FK => vezi exceptia DUPA ce iesit din functie
   }
 }
 
