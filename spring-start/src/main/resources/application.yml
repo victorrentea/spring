@@ -14,7 +14,7 @@ spring:
 props:
     env: prod
     gate: 123
-    welcomeMessage: Welcome to Spring
+    welcomeMessage: .
     supportUrls:
         - http://stackoverflow.com
         - http://baeldung.com
@@ -32,4 +32,9 @@ props:
         lunch: PT3h
       RO:
         greeting: Salut!
+        lunch: PT30m
+    tenants-list:
+      - greeting: Bonjour!
+        lunch: PT3h
+      - greeting: Salut!
         lunch: PT30m
