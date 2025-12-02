@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -19,11 +20,12 @@ public class PlayTransactions {
   private final MessageRepo repo; // = Spring Data JPA, 2011
   private final OtherClass other;
 
-  @Transactional
-  public void play() {
+  @Transactional // ~ @TransactionAttribute (EJB)
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
+    jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
+    if (true) throw new IOException("Atomic pana acolo");
     repo.save(new Message("JPA"));
-    throw new RuntimeException();// validare de business, randul 20 din 100 a avut o eroare -> cancel la toate 100
   }
 }
 
