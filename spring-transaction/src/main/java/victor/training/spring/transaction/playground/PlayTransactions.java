@@ -89,12 +89,17 @@ class MyEx extends RuntimeException {}
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 class OtherClass {
   private final MessageRepo repo;
 
   //  @Transactional(propagation = Propagation.REQUIRED) // default: propaga daca e, sau creeaza daca nu-i
 //  @Transactional // default: propaga daca e, sau creeaza daca nu-i
-  @Transactional(propagation = Propagation.REQUIRES_NEW) // tx 2 e ROLLBACK
+//  @Transactional(propagation = Propagation.REQUIRES_NEW) // tx 2 e ROLLBACK
+//  @Transactional// introduce un proxy care marcheaza tx activa acum ca "ROLLBACK ONLY"
+
+  @Transactional(propagation = Propagation.NOT_SUPPORTED) // chiar daca pe clasa cica vor toate metodele tx, asta nu vrea
+  // daca sare vreo ex runtime, nu strica tx callerului
   public void extracted() {
     repo.save(new Message("JPA2"));
     if (true) throw new MyEx();
