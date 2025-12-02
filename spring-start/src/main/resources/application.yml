@@ -1,5 +1,5 @@
 spring:
-    mail:
+  mail:
         host: smtp.gmail.com
         port: 587
         properties:
@@ -10,6 +10,10 @@ spring:
                         enable: true
         username: user
         password: pass
+  datasource:
+    hikari:
+      login-timeout: 1000
+      maximum-pool-size: 10
 
 props:
     env: prod
@@ -38,3 +42,23 @@ props:
         lunch: PT3h
       - greeting: Salut!
         lunch: PT30m
+thread-pool:
+  core-pool-size: 5
+  max-pool-size: ${thread-pool.core-pool-size}
+  queue-capacity: 500
+  thread-name-prefix: worker-
+
+#thread-pool.threads: 5
+management:
+  endpoint:
+    health:
+      access: read_only
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*" # nu in prod
+#server:
+#  shutdown: graceful
+#thread-pool.queue: 500
