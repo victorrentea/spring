@@ -1,6 +1,7 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional // ~ @TransactionAttribute (EJB)
-  public void play() throws IOException {
+  @SneakyThrows
+  public void play()  {
     jdbcTemplate.update("insert into MESSAGE(id, message) values (100,'SQL' )");
     jdbcTemplate.update("insert into MESSAGE(id, message) values (101,'SQL2' )");
     if (true) throw new IOException("Atomic pana acolo");
