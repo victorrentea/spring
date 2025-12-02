@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString
+@ToString // NU PUNE!
 @Setter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "MESSAGE", name = "UQ_MESSAGE"))
 public class Message {
@@ -21,6 +21,7 @@ public class Message {
   @NotNull
   private String message;
   @ElementCollection
+  @ToString.Exclude // RECOMAND
   private List<String> tags = new ArrayList<>();
 
   protected Message() { // for hibernate only

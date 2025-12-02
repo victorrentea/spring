@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayJpa {
   private final MessageRepo repo;
 
-  @Transactional
   public void writeBehind() {
-    repo.save(new Message("ONE"));
+    var id = repo.save(new Message("ONE")).getId();
+    log.info("Gasesc?: " + repo.findById(id));
     log.info("--- End of method");
   }
 

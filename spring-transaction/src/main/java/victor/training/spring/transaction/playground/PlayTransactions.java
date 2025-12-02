@@ -67,18 +67,27 @@ public class PlayTransactions {
   // Springu extinde clasa asta (PlayTransactions) la runtime in care face
   // override la metodele tale, pt a putea executa cod INAINTE ± DUPA apelul efectiv
   // ce alte adnotari Spring standard mai intercepteaza apeluri de metode = Spring AOP
-  @Transactional // cum merge? -> trebuie ca spring sa intercepteze apelurile acestei metode
   // @Secured("ROLE_ADMIN") / @PreAuthorized("..") -> cere sa fii admin
   // @Timed / @Observed: (micrometer) masori timpul de executie ca metrica pe /actuator/prometheus
   // @Cacheable: daca chemi metoda din nou cu aceeasi param -> aceleasi result
+  @Transactional // cum merge? -> trebuie ca spring sa intercepteze apelurile acestei metode
   public void play() {
-    repo.save(new Message("JPA"));
-    extracted();
+    repo.save(new Message("JPA")); // 😱 are el intern @Transactional
+          // => NU ai nevoie de @Transactional pe metoda ta daca faci un singur save
+    //extracted(); // apelul local (in aceeasi clasa) nu trece prin proxy! ⚠️⚠️⚠️⚠️⚠️
+
+
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  protected void extracted() {
+  public void extracted() {
     repo.save(new Message("JPA2"));
+  }
+
+  @Transactional
+  public void locala() {
+    play();
+    extracted();
   }
 }
 
