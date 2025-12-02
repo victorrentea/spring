@@ -21,7 +21,7 @@ public class DBPrinter {
   @Transactional(readOnly = true)
   public void print() {
     String contents = repo.findAll().stream().map(Message::toString).collect(joining("\n"));
-    log.info("🏁🏁🏁 FINAL DATABASE CONTENTS:      --- you can see more at http://localhost:8080/h2-console/ using URL: jdbc:h2:tcp://localhost:9092/~/test  DRIVER: org.h2.Driver USER: sa PASS: sa "
+    log.info("🏁🏁🏁 FINAL DATABASE CONTENTS:      --- you can see more at http://localhost:8080/h2-console/ using URL: jdbc:h2:tcp://localhost:9092/~/test  DRIVER: org.h2.Driver USER: sa PASS: sa \n"
              + (contents.isEmpty()?"<EMPTY>":contents));
   }
 }
