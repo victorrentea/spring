@@ -29,6 +29,7 @@ public class TransactionsApp {
     try {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
       log.info("============= START EXPERIMENTS ==============");
+      log.info("Chem metoda pe un proxy injectat de Spring " + transactions.getClass());
       transactions.play();
 
 //      log.info("============= JPA:writeBehind ==============");

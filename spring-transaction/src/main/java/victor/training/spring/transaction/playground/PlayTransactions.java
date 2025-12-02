@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -14,6 +15,20 @@ import victor.training.spring.transaction.TransactionalMindit;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+
+
+// spring va injecta tutoror care cer o PlayTransaction o instanta din proxy
+// generat dinamic cu CGLIB (Code Generation LIB):
+//class PlayTransactionsSubclasaGenerateDeCGLIB extends PlayTransactions {
+//  @Override
+//  public void play() {
+//    // start tx
+//    playTransactionRealInstance.play();
+//    // commit tx
+//    // }catch (RuntimeException) { rollback tx}
+//    // }catch (Exception) { commit tx} 😱😱😱
+//  }
+//}
 
 @Slf4j
 @Service
@@ -49,9 +64,20 @@ public class PlayTransactions {
 //    // 🙁 debugging🔽: daca INSERT SQL crapa cu PK/UK/NOT NULL/FK => vezi exceptia DUPA ce iesit din functie, tarziu. greu de traceuit.
 //  }
 
-  @Transactional
+  // Springu extinde clasa asta (PlayTransactions) la runtime in care face
+  // override la metodele tale, pt a putea executa cod INAINTE ± DUPA apelul efectiv
+  // ce alte adnotari Spring standard mai intercepteaza apeluri de metode = Spring AOP
+  @Transactional // cum merge? -> trebuie ca spring sa intercepteze apelurile acestei metode
+  // @Secured("ROLE_ADMIN") / @PreAuthorized("..") -> cere sa fii admin
+  // @Timed / @Observed: (micrometer) masori timpul de executie ca metrica pe /actuator/prometheus
+  // @Cacheable: daca chemi metoda din nou cu aceeasi param -> aceleasi result
   public void play() {
     repo.save(new Message("JPA"));
+    extracted();
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void extracted() {
     repo.save(new Message("JPA2"));
   }
 }
