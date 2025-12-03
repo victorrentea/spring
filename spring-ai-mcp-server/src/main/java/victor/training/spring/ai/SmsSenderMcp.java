@@ -17,6 +17,7 @@ import java.util.Map;
 class SmsSenderMcp {
   private final Map<String, String> userPhoneNumbers = Map.of("victor","+40720000000"); // from DB
 
+  // ~@PostMapping
   @Tool(description = "send an SMS about the pickup details following scheduling the adoption of a dog")
   String sendPickupDetailsSMS(
       @ToolParam(description = "the id of the dog") int dogId,
@@ -53,7 +54,6 @@ class SmsSenderMcp {
   }
 
   private String getString(McpSchema.CreateMessageResult samplingResponse) {
-    var poeticSMS = ((McpSchema.TextContent) samplingResponse.content()).text();
-    return poeticSMS;
+    return ((McpSchema.TextContent) samplingResponse.content()).text();
   }
 }

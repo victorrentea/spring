@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AssistantController {
   private final ChatClient ai;
 
-  private final Map<String, PromptChatMemoryAdvisor> memory = new ConcurrentHashMap<>(); // in Redis, SQL, Mongo...
+  private final Map<String, PromptChatMemoryAdvisor> memory = new ConcurrentHashMap<>(); // in Redis, SQL, Cassandra...
 
   AssistantController(
       ChatClient.Builder ai,
@@ -40,30 +40,29 @@ public class AssistantController {
         don’t have any dogs available. To adopt a dog, the user must be sent an SMS with the details about the pickup.
         """;
     this.ai = ai
-        .defaultSystem(systemPrompt)
-        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClient).build())
+        .defaultSystem(systemPrompt) // assumed role
+        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClient).build()) // remote call to send SMS
         .defaultTools(jobAdoptionScheduler)
-        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
+        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build()/*RAG dintr-un general purpose dog characteristics json 2MB*/)
         .build();
   }
 
   @GetMapping(value = "/{username}/assistant",produces = "text/markdown")
   String assistant(@PathVariable String username, @RequestParam String q) {
-    var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> newAdvisor());
+    var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> memoryAdvisor());
 
+    // TODO de ce nu pot sa-i spun "vreau primul"
     return ai.prompt()
-        .system("The user's username is \"%s\"".formatted(username))
-        .user(q)
+        .system("The user's username is \"%s\"".formatted(username)) // system-prompt from SecurityContextHolder...
+        .user(q) // user-prompt
         .advisors(chatMemoryAdvisor)
         .call()
-        .content();
+        .content(); // TODO se poate streamui inapoi cuvant cu cuvant rezultatul ca Flux<String> ~> SSE / WS:
   }
 
-  private PromptChatMemoryAdvisor newAdvisor() {
-    return PromptChatMemoryAdvisor
-        .builder(MessageWindowChatMemory.builder()
-            .chatMemoryRepository(new InMemoryChatMemoryRepository())
-            .build())
+  private PromptChatMemoryAdvisor memoryAdvisor() {
+    return PromptChatMemoryAdvisor.builder(
+        MessageWindowChatMemory.builder().chatMemoryRepository(new InMemoryChatMemoryRepository()).build())
         .build();
   }
 
