@@ -1,32 +1,19 @@
 package victor.training.spring.ai;
 
 import io.modelcontextprotocol.client.McpSyncClient;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
-import org.springframework.ai.mcp.SyncMcpToolCallback;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
-import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -58,11 +45,12 @@ public class AssistantController {
         .build();
   }
 
-  @GetMapping(value = "/{user}/assistant",produces = "text/markdown")
-  String assistant(@PathVariable String user, @RequestParam String question) {
-    var chatMemoryAdvisor = memory.computeIfAbsent(user, k -> newAdvisor());
+  @GetMapping(value = "/{username}/assistant",produces = "text/markdown")
+  String assistant(@PathVariable String username, @RequestParam String question) {
+    var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> newAdvisor());
 
     return ai.prompt()
+        .system("The user's username is \"%s\"".formatted(username))
         .user(question)
         .advisors(chatMemoryAdvisor)
         .call()
