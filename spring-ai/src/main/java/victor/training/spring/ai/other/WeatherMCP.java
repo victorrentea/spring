@@ -1,4 +1,4 @@
-package victor.training.spring.ai;
+package victor.training.spring.ai.other;
 
 import java.util.List;
 import java.util.Map;

@@ -1,10 +1,11 @@
 package victor.training.spring.ai;
 
 import io.modelcontextprotocol.spec.McpSchema;
+import io.modelcontextprotocol.spec.McpSchema.CreateMessageRequest;
+import io.modelcontextprotocol.spec.McpSchema.CreateMessageResult;
+import io.modelcontextprotocol.spec.McpSchema.TextContent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springaicommunity.mcp.annotation.McpSampling;
-import org.springframework.ai.chat.messages.AbstractMessage;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -18,29 +19,26 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class Sampl {
+public class SamplingMcpClientHandler {
   private final ChatModel chatModel;
 
-  @McpSampling(clients = "server1")
-  public McpSchema.CreateMessageResult handleSampling(McpSchema.CreateMessageRequest request) {
-    // Use Spring AI ChatModel for sampling
+  public CreateMessageResult handleSampling(CreateMessageRequest request) {
     List<Message> messages = request.messages().stream()
         .map(msg -> {
+          TextContent textContent = (TextContent) msg.content();
           if (msg.role() == McpSchema.Role.USER) {
-            return new UserMessage(((McpSchema.TextContent) msg.content()).text());
+            return new UserMessage(textContent.text());
           } else {
-            return (Message) AssistantMessage.builder()
-                .content(((McpSchema.TextContent) msg.content()).text())
-                .build();
+            return (Message) AssistantMessage.builder().content(textContent.text()).build();
           }
         })
         .toList();
 
-    ChatResponse response = chatModel.call(new Prompt(messages));
+    ChatResponse chatResponse = chatModel.call(new Prompt(messages));
 
-    return McpSchema.CreateMessageResult.builder()
+    return CreateMessageResult.builder()
         .role(McpSchema.Role.ASSISTANT)
-        .content(new McpSchema.TextContent(response.getResult().getOutput().getText()))
+        .content(new TextContent(chatResponse.getResult().getOutput().getText()))
 //        .model(request.modelPreferences().hints().get(0).name())
         .build();
   }

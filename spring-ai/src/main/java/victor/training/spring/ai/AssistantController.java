@@ -30,22 +30,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-@Data
-@Entity
-class Dog {
-  @Id
-  @GeneratedValue
-  private Integer id;
-  private String name;
-  private String description;
-  private String owner;
-  private String vectorId = UUID.randomUUID().toString();
-}
-interface DogRepo extends JpaRepository<Dog, Integer> {}
-
 @RestController
 // From https://www.youtube.com/watch?v=9mOuvrZtLbc&t=2s
-class AssistantController {
+public class AssistantController {
   private final ChatClient ai;
 
   private final Map<String, PromptChatMemoryAdvisor> memory = new ConcurrentHashMap<>(); // in Redis, SQL, Mongo...
@@ -73,18 +60,20 @@ class AssistantController {
 
   @GetMapping(value = "/{user}/assistant",produces = "text/markdown")
   String assistant(@PathVariable String user, @RequestParam String question) {
-    var advisorForUser = memory.computeIfAbsent(user, k -> newAdvisor());
+    var chatMemoryAdvisor = memory.computeIfAbsent(user, k -> newAdvisor());
 
     return ai.prompt()
         .user(question)
-        .advisors(advisorForUser)
+        .advisors(chatMemoryAdvisor)
         .call()
         .content();
   }
 
   private PromptChatMemoryAdvisor newAdvisor() {
     return PromptChatMemoryAdvisor
-        .builder(MessageWindowChatMemory.builder().chatMemoryRepository(new InMemoryChatMemoryRepository()).build())
+        .builder(MessageWindowChatMemory.builder()
+            .chatMemoryRepository(new InMemoryChatMemoryRepository())
+            .build())
         .build();
   }
 }

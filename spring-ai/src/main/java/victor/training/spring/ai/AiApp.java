@@ -9,6 +9,8 @@ import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import victor.training.spring.ai.other.VictorTrainingCatalog;
+import victor.training.spring.ai.other.WeatherMCP;
 
 @SpringBootApplication
 public class AiApp {
@@ -23,10 +25,10 @@ public class AiApp {
   }
 
   @Bean
-  McpSyncClient mcpSyncClient(Sampl sampl) {
+  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
     var transport = HttpClientSseClientTransport.builder("http://localhost:8081").build();
     var mcpClient = McpClient.sync(transport)
-        .sampling(sampl::handleSampling)
+        .sampling(samplingMcpClientHandler::handleSampling)
         .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
         .build();
     mcpClient.initialize();

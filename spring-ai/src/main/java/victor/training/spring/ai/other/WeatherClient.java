@@ -1,4 +1,4 @@
-package victor.training.spring.ai;
+package victor.training.spring.ai.other;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

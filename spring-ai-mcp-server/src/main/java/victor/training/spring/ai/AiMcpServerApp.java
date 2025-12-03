@@ -1,6 +1,5 @@
 package victor.training.spring.ai;
 
-import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,8 +13,8 @@ public class AiMcpServerApp {
 	}
 
 	@Bean
-	MethodToolCallbackProvider methodToolCallbackProvider(JobAdoptionScheduler jobAdoptionScheduler) {
-    return MethodToolCallbackProvider.builder().toolObjects(jobAdoptionScheduler).build();
+	MethodToolCallbackProvider methodToolCallbackProvider(SmsSenderMcp smsSenderMcp) {
+    return MethodToolCallbackProvider.builder().toolObjects(smsSenderMcp).build();
 	}
 
 }

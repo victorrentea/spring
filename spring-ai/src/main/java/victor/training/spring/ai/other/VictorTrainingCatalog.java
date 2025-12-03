@@ -1,10 +1,8 @@
-package victor.training.spring.ai;
+package victor.training.spring.ai.other;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class VictorTrainingCatalog {
