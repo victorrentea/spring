@@ -1,10 +1,10 @@
 package victor.training.spring.web;
 
-public class MyException extends RuntimeException {
+public class MyException extends RuntimeException { // cum se cuvine
 
-   public enum ErrorCode {
-      GENERAL,
-      DUPLICATE_TRAINING_NAME,
+   public enum ErrorCode { // in loc de 100+ clase de exceptii custom
+      GENERAL/*(500,"Human message")*/, // fa asa daca nu i18n mesajele de eroare
+      DUPLICATE_TRAINING_NAME,// x 100 business errors de raportat userului
       NOT_FOUND
    }
 

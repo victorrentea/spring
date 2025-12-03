@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,26 +15,33 @@ import victor.training.spring.web.MyException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // #mushave
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
+  @ExceptionHandler(Exception.class) // catch-all fallback
+  @ResponseStatus(INTERNAL_SERVER_ERROR) // 500
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
-    if (exception instanceof AccessDeniedException) {
-      throw exception; // allow 403 to go out
-    }
-    log.error(exception.getMessage(), exception);
-    return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
+    String errorId = UUID.randomUUID().toString();// next level: sa folosesti traceparent/traceId
+    log.error(exception.getMessage() + " errorId: "+ errorId, exception);
+    return exception.getMessage() + " errorId: errorId"; // don't leak stack traces to clients (Security Best Practice)
   }
+
+  @ExceptionHandler(NoSuchElementException.class) // se aplica pt toate endpointurile din app
+  public ResponseEntity<String> onNoSuchElementException(NoSuchElementException exception) {
+    log.error(exception.getMessage(), exception);
+    return ResponseEntity.status(404).body("Not Found");
+  }
+
 
   //	@ResponseStatus(NOT_FOUND)
   //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
@@ -47,10 +55,11 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
-  public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
+  public String onMyException(MyException exception, HttpServletRequest httpRequest) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
-    Locale clientLocale = request.getLocale(); // or from the Access Token
-    String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
+    Locale clientLocale = httpRequest.getLocale(); // "Accept-Language: " or from the Access Token
+    String responseBody = messageSource.getMessage(errorMessageKey,
+        exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
     return responseBody;
   }

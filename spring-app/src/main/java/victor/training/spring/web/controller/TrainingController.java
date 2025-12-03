@@ -14,6 +14,7 @@ import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -28,10 +29,17 @@ public class TrainingController {
 		return trainingService.getAllTrainings();
 	}
 
+//	@GetMapping("{id}")
+//	public ResponseEntity<TrainingDto> get(@PathVariable /*TrainingId*/ long id) {
+//    try {
+//      return ResponseEntity.ok(trainingService.getTrainingById(id));
+//    } catch (NoSuchElementException e) { // REJECT la CR: "daca sare si din alte endpointuri, daca uiti sa dai copy-paste? Si-n plus, e noise (gunoi)"
+//      return ResponseEntity.notFound().build();
+//    }
+//	}
 	@GetMapping("{id}")
 	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
 		return trainingService.getTrainingById(id);
-		//TODO return 404 if not found
 	}
 
 	// TODO @Validated / @Valid

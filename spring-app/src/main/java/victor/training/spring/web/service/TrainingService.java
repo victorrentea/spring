@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import victor.training.spring.web.MyException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
@@ -58,7 +59,8 @@ public class TrainingService {
 
     public void createTraining(TrainingDto dto) {
         if (trainingRepo.getByName(dto.name) != null) {
-            throw new IllegalArgumentException("Another training with that name already exists");
+//            throw new IllegalArgumentException("Another training with that name already exists");
+            throw new MyException(MyException.ErrorCode.DUPLICATE_TRAINING_NAME);
         }
         Training newEntity = new Training()
                 .setName(dto.name)
