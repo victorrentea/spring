@@ -49,7 +49,8 @@ class KeyCloakSecurity {
         http.authorizeHttpRequests(authz -> authz
             .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
             .anyRequest().authenticated());
-        http.oauth2Login(c->c.userInfoEndpoint(u->u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
+        http.oauth2Login(c->c.userInfoEndpoint(u->
+            u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
         http.logout(l-> l.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));
         return http.build();
     }

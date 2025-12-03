@@ -17,6 +17,11 @@
             <!--<version>3.1.1</version>  NICIODATA-->
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.5.0-jre</version>
+        </dependency>
+        <dependency>
             <!-- @NotNull, @Validated -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>

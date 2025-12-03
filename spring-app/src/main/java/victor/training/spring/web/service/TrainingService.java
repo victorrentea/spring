@@ -1,5 +1,9 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.observation.annotation.Observed;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,15 +27,26 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-@Transactional
+@Transactional // RAU😈
 public class TrainingService {
     private final TrainingRepo trainingRepo;
     private final TrainingSearchRepo trainingSearchRepo;
     private final TeacherRepo teacherRepo;
     private final EmailSender emailSender;
     private final TeacherBioClient teacherBioClient;
+    private final MeterRegistry meterRegistry;
 
+    @PostConstruct
+    public void laStartup() {
+        meterRegistry.gauge("trainingsindb",trainingRepo, repo->repo.count()); // PULL la apelul /actuator/prometheus
+//        meterRegistry.gauge("consumerlag",..
+    }
+
+    @Timed
+    @Observed // trimite in APM(AWS)/Zipkin durata executie metodei asteia corelata in traceul ei
     public List<TrainingDto> getAllTrainings() {
+        meterRegistry.counter("bani").increment(1000);
+//        meterRegistry.gauge("trainingsindb",trainingRepo.count()); // PUSH din app code
         List<TrainingDto> dtos = new ArrayList<>();
         for (Training training : trainingRepo.findAll()) {
             dtos.add(new TrainingDto(training));

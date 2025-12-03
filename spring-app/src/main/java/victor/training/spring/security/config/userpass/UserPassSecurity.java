@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Profile("userpass")
 @Configuration
 @EnableWebSecurity // (debug = true) // see the filter chain in use
-@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true) // @Secured
 public class UserPassSecurity {
   @PostConstruct
   public void hi() {
@@ -49,7 +49,7 @@ public class UserPassSecurity {
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user").password("user").roles("USER").build();
+        .username("user").password("user").roles("USER").build();// ⚠️ parola in clar (cum ajung ingineri in puscarie)
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin").password("admin").roles("ADMIN").build();
     UserDetails power = User.withDefaultPasswordEncoder()

@@ -1,6 +1,7 @@
 package victor.training.spring.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -11,6 +12,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
@@ -79,8 +82,24 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
-	@DeleteMapping("{trainingId}")
+
+
+  @DeleteMapping("{trainingId}")
+// in spring un Principal(user/sistem) autentificat are o List<string>
+  // intre acele stringuri alea care-ncep cu "ROLE_" sunt "roluri" si poti folosi oricare din :
+//  @RolesAllowed("ROLE_ADMIN")
+//  @Secured("ROLE_ADMIN") // scurt❤️
+//  @Secured("ROLE_ADMIN","ROLE_POWER","ROLE_SUPPORT") // ❌ pt ca e dublata in FE
+  @Secured("ROLE_DELETE_TRAINING") // fine-grained roles pe care le asociezi rolurilor 'composite' ADMIN
+
+//  @PreAuthorize("hasRole('ADMIN')")
+//  @PreAuthorize("hasAuthority('ROLE_ADMIN') and #trainingId != 2")
+//  @PreAuthorize("@permissionService.canEditTraining(#trainingId)")
+//      @Service class PermissionService{boolean canEditTraining(long trainingId) { merita la 10+ aparitii
+        // altfel @Autowired PermissionService; si chemi la inceputul
+//  @PreAuthorize("hasPermission('ROLE_ADMIN')")
 	public void delete(@PathVariable Long trainingId) {
+//    permissionService.can.. (babeste, apel la vedere pe bean injectat), 🥱
 		trainingService.deleteById(trainingId);
 	}
 
@@ -103,8 +122,13 @@ public class TrainingController {
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
+  @GetMapping("search/query") // ?name=J
+	public List<TrainingDto> searchUsingGETWithDto(TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
+
   @GetMapping("search/body") // OMG does the same as the above, but it's not OpenAPI friendly
-	public List<TrainingDto> searchUsingGET(@RequestBody TrainingSearchCriteria criteria) {
+	public List<TrainingDto> searchUsingGETBody(@RequestBody TrainingSearchCriteria criteria) {
     // DON'T
 		return trainingService.search(criteria);
 	}

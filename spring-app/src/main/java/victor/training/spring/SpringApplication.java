@@ -55,8 +55,12 @@ public class  SpringApplication {
     return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
   }
 
-  @Bean // enable propagation of SecurityContextHolder over @Async
+  @Bean // enable propagation of SecurityContextHolder over @Async / CompletableFuture
   public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
+    // TODO fix sa mearga si cand dai param la CompletaleFuture executorul
+    // listOfDto = listOfIds.parallelStream().map(id->apiCall(id)).toList ❌
+    // listOfDto = listOfIds.stream().map(id->CF.supplyAsync(()->apiCall(id),executor)).map(CF::join).toList() 🤔
+    // listOfDto = apiCall(listOfIds) ✅✅✅
     return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
   }
 
