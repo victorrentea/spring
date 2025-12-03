@@ -17,7 +17,6 @@ public class TrainingDto {
 	public Long id;
 	@Size(min = 3, max = 50, message = "{customer.name.length}")
 	public String name;
-  @NotNull
 	public ContractType level;
 	public Long teacherId;
 	public String teacherBio;

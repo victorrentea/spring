@@ -31,8 +31,20 @@
         <!--<module>spring-app-cdn</module>-->
     </modules>
 
-    <dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!--<version>3.1.1</version>  NICIODATA-->
+        </dependency>
+    </dependencies>
+    <dependencyManagement> <!-- aloca vers anume copiilor acestui pom care vor dep respective -->
         <dependencies>
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>3.9.1</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>

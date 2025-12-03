@@ -3,9 +3,17 @@ package victor.training.spring.web;
 public class MyException extends RuntimeException { // cum se cuvine
 
    public enum ErrorCode { // in loc de 100+ clase de exceptii custom
-      GENERAL/*(500,"Human message")*/, // fa asa daca nu i18n mesajele de eroare
+      GENERAL/*(500,"Human message")*/, // daca nu ai i18n
       DUPLICATE_TRAINING_NAME,// x 100 business errors de raportat userului
-      NOT_FOUND
+      NOT_FOUND;
+
+//     private final int httpCode;
+//     private final String userMessage;
+//
+//     ErrorCode(int httpCode, String userMessage) {
+//       this.httpCode = httpCode;
+//       this.userMessage = userMessage;
+//     }
    }
 
    private final ErrorCode code;

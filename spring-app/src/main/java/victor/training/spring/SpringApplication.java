@@ -30,7 +30,7 @@ import static java.lang.System.currentTimeMillis;
 @Slf4j
 @ConfigurationPropertiesScan
 @EnableFeignClients
-public class SpringApplication {
+public class  SpringApplication {
   public static final long t0 = currentTimeMillis();
 
   public static void main(String[] args) {

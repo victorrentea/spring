@@ -55,13 +55,15 @@ public class GlobalExceptionHandler {
 
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
-  public String onMyException(MyException exception, HttpServletRequest httpRequest) throws Exception {
-    String errorMessageKey = "error." + exception.getCode().name();
+  public ResponseEntity<String> onMyException(MyException exception, HttpServletRequest httpRequest) throws Exception {
+    String errorMessageKey = "error." + exception.getCode().name() + ".message";
     Locale clientLocale = httpRequest.getLocale(); // "Accept-Language: " or from the Access Token
     String responseBody = messageSource.getMessage(errorMessageKey,
         exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " : " + responseBody, exception);
-    return responseBody;
+    String codeMessageKey =  "error." + exception.getCode().name() + ".code";
+    int status = Integer.valueOf(messageSource.getMessage(codeMessageKey, new Object[0], "500", clientLocale));
+    return ResponseEntity.status(status).body(responseBody);
   }
 
   @ResponseStatus(BAD_REQUEST)

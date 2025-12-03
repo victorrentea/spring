@@ -3,12 +3,21 @@ package victor.training.spring.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.repo.TrainingRepo;
 import victor.training.spring.web.service.TrainingService;
 
@@ -23,8 +32,9 @@ import static org.springframework.http.MediaType.IMAGE_JPEG;
 @RequestMapping("api/trainings")
 public class TrainingController {
 	private final TrainingService trainingService;
+  private final RestTemplateBuilder restTemplateBuilder;
 
-	@GetMapping
+  @GetMapping
 	public List<TrainingDto> getAll() {
 		return trainingService.getAllTrainings();
 	}
@@ -37,13 +47,18 @@ public class TrainingController {
 //      return ResponseEntity.notFound().build();
 //    }
 //	}
+
+  // ... waiting for Valhalla project
+  record TrainingId(long id) {} // fights "primitive obsession" code smell: nu mai ai cum sa uiti ca acest long e un id de training.
+  // acest string e un CNP, IBAN
 	@GetMapping("{id}")
-	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
+//	public TrainingDto get(@PathVariable TrainingId id) { // vis!
+	public TrainingDto get(@PathVariable  long id) {
 		return trainingService.getTrainingById(id);
 	}
 
 	// TODO @Validated / @Valid
-	@Operation(description = "Create a training")
+	@Operation(description = "Create a training") // doc de swagger
 	@PostMapping
 	public void create(@RequestBody @Validated TrainingDto dto) {
 		trainingService.createTraining(dto);
@@ -88,13 +103,15 @@ public class TrainingController {
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
-	//	@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
-	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
+  @GetMapping("search/body") // OMG does the same as the above, but it's not OpenAPI friendly
+	public List<TrainingDto> searchUsingGET(@RequestBody TrainingSearchCriteria criteria) {
+    // DON'T
 		return trainingService.search(criteria);
 	}
 
-	@Value("classpath:/static/spa.jpg")
-	private Resource picture;
+
+  @Value("classpath:/static/spa.jpg")
+  private Resource picture;
 	@GetMapping("download")
 	public ResponseEntity<Resource> downloadFile() throws IOException {
 		return ResponseEntity.ok()
