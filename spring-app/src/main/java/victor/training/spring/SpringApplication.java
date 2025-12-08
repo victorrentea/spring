@@ -17,6 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.web.controller.util.TestDBConnectionInitializer;
 
@@ -48,6 +49,11 @@ public class SpringApplication {
   @Bean // instrumented by micrometer-tracing
   public RestTemplate restTemplate(RestTemplateBuilder builder) {
     return builder.build();
+  }
+
+  @Bean
+  public RestClient restClient(RestTemplate restTemplate) {
+    return RestClient.builder(restTemplate).build();
   }
 
   @Bean // propagate tracing over all Spring-managed thread pools
