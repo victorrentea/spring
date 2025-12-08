@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class Y {
   @Autowired
-  @Qualifier("mailServiceImpl")
-  private MailService mailService; // polymorphic injection
+  private MailServiceImpl mailService; // polymorphic injection
   @Value("${props.gate}")
   private Integer gate;
 
