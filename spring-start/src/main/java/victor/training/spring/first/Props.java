@@ -4,6 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
 import java.net.URL;
@@ -12,8 +17,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@Validated
+@ConfigurationProperties(prefix = "props")
 record Props(
+    @NotEmpty
     String env,
+    @NotNull
     Integer gate,
     String welcomeMessage,
     List<URL> supportUrls,
@@ -33,7 +42,20 @@ record Props(
       String email
   ){}
 
-  @PostConstruct
+  @AssertTrue(message = "File exists")
+  public boolean isFileExists() {
+    // validari mai complexe
+    return help.file.exists();
+  }
+
+//  @PostConstruct
+//  void fileExists() {
+//    if (!help.file.exists()) {
+//      throw new RuntimeException("Nu-i: " + help.file());
+//    }
+//  }
+
+  @PostConstruct // IoC lifecycle hook
   public void printMyselfAtStartup() throws JsonProcessingException {
     String json = new ObjectMapper()
         .findAndRegisterModules()

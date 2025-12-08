@@ -13,8 +13,8 @@ spring:
         password: pass
 
 props:
-    env: prod
-    gate: 123
+    env: dev
+    gate: 42
     welcomeMessage: Welcome to Spring
     supportUrls:
         - http://stackoverflow.com

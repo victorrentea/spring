@@ -5,11 +5,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import victor.training.spring.first.subp.X;
+
+//@EnableConfigurationProperties(Props.class)//#1
+@ConfigurationPropertiesScan //#2
 
 @SpringBootApplication
 //@ComponentScan(basePackages = {"subp","victor"})

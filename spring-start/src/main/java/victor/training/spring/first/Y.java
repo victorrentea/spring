@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 public class Y {
   private final MailService mailService; // polymorphic injection
   private final ThreadPoolTaskExecutor executor2;
-  @Value("${props.gate}") // merge datorita lombok.config
-  private final Integer gate;
-
+//  @Value("${props.gate}") // merge datorita lombok.config
+//  private final Integer gate;
+  private final Props props;
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.gate());
     Entity rupiInTeste = new Entity()
         .setName("John")
         .setPhone("8989989");
