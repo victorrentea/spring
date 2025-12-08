@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public Executor poolBar() {
+	public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(1);
 		executor.setMaxPoolSize(1);
@@ -24,6 +24,7 @@ public class AsyncConfig {
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
+    executor.setTaskDecorator(taskDecorator);
 
 		Gauge.builder( "poolbar_pool_size", executor::getPoolSize).register(Metrics.globalRegistry);
 		Gauge.builder( "poolbar_queue_size", executor::getQueueSize).register(Metrics.globalRegistry);
