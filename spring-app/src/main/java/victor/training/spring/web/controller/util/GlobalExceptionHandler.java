@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice // #must have, sa nu scapi stack trace de exceptii clientilor = security brici🙁🙁🙁🙁
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
