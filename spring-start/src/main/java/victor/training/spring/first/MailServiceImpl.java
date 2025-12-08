@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 //@Primary
 @Service
 @RequiredArgsConstructor
-@Profile("!dev")
+//@Profile("!dev")
 public class MailServiceImpl implements MailService {
   //  private final MailSender sender; // TODO this bean is automatically defined by spring
 

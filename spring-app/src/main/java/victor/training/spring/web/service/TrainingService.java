@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Slf4j
-@Service
+@Service // by default SPrign creaza o singura instanta = singleton (face NEW o singura data)
 @Transactional
 public class TrainingService {
   private final TrainingRepo trainingRepo;
@@ -28,6 +28,8 @@ public class TrainingService {
   private final TeacherRepo teacherRepo;
   private final EmailSender emailSender;
   private final TeacherBioClient teacherBioClient;
+
+  private String currentUser;
 
   public List<TrainingDto> getAllTrainings() {
     List<TrainingDto> dtos = new ArrayList<>();
