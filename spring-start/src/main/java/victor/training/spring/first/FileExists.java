@@ -13,6 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = FileExists.FileExistsValidator.class)
 @Retention(RUNTIME) // stops javac from removing it at compilation
 public @interface FileExists {
+  // io va arat, da sa nu va prind ca va faceti voi
    String message() default "File does not exist";
 
    Class<?>[] groups() default {};

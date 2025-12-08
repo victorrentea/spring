@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ record Props(
     String welcomeMessage,
     List<URL> supportUrls,
     Map<Locale, String> contactPhones,
+    @Valid// cascadeaza validarea lui Props pe Help
     Help help,
     Map<TenantEnum, TenantConfig> tenants
 ){
@@ -38,11 +40,12 @@ record Props(
 
   record Help(
       Integer appId,
+//      @FileExists
       File file,
       String email
   ){}
 
-  @AssertTrue(message = "File exists")
+//  @AssertTrue(message = "File exists")
   public boolean isFileExists() {
     // validari mai complexe
     return help.file.exists();
