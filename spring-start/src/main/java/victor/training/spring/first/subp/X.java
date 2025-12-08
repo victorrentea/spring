@@ -1,4 +1,4 @@
-package subp;
+package victor.training.spring.first.subp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
