@@ -63,24 +63,37 @@ public class TrainingController {
 	private final TrainingRepo trainingRepo;
 
 
-	// --------------------------------------------------
+	// === Search ===
 	// TODO 'search' should use GET or POST ?
 	// GET:
 	// POST:
 
-	@PostMapping("search") // pragmatic HTTP endpoints
+  // == #1 POST ==
+	@PostMapping("search") // traditional
+  // 😊 hides sensitive search criteria from URL eg ?phone=0158135767
 	public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
-	@GetMapping("search") // by-the-book REST
+  // == #2 GET + query params: search?name=xxx&teacherId=yyy ==
+  // 😊 users can send search URLs to friends
+  // 🙁 but url <= 2000 characters
+	@GetMapping("search") // traditional
 	public List<TrainingDto> searchUsingGET(
 					@RequestParam(required = false) String name,
 					@RequestParam(required = false) Long teacherId) {
 		return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
 	}
-	//	@GetMapping("search") // OMG does the same as the above, but it's not OpenAPI friendly
+
+  // GET + query params, but captured as a DTO
+  @GetMapping("search2")
 	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
+		return trainingService.search(criteria);
+	}
+
+  // ❌ GET + Body avoid - not fully supported
+  @GetMapping("searchGetBody")
+	public List<TrainingDto> searchUsingGETBody(@RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
