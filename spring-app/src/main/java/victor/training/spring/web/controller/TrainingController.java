@@ -13,6 +13,7 @@ import victor.training.spring.web.service.TrainingService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
@@ -27,10 +28,20 @@ public class TrainingController {
 		return trainingService.getAllTrainings();
 	}
 
-	@GetMapping("{id}")
-	public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-		return trainingService.getTrainingById(id);
-		//TODO return 404 if not found
+//  @GetMapping("{id}")
+//  public ResponseEntity<TrainingDto> get( // asa nu!❌ exceptiile se prind global
+//      @PathVariable /*TrainingId*/ long id) {
+//    try {
+//      return ResponseEntity.ok(trainingService.getTrainingById(id));
+//    } catch (NoSuchElementException e) {
+//      return ResponseEntity.notFound().build();
+//    }
+//  }
+
+
+  @GetMapping("{id}")
+	public TrainingDto get(@PathVariable long id) {
+    return trainingService.getTrainingById(id);
 	}
 
 	// TODO @Validated / @Valid
@@ -40,7 +51,7 @@ public class TrainingController {
 		trainingService.createTraining(dto);
 	}
 
-	@Operation(description = "Create a training")
+	@Operation(description = "Update a training")
 	@PutMapping("{trainingId}")
 	public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
 		dto.id = trainingId;

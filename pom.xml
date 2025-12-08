@@ -5,7 +5,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>3.5.7</version> <!-- la vulnerab de o dep
+         manageuita de spring, NU o cresti doar pe aia ci urci vers spring parent si RETESTEZI TOT-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>victor.training.spring</groupId>
