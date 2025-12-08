@@ -3,9 +3,14 @@ package victor.training.spring.web;
 public class MyException extends RuntimeException {
 
    public enum ErrorCode {
-      GENERAL,
-      DUPLICATE_TRAINING_NAME,
-      NOT_FOUND
+      GENERAL(500),
+      DUPLICATE_TRAINING_NAME(400),
+      NOT_FOUND(404);
+
+     public final int statusCode;
+     ErrorCode(int statusCode) {
+       this.statusCode = statusCode;
+     }
    }
 
    private final ErrorCode code;

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,16 +50,22 @@ public class GlobalExceptionHandler {
   // - the 'Accept-Language' request header via request.getLocale())
   // - the language in the Access Token via SecurityContextHolder
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
+//  @ResponseStatus(INTERNAL_SERVER_ERROR)
   @ExceptionHandler(MyException.class)
-  public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
+  public ResponseEntity<String> onMyException(MyException exception, HttpServletRequest request) throws Exception {
     UUID errorId= UUID.randomUUID(); // vis de L2 support: sa fie trace parent (traceID)
     // propagat in toate sistemele in care requestul a ajuns peste REST sau mesaje!
     String errorMessageKey = "error." + exception.getCode().name();
     Locale clientLocale = request.getLocale(); // or from the Access Token
     String responseBody = messageSource.getMessage(errorMessageKey, exception.getParams(), exception.getCode().name(), clientLocale);
     log.error(exception.getMessage() + " id: " + errorId +" : " + responseBody, exception);
-    return responseBody+" " + errorId;
+    // "vreau sa returnezi 404 daca TRAINING_NAME e duplicat" - FE
+    // "nu vreau. la ce-ti trebuie? ca doar ii pui un toaster pe orice nu-i 200" - BE
+    // "<liniste>" - FE
+
+    // daca clientii tai sunt alte app BE, atunci:
+    int status = exception.getCode().statusCode;
+    return ResponseEntity.status(status).body(responseBody+" " + errorId);
   }
 
   @ResponseStatus(BAD_REQUEST)

@@ -75,9 +75,16 @@ public class TrainingController {
 
 
 	// === Search ===
-	// TODO 'search' should use GET or POST ?
+	// TODO 'search' should use GET✅ or POST ?
 	// GET:
 	// POST:
+
+
+
+
+
+
+
 
   // == #1 POST ==
 	@PostMapping("search") // traditional
