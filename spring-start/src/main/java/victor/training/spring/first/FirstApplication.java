@@ -19,14 +19,13 @@ import victor.training.spring.first.subp.X;
 @SpringBootApplication
 //@ComponentScan(basePackages = {"subp","victor"})
 //@Import(X.class)
+
 public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
   }
   @Autowired
   private X x;
-
-
 
   @EventListener(ApplicationReadyEvent.class)
   public void onAppStart() {

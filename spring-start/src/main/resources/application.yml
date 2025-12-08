@@ -1,5 +1,3 @@
-executor.threads: 5
-
 spring:
 #    main.allow-circular-references: true
     mail:
@@ -13,6 +11,8 @@ spring:
                         enable: true
         username: user
         password: pass
+    config:
+      additional-location: pro
 #        password: ${vault:/email/pass}
 
 props:
@@ -37,3 +37,6 @@ props:
       RO:
         greeting: Salut!
         lunch: PT30m
+executor:
+  max-pool-size: 5
+  thread-name-prefix: worker

@@ -4,3 +4,7 @@ props:
 #spring:
 #  datasource:
 #    password: IN_CLAR_TE_DA_AFARA_N_PLOAIE
+spring:
+  datasource:
+    hikari:
+      pool-name: a

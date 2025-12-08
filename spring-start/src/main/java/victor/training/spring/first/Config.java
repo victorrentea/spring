@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -10,12 +11,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class Config {
   @Bean
+  @ConfigurationProperties(prefix = "executor")
   public ThreadPoolTaskExecutor executor(
-      @Value("${executor.threads}") int threads
+//      @Value("${executor.threads}") int threads
   ) {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setMaxPoolSize(threads);
-    executor.setThreadNamePrefix("worker");
+//    executor.setMaxPoolSize(threads);
+//    executor.setThreadNamePrefix("worker");
     return executor;
   }
 }
