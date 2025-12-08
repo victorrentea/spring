@@ -45,7 +45,7 @@ public class TrainingController {
 	}
 
 	// TODO @Validated / @Valid
-	@Operation(description = "Create a training")
+	@Operation(description = "Create a training. Imi pasa de API clienti (alti BE) #respect")
 	@PostMapping
 	public void create(@RequestBody TrainingDto dto) {
 		trainingService.createTraining(dto);
@@ -76,15 +76,10 @@ public class TrainingController {
 
 	// === Search ===
 	// TODO 'search' should use GET✅ or POST ?
-	// GET:
-	// POST:
-
-
-
-
-
-
-
+	// GET 'query' ❤️❤️❤️
+	// POST daca
+  // a) prea multe criterii > 2000 ch
+  // b) criterii senzitive (GDPR): eg ?phone=2038504857&accountNumber=X
 
   // == #1 POST ==
 	@PostMapping("search") // traditional
@@ -93,7 +88,8 @@ public class TrainingController {
 		return trainingService.search(criteria);
 	}
 
-  // == #2 GET + query params: search?name=xxx&teacherId=yyy ==
+  // == #2 GET + query params:
+  // http://localhost:8080/api/trainings/search?name=J
   // 😊 users can send search URLs to friends
   // 🙁 but url <= 2000 characters
 	@GetMapping("search") // traditional
@@ -105,13 +101,16 @@ public class TrainingController {
 
   // GET + query params, but captured as a DTO
   @GetMapping("search2")
-	public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
+  // http://localhost:8080/api/trainings/search2?name=J
+	public List<TrainingDto> searchUsingGET(
+      TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
   // ❌ GET + Body avoid - not fully supported
   @GetMapping("searchGetBody")
-	public List<TrainingDto> searchUsingGETBody(@RequestBody TrainingSearchCriteria criteria) {
+	public List<TrainingDto> searchUsingGETBody(
+      @RequestBody TrainingSearchCriteria criteria) {
 		return trainingService.search(criteria);
 	}
 
