@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-@Primary
+//@Primary
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
