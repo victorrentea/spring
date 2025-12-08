@@ -1,14 +1,18 @@
 package victor.training.spring.first;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class ChainTest {
 
-  private final Chain chain = new Chain();
+  @Autowired
+  private Chain chain;
 
   @Test
   void validate_okTransaction_returnsEmptyList() {
