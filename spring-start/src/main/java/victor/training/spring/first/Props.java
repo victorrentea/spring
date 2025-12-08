@@ -21,7 +21,7 @@ record Props(
     Help help,
     Map<TenantEnum, TenantConfig> tenants
 ){
-  enum TenantEnum {FR, RO} //  ⚠️ app may fail to start if props mention unknown value ('ES')
+  enum TenantEnum {FR, RO} //  ⚠️ app may fail to start if config mentions an unknown value ('ES')
   record TenantConfig(
       String greeting,  // TODO set default value
       Duration lunch
