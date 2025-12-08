@@ -1,13 +1,21 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Slf4j
 @Aspect
 @Component
+// doar daca proprietatea intercept.params = true sau lipseste
+@ConditionalOnProperty(name = "intercept.params",
+    havingValue = "true",
+    matchIfMissing = true)
 public class LoggingAspectExercise {
   // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
 
@@ -23,11 +31,24 @@ public class LoggingAspectExercise {
 
   // TODO 4 ⭐️ make this aspect also target all methods in classes annotated with @Logged
   //   - use @Around("@within(Logged) || @annotation(Logged)")
-  public void intercept() {
-    log.info("INTERCEPTED");
+  @Around("@annotation(Logged) || @within(Logged)")
+  // annotation = metoda e adnotata
+  // within = clasa e adnotata
+  public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    log.info(pjp.getSignature().getName() + " cu " + Arrays.toString(pjp.getArgs()));
+    return pjp.proceed();
+//    return 13;//☠️
   }
 }
+// De bun simt, daca nu se repeta treaba de 5+ ori, n-ai nevoie de aspect.
+//    ramai la copy-paste/metoda de util.
+// Risk☠️ (de ce unii devi se tem de aspecte)
+// - poate returna altceva
+// - pot sa modifice argumente
+// - arunca/inghit exceptii
+// - pot consuma timp: eg facand un API call invizibil in Entitlements sa-si ia pe mama
 
+// poti si FP in loc de AOP
 
 
 // TODO 5: also include the time the method took to execute
