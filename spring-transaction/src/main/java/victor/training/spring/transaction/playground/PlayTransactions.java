@@ -25,10 +25,11 @@ public class PlayTransactions {
     public void play() throws IOException {
         jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)", "SQL");
         altaMetoda();
+        if (true) throw new RuntimeException("INTENTIONAL");
         log.info("Ies din metoda"); // JPA "Write Behind" = INSERTul de la repo.save se face dupa iesire, inainte de COMMIT
     }
     private void altaMetoda() {
-        repo.saveAndFlush(new MyEntity("SQL")); // INSERT imediat! < poate fi PTSD dupa traume de debug
+        repo.saveAndFlush(new MyEntity("JPA")); // INSERT imediat! < poate fi PTSD dupa traume de debug
     }
 }
 
