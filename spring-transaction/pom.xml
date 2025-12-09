@@ -27,11 +27,16 @@
         </dependency>
         <dependency>
             <!-- ASTA JDBC Driver proxy intercepting all DB interactions #musthave pe orice mediu < prod -->
-
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
         </dependency>
+        <!-- mai fitza,  <dependency>
+    <groupId>com.github.gavlyukovskiy</groupId>
+    <artifactId>p6spy-spring-boot-starter</artifactId>
+    <version>1.12.1</version>
+    <scope>test</scope>
+</dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
