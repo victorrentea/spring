@@ -12,7 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
 	@Bean
-	public ThreadPoolTaskExecutor poolBar() {
+	public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(1);
 		executor.setMaxPoolSize(1);
@@ -20,7 +20,7 @@ public class AsyncConfig {
 		executor.setThreadNamePrefix("pool-bar-");
 		executor.initialize();
 		executor.setWaitForTasksToCompleteOnShutdown(true);
-		executor.setTaskDecorator(new CopyMDCToWorker()); // copies TraceID
+    executor.setTaskDecorator(taskDecorator); // copies TraceID
 
 		Gauge.builder( "poolbar_pool_size", executor::getPoolSize).register(Metrics.globalRegistry);
 		Gauge.builder( "poolbar_queue_size", executor::getQueueSize).register(Metrics.globalRegistry);

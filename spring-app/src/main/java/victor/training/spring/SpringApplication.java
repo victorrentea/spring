@@ -1,6 +1,10 @@
 package victor.training.spring;
 
+import feign.Capability;
+import feign.micrometer.MicrometerCapability;
 import io.micrometer.context.ContextSnapshot;
+import io.micrometer.context.ContextSnapshotFactory;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,9 +54,13 @@ public class SpringApplication {
     return builder.build();
   }
 
-  @Bean // propagate tracing over all Spring-managed thread pools
+  @Bean // propagate tracing over Spring-managed thread pools
   public TaskDecorator taskDecorator() {
-    return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
+    return runnable -> ContextSnapshotFactory
+        .builder()
+        .build()
+        .captureAll()
+        .wrap(runnable);
   }
 
   @Bean // enable propagation of SecurityContextHolder over @Async

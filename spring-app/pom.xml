@@ -88,6 +88,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-micrometer</artifactId>
+        </dependency>
       <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -137,10 +141,8 @@
             <version>4.3.0</version>
         </dependency>
         <dependency>
-            <!-- For distributed tracing of requests (printed after log level) -->
-            <!-- SB3 replacement of org.springframework.cloud:spring-cloud-starter-sleuth -->
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
