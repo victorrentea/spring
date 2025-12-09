@@ -4,15 +4,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class CustomerDto {
-    interface ActivationUC {
-    }
+  interface ActivationUC {
+  }
 
-    @Email
-    public String email;
+  @Email
+  public String email;
 
-    @NotBlank(groups = ActivationUC.class)
-    public String name;
+  @NotBlank(groups = ActivationUC.class)
+  public String name;
 
-    @ValidPostalCode(groups = ActivationUC.class)
-    public String postalCode;
+  @ValidPostalCode(groups = ActivationUC.class)
+  public String postalCode;
 }

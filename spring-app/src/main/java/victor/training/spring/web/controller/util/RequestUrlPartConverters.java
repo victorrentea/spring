@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 @Configuration
 public class RequestUrlPartConverters implements WebMvcConfigurer {
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(String.class, LocalDate.class, LocalDate::parse);
-    }
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverter(String.class, LocalDate.class, LocalDate::parse);
+  }
 }

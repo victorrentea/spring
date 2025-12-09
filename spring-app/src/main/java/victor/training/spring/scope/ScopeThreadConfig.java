@@ -33,70 +33,70 @@ import java.util.Map;
 @Configuration
 public class ScopeThreadConfig {
 
-    @Bean
-    public static CustomScopeConfigurer defineThreadScope() {
-        CustomScopeConfigurer configurer = new CustomScopeConfigurer();
-        // WARNING: Can leaks memory if data remains on thread. Prefer 'request' scope or read here: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/support/SimpleThreadScope.html
-        // TODO finally { ClearableThreadScope.clearAllThreadData(); }
-        configurer.addScope("thread", new ClearableThreadScope());
-        return configurer;
+  @Bean
+  public static CustomScopeConfigurer defineThreadScope() {
+    CustomScopeConfigurer configurer = new CustomScopeConfigurer();
+    // WARNING: Can leaks memory if data remains on thread. Prefer 'request' scope or read here: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/support/SimpleThreadScope.html
+    // TODO finally { ClearableThreadScope.clearAllThreadData(); }
+    configurer.addScope("thread", new ClearableThreadScope());
+    return configurer;
+  }
+
+  /**
+   * Silly but correct implementation of Thread scope that supports clearing of all data at the end.
+   *
+   * @see org.springframework.context.support.SimpleThreadScope
+   */
+  public static class ClearableThreadScope implements Scope {
+    private static final Logger log = LoggerFactory.getLogger(ClearableThreadScope.class);
+
+    private static final ThreadLocal<Map<String, Object>> threadScope =
+            new NamedThreadLocal<Map<String, Object>>("ClearableThreadScope") {
+              @Override
+              protected Map<String, Object> initialValue() {
+                return new HashMap<>();
+              }
+            };
+
+    public static void clearAllThreadData() {
+      threadScope.remove();
     }
 
-    /**
-     * Silly but correct implementation of Thread scope that supports clearing of all data at the end.
-     *
-     * @see org.springframework.context.support.SimpleThreadScope
-     */
-    public static class ClearableThreadScope implements Scope {
-        private static final Logger log = LoggerFactory.getLogger(ClearableThreadScope.class);
-
-        private static final ThreadLocal<Map<String, Object>> threadScope =
-                new NamedThreadLocal<Map<String, Object>>("ClearableThreadScope") {
-                    @Override
-                    protected Map<String, Object> initialValue() {
-                        return new HashMap<>();
-                    }
-                };
-
-        public static void clearAllThreadData() {
-            threadScope.remove();
-        }
-
-        @Override
-        public Object get(String name, ObjectFactory<?> objectFactory) {
-            Map<String, Object> scope = threadScope.get();
-            Object scopedObject = scope.get(name);
-            if (scopedObject == null) {
-                scopedObject = objectFactory.getObject();
-                scope.put(name, scopedObject);
-            }
-            return scopedObject;
-        }
-
-        @Override
-        @Nullable
-        public Object remove(String name) {
-            Map<String, Object> scope = threadScope.get();
-            return scope.remove(name);
-        }
-
-        @Override
-        public void registerDestructionCallback(String name, Runnable callback) {
-            callback.run();
-            threadScope.get().remove(name);
-        }
-
-        @Override
-        @Nullable
-        public Object resolveContextualObject(String key) {
-            return null;
-        }
-
-        @Override
-        public String getConversationId() {
-            return Thread.currentThread().getName();
-        }
-
+    @Override
+    public Object get(String name, ObjectFactory<?> objectFactory) {
+      Map<String, Object> scope = threadScope.get();
+      Object scopedObject = scope.get(name);
+      if (scopedObject == null) {
+        scopedObject = objectFactory.getObject();
+        scope.put(name, scopedObject);
+      }
+      return scopedObject;
     }
+
+    @Override
+    @Nullable
+    public Object remove(String name) {
+      Map<String, Object> scope = threadScope.get();
+      return scope.remove(name);
+    }
+
+    @Override
+    public void registerDestructionCallback(String name, Runnable callback) {
+      callback.run();
+      threadScope.get().remove(name);
+    }
+
+    @Override
+    @Nullable
+    public Object resolveContextualObject(String key) {
+      return null;
+    }
+
+    @Override
+    public String getConversationId() {
+      return Thread.currentThread().getName();
+    }
+
+  }
 
 }

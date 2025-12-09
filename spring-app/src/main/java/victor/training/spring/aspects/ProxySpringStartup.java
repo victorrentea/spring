@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProxySpringStartup {
-    @Autowired
-    private SecondGrade secondGrade;
+  @Autowired
+  private SecondGrade secondGrade;
 
-    @EventListener(ApplicationStartedEvent.class)
-    public void runAtStartup() {
-        System.out.println("Running Maths class...");
-        secondGrade.mathClass();
-    }
+  @EventListener(ApplicationStartedEvent.class)
+  public void runAtStartup() {
+    System.out.println("Running Maths class...");
+    secondGrade.mathClass();
+  }
 }

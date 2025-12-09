@@ -7,9 +7,9 @@ import victor.training.spring.web.entity.Training;
 import java.util.Optional;
 
 public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecificationExecutor<Training> {
-    Optional<Training> findById(Long aLong);
+  Optional<Training> findById(Long aLong);
 
-    Training getByName(String name);
+  Training getByName(String name);
 
-    int countByNameAndIdNot(String name, Long currentId);
+  int countByNameAndIdNot(String name, Long currentId);
 }

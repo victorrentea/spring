@@ -13,30 +13,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/teachers")
 public class TeachersController {
-    private final TeacherService service;
+  private final TeacherService service;
 
-    @GetMapping
-    public List<TeacherDto> getAllTeachers() {
-        return service.getAllTeachers();
-    }
+  @GetMapping
+  public List<TeacherDto> getAllTeachers() {
+    return service.getAllTeachers();
+  }
 
-    @GetMapping("create") // easier to demo in BROWSER
-    public void createTeacherFromBrowser() {
-        TeacherDto dto = new TeacherDto();
-        dto.name = "Teacher" + LocalDateTime.now();
-        createTeacher(dto);
-    }
+  @GetMapping("create") // easier to demo in BROWSER
+  public void createTeacherFromBrowser() {
+    TeacherDto dto = new TeacherDto();
+    dto.name = "Teacher" + LocalDateTime.now();
+    createTeacher(dto);
+  }
 
-    @PostMapping
-    public void createTeacher(@Valid @RequestBody TeacherDto dto) {
-        service.createTeacher(dto);
-    }
+  @PostMapping
+  public void createTeacher(@Valid @RequestBody TeacherDto dto) {
+    service.createTeacher(dto);
+  }
 
-    //	@PutMapping
-    //	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
-    @GetMapping("{id}/update") // easier to demo in BROWSER
-    public void updateTeacher(@PathVariable long id) {
-        String newName = "Teacher" + LocalDateTime.now();
-        service.updateTeacher(id, newName);
-    }
+  //	@PutMapping
+  //	public void createTeacher(@Valid @RequestBody TeacherDto dto) {
+  @GetMapping("{id}/update") // easier to demo in BROWSER
+  public void updateTeacher(@PathVariable long id) {
+    String newName = "Teacher" + LocalDateTime.now();
+    service.updateTeacher(id, newName);
+  }
 }

@@ -4,17 +4,17 @@ import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.Teacher;
 
 public class TeacherDto {
-    public Long id;
-    @NotNull
-    public String name;
+  public Long id;
+  @NotNull
+  public String name;
 
-    public TeacherDto() {
-    }
+  public TeacherDto() {
+  }
 
-    public TeacherDto(Teacher teacher) {
-        this.id = teacher.getId();
-        this.name = teacher.getName();
-    }
+  public TeacherDto(Teacher teacher) {
+    this.id = teacher.getId();
+    this.name = teacher.getName();
+  }
 
 
 }

@@ -8,16 +8,16 @@ import lombok.Data;
 @Entity
 @Data
 public class ExceptionalEntity {
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String name;
+  @Id
+  @GeneratedValue
+  private Long id;
+  private String name;
 
-    protected ExceptionalEntity() {
-    } // for Hibernate
+  protected ExceptionalEntity() {
+  } // for Hibernate
 
-    public ExceptionalEntity(String name) {
-        this.name = name;
-    }
+  public ExceptionalEntity(String name) {
+    this.name = name;
+  }
 
 }

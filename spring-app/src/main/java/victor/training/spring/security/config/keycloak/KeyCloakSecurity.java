@@ -25,47 +25,47 @@ import static victor.training.spring.security.config.keycloak.TokenRolesToLocalR
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class KeyCloakSecurity {
 
-    private final KeyCloakLogoutHandler keycloakLogoutHandler;
+  private final KeyCloakLogoutHandler keycloakLogoutHandler;
 
-    KeyCloakSecurity(KeyCloakLogoutHandler keycloakLogoutHandler) {
-        this.keycloakLogoutHandler = keycloakLogoutHandler;
-    }
+  KeyCloakSecurity(KeyCloakLogoutHandler keycloakLogoutHandler) {
+    this.keycloakLogoutHandler = keycloakLogoutHandler;
+  }
 
-    @Bean
-    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-    }
+  @Bean
+  protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+    return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+  }
 
 
-    @Bean
-    public GrantedAuthoritiesMapper extractAuthoritiesFromToken() {
-        return new TokenRolesToLocalRoles(CLIENT, false);
-    }
+  @Bean
+  public GrantedAuthoritiesMapper extractAuthoritiesFromToken() {
+    return new TokenRolesToLocalRoles(CLIENT, false);
+  }
 
-    @Order(1)
-    @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                .anyRequest().authenticated());
-        http.oauth2Login(c -> c.userInfoEndpoint(u -> u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
-        http.logout(l -> l.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));
-        return http.build();
-    }
+  @Order(1)
+  @Bean
+  public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(authz -> authz
+            .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+            .anyRequest().authenticated());
+    http.oauth2Login(c -> c.userInfoEndpoint(u -> u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
+    http.logout(l -> l.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));
+    return http.build();
+  }
 
-    @Order(2)
-    @Bean
-    public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(new AntPathRequestMatcher("/**")).authenticated());
-        http.oauth2ResourceServer((oauth2) -> oauth2
-                .jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+  @Order(2)
+  @Bean
+  public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests(authz -> authz
+            .requestMatchers(new AntPathRequestMatcher("/**")).authenticated());
+    http.oauth2ResourceServer((oauth2) -> oauth2
+            .jwt(Customizer.withDefaults()));
+    return http.build();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .build();
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    return http.getSharedObject(AuthenticationManagerBuilder.class)
+            .build();
+  }
 }

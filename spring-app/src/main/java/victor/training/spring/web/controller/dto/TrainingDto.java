@@ -10,30 +10,30 @@ import victor.training.spring.web.entity.Training;
 import java.time.LocalDate;
 
 public class TrainingDto {
-    public Long id;
-    @Size(min = 3, max = 50, message = "{customer.name.length}")
-    public String name;
-    public ContractType level;
-    public Long teacherId;
-    public String teacherBio;
-    public ProgrammingLanguage language;
-    public String teacherName;
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    public LocalDate startDate;
-    public String description;
-    public Long version;
+  public Long id;
+  @Size(min = 3, max = 50, message = "{customer.name.length}")
+  public String name;
+  public ContractType level;
+  public Long teacherId;
+  public String teacherBio;
+  public ProgrammingLanguage language;
+  public String teacherName;
+  @JsonFormat(pattern = "dd-MM-yyyy")
+  public LocalDate startDate;
+  public String description;
+  public Long version;
 
-    public TrainingDto() {
-    }
+  public TrainingDto() {
+  }
 
-    public TrainingDto(Training training) {
-        id = training.getId();
-        name = training.getName();
-        description = training.getDescription();
-        startDate = training.getStartDate();
-        teacherId = training.getTeacher().getId();
-        language = training.getProgrammingLanguage();
-        teacherName = training.getTeacher().getName();
-        version = training.getVersion();
-    }
+  public TrainingDto(Training training) {
+    id = training.getId();
+    name = training.getName();
+    description = training.getDescription();
+    startDate = training.getStartDate();
+    teacherId = training.getTeacher().getId();
+    language = training.getProgrammingLanguage();
+    teacherName = training.getTeacher().getName();
+    version = training.getVersion();
+  }
 }

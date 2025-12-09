@@ -9,8 +9,8 @@ import java.util.List;
 @RestController
 public class ReferenceController {
 
-    @GetMapping("api/languages")
-    public List<ProgrammingLanguage> getAllLanguages() {
-        return List.of(ProgrammingLanguage.values());
-    }
+  @GetMapping("api/languages")
+  public List<ProgrammingLanguage> getAllLanguages() {
+    return List.of(ProgrammingLanguage.values());
+  }
 }

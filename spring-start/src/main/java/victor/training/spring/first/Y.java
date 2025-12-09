@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
-    @Autowired
-    private MailService mailService; // polymorphic injection
-    @Value("${props.gate}")
-    private Integer gate;
+  @Autowired
+  private MailService mailService; // polymorphic injection
+  @Value("${props.gate}")
+  private Integer gate;
 
-    public int logic() {
-        mailService.sendEmail("Go to gate " + gate);
+  public int logic() {
+    mailService.sendEmail("Go to gate " + gate);
 
-        return 1;
-    }
+    return 1;
+  }
 }

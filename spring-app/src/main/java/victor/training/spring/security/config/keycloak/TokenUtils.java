@@ -20,48 +20,48 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class TokenUtils {
-    public static void printTheTokens() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!(principal instanceof DefaultOidcUser oidcUser)) {
-            return;
-        }
+  public static void printTheTokens() {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (!(principal instanceof DefaultOidcUser oidcUser)) {
+      return;
+    }
 //    JwtAuthenticationToken t= oidcUser;
 
-        log.info("\n-- OpenID Connect Token: {} ", oidcUser.getUserInfo().getClaims());
-        Instant expInstant = oidcUser.getExpiresAt();
-        LocalDateTime expirationTime = expInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-        String deltaLeft = LocalTime.MIN.plusSeconds(LocalDateTime.now().until(expirationTime, ChronoUnit.SECONDS)).toString();
-        log.info("User: " + oidcUser);
-        log.info("\n-- Access Token 👑 (expires in {} at {}): {}\n{}",
-                deltaLeft,
-                expirationTime,
-                getCurrentToken().orElse("N/A"),
-                mapToPrettyJson(oidcUser.getAttributes()));
-    }
+    log.info("\n-- OpenID Connect Token: {} ", oidcUser.getUserInfo().getClaims());
+    Instant expInstant = oidcUser.getExpiresAt();
+    LocalDateTime expirationTime = expInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+    String deltaLeft = LocalTime.MIN.plusSeconds(LocalDateTime.now().until(expirationTime, ChronoUnit.SECONDS)).toString();
+    log.info("User: " + oidcUser);
+    log.info("\n-- Access Token 👑 (expires in {} at {}): {}\n{}",
+            deltaLeft,
+            expirationTime,
+            getCurrentToken().orElse("N/A"),
+            mapToPrettyJson(oidcUser.getAttributes()));
+  }
 
-    public static Optional<String> getCurrentToken() {
-        return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .map(Authentication::getPrincipal)
-                .filter(OidcUser.class::isInstance)
-                .map(OidcUser.class::cast)
-                .map(OidcUser::getIdToken)
-                .map(OidcIdToken::getTokenValue);
-    }
+  public static Optional<String> getCurrentToken() {
+    return Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getPrincipal)
+            .filter(OidcUser.class::isInstance)
+            .map(OidcUser.class::cast)
+            .map(OidcUser::getIdToken)
+            .map(OidcIdToken::getTokenValue);
+  }
 
-    private static String mapToPrettyJson(Map<String, Object> map) {
-        return map.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .map(e -> "\t" + e.getKey() + ": " + e.getValue())
-                .collect(Collectors.joining("\n"));
-    }
+  private static String mapToPrettyJson(Map<String, Object> map) {
+    return map.entrySet().stream().sorted(Map.Entry.comparingByKey())
+            .map(e -> "\t" + e.getKey() + ": " + e.getValue())
+            .collect(Collectors.joining("\n"));
+  }
 
-    private List<String> extractAuthoritiesAfterKeycloakAuthn() {
-        TokenUtils.printTheTokens();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  private List<String> extractAuthoritiesAfterKeycloakAuthn() {
+    TokenUtils.printTheTokens();
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //    KeycloakPrincipal<KeycloakSecurityContext> keycloakToken =(KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
 //    log.info("Other details about user from ID Token: " + keycloakToken.getKeycloakSecurityContext().getIdToken().getOtherClaims());
 //    return keycloakToken.getSubRoles();
-        return List.of();
-    }
+    return List.of();
+  }
 
 }

@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class OrderService {
-    private final StockManagementService stockManagementService;
-    private final InvoiceService invoiceService;
+  private final StockManagementService stockManagementService;
+  private final InvoiceService invoiceService;
 
-    @GetMapping("place-order")
-    public void placeOrder() {
-        log.debug(">> PERSIST new Order");
-        long orderId = 13L;
-        stockManagementService.process(orderId);
-        invoiceService.sendInvoice(orderId);
-    }
+  @GetMapping("place-order")
+  public void placeOrder() {
+    log.debug(">> PERSIST new Order");
+    long orderId = 13L;
+    stockManagementService.process(orderId);
+    invoiceService.sendInvoice(orderId);
+  }
 }
 
 

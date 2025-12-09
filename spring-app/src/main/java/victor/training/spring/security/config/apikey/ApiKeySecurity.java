@@ -16,21 +16,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class ApiKeySecurity {
-    @PostConstruct
-    public void hi() {
-        log.warn("Using");
-    }
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
 
-    @Value("${api-key:secret}")
-    private String apiKey;
+  @Value("${api-key:secret}")
+  private String apiKey;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable());
-        http.authorizeRequests(authz -> authz.anyRequest().authenticated());
-        http.addFilter(new ApiKeyFilter(apiKey));
-        http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable());
+    http.authorizeRequests(authz -> authz.anyRequest().authenticated());
+    http.addFilter(new ApiKeyFilter(apiKey));
+    http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
+    return http.build();
+  }
 
 }

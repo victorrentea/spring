@@ -22,46 +22,46 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 @RequiredArgsConstructor
 public class ActuatorSecurity {
-    @PostConstruct
-    public void hi() {
-        log.warn("Using");
-    }
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
 
-    @Value("${actuator.security.username}")
-    private final String username;
-    @Value("${actuator.security.password}")
-    private final String password;
+  @Value("${actuator.security.username}")
+  private final String username;
+  @Value("${actuator.security.password}")
+  private final String password;
 
-    @Order(1) // less than the MAX_INT default, thus has priority over the rest
-    @Bean
-    public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable());
+  @Order(1) // less than the MAX_INT default, thus has priority over the rest
+  @Bean
+  public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable());
 
-        // this security filter chain only applies to /actuator/**
-        http.securityMatcher(EndpointRequest.toAnyEndpoint());
+    // this security filter chain only applies to /actuator/**
+    http.securityMatcher(EndpointRequest.toAnyEndpoint());
 //    http.securityMatcher("/actuator/**"); // equivalent with above
 
-        http.authorizeHttpRequests(authz -> authz
-                        // http://localhost:8080/actuator/health is unsecured
-                        .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+    http.authorizeHttpRequests(authz -> authz
+                    // http://localhost:8080/actuator/health is unsecured
+                    .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 
-                        // the rest of actuator:
+                    // the rest of actuator:
 //          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD!
-                        .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
-        );
+                    .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
+    );
 
-        http.httpBasic(Customizer.withDefaults()).userDetailsService(actuatorUserDetailsService());
+    http.httpBasic(Customizer.withDefaults()).userDetailsService(actuatorUserDetailsService());
 
-        http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
-        return http.build();
-    }
+    http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
+    return http.build();
+  }
 
-    @Bean
-    public UserDetailsService actuatorUserDetailsService() {
-        UserDetails actuatorUser = User.builder()
-                .username(username)
-                .password(password)
-                .roles("ACTUATOR").build();
-        return new InMemoryUserDetailsManager(actuatorUser);
-    }
+  @Bean
+  public UserDetailsService actuatorUserDetailsService() {
+    UserDetails actuatorUser = User.builder()
+            .username(username)
+            .password(password)
+            .roles("ACTUATOR").build();
+    return new InMemoryUserDetailsManager(actuatorUser);
+  }
 }

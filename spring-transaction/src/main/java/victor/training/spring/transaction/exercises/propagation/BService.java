@@ -12,24 +12,24 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Service
 @Transactional
 public class BService {
-    @Autowired
-    private Repo repo;
+  @Autowired
+  private Repo repo;
 
-    public void b1() {
-        log.info("b1");
-        repo.r1();
-    }
+  public void b1() {
+    log.info("b1");
+    repo.r1();
+  }
 
-    @Transactional(propagation = REQUIRES_NEW)
-    public void b2() {
-        log.info("b2");
-        repo.r1();
-    }
+  @Transactional(propagation = REQUIRES_NEW)
+  public void b2() {
+    log.info("b2");
+    repo.r1();
+  }
 
-    @Transactional(propagation = NOT_SUPPORTED)
-    public void b3() {
-        log.info("b3");
-        repo.r1();
-    }
+  @Transactional(propagation = NOT_SUPPORTED)
+  public void b3() {
+    log.info("b3");
+    repo.r1();
+  }
 
 }

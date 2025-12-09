@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UnsecuredController {
 
-    // TODO allow unsecured access
-    @GetMapping("unsecured/welcome")
-    public String showWelcomeInfo() {
-        return "Contact Phone";
-    }
+  // TODO allow unsecured access
+  @GetMapping("unsecured/welcome")
+  public String showWelcomeInfo() {
+    return "Contact Phone";
+  }
 }

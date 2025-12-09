@@ -14,19 +14,19 @@ import static java.lang.System.currentTimeMillis;
 @RestController
 @RequiredArgsConstructor
 public class BarApi {
-    private final DrinksClient drinksClient;
+  private final DrinksClient drinksClient;
 
-    @GetMapping("api/drink")
-    public DillyDilly drink() throws Exception {
-        log.debug("Submitting my order");
-        long t0 = currentTimeMillis();
+  @GetMapping("api/drink")
+  public DillyDilly drink() throws Exception {
+    log.debug("Submitting my order");
+    long t0 = currentTimeMillis();
 
-        Beer beer = drinksClient.pourBeer();
-        Vodka vodka = drinksClient.pourVodka();
+    Beer beer = drinksClient.pourBeer();
+    Vodka vodka = drinksClient.pourVodka();
 
-        drinksClient.sendNotification("Dilly");
+    drinksClient.sendNotification("Dilly");
 
-        log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
-        return new DillyDilly(beer, vodka);
-    }
+    log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
+    return new DillyDilly(beer, vodka);
+  }
 }

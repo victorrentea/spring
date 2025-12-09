@@ -15,49 +15,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Disabled
 @SpringBootTest
 public class PlayJpaExercisesTest {
-   @Autowired
-   JpaExercises jpaExercises;
-   @Autowired
-   JpaEntityRepo repo;
+  @Autowired
+  JpaExercises jpaExercises;
+  @Autowired
+  JpaEntityRepo repo;
 
-   @BeforeEach
-   final void before() {
-      repo.deleteAll(); // explicit cleanup as tests cannot be @Transactional here
-   }
+  @BeforeEach
+  final void before() {
+    repo.deleteAll(); // explicit cleanup as tests cannot be @Transactional here
+  }
 
-   @Test
-   void changesToEntityAreAutoSaved() {
-      long id = repo.save(new JpaEntity("name")).getId();
+  @Test
+  void changesToEntityAreAutoSaved() {
+    long id = repo.save(new JpaEntity("name")).getId();
 
-      jpaExercises.changesToEntityAreAutoSaved(id);
+    jpaExercises.changesToEntityAreAutoSaved(id);
 
-      assertThat(repo.findById(id).orElseThrow().getName()).isNotEqualTo("name");
-   }
+    assertThat(repo.findById(id).orElseThrow().getName()).isNotEqualTo("name");
+  }
 
-   @Test
-   @CaptureSystemOutput
-   void lazyLoadingRequiresSurroundingTransaction(OutputCapture capture) {
-      long id = repo.save(new JpaEntity("name", "tag1", "tag2")).getId();
+  @Test
+  @CaptureSystemOutput
+  void lazyLoadingRequiresSurroundingTransaction(OutputCapture capture) {
+    long id = repo.save(new JpaEntity("name", "tag1", "tag2")).getId();
 
-      jpaExercises.lazyLoadingRequiresSurroundingTransaction(id);
+    jpaExercises.lazyLoadingRequiresSurroundingTransaction(id);
 
-      assertThat(capture.toString()).contains("tag1,tag2");
-   }
+    assertThat(capture.toString()).contains("tag1,tag2");
+  }
 
-   @Test
-   @CaptureSystemOutput
-   void prematureAutoFlushing(OutputCapture capture) {
-      jpaExercises.prematureAutoFlushing();
+  @Test
+  @CaptureSystemOutput
+  void prematureAutoFlushing(OutputCapture capture) {
+    jpaExercises.prematureAutoFlushing();
 
-      assertThat(capture.toString()).containsSubsequence(List.of("insert", "END OF METHOD"));
-   }
+    assertThat(capture.toString()).containsSubsequence(List.of("insert", "END OF METHOD"));
+  }
 
-   @Test
-   void firstLevelCache() {
-      long id = repo.save(new JpaEntity("name")).getId();
+  @Test
+  void firstLevelCache() {
+    long id = repo.save(new JpaEntity("name")).getId();
 
-      boolean r = jpaExercises.firstLevelCache(id);
+    boolean r = jpaExercises.firstLevelCache(id);
 
-      assertThat(r).isTrue();
-   }
+    assertThat(r).isTrue();
+  }
 }

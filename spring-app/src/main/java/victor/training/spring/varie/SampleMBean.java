@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
         persistLocation = "foo",
         persistName = "bar")
 public class SampleMBean {
-    @ManagedOperation
-    public void dummy() {
-        System.out.println("Called over JMX");
-    }
+  @ManagedOperation
+  public void dummy() {
+    System.out.println("Called over JMX");
+  }
 }

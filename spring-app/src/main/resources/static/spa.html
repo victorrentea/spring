@@ -25,16 +25,16 @@
             onLoad: "login-required",
             // Client > advanced settings > Proof Key for Code Exchange Code Challenge Method > S256
             pkceMethod: 'S256'
-        }).then(function(authenticated) {
+        }).then(function (authenticated) {
 
             if (authenticated) {
-                oauthstatus.innerText = 'authenticated as '+ keycloak.idTokenParsed.preferred_username +
+                oauthstatus.innerText = 'authenticated as ' + keycloak.idTokenParsed.preferred_username +
                     ", with email in IDToken: " + keycloak.idTokenParsed.email;
                 console.log(keycloak.idTokenParsed)
             } else {
                 oauthstatus.innerText = 'NOT authenticated';
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             oauthstatus.innerText = 'failed to initialize';
             console.log(e);
         });
@@ -52,7 +52,7 @@
             }),
             contentType: "application/json",
             headers: {
-                "Authorization": "Bearer "+ keycloak.token
+                "Authorization": "Bearer " + keycloak.token
             },
             success: function (trainings) {
                 toastr.success("Money Transferred")

@@ -18,40 +18,40 @@ import java.util.List;
 // this sticks in the big chain of security filters of spring : https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
 @Slf4j
 public class JwtFilter extends AbstractPreAuthenticatedProcessingFilter {
-    private final String jwtSecret;
+  private final String jwtSecret;
 
-    public JwtFilter(AuthenticationManager authenticationManager, String jwtSecret) {
-        setAuthenticationManager(authenticationManager);
-        this.jwtSecret = jwtSecret;
+  public JwtFilter(AuthenticationManager authenticationManager, String jwtSecret) {
+    setAuthenticationManager(authenticationManager);
+    this.jwtSecret = jwtSecret;
+  }
+
+  @Override
+  protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+    String headerValue = request.getHeader("Authorization");
+    if (headerValue == null || !headerValue.startsWith("Bearer ")) {
+      log.error("FAIL: No authorization bearer header: " + headerValue);
+      throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
     }
+    String jwtTokenString = headerValue.substring("Bearer ".length());
+    log.debug("Received JWT token string: " + jwtTokenString);
 
-    @Override
-    protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        String headerValue = request.getHeader("Authorization");
-        if (headerValue == null || !headerValue.startsWith("Bearer ")) {
-            log.error("FAIL: No authorization bearer header: " + headerValue);
-            throw new PreAuthenticatedCredentialsNotFoundException("No 'Authorization: Bearer ' header: " + headerValue); // reject
-        }
-        String jwtTokenString = headerValue.substring("Bearer ".length());
-        log.debug("Received JWT token string: " + jwtTokenString);
+    Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
 
-        Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(jwtSecret));
+    JWTVerifier verifier = JWT.require(algorithm).withIssuer("Victor").build();
 
-        JWTVerifier verifier = JWT.require(algorithm).withIssuer("Victor").build();
+    DecodedJWT decodedJwt = verifier.verify(jwtTokenString);
 
-        DecodedJWT decodedJwt = verifier.verify(jwtTokenString);
+    UserRole role = UserRole.valueOf(decodedJwt.getClaim("role").asString());
+    String country = decodedJwt.getClaim("country").asString();
+    String[] authorities = decodedJwt.getClaim("authorities").asArray(String.class);
+    String username = decodedJwt.getSubject();
+    JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role, List.of(authorities));
+    log.info("Login successful for " + jwtPrincipal);
+    return jwtPrincipal; // later received by UserDetailsService
+  }
 
-        UserRole role = UserRole.valueOf(decodedJwt.getClaim("role").asString());
-        String country = decodedJwt.getClaim("country").asString();
-        String[] authorities = decodedJwt.getClaim("authorities").asArray(String.class);
-        String username = decodedJwt.getSubject();
-        JwtPrincipal jwtPrincipal = new JwtPrincipal(username, country, role, List.of(authorities));
-        log.info("Login successful for " + jwtPrincipal);
-        return jwtPrincipal; // later received by UserDetailsService
-    }
-
-    @Override
-    protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
-        return "N/A";
-    }
+  @Override
+  protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
+    return "N/A";
+  }
 }

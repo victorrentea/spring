@@ -12,12 +12,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class UserController {
-    @GetMapping("api/user/current")
-    public CurrentUserDto getCurrentUser() {
-        log.info("Return current user");
-        CurrentUserDto dto = new CurrentUserDto();
-        dto.username = "<todo-username>"; // TODO
-        dto.authorities = List.of(); // TODO
-        return dto;
-    }
+  @GetMapping("api/user/current")
+  public CurrentUserDto getCurrentUser() {
+    log.info("Return current user");
+    CurrentUserDto dto = new CurrentUserDto();
+    dto.username = "<todo-username>"; // TODO
+    dto.authorities = List.of(); // TODO
+    return dto;
+  }
 }

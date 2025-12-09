@@ -12,16 +12,16 @@ import java.util.stream.IntStream;
 
 @RestController
 public class MonitoringParallelStreamThreadStarvation {
-    @Autowired
-    MeterRegistry registry;
+  @Autowired
+  MeterRegistry registry;
 
-    @PostConstruct
-    public void method() {
-        ExecutorServiceMetrics.monitor(registry, ForkJoinPool.commonPool(), "commonPool");
-    }
+  @PostConstruct
+  public void method() {
+    ExecutorServiceMetrics.monitor(registry, ForkJoinPool.commonPool(), "commonPool");
+  }
 
-    @GetMapping("test")
-    public void get() {
-        IntStream.range(1, 100).parallel().forEach(System.out::println);
-    }
+  @GetMapping("test")
+  public void get() {
+    IntStream.range(1, 100).parallel().forEach(System.out::println);
+  }
 }

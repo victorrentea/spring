@@ -13,12 +13,14 @@
             -o-background-size: cover;
             background-size: cover;
         }
+
         .ql-container, .ql-toolbar {
             background-color: white;
         }
+
         .training_name:hover {
             color: red;
-            cursor:pointer;
+            cursor: pointer;
         }
     </style>
     <title>SPA (8080)</title>
@@ -82,7 +84,8 @@
     </div>
     <div style="font-size: smaller" title="XSS warmup">&lt;img src='x' onerror='alert(2)'&gt;</div>
     <div style="font-size: smaller" title="for XSS attacks">
-        &lt;img src='http://bogus.com/fake.jpeg' onerror='fetch(`api/salary/raise?who=vrentea&amount=MAX`).then(function (x) {alert(`Thank you!`)});'>
+        &lt;img src='http://bogus.com/fake.jpeg' onerror='fetch(`api/salary/raise?who=vrentea&amount=MAX`).then(function
+        (x) {alert(`Thank you!`)});'>
     </div>
     Start Date (dd-mm-yyyy):<input type="text" id="editStartDate"/> <br/>
     Teacher: <select id="editTeacher"></select><br/>
@@ -93,7 +96,7 @@
 </div>
 
 <div style="text-align: center; background: white">
-    <a href="/actuator/prometheus" target="_blank">Metrics at /actuator/prometheus</a>  |
+    <a href="/actuator/prometheus" target="_blank">Metrics at /actuator/prometheus</a> |
     <a href="api/drink">Async Barman Flow</a> |
     <a href="/v3/api-docs" target="_blank">OpenAPI extracted from code</a> <br/>
     <a href="spa.html" target="_blank">Implicit Flow (Keycloak), when on CDN</a> |
@@ -155,7 +158,7 @@
 
             // if (currentUser.authorities.includes('ROLE_TRAINING_DELETE'))
             // if (currentUser.authorities.includes('ROLE_ADMIN'))
-                row += `<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(${training.id})" />`;
+            row += `<input class="deleteButton" type="button" value="Delete" onclick="deleteTraining(${training.id})" />`;
 
             row += '</td>';
             row += '</tr>';
@@ -250,6 +253,7 @@
 
     //------------- TRAINING: UPDATE SCREEN --------------------
     let versionUnderEdit;
+
     function openEditTraining(trainingId) {
         $.ajax(restEndpoint + "/trainings/" + trainingId, {
             method: "GET",
@@ -297,7 +301,7 @@
         populateLanguageSelect($("#newLanguage"));
         populateTeacherSelect($("#newTeacher"));
         $("#newName").val("");
-        $("#newStartDate").val("01-01-"+(1+new Date().getFullYear()));
+        $("#newStartDate").val("01-01-" + (1 + new Date().getFullYear()));
         // $("#newDescription").val("");
         newDescriptionQuill.root.innerHTML = "";
         $('#trainingMain').hide();

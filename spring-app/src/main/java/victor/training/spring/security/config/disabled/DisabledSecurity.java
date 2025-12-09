@@ -15,15 +15,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class DisabledSecurity {
 
-    @PostConstruct
-    public void hi() {
-        log.warn("Using");
-    }
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable());
-        http.authorizeRequests(authz -> authz.anyRequest().permitAll());
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable());
+    http.authorizeRequests(authz -> authz.anyRequest().permitAll());
+    return http.build();
+  }
 }

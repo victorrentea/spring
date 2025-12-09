@@ -14,32 +14,32 @@ import victor.training.spring.transaction.playground.MyEntityRepo;
 @Component
 @RequiredArgsConstructor
 public class TransactionListener {
-    private final ApplicationEventPublisher eventPublisher;
-    private final MyEntityRepo myEntityRepo;
+  private final ApplicationEventPublisher eventPublisher;
+  private final MyEntityRepo myEntityRepo;
 
-    @Transactional
-    public void insideATransaction() {
-        myEntityRepo.save(new MyEntity("Start"));
-        eventPublisher.publishEvent(new CleanupAfterTransactionEvent("Delete files, mark rows DONE, ACK a message"));
-        eventPublisher.publishEvent(new SendNotificationAfterCommitEvent("boss@corp.io", "The transaction was completed"));
-        myEntityRepo.save(new MyEntity("End"));
-        log.info("End method");
-    }
+  @Transactional
+  public void insideATransaction() {
+    myEntityRepo.save(new MyEntity("Start"));
+    eventPublisher.publishEvent(new CleanupAfterTransactionEvent("Delete files, mark rows DONE, ACK a message"));
+    eventPublisher.publishEvent(new SendNotificationAfterCommitEvent("boss@corp.io", "The transaction was completed"));
+    myEntityRepo.save(new MyEntity("End"));
+    log.info("End method");
+  }
 
-    record CleanupAfterTransactionEvent(String workToDo) {
-    }
+  record CleanupAfterTransactionEvent(String workToDo) {
+  }
 
-    record SendNotificationAfterCommitEvent(String email, String text) {
-    }
+  record SendNotificationAfterCommitEvent(String email, String text) {
+  }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
-    public void afterCompletion(CleanupAfterTransactionEvent event) {
-        log.info("After completion: " + event.workToDo());
-    }
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
+  public void afterCompletion(CleanupAfterTransactionEvent event) {
+    log.info("After completion: " + event.workToDo());
+  }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void afterCommit(SendNotificationAfterCommitEvent event) {
-        log.info("Sending emails: " + event);
-    }
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void afterCommit(SendNotificationAfterCommitEvent event) {
+    log.info("Sending emails: " + event);
+  }
 }
 

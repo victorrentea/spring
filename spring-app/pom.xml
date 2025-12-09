@@ -93,7 +93,7 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-micrometer</artifactId>
         </dependency>
-      <dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.8.14</version>
@@ -122,16 +122,16 @@
         </dependency>
 
 
-       <!-- <dependency>
-            &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-        </dependency>-->
-      <!--  <dependency>
-            &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-        </dependency>-->
+        <!-- <dependency>
+             &lt;!&ndash; OAuth2 with KeyCloak AuthServer &ndash;&gt;
+             <groupId>org.keycloak</groupId>
+             <artifactId>keycloak-spring-boot-starter</artifactId>
+         </dependency>-->
+        <!--  <dependency>
+              &lt;!&ndash; OAuth2RestTemplate for Client Credentials flow in SB3 &ndash;&gt;
+              <groupId>org.springframework.security.oauth.boot</groupId>
+              <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+          </dependency>-->
 
         <dependency>
             <!-- manually parse/build JWT tokens -->

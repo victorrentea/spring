@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AsyncEventsConfig {
-    // [DANGER] uncomment to dispatch ALL events to listeners asynchronously
+  // [DANGER] uncomment to dispatch ALL events to listeners asynchronously
 //	@Bean
 //    public ApplicationEventMulticaster applicationEventMulticaster() {
 //        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();

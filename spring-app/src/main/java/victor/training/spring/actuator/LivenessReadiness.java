@@ -13,23 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class LivenessReadiness {
-    private final ApplicationEventPublisher eventPublisher;
+  private final ApplicationEventPublisher eventPublisher;
 
-    @GetMapping("api/kill")
-    public String kill() {
-        AvailabilityChangeEvent.publish(eventPublisher, "api-call", LivenessState.BROKEN);
-        return "Set app liveness to DOWN: http://localhost:8080/actuator/health/liveness";
-    }
+  @GetMapping("api/kill")
+  public String kill() {
+    AvailabilityChangeEvent.publish(eventPublisher, "api-call", LivenessState.BROKEN);
+    return "Set app liveness to DOWN: http://localhost:8080/actuator/health/liveness";
+  }
 
-    @GetMapping("api/unavailable")
-    public String unavailable() {
-        AvailabilityChangeEvent.publish(eventPublisher, "api-call", ReadinessState.REFUSING_TRAFFIC);
-        return "Set app to refuse traffic: http://localhost:8080/actuator/health/readiness";
-    }
+  @GetMapping("api/unavailable")
+  public String unavailable() {
+    AvailabilityChangeEvent.publish(eventPublisher, "api-call", ReadinessState.REFUSING_TRAFFIC);
+    return "Set app to refuse traffic: http://localhost:8080/actuator/health/readiness";
+  }
 
-    @GetMapping("api/available")
-    public String available() {
-        AvailabilityChangeEvent.publish(eventPublisher, "api-call", ReadinessState.ACCEPTING_TRAFFIC);
-        return "Set app to accept traffic: see at http://localhost:8080/actuator/health/readiness";
-    }
+  @GetMapping("api/available")
+  public String available() {
+    AvailabilityChangeEvent.publish(eventPublisher, "api-call", ReadinessState.ACCEPTING_TRAFFIC);
+    return "Set app to accept traffic: see at http://localhost:8080/actuator/health/readiness";
+  }
 }

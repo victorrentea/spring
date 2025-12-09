@@ -21,29 +21,29 @@ import victor.training.spring.security.config.AddFilterDSL;
 @Configuration
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class JwtSecurity {
-    @PostConstruct
-    public void hi() {
-        log.warn("Using");
-    }
+  @PostConstruct
+  public void hi() {
+    log.warn("Using");
+  }
 
-    @Value("${jwt.signature.shared.secret.base64}")
-    private String jwtSecret;
+  @Value("${jwt.signature.shared.secret.base64}")
+  private String jwtSecret;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable());
-        http.authorizeHttpRequests(authz -> authz.anyRequest().authenticated());
-        http.authenticationProvider(preAuthenticatedProvider());
-        http.apply(AddFilterDSL.of(authenticationManager -> new JwtFilter(authenticationManager, jwtSecret)));
-        http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable());
+    http.authorizeHttpRequests(authz -> authz.anyRequest().authenticated());
+    http.authenticationProvider(preAuthenticatedProvider());
+    http.apply(AddFilterDSL.of(authenticationManager -> new JwtFilter(authenticationManager, jwtSecret)));
+    http.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't emit Set-Cookie
+    return http.build();
+  }
 
-    @Bean
-    public AuthenticationProvider preAuthenticatedProvider() {
-        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-        provider.setPreAuthenticatedUserDetailsService(token -> (JwtPrincipal) token.getPrincipal());
-        return provider;
-    }
+  @Bean
+  public AuthenticationProvider preAuthenticatedProvider() {
+    PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+    provider.setPreAuthenticatedUserDetailsService(token -> (JwtPrincipal) token.getPrincipal());
+    return provider;
+  }
 
 }

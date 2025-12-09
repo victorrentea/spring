@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 public class FeignClientConfig {
 //  @Bean
 //  public RequestInterceptor propagateOAuthAccessTokenInFeignRequests() {
-    // TODO FIX migration
+  // TODO FIX migration
 //    return template -> {
 //      Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //      if (principal instanceof KeycloakPrincipal) {

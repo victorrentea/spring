@@ -14,31 +14,31 @@ import java.util.List;
 @Setter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "NAME", name = "UQ_NAME"))
 public class MyEntity {
-    @Id
-    @GeneratedValue
-    private Long id;
-    @NotNull
-    private String name;
-    @ElementCollection
-    private List<String> tags = new ArrayList<>();
+  @Id
+  @GeneratedValue
+  private Long id;
+  @NotNull
+  private String name;
+  @ElementCollection
+  private List<String> tags = new ArrayList<>();
 
-    protected MyEntity() { // for hibernate only
-    }
+  protected MyEntity() { // for hibernate only
+  }
 
-    public MyEntity(String name) {
-        this.name = name;
-    }
+  public MyEntity(String name) {
+    this.name = name;
+  }
 
-    public MyEntity addTag(String tag) {
-        tags.add(tag);
-        return this;
-    }
+  public MyEntity addTag(String tag) {
+    tags.add(tag);
+    return this;
+  }
 
-    @Override
-    public String toString() {
-        return "MyEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "MyEntity{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            '}';
+  }
 }

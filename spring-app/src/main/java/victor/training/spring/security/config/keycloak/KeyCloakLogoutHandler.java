@@ -15,30 +15,30 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class KeyCloakLogoutHandler implements LogoutHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(KeyCloakLogoutHandler.class);
-    private final RestTemplate restTemplate;
+  private static final Logger logger = LoggerFactory.getLogger(KeyCloakLogoutHandler.class);
+  private final RestTemplate restTemplate;
 
-    public KeyCloakLogoutHandler(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+  public KeyCloakLogoutHandler(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
+
+  @Override
+  public void logout(HttpServletRequest request, HttpServletResponse response, Authentication auth) {
+    logoutFromKeycloak((OidcUser) auth.getPrincipal());
+  }
+
+  private void logoutFromKeycloak(OidcUser user) {
+    String endSessionEndpoint = user.getIssuer() + "/protocol/openid-connect/logout";
+    UriComponentsBuilder builder = UriComponentsBuilder
+            .fromUriString(endSessionEndpoint)
+            .queryParam("id_token_hint", user.getIdToken().getTokenValue());
+
+    ResponseEntity<String> logoutResponse = restTemplate.getForEntity(builder.toUriString(), String.class);
+    if (logoutResponse.getStatusCode().is2xxSuccessful()) {
+      logger.info("Successfulley logged out from Keycloak");
+    } else {
+      logger.error("Could not propagate logout to Keycloak");
     }
-
-    @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication auth) {
-        logoutFromKeycloak((OidcUser) auth.getPrincipal());
-    }
-
-    private void logoutFromKeycloak(OidcUser user) {
-        String endSessionEndpoint = user.getIssuer() + "/protocol/openid-connect/logout";
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString(endSessionEndpoint)
-                .queryParam("id_token_hint", user.getIdToken().getTokenValue());
-
-        ResponseEntity<String> logoutResponse = restTemplate.getForEntity(builder.toUriString(), String.class);
-        if (logoutResponse.getStatusCode().is2xxSuccessful()) {
-            logger.info("Successfulley logged out from Keycloak");
-        } else {
-            logger.error("Could not propagate logout to Keycloak");
-        }
-    }
+  }
 
 }

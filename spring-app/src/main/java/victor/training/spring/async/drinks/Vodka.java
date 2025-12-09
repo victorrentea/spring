@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class Vodka {
-    public final String type = "deadly";
+  public final String type = "deadly";
 }

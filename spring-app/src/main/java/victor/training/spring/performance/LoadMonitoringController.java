@@ -11,18 +11,18 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequiredArgsConstructor
 public class LoadMonitoringController {
-    private final ExpensiveApiClient apiClient;
-    private final TransactedService transactedService;
+  private final ExpensiveApiClient apiClient;
+  private final TransactedService transactedService;
 
-    @GetMapping("load/expensive")
-    public CompletableFuture<String> expensive() {
-        return apiClient.asyncCall();
-    }
+  @GetMapping("load/expensive")
+  public CompletableFuture<String> expensive() {
+    return apiClient.asyncCall();
+  }
 
-    @GetMapping("load/conn-starve")
-    public void starveConnections() {
-        transactedService.flow();
-    }
+  @GetMapping("load/conn-starve")
+  public void starveConnections() {
+    transactedService.flow();
+  }
 
 }
 

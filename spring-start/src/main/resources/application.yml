@@ -1,35 +1,35 @@
 spring:
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    starttls:
-                        enable: true
-        username: user
-        password: pass
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    username: user
+    password: pass
 
 props:
-    env: prod
-    gate: 123
-    welcomeMessage: Welcome to Spring
-    supportUrls:
-        - http://stackoverflow.com
-        - http://baeldung.com
-        - http://spring.io
-    contactPhones:
-        FR: 430123414123
-        RO: 401312121414
-    help:
-        app-id: 1251
-        file: c:/help-file.pdf
-        email: help@spring.io
-    tenants:
-      FR:
-        greeting: Bonjour!
-        lunch: PT3h
-      RO:
-        greeting: Salut!
-        lunch: PT30m
+  env: prod
+  gate: 123
+  welcomeMessage: Welcome to Spring
+  supportUrls:
+    - http://stackoverflow.com
+    - http://baeldung.com
+    - http://spring.io
+  contactPhones:
+    FR: 430123414123
+    RO: 401312121414
+  help:
+    app-id: 1251
+    file: c:/help-file.pdf
+    email: help@spring.io
+  tenants:
+    FR:
+      greeting: Bonjour!
+      lunch: PT3h
+    RO:
+      greeting: Salut!
+      lunch: PT30m

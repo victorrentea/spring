@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Secured("ROLE_ADMIN")
 public class AdminController {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminController.class);
+  private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
-    @GetMapping("admin/launch")
-    public String restart() {
-        return "What does this red button do?     ... [Missile Launched]";
-    }
+  @GetMapping("admin/launch")
+  public String restart() {
+    return "What does this red button do?     ... [Missile Launched]";
+  }
 
-    @GetMapping("admin/clear-cache")
-    public String clearCaches() {
-        return "Wipe out caches";
-    }
+  @GetMapping("admin/clear-cache")
+  public String clearCaches() {
+    return "Wipe out caches";
+  }
 
-    @GetMapping("api/salary/raise")
-    public String raiseSalary(@RequestParam String who, @RequestParam String amount) {
-        log.info("Raising salary of {} with {}", who, amount);
-        return "Salary raised by admin!";
-    }
+  @GetMapping("api/salary/raise")
+  public String raiseSalary(@RequestParam String who, @RequestParam String amount) {
+    log.info("Raising salary of {} with {}", who, amount);
+    return "Salary raised by admin!";
+  }
 
 }

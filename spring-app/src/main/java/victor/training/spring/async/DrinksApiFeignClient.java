@@ -8,9 +8,9 @@ import victor.training.spring.async.drinks.Vodka;
 
 @FeignClient("drinks")
 public interface DrinksApiFeignClient {
-    @GetMapping("api/beer/{type}")
-    Beer getBeer(@PathVariable("type") String type);
+  @GetMapping("api/beer/{type}")
+  Beer getBeer(@PathVariable("type") String type);
 
-    @GetMapping("api/vodka")
-    Vodka getVodka();
+  @GetMapping("api/vodka")
+  Vodka getVodka();
 }

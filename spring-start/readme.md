@@ -5,7 +5,7 @@
 - Qualifier, bean names
 - Primary
 - Lombok tricks: @RAC, lombok.copyableAnnotations+=
-----1h
+  ----1h
 - Profile (bean & props)
 - @Autowired List<BeanInterface>
 - ApplicationContext#getBean
