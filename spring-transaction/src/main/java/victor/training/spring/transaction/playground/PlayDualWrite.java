@@ -15,12 +15,13 @@ public class PlayDualWrite {
   public void saveAndSend() {
     repo.save(new MyEntity("E12"));
     repo.save(new MyEntity("E22"));
+    repo.flush();
     send(new MyMessage("M")); // ❌ => ex => rollback
   }
-// SEND KAFKA/RABBIT/PUB-SUB
-// INSERT + @NotNull @Size ❌
+// INSERT + @NotNull @Size
 // INSERT
-// COMMIT
+// SEND KAFKA/RABBIT/PUB-SUB ✅
+// COMMIT ❌ FK/PK/UK💥
 
   public record MyMessage(String content){}
 
