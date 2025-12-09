@@ -17,12 +17,15 @@ public class PlayTransactions {
   private final DataSource dataSource; // since 1998
   private final JdbcTemplate jdbcTemplate; // since 2001
   private final EntityManager entityManager; // since 2006
+//    mybatis
   private final MyEntityRepo repo; // = Spring Data JPA, since 2011
   private final OtherClass other;
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+      // p6spy iti arata ? concret, conex, timpul query-ului, commit/rollback per conexiune
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)","SQL");
+    if (true) throw new RuntimeException("Boom");
     repo.save(new MyEntity("JPA"));
   }
 }

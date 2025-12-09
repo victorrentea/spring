@@ -26,7 +26,8 @@
             <version>2.1.212</version>
         </dependency>
         <dependency>
-            <!-- JDBC Driver proxy intercepting all DB interactions -->
+            <!-- ASTA JDBC Driver proxy intercepting all DB interactions #musthave pe orice mediu < prod -->
+
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
