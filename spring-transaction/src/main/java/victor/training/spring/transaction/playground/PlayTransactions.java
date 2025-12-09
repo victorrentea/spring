@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
 
 @Slf4j
 @Service
@@ -46,7 +47,7 @@ public class PlayTransactions {
 class OtherClass {
     private final MyEntityRepo repo;
     // tx callerului nu ti se propaga daca:
-    @Transactional(propagation = Propagation.REQUIRES_NEW) // suspend tranzactia curenta si incepe alta noua
+//    @Transactional(propagation = Propagation.REQUIRES_NEW) // suspend tranzactia curenta si incepe alta noua
 //    @Transactional(propagation = Propagation.NOT_SUPPORTED)
 //    @Async // sau CompletableFuture... = alt thread: conexiunile JDBC sunt legate de threadul care le initiaza ⚠️ la massive batch import
 
@@ -54,14 +55,22 @@ class OtherClass {
     // 1) waste de conexiuni
     // 2) greu de testat cu @Test @Transactional
     // 3) ❌❌ !! NU TRIMITE ENTITATI DINTR-O TRANZACTIE IN ALTA TRANZACTIE !!
+
+
+    @Transactional // lasa tranzactia callerului sa continue aici [daca era!];
+    // daca nu exista tranzactie deschia pe thread, porneste si comite dupa o tx noua
     void altaMetoda(/*entityDinPrimaTx❌❌*/) { // tranzactia pornita in caller method se continua aici
         MyEntity e = new MyEntity("JPA");
 //        entityDinPrimaTx.getChildren().forEach(c -> e.addTag(c.getName()));//
         repo.save(e); // ACUM JPA face e.setId(select nextval din seq)
         log.info("OAre are id deja? " + e.getId());
+        entityManager.getTransaction().commit();
+//        Connection c;
+//        c.commit();
         repo.save(new MyEntity("JPA1"));
         repo.save(new MyEntity("JPA2"));
     }
+    private final EntityManager entityManager;
 }
 
 // TODO

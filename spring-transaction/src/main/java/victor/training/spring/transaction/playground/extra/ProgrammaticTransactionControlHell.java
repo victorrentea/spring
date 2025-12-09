@@ -12,6 +12,7 @@ public class ProgrammaticTransactionControlHell {
 
       try {
          a(conn);
+         conn.commit();
       } finally {
          conn.rollback();
          conn.close();
@@ -21,13 +22,11 @@ public class ProgrammaticTransactionControlHell {
    private void a(Connection conn) throws SQLException {
       conn.createStatement().executeQuery("INSERT ..."); // would this be commited?
       b(conn);
+      conn.createStatement().executeQuery("INSERT ..."); // would this be commited?
    }
 
    private void b(Connection conn) throws SQLException {
-      if (Math.random() < .5) {
-         conn.rollback();
-      }
-      c(conn);
+       conn.commit();
       conn.createStatement().executeQuery("INSERT ..."); // would this be commited?
    }
 
