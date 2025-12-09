@@ -3,7 +3,10 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,11 +15,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PlayJpa /*extends BaseService  @Transactional{}*/ {
     private final MyEntityRepo repo;
+    private final PlatformTransactionManager transactionManager;
 
     public void writeBehind() {
-        anafApiCall();
-        repo.save(new MyEntity("ONE").addTag("tag1"));
+        anafApiCallReportFraud();
+        try {
+//            Runnable r = () -> atomicPutin();
+//            r.run();
+            putinTransactat();
+        } catch (Exception e) {
+//            anafUndoReportFraud();
+        }
         log.info("--- End of method ---");
+    }
+
+    private void putinTransactat() {
+        TransactionTemplate tx = new TransactionTemplate(transactionManager);
+        tx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        tx.executeWithoutResult(s -> atomicPutin());
+    }
+    @Transactional
+    // nu merge apelata local
+    void atomicPutin() {
+        repo.save(new MyEntity("ONE").addTag("tag1"));
+        repo.save(new MyEntity("TWO").addTag("tag1"));
     }
 
     @Transactional // 😱 auto-update without repo.save()
@@ -29,7 +51,7 @@ public class PlayJpa /*extends BaseService  @Transactional{}*/ {
 
     private void altaMetoda() {
         System.out.println(repo.findById(1L).orElseThrow()); // 0 SELECT (1st level cache)
-            // inseamna ca JPA a tinut undeva intr-un cache Map<pk,entity> in mem entitatea resp :22
+        // inseamna ca JPA a tinut undeva intr-un cache Map<pk,entity> in mem entitatea resp :22
         System.out.println(repo.findById(1L).orElseThrow());
         System.out.println(repo.findById(1L).orElseThrow());
 
@@ -42,7 +64,6 @@ public class PlayJpa /*extends BaseService  @Transactional{}*/ {
     }
 
 
-
     // 10 caluri paralele pe api-ul asta = nici un alt endpoint lovi baza
     // /actuator/health = mai e app in viata?
     // majoritatea app includ accesul in DB in health-check
@@ -52,10 +73,11 @@ public class PlayJpa /*extends BaseService  @Transactional{}*/ {
     public void lazyLoading() { // b) !REST-called =
         MyEntity e = repo.findById(1L).orElseThrow();
         log.info("Message: {}", e.getTags()); // unde-i selectul in log?
-        anafApiCall(); // ❌ SA NU FACI API CALLS CU TRANZACTIE DESCHISA!
+        anafApiCallReportFraud(); // ❌ SA NU FACI API CALLS CU TRANZACTIE DESCHISA!
     }
+
     @SneakyThrows
-    private /*synchronized*/ void anafApiCall() {
+    private /*synchronized*/ void anafApiCallReportFraud() {
         Thread.sleep(5_000); // tine 1/10 JDBC conn ocupata pe durata API-calluluil
     }
 
