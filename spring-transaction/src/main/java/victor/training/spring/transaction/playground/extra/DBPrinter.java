@@ -13,12 +13,12 @@ import static java.util.stream.Collectors.joining;
 @Component
 @RequiredArgsConstructor
 public class DBPrinter {
-  private final MyEntityRepo repo;
+    private final MyEntityRepo repo;
 
-  @Transactional(readOnly = true)
-  public void print() {
-    String contents = repo.findAll().stream().map(MyEntity::toString).collect(joining("\n"));
-    log.info("🏁🏁🏁 FINAL DATABASE CONTENTS:      --- you can see more at http://localhost:8080/h2-console/ using \nURL: jdbc:h2:tcp://localhost:9092/~/test  DRIVER: org.h2.Driver USER: sa PASS: sa \n"
-             + (contents.isEmpty()?"<EMPTY>":contents));
-  }
+    @Transactional(readOnly = true)
+    public void print() {
+        String contents = repo.findAll().stream().map(MyEntity::toString).collect(joining("\n"));
+        log.info("🏁🏁🏁 FINAL DATABASE CONTENTS:      --- you can see more at http://localhost:8080/h2-console/ using \nURL: jdbc:h2:tcp://localhost:9092/~/test  DRIVER: org.h2.Driver USER: sa PASS: sa \n"
+                + (contents.isEmpty() ? "<EMPTY>" : contents));
+    }
 }

@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class PlayJpa {
-  private final MyEntityRepo repo;
+    private final MyEntityRepo repo;
 
-  @Transactional
-  public void writeBehind() {
-    repo.save(new MyEntity("ONE"));
-    log.info("--- End of method ---");
-  }
+    @Transactional
+    public void writeBehind() {
+        repo.save(new MyEntity("ONE"));
+        log.info("--- End of method ---");
+    }
 
-  public void autoSave() {
-    MyEntity e = repo.findById(1L).orElseThrow();
-    e.setName("Different");
-    // TODO send update in DB
-  }
+    public void autoSave() {
+        MyEntity e = repo.findById(1L).orElseThrow();
+        e.setName("Different");
+        // TODO send update in DB
+    }
 
-  //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
-  public void lazyLoading() { // b) !REST-called =
-    MyEntity e = repo.findById(1L).orElseThrow();
-    log.info("Message: {}", e.getTags());
-  }
+    //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
+    public void lazyLoading() { // b) !REST-called =
+        MyEntity e = repo.findById(1L).orElseThrow();
+        log.info("Message: {}", e.getTags());
+    }
 
 }
 // TODO

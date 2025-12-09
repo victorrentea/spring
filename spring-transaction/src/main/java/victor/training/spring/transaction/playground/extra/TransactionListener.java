@@ -36,6 +36,7 @@ public class TransactionListener {
     public void afterCompletion(CleanupAfterTransactionEvent event) {
         log.info("After completion: " + event.workToDo());
     }
+
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void afterCommit(SendNotificationAfterCommitEvent event) {
         log.info("Sending emails: " + event);

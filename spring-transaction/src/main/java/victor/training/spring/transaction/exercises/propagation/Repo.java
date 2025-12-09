@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class Repo {
-   public void r1() {
-      log.info("r1");
-   }
+    public void r1() {
+        log.info("r1");
+    }
 }
