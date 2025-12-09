@@ -69,7 +69,12 @@ public class PlayJpa /*extends BaseService  @Transactional{}*/ {
     // majoritatea app includ accesul in DB in health-check
     //  daca raspunzi cu 500/timeout x 3 ori => k8s/GKE iti da kill+restart
     @GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
-    @Transactional
+    // can intri cu HTTP call in metoda, Springul iti tine deschisa tranzactia si fara @Transactional
+    // pt a permite lazy-loading facut de juniori = open-session-in-view=true (default)
+
+//    @Transactional
+//            (timeout = 10) daca > 10 secunde => rollback + exceptie
+//            (readOnly = true) 🤔o pui cand stii ca doar citesti (SELECT)
     public void lazyLoading() { // b) !REST-called =
         MyEntity e = repo.findById(1L).orElseThrow();
         log.info("Message: {}", e.getTags()); // unde-i selectul in log?
