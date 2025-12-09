@@ -29,14 +29,14 @@ public class TransactionsApp {
     try {
       log.info("⚠️ DB is re-created empty at each restart ⚠️");
       log.info("============= START EXPERIMENTS ==============");
-      transactions.play();
+//      transactions.play();
 
-//      log.info("============= JPA:writeBehind ==============");
-//      jpa.writeBehind();
-//      log.info("============= JPA:autoSave ==============");
-//      jpa.autoSave();
-//      log.info("============= JPA:lazyLoading ==============");
-//      jpa.lazyLoading();
+      log.info("============= JPA:writeBehind ==============");
+      jpa.writeBehind();
+      log.info("============= JPA:autoSave ==============");
+      jpa.autoSave();
+      log.info("============= JPA:lazyLoading ==============");
+      jpa.lazyLoading();
 
 //      log.info("============= LOCKS ==============");
 //      allOf(runAsync(locks::thread), runAsync(locks::thread)).join();
