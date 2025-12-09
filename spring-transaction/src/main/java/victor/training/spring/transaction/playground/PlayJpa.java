@@ -1,18 +1,20 @@
 package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class PlayJpa {
+public class PlayJpa /*extends BaseService  @Transactional{}*/ {
     private final MyEntityRepo repo;
 
-    @Transactional
     public void writeBehind() {
+        anafApiCall();
         repo.save(new MyEntity("ONE").addTag("tag1"));
         log.info("--- End of method ---");
     }
@@ -40,11 +42,21 @@ public class PlayJpa {
     }
 
 
-    //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
+
+    // 10 caluri paralele pe api-ul asta = nici un alt endpoint lovi baza
+    // /actuator/health = mai e app in viata?
+    // majoritatea app includ accesul in DB in health-check
+    //  daca raspunzi cu 500/timeout x 3 ori => k8s/GKE iti da kill+restart
+    @GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
     @Transactional
     public void lazyLoading() { // b) !REST-called =
         MyEntity e = repo.findById(1L).orElseThrow();
         log.info("Message: {}", e.getTags()); // unde-i selectul in log?
+        anafApiCall(); // ❌ SA NU FACI API CALLS CU TRANZACTIE DESCHISA!
+    }
+    @SneakyThrows
+    private /*synchronized*/ void anafApiCall() {
+        Thread.sleep(5_000); // tine 1/10 JDBC conn ocupata pe durata API-calluluil
     }
 
 }
