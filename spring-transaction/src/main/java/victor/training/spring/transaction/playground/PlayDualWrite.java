@@ -2,32 +2,44 @@ package victor.training.spring.transaction.playground;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class PlayDualWrite {
-  private final MyEntityRepo repo;
+    private final MyEntityRepo repo;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-  @Transactional
-  public void saveAndSend() {
-    repo.save(new MyEntity("E12"));
-    repo.save(new MyEntity("E22"));
-    repo.flush();
-    send(new MyMessage("M")); // ❌ => ex => rollback
-  }
+    @Transactional
+    public void saveAndSend() {
+        repo.save(new MyEntity("E12"));
+        repo.save(new MyEntity("E22"));
+        repo.flush();
+        //send(new MyMessage("M")); // ❌ => ex => rollback
+        applicationEventPublisher.publishEvent(new MyMessage("M"));
+    }
+    // ruleaza dupa COMMITul tx din care s-a facut .publishEvent
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void afterCommit(MyMessage message) {
+        send(message);
+    }
 // INSERT + @NotNull @Size
 // INSERT
-// SEND KAFKA/RABBIT/PUB-SUB ✅
 // COMMIT ❌ FK/PK/UK💥
+// SEND KAFKA/RABBIT/PUB-SUB ✅ nu prea pica=> il faci ultimul
 
-  public record MyMessage(String content){}
+    public record MyMessage(String content) {
+    }
 
-  private void send(MyMessage message) {
-    log.info("kafkaTemplate.send("+message+") pretend");
-    log.info("restTemplate.post("+message+") pretend API CALL");
+    private void send(MyMessage message) {
+        log.info("kafkaTemplate.send(" + message + ") pretend");
+        log.info("restTemplate.post(" + message + ") pretend API CALL");
 //    if (Math.random() < .5) throw new RuntimeException("BOOM"); // may fail
-  }
+    }
 }
