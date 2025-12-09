@@ -15,38 +15,38 @@ import victor.training.spring.varie.Sleep;
 @Timed
 @RequiredArgsConstructor
 public class DrinksClient {
-  private final RestTemplate restTemplate;
-  private final RestClient restClient;
-  private final DrinksFeignClient drinksFeignClient;
+    private final RestTemplate restTemplate;
+    private final RestClient restClient;
+    private final DrinksApiFeignClient drinksApiFeignClient;
 
-  public Beer pourBeer() {
-    String type = "blond";
-    log.debug("Calling GET Beer...");
-    // #1 RestTemplate (traditional)
-    return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
+    public Beer pourBeer() {
+        String type = "blond";
+        log.debug("Calling GET Beer...");
+        // #1 RestTemplate (traditional)
+        return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
 
-    // #2 Feign (😎)
+        // #2 Feign Client 😎
 //     return drinksFeignClient.getBeer(type);
-  }
+    }
 
-  public Vodka pourVodka() {
-    log.debug("Calling GET Vodka...");
+    public Vodka pourVodka() {
+        log.debug("Calling GET Vodka...");
 //    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
 
-    // #3 RestClient < 🆕 blocking equivalent of WebClient☠️
-     return restClient.get()
-         .uri("http://localhost:8080/api/vodka")
-         .retrieve()
-         .body(Vodka.class);
+        // #3 RestClient ⭐️ = blocking equivalent of WebClient☠️
+        return restClient.get()
+                .uri("http://localhost:8080/api/vodka")
+                .retrieve()
+                .body(Vodka.class);
 
-    // #4 generated client from open-api/swagger 💖
-  }
+        // #4 generated client from open-api/swagger 💖
+    }
 
-  public void sendNotification(String email) { // TODO outbox pattern
-    log.debug("Sending notification (takes time and might fail) {}...", email);
-    Sleep.millis(500); // critical but slow work that can fail
-    if (Math.random() < 0.5) throw new RuntimeException("Email server down💥");
-    log.debug("Notification sent!");
-  }
+    public void sendNotification(String email) { // TODO outbox pattern
+        log.debug("Sending notification (takes time and might fail) {}...", email);
+        Sleep.millis(500); // critical but slow work that can fail
+        if (Math.random() < 0.5) throw new RuntimeException("Email server down💥");
+        log.debug("Notification sent!");
+    }
 
 }

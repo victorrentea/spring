@@ -11,17 +11,17 @@ import victor.training.spring.varie.Sleep;
 @Slf4j
 @RestController
 public class DrinksApi { // pretend it's running in a different app
-  @GetMapping("/api/beer/{type}")
-  public Beer beer(@PathVariable String type) {
-    log.info("Remote service: pouring beer");
-    Sleep.millis(1000);
-    return new Beer().setType(type);
-  }
+    @GetMapping("/api/beer/{type}")
+    public Beer beer(@PathVariable String type) {
+        log.info("Remote service: pouring beer");
+        Sleep.millis(1000);
+        return new Beer().setType(type);
+    }
 
-  @GetMapping("/api/vodka")
-  public Vodka vodka() {
-    log.info("Remote service: pouring vodka");
-    Sleep.millis(1000);
-    return new Vodka();
-  }
+    @GetMapping("/api/vodka")
+    public Vodka vodka() {
+        log.info("Remote service: pouring vodka");
+        Sleep.millis(1000);
+        return new Vodka();
+    }
 }

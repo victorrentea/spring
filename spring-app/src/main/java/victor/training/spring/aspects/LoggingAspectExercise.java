@@ -21,7 +21,7 @@ public class LoggingAspectExercise {
 
   // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
 
-  // TODO 4 ⭐️ make this aspect also target all methods in classes annotated with @Logged
+  // TODO 4 ⭐️ also intercept all methods in classes annotated with @Logged
   //   - use @Around("@within(Logged) || @annotation(Logged)")
   public void intercept() {
     log.info("INTERCEPTED");
