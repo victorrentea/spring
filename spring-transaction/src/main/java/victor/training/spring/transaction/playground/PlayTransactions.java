@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -22,10 +23,11 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional
-  public void play() {
+  public void play() throws IOException {
       // p6spy iti arata ? concret, conex, timpul query-ului, commit/rollback per conexiune
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)","SQL");
-    if (true) throw new RuntimeException("Boom");
+    if (true) throw new IOException("Boom"); // cauzeaza COMMIT in DB, spre stupoarea tuturor
+      // spring framework a furat developeri/proj de pe EJBullshit💥💥💥 J2EE in 2005< au copiat comportamentul @TransactionAttribute (EJB)
     repo.save(new MyEntity("JPA"));
   }
 }
