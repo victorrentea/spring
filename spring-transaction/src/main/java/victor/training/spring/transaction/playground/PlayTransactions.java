@@ -28,7 +28,7 @@ public class PlayTransactions {
         log.info("Ies din metoda"); // JPA "Write Behind" = INSERTul de la repo.save se face dupa iesire, inainte de COMMIT
     }
     private void altaMetoda() {
-        repo.save(new MyEntity("SQL")); // 💥💥💥💥💥
+        repo.saveAndFlush(new MyEntity("SQL")); // INSERT imediat! < poate fi PTSD dupa traume de debug
     }
 }
 
