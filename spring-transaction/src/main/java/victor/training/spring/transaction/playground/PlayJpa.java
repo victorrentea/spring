@@ -17,11 +17,11 @@ public class PlayJpa {
         log.info("--- End of method ---");
     }
 
+    @Transactional // 😱auto-update without repo.save()
     public void autoSave() {
         MyEntity e = repo.findById(1L).orElseThrow();
         e.setName("Different");
-        repo.save(e); //traditional ≈jdbcTemplate("UPDATE...
-        // TODO send update in DB
+        // repo.save(e); //traditional ≈jdbcTemplate("UPDATE...
     }
 
 
