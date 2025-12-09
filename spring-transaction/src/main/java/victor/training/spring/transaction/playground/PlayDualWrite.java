@@ -13,16 +13,20 @@ public class PlayDualWrite {
 
   @Transactional
   public void saveAndSend() {
-    repo.save(new MyEntity("E1"));
-    repo.save(new MyEntity("E2"));
-    send(new MyMessage("M"));
+    repo.save(new MyEntity("E12"));
+    repo.save(new MyEntity("E22"));
+    send(new MyMessage("M")); // ❌ => ex => rollback
   }
+// SEND KAFKA/RABBIT/PUB-SUB
+// INSERT + @NotNull @Size ❌
+// INSERT
+// COMMIT
 
   public record MyMessage(String content){}
 
   private void send(MyMessage message) {
     log.info("kafkaTemplate.send("+message+") pretend");
-    log.info("restTemplate.post("+message+") pretend");
-    if (Math.random() < .5) throw new RuntimeException("BOOM"); // may fail
+    log.info("restTemplate.post("+message+") pretend API CALL");
+//    if (Math.random() < .5) throw new RuntimeException("BOOM"); // may fail
   }
 }

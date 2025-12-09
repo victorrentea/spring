@@ -14,7 +14,9 @@ import static java.util.concurrent.CompletableFuture.runAsync;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class TransactionsApp {
-  public static void main(String[] args) {
+    private final PlayDualWrite playDualWrite;
+
+    public static void main(String[] args) {
     SpringApplication.run(TransactionsApp.class, args);
   }
 
@@ -31,12 +33,14 @@ public class TransactionsApp {
       log.info("============= START EXPERIMENTS ==============");
 //      transactions.play();
 
-      log.info("============= JPA:writeBehind ==============");
-      jpa.writeBehind();
-      log.info("============= JPA:autoSave ==============");
-      jpa.autoSave();
-      log.info("============= JPA:lazyLoading ==============");
-      jpa.lazyLoading();
+//      log.info("============= JPA:writeBehind ==============");
+//      jpa.writeBehind();
+//      log.info("============= JPA:autoSave ==============");
+//      jpa.autoSave();
+//      log.info("============= JPA:lazyLoading ==============");
+//      jpa.lazyLoading();
+
+        playDualWrite.saveAndSend();
 
 //      log.info("============= LOCKS ==============");
 //      allOf(runAsync(locks::thread), runAsync(locks::thread)).join();
