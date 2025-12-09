@@ -25,12 +25,21 @@ public class PlayTransactions {
     public void play() throws IOException {
         jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)", "SQL");
         altaMetoda();
+        log.info("Inainte de SELECT");
+        log.info("JPA NU TE MINTE: " + repo.count()); // JPA se stia vinovat ca inca n-a trimit cele 3 inserturi in DB => auto-flush inainte de select
+//        repo.flush();// rar vazut
+        if (repo.count() > 3) {
+            log.info("TOTU BINE");
+        }
+        repo.save(new MyEntity("X"));
         log.info("Ies din metoda"); // JPA "Write Behind" = INSERTul de la repo.save se face dupa iesire, inainte de COMMIT
         // ❌ debug greu
         // ✅ mai putine round-tripuri la DB: (A) JDBC batch insert; (B) ca poate nu-i nevoie ca arunca runtime pana la final
     }
     private void altaMetoda() { // tranzactia pornita in caller method se continua aici
-        repo.save(new MyEntity("JPA")); // INSERT imediat! < poate fi PTSD dupa traume de debug
+        MyEntity e = new MyEntity("JPA");
+        repo.save(e); // ACUM JPA face e.setId(select nextval din seq)
+        log.info("OAre are id deja? " + e.getId());
         repo.save(new MyEntity("JPA1"));
         repo.save(new MyEntity("JPA2"));
     }
