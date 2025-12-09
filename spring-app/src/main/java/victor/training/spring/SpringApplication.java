@@ -32,49 +32,49 @@ import static java.lang.System.currentTimeMillis;
 @ConfigurationPropertiesScan
 @EnableFeignClients
 public class SpringApplication {
-  public static final long t0 = currentTimeMillis();
+    public static final long t0 = currentTimeMillis();
 
-  public static void main(String[] args) {
-    new SpringApplicationBuilder(SpringApplication.class)
-        .listeners(new TestDBConnectionInitializer())
-        .run(args);
-  }
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(SpringApplication.class)
+                .listeners(new TestDBConnectionInitializer())
+                .run(args);
+    }
 
-  @Autowired
-  private Environment environment;
+    @Autowired
+    private Environment environment;
 
-  @Autowired
-  private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-  @Bean // instrumented by micrometer-tracing
-  public RestTemplate restTemplate(RestTemplateBuilder builder) {
-    return builder.build();
-  }
+    @Bean // instrumented by micrometer-tracing
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
+    }
 
-  @Bean
-  public RestClient restClient(RestTemplate restTemplate) {
-    return RestClient.builder(restTemplate).build();
-  }
+    @Bean
+    public RestClient restClient(RestTemplate restTemplate) {
+        return RestClient.builder(restTemplate).build();
+    }
 
-  @Bean // propagate tracing over all Spring-managed thread pools
-  public TaskDecorator taskDecorator() {
-    return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
-  }
+    @Bean // propagate tracing over all Spring-managed thread pools
+    public TaskDecorator taskDecorator() {
+        return (runnable) -> ContextSnapshot.captureAll().wrap(runnable);
+    }
 
-  @Bean // enable propagation of SecurityContextHolder over @Async
-  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
-    return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
-  }
+    @Bean // enable propagation of SecurityContextHolder over @Async
+    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
+        return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
+    }
 
-  @EventListener(ApplicationStartedEvent.class)
-  @Order
-  public void printAppStarted() throws SQLException {
-    long t1 = currentTimeMillis();
-    String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
-    log.info("🎈🎈🎈 Application started in {}ms on port :{} connected to DB {} 🎈🎈🎈",
-        t1 - t0,
-        environment.getProperty("local.server.port"),
-        jdbcUrl);
-  }
+    @EventListener(ApplicationStartedEvent.class)
+    @Order
+    public void printAppStarted() throws SQLException {
+        long t1 = currentTimeMillis();
+        String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
+        log.info("🎈🎈🎈 Application started in {}ms on port :{} connected to DB {} 🎈🎈🎈",
+                t1 - t0,
+                environment.getProperty("local.server.port"),
+                jdbcUrl);
+    }
 
 }

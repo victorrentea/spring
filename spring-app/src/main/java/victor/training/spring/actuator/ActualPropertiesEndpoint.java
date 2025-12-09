@@ -22,31 +22,31 @@ import java.util.TreeMap;
 @Slf4j
 @Import(ActuatorEndpoint.class) // aka @Bean X  {return new X()}
 public class ActualPropertiesEndpoint {
-  @ConfigurationProperties // without prefix to get all properties
-  @Bean
-  public Properties allProps() {
-    return new Properties();
-  }
-
-  @Endpoint(id = "actual-properties")
-  // http://localhost:8080/actuator/actual-properties
-  @RefreshScope // reload at http://localhost:8080/actuator/refresh
-  @RequiredArgsConstructor
-  public static class ActuatorEndpoint {
-    private final Properties allProps;
-
-    @PostConstruct
-    public void printResolvedProps() throws JsonProcessingException {
-      TreeMap<String, String> sortedProps = new TreeMap<>((Map<String, String>) (Map) allProps);
-      String allPropsJson = new ObjectMapper().writeValueAsString(sortedProps);
-      log.info("All properties: " + allPropsJson);
+    @ConfigurationProperties // without prefix to get all properties
+    @Bean
+    public Properties allProps() {
+        return new Properties();
     }
 
-    @ReadOperation
-    @SuppressWarnings("rawtypes")
-    public Map<String, String> getAllProps() {
-      return new TreeMap<>((Map<String, String>) (Map) allProps);
+    @Endpoint(id = "actual-properties")
+    // http://localhost:8080/actuator/actual-properties
+    @RefreshScope // reload at http://localhost:8080/actuator/refresh
+    @RequiredArgsConstructor
+    public static class ActuatorEndpoint {
+        private final Properties allProps;
+
+        @PostConstruct
+        public void printResolvedProps() throws JsonProcessingException {
+            TreeMap<String, String> sortedProps = new TreeMap<>((Map<String, String>) (Map) allProps);
+            String allPropsJson = new ObjectMapper().writeValueAsString(sortedProps);
+            log.info("All properties: " + allPropsJson);
+        }
+
+        @ReadOperation
+        @SuppressWarnings("rawtypes")
+        public Map<String, String> getAllProps() {
+            return new TreeMap<>((Map<String, String>) (Map) allProps);
+        }
     }
-  }
 
 }

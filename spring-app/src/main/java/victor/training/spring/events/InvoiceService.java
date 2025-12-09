@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class InvoiceService {
-   public void sendInvoice(long orderId) {
-      log.info("Generating invoice for order " + orderId);
-      // if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
-      log.info(">> PERSIST Invoice!!");
-   }
+    public void sendInvoice(long orderId) {
+        log.info("Generating invoice for order " + orderId);
+        // if (random() < .3) throw new RuntimeException("Invoice Generation Failed");
+        log.info(">> PERSIST Invoice!!");
+    }
 }

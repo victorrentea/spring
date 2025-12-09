@@ -14,23 +14,23 @@ import java.io.IOException;
 // https://stackoverflow.com/a/53665706
 public class EmptyStringAsNullJacksonConfiguration {
 
-   @Bean
-   SimpleModule emptyStringAsNullModule() {
-      SimpleModule module = new SimpleModule();
+    @Bean
+    SimpleModule emptyStringAsNullModule() {
+        SimpleModule module = new SimpleModule();
 
-      module.addDeserializer(
-          String.class,
-          new StdDeserializer<String>(String.class) {
-             @Override
-             public String deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-                String result = StringDeserializer.instance.deserialize(parser, context);
-                if (result == null || result.isEmpty() || result.isBlank()) {
-                   return null;
-                }
-                return result;
-             }
-          });
+        module.addDeserializer(
+                String.class,
+                new StdDeserializer<String>(String.class) {
+                    @Override
+                    public String deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+                        String result = StringDeserializer.instance.deserialize(parser, context);
+                        if (result == null || result.isEmpty() || result.isBlank()) {
+                            return null;
+                        }
+                        return result;
+                    }
+                });
 
-      return module;
-   }
+        return module;
+    }
 }

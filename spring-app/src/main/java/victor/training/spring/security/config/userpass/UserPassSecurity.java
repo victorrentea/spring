@@ -21,40 +21,40 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity // (debug = true) // see the filter chain in use
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class UserPassSecurity {
-  @PostConstruct
-  public void hi() {
-    log.warn("Using");
-  }
+    @PostConstruct
+    public void hi() {
+        log.warn("Using");
+    }
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()); // OK since I never take <form> POSTs
 
-    // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
+        // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
-    http.authorizeHttpRequests(authz -> authz
-        .anyRequest().authenticated()
-    );
+        http.authorizeHttpRequests(authz -> authz
+                .anyRequest().authenticated()
+        );
 
-    http.formLogin(Customizer.withDefaults()) // display a login page
-        .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
+        http.formLogin(Customizer.withDefaults()) // display a login page
+                .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
-    http.httpBasic(Customizer.withDefaults()) // also accept Authorization: Basic ... request header
-        .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
+        http.httpBasic(Customizer.withDefaults()) // also accept Authorization: Basic ... request header
+                .userDetailsService(userDetailsService()); // distinguish vs Actuator user/pass
 
-    return http.build();
-  }
+        return http.build();
+    }
 
-  // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
-  @Bean
-  public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user").password("user").roles("USER").build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-        .username("admin").password("admin").roles("ADMIN").build();
-    UserDetails power = User.withDefaultPasswordEncoder()
-        .username("power").password("power").roles("POWER").build();
-    return new InMemoryUserDetailsManager(user, admin, power);
-  }
+    // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user").password("user").roles("USER").build();
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("admin").password("admin").roles("ADMIN").build();
+        UserDetails power = User.withDefaultPasswordEncoder()
+                .username("power").password("power").roles("POWER").build();
+        return new InMemoryUserDetailsManager(user, admin, power);
+    }
 
 }

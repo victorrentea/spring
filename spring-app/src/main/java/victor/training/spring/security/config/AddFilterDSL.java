@@ -11,16 +11,17 @@ public class AddFilterDSL extends AbstractHttpConfigurer<AddFilterDSL, HttpSecur
     private final Function<AuthenticationManager, Filter> filterFactory;
 
     AddFilterDSL(Function<AuthenticationManager, Filter> filterFactory) {
-      this.filterFactory = filterFactory;
+        this.filterFactory = filterFactory;
     }
 
     @Override
     public void configure(HttpSecurity http) {
-      AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-      var filter = filterFactory.apply(authenticationManager);
-      http.addFilter(filter);
+        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+        var filter = filterFactory.apply(authenticationManager);
+        http.addFilter(filter);
     }
+
     public static AddFilterDSL of(Function<AuthenticationManager, Filter> filterFactory) {
-      return new AddFilterDSL(filterFactory);
+        return new AddFilterDSL(filterFactory);
     }
-  }
+}

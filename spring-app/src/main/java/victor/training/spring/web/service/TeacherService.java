@@ -1,11 +1,9 @@
 package victor.training.spring.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.controller.dto.TeacherDto;
-import victor.training.spring.web.entity.ContractType;
 import victor.training.spring.web.entity.Teacher;
 import victor.training.spring.web.repo.TeacherRepo;
 

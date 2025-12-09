@@ -1,21 +1,20 @@
 package victor.training.spring.web.controller.dto;
 
+import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.Teacher;
 
-import jakarta.validation.constraints.NotNull;
-
 public class TeacherDto {
-	public Long id;
-	@NotNull
-	public String name;
-	
-	public TeacherDto() {
-	}
+    public Long id;
+    @NotNull
+    public String name;
 
-	public TeacherDto(Teacher teacher) {
-		this.id = teacher.getId();
-		this.name = teacher.getName();
-	}
-	
-	
+    public TeacherDto() {
+    }
+
+    public TeacherDto(Teacher teacher) {
+        this.id = teacher.getId();
+        this.name = teacher.getName();
+    }
+
+
 }

@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAspect {
-  // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
+    // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
 
-  // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
-  //  - use @Around("@annotation(Logged)") to intercept any method annotated with @Logged
-  //     The @Logged annotation is defined in this package
-  //  - the function should take a ProceedingJoinPoint parameter
-  //  - call ProceedingJoinPoint#proceed() and return its result
+    // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
+    //  - use @Around("@annotation(Logged)") to intercept any method annotated with @Logged
+    //     The @Logged annotation is defined in this package
+    //  - the function should take a ProceedingJoinPoint parameter
+    //  - call ProceedingJoinPoint#proceed() and return its result
 
-  // TODO 2 print method name and arguments, extracted from the ProceedingJoinPoint
+    // TODO 2 print method name and arguments, extracted from the ProceedingJoinPoint
 
-  // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
+    // TODO 3 print the value returned by ProceedingJoinPoint#proceed()
 
-  // TODO 4 ⭐️ also intercept all methods in classes annotated with @Logged
-  //   - use @Around("@within(Logged) || @annotation(Logged)")
-  public void intercept() {
-    log.info("INTERCEPTED");
-  }
+    // TODO 4 ⭐️ also intercept all methods in classes annotated with @Logged
+    //   - use @Around("@within(Logged) || @annotation(Logged)")
+    public void intercept() {
+        log.info("INTERCEPTED");
+    }
 }
 
 // TODO 5: also print the time the method took to execute

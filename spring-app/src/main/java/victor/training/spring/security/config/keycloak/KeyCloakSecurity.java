@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static victor.training.spring.security.config.keycloak.TokenRolesToLocalRoles.RoleLevel.CLIENT;
 
 @Profile("keycloak")
@@ -47,10 +46,10 @@ class KeyCloakSecurity {
     @Bean
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz -> authz
-            .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-            .anyRequest().authenticated());
-        http.oauth2Login(c->c.userInfoEndpoint(u->u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
-        http.logout(l-> l.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));
+                .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                .anyRequest().authenticated());
+        http.oauth2Login(c -> c.userInfoEndpoint(u -> u.userAuthoritiesMapper(extractAuthoritiesFromToken())));
+        http.logout(l -> l.addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/"));
         return http.build();
     }
 
@@ -58,15 +57,15 @@ class KeyCloakSecurity {
     @Bean
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz -> authz
-            .requestMatchers(new AntPathRequestMatcher("/**")).authenticated());
+                .requestMatchers(new AntPathRequestMatcher("/**")).authenticated());
         http.oauth2ResourceServer((oauth2) -> oauth2
-            .jwt(Customizer.withDefaults()));
+                .jwt(Customizer.withDefaults()));
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .build();
+                .build();
     }
 }

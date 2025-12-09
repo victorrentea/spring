@@ -10,10 +10,11 @@ import victor.training.spring.web.repo.MessageRepo;
 @Transactional
 @RequiredArgsConstructor
 public class TransactedService {
-   private final ExpensiveApiClient apiClient;
-   private final MessageRepo messageRepo;
-   public void flow() {
-      String data = apiClient.blockingCall();
-      messageRepo.save(new Message(data));
-   }
+    private final ExpensiveApiClient apiClient;
+    private final MessageRepo messageRepo;
+
+    public void flow() {
+        String data = apiClient.blockingCall();
+        messageRepo.save(new Message(data));
+    }
 }

@@ -13,18 +13,19 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Service
 public class ExpensiveApiClient {
-   @Async("customExecutor")
-   @Timed("external call")
-   public CompletableFuture<String> asyncCall() {
-      log.info("Calling async...");
-      Sleep.millis(1000);
-      log.info("DONE");
-      return CompletableFuture.completedFuture("data");
-   }
-   public String blockingCall() {
-      log.info("Calling sync...");
-      Sleep.millis(1000);
-      log.info("DONE");
-      return "data " + System.currentTimeMillis();
-   }
+    @Async("customExecutor")
+    @Timed("external call")
+    public CompletableFuture<String> asyncCall() {
+        log.info("Calling async...");
+        Sleep.millis(1000);
+        log.info("DONE");
+        return CompletableFuture.completedFuture("data");
+    }
+
+    public String blockingCall() {
+        log.info("Calling sync...");
+        Sleep.millis(1000);
+        log.info("DONE");
+        return "data " + System.currentTimeMillis();
+    }
 }

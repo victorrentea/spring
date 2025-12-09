@@ -25,18 +25,18 @@ import static java.util.stream.Collectors.joining;
 @ConditionalOnProperty(name = "print.request.headers", havingValue = "true")
 @Order(SecurityProperties.DEFAULT_FILTER_ORDER - 1000) // run before Spring's Security Filter Chain
 public class HeaderPrinterFilter extends HttpFilter {
-  @Override
-  protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-    log.info("\nRequest Headers for " + request.getRequestURI() + "\n" +
-             getHeadersAsMap(list(request.getHeaderNames()), name -> list(request.getHeaders(name))));
-    chain.doFilter(request, response);
-    //log.info("\nResponse Headers for "  + request.getRequestURI()+"\n" + getHeadersAsMap(response.getHeaderNames(), response::getHeaders));
-  }
+    @Override
+    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info("\nRequest Headers for " + request.getRequestURI() + "\n" +
+                getHeadersAsMap(list(request.getHeaderNames()), name -> list(request.getHeaders(name))));
+        chain.doFilter(request, response);
+        //log.info("\nResponse Headers for "  + request.getRequestURI()+"\n" + getHeadersAsMap(response.getHeaderNames(), response::getHeaders));
+    }
 
-  private static String getHeadersAsMap(Collection<String> names, Function<String, Collection<String>> valueByName) {
-    return names.stream()
-        .sorted()
-        .map(name -> "\t" + name + ": " + join("; ", valueByName.apply(name)))
-        .collect(joining("\n"));
-  }
+    private static String getHeadersAsMap(Collection<String> names, Function<String, Collection<String>> valueByName) {
+        return names.stream()
+                .sorted()
+                .map(name -> "\t" + name + ": " + join("; ", valueByName.apply(name)))
+                .collect(joining("\n"));
+    }
 }

@@ -3,7 +3,7 @@ package victor.training.spring.varie.advancedvalidation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PostalCodeValidator implements ConstraintValidator<ValidPostalCode,String> {
+public class PostalCodeValidator implements ConstraintValidator<ValidPostalCode, String> {
     @Override
     public void initialize(ValidPostalCode constraintAnnotation) {
     }

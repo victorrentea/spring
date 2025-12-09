@@ -7,5 +7,5 @@ import victor.training.spring.web.entity.Teacher;
 import java.util.List;
 
 public interface TeacherRepo extends JpaRepository<Teacher, Long> {
-   List<Teacher> findByContractType(ContractType contractType);
+    List<Teacher> findByContractType(ContractType contractType);
 }

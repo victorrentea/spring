@@ -8,7 +8,9 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import victor.training.spring.web.entity.UserRole;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toUnmodifiableSet;
@@ -16,9 +18,13 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 @Slf4j
 public class TokenRolesToLocalRoles implements GrantedAuthoritiesMapper {
     public enum RoleLevel {
-        /** Global per ecosystem, in OIDCToken.realm_access.roles */
+        /**
+         * Global per ecosystem, in OIDCToken.realm_access.roles
+         */
         REALM,
-        /** Specific to my system, in OIDCToken.resource_access['spring-app'].roles */
+        /**
+         * Specific to my system, in OIDCToken.resource_access['spring-app'].roles
+         */
         CLIENT
     }
 
@@ -28,7 +34,9 @@ public class TokenRolesToLocalRoles implements GrantedAuthoritiesMapper {
         this.roleLevel = roleLevel;
         this.expandRoles = expandRoles;
     }
+
     private final RoleLevel roleLevel;
+
     @Override
     public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
 
@@ -55,8 +63,8 @@ public class TokenRolesToLocalRoles implements GrantedAuthoritiesMapper {
         }
         log.debug("Token roles: {} => Local roles: {} ", tokenRoles, localRoles);
         return localRoles.stream()
-            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-            .collect(toUnmodifiableSet());
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(toUnmodifiableSet());
     }
 
     private List<String> getRealmRoles(OidcIdToken idToken) {

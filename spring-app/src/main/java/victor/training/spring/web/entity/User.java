@@ -1,10 +1,12 @@
 package victor.training.spring.web.entity;
 
 import jakarta.persistence.*;
-import java.util.*;
 
-import static java.util.Collections.*;
-import static victor.training.spring.web.entity.ProgrammingLanguage.JAVA;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static java.util.Collections.unmodifiableSet;
 
 @Entity
 @Table(name = "USERS")
@@ -20,11 +22,13 @@ public class User {
     private ProgrammingLanguage adminForLanguage;
     @ElementCollection
     private Set<Long> managedTeacherIds = new HashSet<>();
+
     public User() {
     }
+
     public User(String fullName, String username, UserRole role, List<Long> managedTeacherIds, ProgrammingLanguage adminForLanguage) {
         this.username = username;
-        this.name=fullName;
+        this.name = fullName;
         this.role = role;
         this.managedTeacherIds = new HashSet<>(managedTeacherIds);
         this.adminForLanguage = adminForLanguage;

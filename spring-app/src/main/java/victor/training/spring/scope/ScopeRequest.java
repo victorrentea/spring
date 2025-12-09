@@ -16,15 +16,15 @@ import victor.training.spring.varie.Sleep;
 @RequiredArgsConstructor
 @RestController
 public class ScopeRequest {
-  private final RequestMetadata requestScoped;
-  private final AnotherBean anotherBean;
+    private final RequestMetadata requestScoped;
+    private final AnotherBean anotherBean;
 
-  @GetMapping("api/scope/request")
-  public String requestScope(@RequestParam(defaultValue = "ro") String lang) {
-    log.info("Got metadata on request: " + lang);
-    requestScoped.setMetadata(lang);
-    return anotherBean.method();
-  }
+    @GetMapping("api/scope/request")
+    public String requestScope(@RequestParam(defaultValue = "ro") String lang) {
+        log.info("Got metadata on request: " + lang);
+        requestScoped.setMetadata(lang);
+        return anotherBean.method();
+    }
 }
 
 @Data
@@ -32,19 +32,19 @@ public class ScopeRequest {
 // experiment system behavior without the next line:
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class RequestMetadata {
-  private String metadata;
+    private String metadata;
 }
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class AnotherBean {
-  private final RequestMetadata requestScoped;
+    private final RequestMetadata requestScoped;
 
-  public String method() {
-    Sleep.millis(3000); // fake some delay to allow the race bug
-    String metadata = requestScoped.getMetadata();
-    log.info("Got metadata deep in code: " + metadata);
-    return "Obtained magically: " + metadata;
-  }
+    public String method() {
+        Sleep.millis(3000); // fake some delay to allow the race bug
+        String metadata = requestScoped.getMetadata();
+        log.info("Got metadata deep in code: " + metadata);
+        return "Obtained magically: " + metadata;
+    }
 }

@@ -9,38 +9,38 @@ import java.text.ParseException;
 import java.util.List;
 
 public class TrainingControllerStripped {
-	@Autowired
-	private TrainingService trainingService;
+    @Autowired
+    private TrainingService trainingService;
 
-	public List<TrainingDto> getAllTrainings() {
-		return trainingService.getAllTrainings();
-	}
+    public List<TrainingDto> getAllTrainings() {
+        return trainingService.getAllTrainings();
+    }
 
-	public TrainingDto getTrainingById(Long id) {
-		return trainingService.getTrainingById(id);
-	}
+    public TrainingDto getTrainingById(Long id) {
+        return trainingService.getTrainingById(id);
+    }
 
-	// TODO @Valid
-	public void createTraining(TrainingDto dto) throws ParseException {
-		trainingService.createTraining(dto);
-	}
+    // TODO @Valid
+    public void createTraining(TrainingDto dto) throws ParseException {
+        trainingService.createTraining(dto);
+    }
 
-	public void updateTraining(Long trainingId, TrainingDto dto) throws ParseException {
-		dto.id = trainingId;
-		trainingService.updateTraining(dto);
-	}
-	// TODO Allow only for role 'ADMIN'... or POWER or SUPER
-	// TODO Allow for authority 'training.delete'
-	// TODO The current user must manage the the teacher of that training
-	//  	User.getManagedTeacherIds.contains(training.teacher.id)
-	// TODO @accessController.canDeleteTraining(#id)
-	// TODO PermissionEvaluator
+    public void updateTraining(Long trainingId, TrainingDto dto) throws ParseException {
+        dto.id = trainingId;
+        trainingService.updateTraining(dto);
+    }
+    // TODO Allow only for role 'ADMIN'... or POWER or SUPER
+    // TODO Allow for authority 'training.delete'
+    // TODO The current user must manage the the teacher of that training
+    //  	User.getManagedTeacherIds.contains(training.teacher.id)
+    // TODO @accessController.canDeleteTraining(#id)
+    // TODO PermissionEvaluator
 
-	public void deleteTrainingById(Long id) {
-		trainingService.deleteById(id);
-	}
+    public void deleteTrainingById(Long id) {
+        trainingService.deleteById(id);
+    }
 
-	public List<TrainingDto> search(TrainingSearchCriteria criteria) {
-		return trainingService.search(criteria);
-	}
+    public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+        return trainingService.search(criteria);
+    }
 }

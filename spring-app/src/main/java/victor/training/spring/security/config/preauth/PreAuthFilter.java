@@ -1,14 +1,11 @@
 package victor.training.spring.security.config.preauth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
-import jakarta.servlet.http.HttpServletRequest;
-import victor.training.spring.web.entity.UserRole;
-
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -17,6 +14,7 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
     public PreAuthFilter(AuthenticationManager authenticationManager) {
         setAuthenticationManager(requireNonNull(authenticationManager));
     }
+
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
         String username = httpRequest.getHeader("x-user");
