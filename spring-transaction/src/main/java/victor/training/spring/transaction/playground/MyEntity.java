@@ -2,6 +2,7 @@ package victor.training.spring.transaction.playground;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,18 +13,21 @@ import java.util.List;
 @Getter
 
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "NAME", name = "UQ_NAME"))
+@Table
 public class MyEntity {
   @Id
   @GeneratedValue
   private Long id;
   @NotNull
+  @Size(min=3) // java-only
+  @Column(unique = true)
   private String name;
   @ElementCollection
   private List<String> tags = new ArrayList<>();
 
   protected MyEntity() { // for hibernate only
   }
+
 
   public MyEntity(String name) {
     this.name = name;
