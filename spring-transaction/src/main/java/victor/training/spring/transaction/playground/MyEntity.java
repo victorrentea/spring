@@ -16,8 +16,11 @@ import java.util.List;
 @Table
 public class MyEntity {
   @Id
-  @GeneratedValue
+  @GeneratedValue // din seq
   private Long id;
+//  @Id
+//  @CustomGenerator... randomUUID
+//  private UUID id;
   @NotNull
   @Size(min=3) // java-only
   @Column(unique = true)

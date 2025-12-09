@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -36,7 +37,8 @@ public class PlayTransactions {
         // ❌ debug greu
         // ✅ mai putine round-tripuri la DB: (A) JDBC batch insert; (B) ca poate nu-i nevoie ca arunca runtime pana la final
     }
-    private void altaMetoda() { // tranzactia pornita in caller method se continua aici
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    void altaMetoda() { // tranzactia pornita in caller method se continua aici
         MyEntity e = new MyEntity("JPA");
         repo.save(e); // ACUM JPA face e.setId(select nextval din seq)
         log.info("OAre are id deja? " + e.getId());
