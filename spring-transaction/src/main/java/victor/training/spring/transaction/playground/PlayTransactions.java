@@ -22,12 +22,13 @@ public class PlayTransactions {
   private final MyEntityRepo repo; // = Spring Data JPA, since 2011
   private final OtherClass other;
 
-  @Transactional
+  @Transactional//#1(rollbackFor = Exception.class)❌
   public void play() throws IOException {
       // p6spy iti arata ? concret, conex, timpul query-ului, commit/rollback per conexiune
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)","SQL");
     if (true) throw new IOException("Boom"); // cauzeaza COMMIT in DB, spre stupoarea tuturor
       // spring framework a furat developeri/proj de pe EJBullshit💥💥💥 J2EE in 2005< au copiat comportamentul @TransactionAttribute (EJB)
+      // :morala sa nu va prind cu throws <checked> din metode @Transactional ✅✅✅
     repo.save(new MyEntity("JPA"));
   }
 }
