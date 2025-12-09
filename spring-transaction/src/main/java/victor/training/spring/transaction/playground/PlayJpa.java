@@ -17,19 +17,27 @@ public class PlayJpa {
         log.info("--- End of method ---");
     }
 
-    @Transactional // 😱auto-update without repo.save()
+    @Transactional // 😱 auto-update without repo.save()
     public void autoSave() {
-        MyEntity e = repo.findById(1L).orElseThrow();
+        MyEntity e = repo.findById(1L).orElseThrow(); // 1 SELECT
         e.setName("Different");
+        altaMetoda();
         // repo.save(e); //traditional ≈jdbcTemplate("UPDATE...
     }
 
+    private void altaMetoda() {
+        System.out.println(repo.findById(1L).orElseThrow()); // 0 SELECT (1st level cache)
+            // inseamna ca JPA a tinut undeva intr-un cache Map<pk,entity> in mem entitatea resp :22
+        System.out.println(repo.findById(1L).orElseThrow());
+        System.out.println(repo.findById(1L).orElseThrow());
 
-
-
-
-
-
+        var e1 = repo.findById(1L).orElseThrow();
+        e1.setName("Changed Again");
+        var e2 = repo.findById(1L).orElseThrow();
+        System.out.println("e1 == e2 ? " + (e1 == e2));
+        MyEntity e3 = repo.findByName("Changed Again").get(0);
+        System.out.println("e1 == e3 ? " + (e1 == e3));
+    }
 
 
     //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =

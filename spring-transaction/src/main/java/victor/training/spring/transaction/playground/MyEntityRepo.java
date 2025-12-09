@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
@@ -13,4 +15,5 @@ public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
   // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<MyEntity> findByIdLocking(long id);
 
+    List<MyEntity> findByName(String name);
 }

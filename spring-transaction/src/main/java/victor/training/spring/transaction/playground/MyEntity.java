@@ -14,6 +14,7 @@ import java.util.List;
 
 @Setter
 @Table
+//@Cacheable //2nd level cache cu ehcache provider ca EhCache (disabled by default in Spring Boot), ne recomandat
 public class MyEntity {
   @Id
   @GeneratedValue // din seq
