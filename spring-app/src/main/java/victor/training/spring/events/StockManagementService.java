@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class StockManagementService {
-    private int stock =0; // silly implem :D
+    private int stock =7; // silly implem :D
 
     @EventListener // N-O FACE⚠️
 //    @Async 😱 n-a apucat publisherul sa dea COMMIT ca listenerul da SELECT (de craciun crapa)
