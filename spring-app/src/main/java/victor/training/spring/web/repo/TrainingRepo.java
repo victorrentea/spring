@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import victor.training.spring.web.entity.Training;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface TrainingRepo extends JpaRepository<Training, Long>, JpaSpecificationExecutor<Training> {
     Optional<Training> findById(Long aLong);

@@ -37,6 +37,7 @@ public class ActualPropertiesEndpoint {
 
     @PostConstruct
     public void printResolvedProps() throws JsonProcessingException {
+
       TreeMap<String, String> sortedProps = new TreeMap<>((Map<String, String>) (Map) allProps);
       String allPropsJson = new ObjectMapper().writeValueAsString(sortedProps);
       log.info("All properties: " + allPropsJson);
