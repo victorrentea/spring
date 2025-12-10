@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
   @Query("FROM MyEntity WHERE id = ?1")
@@ -23,4 +24,25 @@ public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
           LEFT JOIN FETCH e.tags
           """)
   List<MyEntity> findAllCuCopchii();
+
+  @Query("SELECT e " +
+          "FROM MyEntity e  " /*+
+          "LEFT JOIN FETCH e.children c " +
+          "LEFT JOIN FETCH c.pisici"*/)
+  Set<MyEntityProj> findAllProj();
+  interface MyEntityProj { // SPring Data Projection
+    Long getId();
+    String getName();
+    String getX();
+    Set<ChildProj> getChildren();
+    interface ChildProj {
+      Long getId();
+      String getName();
+      Set<PisicaProj> getPisici();
+      interface PisicaProj {
+        Long getId();
+        String getNume();
+      }
+    }
+  }
 }

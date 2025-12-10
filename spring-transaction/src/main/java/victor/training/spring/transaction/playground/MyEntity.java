@@ -26,6 +26,7 @@ public class MyEntity {
   @Size(min=3) // java-only
   @Column(unique = true)
   private String name;
+  private String x;
   @ElementCollection
 //          (fetch = FetchType.EAGER)// ❌❌⚠️⚠️⚠️ NICIODATA CA TE VEDE VLAD MIHALCEA
   private List<String> tags = new ArrayList<>();
@@ -46,6 +47,7 @@ public class MyEntity {
     return this;
   }
   public MyEntity addChild(Child child) {
+    child.setParent(this);
     children.add(child);
     return this;
   }
