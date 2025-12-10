@@ -12,16 +12,18 @@ public class NPlusOne {
   private final MyEntityRepo repo;
 
   public void insert() {
+    repo.save(new MyEntity().setName("burlac cu 3 pisici - Trofim"));
     for (int i = 0; i < 10; i++) {
       repo.save(new MyEntity()
               .addTag("tag1")
+              .addTag("tag2")
               .setName("Entity " + i));
     }
   }
   @Transactional(readOnly = true)
   void export() {
-    for (MyEntity entity : repo.findAll()) { // 1
-      log.info("Entity in CSV: " + entity.getName() + ";" + entity.getTags()); //N
+    for (MyEntity entity : repo.findAllCuCopchii()) {
+      log.info("Entity in CSV: " + entity.getName() + ";" + entity.getTags());
     }
   }
 }
