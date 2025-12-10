@@ -27,8 +27,11 @@ public class MyEntity {
   @Column(unique = true)
   private String name;
   @ElementCollection
-          (fetch = FetchType.EAGER)// ❌❌⚠️⚠️⚠️ NICIODATA CA TE VEDE VLAD MIHALCEA
+//          (fetch = FetchType.EAGER)// ❌❌⚠️⚠️⚠️ NICIODATA CA TE VEDE VLAD MIHALCEA
   private List<String> tags = new ArrayList<>();
+
+  @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Child> children = new ArrayList<>();
 
   protected MyEntity() { // for hibernate only
   }
@@ -40,6 +43,10 @@ public class MyEntity {
 
   public MyEntity addTag(String tag) {
     tags.add(tag);
+    return this;
+  }
+  public MyEntity addChild(Child child) {
+    children.add(child);
     return this;
   }
 
