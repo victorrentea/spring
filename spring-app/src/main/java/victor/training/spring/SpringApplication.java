@@ -63,10 +63,10 @@ public class SpringApplication {
         .wrap(runnable);
   }
 
-  @Bean // enable propagation of SecurityContextHolder over @Async
-  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
-    return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
-  }
+//  @Bean // enable propagation of SecurityContextHolder over @Async
+//  public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(ThreadPoolTaskExecutor poolBar) {
+//    return new DelegatingSecurityContextAsyncTaskExecutor(poolBar);
+//  }
 
   @EventListener(ApplicationStartedEvent.class)
   @Order
