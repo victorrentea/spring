@@ -15,8 +15,9 @@ import static java.util.concurrent.CompletableFuture.runAsync;
 @RequiredArgsConstructor
 public class TransactionsApp {
     private final PlayDualWrite playDualWrite;
+  private final NPlusOne nPlusOne;
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
     SpringApplication.run(TransactionsApp.class, args);
   }
 
@@ -40,7 +41,10 @@ public class TransactionsApp {
 //      log.info("============= JPA:lazyLoading ==============");
 //      jpa.lazyLoading();
 
-        playDualWrite.saveAndSend();
+//        playDualWrite.saveAndSend();
+
+      nPlusOne.insert();
+      nPlusOne.export();
 
 //      log.info("============= LOCKS ==============");
 //      allOf(runAsync(locks::thread), runAsync(locks::thread)).join();
