@@ -22,7 +22,7 @@ public class NPlusOne {
   }
   @Transactional(readOnly = true)
   void export() {
-    for (MyEntity entity : repo.findAllCuCopchii()) {
+    for (MyEntity entity : repo.findAll()) { // N+1 aici toate = FFFFF PROST 😱😱😱😱
       log.info("Entity in CSV: " + entity.getName() + ";" + entity.getTags());
     }
   }

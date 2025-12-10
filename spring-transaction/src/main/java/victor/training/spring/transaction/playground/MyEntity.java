@@ -27,6 +27,7 @@ public class MyEntity {
   @Column(unique = true)
   private String name;
   @ElementCollection
+          (fetch = FetchType.EAGER)// ❌❌⚠️⚠️⚠️ NICIODATA CA TE VEDE VLAD MIHALCEA
   private List<String> tags = new ArrayList<>();
 
   protected MyEntity() { // for hibernate only
