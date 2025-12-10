@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -66,7 +68,15 @@ public class TrainingController {
 	//  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
 	//  -> use SpEL: @accessController.canDeleteTraining(#id)
 	//  -> hasPermission + PermissionEvaluator [GEEK]
-	@DeleteMapping("{trainingId}")
+
+//  @PreAuthorize("hasRole('ADMIN')") // 😊
+//  @PreAuthorize("hasRole('ADMIN') && hasRole('ADMIN')") // = SI 😱
+//  @PreAuthorize("hasAnyRole('ADMIN_GLOBAL','ADMIN_REGIONAL')") // = de evitat❌ SAU; mai frecvent . evita!❌
+  @PreAuthorize("hasAnyRole('CAN_DELETE_TRAINING')") // = ❤️ role fine-grained/ per functie; si in FE la fel in ng:if
+  // role fine-grained pot fi determinate din rolurile mari in APP, sau aduse direct din entitlements
+
+  @Secured("ROLE_ADMIN")
+  @DeleteMapping("{trainingId}")
 	public void delete(@PathVariable Long trainingId) {
 		trainingService.deleteById(trainingId);
 	}

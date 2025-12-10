@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 @Profile("userpass")
 @Configuration
-@EnableWebSecurity // (debug = true) // see the filter chain in use
+@EnableWebSecurity(debug = true) // see the filter chain in use
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class UserPassSecurity {
   @PostConstruct

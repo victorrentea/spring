@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,10 @@ public class UserController {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = selfInject.getUsername().join();
+    Object wtf = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    // in functie de cum ai autentificat requestul, poti avea diverse instante aici
+//    User daca ai venit din Basic/USername passowrd
+    // KeyCloakPrincipal daca requestul a venit cu JWT in header
     dto.authorities = List.of(); // TODO
     return dto;
   }

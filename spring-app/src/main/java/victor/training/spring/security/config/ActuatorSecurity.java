@@ -42,11 +42,12 @@ public class ActuatorSecurity {
   @Order(1) // less than the MAX_INT default, thus has priority over the rest
   @Bean
   public SecurityFilterChain actuatorFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable());
+    http.csrf(csrf -> csrf.disable()); // => +1 filtru in lant
+//    http.cors()
 
     // this security filter chain only applies to /actuator/**
-    http.securityMatcher(EndpointRequest.toAnyEndpoint());
-//    http.securityMatcher("/actuator/**"); // equivalent with above
+//    http.securityMatcher(EndpointRequest.toAnyEndpoint());
+    http.securityMatcher("/actuator/**"); // equivalent with above
 
     http.authorizeHttpRequests(authz -> authz
           // http://localhost:8080/actuator/health is unsecured
@@ -54,8 +55,12 @@ public class ActuatorSecurity {
 
           // the rest of actuator:
 //          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD!
-          .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
+          .requestMatchers(EndpointRequest.toAnyEndpoint()).authenticated()//hasRole("ACTUATOR")
     );
+
+    // Authorization: Basic <base64encodeduserpass>
+    // X-Api-Key: apikey
+    http.addFilter(new ApiKeyFilter("apikey"));
 
     http.httpBasic(Customizer.withDefaults()).userDetailsService(actuatorUserDetailsService());
 

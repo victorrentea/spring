@@ -27,7 +27,8 @@ public class TokenUtils {
   public static void printTheTokens() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if (!(principal instanceof DefaultOidcUser oidcUser)) {
-      return;
+//      return; // e curs
+      throw new IllegalArgumentException("Tu cum ai ajuns pana aic?!?!❌❌❌❌❌💥💥💥💥💥");
     }
 //    JwtAuthenticationToken t= oidcUser;
 
@@ -35,6 +36,7 @@ public class TokenUtils {
     Instant expInstant = oidcUser.getExpiresAt();
     LocalDateTime expirationTime = expInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
     String deltaLeft = LocalTime.MIN.plusSeconds(LocalDateTime.now().until(expirationTime, ChronoUnit.SECONDS)).toString();
+    oidcUser.getClaims().get("email");
     log.info("User: " + oidcUser);
     log.info("\n-- Access Token 👑 (expires in {} at {}): {}\n{}",
         deltaLeft,
