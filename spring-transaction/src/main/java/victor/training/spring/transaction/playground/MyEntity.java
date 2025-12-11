@@ -18,6 +18,7 @@ public class MyEntity {
   @GeneratedValue
   private Long id;
   @NotNull
+  @Column
   private String name;
   @ElementCollection
   private List<String> tags = new ArrayList<>();

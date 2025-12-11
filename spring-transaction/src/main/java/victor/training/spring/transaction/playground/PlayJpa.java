@@ -3,6 +3,7 @@ package victor.training.spring.transaction.playground;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -13,7 +14,7 @@ public class PlayJpa {
 
   @Transactional
   public void writeBehind() {
-    repo.save(new MyEntity("ONE"));
+    repo.save(new MyEntity("ONE").addTag("tag1"));
     log.info("--- End of method ---");
   }
 
@@ -23,12 +24,16 @@ public class PlayJpa {
     // TODO send update in DB
   }
 
-  //@GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
-  public void lazyLoading() { // b) !REST-called =
+  public void lazyLoading() {
     MyEntity e = repo.findById(1L).orElseThrow();
-    log.info("Message: {}", e.getTags());
+    log.info("Message: {}", e.getName());
+    log.info("Children: {}", e.getTags());
   }
 
+  @GetMapping("lazy")
+  public void restApi() {
+    lazyLoading();
+  }
 }
 // TODO
 //  - write behind = insert/update/delete sent to DB (=flush) after method end, before tx COMMIT

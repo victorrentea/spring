@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
   @Query("FROM MyEntity WHERE id = ?1")
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
-    // db row lock via "SELECT .. FOR UPDATE"
-    // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
-  Optional<MyEntity> findByIdLocking(long id);
+  @Lock(LockModeType.PESSIMISTIC_WRITE) // row lock via SELECT..  FOR UPDATE
+  Optional<MyEntity> lock(long id);
 
 }
