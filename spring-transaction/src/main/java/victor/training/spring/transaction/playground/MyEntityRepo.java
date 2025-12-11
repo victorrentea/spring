@@ -3,8 +3,12 @@ package victor.training.spring.transaction.playground;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import jakarta.persistence.LockModeType;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -16,7 +20,12 @@ public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
     // https://stackoverflow.com/questions/33062635/difference-between-lockmodetype-jpa
   Optional<MyEntity> findByIdLocking(long id);
 
-  List<MyEntity> findByName(String name);
+    List<MyEntity> findByName(String name);
+
+  @Modifying
+  @Query("DELETE FROM MyEntity where id in (:ids)") // 1GB date
+  void deleteMyEntityByIdIn(Collection<Long> ids);
+
 
   @Query("""
           SELECT e 
@@ -45,4 +54,5 @@ public interface MyEntityRepo extends JpaRepository<MyEntity, Long> {
       }
     }
   }
+
 }

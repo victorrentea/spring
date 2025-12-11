@@ -10,82 +10,90 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class PlayJpa /*extends BaseService  @Transactional{}*/ {
-    private final MyEntityRepo repo;
-    private final PlatformTransactionManager transactionManager;
+  private final MyEntityRepo repo;
+  private final PlatformTransactionManager transactionManager;
 
-    public void writeBehind() {
-        anafApiCallReportFraud();
-        try {
+  public void writeBehind() {
+    anafApiCallReportFraud();
+    try {
 //            Runnable r = () -> atomicPutin();
 //            r.run();
-            putinTransactat();
-        } catch (Exception e) {
+      putinTransactat();
+    } catch (Exception e) {
 //            anafUndoReportFraud();
-        }
-        log.info("--- End of method ---");
     }
+    log.info("--- End of method ---");
+  }
 
-    private void putinTransactat() {
-        TransactionTemplate tx = new TransactionTemplate(transactionManager);
-        tx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        tx.executeWithoutResult(s -> atomicPutin());
-    }
-    @Transactional
+  private void putinTransactat() {
+    TransactionTemplate tx = new TransactionTemplate(transactionManager);
+    tx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    tx.executeWithoutResult(s -> atomicPutin());
+  }
+
+  @Transactional
     // nu merge apelata local
-    void atomicPutin() {
-        repo.save(new MyEntity("ONE").addTag("tag1"));
-        repo.save(new MyEntity("TWO").addTag("tag1"));
-    }
+  void atomicPutin() {
+    repo.save(new MyEntity("ONE").addTag("tag1"));
+    repo.save(new MyEntity("TWO").addTag("tag1"));
+  }
 
-    @Transactional // 😱 auto-update without repo.save()
-    public void autoSave() {
-        MyEntity e = repo.findById(1L).orElseThrow(); // 1 SELECT
-        e.setName("Different");
-        altaMetoda();
-        // repo.save(e); //traditional ≈jdbcTemplate("UPDATE...
-    }
+  @Transactional // 😱 auto-update without repo.save()
+  public void autoSave() {
+    MyEntity e = repo.findById(1L).orElseThrow(); // 1 SELECT
+    e.setName("Different");
+    altaMetoda();
+    // repo.save(e); //traditional ≈jdbcTemplate("UPDATE...
+  }
 
-    private void altaMetoda() {
-        System.out.println(repo.findById(1L).orElseThrow()); // 0 SELECT (1st level cache)
-        // inseamna ca JPA a tinut undeva intr-un cache Map<pk,entity> in mem entitatea resp :22
-        System.out.println(repo.findById(1L).orElseThrow());
-        System.out.println(repo.findById(1L).orElseThrow());
+  private void altaMetoda() {
+    System.out.println(repo.findById(1L).orElseThrow()); // 0 SELECT (1st level cache)
+    // inseamna ca JPA a tinut undeva intr-un cache Map<pk,entity> in mem entitatea resp :22
+    System.out.println(repo.findById(1L).orElseThrow());
+    System.out.println(repo.findById(1L).orElseThrow());
 
-        var e1 = repo.findById(1L).orElseThrow();
-        e1.setName("Changed Again");
-        var e2 = repo.findById(1L).orElseThrow();
-        System.out.println("e1 == e2 ? " + (e1 == e2));
-        MyEntity e3 = repo.findByName("Changed Again").get(0);
-        System.out.println("e1 == e3 ? " + (e1 == e3));
-    }
+    var e1 = repo.findById(1L).orElseThrow();
+    e1.setName("Changed Again");
+    var e2 = repo.findById(1L).orElseThrow();
+    System.out.println("e1 == e2 ? " + (e1 == e2));
+    MyEntity e3 = repo.findByName("Changed Again").get(0);
+    System.out.println("e1 == e3 ? " + (e1 == e3));
+  }
+
+  @Transactional
+  public void deleteCuDSL() {
+    repo.deleteMyEntityByIdIn(List.of(1L));
+  }
 
 
-    // 10 caluri paralele pe api-ul asta = nici un alt endpoint lovi baza
-    // /actuator/health = mai e app in viata?
-    // majoritatea app includ accesul in DB in health-check
-    //  daca raspunzi cu 500/timeout x 3 ori => k8s/GKE iti da kill+restart
-    // can intri cu HTTP call in metoda, Springul iti tine deschisa tranzactia si fara @Transactional
-    // pt a permite lazy-loading facut de juniori = open-session-in-view=true (default)
+  // 10 caluri paralele pe api-ul asta = nici un alt endpoint lovi baza
+  // /actuator/health = mai e app in viata?
+  // majoritatea app includ accesul in DB in health-check
+  //  daca raspunzi cu 500/timeout x 3 ori => k8s/GKE iti da kill+restart
+  // can intri cu HTTP call in metoda, Springul iti tine deschisa tranzactia si fara @Transactional
+  // pt a permite lazy-loading facut de juniori = open-session-in-view=true (default)
 
-//    @Transactional
+  //    @Transactional
 //            (timeout = 10) daca > 10 secunde => rollback + exceptie
 //            (readOnly = true) 🤔o pui cand stii ca doar citesti (SELECT)
-    @GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
-    public void lazyLoading() { // b) !REST-called =
-        log.debug("Loguri puse in prod ca doar acolo bubuie APARE DOAR pe la 4 PM in zi de luna plina");
-        MyEntity e = repo.findById(1L).orElseThrow();
-        log.info("Message: {}", e.getTags()); // unde-i selectul in log?
-        anafApiCallReportFraud(); // ❌ SA NU FACI API CALLS CU TRANZACTIE DESCHISA!
-    }
+  @GetMapping("lazy") // a) REST-called http://localhost:8080/lazy =
+  public void lazyLoading() { // b) !REST-called =
+    log.debug("Loguri puse in prod ca doar acolo bubuie APARE DOAR pe la 4 PM in zi de luna plina");
+    MyEntity e = repo.findById(1L).orElseThrow();
+    log.info("Message: {}", e.getTags()); // unde-i selectul in log?
+    anafApiCallReportFraud(); // ❌ SA NU FACI API CALLS CU TRANZACTIE DESCHISA!
+  }
 
-    @SneakyThrows
-    private /*synchronized*/ void anafApiCallReportFraud() {
-        Thread.sleep(5_000); // tine 1/10 JDBC conn ocupata pe durata API-calluluil
-    }
+  @SneakyThrows
+  private /*synchronized*/ void anafApiCallReportFraud() {
+    Thread.sleep(5_000); // tine 1/10 JDBC conn ocupata pe durata API-calluluil
+  }
 
 }
 // TODO

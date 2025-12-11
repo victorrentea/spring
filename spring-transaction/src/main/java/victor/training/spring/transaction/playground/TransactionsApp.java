@@ -41,6 +41,8 @@ public class TransactionsApp {
 //      log.info("============= JPA:lazyLoading ==============");
 //      jpa.lazyLoading();
 
+      jpa.deleteCuDSL();
+//        playDualWrite.saveAndSend();
 //        playDualWrite.saveAndSend();
 
       nPlusOne.insert();
