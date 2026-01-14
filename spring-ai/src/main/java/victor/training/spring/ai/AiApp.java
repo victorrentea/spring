@@ -9,19 +9,12 @@ import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import victor.training.spring.ai.other.VictorTrainingCatalog;
-import victor.training.spring.ai.other.WeatherMCP;
 
 @SpringBootApplication
 public class AiApp {
 
   public static void main(String[] args) {
     SpringApplication.run(AiApp.class, args);
-  }
-
-  @Bean
-  ToolCallbackProvider weatherTools(WeatherMCP weatherMCP, VictorTrainingCatalog victorTrainingCatalog) {
-    return MethodToolCallbackProvider.builder().toolObjects(weatherMCP, victorTrainingCatalog).build();
   }
 
   @Bean
