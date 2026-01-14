@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- styles extracted to assistant.css -->
+    <link rel="stylesheet" href="assistant.css">
+</head>
+<body>
+<!-- input for free text to send to assistant -->
+<label for="assistantInput" style="display:inline; margin:8px 0;">Send to assistant:</label>
+<input type="text" id="assistantInput" placeholder="Type a message" style="width:50%; padding:6px;" />
+<button id="assistantSend" type="button">Send</button>
+<!-- added user name input to the right of the Send button with default value 'victor' -->
+<label for="assistantUser" style="margin-left:8px; display:inline-block;">Name</label>
+<input type="text" id="assistantUser" placeholder="Name" value="victor" style="margin-left:4px; padding:6px;" />
+<br>
+<a>Hello</a><br>
+<a>I'd like to adopt a dog</a><br>
+<a>I'm looking for a loving dog for children</a><br>
+
+<div class="iframe-container" style="margin-top:12px;">
+    <iframe id="assistantFrame" name="assistantFrame" style="width:100%; height:70vh; border:1px solid #ccc;" title="Assistant"></iframe>
+    <div id="spinnerOverlay" class="spinner-overlay" role="status" aria-hidden="true">
+        <div class="spinner" aria-hidden="true"></div>
+    </div>
+</div>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var anchors = document.querySelectorAll("body a");
+        var input = document.getElementById('assistantInput');
+        var btn = document.getElementById('assistantSend');
+        var userInput = document.getElementById('assistantUser');
+        var iframe = document.getElementById('assistantFrame');
+        var overlay = document.getElementById('spinnerOverlay');
+        var hideTimeout = null;
+
+        function showOverlay() {
+            if (!overlay) return;
+            overlay.classList.add('show');
+            overlay.setAttribute('aria-hidden', 'false');
+            // fallback hide after 20s
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(hideOverlay, 20000);
+        }
+
+        function hideOverlay() {
+            if (!overlay) return;
+            overlay.classList.remove('show');
+            overlay.setAttribute('aria-hidden', 'true');
+            if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
+        }
+
+        function sendToAssistant(text) {
+            if (!text) {
+                return;
+            }
+            var user = (userInput && userInput.value) ? userInput.value.trim() : '';
+            if (!user) user = 'victor';
+            showOverlay();
+            iframe.src = '/user1/assistant?q=' + encodeURIComponent(text) + '&user=' + encodeURIComponent(user);
+            try { iframe.focus(); } catch (e) { /* ignore focus errors */ }
+        }
+
+        // hide overlay when iframe finishes loading
+        iframe.addEventListener('load', function() {
+            // small delay for nicer UX
+            setTimeout(hideOverlay, 150);
+        });
+
+        // wire anchors to use current user value when clicked
+        anchors.forEach(function(anchor) {
+            var text = anchor.textContent;
+            // prevent default navigation and load inside iframe with user param
+            anchor.href = '#';
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                sendToAssistant(text);
+            });
+            // ensure a line break after each anchor (avoid duplicate BRs)
+            var nextEl = anchor.nextElementSibling;
+            if (!nextEl || nextEl.tagName !== 'BR') {
+                anchor.insertAdjacentHTML('afterend', '<br>');
+            }
+        });
+
+        btn.addEventListener('click', function() {
+            var text = input.value ? input.value.trim() : '';
+            if (text.length === 0) {
+                return;
+            }
+            sendToAssistant(text);
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                var text = input.value ? input.value.trim() : '';
+                if (text.length === 0) {
+                    return;
+                }
+                sendToAssistant(text);
+            }
+        });
+    });
+</script>
+</html>

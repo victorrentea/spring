@@ -1,5 +1,6 @@
 package victor.training.spring.ai;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
@@ -11,16 +12,12 @@ import java.util.List;
 
 @Slf4j
 @Component
-class JobAdoptionScheduler {
+@RequiredArgsConstructor
+class AdoptionSchedulerTool {
   private final DogRepo dogRepo;
   private final PgVectorStore vectorStore;
 
-  JobAdoptionScheduler(DogRepo dogRepo, PgVectorStore vectorStore) {
-    this.dogRepo = dogRepo;
-    this.vectorStore = vectorStore;
-  }
-
-  @Tool(description = "schedule an appointment to pickup or adopt a dog from a location")
+  @Tool(description = "schedule an appointment to pickup or adopt a dog from a location, returning the date of the appointment")
   String scheduleAdoption(
       @ToolParam(description = "the id of the dog") int dogId,
       @ToolParam(description = "the name of the dog") String dogName,

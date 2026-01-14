@@ -24,14 +24,14 @@ public class AiApp {
     return MethodToolCallbackProvider.builder().toolObjects(weatherMCP, victorTrainingCatalog).build();
   }
 
-  @Bean
-  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
-    var transport = HttpClientSseClientTransport.builder("http://localhost:8081").build();
-    var mcpClient = McpClient.sync(transport)
-        .sampling(samplingMcpClientHandler::handleSampling)
-        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
-        .build();
-    mcpClient.initialize();
-    return mcpClient;
-  }
+//  @Bean
+//  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
+//    var transport = HttpClientSseClientTransport.builder("http://localhost:8081").build();
+//    var mcpClient = McpClient.sync(transport)
+//        .sampling(samplingMcpClientHandler::handleSampling)
+//        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
+//        .build();
+//    mcpClient.initialize();
+//    return mcpClient;
+//  }
 }

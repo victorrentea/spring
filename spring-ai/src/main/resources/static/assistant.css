@@ -1,0 +1,98 @@
+/* extracted styles for assistant page */
+/* light mode defaults */
+:root {
+    --bg: #ffffff;
+    --panel: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #d1d5db;
+    --link: #0b61ff;
+    /* overlay color defaults for spinner */
+    --overlay: rgba(255,255,255,0.7);
+    --spinner-track: rgba(0,0,0,0.12);
+}
+
+html, body {
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 16px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+    color: var(--link);
+}
+
+input, button, label {
+    color: var(--text);
+}
+
+input, button {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+/* ensure iframe element itself follows the color scheme (override inline border/background) */
+iframe {
+    background: var(--panel) !important;
+    border-color: var(--border) !important;
+    color: var(--text);
+}
+
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0b1220;
+        --panel: #09101a;
+        --text: #e6eef8;
+        --muted: #94a3b8;
+        --border: #203040;
+        --link: #7cc7ff;
+        --overlay: rgba(0,0,0,0.5);
+        --spinner-track: rgba(255,255,255,0.08);
+    }
+}
+
+/* spinner overlay styles */
+.iframe-container {
+    position: relative; /* parent for overlay */
+}
+
+.spinner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--overlay);
+    transition: opacity 150ms ease-in-out, visibility 150ms ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    pointer-events: none; /* allow clicks when not visible */
+}
+
+.spinner-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid var(--spinner-track);
+    border-top-color: var(--link);
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 8px rgba(0,0,0,0.12);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
