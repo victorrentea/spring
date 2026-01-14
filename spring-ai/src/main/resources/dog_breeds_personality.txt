@@ -1,0 +1,217 @@
+PERSONALITY TRAITS OF COMMON DOG BREEDS (Plain Text)
+
+Labrador Retriever
+- Friendly and outgoing; affectionate, easygoing nature.
+- Energetic and playful; needs plenty of exercise (fetch, swimming, vigorous play).
+- Highly trainable and eager to please; often excels in obedience and dog sports.
+- Versatile working ability; adapts well to service, SAR, hunting, etc.
+- Great with families and children; patient and loving.
+- Social and generally friendly with other dogs and strangers; not a strong guard dog.
+
+German Shepherd Dog
+- Loyal, confident, courageous; strong protective instinct.
+- Highly intelligent and trainable; excels in police/service/SAR roles.
+- Steady, dependable, calm focus; strong “nerve” when well-bred/socialized.
+- Protective and watchful; often aloof with strangers.
+- Versatile working ability; happiest with a job/purpose.
+- Devoted family companion; gentle and affectionate with their people.
+
+Golden Retriever
+- Friendly, gentle, outgoing; famously good-natured.
+- Devoted and affectionate; strong desire to please.
+- Intelligent and highly trainable; responds well to positive reinforcement.
+- Playful and active; keeps a puppy-like spirit into adulthood.
+- Patient and sweet with children; great family dog.
+- Social with other pets and strangers; not naturally a guard dog.
+
+French Bulldog
+- Even-tempered and adaptable; gentle, easygoing.
+- Playful and alert; fun-loving without being overly rowdy.
+- Affectionate and people-oriented; loves closeness and cuddles.
+- Good for apartment living; modest exercise needs.
+- Usually quiet; can be a good watchdog (alerts but not aggressive).
+- Bright but sometimes stubborn; best with fun, positive training.
+
+Bulldog (English Bulldog)
+- Devoted, friendly, gentle companion.
+- Easygoing and calm; laid-back temperament.
+- Eager to please (though can be stubborn); responds to consistent training.
+- Courageous but not aggressive; pacific and dignified.
+- Typically good with children and other pets; tolerant.
+- Social and adaptable; thrives on human attention.
+
+Cavalier King Charles Spaniel
+- Exceptionally affectionate and gentle; loves lap time.
+- Friendly and sociable with people and other pets.
+- Eager to please; easy to train with gentle methods.
+- Playful yet adaptable; happy with walks or couch cuddles.
+- Patient with children; kind, non-snappy temperament when treated well.
+- Attuned and comforting; often empathetic to owner moods.
+
+Chihuahua
+- Bold, confident, fiercely loyal; “big dog” attitude.
+- Lively and spirited; enjoys play plus lap time.
+- Alert watchdog; often vocal with strangers/noises.
+- Wary of strangers initially; benefits from early socialization.
+- Affectionate with chosen people; strong bond to 1–2 individuals.
+- Independent and strong-willed; can be stubborn.
+
+Cocker Spaniel (American)
+- Merry, cheerful, upbeat.
+- Gentle and affectionate; loves closeness.
+- Friendly and social; generally good with children/other pets.
+- Eager to please; responds well to positive, gentle training.
+- Sensitive; does best with kind handling (can shut down with harshness).
+- Moderate energy; enjoys play and walks, also likes relaxing.
+
+Collie (Rough Collie)
+- Devoted and loyal; bonds deeply with family.
+- Gentle, patient, sensitive; often excellent with children.
+- Intelligent and trainable; responds best to gentle training.
+- Watchful/protective in a non-aggressive way; may alert-bark.
+- Calm and even-tempered at home; enjoys balanced exercise.
+- Dignified yet affectionate; noble, comforting companion.
+
+Dachshund
+- Bold and vivacious; big personality.
+- Clever and curious; independent and sometimes stubborn.
+- Affectionate and loyal; often attaches strongly to a person.
+- Fearless and determined; can be reckless if unchecked.
+- Playful and spunky; moderate exercise needs.
+- Alert and vocal; good little watchdog.
+
+Dalmatian
+- Very energetic and athletic; needs lots of exercise.
+- Loyal and loving with family.
+- Often reserved/aloof with strangers initially.
+- Alert and watchful; dependable watchdog.
+- Intelligent and strong-willed; needs consistent training.
+- Playful and spirited; puppy-like enthusiasm.
+
+Doberman Pinscher
+- Fearless, vigilant, self-assured; strong guardian instincts.
+- Loyal and affectionate with family; often “velcro” attachment.
+- Highly intelligent and trainable; thrives on structured work.
+- Confident and composed; steady when well-socialized.
+- Protective and often aloof with strangers; discerning.
+- Athletic and energetic; needs ample exercise and engagement.
+
+English Springer Spaniel
+- Friendly, outgoing, eager to please; very people-oriented.
+- Smart and trainable; enjoys working and learning.
+- High-spirited and energetic; needs good daily exercise.
+- Gentle and affectionate at home; good family dog.
+- Alert and will bark to announce visitors; not aggressive.
+- Devoted; can be prone to separation anxiety if left alone too much.
+
+German Shorthaired Pointer
+- Enthusiastic, high-energy, athletic; thrives on vigorous exercise.
+- Intelligent and versatile; excels across many activities.
+- Friendly, affectionate, loyal; close family bonds.
+- Eager to please; responds well to upbeat training.
+- Outgoing and even-tempered; usually good with kids/dogs (socialize early).
+- Alert, adventurous, strong prey drive; may chase wildlife.
+
+Great Dane
+- Gentle, patient, affectionate; classic “gentle giant.”
+- Friendly and sociable; typically amiable with people and animals.
+- Trainable and responsive; does best with consistent, gentle training.
+- Easygoing and calm indoors; likes lounging.
+- Moderate exercise needs; not a high-energy breed.
+- Loyal and mildly protective; presence alone is a deterrent.
+
+Greyhound
+- Gentle, calm, quiet; polite indoor companion.
+- Affectionate and sweet with family; can be reserved.
+- Often shy with strangers at first; warms up with trust.
+- Low-energy indoors (“couch potato”); enjoys naps.
+- Athletic sprinter in short bursts; not a marathon runner.
+- Sensitive and non-aggressive; may have prey drive (watch small pets).
+
+Jack Russell Terrier (Parson Russell Terrier)
+- Extremely energetic; needs lots of exercise and stimulation.
+- Fearless and tenacious; big-dog bravery.
+- Clever and inquisitive; strong-willed and can be stubborn.
+- Devoted to owners; may be possessive of people/resources.
+- Alert and vocal; strong watchdog tendencies.
+- Can be dog-selective; intense prey drive.
+
+Mastiff (English Mastiff)
+- Gentle, calm, dignified; docile and even-tempered.
+- Loyal and protective; composed guardian.
+- Courageous and strong-willed; immense strength.
+- Affectionate with family; tolerant with children (supervise due to size).
+- Independent; needs patient, consistent training.
+- Low to moderate energy; content lounging near family.
+
+Pembroke Welsh Corgi
+- Spirited, athletic, lively; loves activity.
+- Affectionate and companionable; enjoys family life.
+- Bold and confident; sometimes bossy/herdy.
+- Intelligent and eager to please; quick learner (can be crafty).
+- Watchful and vocal; barks to alert.
+- Loyal and people-loving; may try to herd kids (nip heels).
+
+Pomeranian
+- Vivacious, bold, confident; huge personality.
+- Lively and playful; needs stimulation.
+- Affectionate and loyal; thrives on human contact.
+- Alert and vocal; strong watchdog bark.
+- Intelligent but sometimes willful/independent.
+- Social and charming; may boss around bigger dogs.
+
+Poodle (Standard/Miniature/Toy)
+- Exceptionally intelligent; highly trainable.
+- Active and athletic; needs regular exercise.
+- Proud/elegant demeanor; affectionate and people-focused.
+- Alert; can be a good watchdog (not aggressive).
+- Sensitive and emotionally attuned; responds best to positive training.
+- Playful and versatile; needs mental stimulation.
+
+Pug
+- Charming, affectionate, playful; clownish humor.
+- Loves to love and be loved; very people-oriented.
+- Even-tempered and outgoing; generally friendly.
+- Low to moderate energy; playful spurts plus lots of naps.
+- Slightly stubborn but often eager to please; food-motivated.
+- Sensitive and intuitive; enjoys close companionship.
+
+Rottweiler
+- Confident, calm, courageous; steady temperament.
+- Deeply loyal and protective of family.
+- Affectionate and gentle with their people when well-socialized.
+- Intelligent and trainable; thrives with consistent leadership.
+- Reserved/aloof with strangers; discerning.
+- Even-tempered and self-controlled; watchful rather than noisy.
+
+Saint Bernard
+- Gentle, patient, tolerant; excellent with children.
+- Calm and easygoing; laid-back at home.
+- Affectionate and devoted; loving family companion.
+- Watchful and protective in a mild manner.
+- Low to moderate energy; needs only moderate daily activity.
+- Amiable with other animals; social and good-natured.
+
+Shetland Sheepdog (Sheltie)
+- Very intelligent; highly trainable; loves learning.
+- Playful, gentle, devoted; sweet temperament.
+- Alert and watchful; often barks to announce changes.
+- Sensitive and emotionally attuned; thrives on gentle handling.
+- Loyal; can be reserved with strangers; socialization helps.
+- Vocal and expressive; “talks” with barks and sounds.
+
+West Highland White Terrier (Westie)
+- Bold, confident, spirited; big self-esteem.
+- Happy, fun-loving, cheeky; playful antics.
+- Affectionate and loyal; also independent.
+- Alert and vocal; strong watchdog tendencies.
+- Intelligent but stubborn; needs consistent positive training.
+- Generally friendly; may be scrappy with other dogs; prey drive for small critters.
+
+Yorkshire Terrier (Yorkie)
+- Feisty, brave, sometimes bossy; classic terrier spirit.
+- Affectionate and loyal; strong attachment to owners.
+- Energetic and playful; lively companion.
+- Confident and occasionally stubborn; train with consistency.
+- Alert and vocal; excellent little watchdog.
+- Social with good socialization; may challenge bigger dogs (supervise).

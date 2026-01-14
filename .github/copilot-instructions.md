@@ -1,4 +1,4 @@
-keep code simple and concise
-don't over use functional programming / lambdas
-avoid using deprecated code
-prefer import statements at the top of the file to fully qualified class names
+- keep code simple and concise
+- don't overuse functional programming / lambdas
+- avoid using deprecated code
+- always prefer adding import statements to using fully qualified class names in code
