@@ -31,13 +31,13 @@ public class AssistantController {
       ChatClient.Builder ai,
       VectorStore vectorStore,
       AdoptionSchedulerTool adoptionSchedulerTool,
-      McpSyncClient mcpSyncClient // remote call to send SMS
+      McpSyncClient smsSenderTool // remote call to send SMS
   )  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT) // assumed role
-        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClient).build()) // remote call to send SMS
-        .defaultTools(adoptionSchedulerTool)
+        .defaultTools(adoptionSchedulerTool) // local tool
+        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build()) // remote call to send SMS
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build()/*RAG dintr-un general purpose dog characteristics json 2MB*/)
         .build();
   }

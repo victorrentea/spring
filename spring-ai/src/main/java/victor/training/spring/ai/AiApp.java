@@ -4,14 +4,12 @@ import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.client.transport.HttpClientSseClientTransport;
 import io.modelcontextprotocol.spec.McpSchema;
-import org.springframework.ai.tool.ToolCallbackProvider;
-import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
 // Inspired from https://www.youtube.com/watch?v=9mOuvrZtLbc&t=2s
+@SpringBootApplication
 public class AiApp {
 
   public static final String SYSTEM_PROMPT = """
@@ -26,7 +24,7 @@ public class AiApp {
   }
 
   @Bean
-  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
+  McpSyncClient smsSenderTool(SamplingMcpClientHandler samplingMcpClientHandler) {
     String remoteMcpServer = "http://localhost:8081";
     var transport = HttpClientSseClientTransport.builder(remoteMcpServer).build();
     var mcpClient = McpClient.sync(transport)
