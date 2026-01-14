@@ -19,18 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static victor.training.spring.ai.AiApp.SYSTEM_PROMPT;
+
 
 @RestController
-// From https://www.youtube.com/watch?v=9mOuvrZtLbc&t=2s
 public class AssistantController {
-  public static final String SYSTEM_PROMPT = """
-      You are an AI powered assistant to help people adopt a dog from the adoption
-      agency named Pooch Palace with locations in Antwerp, Seoul, Tokyo, Singapore, Paris,
-      Mumbai, New Delhi, Barcelona, San Francisco, and London. Information about the dogs available
-      will be presented below. If there is no information, then return a polite response suggesting we
-      don’t have any dogs available. To adopt a dog, the user must be sent an SMS with the details about the pickup.
-      """;
-
   private final ChatClient ai;
   private final Map<String, PromptChatMemoryAdvisor> memory = new ConcurrentHashMap<>(); // or in Redis, SQL, Cassandra...
 
@@ -79,6 +72,5 @@ public class AssistantController {
         .call()
         .entity(new ParameterizedTypeReference<>() {});
   }
-
 }
 

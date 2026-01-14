@@ -11,7 +11,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+// Inspired from https://www.youtube.com/watch?v=9mOuvrZtLbc&t=2s
 public class AiApp {
+
+  public static final String SYSTEM_PROMPT = """
+      You are an AI powered assistant to help people adopt a dog from the adoption
+      agency named Pooch Palace. Information about the dogs available
+      will be presented below. If there is no information, then return a polite response suggesting we
+      don’t have any dogs available. To adopt a dog, the user must be sent an SMS with the details about the pickup.
+      """;
 
   public static void main(String[] args) {
     SpringApplication.run(AiApp.class, args);

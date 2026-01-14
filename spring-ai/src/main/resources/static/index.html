@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="assistant.css">
 </head>
 <body>
+
+<!-- top controls: name + restart -->
+<div class="top-controls">
+    <label for="assistantUser">Name</label>
+    <input type="text" id="assistantUser" placeholder="Name" value="victor" style="width:120px; padding:6px;" />
+    <a href="#" class="restart-link" id="restartLink" style="color:red;">/restart</a>
+</div>
+
 <!-- message history -->
 <div id="messageHistory" class="message-history" aria-live="polite" aria-atomic="false">
     <div id="spinnerOverlay" class="spinner-overlay" role="status" aria-hidden="true">
@@ -14,16 +22,12 @@
     </div>
 </div>
 
-<!-- input for free text to send to assistant -->
-<label for="assistantInput" style="display:inline; margin:8px 0;">Send to assistant:</label>
-<input type="text" id="assistantInput" placeholder="Type a message" style="width:50%; padding:6px;" />
-<button id="assistantSend" type="button">Send</button>
-<!-- added user name input to the right of the Send button with default value 'victor' (now smaller) -->
-<label for="assistantUser" style="margin-left:8px; display:inline-block;">Name</label>
-<input type="text" id="assistantUser" placeholder="Name" value="victor" style="width:120px; margin-left:4px; padding:6px;" />
-<!-- restart should not navigate the page; handled by JS -->
-<a href="#" class="restart-link" id="restartLink" style="color:red; margin-left:8px;">/restart</a>
-<br>
+<!-- chat input row: message input (takes rest) + send button aligned right -->
+<div class="chat-row">
+    <input type="text" id="assistantInput" placeholder="Type a message" style="padding:6px;" />
+    <button id="assistantSend" type="button">Send</button>
+</div>
+
 <!-- predefined prompts -->
 <a class="prompt">Hello</a><br>
 <a class="prompt">I'd like to adopt a dog</a><br>
