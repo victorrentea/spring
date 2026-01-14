@@ -21,6 +21,7 @@ public class InitialData {
   private final DogRepo dogRepo;
   private final PgVectorStore vectorStore;
   private final JdbcTemplate jdbcTemplate;
+
   @Value("${server.port:8080}")
   int serverPort;
 
@@ -30,7 +31,6 @@ public class InitialData {
       log.info("Skip initialization. DB contains {} dogs. To re-init click here: http://localhost:{}/restart", dogRepo.count(),serverPort);
       return;
     }
-    jdbcTemplate.execute("TRUNCATE TABLE vector_store");
 
     List<Dog> initialDogs = List.of(
         new Dog().setName("Fierce Chiwawa").setDescription("A small but brave dog breed known for its lively personality."),
@@ -41,11 +41,11 @@ public class InitialData {
         new Dog().setName("Affectionate Cavalier King Charles Spaniel").setDescription("A loving and gentle dog breed, perfect for companionship."),
         new Dog().setName("Alert Doberman Pinscher").setDescription("A sleek and powerful dog breed, known for its loyalty and protective instincts."));
 
+    dogRepo.saveAll(initialDogs);
+
+    jdbcTemplate.execute("TRUNCATE TABLE vector_store");
     log.info("Start vectorization");
-
     for (Dog dog : initialDogs) {
-      dogRepo.save(dog);
-
       // TODO create a string content with id, name, description and vectorize it
       //  add it to vector store with document.id=dog.getVectorId()
       String content = "id: %d, name: %s, description: %s".formatted(
