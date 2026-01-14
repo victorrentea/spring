@@ -39,7 +39,6 @@ public class SamplingMcpClientHandler {
     return CreateMessageResult.builder()
         .role(McpSchema.Role.ASSISTANT)
         .content(new TextContent(chatResponse.getResult().getOutput().getText()))
-//        .model(request.modelPreferences().hints().get(0).name())
         .build();
   }
 }

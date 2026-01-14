@@ -2,6 +2,7 @@ package victor.training.spring.ai;
 
 import io.modelcontextprotocol.server.McpSyncServerExchange;
 import io.modelcontextprotocol.spec.McpSchema;
+import io.modelcontextprotocol.spec.McpSchema.TextContent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.mcp.McpToolUtils;
@@ -14,10 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-class SmsSenderMcp {
-  private final Map<String, String> userPhoneNumbers = Map.of("victor","+40720000000"); // from DB
-
-  // ~@PostMapping
+class SmsSenderTool {
   @Tool(description = "send an SMS about the pickup details following scheduling the adoption of a dog")
   String sendPickupDetailsSMS(
       @ToolParam(description = "the id of the dog") int dogId,
@@ -36,24 +34,21 @@ class SmsSenderMcp {
 
   private String generatePoeticSMS(String dogName, String username, McpSyncServerExchange exchange) {
     try {
-      if (exchange.getClientCapabilities().sampling() != null) {
-        log.info("Client Sampling ON✅");
-        String userPrompt = "the user " + username + " adopts dog " + dogName + ", write a funny SMS for pickup up the dog. exclude any further actions proposed back to user - your response should be the final SMS to send";
-        McpSchema.CreateMessageResult samplingResponse = exchange.createMessage(McpSchema.CreateMessageRequest.builder()
-            .systemPrompt("You are a poet!")
-            .messages(List.of(new McpSchema.SamplingMessage(McpSchema.Role.USER, new McpSchema.TextContent(userPrompt))))
-            .build());
-
-        return getString(samplingResponse);
+      if (exchange.getClientCapabilities().sampling() == null) {
+        return null;
       }
+      log.info("Client Sampling ON✅");
+      String userPrompt = "the user " + username + " adopts dog " + dogName + ", write a funny SMS for pickup up the dog. exclude any further actions proposed back to user - your response should be the final SMS to send";
+      McpSchema.CreateMessageResult samplingResponse = exchange.createMessage(McpSchema.CreateMessageRequest.builder()
+          .systemPrompt("You are a poet!")
+          .messages(List.of(new McpSchema.SamplingMessage(McpSchema.Role.USER, new TextContent(userPrompt))))
+          .build());
+
+      TextContent textContent = (TextContent) samplingResponse.content();
+      return textContent.text();
     } catch (Exception e) {
       e.printStackTrace();
       throw e;
     }
-    return null;
-  }
-
-  private String getString(McpSchema.CreateMessageResult samplingResponse) {
-    return ((McpSchema.TextContent) samplingResponse.content()).text();
   }
 }

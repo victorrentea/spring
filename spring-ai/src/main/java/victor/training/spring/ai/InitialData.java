@@ -30,7 +30,6 @@ public class InitialData {
       log.info("Skip initialization. DB contains {} dogs. To re-init click here: http://localhost:{}/restart", dogRepo.count(),serverPort);
       return;
     }
-    // truncate table vector_store
     jdbcTemplate.execute("TRUNCATE TABLE vector_store");
 
     List<Dog> initialDogs = List.of(
@@ -47,6 +46,8 @@ public class InitialData {
     for (Dog dog : initialDogs) {
       dogRepo.save(dog);
 
+      // TODO create a string content with id, name, description and vectorize it
+      //  add it to vector store with document.id=dog.getVectorId()
       String content = "id: %d, name: %s, description: %s".formatted(
           dog.getId(), dog.getName(), dog.getDescription()
       );

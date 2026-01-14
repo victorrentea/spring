@@ -32,4 +32,11 @@ class AdoptionSchedulerTool {
     vectorStore.delete(List.of(dog.getVectorId()));
     return LocalDate.now().plusDays(3).toString();
   }
+
+//  String scheduleAdoption(int dogId, String dogName, String username) {
+//    log.info("Scheduling adoption for dog {} with id {} for user {}", dogName, dogId, username);
+//    // TODO assign owner in DOG table
+//    // TODO remove from vector store
+//    // TODO return a pickup date of 3 days from now
+//  }
 }

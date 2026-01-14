@@ -13,8 +13,8 @@ public class AiMcpServerApp {
 	}
 
 	@Bean
-	MethodToolCallbackProvider methodToolCallbackProvider(SmsSenderMcp smsSenderMcp) {
-    return MethodToolCallbackProvider.builder().toolObjects(smsSenderMcp).build();
+	MethodToolCallbackProvider methodToolCallbackProvider(SmsSenderTool smsSenderTool) {
+    return MethodToolCallbackProvider.builder().toolObjects(smsSenderTool).build();
 	}
 
 }

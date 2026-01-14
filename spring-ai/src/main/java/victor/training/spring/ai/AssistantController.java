@@ -29,21 +29,29 @@ public class AssistantController {
 
   AssistantController(
       ChatClient.Builder ai,
-      VectorStore vectorStore,
-      AdoptionSchedulerTool adoptionSchedulerTool,
-      McpSyncClient smsSenderTool // remote call to send SMS
+      VectorStore vectorStore, // RAG of dog descriptions
+      AdoptionSchedulerTool adoptionSchedulerTool, // local tool
+      McpSyncClient smsSenderTool // remote tool
   )  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT) // assumed role
-        .defaultTools(adoptionSchedulerTool) // local tool
-        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build()) // remote call to send SMS
-        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build()/*RAG dintr-un general purpose dog characteristics json 2MB*/)
+        .defaultTools(adoptionSchedulerTool)
+        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build())
+        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
+    // TODO 1: add default SYSTEM_PROMPT
+    // TODO 3: add Q&A vector store with available dogs
+    // TODO 5: add the adoption scheduler local MCP tool + annotate it
+    // TODO 6: add the SMS sender remote MCP tool
   }
+
 
   @GetMapping(value = "/{username}/assistant", produces = "text/markdown")
   Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
+    // TODO 2: return Flux<String> for better UX
+    // TODO 3: add chat memory advisor per username
+    // TODO 5: add a system prompt with the current username
     var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> memoryAdvisor());
 
     return ai.prompt()
@@ -62,10 +70,12 @@ public class AssistantController {
         .build();
   }
 
-  record DogSearchResultDto(int id, String name, String breed) {}
+  record DogSearchResultDto(/*TODO */int id, String name, String breed) {}
 
   @GetMapping(value = "/{username}/search")
   List<DogSearchResultDto> search(@PathVariable String username, @RequestParam String q) {
+    // TODO 7: get structured JSON data from AI. tell it in a system prompt.
+    //  Hint: .entity(new ParameterizedTypeReference<>() {});
     return ai.prompt()
         .system("Based on the user query, return ONLY a JSON array of objects, NOT an JSON object.")
         .user(q)
