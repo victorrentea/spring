@@ -7,35 +7,80 @@
     <link rel="stylesheet" href="assistant.css">
 </head>
 <body>
-<!-- input for free text to send to assistant -->
-<label for="assistantInput" style="display:inline; margin:8px 0;">Send to assistant:</label>
-<input type="text" id="assistantInput" placeholder="Type a message" style="width:50%; padding:6px;" />
-<button id="assistantSend" type="button">Send</button>
-<!-- added user name input to the right of the Send button with default value 'victor' -->
-<label for="assistantUser" style="margin-left:8px; display:inline-block;">Name</label>
-<input type="text" id="assistantUser" placeholder="Name" value="victor" style="margin-left:4px; padding:6px;" />
-<br>
-<a>Hello</a><br>
-<a>I'd like to adopt a dog</a><br>
-<a>I'm looking for a loving dog for children</a><br>
-
-<div class="iframe-container" style="margin-top:12px;">
-    <iframe id="assistantFrame" name="assistantFrame" style="width:100%; height:70vh; border:1px solid #ccc;" title="Assistant"></iframe>
+<!-- message history -->
+<div id="messageHistory" class="message-history" aria-live="polite" aria-atomic="false">
     <div id="spinnerOverlay" class="spinner-overlay" role="status" aria-hidden="true">
         <div class="spinner" aria-hidden="true"></div>
     </div>
 </div>
 
+<!-- input for free text to send to assistant -->
+<label for="assistantInput" style="display:inline; margin:8px 0;">Send to assistant:</label>
+<input type="text" id="assistantInput" placeholder="Type a message" style="width:50%; padding:6px;" />
+<button id="assistantSend" type="button">Send</button>
+<!-- added user name input to the right of the Send button with default value 'victor' (now smaller) -->
+<label for="assistantUser" style="margin-left:8px; display:inline-block;">Name</label>
+<input type="text" id="assistantUser" placeholder="Name" value="victor" style="width:120px; margin-left:4px; padding:6px;" />
+<!-- restart should not navigate the page; handled by JS -->
+<a href="#" class="restart-link" id="restartLink" style="color:red; margin-left:8px;">/restart</a>
+<br>
+<!-- predefined prompts -->
+<a class="prompt">Hello</a><br>
+<a class="prompt">I'd like to adopt a dog</a><br>
+<a class="prompt">I'm looking for a loving dog for children</a><br>
+<a class="prompt">I'm a lonely guy and I'd like a friend</a><br>
+<a class="prompt">I need a fierce dog to guard my garden</a><br>
+
+<!-- search UI -->
+<div class="search-container">
+    <div class="search-controls">
+        <label for="searchInput" style="position:absolute; left:-9999px;">Search</label>
+        <input type="text" id="searchInput" aria-label="Search" placeholder="Search" style="flex:1; padding:6px;" />
+        <button id="searchBtn" type="button">Search</button>
+    </div>
+    <div id="searchResults" class="search-grid" aria-live="polite"></div>
+</div>
+
 </body>
+<script src="assistant-md.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var anchors = document.querySelectorAll("body a");
         var input = document.getElementById('assistantInput');
         var btn = document.getElementById('assistantSend');
         var userInput = document.getElementById('assistantUser');
-        var iframe = document.getElementById('assistantFrame');
         var overlay = document.getElementById('spinnerOverlay');
+        var historyEl = document.getElementById('messageHistory');
         var hideTimeout = null;
+
+        var searchInput = document.getElementById('searchInput');
+        var searchBtn = document.getElementById('searchBtn');
+        var searchResults = document.getElementById('searchResults');
+
+        function scrollHistoryToBottom() {
+            if (!historyEl) return;
+            historyEl.scrollTop = historyEl.scrollHeight;
+        }
+
+        function appendMessage(role, text, meta) {
+            var el = document.createElement('div');
+            el.className = 'message ' + (role === 'user' ? 'user' : 'assistant');
+            if (role === 'user') {
+                el.innerText = text;
+            } else {
+                // assistant: allow HTML rendering using the global renderMarkdown
+                el.innerHTML = text ? renderMarkdown(text) : '';
+            }
+            if (meta && role === 'user') {
+                var m = document.createElement('small');
+                m.className = 'meta';
+                m.innerText = meta;
+                el.appendChild(m);
+            }
+            historyEl.appendChild(el);
+            scrollHistoryToBottom();
+            return el;
+        }
 
         function showOverlay() {
             if (!overlay) return;
@@ -53,27 +98,66 @@
             if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
         }
 
-        function sendToAssistant(text) {
+        async function sendToAssistant(text) {
             if (!text) {
                 return;
             }
             var user = (userInput && userInput.value) ? userInput.value.trim() : '';
             if (!user) user = 'victor';
-            showOverlay();
-            iframe.src = '/user1/assistant?q=' + encodeURIComponent(text) + '&user=' + encodeURIComponent(user);
-            try { iframe.focus(); } catch (e) { /* ignore focus errors */ }
-        }
 
-        // hide overlay when iframe finishes loading
-        iframe.addEventListener('load', function() {
-            // small delay for nicer UX
-            setTimeout(hideOverlay, 150);
-        });
+            // append user message immediately
+            appendMessage('user', text, user + ' • ' + new Date().toLocaleTimeString());
+            // clear the input textbox after sending and focus it
+            if (input) { input.value = ''; try { input.focus(); } catch(e) { /* ignore */ } }
+
+            // append assistant placeholder
+            var assistantEl = appendMessage('assistant', '', null);
+
+            showOverlay();
+
+            // fetch the streaming assistant response and append progressively
+            var url = '/'+ encodeURIComponent(user) + '/assistant?q=' + encodeURIComponent(text);
+            try {
+                const res = await fetch(url, { method: 'GET', headers: { Accept: 'text/markdown' } });
+                if (!res.ok) {
+                    assistantEl.innerText = 'Error: ' + res.status + ' ' + res.statusText;
+                    hideOverlay();
+                    return;
+                }
+
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                let done = false;
+                let accumulated = '';
+
+                while (!done) {
+                    const { value, done: streamDone } = await reader.read();
+                    if (value) {
+                        accumulated += decoder.decode(value, { stream: true });
+                        // append chunk to assistant element (progressive rendering) as HTML
+                        assistantEl.innerHTML = renderMarkdown(accumulated);
+                        scrollHistoryToBottom();
+                    }
+                    done = streamDone;
+                }
+
+                // finalize with any remaining text
+                assistantEl.innerHTML = renderMarkdown(accumulated.trim());
+                // no timestamp for assistant messages as requested
+            } catch (e) {
+                assistantEl.innerText = 'Request failed: ' + (e && e.message ? e.message : e);
+            } finally {
+                hideOverlay();
+            }
+        }
 
         // wire anchors to use current user value when clicked
         anchors.forEach(function(anchor) {
+            // skip the restart link so it behaves as a normal link (we'll handle it separately)
+            if (anchor.classList && (anchor.classList.contains('restart-link'))) return;
+
             var text = anchor.textContent;
-            // prevent default navigation and load inside iframe with user param
+            // prevent default navigation and perform fetch streaming
             anchor.href = '#';
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -86,11 +170,36 @@
             }
         });
 
+        // handle restart via fetch so page doesn't reload
+        var restartLink = document.getElementById('restartLink');
+        if (restartLink) {
+            restartLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showOverlay();
+                fetch('/restart', { method: 'GET' })
+                    .then(function(res) {
+                        hideOverlay();
+                        if (!res.ok) {
+                            appendMessage('assistant', 'Restart failed: ' + res.status + ' ' + res.statusText, null);
+                            return;
+                        }
+                        appendMessage('assistant', 'Restart completed', null);
+                    })
+                    .catch(function(err) {
+                        hideOverlay();
+                        appendMessage('assistant', 'Restart failed: ' + (err && err.message ? err.message : err), null);
+                    });
+            });
+        }
+
         btn.addEventListener('click', function() {
             var text = input.value ? input.value.trim() : '';
             if (text.length === 0) {
                 return;
             }
+            // clear input and focus for quick follow-up
+            input.value = '';
+            try { input.focus(); } catch (e) { /* ignore */ }
             sendToAssistant(text);
         });
 
@@ -101,9 +210,90 @@
                 if (text.length === 0) {
                     return;
                 }
+                // clear input and focus (user requested clearing after Enter send)
+                input.value = '';
+                try { input.focus(); } catch (e) { /* ignore */ }
                 sendToAssistant(text);
             }
         });
+
+        // search logic
+        async function renderSearchResults(results) {
+            searchResults.innerHTML = '';
+            if (!results || !results.length) {
+                searchResults.innerText = 'No results';
+                return;
+            }
+
+            // if objects have name/breed, render as table
+            var first = results[0];
+            if (first && (first.name || first.breed)) {
+                var table = document.createElement('table');
+                table.className = 'search-table';
+                var thead = document.createElement('thead');
+                var headerRow = document.createElement('tr');
+                var thName = document.createElement('th'); thName.innerText = 'Name'; headerRow.appendChild(thName);
+                var thBreed = document.createElement('th'); thBreed.innerText = 'Breed'; headerRow.appendChild(thBreed);
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                var tbody = document.createElement('tbody');
+                results.forEach(function(item) {
+                    var tr = document.createElement('tr');
+                    var tdName = document.createElement('td'); tdName.innerText = item.name || '-'; tr.appendChild(tdName);
+                    var tdBreed = document.createElement('td'); tdBreed.innerText = item.breed || '-'; tr.appendChild(tdBreed);
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+                searchResults.appendChild(table);
+                return;
+            }
+
+            // fallback: render as cards
+            results.forEach(function(item) {
+                var div = document.createElement('div');
+                div.className = 'search-item';
+                var a = document.createElement('a');
+                a.className = 'title';
+                a.href = item.url || '#';
+                a.innerText = item.title || item.name || item.url || 'Result';
+                div.appendChild(a);
+                if (item.snippet) {
+                    var s = document.createElement('div'); s.className = 'snippet'; s.innerText = item.snippet; div.appendChild(s);
+                }
+                searchResults.appendChild(div);
+            });
+        }
+
+        async function doSearch(q) {
+            if (!q) { renderSearchResults([]); return; }
+            // small loading state
+            searchResults.innerText = 'Searching...';
+            try {
+                // include username in the path to match server mapping: /{username}/search
+                var user = (userInput && userInput.value) ? userInput.value.trim() : 'victor';
+                var res = await fetch('/' + encodeURIComponent(user) + '/search?q=' + encodeURIComponent(q), { method: 'GET', headers: { Accept: 'application/json,text/plain' } });
+                if (!res.ok) {
+                    searchResults.innerText = 'Search failed: ' + res.status;
+                    return;
+                }
+                var contentType = res.headers.get('content-type') || '';
+                if (contentType.indexOf('application/json') !== -1) {
+                    var data = await res.json();
+                    await renderSearchResults(data);
+                    return;
+                }
+                // fallback to plain text
+                var text = await res.text();
+                renderSearchResults([{ title: 'Result', url:'#', snippet: text }]);
+            } catch (e) {
+                searchResults.innerText = 'Search error: ' + (e && e.message ? e.message : e);
+            }
+        }
+
+        searchBtn.addEventListener('click', function() { doSearch(searchInput.value ? searchInput.value.trim() : ''); });
+        searchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); doSearch(searchInput.value ? searchInput.value.trim() : ''); } });
+
     });
 </script>
 </html>

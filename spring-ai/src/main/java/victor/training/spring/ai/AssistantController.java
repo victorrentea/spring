@@ -1,10 +1,12 @@
 package victor.training.spring.ai;
 
+import io.modelcontextprotocol.client.McpSyncClient;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,23 +37,22 @@ public class AssistantController {
   AssistantController(
       ChatClient.Builder ai,
       VectorStore vectorStore,
-      AdoptionSchedulerTool adoptionSchedulerTool
-//      McpSyncClient mcpSyncClient
+      AdoptionSchedulerTool adoptionSchedulerTool,
+      McpSyncClient mcpSyncClient // remote call to send SMS
   )  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT) // assumed role
-//        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClient).build()) // remote call to send SMS
+        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(mcpSyncClient).build()) // remote call to send SMS
         .defaultTools(adoptionSchedulerTool)
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build()/*RAG dintr-un general purpose dog characteristics json 2MB*/)
         .build();
   }
 
-  @GetMapping(value = "/{username}/assistant",produces = "text/markdown")
+  @GetMapping(value = "/{username}/assistant", produces = "text/markdown")
   Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
     var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> memoryAdvisor());
 
-    // TODO de ce nu pot sa-i spun "vreau primul"??
     return ai.prompt()
         .system("The user's username is \"%s\"".formatted(username)) // system-prompt from SecurityContextHolder...
         .user(q) // user-prompt
@@ -76,7 +77,7 @@ public class AssistantController {
         .system("Based on the user query, return ONLY a JSON array of objects, NOT an JSON object.")
         .user(q)
         .call()
-        .entity(new ParameterizedTypeReference<List<DogSearchResultDto>>() {});
+        .entity(new ParameterizedTypeReference<>() {});
   }
 
 }

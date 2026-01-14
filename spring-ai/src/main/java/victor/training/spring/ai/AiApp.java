@@ -24,14 +24,19 @@ public class AiApp {
     return MethodToolCallbackProvider.builder().toolObjects(weatherMCP, victorTrainingCatalog).build();
   }
 
-//  @Bean
-//  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
-//    var transport = HttpClientSseClientTransport.builder("http://localhost:8081").build();
-//    var mcpClient = McpClient.sync(transport)
-//        .sampling(samplingMcpClientHandler::handleSampling)
-//        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
-//        .build();
-//    mcpClient.initialize();
-//    return mcpClient;
-//  }
+  @Bean
+  McpSyncClient mcpSyncClient(SamplingMcpClientHandler samplingMcpClientHandler) {
+    String remoteMcpServer = "http://localhost:8081";
+    var transport = HttpClientSseClientTransport.builder(remoteMcpServer).build();
+    var mcpClient = McpClient.sync(transport)
+        .sampling(samplingMcpClientHandler::handleSampling)
+        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
+        .build();
+    try {
+      mcpClient.initialize();
+    }catch (Exception e) {
+      throw new RuntimeException("Unable to connect to remote MCP server at: " + remoteMcpServer, e);
+    }
+    return mcpClient;
+  }
 }

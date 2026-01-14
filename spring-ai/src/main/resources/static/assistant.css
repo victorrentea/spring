@@ -34,13 +34,6 @@ input, button {
     border-radius: 4px;
 }
 
-/* ensure iframe element itself follows the color scheme (override inline border/background) */
-iframe {
-    background: var(--panel) !important;
-    border-color: var(--border) !important;
-    color: var(--text);
-}
-
 /* dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
@@ -55,11 +48,7 @@ iframe {
     }
 }
 
-/* spinner overlay styles */
-.iframe-container {
-    position: relative; /* parent for overlay */
-}
-
+/* spinner overlay styles (placed inside message-history) */
 .spinner-overlay {
     position: absolute;
     top: 0;
@@ -95,4 +84,132 @@ iframe {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* message history styles */
+.message-history {
+    height: 50vh; /* user requested: take 50% of screen height */
+    min-height: 80px;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 12px;
+    position: relative; /* so spinner-overlay can be positioned inside */
+}
+
+.message {
+    margin: 8px 4px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    line-height: 1.3;
+    word-break: break-word;
+    max-width: 85%;
+}
+
+.message.user {
+    background: linear-gradient(180deg, rgba(11,97,255,0.08), rgba(11,97,255,0.04));
+    border: 1px solid rgba(11,97,255,0.12);
+    color: var(--text);
+    /* user messages should be left-side now */
+    margin-right: auto;
+    text-align: left;
+}
+
+.message.assistant {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    /* assistant (AI) messages should be right-side visually; bubble aligned right but text flows left-to-right */
+    margin-left: auto;
+    text-align: left; /* ensure progressive streaming flows left-to-right */
+    direction: ltr; /* explicit left-to-right text direction */
+}
+
+.message small.meta {
+    display: block;
+    font-size: 0.75em;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+/* small responsive tweak */
+@media (max-width: 600px) {
+    .message-history { height: 40vh; }
+}
+
+/* search results grid */
+.search-container {
+    margin-top: 12px;
+}
+
+.search-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.search-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 6px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-item a.title {
+    font-weight: 600;
+    color: var(--link);
+    text-decoration: none;
+    margin-bottom: 6px;
+}
+
+.search-item .snippet {
+    color: var(--muted);
+    font-size: 0.9em;
+}
+
+/* table view for search results */
+.search-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.search-table th,
+.search-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.search-table th {
+    background: rgba(0,0,0,0.03);
+    font-weight: 600;
+}
+
+.search-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* responsive tweak: stack into single column on very small screens */
+@media (max-width: 420px) {
+    .search-table th, .search-table td { display: block; width: 100%; }
+    .search-table thead { display: none; }
 }
