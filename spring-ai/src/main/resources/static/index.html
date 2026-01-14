@@ -24,6 +24,7 @@
 
 <!-- chat input row: message input (takes rest) + send button aligned right -->
 <div class="chat-row">
+    <label for="assistantInput" style="position:absolute; left:-9999px;">Message</label>
     <input type="text" id="assistantInput" placeholder="Type a message" style="padding:6px;" />
     <button id="assistantSend" type="button">Send</button>
 </div>
@@ -67,6 +68,15 @@
             historyEl.scrollTop = historyEl.scrollHeight;
         }
 
+        // Keep overlay visually in sync with the scroll position so it appears to scroll with content
+        function syncOverlayPosition() {
+            if (!overlay || !historyEl) return;
+            // move overlay visually by the scrollTop so it follows the scrolled content
+            overlay.style.transform = 'translateY(' + historyEl.scrollTop + 'px)';
+        }
+        // update overlay position when user scrolls the history
+        historyEl.addEventListener('scroll', function() { syncOverlayPosition(); });
+
         function appendMessage(role, text, meta) {
             var el = document.createElement('div');
             el.className = 'message ' + (role === 'user' ? 'user' : 'assistant');
@@ -91,6 +101,8 @@
             if (!overlay) return;
             overlay.classList.add('show');
             overlay.setAttribute('aria-hidden', 'false');
+            // ensure overlay is positioned to match current scroll
+            syncOverlayPosition();
             // fallback hide after 20s
             if (hideTimeout) clearTimeout(hideTimeout);
             hideTimeout = setTimeout(hideOverlay, 20000);
@@ -100,6 +112,8 @@
             if (!overlay) return;
             overlay.classList.remove('show');
             overlay.setAttribute('aria-hidden', 'true');
+            // reset transform when hidden
+            overlay.style.transform = 'none';
             if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }
         }
 
