@@ -38,15 +38,19 @@ public class AssistantController {
     // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
   }
 
+  Map<String, PromptChatMemoryAdvisor> chatMemoryPerUser = new ConcurrentHashMap<>();
+
   @GetMapping(value = "/{username}/assistant", produces = "text/markdown")
   // you can also use SSE without webflux
   Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
-    // TODO 2: return Flux<String> for better UX
+    // TODO 2:✅ return Flux<String> for better UX
     // TODO 3: add chat memory advisor per username
     // TODO 5: add a system prompt with the current username
+    PromptChatMemoryAdvisor memoryAdvisor = chatMemoryPerUser.computeIfAbsent(username, k -> memoryAdvisor());
 
     return ai.prompt()
         .user(q)
+        .advisors(memoryAdvisor)
         .stream()
         .content();
   }
@@ -54,7 +58,7 @@ public class AssistantController {
   private PromptChatMemoryAdvisor memoryAdvisor() {
     return PromptChatMemoryAdvisor.builder(
         MessageWindowChatMemory.builder()
-            .chatMemoryRepository(new InMemoryChatMemoryRepository())
+            .chatMemoryRepository(new InMemoryChatMemoryRepository()) // also could be Redis, SQL, Cassandra...
             .build())
         .build();
   }
