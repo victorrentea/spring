@@ -35,9 +35,9 @@ class SmsSenderTool {
     return "SMS sent to user's phone number";
   }
 
-  private String generatePoeticSMS(String dogName, String username, McpSyncServerExchange exchange) {
+  private String generatePoeticSMS(String dogName, String username, McpSyncServerExchange mcpExchange) {
     try {
-      if (exchange.getClientCapabilities().sampling() == null) {
+      if (mcpExchange.getClientCapabilities().sampling() == null) {
         log.info("Sampling OFF❌");
         return null;
       }
@@ -47,7 +47,8 @@ class SmsSenderTool {
           .systemPrompt("You are a poet!")
           .messages(List.of(new McpSchema.SamplingMessage(McpSchema.Role.USER, new TextContent(userPrompt))))
           .build();
-      CreateMessageResult samplingResponse = exchange.createMessage(samplingRequest);
+
+      CreateMessageResult samplingResponse = mcpExchange.createMessage(samplingRequest);
 
       TextContent textContent = (TextContent) samplingResponse.content();
       return textContent.text();

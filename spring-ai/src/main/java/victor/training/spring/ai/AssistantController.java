@@ -29,17 +29,19 @@ public class AssistantController {
   AssistantController(
       ChatClient.Builder ai,
       PgVectorStore vectorStore,
-      AdoptionSchedulerTool adoptionSchedulerTool)  {
+      AdoptionSchedulerTool adoptionSchedulerTool,
+      McpSyncClient smsSenderTool)  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT)
         .defaultTools(adoptionSchedulerTool)
+        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build())
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
     // TODO 1:✅ add default SYSTEM_PROMPT
     // TODO 4:✅ add Q&A advisor on the VectorStore with available dogs
-    // TODO 5: add the adoption scheduler local MCP tool + annotate it
-    // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
+    // TODO 5:✅ add the adoption scheduler local MCP tool + annotate it
+    // TODO 6:✅ add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
   }
 
   Map<String, PromptChatMemoryAdvisor> chatMemoryPerUser = new ConcurrentHashMap<>();

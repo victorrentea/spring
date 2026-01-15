@@ -35,10 +35,15 @@ public class SamplingMcpClientHandler {
         })
         .toList();
 
+    // guardrail response/requests.
     // TODO call chatModel
+    ChatResponse chatResponse = chatModel.call(new Prompt(messages));
 
     // TODO turn Spring AI response back into MCP response TextContent coming from Assistant
 //    return CreateMessageResult.builder()
-    return null;
+    return CreateMessageResult.builder()
+        .role(McpSchema.Role.ASSISTANT)
+        .content(new TextContent(chatResponse.getResult().getOutput().getText()))
+        .build();
   }
 }

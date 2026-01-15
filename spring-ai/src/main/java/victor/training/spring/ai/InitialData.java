@@ -39,7 +39,10 @@ public class InitialData {
         new Dog().setName("Loyal German Shepherd").setDescription("A versatile and courageous dog breed, often used in police and military roles."),
         new Dog().setName("Energetic Border Collie").setDescription("A highly intelligent and energetic dog breed, excels in agility and obedience."),
         new Dog().setName("Affectionate Cavalier King Charles Spaniel").setDescription("A loving and gentle dog breed, perfect for companionship."),
-        new Dog().setName("Alert Doberman Pinscher").setDescription("A sleek and powerful dog breed, known for its loyalty and protective instincts."));
+        new Dog().setName("Alert Doberman Pinscher").setDescription("A sleek and powerful dog breed, known for its loyalty and protective instincts."),
+        new Dog().setName("Ludovic XV").setDescription("A royal dog with a majestic presence and a penchant for fine dining."));
+
+
     dogRepo.saveAll(initialDogs);
 
     //  AI stuff:
