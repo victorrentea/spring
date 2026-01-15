@@ -32,21 +32,22 @@ public class AssistantController {
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT)
         .build();
-    // TODO 1: add default SYSTEM_PROMPT
+    // TODO 1:✅ add default SYSTEM_PROMPT
     // TODO 3: add Q&A advisor on the VectorStore with available dogs
     // TODO 5: add the adoption scheduler local MCP tool + annotate it
     // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
   }
 
   @GetMapping(value = "/{username}/assistant", produces = "text/markdown")
-  String assistant(@PathVariable String username, @RequestParam String q) {
+  // you can also use SSE without webflux
+  Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
     // TODO 2: return Flux<String> for better UX
     // TODO 3: add chat memory advisor per username
     // TODO 5: add a system prompt with the current username
 
     return ai.prompt()
         .user(q)
-        .call()
+        .stream()
         .content();
   }
 
