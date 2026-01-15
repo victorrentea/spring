@@ -30,6 +30,7 @@ public class AssistantController {
   )  {
 
     this.ai = ai
+        .defaultSystem(SYSTEM_PROMPT)
         .build();
     // TODO 1: add default SYSTEM_PROMPT
     // TODO 3: add Q&A advisor on the VectorStore with available dogs
