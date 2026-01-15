@@ -7,13 +7,8 @@ import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvi
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
-import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -25,12 +20,16 @@ import static victor.training.spring.ai.AiApp.SYSTEM_PROMPT;
 @RestController
 public class AssistantController {
   private final ChatClient ai;
+  private final DogRepo dogRepo;
+  private final EmbeddingService embeddingService;
 
   AssistantController(
       ChatClient.Builder ai,
       PgVectorStore vectorStore,
       AdoptionSchedulerTool adoptionSchedulerTool,
-      McpSyncClient smsSenderTool)  {
+      McpSyncClient smsSenderTool,
+      DogRepo dogRepo,
+      EmbeddingService embeddingService)  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT)
@@ -38,10 +37,8 @@ public class AssistantController {
         .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build())
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
-    // TODO 1:✅ add default SYSTEM_PROMPT
-    // TODO 4:✅ add Q&A advisor on the VectorStore with available dogs
-    // TODO 5:✅ add the adoption scheduler local MCP tool + annotate it
-    // TODO 6:✅ add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
+    this.dogRepo = dogRepo;
+    this.embeddingService = embeddingService;
   }
 
   Map<String, PromptChatMemoryAdvisor> chatMemoryPerUser = new ConcurrentHashMap<>();
@@ -81,7 +78,19 @@ public class AssistantController {
         .user(q)
         .call()
         .entity(new ParameterizedTypeReference<>() {});
+  }
 
+  // create a delete api that cancels a resevation for a dog id and a user.
+  // mind to restore in vector store that dog back
+  @DeleteMapping("/{username}/cancel/{dogId}")
+  String cancelReservation(@PathVariable String username, @PathVariable Integer dogId) {
+    var dog = dogRepo.findById(dogId).orElseThrow();
+    if (dog.getOwner() == null || !dog.getOwner().equals(username)) {
+      throw new IllegalStateException("Dog with id %d is not reserved by user %s".formatted(dogId, username));
+    }
+    dog.setOwner(null);
+    dogRepo.save(dog);
+    embeddingService.addDog(dog);
+    return "Reservation cancelled for dog id %d by user %s".formatted(dogId, username);
   }
 }
-

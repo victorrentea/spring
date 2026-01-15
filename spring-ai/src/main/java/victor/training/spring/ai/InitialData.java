@@ -2,8 +2,6 @@ package victor.training.spring.ai;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
@@ -12,15 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class InitialData {
   private final DogRepo dogRepo;
-  private final PgVectorStore vectorStore;
   private final JdbcTemplate jdbcTemplate;
+  private final EmbeddingService embeddingService;
 
   @Value("${server.port:8080}")
   int serverPort;
@@ -50,11 +47,7 @@ public class InitialData {
     jdbcTemplate.execute("TRUNCATE TABLE vector_store");
     log.info("Start vectorization");
     for (Dog dog : initialDogs) {
-      String content = "id: %d, name: %s, description: %s".formatted(
-          dog.getId(), dog.getName(), dog.getDescription()
-      );
-      String vectorId = dog.getVectorId();
-      vectorStore.add(List.of(new Document(vectorId, content, Map.of())));
+      embeddingService.addDog(dog);
     }
     log.info("Done vectorization");
   }

@@ -4,18 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
-import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 class AdoptionSchedulerTool {
   private final DogRepo dogRepo;
-  private final PgVectorStore vectorStore;
+  private final EmbeddingService embeddingService;
 
   @Tool(description = "schedule an appointment to pickup or adopt a dog from a location, returning the date of the appointment")
   String scheduleAdoption(
@@ -30,7 +28,7 @@ class AdoptionSchedulerTool {
     }
     dog.setOwner(username);
     dogRepo.save(dog);
-    vectorStore.delete(List.of(dog.getVectorId()));
+    embeddingService.removeDog(dog);
     return LocalDate.now().plusDays(3).toString();
   }
 }
