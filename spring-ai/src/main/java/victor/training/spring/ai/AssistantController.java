@@ -21,44 +21,30 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static victor.training.spring.ai.AiApp.SYSTEM_PROMPT;
 
-
 @RestController
 public class AssistantController {
   private final ChatClient ai;
-  private final Map<String, PromptChatMemoryAdvisor> memory = new ConcurrentHashMap<>(); // or in Redis, SQL, Cassandra...
 
   AssistantController(
-      ChatClient.Builder ai,
-      VectorStore vectorStore, // RAG of dog descriptions
-      AdoptionSchedulerTool adoptionSchedulerTool, // local tool
-      McpSyncClient smsSenderTool // remote tool
+      ChatClient.Builder ai
   )  {
 
     this.ai = ai
-        .defaultSystem(SYSTEM_PROMPT) // assumed role
-        .defaultTools(adoptionSchedulerTool)
-        .defaultToolCallbacks(SyncMcpToolCallbackProvider.builder().mcpClients(smsSenderTool).build())
-        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
     // TODO 1: add default SYSTEM_PROMPT
-    // TODO 3: add Q&A vector store with available dogs
+    // TODO 3: add Q&A advisor on the VectorStore with available dogs
     // TODO 5: add the adoption scheduler local MCP tool + annotate it
-    // TODO 6: add the SMS sender remote MCP tool
+    // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
   }
 
-
   @GetMapping(value = "/{username}/assistant", produces = "text/markdown")
-  Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
+  String assistant(@PathVariable String username, @RequestParam String q) {
     // TODO 2: return Flux<String> for better UX
     // TODO 3: add chat memory advisor per username
     // TODO 5: add a system prompt with the current username
-    var chatMemoryAdvisor = memory.computeIfAbsent(username, k -> memoryAdvisor());
 
     return ai.prompt()
-        .system("The user's username is \"%s\"".formatted(username)) // system-prompt from SecurityContextHolder...
-        .user(q) // user-prompt
-        .advisors(chatMemoryAdvisor)
-        .stream()
+        .call()
         .content();
   }
 
@@ -70,17 +56,13 @@ public class AssistantController {
         .build();
   }
 
-  record DogSearchResultDto(/*TODO */int id, String name, String breed) {}
+  record DogSearchResultDto(/*TODO */) {}
 
   @GetMapping(value = "/{username}/search")
   List<DogSearchResultDto> search(@PathVariable String username, @RequestParam String q) {
     // TODO 7: get structured JSON data from AI. tell it in a system prompt.
-    //  Hint: .entity(new ParameterizedTypeReference<>() {});
-    return ai.prompt()
-        .system("Based on the user query, return ONLY a JSON array of objects, NOT an JSON object.")
-        .user(q)
-        .call()
-        .entity(new ParameterizedTypeReference<>() {});
+    //  then .entity(new ParameterizedTypeReference<>() {});
+    return List.of();
   }
 }
 

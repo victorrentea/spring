@@ -23,6 +23,7 @@ public class SamplingMcpClientHandler {
   private final ChatModel chatModel;
 
   public CreateMessageResult handleSampling(CreateMessageRequest request) {
+    // turn MCP messages into Spring AI messages
     List<Message> messages = request.messages().stream()
         .map(msg -> {
           TextContent textContent = (TextContent) msg.content();
@@ -34,11 +35,10 @@ public class SamplingMcpClientHandler {
         })
         .toList();
 
-    ChatResponse chatResponse = chatModel.call(new Prompt(messages));
+    // TODO call chatModel
 
-    return CreateMessageResult.builder()
-        .role(McpSchema.Role.ASSISTANT)
-        .content(new TextContent(chatResponse.getResult().getOutput().getText()))
-        .build();
+    // TODO turn Spring AI response back into MCP response TextContent coming from Assistant
+//    return CreateMessageResult.builder()
+    return null;
   }
 }

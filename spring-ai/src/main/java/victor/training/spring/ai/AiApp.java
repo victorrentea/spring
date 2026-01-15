@@ -29,8 +29,8 @@ public class AiApp {
     String remoteMcpServer = "http://localhost:8081";
     var transport = HttpClientSseClientTransport.builder(remoteMcpServer).build();
     var mcpClient = McpClient.sync(transport)
-        .sampling(samplingMcpClientHandler::handleSampling)
-        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
+//        .capabilities(McpSchema.ClientCapabilities.builder().sampling().build())
+//        .sampling(samplingMcpClientHandler::handleSampling)
         .build();
     try {
       mcpClient.initialize();

@@ -48,11 +48,6 @@ public class InitialData {
     for (Dog dog : initialDogs) {
       // TODO create a string content with id, name, description and vectorize it
       //  add it to vector store with document.id=dog.getVectorId()
-      String content = "id: %d, name: %s, description: %s".formatted(
-          dog.getId(), dog.getName(), dog.getDescription()
-      );
-      String vectorId = dog.getVectorId();
-      vectorStore.add(List.of(new Document(vectorId, content, Map.of())));
     }
     log.info("Done vectorization");
   }

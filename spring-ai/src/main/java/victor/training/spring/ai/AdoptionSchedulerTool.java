@@ -17,22 +17,6 @@ class AdoptionSchedulerTool {
   private final DogRepo dogRepo;
   private final PgVectorStore vectorStore;
 
-  @Tool(description = "schedule an appointment to pickup or adopt a dog from a location, returning the date of the appointment")
-  String scheduleAdoption(
-      @ToolParam(description = "the id of the dog") int dogId,
-      @ToolParam(description = "the name of the dog") String dogName,
-      @ToolParam(description = "the username of the adopter") String username) {
-    log.info("Scheduling adoption for dog {} with id {} for user {}", dogName, dogId, username);
-    Dog dog = dogRepo.findById(dogId).orElseThrow();
-    if (dog.getOwner() != null) {
-      throw new IllegalStateException("Dog with id %d is already adopted".formatted(dogId));
-    }
-    dog.setOwner(username);
-    dogRepo.save(dog);
-    vectorStore.delete(List.of(dog.getVectorId()));
-    return LocalDate.now().plusDays(3).toString();
-  }
-
 //  String scheduleAdoption(int dogId, String dogName, String username) {
 //    log.info("Scheduling adoption for dog {} with id {} for user {}", dogName, dogId, username);
 //    // TODO assign owner in DOG table
