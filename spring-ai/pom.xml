@@ -10,6 +10,7 @@
     <artifactId>spring-ai</artifactId>
     <packaging>jar</packaging>
 
+    <!--pick this-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
