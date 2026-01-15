@@ -25,21 +25,21 @@ import static victor.training.spring.ai.AiApp.SYSTEM_PROMPT;
 @RestController
 public class AssistantController {
   private final ChatClient ai;
-  private final PgVectorStore vectorStore;
 
   AssistantController(
       ChatClient.Builder ai,
-      PgVectorStore vectorStore)  {
+      PgVectorStore vectorStore,
+      AdoptionSchedulerTool adoptionSchedulerTool)  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT)
+        .defaultTools(adoptionSchedulerTool)
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
     // TODO 1:✅ add default SYSTEM_PROMPT
-    // TODO 4: add Q&A advisor on the VectorStore with available dogs
+    // TODO 4:✅ add Q&A advisor on the VectorStore with available dogs
     // TODO 5: add the adoption scheduler local MCP tool + annotate it
     // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
-    this.vectorStore = vectorStore;
   }
 
   Map<String, PromptChatMemoryAdvisor> chatMemoryPerUser = new ConcurrentHashMap<>();
@@ -49,10 +49,11 @@ public class AssistantController {
   Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
     // TODO 2:✅ return Flux<String> for better UX
     // TODO 3:✅ add chat memory advisor per username
-    // TODO 5: add a system prompt with the current username
+    // TODO 5:✅ add a system prompt with the current username
     PromptChatMemoryAdvisor memoryAdvisor = chatMemoryPerUser.computeIfAbsent(username, k -> memoryAdvisor());
 
     return ai.prompt()
+        .system("The user's username is \"%s\"".formatted(username)) // system-prompt from SecurityContextHolder...
         .user(q)
         .advisors(memoryAdvisor)
         .stream()
