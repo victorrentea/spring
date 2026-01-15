@@ -17,4 +17,5 @@ class Dog {
   private String description;
   private String owner;
   private String vectorId = UUID.randomUUID().toString();
+  // ~ FK to vector store entry
 }

@@ -8,6 +8,7 @@ import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,18 +25,21 @@ import static victor.training.spring.ai.AiApp.SYSTEM_PROMPT;
 @RestController
 public class AssistantController {
   private final ChatClient ai;
+  private final PgVectorStore vectorStore;
 
   AssistantController(
-      ChatClient.Builder ai
-  )  {
+      ChatClient.Builder ai,
+      PgVectorStore vectorStore)  {
 
     this.ai = ai
         .defaultSystem(SYSTEM_PROMPT)
+        .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
         .build();
     // TODO 1:✅ add default SYSTEM_PROMPT
-    // TODO 3: add Q&A advisor on the VectorStore with available dogs
+    // TODO 4: add Q&A advisor on the VectorStore with available dogs
     // TODO 5: add the adoption scheduler local MCP tool + annotate it
     // TODO 6: add the SMS sender remote MCP tool via SyncMcpToolCallbackProvider
+    this.vectorStore = vectorStore;
   }
 
   Map<String, PromptChatMemoryAdvisor> chatMemoryPerUser = new ConcurrentHashMap<>();
@@ -44,7 +48,7 @@ public class AssistantController {
   // you can also use SSE without webflux
   Flux<String> assistant(@PathVariable String username, @RequestParam String q) {
     // TODO 2:✅ return Flux<String> for better UX
-    // TODO 3: add chat memory advisor per username
+    // TODO 3:✅ add chat memory advisor per username
     // TODO 5: add a system prompt with the current username
     PromptChatMemoryAdvisor memoryAdvisor = chatMemoryPerUser.computeIfAbsent(username, k -> memoryAdvisor());
 

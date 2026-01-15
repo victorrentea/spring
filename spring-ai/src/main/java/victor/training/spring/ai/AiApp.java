@@ -18,6 +18,7 @@ public class AiApp {
       will be presented below. If there is no information, then return a polite response suggesting we
       don’t have any dogs available. To adopt a dog, the user must be sent an SMS with the details about the pickup.
       When uncertain, ask for clarifications rather than making assumptions.
+      If the user wants to see all the dogs, list them all briefly.
       """;
 
   public static void main(String[] args) {

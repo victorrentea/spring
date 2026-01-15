@@ -25,7 +25,7 @@ public class InitialData {
   @Value("${server.port:8080}")
   int serverPort;
 
-  @EventListener(ApplicationStartedEvent.class)
+  @EventListener(ApplicationStartedEvent.class) // TODO comment out
   public void insertData() {
     if (dogRepo.count() > 0) {
       log.info("Skip initialization. DB contains {} dogs. To re-init click here: http://localhost:{}/restart", dogRepo.count(),serverPort);
@@ -40,14 +40,18 @@ public class InitialData {
         new Dog().setName("Energetic Border Collie").setDescription("A highly intelligent and energetic dog breed, excels in agility and obedience."),
         new Dog().setName("Affectionate Cavalier King Charles Spaniel").setDescription("A loving and gentle dog breed, perfect for companionship."),
         new Dog().setName("Alert Doberman Pinscher").setDescription("A sleek and powerful dog breed, known for its loyalty and protective instincts."));
-
     dogRepo.saveAll(initialDogs);
+
+    //  AI stuff:
 
     jdbcTemplate.execute("TRUNCATE TABLE vector_store");
     log.info("Start vectorization");
     for (Dog dog : initialDogs) {
-      // TODO create a string content with id, name, description and vectorize it
-      //  add it to vector store with document.id=dog.getVectorId()
+      String content = "id: %d, name: %s, description: %s".formatted(
+          dog.getId(), dog.getName(), dog.getDescription()
+      );
+      String vectorId = dog.getVectorId();
+      vectorStore.add(List.of(new Document(vectorId, content, Map.of())));
     }
     log.info("Done vectorization");
   }
