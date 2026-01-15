@@ -1,0 +1,61 @@
+name: Auto cherry-pick to master
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cherry-pick:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find matching commits
+        id: commits
+        run: |
+          MATCHING=$(git log ${{ github.event.before }}..${{ github.sha }} \
+            --pretty=format:%H \
+            --grep='\[cp-master\]' || true)
+
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$MATCHING" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Stop if nothing to cherry-pick
+        if: steps.commits.outputs.commits == ''
+        run: echo "No matching commits."
+
+      - name: Cherry-pick onto master
+        if: steps.commits.outputs.commits != ''
+        run: |
+          git checkout master
+          git pull origin master
+
+          BRANCH=cp-${{ github.run_id }}
+          git checkout -b $BRANCH
+
+          for c in ${{ steps.commits.outputs.commits }}; do
+            git cherry-pick $c
+          done
+
+          git push origin $BRANCH
+
+      - name: Create PR
+        if: steps.commits.outputs.commits != ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: cp-${{ github.run_id }}
+          base: master
+          title: "Auto cherry-pick to master"
+          body: "Commits containing [cp-master]"
+          merge-method: squash
+          delete-branch: true
+          auto-merge: true
