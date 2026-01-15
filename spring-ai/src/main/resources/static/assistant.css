@@ -182,32 +182,9 @@ input, button {
 }
 
 .search-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-}
-
-.search-item {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 10px;
-    border-radius: 6px;
-    min-height: 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.search-item a.title {
-    font-weight: 600;
-    color: var(--link);
-    text-decoration: none;
-    margin-bottom: 6px;
-}
-
-.search-item .snippet {
-    color: var(--muted);
-    font-size: 0.9em;
+    /* ensure results span the full available width */
+    width: 100%;
+    display: block; /* table should occupy full width without grid constraints */
 }
 
 /* table view for search results */

@@ -70,13 +70,18 @@ public class AssistantController {
         .build();
   }
 
-  record DogSearchResultDto(/*TODO */) {}
+  record DogSearchResultDto(Long id, String name, String breed) {}
 
   @GetMapping(value = "/{username}/search")
   List<DogSearchResultDto> search(@PathVariable String username, @RequestParam String q) {
     // TODO 7: get structured JSON data from AI. tell it in a system prompt.
     //  then .entity(new ParameterizedTypeReference<>() {});
-    return List.of();
+    return ai.prompt()
+        .system("Based on the user query, return ONLY a JSON array of objects, NOT a single JSON object.")
+        .user(q)
+        .call()
+        .entity(new ParameterizedTypeReference<>() {});
+
   }
 }
 
