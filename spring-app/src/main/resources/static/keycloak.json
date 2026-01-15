@@ -1,8 +1,0 @@
-{
-  "realm": "LearningRealm",
-  "auth-server-url": "http://localhost:8180/auth/",
-  "ssl-required": "external",
-  "resource": "spring-spa",
-  "public-client": true,
-  "confidential-port": 0
-}
