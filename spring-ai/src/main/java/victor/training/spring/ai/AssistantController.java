@@ -44,6 +44,7 @@ public class AssistantController {
     // TODO 5: add a system prompt with the current username
 
     return ai.prompt()
+        .user(q)
         .call()
         .content();
   }
