@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Import;
     victor.training.spring.first.subp.X.class,
     Y.class,
     Z.class,
-    MailServiceDummy.class // default name = "mailServiceDummy"
+    MailServiceDummy.class,
+    MailServiceImpl.class
 })
 public class FirstConfig {
 
