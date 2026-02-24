@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Y {
-  @Autowired
   private MailService mailService; // polymorphic injection
   @Value("${props.gate}")
   private Integer gate;
+
+  @Autowired
+  public void anyMethod(MailService mailService) {
+    this.mailService = mailService; // don't use this at all!
+  }
 
   public int logic() {
     mailService.sendEmail("Go to gate " + gate);
@@ -17,3 +21,13 @@ public class Y {
     return 1;
   }
 }
+
+//class MyTest {
+//  {
+//    var y = new Y();
+//    MailServiceDummy dep = new MailServiceDummy();
+//     inejct using reflection
+//    Class<Y> yClass = Y.class;
+//    yClass.getDeclaredField().set
+//  }
+//}

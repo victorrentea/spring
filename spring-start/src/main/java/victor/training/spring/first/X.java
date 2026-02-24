@@ -1,27 +1,24 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
 //@Controller // is for server-side generated HTML: .jsp, .jsf, vaadin, velocity
 //@RestController // REST API calls
 
-@Service // business logic 🧠🧠
 
 //@Repository // DB access
 
 //all above are
 // @Component // when none of te above applies < marks it for @ComponentScan that Picnic doesn't use.
 
+//@Service // business logic 🧠🧠
 public class X {
-  @Autowired
-  private Y y;
-  @Autowired
-  private Z z;
+//  @Autowired // not in /src/main
+  private final Y y;
+  private final Z z;
+
+  public X(Y y, Z z) {
+    this.y = y;
+    this.z = z;
+  }
 
   public int logic() {
     return 1 + y.logic();
