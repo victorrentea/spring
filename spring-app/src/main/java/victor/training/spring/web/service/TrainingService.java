@@ -55,7 +55,7 @@ public class TrainingService {
     }
   }
 
-  public void createTraining(TrainingDto dto) {
+  public Long createTraining(TrainingDto dto) {
     if (trainingRepo.getByName(dto.name) != null) {
       throw new IllegalArgumentException("Another training with that name already exists");
     }
@@ -66,6 +66,7 @@ public class TrainingService {
             .setStartDate(dto.startDate)
             .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
     trainingRepo.save(newEntity);
+    return newEntity.getId();
   }
 
   public void updateTraining(TrainingDto dto) {
