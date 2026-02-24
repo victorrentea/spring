@@ -13,8 +13,8 @@ spring:
 
 props:
   env: prod
-#  gate: 123
-#  welcome-message: Welcome to Spring
+  gate: 123
+  welcome-message: Hello
   supportUrls:
     - http://stackoverflow.com
     - http://baeldung.com
