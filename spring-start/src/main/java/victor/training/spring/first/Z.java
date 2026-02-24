@@ -20,7 +20,7 @@ public class Z {
     // ❌ fails at runtime rather than at startup. later is more shameful/painful/constly...
     T t = applicationContext.getBean("t", T.class); // fetching. DON'T DO IT!❌
     t.logic();
-    System.out.println(applicationContext.getBean("x"));
+//    System.out.println(applicationContext.getBean("x"));
   }
 }
 
