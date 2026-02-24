@@ -25,7 +25,7 @@ props:
   help:
     app-id: 1251
     file: c:/help-file.pdf
-    email: help@spring.io
+    email: victorrentea+yourWebSite@gmail.com
   tenants:
     FR:
       greeting: Bonjour!

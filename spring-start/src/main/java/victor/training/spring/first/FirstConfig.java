@@ -2,6 +2,7 @@ package victor.training.spring.first;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Profile;
     MailServiceImpl.class
 })
 @EnableConfigurationProperties(Props.class)
+@Configuration // classes containing @Bean
 public class FirstConfig {
 
   @Bean // defines a bean named "t" of type T
@@ -25,7 +27,6 @@ public class FirstConfig {
   public T t2() {
     return new T();
   }
-
 
 }
 
