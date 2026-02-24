@@ -2,6 +2,7 @@ package victor.training.spring.first;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 
 @Import({
     X.class, // defines exactly ONE instance of X (singleton) named "x"
