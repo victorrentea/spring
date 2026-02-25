@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -18,7 +19,7 @@ public class PlayTransactions {
   private final OtherClass otherClass;
   @Transactional 
   public void play() {
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)","SQL");
     otherClass.second();
   }
 //  @Transactional //~= @TransactionAttribute(from EJB)
@@ -35,7 +36,9 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
-  protected void second() {
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void second() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
   }
 }

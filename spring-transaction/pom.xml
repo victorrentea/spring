@@ -26,10 +26,11 @@
             <version>2.1.212</version>
         </dependency>
         <dependency>
-            <!-- JDBC Driver proxy intercepting all DB interactions -->
+            <!-- JDBC Driver proxy logging all DB interactions #musthave -->
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
+            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
