@@ -21,6 +21,7 @@ public class PlayTransactions {
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,?)","SQL");
     otherClass.second();
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (105,?)","SQLxx");
   }
 //  @Transactional //~= @TransactionAttribute(from EJB)
 //  public void play() throws IOException {
@@ -37,9 +38,10 @@ public class PlayTransactions {
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional // this proxy enlists in the existing transcation on the thread / Reactor Context
   public void second() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (102,'SQL3')");
   }
 }
 
