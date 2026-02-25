@@ -56,6 +56,7 @@ public class ProxyIntro {
 // ✅ Print the parameters that the methods of maths receive when invoked WITHOUT CHANGING ANY CODE BELOW THE LINE🔽
 // ------------------- LINE -------------------------------------
 // TODO MESS UP SOMETHING BELOW THE LINE TO STOP PROXY FROM WORKING ⭐️
+@Service
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) { // DI framework can inject a proxy here,
@@ -83,6 +84,7 @@ class SecondGrade {
 /*❌#1 final class*/
 //❌#2 record Maths(/*MoreDeps deps*/) = final{
 @Service
+  @Logged
 class Maths {
   // @Secured(ROLE_ADMIN)
   // Calling this method from outside of this class would ensure that the user is admin,
@@ -96,7 +98,7 @@ class Maths {
     // 4 x 3 = 4 + 4 + 4
     int r= 0;
     for (int i = 0; i < a; i++) {
-      r = this.sum(r, b); // ❌#5 👑 local method calls don't get intercepted (@ don't w
+      r = this.sum(r, b); // ❌❌❌#5 👑 local method calls don't get intercepted (@ don't w
     }
     return r;
   }

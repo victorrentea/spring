@@ -1,8 +1,14 @@
 package victor.training.spring.aspects;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+import static java.lang.System.currentTimeMillis;
 
 @Slf4j
 @Aspect
@@ -22,10 +28,21 @@ public class LoggingAspect {
 
   // TODO 4 ⭐️ also intercept all methods in classes annotated with @Logged
   //   - use @Around("@within(Logged) || @annotation(Logged)")
-  public void intercept() {
-    log.info("INTERCEPTED");
+
+  // intercept all methods directly annotated with @Logged, or in classes annotated with @Logged
+  @Around("@annotation(victor.training.spring.aspects.Logged) || @within(victor.training.spring.aspects.Logged)")
+  public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    log.info("INTERCEPTED: {} with args: {}", pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
+    long t0 = currentTimeMillis();
+    var r= pjp.proceed(); // real method call
+    long t1 = currentTimeMillis();
+    return r;
   }
 }
+
+
+
+
 
 // TODO 5: also print the time the method took to execute
 
