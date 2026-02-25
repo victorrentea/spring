@@ -16,15 +16,25 @@ import java.io.IOException;
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // since 2001
 
-  @Transactional //~= @TransactionAttribute(from EJB)
-  public void play() throws IOException {
+  @Transactional 
+  public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    if(true) throw new IOException("Known 💩 in Java. 😱😱 COMMIT UNTIL HERE! WTFeat?");
-    // when Spring was born, everyone was using EJB (massive and intrusive) ~2005
-    // what todo? ⇒ NEVER EVER EVER use 'throws' in methods of Spring beans (mistake anyway)
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
-//    if(true) throw new IllegalArgumentException("rollsback the transaction");
+    second();
   }
+
+  protected void second() {
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL2')");
+  }
+
+//  @Transactional //~= @TransactionAttribute(from EJB)
+//  public void play() throws IOException {
+//    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+//    if(true) throw new IOException("Known 💩 in Java. 😱😱 COMMIT UNTIL HERE! WTFeat?");
+//    // when Spring was born, everyone was using EJB (massive and intrusive) ~2005
+//    // what todo? ⇒ NEVER EVER EVER use 'throws' in methods of Spring beans (mistake anyway)
+//    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
+//    if(true) throw new IllegalArgumentException("rollsback the transaction");
+//  }
 }
 
 
