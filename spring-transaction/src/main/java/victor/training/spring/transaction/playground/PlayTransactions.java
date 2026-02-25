@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -15,10 +16,14 @@ import javax.sql.DataSource;
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // since 2001
 
-  //@Transactional // DB Transaction
-  public void play() {
+  @Transactional //~= @TransactionAttribute(from EJB)
+  public void play() throws IOException {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL2')");
+    if(true) throw new IOException("Known 💩 in Java. 😱😱 COMMIT UNTIL HERE! WTFeat?");
+    // when Spring was born, everyone was using EJB (massive and intrusive) ~2005
+    // what todo? ⇒ NEVER EVER EVER use 'throws' in methods of Spring beans (mistake anyway)
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
+//    if(true) throw new IllegalArgumentException("rollsback the transaction");
   }
 }
 
