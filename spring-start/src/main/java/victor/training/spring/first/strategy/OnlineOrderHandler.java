@@ -1,18 +1,17 @@
 package victor.training.spring.first.strategy;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Order(Integer.MAX_VALUE)
 @Component
-public class DefaultOrderHandler implements OrderHandler {
+public class OnlineOrderHandler implements OrderHandler {
   @Override
   public boolean canHandle(GroceryOrder order) {
-    return true;
+    return "ONLINE".equalsIgnoreCase(order.getType());
   }
 
   @Override
   public void handle(GroceryOrder order) {
-    System.out.println("DefaultOrderHandler handling " + order);
+    System.out.println("OnlineOrderHandler handling " + order);
   }
 }
+

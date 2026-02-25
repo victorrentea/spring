@@ -2,7 +2,7 @@ package victor.training.spring.first.strategy;
 
 public class ProcessOrderRequest {
   private String id;
-  private String type;
+  private OrderType type;
 
   public ProcessOrderRequest() {
   }
@@ -11,16 +11,17 @@ public class ProcessOrderRequest {
     return id;
   }
 
-  public void setId(String id) {
+  public ProcessOrderRequest setId(String id) {
     this.id = id;
+    return this;
   }
 
-  public String getType() {
+  public OrderType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public ProcessOrderRequest setType(OrderType type) {
     this.type = type;
+    return this;
   }
 }
-

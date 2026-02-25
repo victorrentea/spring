@@ -17,7 +17,7 @@ public class OrderController {
 
   @PostMapping("/process")
   public ResponseEntity<String> process(@RequestBody ProcessOrderRequest req) {
-    GroceryOrder order = new GroceryOrder(req.getId(), req.getType());
+    GroceryOrder order = new GroceryOrder(req.getId(), req.getType().name());
     processor.process(order);
     return ResponseEntity.ok("Processed");
   }
