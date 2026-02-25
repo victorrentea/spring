@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 public class TrainingDto {
   public Long id;
-  @Size(min = 3, max = 50, message = "{training.name.length}")
+  @Size(min = 3, max = 50, message = "{training.name.length}"/* groups = DRAFTSTATE.class*/)
   @NotNull
   public String name; // = null
   public ContractType level;

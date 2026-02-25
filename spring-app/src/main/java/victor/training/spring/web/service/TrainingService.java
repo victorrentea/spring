@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import victor.training.spring.web.DuplicateTrainingNameException;
+import victor.training.spring.web.MyException;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.entity.Teacher;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static victor.training.spring.web.MyException.ErrorCode.DUPLICATE_TRAINING_NAME;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -58,7 +60,8 @@ public class TrainingService {
 
   public Long createTraining(TrainingDto dto) {
     if (trainingRepo.getByName(dto.name) != null) {
-      throw new IllegalArgumentException("Another training with that name already exists");
+//      throw new IllegalArgumentException("Another training with that name already exists");
+      throw new DuplicateTrainingNameException(dto.name);
     }
     Training newEntity = new Training()
             .setName(dto.name)
@@ -73,7 +76,11 @@ public class TrainingService {
   public void updateTraining(TrainingDto dto) {
     if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
 //      throw new IllegalArgumentException("Another training with that name already exists");
-      throw new DuplicateTrainingNameException(dto.name);
+//      throw new DuplicateTrainingNameException(dto.name);
+      throw new MyException(DUPLICATE_TRAINING_NAME, dto.name);
+//      throw new MyException(
+//        DUPLICATE_TRAINING_NAME(for FE),
+//        "Another training with that name already exists" (for BE debugging)); // shop-style
     }
     Training training = trainingRepo.findById(dto.id).orElseThrow()
             .setName(dto.name)
