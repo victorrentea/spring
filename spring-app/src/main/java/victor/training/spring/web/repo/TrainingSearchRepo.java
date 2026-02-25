@@ -22,14 +22,14 @@ public class TrainingSearchRepo {
     jpqlParts.add("SELECT t FROM Training t WHERE 1=1");
     Map<String, Object> params = new HashMap<>();
 
-    if (searchCriteria.name != null) {
+    if (searchCriteria.name() != null) {
       jpqlParts.add("AND UPPER(t.name) LIKE UPPER('%' || :name || '%')");
-      params.put("name", searchCriteria.name);
+      params.put("name", searchCriteria.name());
     }
 
-    if (searchCriteria.teacherId != null) {
+    if (searchCriteria.teacherId() != null) {
       jpqlParts.add("AND t.teacher.id = :teacherId");
-      params.put("teacherId", searchCriteria.teacherId);
+      params.put("teacherId", searchCriteria.teacherId());
     }
 
     TypedQuery<Training> query = entityManager.createQuery(String.join("\n", jpqlParts), Training.class);
