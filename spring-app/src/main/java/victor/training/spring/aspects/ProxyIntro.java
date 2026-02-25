@@ -46,8 +46,9 @@ public class ProxyIntro {
 //    return wrapped.product(a, b);
 //  }
 //}
-// TODO Print the parameters that the methods of maths receive when invoked WITHOUT CHANGING ANY CODE BELOW THE LINE🔽
+// ✅ Print the parameters that the methods of maths receive when invoked WITHOUT CHANGING ANY CODE BELOW THE LINE🔽
 // ------------------- LINE -------------------------------------
+// TODO MESS UP SOMETHING BELOW THE LINE TO STOP PROXY FROM WORKING ⭐️
 class SecondGrade {
   private final Maths maths;
   SecondGrade(Maths maths) { // DI framework can inject a proxy here,
@@ -55,13 +56,15 @@ class SecondGrade {
     this.maths = maths;
   }
   public void mathClass() {
+    System.out.println("What type have I actually been injected? "+ maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-class Maths {
+/*final 1*/ class Maths {
   public int sum(int a, int b) {
+    if (true) throw new RuntimeException("BUG🐞");
     return a + b;
   }
   public int product(int a, int b) {
