@@ -13,24 +13,33 @@ import javax.sql.DataSource;
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
-  private final DataSource dataSource; // since 1998
   private final JdbcTemplate jdbcTemplate; // since 2001
-  private final EntityManager entityManager; // since 2006
-  private final MyEntityRepo repo; // = Spring Data JPA, since 2011
-  private final OtherClass other;
 
-  @Transactional
+  @Transactional // DB Transaction
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    repo.save(new MyEntity("JPA"));
   }
 }
+
+
+
+
+
+
+
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MyEntityRepo repo;
 }
+
+
+
+
+
+
+
 
 // TODO
 //  0 p6spy shows connection id, commit/rollback, actual query params (not ?) - everywhere < prod
