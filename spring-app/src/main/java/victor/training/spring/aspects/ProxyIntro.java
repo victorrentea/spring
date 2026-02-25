@@ -1,34 +1,51 @@
 package victor.training.spring.aspects;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 import static java.lang.System.currentTimeMillis;
 
 public class ProxyIntro {
   public static void main(String[] args) {
-    Maths maths = new Maths();
-    Proxy proxy = new Proxy(maths);
+    Maths realMaths = new Maths();
+//    Proxy proxy = new Proxy(realMaths);
+    Callback h = new MethodInterceptor() {
+      @Override
+      public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        System.out.println(method.getName() + " with params: "+ Arrays.toString(args));
+        var result  =method.invoke(realMaths, args);
+        return result;
+      }
+    };
+    Maths proxy = (Maths) Enhancer.create(Maths.class, h);// CodeGenLIB
     SecondGrade secondGrade = new SecondGrade(proxy);
     secondGrade.mathClass();
   }
 }
 // this class is GENERATED at runtime by Spring using CGLIB Enhancer, and it extends the original class (Maths) and overrides its methods to add extra behavior (logging, timing)
-class Proxy extends Maths { // pretend is YOUR bean, when in fact it's a proxy that extends the original bean
-  private final Maths wrapped;
-  Proxy(Maths wrapped) {
-    this.wrapped = wrapped;
-  }
-  public int sum(int a, int b) {
-    System.out.println("sum called with " + a + " and " + b);
-    long t0 = currentTimeMillis();
-    int r = wrapped.sum(a, b);
-    long t1 = currentTimeMillis();
-    System.out.println("sum took " + (t1 - t0) + " ms and returned " + r);
-    return r;
-  }
-  public int product(int a, int b) {
-    System.out.println("product called with " + a + " and " + b);
-    return wrapped.product(a, b);
-  }
-}
+//class Proxy extends Maths { // pretend is YOUR bean, when in fact it's a proxy that extends the original bean
+//  private final Maths wrapped;
+//  Proxy(Maths wrapped) {
+//    this.wrapped = wrapped;
+//  }
+//  public int sum(int a, int b) {
+//    System.out.println("sum called with " + a + " and " + b);
+//    long t0 = currentTimeMillis();
+//    int r = wrapped.sum(a, b);
+//    long t1 = currentTimeMillis();
+//    System.out.println("sum took " + (t1 - t0) + " ms and returned " + r);
+//    return r;
+//  }
+//  public int product(int a, int b) {
+//    System.out.println("product called with " + a + " and " + b);
+//    return wrapped.product(a, b);
+//  }
+//}
 // TODO Print the parameters that the methods of maths receive when invoked WITHOUT CHANGING ANY CODE BELOW THE LINE🔽
 // ------------------- LINE -------------------------------------
 class SecondGrade {
