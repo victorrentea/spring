@@ -4,6 +4,9 @@ import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -62,15 +65,28 @@ class SecondGrade {
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-/*final 1*/ class Maths {
-  public int sum(int a, int b) {
-    if (true) throw new RuntimeException("BUG🐞");
+/*❌#1 final class*/
+//❌#2 record Maths(/*MoreDeps deps*/) = final{
+@Service
+class Maths {
+  // @Secured(ROLE_ADMIN)
+  // Calling this method from outside of this class would ensure that the user is admin,
+  // but if the method is called from within the class, no check is performed
+  public /*😶#3 static*/ int sum(int a, int b) {
     return a + b;
   }
-  public int product(int a, int b) {
-    return a * b;
+  public /*😶#4 final*/ int product(int a, int b) {
+//    return a * b;
+    // 4 x 3 = 4 + 4 + 4
+    int r= 0;
+    for (int i = 0; i < a; i++) {
+      r = this.sum(r, b); // ❌#5 👑 local method calls don't get intercepted (@ don't w
+    }
+    return r;
   }
 }
+
+
 
 
 // Key Points
