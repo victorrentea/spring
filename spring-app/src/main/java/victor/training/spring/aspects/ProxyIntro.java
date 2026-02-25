@@ -64,6 +64,7 @@ class SecondGrade {
     this.maths = maths;
   }
   public void mathClass() {
+//    Maths maths = new Maths(); // ❌#6 manually instantiated (non-Spring beans) : Mongo Docs, jooq records, Dto
     System.out.println("What type have I actually been injected? " + maths.getClass());
 
     System.out.println("8 + 4 = " + measure(()-> maths.sum(8, 4) )   );
