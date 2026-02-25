@@ -15,17 +15,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // since 2001
-
+  private final OtherClass otherClass;
   @Transactional 
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    second();
+    otherClass.second();
   }
-
-  protected void second() {
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL2')");
-  }
-
 //  @Transactional //~= @TransactionAttribute(from EJB)
 //  public void play() throws IOException {
 //    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
@@ -36,18 +31,13 @@ public class PlayTransactions {
 //    if(true) throw new IllegalArgumentException("rollsback the transaction");
 //  }
 }
-
-
-
-
-
-
-
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
-  private final MyEntityRepo repo;
+  private final JdbcTemplate jdbcTemplate;
+  protected void second() {
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
+  }
 }
 
 
