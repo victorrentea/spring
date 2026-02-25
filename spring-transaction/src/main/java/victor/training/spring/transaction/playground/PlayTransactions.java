@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate; // since 2001
 
-  @Transactional // DB Transaction
+  //@Transactional // DB Transaction
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL2')");
