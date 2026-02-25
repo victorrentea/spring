@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -21,7 +22,10 @@ public class ProxyIntro {
       @Override
       public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         System.out.println(method.getName() + " with params: "+ Arrays.toString(args));
+        long t0 = currentTimeMillis();
         var result  =method.invoke(realMaths, args);
+        long t1 = currentTimeMillis();
+        System.out.println("took "+ (t1 - t0) + " ms ");
         return result;
       }
     };
@@ -59,11 +63,22 @@ class SecondGrade {
     this.maths = maths;
   }
   public void mathClass() {
-    System.out.println("What type have I actually been injected? "+ maths.getClass());
-    System.out.println("8 + 4 = " + maths.sum(8, 4));
+    System.out.println("What type have I actually been injected? " + maths.getClass());
+
+    System.out.println("8 + 4 = " + measure(()-> maths.sum(8, 4) )   );
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
+//    cacheManager.tryCache("sum", 8, 4, () -> maths.sum(8, 4));
+
+  Integer measure(Supplier<Integer> s) { // FP alternative to proxies
+    long t0 = currentTimeMillis();
+    Integer r = s.get();
+    long t1 = currentTimeMillis();
+    System.out.println("took "+ (t1 - t0) + " ms ");
+    return r;
+  }
+
 }
 /*❌#1 final class*/
 //❌#2 record Maths(/*MoreDeps deps*/) = final{
@@ -72,6 +87,7 @@ class Maths {
   // @Secured(ROLE_ADMIN)
   // Calling this method from outside of this class would ensure that the user is admin,
   // but if the method is called from within the class, no check is performed
+
   public /*😶#3 static*/ int sum(int a, int b) {
     return a + b;
   }
