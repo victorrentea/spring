@@ -42,7 +42,7 @@ public class TrainingController {
         .body(id);
   }
 
-  @PutMapping("{trainingId}/update")
+  @PutMapping("{trainingId}")
   public void updateTraining(@PathVariable Long trainingId,
                              @RequestBody @Validated TrainingDto dto) throws ParseException {
     dto.id = trainingId;
