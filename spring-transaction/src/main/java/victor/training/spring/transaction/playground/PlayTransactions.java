@@ -18,6 +18,7 @@ public class PlayTransactions {
   @Transactional // DB Transaction
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL2')");
   }
 }
 
