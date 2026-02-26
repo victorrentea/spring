@@ -1,5 +1,7 @@
 package victor.training.spring.web.service;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +33,7 @@ public class TrainingService {
   private final TeacherRepo teacherRepo;
   private final EmailSender emailSender;
   private final TeacherBioClient teacherBioClient;
+  private final MeterRegistry meterRegistry;
 
   public List<TrainingDto> getAllTrainings() {
     List<TrainingDto> dtos = new ArrayList<>();
@@ -43,7 +46,8 @@ public class TrainingService {
   public TrainingDto getTrainingById(Long id) {
     Training training = trainingRepo.findById(id).orElseThrow();
     TrainingDto dto = new TrainingDto(training);
-    dto.teacherBio = retrieveTeacherBio(dto.teacherId);
+    Timer timer = meterRegistry.timer("retrivebio");
+    dto.teacherBio = timer.record(()->  retrieveTeacherBio(dto.teacherId)  );
     String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 //        training.startEdit(currentUser); // PESSIMISTIC LOCKING
     return dto;

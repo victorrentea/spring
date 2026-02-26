@@ -45,6 +45,8 @@ class OtherClass {
   @Transactional // this proxy enlists in the existing transcation on the thread / Reactor Context
   public void second() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
+// restTemplate/webClient.get ⚠️to another [slow] [external] system might take long => COnnection Pool Starvation => delay in reaching by db by any flow
+    // BAD PRACTICE to do API calls from @Transactional methods
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (102,'SQL3')");
     applicationEventPublisher.publishEvent(new MyEvent());
   }

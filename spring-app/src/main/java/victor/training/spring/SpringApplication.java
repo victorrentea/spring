@@ -15,6 +15,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.task.TaskDecorator;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.web.client.RestClient;
@@ -28,6 +29,7 @@ import static java.lang.System.currentTimeMillis;
 
 @SpringBootApplication
 @EnableCaching
+@EnableAsync
 @Slf4j
 @ConfigurationPropertiesScan
 @EnableFeignClients
