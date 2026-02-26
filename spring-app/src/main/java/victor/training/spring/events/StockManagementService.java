@@ -13,7 +13,8 @@ public class StockManagementService {
 
   @EventListener
   @Order(50)
-//  @Async😱
+//  @Async😱 // ☢️ fragile
+  // also consider publishing a rabbit/kafka message to yourself to keep track of the work todo
   public void process(OrderPlacedEvent event) {
     log.info("Checking stock for products in order " + event.orderId());
     if (stock == 0) {

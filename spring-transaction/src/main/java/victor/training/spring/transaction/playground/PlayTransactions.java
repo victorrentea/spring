@@ -3,10 +3,13 @@ package victor.training.spring.transaction.playground;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -37,15 +40,22 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final JdbcTemplate jdbcTemplate;
+  private final ApplicationEventPublisher applicationEventPublisher;
 
   @Transactional // this proxy enlists in the existing transcation on the thread / Reactor Context
   public void second() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (101,'SQL2')");
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (102,'SQL3')");
+    applicationEventPublisher.publishEvent(new MyEvent());
+  }
+  record MyEvent() {}
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT) // transaction hook
+  // spring runs this method after the commit of the transaction from withing the event was published (second() method)
+  public void afterCommit(MyEvent event) {
+    // SEND an email after the commit of this transaction
+    System.out.println("Email sent for commit " + event);
   }
 }
-
-
 
 
 

@@ -10,7 +10,6 @@ spring:
             enable: true
     username: user
     password: pass
-
 props:
   env: prod
   gate: 123
@@ -38,3 +37,15 @@ management:
     web:
       exposure:
         include: "*" #risky in prod
+  endpoint:
+    health:
+      show-components: always
+      probes:
+        enabled: true   # exposes /actuator/health/liveness and /actuator/health/readiness
+      show-details: always
+      group:
+        readiness: #if failed the app will not receive traffic
+          include: mail
+        liveness: # if failed the app will be restarted
+          include: ping   # or whatever you use for liveness
+

@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -13,7 +16,14 @@ import static java.lang.System.currentTimeMillis;
 @Slf4j
 @Aspect
 @Component
+// in platform code, how to make this class disable-able
+//@Profile("aspects")
+
+// Convention over Configuration (CoC)
+//@ConditionalOnProperty(name = "aspects.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnExpression("${aspects.enabled:true}") // SPEL
 public class LoggingAspect {
+
   // TODO 0: Run ProxySpringApp.main() -> you should see in log 6 + 6 = 12
 
   // TODO 1 print 'INTERCEPTED' before every call to methods of Maths
@@ -28,7 +38,6 @@ public class LoggingAspect {
 
   // TODO 4 ⭐️ also intercept all methods in classes annotated with @Logged
   //   - use @Around("@within(Logged) || @annotation(Logged)")
-
   // intercept all methods directly annotated with @Logged, or in classes annotated with @Logged
   @Around("@annotation(victor.training.spring.aspects.Logged) || @within(victor.training.spring.aspects.Logged)")
   public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
