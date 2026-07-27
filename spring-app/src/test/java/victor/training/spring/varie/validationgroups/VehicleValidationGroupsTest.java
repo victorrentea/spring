@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import jakarta.validation.groups.Default;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,5 +103,47 @@ class VehicleValidationGroupsTest {
     assertThat(validator.validate(new Ship(null)))
         .extracting(v -> v.getMessage())
         .containsExactly("Numarul de identificare e obligatoriu pentru orice vehicul");
+  }
+
+  @Test
+  @DisplayName("6. @GroupSequence e ORDONATA: daca pica Default, grupul urmator nici nu se executa")
+  void groupSequenceShortCircuits() {
+    // "" pica si pe @NotBlank (Default), si pe @Pattern-ul de IMO (ShipChecks). Dar...
+    assertThat(validator.validate(new Ship(""))).hasSize(1); // ...primim O SINGURA eroare, nu doua
+
+    // dovada ca a doua regula chiar ar fi picat: cerem ambele grupuri "pe orizontala",
+    // adica fara ordine intre ele => se evalueaza amandoua => 2 erori
+    assertThat(validator.validate(new Ship(""), ShipChecks.class, Default.class)).hasSize(2);
+  }
+
+  @Test
+  @DisplayName("7. A cere explicit Default declanseaza tot secventa redefinita")
+  void explicitDefaultGroupTriggersTheSequence() {
+    assertThat(validator.validate(new Car(VALID_IMO), Default.class))
+        .hasSize(1); // identic cu validate(car) - 'Default' pe Car INSEAMNA secventa
+  }
+
+  @Test
+  @DisplayName("8. Poti forta orice grup din exterior: @GroupSequence redefineste doar Default-ul")
+  void anyGroupCanStillBeRequestedExplicitly() {
+    // cerem regulile de VAPOR pe o MASINA (util: acelasi camp verificat 'ca si cum' ar fi altceva)
+    Set<ConstraintViolation<Car>> violations = validator.validate(new Car(VALID_VIN), ShipChecks.class);
+    assertThat(violations).hasSize(1);
+    assertThat(violations.iterator().next().getMessage()).contains("IMO");
+
+    // si ATENTIE la capcana: cerand DOAR ShipChecks, regulile din Default (@NotBlank) NU se mai verifica
+    // (null trece de @Pattern - ca orice constrangere bine crescuta, ignora null-ul)
+    assertThat(validator.validate(new Car(null), ShipChecks.class)).isEmpty();
+  }
+
+  @Test
+  @DisplayName("9. Formatul IMO, verificat cu acelasi @Pattern, doar cu alt regex si alt grup")
+  void imoFormat() {
+    assertThat(validator.validate(new Ship("IMO9074729"))).isEmpty();  // corect
+    assertThat(validator.validate(new Ship("9074729"))).hasSize(1);    // fara prefixul IMO
+    assertThat(validator.validate(new Ship("IMO907472"))).hasSize(1);  // doar 6 cifre
+    assertThat(validator.validate(new Ship("IMO90747299"))).hasSize(1);// 8 cifre
+    // (cifra de control reala din IMO n-o poate face un regex - acolo ai avea nevoie
+    //  de un ConstraintValidator custom, care oricum ar declara acelasi groups=ShipChecks)
   }
 }
