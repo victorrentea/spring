@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import org.springframework.stereotype.Component;
 
 public class ProxyIntro {
   public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class ProxyIntro {
 
 // logeaza param primit de sum() fara sa modifici nimic sub linie 🔽
 // ------------------- LINE -----------------------------------------
+@Component
 class SecondGrade {
   private final Maths maths;
 
@@ -52,11 +54,14 @@ class SecondGrade {
 
 /*final💥*/
 /*record💥*/
+@Component
+@Logged
 class Maths {
 //  @Secured("ADMIN")
 //  @Transactional
 //  @Cacheable
 //  @Timed // cat a durat executia functiei in Grafana
+
   public /*final😶*/ int sum(int a, int b) {
 
 //    if (true) throw new RuntimeException("BUG🐞");
