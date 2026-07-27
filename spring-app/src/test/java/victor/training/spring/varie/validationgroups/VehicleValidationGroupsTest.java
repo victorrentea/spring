@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -145,5 +146,21 @@ class VehicleValidationGroupsTest {
     assertThat(validator.validate(new Ship("IMO90747299"))).hasSize(1);// 8 cifre
     // (cifra de control reala din IMO n-o poate face un regex - acolo ai avea nevoie
     //  de un ConstraintValidator custom, care oricum ar declara acelasi groups=ShipChecks)
+  }
+
+  @Test
+  @DisplayName("10. Cascadare @Valid peste o colectie polimorfica: fiecare element cu grupul lui")
+  void cascadingOverAPolymorphicCollection() {
+    Fleet fleet = new Fleet(List.of(
+        new Car(VALID_VIN),  // ok
+        new Ship(VALID_IMO), // ok
+        new Ship(VALID_VIN)  // vapor cu VIN => pica
+    ));
+
+    Set<ConstraintViolation<Fleet>> violations = validator.validate(fleet);
+
+    assertThat(violations).hasSize(1);
+    assertThat(violations.iterator().next().getPropertyPath())
+        .hasToString("vehicles[2].identificationNumber");
   }
 }
