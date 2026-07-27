@@ -1,44 +1,52 @@
 package victor.training.spring.aspects;
 
 
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+
+import java.util.Arrays;
+
 public class ProxyIntro {
   public static void main(String[] args) {
     // WE play the role of Spring here ...
-    Maths maths = new Maths();
-    MathsDecorator mathsDecorator = new MathsDecorator(maths);
-    SecondGrade secondGrade = new SecondGrade(mathsDecorator);
+    Maths instantaTaCurata = new Maths();
+
+    MethodInterceptor h = (obj, method, args1, proxy) -> {
+      System.out.println("Calling " + method.getName() + " with args: " + Arrays.toString(args1));
+      return method.invoke(instantaTaCurata, args1);
+    };
+    // Da-mi Doamne o instanta de subclasa generata a lui Maths pe care orice metoda chem,
+    // h trateaza acel apel
+    Maths mathsProxy = (Maths) Enhancer.create(Maths.class, h);
+
+    SecondGrade secondGrade = new SecondGrade(mathsProxy);
     secondGrade.mathClass();
   }
 }
-class MathsDecorator extends Maths {
-  private final Maths maths;
-  MathsDecorator(Maths maths) {
-    this.maths = maths;
-  }
-  public int sum(int a, int b) {
-    System.out.println("sum(" + a + ", " + b + ")");
-    return maths.sum(a, b);
-  }
-}
+
 // logeaza param primit de sum() fara sa modifici nimic sub linie 🔽
 // ------------------- LINE -----------------------------------------
 class SecondGrade {
   private final Maths maths;
+
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
+
   public void mathClass() {
-    System.out.println("Obiectiv DI: sa-ti injectezi dependente decorate:" + maths.getClass());
+    System.out.println("Ce mi s-a injectat:" + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
+// cum stric proxyurile?
 
-class Maths {
+class  Maths {
   public int sum(int a, int b) {
     return a + b;
   }
+
   public int product(int a, int b) {
     return a * b;
   }
