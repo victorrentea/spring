@@ -12,7 +12,8 @@ import lombok.Setter;
  * PROBLEMA: campul e comun (deci nu-l poti duplica in copii), dar regulile pe el difera
  * radical: pentru {@link Car} e un VIN, pentru {@link Ship} e un numar IMO.
  * <p>
- * PRIMUL PAS: pui pe acelasi camp TOATE constrangerile, dar fiecare marcata cu grupul ei.
+ * SOLUTIA: pui pe acelasi camp TOATE constrangerile, dar fiecare marcata cu grupul ei,
+ * si lasi fiecare subclasa sa-si activeze grupul propriu (vezi @GroupSequence pe Car/Ship).
  */
 @Getter
 @Setter
