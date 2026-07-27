@@ -4,8 +4,12 @@ import jakarta.validation.constraints.NotNull;
 import victor.training.spring.web.entity.Teacher;
 
 public class TeacherDto {
+  public static class Groups {
+    public interface Draft {}
+    public interface Final {}
+  }
   public Long id;
-  @NotNull
+  @NotNull(groups = Groups.Final.class)
   public String name;
 
   public TeacherDto() {

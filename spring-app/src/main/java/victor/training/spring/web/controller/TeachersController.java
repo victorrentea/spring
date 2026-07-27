@@ -2,8 +2,11 @@ package victor.training.spring.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TeacherDto;
+import victor.training.spring.web.controller.dto.TeacherDto.Groups.Draft;
+import victor.training.spring.web.controller.dto.TeacherDto.Groups.Final;
 import victor.training.spring.web.service.TeacherService;
 
 import java.time.LocalDateTime;
@@ -28,7 +31,17 @@ public class TeachersController {
   }
 
   @PostMapping
-  public void createTeacher(@Valid @RequestBody TeacherDto dto) {
+  public void createTeacher(@Validated @RequestBody TeacherDto dto) {
+    service.createTeacher(dto);
+  }
+  @PostMapping
+  public void saveDraftTeacher(
+      @Validated(Draft.class) @RequestBody TeacherDto dto) {
+    service.createTeacher(dto);
+  }
+  @PostMapping
+  public void sumbitFullTeacher(
+      @Validated(Final.class) @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
   }
 

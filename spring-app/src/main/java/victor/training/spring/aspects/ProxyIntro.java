@@ -1,39 +1,44 @@
 package victor.training.spring.aspects;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 public class ProxyIntro {
   public static void main(String[] args) {
     // WE play the role of Spring here ...
     Maths maths = new Maths();
-    SecondGrade secondGrade = new SecondGrade(maths);
+    MathsDecorator mathsDecorator = new MathsDecorator(maths);
+    SecondGrade secondGrade = new SecondGrade(mathsDecorator);
     secondGrade.mathClass();
   }
 }
-
-// ------------------- LINE ------------------
-@Service
+class MathsDecorator extends Maths {
+  private final Maths maths;
+  MathsDecorator(Maths maths) {
+    this.maths = maths;
+  }
+  public int sum(int a, int b) {
+    System.out.println("sum(" + a + ", " + b + ")");
+    return maths.sum(a, b);
+  }
+}
+// logeaza param primit de sum() fara sa modifici nimic sub linie 🔽
+// ------------------- LINE -----------------------------------------
 class SecondGrade {
   private final Maths maths;
-
   SecondGrade(Maths maths) {
     this.maths = maths;
   }
-
   public void mathClass() {
+    System.out.println("Obiectiv DI: sa-ti injectezi dependente decorate:" + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
 
-@Component
 class Maths {
   public int sum(int a, int b) {
     return a + b;
   }
-
   public int product(int a, int b) {
     return a * b;
   }
