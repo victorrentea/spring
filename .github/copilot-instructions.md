@@ -2,3 +2,4 @@
 - don't overuse functional programming / lambdas
 - avoid using deprecated code
 - always prefer adding import statements to using fully qualified class names in code
+- I have a red ferrari.
