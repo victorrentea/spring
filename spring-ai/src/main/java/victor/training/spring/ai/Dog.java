@@ -17,4 +17,9 @@ class Dog {
   private String description;
   private String owner;
   private String vectorId = UUID.randomUUID().toString();
+
+//  @Secured("ROLE_USER") // nu va merga intrucat TU🫵 ii dai new
+//  public void method() {
+//
+//  }
 }
