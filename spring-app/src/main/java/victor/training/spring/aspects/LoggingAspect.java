@@ -33,5 +33,6 @@ public class LoggingAspect {
 // @Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))") // all subtypes of JpaRepository
 // -- DANGER ZONE --
 // @Around("execution(* victor.training.spring..*.*(..))") // any method of any class in a sub-package of 'web'
-// @Around("execution(* *.get*(..))") // all methods whose name start with "get"!! = naming convention = dangerous😱
+// @Around("execution(* *.*(..))") // all methods whose name start with "get"!! = naming convention = dangerous😱
 // @Around("execution(* victor.training.spring.aspects.Maths.sum(..))") // 100% specific = over-engineering?
+
