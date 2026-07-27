@@ -59,7 +59,7 @@ class Maths {
 //  @Timed // cat a durat executia functiei in Grafana
   public /*final😶*/ int sum(int a, int b) {
 
-    if (true) throw new RuntimeException("BUG🐞");
+//    if (true) throw new RuntimeException("BUG🐞");
     return a + b;
   }
   public /*static😶*/ int product(int a, int b) {
