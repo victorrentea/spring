@@ -14,9 +14,11 @@ import java.util.Arrays;
 public class LoggingAspect {
   @Around("@within(victor.training.spring.aspects.Logged) || @annotation(victor.training.spring.aspects.Logged)")
   public Object intercept(ProceedingJoinPoint pjp) throws Throwable {
+    long start = System.currentTimeMillis();
     log.info("INTERCEPTED {}{}", pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
     Object result = pjp.proceed();
-    log.info("RETURNED {}", result);
+    long ms = System.currentTimeMillis() - start;
+    log.info("RETURNED {} in {}ms", result, ms);
     return result;
   }
 }
