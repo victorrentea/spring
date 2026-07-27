@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 //@Controller // server-redendered HTML: thymeleaf, jsp, JSF, asp.net, vaadin;
 //@RestController// in Browser (SPA): ng, react
 //@Repository
-@Service
 @RequiredArgsConstructor
 public class Y {
   private final MailService mailService;
-  @Value("${props.gate}")
   private Integer gate;
+
+  public void setGate(Integer gate) {
+    this.gate = gate;
+  }
 
   public int logic() {
     mailService.sendEmail("Go to gate " + gate);
