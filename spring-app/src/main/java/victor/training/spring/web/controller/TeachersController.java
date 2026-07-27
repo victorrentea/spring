@@ -34,12 +34,12 @@ public class TeachersController {
   public void createTeacher(@Validated @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
   }
-  @PostMapping
+  @PostMapping("/draft")
   public void saveDraftTeacher(
       @Validated(Draft.class) @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
   }
-  @PostMapping
+  @PostMapping("/final")
   public void sumbitFullTeacher(
       @Validated(Final.class) @RequestBody TeacherDto dto) {
     service.createTeacher(dto);
