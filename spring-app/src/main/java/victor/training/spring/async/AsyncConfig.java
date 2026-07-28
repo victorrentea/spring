@@ -2,6 +2,7 @@ package victor.training.spring.async;
 
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.Metrics;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
@@ -12,12 +13,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncConfig {
   @Bean
+  @ConfigurationProperties("pool.bar")
   public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(2); // ca berea si vodca sa curga in paralel
-    executor.setMaxPoolSize(2);
-    executor.setQueueCapacity(500);
-    executor.setThreadNamePrefix("pool-bar-");
     executor.setWaitForTasksToCompleteOnShutdown(true);
     executor.setTaskDecorator(taskDecorator); // decorator setat NEAPARAT inainte de initialize()
     executor.initialize();
