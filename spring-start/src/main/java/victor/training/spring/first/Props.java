@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Validated
 @ConfigurationProperties(prefix="props")
-record Props(
+public record Props(
         String env,
         @NotNull
         Integer gate,
