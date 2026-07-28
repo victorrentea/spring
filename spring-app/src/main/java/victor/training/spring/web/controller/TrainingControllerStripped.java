@@ -1,32 +1,46 @@
 package victor.training.spring.web.controller;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
+import victor.training.spring.web.entity.TrainingId;
 import victor.training.spring.web.service.TrainingService;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+@RestController
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/api/trainings")
 public class TrainingControllerStripped {
   @Autowired
   private TrainingService trainingService;
 
+  @GetMapping
   public List<TrainingDto> getAllTrainings() {
     return trainingService.getAllTrainings();
   }
 
-  public TrainingDto getTrainingById(Long id) {
+  @GetMapping("/{id}")
+  public TrainingDto getTrainingById(@PathVariable Long id) {
     return trainingService.getTrainingById(id);
   }
 
-  // TODO @Valid
-  public void createTraining(TrainingDto dto) throws ParseException {
+  @PostMapping
+  public void createTraining( @Valid @RequestBody TrainingDto dto) throws ParseException {
     trainingService.createTraining(dto);
   }
 
-  public void updateTraining(Long trainingId, TrainingDto dto) throws ParseException {
-    dto.id = trainingId;
+  @PutMapping("/{id}")
+  public void updateTraining(@PathVariable Long id, @Valid @RequestBody TrainingDto dto) throws ParseException {
+    dto.id = id;
     trainingService.updateTraining(dto);
   }
   // TODO Allow only for role 'ADMIN'... or POWER or SUPER
@@ -36,11 +50,20 @@ public class TrainingControllerStripped {
   // TODO @accessController.canDeleteTraining(#id)
   // TODO PermissionEvaluator
 
-  public void deleteTrainingById(Long id) {
+  @DeleteMapping("/{id}")
+//  public void deleteTrainingById(@PathVariable TrainingId id) { copilot stie
+  public void deleteTrainingById(@PathVariable Long id) {
     trainingService.deleteById(id);
   }
+  record TrainingId(long id) {} // peste tot in loc de Long
 
-  public List<TrainingDto> search(TrainingSearchCriteria criteria) {
+  @PostMapping("/search")
+  public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
+    return trainingService.search(criteria);
+  }
+// localhost:8080/api/trainings/search-get?name=J
+  @GetMapping("/search-get")
+  public List<TrainingDto> searchCuGet(TrainingSearchCriteria criteria) {
     return trainingService.search(criteria);
   }
 }
