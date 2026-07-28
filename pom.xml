@@ -22,6 +22,7 @@
    
     <modules>
         <module>spring-start</module>
+        <module>spring-emag</module>
         <module>spring-transaction</module>
         <module>spring-app</module>
         <module>spring-ai</module>
