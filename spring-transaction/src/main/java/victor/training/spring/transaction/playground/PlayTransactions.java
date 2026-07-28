@@ -8,21 +8,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PlayTransactions {
-  private final DataSource dataSource; // since 1998
-  private final JdbcTemplate jdbcTemplate; // since 2001
   private final EntityManager entityManager; // since 2006
   private final MyEntityRepo repo; // = Spring Data JPA, since 2011
   private final OtherClass other;
+  private final JdbcTemplate jdbcTemplate;
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    repo.save(new MyEntity("JPA"));
+    repo.save(new MyEntity("JPA1"));
+    repo.save(new MyEntity("JPA1"));
+    System.out.println("ies man");
   }
 }
 
