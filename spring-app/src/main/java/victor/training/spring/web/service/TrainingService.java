@@ -2,6 +2,8 @@ package victor.training.spring.web.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ public class TrainingService {
   private final EmailSender emailSender;
   private final TeacherBioClient teacherBioClient;
 
+  @Cacheable("trainings") // fara parametri => o singura intrare in cache (SimpleKey.EMPTY)
   public List<TrainingDto> getAllTrainings() {
     List<TrainingDto> dtos = new ArrayList<>();
     for (Training training : trainingRepo.findAll()) {
@@ -57,6 +60,7 @@ public class TrainingService {
     }
   }
 
+  @CacheEvict(cacheNames = "trainings", allEntries = true)
   public void createTraining(TrainingDto dto) {
     if (trainingRepo.getByName(dto.name) != null) {
 //      throw new IllegalArgumentException("Another training with that name already exists");
@@ -71,6 +75,7 @@ public class TrainingService {
     trainingRepo.save(newEntity);
   }
 
+  @CacheEvict(cacheNames = "trainings", allEntries = true)
   public void updateTraining(TrainingDto dto) {
     if (trainingRepo.countByNameAndIdNot(dto.name, dto.id) != 0) {
       throw new IllegalArgumentException("Another training with that name already exists");
@@ -96,6 +101,7 @@ public class TrainingService {
     //training.finishEdit(SecurityContextHolder.getContext().getAuthentication().getName());
   }
 
+  @CacheEvict(cacheNames = "trainings", allEntries = true) // si delete-ul modifica lista
   public void deleteById(Long id) {
     trainingRepo.deleteById(id);
   }
