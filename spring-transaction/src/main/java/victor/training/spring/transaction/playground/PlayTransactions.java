@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -21,19 +20,22 @@ public class PlayTransactions {
   private final JdbcTemplate jdbcTemplate;
 
   @Transactional
-  public void play() {
+  public void play() throws IOException {
     repo.save(new MyEntity("JPA1"));
-    repo.saveAndFlush(new MyEntity("JPA1b"));
-    other.extracted();
+    if (true) throw new IOException("Morala: NICIODATA sa nu dai throws... (din metoda transactional)");
+    // === nu folosi exceptii checked
+    repo.save(new MyEntity("JPA2"));
     System.out.println("ies man");
   }
+
 }
 
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MyEntityRepo repo;
-  @Transactional(propagation = Propagation.REQUIRES_NEW) //bad practice - evitati
+//  @TransactionAttribute(Propagation.REQUIRES_NEW)
+  @Transactional(propagation = Propagation.REQUIRES_NEW) //bad practice - evitati; complex de inteles, greu de testat
   public void extracted() { // to pe threadul ala ai ramas, si save @Transactional se enlisteaze in tx activa pe thread = deci tot aia
     repo.save(new MyEntity("JPA2"));
   }
