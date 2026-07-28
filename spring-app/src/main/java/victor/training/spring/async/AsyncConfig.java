@@ -14,13 +14,13 @@ public class AsyncConfig {
   @Bean
   public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(1);
-    executor.setMaxPoolSize(1);
+    executor.setCorePoolSize(2); // ca berea si vodca sa curga in paralel
+    executor.setMaxPoolSize(2);
     executor.setQueueCapacity(500);
     executor.setThreadNamePrefix("pool-bar-");
-    executor.initialize();
     executor.setWaitForTasksToCompleteOnShutdown(true);
-    executor.setTaskDecorator(taskDecorator);
+    executor.setTaskDecorator(taskDecorator); // decorator setat NEAPARAT inainte de initialize()
+    executor.initialize();
 
     Gauge.builder("poolbar_pool_size", executor::getPoolSize).register(Metrics.globalRegistry);
     Gauge.builder("poolbar_queue_size", executor::getQueueSize).register(Metrics.globalRegistry);

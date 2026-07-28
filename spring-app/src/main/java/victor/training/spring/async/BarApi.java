@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.async.drinks.Beer;
@@ -19,18 +20,18 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @RequiredArgsConstructor
 public class BarApi {
   private final DrinksClient drinksClient;
+  private final ThreadPoolTaskExecutor poolBar;
 
   @GetMapping("api/drink")
   @Timed // = quarkus
   public DillyDilly drink() throws Exception {
     log.debug("Submitting my order");
 
-    var beerPromise = supplyAsync(drinksClient::pourBeer);
-    var vodkaPromise = supplyAsync(drinksClient::pourVodka);
-    // exista 3 threaduri: Tomcat + 2 din ForkJoinPool.commonPool()
-    // ⚠️ e mic th poolul default (NCPU-1) (victor:9) nu e usor configurabil
-    // ⚠️ pierzi trace id
-    // ⚠️ competitionezi unfair cu .parallelStream()
+    var beerPromise = supplyAsync(drinksClient::pourBeer, poolBar);
+    var vodkaPromise = supplyAsync(drinksClient::pourVodka, poolBar);
+    // exista 3 threaduri: Tomcat + 2 din poolBar (executor Spring cu TaskDecorator)
+    // TaskDecorator-ul (ContextSnapshot.captureAll) propaga trace id + MDC pe threadul copil
+    // fata de ForkJoinPool.commonPool(): configurabil, nu pierzi trace id, nu concurezi cu .parallelStream()
     Beer beer = beerPromise.get(); // 1s 🥺
     Vodka vodka = vodkaPromise.get(); // 0s
 
