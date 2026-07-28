@@ -21,9 +21,4 @@ public class OfferGateway {
     }
     return cart;
   }
-
-  /** Expus ca să pot verifica în test ordinea reală a lanțului. */
-  public List<OfferProcessor> processors() {
-    return processors;
-  }
 }

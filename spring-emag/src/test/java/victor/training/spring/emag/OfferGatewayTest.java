@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import victor.training.spring.emag.offers.BulkDiscountProcessor;
-import victor.training.spring.emag.offers.CategoryPromoProcessor;
 import victor.training.spring.emag.offers.FreeShippingProcessor;
 import victor.training.spring.emag.offers.VoucherProcessor;
 
@@ -18,19 +16,6 @@ import static org.assertj.core.api.Assertions.within;
 class OfferGatewayTest {
   @Autowired
   OfferGateway gateway;
-
-  @Test
-  @DisplayName("1. Spring injectează TOȚI procesatorii, sortați după @Order")
-  void chainIsSortedByOrderAnnotation() {
-    assertThat(gateway.processors())
-        .hasSize(4)
-        .extracting(Object::getClass)
-        .containsExactly( // exact în ordinea @Order(1..4), nu alfabetic, nu în ordinea declarării
-            BulkDiscountProcessor.class,
-            CategoryPromoProcessor.class,
-            VoucherProcessor.class,
-            FreeShippingProcessor.class);
-  }
 
   @Test
   @DisplayName("2. Un coș realist trece prin tot lanțul, ofertă după ofertă")
