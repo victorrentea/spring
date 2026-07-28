@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import victor.training.spring.web.MyException;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -34,11 +34,11 @@ public class GlobalExceptionHandler {
     return exception.getMessage(); // don't leak stack traces to clients (Security Best Practice)
   }
 
-  //	@ResponseStatus(NOT_FOUND)
-  //	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
-  //	public String noSuchElementException() {
-  //		return "Not Found";
-  //	}
+  	@ResponseStatus(NOT_FOUND)
+  	@ExceptionHandler(NoSuchElementException.class) // attempted first, as the exception is more specific than 'Exception' above
+  	public String noSuchElementException() {
+  		return "Nu-i";
+  	}
 
   // Return internationalized error messages in the user language from:
   // - the 'Accept-Language' request header via request.getLocale())
