@@ -28,7 +28,10 @@ public class BarApi {
     var beerPromise = supplyAsync(drinksClient::pourBeer);
     var vodkaPromise = supplyAsync(drinksClient::pourVodka);
     // exista 3 threaduri: Tomcat + 2 din ForkJoinPool.commonPool()
-    Beer beer = beerPromise.get(); // 1s
+    // ⚠️ e mic th poolul default (NCPU-1) (victor:9) nu e usor configurabil
+    // ⚠️ pierzi trace id
+    // ⚠️ competitionezi unfair cu .parallelStream()
+    Beer beer = beerPromise.get(); // 1s 🥺
     Vodka vodka = vodkaPromise.get(); // 0s
 
     drinksClient.sendNotification("Dilly"); //-0.5s = 0s
