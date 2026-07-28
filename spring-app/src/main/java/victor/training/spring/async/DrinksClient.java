@@ -3,6 +3,7 @@ package victor.training.spring.async;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -42,10 +43,14 @@ public class DrinksClient {
     // #4 generated client from open-api/swagger 💖
   }
 
+  // fire-and-forget
+  @Async // sa astept in alt thread dupa mailserver
   public void sendNotification(String email) { // TODO outbox pattern
+    //pretend restTemplate
     log.debug("Sending notification (takes time and might fail) {}...", email);
     Sleep.millis(500); // critical but slow work that can fail
     if (Math.random() < 0.5) throw new RuntimeException("Email server down💥");
+      // sare in bg, nu o vede useru!⚠️⚠️⚠️
     log.debug("Notification sent!");
   }
 
