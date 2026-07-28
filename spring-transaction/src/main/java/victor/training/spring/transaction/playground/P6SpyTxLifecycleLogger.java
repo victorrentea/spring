@@ -17,9 +17,6 @@ public class P6SpyTxLifecycleLogger extends JdbcEventListener {
   public void onAfterSetAutoCommit(ConnectionInformation ci, boolean newAutoCommit, boolean oldAutoCommit, SQLException e) {
     if (!newAutoCommit && oldAutoCommit) {
       log.info("0 ms|tx|connection {}|🟢 BEGIN (setAutoCommit(false))", ci.getConnectionId());
-    } else if (newAutoCommit && !oldAutoCommit) {
-      // Hikari face reset la autoCommit=true când conexiunea se întoarce în pool
-      log.info("0 ms|tx|connection {}|⚪ autoCommit=true (conexiunea se întoarce în pool)", ci.getConnectionId());
     }
   }
 
