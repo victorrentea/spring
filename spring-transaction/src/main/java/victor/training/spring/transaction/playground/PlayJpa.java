@@ -1,5 +1,6 @@
 package victor.training.spring.transaction.playground;
 
+import jakarta.persistence.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,18 @@ public class PlayJpa {
     log.info("--- End of method ---");
   }
 
-  public void autoSave() {
+  @Transactional
+  public void autoSave() { // #luca #traditie
     MyEntity e = repo.findById(1L).orElseThrow();
     e.setName("Different");
-    // TODO send update in DB
-  }
+    // 😱 cu puii mei merge asta ?!?
+  } // tine o copie a starii initiale persistente, si la final verifica daca ceva s-a modificat ⇒ UPDATE
+
+//  public void autoSave() { // #luca #traditie
+//    MyEntity e = repo.findById(1L).orElseThrow();
+//    e.setName("Different");
+//    repo.save(e);
+//  }
 
   public void lazyLoading() {
     MyEntity e = repo.findById(1L).orElseThrow();
