@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -22,12 +23,9 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new MyEntity("JPA1"));
-    extracted();
+    repo.saveAndFlush(new MyEntity("JPA1b"));
+    other.extracted();
     System.out.println("ies man");
-  }
-
-  private void extracted() { // to pe threadul ala ai ramas, si save @Transactional se enlisteaze in tx activa pe thread = deci tot aia
-    repo.save(new MyEntity("JPA1"));
   }
 }
 
@@ -35,6 +33,10 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final MyEntityRepo repo;
+  @Transactional(propagation = Propagation.REQUIRES_NEW) //bad practice - evitati
+  public void extracted() { // to pe threadul ala ai ramas, si save @Transactional se enlisteaze in tx activa pe thread = deci tot aia
+    repo.save(new MyEntity("JPA2"));
+  }
 }
 
 // TODO
