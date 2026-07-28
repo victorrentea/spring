@@ -1,0 +1,23 @@
+{
+  "name": "spring",
+  "version": "1.0.0",
+  "description": "Among the things demonstrated in this project: - Bean Lifecycle - @Configuration/@Bean - Spring Security, including XSS, CSRF, CORS, and SSO with KeyCloak - Hibernate Repository (Spring Data) - @Transactional - Monitoring with Micrometer/Prometheus/Graphana - Caching - @Async, @Scheduled - @EventListener - @ConfigurationProperties- - Aspects - REST Endpoints - GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorrentea/spring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorrentea/spring/issues"
+  },
+  "homepage": "https://github.com/victorrentea/spring#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.0"
+  }
+}

@@ -34,3 +34,7 @@ prod/
 capture/
 in/
 /instance.dat
+
+# Playwright CLI (browser automation demos)
+node_modules/
+.playwright-cli/
