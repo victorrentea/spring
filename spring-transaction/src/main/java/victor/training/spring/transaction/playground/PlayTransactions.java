@@ -22,8 +22,12 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     repo.save(new MyEntity("JPA1"));
-    repo.save(new MyEntity("JPA1"));
+    extracted();
     System.out.println("ies man");
+  }
+
+  private void extracted() { // to pe threadul ala ai ramas, si save @Transactional se enlisteaze in tx activa pe thread = deci tot aia
+    repo.save(new MyEntity("JPA1"));
   }
 }
 
