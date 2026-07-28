@@ -3,8 +3,10 @@ package victor.training.spring.first;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,5 +38,9 @@ public class X {
     Sloth.statica();
 //    Environment environment = applicationContext.getEnvironment();
 //    environment.getProperty()
+  }
+  @EventListener
+  public void on(ApplicationStartingEvent e) {
+//    e.getBootstrapContext().
   }
 }
