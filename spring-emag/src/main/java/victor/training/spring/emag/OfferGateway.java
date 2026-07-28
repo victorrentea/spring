@@ -1,6 +1,6 @@
 package victor.training.spring.emag;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,13 +11,9 @@ import java.util.List;
  * Nu enumăr nicăieri implementările: adaug un @Component nou și intră singur în lanț.
  */
 @Service
+@RequiredArgsConstructor
 public class OfferGateway {
   private final List<OfferProcessor> processors;
-
-  @Autowired
-  public OfferGateway(List<OfferProcessor> processors) {
-    this.processors = processors;
-  }
 
   public Cart applyOffers(Cart cart) {
     for (OfferProcessor processor : processors) {
