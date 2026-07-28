@@ -22,6 +22,8 @@ public class FirstApplication implements CommandLineRunner {
   public static void main(String[] args) {
     SpringApplication.run(FirstApplication.class);
   }
+//@Autowired
+//Sloth sloth;
 
   @Autowired
   private X x;
@@ -36,3 +38,4 @@ public class FirstApplication implements CommandLineRunner {
     System.out.println(x.logic());
   }
 }
+
