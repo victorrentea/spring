@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -21,23 +20,30 @@ public class PlayTransactions {
 
   @Transactional
   public void play() throws IOException {
-    repo.save(new MyEntity("JPA1"));
-    if (true) throw new IOException("Morala: NICIODATA sa nu dai throws... (din metoda transactional)");
-    // === nu folosi exceptii checked
-    repo.save(new MyEntity("JPA2"));
-    System.out.println("ies man");
+    try {
+      repo.save(new MyEntity("JPA1"));
+      repo.save(new MyEntity("JPA2"));
+      System.out.println(1/0); // nu cauzeaza rollback
+    } catch (Throwable e) {
+      log.error("Shawarma", e);
+    }
+    try {
+      other.extracted();
+    } catch(RuntimeException e) { // dar asta da
+      log.info("Ignoring: " + e);
+      //TODO am dat mail la biz " ca ce fac pe erori" in Jun 2022
+    }
   }
-
 }
-
 @Service
 @RequiredArgsConstructor
 class OtherClass {
   private final MyEntityRepo repo;
-//  @TransactionAttribute(Propagation.REQUIRES_NEW)
-  @Transactional(propagation = Propagation.REQUIRES_NEW) //bad practice - evitati; complex de inteles, greu de testat
+  //(propagation = Propagation.REQUIRES_NEW) //bad practice - evitati; complex de inteles, greu de testat
+  @Transactional //~> la trecerea exceptiei runtime prin proxyul asta, se marcheaza neresuscitabil tx activa ca "rollback-only"
   public void extracted() { // to pe threadul ala ai ramas, si save @Transactional se enlisteaze in tx activa pe thread = deci tot aia
-    repo.save(new MyEntity("JPA2"));
+    repo.save(new MyEntity("JPA3"));
+    if (true) throw new RuntimeException("BUG🐞");
   }
 }
 
