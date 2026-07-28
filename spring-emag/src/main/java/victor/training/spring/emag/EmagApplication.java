@@ -11,9 +11,6 @@ public class EmagApplication {
     try (ConfigurableApplicationContext context = SpringApplication.run(EmagApplication.class, args)) {
       OfferGateway gateway = context.getBean(OfferGateway.class);
 
-      System.out.println("Lanțul de oferte, în ordinea dată de @Order:");
-      gateway.processors().forEach(p -> System.out.println("  -> " + p.getClass().getSimpleName()));
-
       Cart cart = new Cart(
           new CartItem("Laptop", Category.ELECTRONICS, 3000, 1),
           new CartItem("Mouse", Category.ELECTRONICS, 100, 3),
