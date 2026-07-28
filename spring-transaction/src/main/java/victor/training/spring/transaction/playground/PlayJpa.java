@@ -32,10 +32,11 @@ public class PlayJpa {
 //    repo.save(e);
 //  }
 
+  @Transactional(readOnly = true)
   public void lazyLoading() {
     MyEntity e = repo.findById(1L).orElseThrow();
     log.info("Message: {}", e.getName());
-    log.info("Children: {}", e.getTags());
+    log.info("Children: {}", e.getTags().stream().map(Object::toString).toList());
   }
 
   @GetMapping("lazy")
