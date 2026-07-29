@@ -61,7 +61,8 @@ public class TrainingControllerStripped {
   public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
     return trainingService.search(criteria);
   }
-// localhost:8080/api/trainings/search-get?name=J
+
+  // localhost:8080/api/trainings/search-get?name=J
   @GetMapping("/search-get")
   public List<TrainingDto> searchCuGet(TrainingSearchCriteria criteria) {
     return trainingService.search(criteria);

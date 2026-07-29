@@ -17,6 +17,8 @@ public class AsyncConfig {
   public ThreadPoolTaskExecutor poolBar(TaskDecorator taskDecorator) {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
     executor.setWaitForTasksToCompleteOnShutdown(true);
+    // virtual threads
+//    executor.setThreadFactory(Thread.ofVirtual().name("pool-bar-", 0).factory());
     executor.setTaskDecorator(taskDecorator); // decorator setat NEAPARAT inainte de initialize()
     executor.initialize();
 
