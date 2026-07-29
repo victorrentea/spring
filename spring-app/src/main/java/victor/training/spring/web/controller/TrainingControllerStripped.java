@@ -54,7 +54,8 @@ public class TrainingControllerStripped {
 
 //  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 //  @PreAuthorize("hasRole('ADMIN')") // rolul in spring este implicit prefixat cu "ROLE_" < vine din 1998
-  @Secured({"ROLE_ADMIN","ROLE_POWER"}) // "sau" intre
+//  @Secured({"ROLE_ADMIN","ROLE_POWER"}) // "sau" intre
+  @Secured({"ROLE_TRAINING_DELETE"}) // "sau" intre
   @DeleteMapping("/{id}")
   public void deleteTrainingById(@PathVariable Long id) {
     trainingService.deleteById(id);

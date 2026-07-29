@@ -4,8 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 public enum UserRole {
-  USER("TRAINING_SEARCH", "TRAINING_EDIT"),
-  POWER("TRAINING_SEARCH", "TRAINING_EDIT", "TRAINING_DELETE"),
+  USER(
+      "TRAINING_SEARCH",
+      "TRAINING_EDIT"),
+  POWER(
+      "TRAINING_SEARCH",
+      "TRAINING_EDIT",
+      "TRAINING_DELETE"),
   ADMIN("TRAINING_SEARCH", "TRAINING_EDIT", "TRAINING_DELETE", "TEACHER_EDIT");
   private final List<String> authorities;
 

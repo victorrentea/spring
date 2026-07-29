@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import victor.training.spring.web.entity.UserRole;
 
 @Slf4j
 @Profile("userpass")
@@ -48,13 +49,19 @@ public class UserPassSecurity {
   // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user").password("user").roles("USER").build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin").password("admin").roles("ADMIN").build();
-    UserDetails power = User.withDefaultPasswordEncoder()
-            .username("power").password("power").roles("POWER").build();
+    UserDetails user = createUser("user", UserRole.USER);
+    UserDetails admin = createUser("admin", UserRole.ADMIN);
+    UserDetails power = createUser("power", UserRole.POWER);
     return new InMemoryUserDetailsManager(user, admin, power);
+  }
+
+  // explode the coarse role into fine-grained authorities, like TokenRolesToLocalRoles does for OIDC:
+  // POWER => ROLE_TRAINING_SEARCH, ROLE_TRAINING_EDIT, ROLE_TRAINING_DELETE ('.roles()' adds the "ROLE_" prefix)
+  private UserDetails createUser(String username, UserRole role) {
+    return User.withDefaultPasswordEncoder()
+            .username(username).password(username)
+            .roles(role.getSubRoles().toArray(String[]::new))
+            .build();
   }
 
 }
