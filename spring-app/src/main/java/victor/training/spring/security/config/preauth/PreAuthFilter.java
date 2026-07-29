@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import victor.training.spring.web.entity.UserRole;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
   public PreAuthFilter(AuthenticationManager authenticationManager) {
     setAuthenticationManager(requireNonNull(authenticationManager));
   }
-
+// curl -H "x-user: user" -H "x-user-roles: ROLE_USER" http://localhost:8080/api/user/current
   @Override
   protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
     String username = httpRequest.getHeader("x-user");
@@ -25,7 +26,7 @@ public class PreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
     }
     List<String> roles = List.of(rolesStr.split(","));
 
-//        roles = UserRole.expandToSubRoles(roles);
+    roles = UserRole.expandToSubRoles(roles);
 
     return new PreAuthPrincipal(username, roles);
   }
