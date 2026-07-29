@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
@@ -50,11 +52,18 @@ public class TrainingControllerStripped {
   // TODO @accessController.canDeleteTraining(#id)
   // TODO PermissionEvaluator
 
+//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//  @PreAuthorize("hasRole('ADMIN')") // rolul in spring este implicit prefixat cu "ROLE_" < vine din 1998
+  @Secured({"ROLE_ADMIN","ROLE_POWER"}) // "sau" intre
   @DeleteMapping("/{id}")
-//  public void deleteTrainingById(@PathVariable TrainingId id) { copilot stie
   public void deleteTrainingById(@PathVariable Long id) {
     trainingService.deleteById(id);
   }
+
+
+
+
+//  public void deleteTrainingById(@PathVariable TrainingId id) { copilot stie
   record TrainingId(long id) {} // peste tot in loc de Long
 
   @PostMapping("/search")

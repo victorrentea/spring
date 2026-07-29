@@ -111,5 +111,10 @@ public class TrainingService {
             .map(TrainingDto::new)
             .collect(toList());
   }
+
+  public String altaMetoda() {
+    //
+    return SecurityContextHolder.getContext().getAuthentication().getName();
+  }
 }
 

@@ -5,12 +5,16 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Slf4j
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data // not in prod
 public class Training {
   public static final int LOCK_DURATION_SECONDS = 20;
@@ -24,6 +28,11 @@ public class Training {
   private Teacher teacher;
   @Enumerated(EnumType.STRING)
   private ProgrammingLanguage programmingLanguage;
+  @CreatedBy
+  private String createdBy;
+  @LastModifiedBy
+  private String modifiedBy;
+  // daca vrei audit> Hibernate Envers,
 
 
   public Training() {
