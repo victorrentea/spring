@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -21,7 +21,7 @@ import java.util.Map;
 record Props(
         String env,
         Integer gate,
-        @NotNull String welcomeMessage,
+        @NotBlank String welcomeMessage,
         List<URL> supportUrls,
         Map<Locale, String> contactPhones,
         @Valid Help help,
