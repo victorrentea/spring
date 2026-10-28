@@ -1,15 +1,8 @@
 package victor.training.spring.aspects;
 
 
-import io.micrometer.core.annotation.Timed;
-import jakarta.persistence.Cacheable;
-import org.hibernate.annotations.Cache;
-import org.springframework.aop.framework.AopContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
@@ -41,42 +34,24 @@ class SecondGrade {
   }
 
   public void mathClass() {
-//    Maths maths = new Maths(); // n-ar fi mers proxyurile
     System.out.println("Ce mi s-a injectat:" + maths.getClass());
     System.out.println("8 + 4 = " + maths.sum(8, 4));
     System.out.println("6 + 6 = " + maths.sum(6, 6));
     System.out.println("4 x 3 = " + maths.product(4, 3));
   }
 }
-// Cand nu merg proxyurile?
+// cum stric proxyurile?
 
-/*final💥*/
-/*record💥*/
-class Maths {
-//  @Secured("ADMIN")
-//  @Transactional
-//  @Cacheable
-//  @Timed // cat a durat executia functiei in Grafana
-  public /*final😶*/ int sum(int a, int b) {
-
-    if (true) throw new RuntimeException("BUG🐞");
+class  Maths {
+  public int sum(int a, int b) {
     return a + b;
   }
-  public /*static😶*/ int product(int a, int b) {
-    int produs=0;
-    for (int i = 0; i < b; i++) {
-//      Maths proxy = (Maths) AopContext.currentProxy();// 🤖
-      // sau @Autowired Maths maths;
-      produs = sum(produs, a); // apelul local de metoda (in aceeasi clasa) NU e intereceptat de proxy.
-    }
-    return produs;
+
+  public int product(int a, int b) {
+    return a * b;
   }
 }
-class MyUtilHellper {
-  public void method() {
-    
-  }
-}
+
 
 // Key Points
 // - Class Proxy using CGLIB Enhancer to extend the proxied class
