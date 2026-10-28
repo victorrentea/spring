@@ -3,6 +3,8 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +24,7 @@ record Props(
         @NotNull String welcomeMessage,
         List<URL> supportUrls,
         Map<Locale, String> contactPhones,
-        Help help,
+        @Valid Help help,
         Map<TenantEnum, TenantConfig> tenants
 ) {
   enum TenantEnum {FR, RO} //  ⚠️ app may fail to start if config mentions an unknown value ('ES')
@@ -38,6 +40,10 @@ record Props(
           File file,
           String email
   ) {
+    @AssertTrue(message = "Help file not found")
+    boolean isFileExisting() {
+      return file.exists();
+    }
   }
 
   @PostConstruct
