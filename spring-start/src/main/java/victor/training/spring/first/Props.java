@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,7 +23,7 @@ record Props(
         String env,
         Integer gate,
         @NotBlank String welcomeMessage,
-        List<URL> supportUrls,
+        @NotEmpty List<URL> supportUrls,
         Map<Locale, String> contactPhones,
         @Valid Help help,
         Map<TenantEnum, TenantConfig> tenants
