@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -37,13 +36,9 @@ record Props(
 
   record Help(
           Integer appId,
-          File file,
+          @FileExists File file,
           String email
   ) {
-    @AssertTrue(message = "Help file not found")
-    boolean isFileExisting() {
-      return file.exists();
-    }
   }
 
   @PostConstruct
