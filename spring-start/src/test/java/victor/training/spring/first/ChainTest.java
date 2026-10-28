@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = {Chain.class, AmountValidator.class, TerroristValidator.class}) // only the beans under test: no Props, so the app config can't break this test
 class ChainTest {
 
   @Autowired
