@@ -3,12 +3,13 @@ package victor.training.spring.first;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import victor.training.AmountValidator;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {Chain.class, AmountValidator.class, TerroristValidator.class}) // only the beans under test: no Props, so the app config can't break this test
+@SpringBootTest(classes = {Chain.class, AmountValidator.class, TerroristValidator.class, ElonValidator.class}) // only the beans under test: no Props, so the app config can't break this test
 class ChainTest {
 
   @Autowired
@@ -61,5 +62,16 @@ class ChainTest {
     assertEquals(2, result.size());
     assertTrue(result.contains("Amount must be positive"));
     assertTrue(result.contains("To is blacklisted"));
+  }
+
+  @Test
+  void validate_toElon_skipsAllOtherValidators() {
+    Transaction t = new Transaction();
+    t.amount = -1.0; // would fail AmountValidator
+    t.to = "Elon";
+
+    List<String> result = chain.validate(t);
+
+    assertTrue(result.isEmpty(), "Expected Elon to be approved without running the other validators");
   }
 }

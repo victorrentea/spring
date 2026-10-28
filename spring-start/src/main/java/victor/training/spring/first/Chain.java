@@ -1,6 +1,7 @@
 package victor.training.spring.first;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class Chain {
   public List<String> validate(Transaction transaction) {
     List<String> list = new ArrayList<>();
     for (TransactionValidator validator : validators) {
+      if (validator.stopsChain(transaction)) {
+        break; // the remaining validators are skipped
+      }
       list.addAll(validator.validate(transaction));
     }
     return list;
@@ -31,15 +35,22 @@ class Transaction {
 
 interface TransactionValidator {
   List<String> validate(Transaction transaction);
+
+  default boolean stopsChain(Transaction transaction) {
+    return false;
+  }
 }
 
 @Component
-class AmountValidator implements TransactionValidator {
+@Order(1) // first in chain: if it ran later, the validators before it could still reject the transaction
+class ElonValidator implements TransactionValidator {
   public List<String> validate(Transaction transaction) {
-    if (transaction.amount <= 0) {
-      return List.of("Amount must be positive");
-    }
     return List.of();
+  }
+
+  @Override
+  public boolean stopsChain(Transaction transaction) {
+    return "Elon".equals(transaction.to); // we know Elon
   }
 }
 
