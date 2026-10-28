@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class Y {
   private final MailService mailService; // polymorphic injection

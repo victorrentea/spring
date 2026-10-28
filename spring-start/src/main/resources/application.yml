@@ -14,7 +14,6 @@ spring:
 props:
   env: prod
   gate: 123
-  welcomeMessage: "nimic"
   supportUrls:
     - http://stackoverflow.com
     - http://baeldung.com
@@ -33,3 +32,4 @@ props:
     RO:
       greeting: Salut!
       lunch: PT30m
+  welcome-message: autocomplete pt cine-o mai tasta
