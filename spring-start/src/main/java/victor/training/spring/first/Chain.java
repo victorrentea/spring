@@ -42,16 +42,6 @@ interface TransactionValidator {
 }
 
 @Component
-class AmountValidator implements TransactionValidator {
-  public List<String> validate(Transaction transaction) {
-    if (transaction.amount <= 0) {
-      return List.of("Amount must be positive");
-    }
-    return List.of();
-  }
-}
-
-@Component
 @Order(1) // first in chain: if it ran later, the validators before it could still reject the transaction
 class ElonValidator implements TransactionValidator {
   public List<String> validate(Transaction transaction) {

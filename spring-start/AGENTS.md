@@ -1,0 +1,1 @@
+In `src/main/java`, use Lombok `@RequiredArgsConstructor` with `final` fields for dependency injection; do not use `@Autowired` field injection. Keep property configuration such as `@Value` unchanged unless a task explicitly requires otherwise.

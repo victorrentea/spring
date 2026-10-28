@@ -38,7 +38,7 @@ record Props(
 
   record Help(
           Integer appId,
-          @FileExists File file,
+          /*@FileExists */File file,
           @Email String email
   ) {
   }

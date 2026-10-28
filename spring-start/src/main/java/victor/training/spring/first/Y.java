@@ -1,18 +1,40 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class Y {
-  @Autowired
-  private MailService mailService; // polymorphic injection
-  @Value("${props.gate}")
-  private Integer gate;
+  private final MailService mailService; // polymorphic injection
+  private final Props props;
+  @Lazy // injecteaza un proxy; X real e cerut din context abia la primul apel
+  private final X x;
+
+  @PostConstruct
+  public void method() {
+    System.out.println("Oare ce instanta de X am primit?" + x.getClass());
+  }
+
+
+
+
+
+  
+//  @Value("${props.gate}")
+//  private final Integer gate;
+
+  // acum lombok genereaza EXACT asta:
+//  public Y(MailService mailService, @Value("${props.gate}") Integer gate) {
+//    this.mailService = mailService;
+//    this.gate = gate;
+//  }
 
   public int logic() {
-    mailService.sendEmail("Go to gate " + gate);
+    mailService.sendEmail("Go to gate " + props.gate());
 
     return 1;
   }

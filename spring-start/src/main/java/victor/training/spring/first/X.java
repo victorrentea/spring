@@ -1,14 +1,13 @@
 package victor.training.spring.first;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor // ce face asta
 @Service
 public class X {
-  @Autowired
-  private Y y;
-  @Autowired
-  private Z z;
+  private final Y y;
+  private final Z z;
 
   public int logic() {
     return 1 + y.logic();
