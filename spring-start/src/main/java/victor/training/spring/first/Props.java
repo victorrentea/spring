@@ -3,6 +3,9 @@ package victor.training.spring.first;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
 import java.net.URL;
@@ -11,10 +14,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@Validated
+@ConfigurationProperties(prefix = "props")
 record Props(
         String env,
         Integer gate,
-        String welcomeMessage,
+        @NotNull String welcomeMessage,
         List<URL> supportUrls,
         Map<Locale, String> contactPhones,
         Help help,
