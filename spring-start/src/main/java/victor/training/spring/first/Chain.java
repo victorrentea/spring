@@ -1,16 +1,16 @@
 package victor.training.spring.first;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class Chain {
-  private static final List<TransactionValidator> validators = List.of(
-          new AmountValidator(),
-          new TerroristValidator()
-  );
+  private final List<TransactionValidator> validators; // Spring injects all beans implementing the interface
 
   public List<String> validate(Transaction transaction) {
     List<String> list = new ArrayList<>();
@@ -33,6 +33,7 @@ interface TransactionValidator {
   List<String> validate(Transaction transaction);
 }
 
+@Component
 class AmountValidator implements TransactionValidator {
   public List<String> validate(Transaction transaction) {
     if (transaction.amount <= 0) {
@@ -42,6 +43,7 @@ class AmountValidator implements TransactionValidator {
   }
 }
 
+@Component
 class TerroristValidator implements TransactionValidator {
   public List<String> validate(Transaction transaction) {
     List<String> naughtyList = List.of("BadGuy", "BadGirl");
