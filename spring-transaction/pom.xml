@@ -32,6 +32,12 @@
             <version>3.9.1</version>
         </dependency>
         <dependency>
+            <!-- sequence diagrams of calls, transaction frames and SQL: target/sequence + http://localhost:8080/sequence -->
+            <groupId>victor.training.spring</groupId>
+            <artifactId>spring-sequence-diagram</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
