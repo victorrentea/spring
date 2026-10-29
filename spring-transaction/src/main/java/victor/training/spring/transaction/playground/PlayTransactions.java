@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -21,8 +23,9 @@ public class PlayTransactions {
 
   @Transactional
   public void play() {
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+    other.extracted();
     repo.save(new MyEntity("JPA4"));
+    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
   }
 }
 
@@ -30,6 +33,12 @@ public class PlayTransactions {
 @RequiredArgsConstructor
 class OtherClass {
   private final MyEntityRepo repo;
+//  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void extracted() {
+    CompletableFuture.runAsync(() ->
+      repo.save(new MyEntity("JPA_separat"))
+    );
+  }
 }
 
 // TODO
