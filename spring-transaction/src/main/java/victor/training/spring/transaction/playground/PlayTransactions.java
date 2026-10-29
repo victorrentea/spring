@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -22,7 +24,7 @@ public class PlayTransactions {
   private final OtherClass other;
 
   @Transactional
-  public void play() {
+  public void play() throws FileNotFoundException {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
     var name = other.apelDeApi();
@@ -30,9 +32,12 @@ public class PlayTransactions {
     jdbcTemplate.update("insert into " +
             "MY_ENTITY(id, name) " +
             "values (100,'%s')".formatted(name));
+//    new FileReader("c:\\macos.txt"); // ⇒COMMIT in puii mei ?! 🤬🤬🤬🤬😡😡throws Checked exception mostenit de la Enterprise Java Beans
+//    if (true) throw new RuntimeException("Eroare🐞"); // ⇒ ROLLBACK
+    log.info("ies din metoda");
   }
-}
 
+}
 @Service
 @RequiredArgsConstructor
 class OtherClass {
