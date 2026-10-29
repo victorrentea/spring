@@ -26,7 +26,10 @@ public class PlayTransactions {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
     var name = other.apelDeApi();
-    jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
+//    name="');DROP TABLE MY_ENTITY;--";
+    jdbcTemplate.update("insert into " +
+            "MY_ENTITY(id, name) " +
+            "values (100,'%s')".formatted(name));
   }
 }
 
