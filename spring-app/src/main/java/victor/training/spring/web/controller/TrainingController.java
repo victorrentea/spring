@@ -1,6 +1,5 @@
 package victor.training.spring.web.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -20,7 +19,7 @@ import static org.springframework.http.MediaType.IMAGE_JPEG;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/trainings")
-public class TrainingController {
+public class TrainingController implements TrainingApiDocs {
   private final TrainingService trainingService;
 
   @GetMapping
@@ -34,13 +33,12 @@ public class TrainingController {
     //TODO return 404 if not found
   }
 
-  @Operation(description = "Create a training")
+  @Override
   @PostMapping
   public void create(@RequestBody @Validated TrainingDto dto) {
     trainingService.createTraining(dto);
   }
 
-  @Operation(description = "Create a training")
   @PutMapping("{trainingId}")
   public void update(@PathVariable Long trainingId, @RequestBody TrainingDto dto) {
     dto.id = trainingId;
