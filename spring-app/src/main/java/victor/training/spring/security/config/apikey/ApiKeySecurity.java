@@ -21,7 +21,7 @@ public class ApiKeySecurity {
     log.warn("Using");
   }
 
-  @Value("${api-key:secret}")
+  @Value("${api-key}")
   private String apiKey;
 
   @Bean
