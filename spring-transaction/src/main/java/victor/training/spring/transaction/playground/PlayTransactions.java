@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PlayTransactions {
   private final DataSource dataSource; // since 1998
@@ -23,11 +24,10 @@ public class PlayTransactions {
   private final MyEntityRepo repo; // = Spring Data JPA, since 2011
   private final OtherClass other;
 
-  @Transactional
   public void play() throws FileNotFoundException {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
-    var name = other.apelDeApi();
+    var name = other.apelDeApi(); // crezi ca ia 200ms da ia 2min in prod
 //    name="');DROP TABLE MY_ENTITY;--";
     jdbcTemplate.update("insert into " +
             "MY_ENTITY(id, name) " +
