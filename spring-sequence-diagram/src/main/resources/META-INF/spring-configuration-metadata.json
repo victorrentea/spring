@@ -1,0 +1,15 @@
+{
+  "groups": [
+    {"name": "sequence", "type": "victor.training.sequence.SequenceProperties", "description": "Sequence diagrams of calls, transactions and SQL."}
+  ],
+  "properties": [
+    {"name": "sequence.enabled", "type": "java.lang.Boolean", "defaultValue": true, "description": "Turns the whole thing off when false."},
+    {"name": "sequence.base-packages", "type": "java.util.List<java.lang.String>", "description": "Whose beans become participants. Default: the package of your @SpringBootApplication."},
+    {"name": "sequence.output-dir", "type": "java.lang.String", "defaultValue": "target/sequence", "description": "Where the .svg/.puml files and index.html are written."},
+    {"name": "sequence.show-connections", "type": "java.lang.Boolean", "defaultValue": true, "description": "Draw taking a JDBC connection from the pool and giving it back."},
+    {"name": "sequence.keep-in-memory", "type": "java.lang.Integer", "defaultValue": 30, "description": "How many diagrams the /sequence page remembers."},
+    {"name": "sequence.max-label-length", "type": "java.lang.Integer", "defaultValue": 110, "description": "Longer SQL is cut with an ellipsis."},
+    {"name": "sequence.http.enabled", "type": "java.lang.Boolean", "defaultValue": true, "description": "A diagram per HTTP request, and the live page at /sequence."},
+    {"name": "sequence.http.excluded-paths", "type": "java.util.List<java.lang.String>", "defaultValue": ["/sequence", "/h2-console", "/actuator", "/favicon.ico", "/error"], "description": "Requests whose path starts with one of these are not drawn."}
+  ]
+}

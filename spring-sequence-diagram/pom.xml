@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>victor.training.spring</groupId>
+        <artifactId>spring</artifactId>
+        <version>1.0</version>
+    </parent>
+    <artifactId>spring-sequence-diagram</artifactId>
+    <packaging>jar</packaging>
+    <description>
+        Drop-in Spring Boot auto-configuration drawing sequence diagrams of what really ran:
+        calls between beans, transaction boundaries and every JDBC statement. Any database.
+    </description>
+
+    <dependencies>
+        <!-- ===== always needed ===== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <!-- the advisor around your beans' public methods is matched by an AspectJ expression -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <dependency>
+            <!-- spans are recorded with the OpenTelemetry SDK, in-process: nothing is exported -->
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <!-- wraps every DataSource bean: SQL, getConnection, commit, rollback — driver-agnostic -->
+            <groupId>net.ttddyy</groupId>
+            <artifactId>datasource-proxy</artifactId>
+            <version>1.11.1</version>
+        </dependency>
+        <dependency>
+            <!-- renders .puml to .svg in-process; sequence diagrams need no Graphviz -->
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml-mit</artifactId>
+            <version>1.2026.9</version>
+        </dependency>
+
+        <!-- ===== optional: each part switches on when the application already has it ===== -->
+        <dependency>
+            <!-- transaction frames; TransactionExecutionListener needs Spring 6.1+ (Boot 3.2+) -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <!-- calls to Spring Data repositories, named after your interface -->
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <!-- a diagram per HTTP request + the live page at /sequence -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <!-- @SequenceDiagram on tests -->
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- ===== tests: plain JDBC on two different databases, no JPA ===== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
