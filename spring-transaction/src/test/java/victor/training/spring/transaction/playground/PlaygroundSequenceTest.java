@@ -15,7 +15,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * The experiments TransactionsApp runs at startup are drawn too: target/sequence/TransactionsApp.start.svg
  */
 @SequenceDiagram
-@SpringBootTest(webEnvironment = RANDOM_PORT, properties = "spring.datasource.url=jdbc:h2:mem:playground;DB_CLOSE_DELAY=-1")
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = "spring.datasource.url=jdbc:p6spy:h2:mem:playground;DB_CLOSE_DELAY=-1")
 class PlaygroundSequenceTest {
   @Autowired
   PlayJpa jpa;

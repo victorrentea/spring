@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
  * Draws what the exercises do right now: solve one, re-run, and watch its frame change colour.
  */
 @SequenceDiagram
-@SpringBootTest(properties = "spring.datasource.url=jdbc:h2:mem:exceptions;DB_CLOSE_DELAY=-1")
+@SpringBootTest(properties = "spring.datasource.url=jdbc:p6spy:h2:mem:exceptions;DB_CLOSE_DELAY=-1")
 class ExceptionsSequenceTest {
   @Autowired
   Caller caller;

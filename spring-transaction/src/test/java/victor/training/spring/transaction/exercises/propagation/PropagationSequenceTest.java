@@ -11,7 +11,7 @@ import victor.training.sequence.SequenceDiagram;
  * open target/sequence/index.html after running this.
  */
 @SequenceDiagram
-@SpringBootTest(properties = "spring.datasource.url=jdbc:h2:mem:propagation;DB_CLOSE_DELAY=-1")
+@SpringBootTest(properties = "spring.datasource.url=jdbc:p6spy:h2:mem:propagation;DB_CLOSE_DELAY=-1")
 class PropagationSequenceTest {
   @SpringBootApplication
   static class App { // the exercise package has no @SpringBootApplication of its own
