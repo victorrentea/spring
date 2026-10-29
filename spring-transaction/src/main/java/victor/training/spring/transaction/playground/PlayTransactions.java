@@ -25,6 +25,7 @@ public class PlayTransactions {
   public void play() {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
+    var name = other.apelDeApi();
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
   }
 }
@@ -38,6 +39,14 @@ class OtherClass {
     CompletableFuture.runAsync(() ->
       repo.save(new MyEntity("JPA_separat"))
     );
+  }
+  public String apelDeApi() {
+      try {
+          Thread.sleep(1000);
+      } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+      }
+      return "API_RESULT";
   }
 }
 
