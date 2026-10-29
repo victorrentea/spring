@@ -24,8 +24,9 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class GlobalExceptionHandler {
   private final MessageSource messageSource;
 
-  @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(Exception.class)
+  @ExceptionHandler(Exception.class) // daca sare ceva de tipul asta (adica taote),
+  @ResponseStatus(INTERNAL_SERVER_ERROR) // intoarce 500 pe reponse
+  // cu bodyul returnat de met asta
   public String onException(Exception exception, HttpServletRequest request) throws Exception {
     if (exception instanceof AccessDeniedException) {
       throw exception; // allow 403 to go out
@@ -44,8 +45,8 @@ public class GlobalExceptionHandler {
   // - the 'Accept-Language' request header via request.getLocale())
   // - the language in the Access Token via SecurityContextHolder
 
+  @ExceptionHandler(MyException.class) //
   @ResponseStatus(INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(MyException.class)
   public String onMyException(MyException exception, HttpServletRequest request) throws Exception {
     String errorMessageKey = "error." + exception.getCode().name();
     Locale clientLocale = request.getLocale(); // or from the Access Token
