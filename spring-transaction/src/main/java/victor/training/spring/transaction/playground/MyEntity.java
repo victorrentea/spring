@@ -2,6 +2,7 @@ package victor.training.spring.transaction.playground;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class MyEntity {
   private Long id;
   @NotNull
   @Column
+  @Size(min=4)
   private String name;
   @ElementCollection
   private List<String> tags = new ArrayList<>();

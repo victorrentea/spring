@@ -22,7 +22,7 @@ public class PlayTransactions {
   @Transactional
   public void play() {
     jdbcTemplate.update("insert into MY_ENTITY(id, name) values (100,'SQL')");
-    repo.save(new MyEntity("JPA"));
+    repo.save(new MyEntity("JPA4"));
   }
 }
 
