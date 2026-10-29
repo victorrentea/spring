@@ -24,6 +24,12 @@ public class PlayTransactions {
   private final MyEntityRepo repo; // = Spring Data JPA, since 2011
   private final OtherClass other;
 
+  @Transactional(propagation = Propagation.NOT_SUPPORTED) // overrides the class-level
+  public void euDoarUna() {
+    var name = other.apelDeApi(); // crezi ca ia 200ms da ia 2min in prod
+    repo.save(new MyEntity("Doar eu"));
+  }
+
   public void play() throws FileNotFoundException {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
