@@ -2,11 +2,13 @@ package victor.training.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import victor.training.spring.web.controller.dto.CurrentUserDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +23,10 @@ public class UserController {
     log.info("Return current user");
     CurrentUserDto dto = new CurrentUserDto();
     dto.username = alta();
-    dto.authorities = List.of(); // TODO
+    dto.authorities = new ArrayList<>();
+    for (GrantedAuthority authority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+      dto.authorities.add(authority.getAuthority());
+    }
     return dto;
   }
 

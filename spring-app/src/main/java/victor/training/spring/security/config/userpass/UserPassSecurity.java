@@ -14,6 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import victor.training.spring.web.entity.UserRole;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Profile("userpass")
@@ -48,13 +52,23 @@ public class UserPassSecurity {
   // *** Dummy users with plain text passwords - NEVER USE IN PRODUCTION
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user").password("user").roles("USER").build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin").password("admin").roles("ADMIN").build();
-    UserDetails power = User.withDefaultPasswordEncoder()
-            .username("power").password("power").roles("POWER").build();
-    return new InMemoryUserDetailsManager(user, admin, power);
+    return new InMemoryUserDetailsManager(
+            createUser("user", UserRole.USER),
+            createUser("admin", UserRole.ADMIN),
+            createUser("power", UserRole.POWER));
+  }
+
+  private UserDetails createUser(String username, UserRole role) {
+    List<String> authorities = new ArrayList<>();
+    authorities.add("ROLE_" + role.name());
+    for (String permission : role.getSubRoles()) {
+      authorities.add("ROLE_" + permission);
+    }
+    return User.withDefaultPasswordEncoder()
+            .username(username)
+            .password(username)
+            .authorities(authorities.toArray(new String[0]))
+            .build();
   }
 
 }
