@@ -27,7 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static victor.training.spring.web.TestData.javaTraining;
+import static victor.training.spring.web.TestDataUtil.javaTraining;
 
 // starts the whole app on a random port, over an in-memory H2, and calls it over real HTTP
 @SpringBootTest(webEnvironment = RANDOM_PORT,
