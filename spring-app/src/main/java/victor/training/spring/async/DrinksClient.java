@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -47,6 +48,7 @@ public class DrinksClient {
     // #4 generated client from open-api/swagger 💖
   }
 
+  @Async("poolBar")
   public void sendNotification(String email) { // TODO outbox pattern
     log.debug("Sending notification (takes time and might fail) {}...", email);
     Sleep.millis(500); // critical but slow work that can fail

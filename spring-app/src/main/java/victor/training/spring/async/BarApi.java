@@ -32,7 +32,7 @@ public class BarApi {
     var vodka = drinksClient.pourVodka();
     Beer beer = beerFuture.join();
 
-    drinksClient.sendNotification("Dilly");
+    drinksClient.sendNotification("Dilly"); // fire-and-forget pt ca durează si/sau crapă
 
     log.debug("HTTP thread released in {} millis", currentTimeMillis() - t0);
     return new DillyDilly(beer, vodka);
