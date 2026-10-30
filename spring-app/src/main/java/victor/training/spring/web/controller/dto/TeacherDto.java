@@ -12,8 +12,8 @@ public class TeacherDto {
   }
 
   public TeacherDto(Teacher teacher) {
-    this.id = teacher.getId();
-    this.name = teacher.getName();
+    this.id = teacher.id();
+    this.name = teacher.name();
   }
 
 

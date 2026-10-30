@@ -22,7 +22,7 @@ public class ScopeRequest {
   @GetMapping("api/scope/request")
   public String requestScope(@RequestParam(defaultValue = "ro") String lang) {
     log.info("Got metadata on request: " + lang);
-    requestScoped.setMetadata(lang);
+    requestScoped.metadata(lang);
     return anotherBean.method();
   }
 }
@@ -43,7 +43,7 @@ class AnotherBean {
 
   public String method() {
     Sleep.millis(3000); // fake some delay to allow the race bug
-    String metadata = requestScoped.getMetadata();
+    String metadata = requestScoped.metadata();
     log.info("Got metadata deep in code: " + metadata);
     return "Obtained magically: " + metadata;
   }

@@ -58,11 +58,11 @@ class TrainingApiTest {
     trainingRepo.deleteAll(); // the ones InitialData inserted at startup
     alice = teacherRepo.save(new Teacher("Alice"));
     bob = teacherRepo.save(new Teacher("Bob"));
-    trainingRepo.save(javaTraining().setTeacher(alice));
+    trainingRepo.save(javaTraining().teacher(alice));
     trainingRepo.save(new Training("Kotlin", LocalDate.of(2026, 12, 1))
-            .setDescription("Coroutines")
-            .setProgrammingLanguage(ProgrammingLanguage.KOTLIN)
-            .setTeacher(bob));
+            .description("Coroutines")
+            .programmingLanguage(ProgrammingLanguage.KOTLIN)
+            .teacher(bob));
 
     ResponseEntity<TrainingDto[]> response = rest.getForEntity("/api/trainings", TrainingDto[].class);
 
@@ -74,7 +74,7 @@ class TrainingApiTest {
     assertThat(java.name).isEqualTo("Java");
     assertThat(java.description).isEqualTo("Java description");
     assertThat(java.startDate).isEqualTo(LocalDate.of(2026, 11, 1));
-    assertThat(java.teacherId).isEqualTo(alice.getId());
+    assertThat(java.teacherId).isEqualTo(alice.id());
     assertThat(java.teacherName).isEqualTo("Alice");
     assertThat(java.language).isEqualTo(ProgrammingLanguage.JAVA);
 
@@ -82,7 +82,7 @@ class TrainingApiTest {
     assertThat(kotlin.name).isEqualTo("Kotlin");
     assertThat(kotlin.description).isEqualTo("Coroutines");
     assertThat(kotlin.startDate).isEqualTo(LocalDate.of(2026, 12, 1));
-    assertThat(kotlin.teacherId).isEqualTo(bob.getId());
+    assertThat(kotlin.teacherId).isEqualTo(bob.id());
     assertThat(kotlin.teacherName).isEqualTo("Bob");
     assertThat(kotlin.language).isEqualTo(ProgrammingLanguage.KOTLIN);
   }
@@ -99,7 +99,7 @@ class TrainingApiTest {
   @Test
   void returnsOneTrainingWithItsTeacherBio() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(javaTraining().setTeacher(alice)).getId();
+    Long id = trainingRepo.save(javaTraining().teacher(alice)).id();
     // the stub comes from src/test/resources/wiremock/teacher-bio/mappings/teacher-bio.json
     // the same stub, programmatically:
     // teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
@@ -110,14 +110,14 @@ class TrainingApiTest {
 
     ResponseEntity<TrainingDto> response = rest.getForEntity("/api/trainings/{id}", TrainingDto.class, id);
 
-    teacherBioService.verify(getRequestedFor(urlEqualTo("/api/teachers/" + alice.getId() + "/bio")));
+    teacherBioService.verify(getRequestedFor(urlEqualTo("/api/teachers/" + alice.id() + "/bio")));
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     TrainingDto training = response.getBody();
     assertThat(training.id).isEqualTo(id);
     assertThat(training.name).isEqualTo("Java");
     assertThat(training.description).isEqualTo("Java description");
     assertThat(training.startDate).isEqualTo(LocalDate.of(2026, 11, 1));
-    assertThat(training.teacherId).isEqualTo(alice.getId());
+    assertThat(training.teacherId).isEqualTo(alice.id());
     assertThat(training.teacherName).isEqualTo("Alice");
     assertThat(training.teacherBio).isEqualTo("Alice teaches Java");
     assertThat(training.language).isEqualTo(ProgrammingLanguage.JAVA);
@@ -127,8 +127,8 @@ class TrainingApiTest {
   @Test
   void returnsTheTrainingEvenWhenTheTeacherBioServiceFails() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(javaTraining().setTeacher(alice)).getId();
-    teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
+    Long id = trainingRepo.save(javaTraining().teacher(alice)).id();
+    teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.id() + "/bio"))
             .willReturn(serverError()));
 
     ResponseEntity<TrainingDto> response = rest.getForEntity("/api/trainings/{id}", TrainingDto.class, id);

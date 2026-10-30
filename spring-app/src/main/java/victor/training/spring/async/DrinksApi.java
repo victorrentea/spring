@@ -15,7 +15,7 @@ public class DrinksApi { // pretend it's running in a different app
   public Beer beer(@PathVariable String type) {
     log.info("Remote service: pouring beer");
     Sleep.millis(1000);
-    return new Beer().setType(type);
+    return new Beer().type(type);
   }
 
   @GetMapping("/api/vodka")

@@ -48,10 +48,10 @@ class SpelConfiguration {
   @Bean
   public SpELSandbox sandbox() {
     SpELSandbox box = new SpELSandbox();
-    box.setIntProperty(10);
-    box.setStringProperty(day);
-    box.setBooleanProperty(true);
-    box.setChildList(Arrays.asList(
+    box.intProperty(10);
+    box.stringProperty(day);
+    box.booleanProperty(true);
+    box.childList(Arrays.asList(
             new SpELSandbox(10, "One"),
             new SpELSandbox(20, "Two"),
             new SpELSandbox(30, "Three")

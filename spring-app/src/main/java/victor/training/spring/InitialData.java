@@ -28,34 +28,34 @@ public class InitialData {
     log.info("Inserting initial training data");
 
 
-    Teacher victor = teacherRepo.save(new Teacher("Victor").setContractType(ContractType.INDEPENDENT));
-    Teacher ionut = teacherRepo.save(new Teacher("Ionut").setContractType(ContractType.PART));
+    Teacher victor = teacherRepo.save(new Teacher("Victor").contractType(ContractType.INDEPENDENT));
+    Teacher ionut = teacherRepo.save(new Teacher("Ionut").contractType(ContractType.PART));
 
     Training spring = new Training("Spring Framework", LocalDate.now().plusDays(10))
-            .setDescription("<p>All about <b>Spring</b></p>")
-            .setProgrammingLanguage(JAVA)
-            .setTeacher(victor);
+            .description("<p>All about <b>Spring</b></p>")
+            .programmingLanguage(JAVA)
+            .teacher(victor);
     Training jpa = new Training("JPA", LocalDate.now().plusDays(2))
-            .setDescription("<p>The coolest standard in Java EE</p>")
-            .setProgrammingLanguage(JAVA)
-            .setTeacher(victor);
+            .description("<p>The coolest standard in Java EE</p>")
+            .programmingLanguage(JAVA)
+            .teacher(victor);
     Training javaBasic = new Training("Java Basic", LocalDate.now().plusDays(20))
-            .setDescription("<p>The new way of doing Single Page Applications</p>")
-            .setProgrammingLanguage(JAVA)
-            .setTeacher(ionut);
+            .description("<p>The new way of doing Single Page Applications</p>")
+            .programmingLanguage(JAVA)
+            .teacher(ionut);
     Training patterns = new Training("Design Patterns", LocalDate.now().plusDays(5))
-            .setDescription("<p>Design Thinking</p>")
-            .setProgrammingLanguage(PHP)
-            .setTeacher(victor);
+            .description("<p>Design Thinking</p>")
+            .programmingLanguage(PHP)
+            .teacher(victor);
 
     trainingRepo.save(spring);
     trainingRepo.save(jpa);
     trainingRepo.save(javaBasic);
     trainingRepo.save(patterns);
 
-    userRepo.save(new User("PowerHorse", "power", UserRole.POWER, List.of(victor.getId()), PHP)); // only manages Victor, not Ionut
-    userRepo.save(new User("Za Boss", "admin", UserRole.ADMIN, List.of(victor.getId()), JAVA)); // only manages Victor, not Ionut
-    userRepo.save(new User("Clerk", "user", UserRole.USER, List.of(victor.getId(), ionut.getId()), null));
+    userRepo.save(new User("PowerHorse", "power", UserRole.POWER, List.of(victor.id()), PHP)); // only manages Victor, not Ionut
+    userRepo.save(new User("Za Boss", "admin", UserRole.ADMIN, List.of(victor.id()), JAVA)); // only manages Victor, not Ionut
+    userRepo.save(new User("Clerk", "user", UserRole.USER, List.of(victor.id(), ionut.id()), null));
   }
 
 

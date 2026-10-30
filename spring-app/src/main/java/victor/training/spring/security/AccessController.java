@@ -28,7 +28,7 @@ public class AccessController {
     if (training.isEmpty()) {
       return false;
     }
-    return canDeleteTrainingOfTeacher(training.get().getTeacher().getId(), managedTeacherIdsOfCurrentUser());
+    return canDeleteTrainingOfTeacher(training.get().teacher().id(), managedTeacherIdsOfCurrentUser());
   }
 
   public void fillCanDelete(List<TrainingDto> trainings) {

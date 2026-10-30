@@ -58,11 +58,11 @@ public class TrainingService {
       throw new IllegalArgumentException("Another training with that name already exists");
     }
     Training newEntity = new Training()
-            .setName(dto.name)
-            .setDescription(dto.description)
-            .setProgrammingLanguage(dto.language)
-            .setStartDate(dto.startDate)
-            .setTeacher(teacherRepo.getReferenceById(dto.teacherId));
+            .name(dto.name)
+            .description(dto.description)
+            .programmingLanguage(dto.language)
+            .startDate(dto.startDate)
+            .teacher(teacherRepo.getReferenceById(dto.teacherId));
     trainingRepo.save(newEntity);
   }
 
@@ -71,19 +71,19 @@ public class TrainingService {
       throw new IllegalArgumentException("Another training with that name already exists");
     }
     Training training = trainingRepo.findById(dto.id).orElseThrow()
-            .setName(dto.name)
-            .setDescription(dto.description)
-            .setProgrammingLanguage(dto.language)
-            .setTeacher(new Teacher(dto.teacherId));
+            .name(dto.name)
+            .description(dto.description)
+            .programmingLanguage(dto.language)
+            .teacher(new Teacher(dto.teacherId));
 
-    if (!dto.startDate.equals(training.getStartDate())) {
+    if (!dto.startDate.equals(training.startDate())) {
       // TODO check date not in the past
-      emailSender.sendScheduleChangedEmail(training.getTeacher(), training.getName(), dto.startDate);
-      training.setStartDate(dto.startDate);
+      emailSender.sendScheduleChangedEmail(training.teacher(), training.name(), dto.startDate);
+      training.startDate(dto.startDate);
     }
 
     // OPTIMISTIC LOCKING
-    if (!dto.version.equals(training.getVersion())) {
+    if (!dto.version.equals(training.version())) {
 //            throw new OptimisticLockException("Another user changed the entity in the meantime. Please refresh the page and re-do your changes.");
       // Alternative: Hibernate would throw this automatically when repo.save(new Entity from Dto) => EntityManager.merge operator
     }

@@ -37,6 +37,6 @@ public class TeacherService {
   // TODO EvictCache
   public void updateTeacher(long id, String newName) {
     Teacher teacher = teacherRepo.findById(id).orElseThrow();
-    teacher.setName(newName);
+    teacher.name(newName);
   }
 }

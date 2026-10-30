@@ -67,7 +67,7 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     }
     Set<Long> teacherIds = getManagedTeacherIdsFromUsersTable(authentication);
     log.info("Current user manages teacher IDs = {}", teacherIds);
-    Long teacherId = trainingRepo.findById(trainingId).get().getTeacher().getId();
+    Long teacherId = trainingRepo.findById(trainingId).get().teacher().id();
     log.info("Training.teacher.id = {}", teacherId);
     return teacherIds.contains(teacherId);
   }

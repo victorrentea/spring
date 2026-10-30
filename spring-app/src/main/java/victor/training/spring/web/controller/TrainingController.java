@@ -89,7 +89,7 @@ public class TrainingController implements TrainingApiDocs {
   public List<TrainingDto> searchUsingGET(
           @RequestParam(required = false) String name,
           @RequestParam(required = false) Long teacherId) {
-    return withCanDelete(trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId)));
+    return withCanDelete(trainingService.search(new TrainingSearchCriteria().name(name).teacherId(teacherId)));
   }
 
   // GET + query params, but captured as a DTO

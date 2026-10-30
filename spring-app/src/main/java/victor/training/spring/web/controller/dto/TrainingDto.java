@@ -28,13 +28,13 @@ public class TrainingDto {
   }
 
   public TrainingDto(Training training) {
-    id = training.getId();
-    name = training.getName();
-    description = training.getDescription();
-    startDate = training.getStartDate();
-    teacherId = training.getTeacher().getId();
-    language = training.getProgrammingLanguage();
-    teacherName = training.getTeacher().getName();
-    version = training.getVersion();
+    id = training.id();
+    name = training.name();
+    description = training.description();
+    startDate = training.startDate();
+    teacherId = training.teacher().id();
+    language = training.programmingLanguage();
+    teacherName = training.teacher().name();
+    version = training.version();
   }
 }

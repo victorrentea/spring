@@ -72,7 +72,7 @@ class DrinksClientRetryTest {
     server.expect(once(), requestTo(VODKA_URL))
         .andRespond(withSuccess("{\"type\":\"deadly\"}", MediaType.APPLICATION_JSON));
 
-    assertThat(drinksClient.pourVodka().getType()).isEqualTo("deadly");
+    assertThat(drinksClient.pourVodka().type()).isEqualTo("deadly");
     server.verify();
   }
 

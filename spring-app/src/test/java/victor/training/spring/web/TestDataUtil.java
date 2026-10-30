@@ -9,9 +9,9 @@ import java.time.LocalDate;
 public class TestDataUtil {
   public static Training javaTraining() {
     return new Training()
-            .setName("Java")
-            .setStartDate(LocalDate.of(2026, 11, 1))
-            .setDescription("Java description")
-            .setProgrammingLanguage(ProgrammingLanguage.JAVA);
+            .name("Java")
+            .startDate(LocalDate.of(2026, 11, 1))
+            .description("Java description")
+            .programmingLanguage(ProgrammingLanguage.JAVA);
   }
 }

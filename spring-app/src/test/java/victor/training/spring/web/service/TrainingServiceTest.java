@@ -57,15 +57,15 @@ class TrainingServiceTest {
   private Training training(Long id, String name, String description, LocalDate startDate,
                             Long teacherId, String teacherName, ProgrammingLanguage language) {
     Teacher teacher = new Teacher(teacherName);
-    teacher.setId(teacherId);
+    teacher.id(teacherId);
 
     Training training = new Training();
-    training.setId(id);
-    training.setName(name);
-    training.setDescription(description);
-    training.setStartDate(startDate);
-    training.setTeacher(teacher);
-    training.setProgrammingLanguage(language);
+    training.id(id);
+    training.name(name);
+    training.description(description);
+    training.startDate(startDate);
+    training.teacher(teacher);
+    training.programmingLanguage(language);
     return training;
   }
 }
