@@ -20,6 +20,10 @@ public class KafkaReceiver {
 
   @KafkaListener(topics = "demo", groupId = "spring-app")
   public void receive(NewUser newUser) {
+    if (userRepo.existsByUsername(newUser.username())) {
+      log.info("User {} already exists, ignoring: {}", newUser.username(), newUser);
+      return;
+    }
     User user = userRepo.save(new User(newUser.name(), newUser.username(), UserRole.USER, List.of(), null));
     log.info("Inserted user id={} from Kafka: {}", user.getId(), newUser);
   }

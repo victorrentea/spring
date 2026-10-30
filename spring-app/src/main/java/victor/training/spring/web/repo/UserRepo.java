@@ -10,4 +10,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
   @Query("SELECT u FROM User u LEFT JOIN FETCH u.managedTeacherIds WHERE u.username = ?1")
   Optional<User> findByUsernameForLogin(String username);
 
+  boolean existsByUsername(String username);
+
 }
