@@ -9,6 +9,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import victor.training.spring.varie.Sleep;
 
@@ -28,15 +29,8 @@ public class TeacherBioClient {
   private final TeacherBioFeignClient feignClient;
   private final RestTemplate rest;
 
-
-  // TODO cacheable
   public String retrieveBiographyForTeacher(long teacherId) {
-    log.debug("Calling external web endpoint... (takes time)");
-//    String result = dummyCall(teacherId);
-    String result = feignClient.getTeacherBio(teacherId);
-//    String result = callUsingRestTemplate(teacherId);
-    log.debug("Got result");
-    return result;
+      return feignClient.getTeacherBio(teacherId);
   }
 
   private String dummyCall(long teacherId) {
