@@ -22,6 +22,7 @@ public class TrainingDto {
   public LocalDate startDate;
   public String description;
   public Long version;
+  public Boolean canDelete; // computed for the current user; ignored on create/update
 
   public TrainingDto() {
   }

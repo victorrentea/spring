@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import victor.training.spring.security.AccessController;
 import victor.training.spring.web.controller.dto.TrainingDto;
 import victor.training.spring.web.controller.dto.TrainingSearchCriteria;
 import victor.training.spring.web.repo.TrainingRepo;
@@ -22,15 +23,18 @@ import static org.springframework.http.MediaType.IMAGE_JPEG;
 @RequestMapping("api/trainings")
 public class TrainingController implements TrainingApiDocs {
   private final TrainingService trainingService;
+  private final AccessController accessController;
 
   @GetMapping
   public List<TrainingDto> getAll() {
-    return trainingService.getAllTrainings();
+    return withCanDelete(trainingService.getAllTrainings());
   }
 
   @GetMapping("{id}")
   public TrainingDto get(@PathVariable /*TrainingId*/ long id) {
-    return trainingService.getTrainingById(id);
+    TrainingDto dto = trainingService.getTrainingById(id);
+    accessController.fillCanDelete(List.of(dto));
+    return dto;
     //TODO return 404 if not found
   }
 
@@ -52,10 +56,15 @@ public class TrainingController implements TrainingApiDocs {
   //  (comes as 'admin_for_language' claim in in KeyCloak AccessToken)
   //  -> use SpEL: @accessController.canDeleteTraining(#id)
   //  -> hasPermission + PermissionEvaluator [GEEK]
-  @PreAuthorize("hasRole('TRAINING_DELETE')")
+  @PreAuthorize("@accessController.canDeleteTraining(#trainingId)")
   @DeleteMapping("{trainingId}")
   public void delete(@PathVariable Long trainingId) {
     trainingService.deleteById(trainingId);
+  }
+
+  private List<TrainingDto> withCanDelete(List<TrainingDto> trainings) {
+    accessController.fillCanDelete(trainings);
+    return trainings;
   }
 
   private final TrainingRepo trainingRepo;
@@ -70,7 +79,7 @@ public class TrainingController implements TrainingApiDocs {
   @PostMapping("search") // traditional
   // 😊 hides sensitive search criteria from URL eg ?phone=0158135767
   public List<TrainingDto> search(@RequestBody TrainingSearchCriteria criteria) {
-    return trainingService.search(criteria);
+    return withCanDelete(trainingService.search(criteria));
   }
 
   // == #2 GET + query params: search?name=xxx&teacherId=yyy ==
@@ -80,19 +89,19 @@ public class TrainingController implements TrainingApiDocs {
   public List<TrainingDto> searchUsingGET(
           @RequestParam(required = false) String name,
           @RequestParam(required = false) Long teacherId) {
-    return trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId));
+    return withCanDelete(trainingService.search(new TrainingSearchCriteria().setName(name).setTeacherId(teacherId)));
   }
 
   // GET + query params, but captured as a DTO
   @GetMapping("search2")
   public List<TrainingDto> searchUsingGET(TrainingSearchCriteria criteria) {
-    return trainingService.search(criteria);
+    return withCanDelete(trainingService.search(criteria));
   }
 
   // ❌ GET + Body avoid - not fully supported
   @GetMapping("searchGetBody")
   public List<TrainingDto> searchUsingGETBody(@RequestBody TrainingSearchCriteria criteria) {
-    return trainingService.search(criteria);
+    return withCanDelete(trainingService.search(criteria));
   }
 
   @Value("classpath:/static/spa.jpg")

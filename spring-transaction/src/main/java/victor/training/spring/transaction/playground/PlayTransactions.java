@@ -33,6 +33,7 @@ public class PlayTransactions {
   public void play() throws FileNotFoundException {
     other.extracted();
     repo.save(new MyEntity("JPA4"));
+//    repo.saveAndFlush(new MyEntity("JPA4")); // trimite acum insertul, dar nu comite tx
     var name = other.apelDeApi(); // crezi ca ia 200ms da ia 2min in prod
 //    name="');DROP TABLE MY_ENTITY;--";
     jdbcTemplate.update("insert into " +

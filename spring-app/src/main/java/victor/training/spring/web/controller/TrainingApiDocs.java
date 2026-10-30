@@ -25,7 +25,7 @@ public interface TrainingApiDocs {
           - `startDate` — format **dd-MM-yyyy** (not ISO!)
           - `description` — may contain HTML
 
-          Ignored on create: `id` (assigned by the server), `version`, `level`, `teacherName`, `teacherBio`.
+          Ignored on create: `id` (assigned by the server), `version`, `level`, `teacherName`, `teacherBio`, `canDelete`.
 
           The response has no body: to get the new id, search by name via `GET /api/trainings/search?name=...`.
 

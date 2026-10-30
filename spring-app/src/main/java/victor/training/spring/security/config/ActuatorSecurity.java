@@ -46,7 +46,7 @@ public class ActuatorSecurity {
                     .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 
                     // the rest of actuator:
-//          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD!
+//          .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll() // ⚠️NOT IN PROD! // /actuator/**
                     .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
     );
 
