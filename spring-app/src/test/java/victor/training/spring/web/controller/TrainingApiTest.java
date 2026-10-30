@@ -59,7 +59,9 @@ class TrainingApiTest {
     alice = teacherRepo.save(new Teacher("Alice"));
     bob = teacherRepo.save(new Teacher("Bob"));
     trainingRepo.save(javaTraining().teacher(alice));
-    trainingRepo.save(new Training("Kotlin", LocalDate.of(2026, 12, 1))
+    trainingRepo.save(new Training()
+            .name("Kotlin")
+            .startDate(LocalDate.of(2026, 12, 1))
             .description("Coroutines")
             .programmingLanguage(ProgrammingLanguage.KOTLIN)
             .teacher(bob));
