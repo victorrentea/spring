@@ -41,8 +41,6 @@ public class TrainingService {
     Training training = trainingRepo.findById(id).orElseThrow();
     TrainingDto dto = new TrainingDto(training);
     dto.teacherBio = retrieveTeacherBio(dto.teacherId);
-    String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-//        training.startEdit(currentUser); // PESSIMISTIC LOCKING
     return dto;
   }
 
