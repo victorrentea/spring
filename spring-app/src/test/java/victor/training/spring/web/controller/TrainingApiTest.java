@@ -27,6 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static victor.training.spring.web.TestData.javaTraining;
 
 // starts the whole app on a random port, over an in-memory H2, and calls it over real HTTP
 @SpringBootTest(webEnvironment = RANDOM_PORT,
@@ -57,10 +58,7 @@ class TrainingApiTest {
     trainingRepo.deleteAll(); // the ones InitialData inserted at startup
     alice = teacherRepo.save(new Teacher("Alice"));
     bob = teacherRepo.save(new Teacher("Bob"));
-    trainingRepo.save(new Training("Java", LocalDate.of(2026, 11, 1))
-            .setDescription("JPA basics")
-            .setProgrammingLanguage(ProgrammingLanguage.JAVA)
-            .setTeacher(alice));
+    trainingRepo.save(javaTraining(alice));
     trainingRepo.save(new Training("Kotlin", LocalDate.of(2026, 12, 1))
             .setDescription("Coroutines")
             .setProgrammingLanguage(ProgrammingLanguage.KOTLIN)
@@ -101,10 +99,7 @@ class TrainingApiTest {
   @Test
   void returnsOneTrainingWithItsTeacherBio() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(new Training("Java", LocalDate.of(2026, 11, 1))
-            .setDescription("JPA basics")
-            .setProgrammingLanguage(ProgrammingLanguage.JAVA)
-            .setTeacher(alice)).getId();
+    Long id = trainingRepo.save(javaTraining(alice)).getId();
     // the stub comes from src/test/resources/wiremock/teacher-bio/mappings/teacher-bio.json
     // the same stub, programmatically:
     // teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
@@ -132,8 +127,7 @@ class TrainingApiTest {
   @Test
   void returnsTheTrainingEvenWhenTheTeacherBioServiceFails() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(new Training("Java", LocalDate.of(2026, 11, 1))
-            .setTeacher(alice)).getId();
+    Long id = trainingRepo.save(javaTraining(alice)).getId();
     teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
             .willReturn(serverError()));
 
