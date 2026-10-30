@@ -3,6 +3,9 @@ package victor.training.spring.async;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -23,8 +26,10 @@ public class DrinksClient {
     String type = "blond";
     log.debug("Calling GET Beer...");
     // #1 RestTemplate (traditional)
-    return restTemplate.getForObject("http://localhost:8080/api/beer/{type}", Beer.class, type);
-
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBasicAuth("user", "user");
+    return restTemplate.exchange("http://localhost:8080/api/beer/{type}",
+        HttpMethod.GET, new HttpEntity<>(headers), Beer.class, type).getBody();
     // #2 Feign Client 😎
 //     return drinksFeignClient.getBeer(type);
   }
@@ -32,10 +37,10 @@ public class DrinksClient {
   public Vodka pourVodka() {
     log.debug("Calling GET Vodka...");
 //    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
-
     // #3 RestClient ⭐️ = blocking equivalent of WebClient☠️
     return restClient.get()
             .uri("http://localhost:8080/api/vodka")
+            .headers(h -> h.setBasicAuth("user", "user"))
             .retrieve()
             .body(Vodka.class);
 
