@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class TestDataUtil {
   public static Training javaTraining(Teacher teacher) {
     return new Training("Java", LocalDate.of(2026, 11, 1))
-            .setDescription("JPA basics")
+            .setDescription("Java description")
             .setProgrammingLanguage(ProgrammingLanguage.JAVA)
             .setTeacher(teacher);
   }

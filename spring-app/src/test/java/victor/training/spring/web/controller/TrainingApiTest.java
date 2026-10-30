@@ -72,7 +72,7 @@ class TrainingApiTest {
 
     TrainingDto java = trainings[0];
     assertThat(java.name).isEqualTo("Java");
-    assertThat(java.description).isEqualTo("JPA basics");
+    assertThat(java.description).isEqualTo("Java description");
     assertThat(java.startDate).isEqualTo(LocalDate.of(2026, 11, 1));
     assertThat(java.teacherId).isEqualTo(alice.getId());
     assertThat(java.teacherName).isEqualTo("Alice");
@@ -115,7 +115,7 @@ class TrainingApiTest {
     TrainingDto training = response.getBody();
     assertThat(training.id).isEqualTo(id);
     assertThat(training.name).isEqualTo("Java");
-    assertThat(training.description).isEqualTo("JPA basics");
+    assertThat(training.description).isEqualTo("Java description");
     assertThat(training.startDate).isEqualTo(LocalDate.of(2026, 11, 1));
     assertThat(training.teacherId).isEqualTo(alice.getId());
     assertThat(training.teacherName).isEqualTo("Alice");

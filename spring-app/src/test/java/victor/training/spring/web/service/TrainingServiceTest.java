@@ -27,7 +27,7 @@ class TrainingServiceTest {
 
   @Test
   void returnsTrainingsWithTheirDetailsInRepositoryOrder() {
-    Training javaTraining = training(1L, "Java", "JPA basics", LocalDate.of(2026, 11, 1), 11L, "Alice", ProgrammingLanguage.JAVA);
+    Training javaTraining = training(1L, "Java", "Java description", LocalDate.of(2026, 11, 1), 11L, "Alice", ProgrammingLanguage.JAVA);
     Training kotlinTraining = training(2L, "Kotlin", "Coroutines", LocalDate.of(2026, 12, 1), 12L, "Bob", ProgrammingLanguage.KOTLIN);
     when(trainingRepo.findAll()).thenReturn(List.of(javaTraining, kotlinTraining));
 
@@ -36,7 +36,7 @@ class TrainingServiceTest {
     assertThat(trainings).hasSize(2);
     assertThat(trainings.get(0).id).isEqualTo(1L);
     assertThat(trainings.get(0).name).isEqualTo("Java");
-    assertThat(trainings.get(0).description).isEqualTo("JPA basics");
+    assertThat(trainings.get(0).description).isEqualTo("Java description");
     assertThat(trainings.get(0).startDate).isEqualTo(LocalDate.of(2026, 11, 1));
     assertThat(trainings.get(0).teacherId).isEqualTo(11L);
     assertThat(trainings.get(0).teacherName).isEqualTo("Alice");
