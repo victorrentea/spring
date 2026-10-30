@@ -197,6 +197,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <!-- fake HTTP server standing in for the services we call -->
+            <groupId>org.wiremock.integrations</groupId>
+            <artifactId>wiremock-spring-boot</artifactId>
+            <version>3.10.6</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
         <!-- <dependency>
