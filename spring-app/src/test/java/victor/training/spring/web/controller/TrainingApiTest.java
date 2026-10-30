@@ -137,4 +137,16 @@ class TrainingApiTest {
     assertThat(response.getBody().name).isEqualTo("Java");
     assertThat(response.getBody().teacherBio).startsWith("<ERROR RETRIEVING TEACHER BIO");
   }
+
+  @Test
+  void searchesByNameGivenAsQueryParam() {
+    trainingRepo.deleteAll();
+    alice = teacherRepo.save(new Teacher("Alice"));
+    trainingRepo.save(javaTraining().teacher(alice));
+    trainingRepo.save(new Training().name("Kotlin").teacher(alice));
+
+    TrainingDto[] trainings = rest.getForObject("/api/trainings/search2?name=Java", TrainingDto[].class);
+
+    assertThat(trainings).extracting(t -> t.name).containsExactly("Java");
+  }
 }

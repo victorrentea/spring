@@ -2,6 +2,7 @@ package victor.training.spring.varie;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Accessors(fluent = false, chain = true) // SpEL reads sandbox.intProperty via getIntProperty()
 public class SpELSandbox {
   private String stringProperty;
   private Integer intProperty;
@@ -48,10 +50,10 @@ class SpelConfiguration {
   @Bean
   public SpELSandbox sandbox() {
     SpELSandbox box = new SpELSandbox();
-    box.intProperty(10);
-    box.stringProperty(day);
-    box.booleanProperty(true);
-    box.childList(Arrays.asList(
+    box.setIntProperty(10);
+    box.setStringProperty(day);
+    box.setBooleanProperty(true);
+    box.setChildList(Arrays.asList(
             new SpELSandbox(10, "One"),
             new SpELSandbox(20, "Two"),
             new SpELSandbox(30, "Three")
