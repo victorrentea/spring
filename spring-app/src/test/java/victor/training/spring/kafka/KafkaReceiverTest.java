@@ -46,8 +46,7 @@ class KafkaReceiverTest {
     kafkaTemplate.send("demo", new NewUser("Mary", "mary")); // same partition => consumed after john
 
     await().atMost(Duration.ofSeconds(10)).until(() -> userRepo.existsByUsername("mary"));
-    assertThat(userRepo.findAll()).filteredOn(u -> u.getUsername().equals("john"))
-            .singleElement()
-            .extracting(User::getName).isEqualTo("John Doe");
+    User john = userRepo.findByUsernameForLogin("john").orElseThrow(); // throws if 2 users "john"
+    assertThat(john.getName()).isEqualTo("John Doe");
   }
 }
