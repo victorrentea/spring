@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaReceiver {
   @KafkaListener(topics = "demo", groupId = "spring-app")
-  public void receive(String message) {
-    log.info("Received from Kafka: {}", message);
+  public void receive(NewUser newUser) {
+    log.info("Received from Kafka: {}", newUser);
   }
 }

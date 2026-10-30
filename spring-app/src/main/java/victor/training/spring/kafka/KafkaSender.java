@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class KafkaSender {
-  private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, NewUser> kafkaTemplate;
 
-  // curl -u user:user "localhost:8080/api/kafka/send?message=Hello"
+  // curl -u user:user "localhost:8080/api/kafka/send?name=Jane%20Doe&username=jane"
   @GetMapping("api/kafka/send")
-  public void send(@RequestParam String message) {
-    kafkaTemplate.send("demo", message);
+  public void send(@RequestParam String name, @RequestParam String username) {
+    kafkaTemplate.send("demo", new NewUser(name, username));
   }
 }
