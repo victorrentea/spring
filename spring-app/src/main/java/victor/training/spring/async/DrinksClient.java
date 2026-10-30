@@ -1,5 +1,6 @@
 package victor.training.spring.async;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class DrinksClient {
 //     return drinksFeignClient.getBeer(type);
   }
 
+  @Retry(name = "drinks")
   public Vodka pourVodka() {
     log.debug("Calling GET Vodka...");
 //    return restTemplate.getForObject("http://localhost:8080/api/vodka", Vodka.class);
