@@ -25,6 +25,7 @@
         <module>spring-sequence-diagram</module>
         <module>spring-transaction</module>
         <module>spring-app</module>
+        <module>spring-kafka-broker</module>
         <module>spring-ai</module>
         <module>spring-ai-mcp-server</module>
         <!--<module>spring-gateway</module>-->
