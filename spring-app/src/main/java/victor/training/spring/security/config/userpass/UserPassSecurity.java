@@ -37,6 +37,7 @@ public class UserPassSecurity {
     // http.cors(Customizer.withDefaults()); // only if .js files come from a CDN (by default CORS requests get blocked)
 
     http.authorizeHttpRequests(authz -> authz
+            .requestMatchers("/error").permitAll() // else a 401 from /actuator, forwarded to /error, lands here and gets redirected to /login
             .anyRequest().authenticated()
     );
 
