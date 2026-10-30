@@ -22,6 +22,9 @@ public class DrinksApi { // pretend it's running in a different app
   public Vodka vodka() {
     log.info("Remote service: pouring vodka");
     Sleep.millis(1000);
+    if (Math.random() < 0.75) {
+      throw new IllegalStateException("No vodka left!");
+    }
     return new Vodka();
   }
 }
