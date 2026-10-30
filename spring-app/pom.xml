@@ -210,6 +210,18 @@
             <version>3.10.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <!-- @EmbeddedKafka: a Kafka broker inside the test JVM -->
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- wait for async effects, eg a message consumed in background -->
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- this dependency is vulnerable. run mvn verify and the 'dependency-check-maven' plugin below will report it -->
         <!-- <dependency>
