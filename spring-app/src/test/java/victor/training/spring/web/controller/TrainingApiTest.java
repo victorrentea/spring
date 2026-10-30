@@ -58,7 +58,7 @@ class TrainingApiTest {
     trainingRepo.deleteAll(); // the ones InitialData inserted at startup
     alice = teacherRepo.save(new Teacher("Alice"));
     bob = teacherRepo.save(new Teacher("Bob"));
-    trainingRepo.save(javaTraining(alice));
+    trainingRepo.save(javaTraining().setTeacher(alice));
     trainingRepo.save(new Training("Kotlin", LocalDate.of(2026, 12, 1))
             .setDescription("Coroutines")
             .setProgrammingLanguage(ProgrammingLanguage.KOTLIN)
@@ -99,7 +99,7 @@ class TrainingApiTest {
   @Test
   void returnsOneTrainingWithItsTeacherBio() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(javaTraining(alice)).getId();
+    Long id = trainingRepo.save(javaTraining().setTeacher(alice)).getId();
     // the stub comes from src/test/resources/wiremock/teacher-bio/mappings/teacher-bio.json
     // the same stub, programmatically:
     // teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
@@ -127,7 +127,7 @@ class TrainingApiTest {
   @Test
   void returnsTheTrainingEvenWhenTheTeacherBioServiceFails() {
     alice = teacherRepo.save(new Teacher("Alice"));
-    Long id = trainingRepo.save(javaTraining(alice)).getId();
+    Long id = trainingRepo.save(javaTraining().setTeacher(alice)).getId();
     teacherBioService.stubFor(get(urlEqualTo("/api/teachers/" + alice.getId() + "/bio"))
             .willReturn(serverError()));
 
